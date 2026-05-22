@@ -2819,7 +2819,7 @@ function renderShipTab(body){
           const _subRight=_garageSubTab==='parts'
             ?`<div style="font-size:10px;color:var(--dim);margin-bottom:6px">⚙️ <b style="color:var(--gold)">파츠 장비</b> ${(s.parts||[]).length}개 <span style="opacity:.45;font-size:9px">클릭=탈착</span></div>${partsGridHtml}<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:3px 8px" onclick="pickPartForSlot(${idx})">+ 파츠 장착</button></div>`
             :_garageSubTab==='crew'
-            ?`<div style="font-size:10px;color:var(--dim);margin-bottom:6px">👥 <b style="color:var(--green)">크루 배치</b> ${(s.crewIds||[]).length}/${maxCrew}명 <span style="opacity:.45;font-size:9px">클릭=하선</span></div><div style="display:grid;grid-template-columns:repeat(${crewCols},51px);gap:4px;margin-bottom:8px">${crewGrid}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:3px 8px" onclick="pickCrewForSlot(${idx})">+ 크루 배치</button>${(s.crewIds||[]).length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88;font-size:11px;padding:3px 8px" onclick="unassignCrewModal(${idx},0)">👤 전원 하선</button>`:''}</div>`
+            ?`<div style="font-size:10px;color:var(--dim);margin-bottom:6px">👥 <b style="color:var(--green)">크루 배치</b> ${(s.crewIds||[]).length}/${maxCrew}명 <span style="opacity:.45;font-size:9px">클릭=하선</span></div><div style="display:grid;grid-template-columns:repeat(${crewCols},51px);gap:4px;margin-bottom:8px">${crewGrid}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:3px 8px" onclick="pickCrewForSlot(${idx})">+ 크루 배치</button>${(s.crewIds||[]).length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88;font-size:11px;padding:3px 8px" onclick="unassignAllCrew(${idx})">👤 전원 하선</button>`:''}</div>`
             :_cargoHtml;
           return `<div style="display:flex;gap:0;min-height:160px">
             <div style="width:160px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px">
@@ -3304,10 +3304,19 @@ function pickCrewModal(shipIdx){
 // 모달 내 크루 해제
 function unassignCrewModal(shipIdx,crewSlotIdx){
   const s=G.fleet[shipIdx];if(!s||!s.crewIds)return;
+  if(crewSlotIdx<0||crewSlotIdx>=s.crewIds.length){notify('잘못된 크루 위치','err');return;}
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||(G.heroes||[]).map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
   notify(`${c?.nm||'크루'} 하선`,'ok');
   saveGame(true);showShipDetailModal(shipIdx);
+}
+// 함선의 모든 크루 일괄 하선
+function unassignAllCrew(shipIdx){
+  const s=G.fleet[shipIdx];if(!s||!s.crewIds||s.crewIds.length===0)return;
+  const n=s.crewIds.length;
+  s.crewIds=[];
+  notify(`${n}명 전원 하선 완료`,'ok');
+  saveGame(true);rerenderShipOrGarage();
 }
 function repairShipFull(idx){
   const s=G.fleet[idx];if(!s)return;
@@ -5257,13 +5266,12 @@ function renderGachaCards(results){
   const rarityNm={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'};
   const rarityCol={N:'var(--dim)',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)'};
   const CREW_BONUS={Pilot:{att:8,int2:2,tec:4},Eng:{att:2,int2:5,tec:8},Merch:{att:3,int2:7,tec:4}};
-  const RMULT={N:1,R:1.5,H:2.5,L:4};
   c.innerHTML=results.map((r,i)=>{
     const rKey='r'+r.rarity;
     const rnm=rarityNm[r.rarity];
     const rcol=rarityCol[r.rarity];
     const cb=CREW_BONUS[r.cl]||{att:3,int2:3,tec:3};
-    const m=RMULT[r.rarity]||1;
+    const m=RARITY_MULT[r.rarity]||1;
     const bonusTxt=['att','int2','tec'].filter(k=>cb[k]>0).map(k=>`${k.replace('int2','SHD').replace('att','ATT').replace('tec','ENG').replace('def','DEF')}+${Math.round(cb[k]*m)}`).join('  ');
     const gen=(r.ic||'👩').includes('👩')||r.nm?.endsWith('a')?'f':'m';
     return`<div class="gc-char ${rKey}" style="animation-delay:${i*0.12}s">
@@ -5782,7 +5790,7 @@ function renderCombatLog(body){
     ${logs.length===0?'<div style="color:var(--dim);font-size:14px">전투 기록 없음</div>':
     `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">`+logs.slice().reverse().map(l=>{
       const pd=PLANET_DEF.find(p=>p.id===l.planetId)||PLANET_DEF.find(p=>p.nm===l.planet);
-      const planetImgSrc=pd?`img/planets/${pd.id}.png`:'img/planets/DEFAULT.png';
+      const planetImgSrc=pd?`img/planets/${pd.id}.png`:'img/planets/P01.png';
       const pFaction=pd?FACTION[pd.f]:null;
       return `<div style="background:var(--card);border:1px solid ${l.win?'rgba(46,204,113,.3)':'rgba(255,80,80,.25)'};border-radius:12px;overflow:hidden;display:flex;flex-direction:row;min-height:160px">
         <!-- 좌측: 전투 정보 -->
@@ -6687,9 +6695,47 @@ function _drawShipUnit(ctx,u,x,y,sz){
 // ═══ 누락 함수 복구 패치 ════════════════════════════════════════════
 
 // ── 전투 상태 변수 ────────────────────────────────────────────────
-let _cbEffects=[];  // [{x,y,col,r,life,maxLife}]
+let _cbEffects=[];  // [{type,...}] beam / exp / shard / shockwave / muzzle
 let _unitPos={};    // {unitId: {x,y}}
 let _cbAnimReq=null;
+
+// 이펙트가 살아있는 동안만 60fps 루프로 캔버스 재그리기.
+// drawCombatFrame은 호출될 때마다 life 1씩 감소시키므로, 루프가 돌아야 effects가 자연스럽게 사라짐.
+function _cbStartAnimLoop(){
+  if(_cbAnimReq)return; // 이미 루프 중
+  const tick=()=>{
+    if(!cbCtx||!cbCV){_cbAnimReq=null;return;}
+    drawCombatFrame();
+    if((_cbEffects||[]).length>0){
+      _cbAnimReq=requestAnimationFrame(tick);
+    } else {
+      _cbAnimReq=null;
+    }
+  };
+  _cbAnimReq=requestAnimationFrame(tick);
+}
+
+// 빔/폭발/파편 한 세트를 한 번에 push (격침 여부에 따라 강도 조절)
+function _cbAddBeamAndHit(a1,a2,beamCol,isDead){
+  // 1) 머즐 플래시 (발사 위치에서 짧고 강한 섬광)
+  _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:beamCol,r:8,life:8,maxLife:8});
+  // 2) 레이저 빔 (천천히 페이드 — life 18프레임 ≈ 0.3초)
+  _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:beamCol,life:18,maxLife:18});
+  // 3) 피격 폭발
+  const expCol=isDead?'#ff3300':'#ff7755';
+  const expR=isDead?28:16;
+  _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:expCol,r:expR,life:isDead?36:24,maxLife:isDead?36:24});
+  if(isDead){
+    // 4) 격침 시: 충격파 링 + 흰 코어 + 파편 8개
+    _cbEffects.push({type:'shockwave',x:a2.x,y:a2.y,col:'#ffaa44',r:50,life:30,maxLife:30});
+    _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffffff',r:14,life:14,maxLife:14});
+    for(let i=0;i<8;i++){
+      const ang=(Math.PI*2*i)/8 + Math.random()*0.3;
+      _cbEffects.push({type:'shard',x:a2.x,y:a2.y,vx:Math.cos(ang)*3.5,vy:Math.sin(ang)*3.5,col:'#ffcc66',life:40,maxLife:40});
+    }
+  }
+  _cbStartAnimLoop();
+}
 
 // ── 전투 로그 ────────────────────────────────────────────────────
 function addCombatLog(msg,cls){
@@ -6790,37 +6836,66 @@ function drawCombatFrame(){
     _drawShipUnit(cbCtx,u,x,y,null);
     _drawHealthBar(cbCtx,u,x,y,_enemySize(u),true);
   });
-  // 이펙트 렌더링 (beam: 레이저 빔, exp: 폭발 원형)
+  // 이펙트 렌더링 (beam: 레이저 빔, exp: 폭발, shockwave: 충격파 링, shard: 파편, muzzle: 발사 섬광)
   _cbEffects=(_cbEffects||[]).filter(ef=>{
     ef.life--;
-    const a=ef.life/ef.maxLife;
+    const a=Math.max(0,ef.life/ef.maxLife);   // 1 → 0 페이드
+    const t=1-a;                              // 0 → 1 진행도
     cbCtx.save();
-    cbCtx.globalAlpha=Math.min(1,a*1.4);
     if(ef.type==='beam'){
-      // 레이저 빔: 공격자 → 목표 라인
+      // 외곽 글로우
+      cbCtx.globalAlpha=Math.min(1,a*0.9);
       cbCtx.strokeStyle=ef.col;
-      cbCtx.lineWidth=2.5*(a);
+      cbCtx.lineWidth=6*a;
       cbCtx.shadowColor=ef.col;
-      cbCtx.shadowBlur=10*a;
-      cbCtx.beginPath();
-      cbCtx.moveTo(ef.x1,ef.y1);
-      cbCtx.lineTo(ef.x2,ef.y2);
-      cbCtx.stroke();
-      // 빔 중심 밝은 코어
-      cbCtx.strokeStyle='rgba(255,255,255,'+a*0.7+')';
-      cbCtx.lineWidth=1*a;
+      cbCtx.shadowBlur=20*a;
+      cbCtx.lineCap='round';
+      cbCtx.beginPath();cbCtx.moveTo(ef.x1,ef.y1);cbCtx.lineTo(ef.x2,ef.y2);cbCtx.stroke();
+      // 중심 흰 코어
+      cbCtx.globalAlpha=Math.min(1,a);
+      cbCtx.strokeStyle='#ffffff';
+      cbCtx.lineWidth=2*a;
       cbCtx.shadowBlur=0;
       cbCtx.beginPath();cbCtx.moveTo(ef.x1,ef.y1);cbCtx.lineTo(ef.x2,ef.y2);cbCtx.stroke();
-    } else {
-      // 폭발: 외부 링
-      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=18*a;
+    } else if(ef.type==='muzzle'){
+      // 발사 시 머즐 플래시 — 십자 별 형태
+      cbCtx.globalAlpha=Math.min(1,a);
+      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=22*a;
       cbCtx.fillStyle=ef.col;
-      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,ef.r*(2-a),0,Math.PI*2);cbCtx.fill();
-      // 내부 밝은 코어
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,ef.r*(1+t*0.3),0,Math.PI*2);cbCtx.fill();
+      cbCtx.fillStyle='#ffffff';
       cbCtx.globalAlpha=Math.min(1,a*0.9);
-      cbCtx.fillStyle='rgba(255,255,255,0.85)';
-      cbCtx.shadowBlur=0;
-      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,ef.r*(2-a)*0.35,0,Math.PI*2);cbCtx.fill();
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,ef.r*0.5*a,0,Math.PI*2);cbCtx.fill();
+    } else if(ef.type==='shockwave'){
+      // 충격파 링 — 시간이 갈수록 확장하고 얇아짐
+      const radius=ef.r*(0.3+t*1.8);
+      cbCtx.globalAlpha=Math.min(1,a*0.85);
+      cbCtx.strokeStyle=ef.col;
+      cbCtx.lineWidth=Math.max(0.5,4*a);
+      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=18*a;
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,radius,0,Math.PI*2);cbCtx.stroke();
+    } else if(ef.type==='shard'){
+      // 파편 — 방향(vx,vy)으로 날아가며 점점 작아짐
+      ef.x+=ef.vx;ef.y+=ef.vy;
+      ef.vx*=0.96;ef.vy*=0.96;
+      cbCtx.globalAlpha=Math.min(1,a);
+      cbCtx.fillStyle=ef.col;
+      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=8*a;
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
+    } else {
+      // 폭발: 외부 링이 진행에 따라 커지며 페이드
+      const radius=ef.r*(0.4+t*1.6);
+      cbCtx.globalAlpha=Math.min(1,a*1.1);
+      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=24*a;
+      cbCtx.fillStyle=ef.col;
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,radius,0,Math.PI*2);cbCtx.fill();
+      // 내부 밝은 코어 (초반에만)
+      if(a>0.55){
+        cbCtx.globalAlpha=Math.min(1,a*0.9);
+        cbCtx.fillStyle='rgba(255,255,255,0.9)';
+        cbCtx.shadowBlur=0;
+        cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,radius*0.45,0,Math.PI*2);cbCtx.fill();
+      }
     }
     cbCtx.restore();
     return ef.life>0;
@@ -6883,14 +6958,10 @@ function runCombatTurn(){
     target.hp=Math.max(0,(target.hp||target.maxHP)-hpDmg);
     const isDead=target.hp<=0;
     log.push(`🚀 ${p.nm||'아군'} → ${target.nm||'적'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격침!':''));
-    // 레이저 빔 이펙트 (공격자 → 목표)
+    // 레이저 빔 + 피격 폭발 + (격침 시) 충격파/파편
     const ap=_unitPos[p.id||('P'+0)], ep=_unitPos[target.id];
     if(ap&&ep){
-      const a1=_txPos(ap), a2=_txPos(ep);
-      _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:'#00f3ff',life:9,maxLife:9});
-      // 피격 폭발
-      _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:isDead?'#ff4400':'#ff6b6b',r:isDead?22:14,life:22,maxLife:22});
-      if(isDead)_cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffffff',r:10,life:10,maxLife:10});
+      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#00f3ff',isDead);
     }
   });
   // 적 공격
@@ -6908,13 +6979,10 @@ function runCombatTurn(){
     if(gs){gs.hp=target.hp;gs.sh=target.sh;}
     const isDead=target.hp<=0;
     log.push(`💥 ${e.nm||'적'} → ${target.nm||'아군'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
-    // 적 레이저 빔
+    // 적 레이저 빔 + 피격 이펙트
     const ap=_unitPos[e.id], ep=_unitPos[target.id];
     if(ap&&ep){
-      const a1=_txPos(ap), a2=_txPos(ep);
-      _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:'#cc44ff',life:9,maxLife:9});
-      _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:isDead?'#ff2200':'#ffd43b',r:isDead?20:12,life:20,maxLife:20});
-      if(isDead)_cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffaa00',r:8,life:8,maxLife:8});
+      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#cc44ff',isDead);
     }
   });
   log.forEach(m=>addCombatLog(m,''));
