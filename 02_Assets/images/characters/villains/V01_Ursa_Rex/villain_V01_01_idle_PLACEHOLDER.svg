@@ -1,0 +1,11 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#0d1117" rx="16"/>
+  <rect x="58" y="40" width="140" height="150" fill="#1a0a2a" stroke="#8b00ff" stroke-width="2" rx="8"/>
+  <circle cx="128" cy="75" r="30" fill="#1a0a2a" stroke="#8b00ff" stroke-width="2"/>
+  <circle cx="115" cy="73" r="6" fill="#ff0000" opacity="0.9"/>
+  <circle cx="141" cy="73" r="6" fill="#ff0000" opacity="0.9"/>
+  <text x="128" y="155" text-anchor="middle" fill="#8b00ff" font-size="11" font-family="monospace">V01 황제 우르사-렉스</text>
+  <text x="128" y="170" text-anchor="middle" fill="#ff4444" font-size="10" font-family="monospace">HP: 5,000,000</text>
+  <text x="128" y="185" text-anchor="middle" fill="#8b00ff" font-size="9" font-family="monospace">절대 무적 실드 보유</text>
+  <text x="128" y="205" text-anchor="middle" fill="#444" font-size="9" font-family="monospace">PLACEHOLDER — Grok xAI</text>
+</svg>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Destination Earth — Galaxy Navigator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body,html{width:100%;height:100%;background:#060c18;overflow:hidden;font-family:'Courier New',monospace}
+#vp{width:100%;height:100%;position:relative}
+#ui{position:absolute;top:16px;left:16px;background:rgba(10,18,32,.95);padding:16px;border-radius:8px;border:1px solid #deff9a;width:270px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.7)}
+.ui-row{margin-bottom:12px}
+.ui-lbl{display:block;color:#deff9a;font-size:10px;font-weight:bold;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+select,input[type=number],input[type=range],input[type=text]{width:100%;background:#111c2e;border:1px solid #1e3050;color:#cde;padding:6px 8px;border-radius:4px;font-size:12px;outline:none}
+#legend{position:absolute;bottom:16px;left:16px;background:rgba(10,18,32,.92);padding:12px 16px;border-radius:8px;border:1px solid #1e3050;z-index:100}
+.leg-row{display:flex;align-items:center;gap:8px;font-size:10px;color:#aac;margin:3px 0}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+#hud{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:10}
+.star-lbl{position:absolute;font-size:9px;font-weight:bold;text-shadow:1px 1px 3px #000,-1px -1px 3px #000;white-space:nowrap;transform:translate(-50%,-180%)}
+/* 블랙홀 이미지 앵커 */
+#blackhole-img-anchor{position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+  width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+/* 지구 이미지 앵커 */
+#earth-img-anchor{position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+  width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+#cheat-zone{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed #1e3050}
+</style>
+</head>
+<body>
+<div id="vp">
+  <div id="ui">
+    <div class="ui-row">
+      <label class="ui-lbl">노이즈 강도 (Jitter)</label>
+      <span class="ui-lbl" id="jitter-lbl" style="color:#aac;text-transform:none">15%</span>
+      <input type="range" id="jitter" min="0" max="35" value="15">
+    </div>
+    <div class="ui-row">
+      <label class="ui-lbl">난이도 (항로 밀도)</label>
+      <select id="diff">
+        <option value="4">쉬움 — 최대 4항로</option>
+        <option value="3" selected>보통 — 최대 3항로</option>
+        <option value="2">어려움 — 최대 2항로</option>
+      </select>
+    </div>
+    <div class="ui-row">
+      <label class="ui-lbl">치트 코드</label>
+      <input type="text" id="cheat-in" placeholder="DE 입력 시 블링크 패널 해금">
+    </div>
+    <div id="cheat-zone">
+      <label style="display:flex;align-items:center;gap:8px;color:#f0f;font-size:11px;cursor:pointer">
+        <input type="checkbox" id="blink-cb" style="width:auto"> E15 블링크 엔진 (전체 이동)
+      </label>
+    </div>
+  </div>
+  <div id="legend">
+    <div class="leg-row"><div class="leg-dot" style="background:#00f3ff"></div>지구 / 저항군 (12시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#ffd700"></div>아우레우스 금융 (1~2시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#ff4500"></div>치크스 제국 (10시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#44ff88"></div>수퍼비아/센타우리/프록시마 (6시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#ff88ff"></div>메카니카 (4시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#ff3344"></div>크리그 (7시)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#9955ff"></div>보이드 (외곽)</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#222;border:1px solid #ff0"></div>블랙홀 (중심)</div>
+  </div>
+  <div id="hud">
+    <!-- 블랙홀 이미지 앵커: 이 안에 <img> 태그를 넣으면 블랙홀 위치에 표시됩니다 -->
+    <div id="blackhole-img-anchor"></div>
+    <!-- 지구 이미지 앵커: 이 안에 <img> 태그를 넣으면 P00 지구 위치에 표시됩니다 -->
+    <div id="earth-img-anchor"></div>
+  </div>
+</div>
+<script>
+(function(){
+
+// ── 팩션 색상 ──────────────────────────────────────────────────────────────
+const FAC = {
+  earth    : { hex:0x00f3ff, col:'#00f3ff' },
+  aureus   : { hex:0xffd700, col:'#ffd700' },
+  cheeks   : { hex:0xff4500, col:'#ff4500' },
+  supavia  : { hex:0x44ff88, col:'#44ff88' },
+  mechanica: { hex:0xff88ff, col:'#ff88ff' },
+  krieg    : { hex:0xff3344, col:'#ff3344' },
+  void     : { hex:0x9955ff, col:'#9955ff' }
+};
+
+// ── 행성 고정 레이아웃 (다이아몬드 그리드 좌표, UNIT=10) ────────────────
+// x: 동(+)/서(-), z: 남(+)/북(-), 12시=북, 6시=남
+const PLANET_DEF = [
+  // 지구/저항군 — 12시 (북쪽)
+  { name:'P00 지구',          x:  0, z:-40, fac:'earth',    isEarth:true  },
+  { name:'P24 에우로파',       x:-10, z:-50, fac:'earth'   },
+  { name:'P25 가니메데',       x: 10, z:-50, fac:'earth'   },
+  { name:'P27 저항군 기지α',  x:-20, z:-40, fac:'earth'   },
+  { name:'P28 저항군 기지β',  x: 20, z:-40, fac:'earth'   },
+  { name:'P26 타이탄 전초',   x:  0, z:-60, fac:'earth'   },
+
+  // 아우레우스 금융 — 지구 바로 아래 (1~2시, 북동)
+  { name:'P05 아우레우스',    x: 10, z:-30, fac:'aureus'  },
+  { name:'P06 플루토스',      x: 20, z:-20, fac:'aureus'  },
+  { name:'P07 크로노스 시장', x: 30, z:-30, fac:'aureus'  },
+  { name:'P08 뱅크',         x: 40, z:-20, fac:'aureus'  },
+  { name:'P09 마몬 게이트',  x: 30, z:-10, fac:'aureus'  },
+  { name:'P10 루크레 정거장',x: 40, z:  0, fac:'aureus'  },
+
+  // 치크스 제국 — 10시 (북서)
+  { name:'P11 벨제붑 함대',  x:-20, z:-20, fac:'cheeks'  },
+  { name:'P12 치크스 가스전',x:-30, z:-30, fac:'cheeks'  },
+  { name:'P13 아스모데 무역',x:-40, z:-20, fac:'cheeks'  },
+  { name:'P14 레비아탄',     x:-30, z:-10, fac:'cheeks'  },
+  { name:'P15 치크스 제국령',x:-40, z:-40, fac:'cheeks'  },
+  { name:'P16 벨페고르 광산',x:-50, z:-10, fac:'cheeks'  },
+
+  // 수퍼비아/센타우리/프록시마 — 6시 (남)
+  { name:'P01 프록시마 b',   x: 10, z: 30, fac:'supavia' },
+  { name:'P22 수퍼비아(HUB)',x:  0, z: 40, fac:'supavia' },
+  { name:'P30 제타 레티쿨리',x:-10, z: 30, fac:'supavia' },
+  { name:'P29 센타우리',     x:  0, z: 60, fac:'supavia' },
+  { name:'P02 폐기물 정제소',x: 10, z: 50, fac:'supavia' },
+  { name:'P03 고철 집하장', x:-10, z: 50, fac:'supavia' },
+
+  // 메카니카 — 4시 (남동)
+  { name:'M01 메카니카',     x: 30, z: 30, fac:'mechanica'},
+  { name:'M02 기어 플랫폼',  x: 40, z: 20, fac:'mechanica'},
+  { name:'M03 쉐도우 포지',  x: 40, z: 40, fac:'mechanica'},
+  { name:'M04 아이언 덱',    x: 20, z: 40, fac:'mechanica'},
+  { name:'M05 볼트 구역',    x: 30, z: 50, fac:'mechanica'},
+  { name:'M06 스크랩 야드',  x: 50, z: 30, fac:'mechanica'},
+
+  // 크리그 — 7시 (남서)
+  { name:'K01 크리그 전선',  x:-30, z: 30, fac:'krieg'   },
+  { name:'K02 철갑 요새',    x:-40, z: 20, fac:'krieg'   },
+  { name:'K03 격전구역',     x:-40, z: 40, fac:'krieg'   },
+  { name:'K04 크리그 사령부',x:-20, z: 40, fac:'krieg'   },
+  { name:'K05 붉은 전선',   x:-30, z: 50, fac:'krieg'   },
+  { name:'K06 폭격대',       x:-50, z: 30, fac:'krieg'   },
+
+  // 보이드 — 외곽 (3블록 이상 간격 유지)
+  { name:'V01 보이드 전초',  x: -10, z:-70, fac:'void'   },
+  { name:'V02 균열 지대',    x: -60, z:-40, fac:'void'   },
+  { name:'V03 어둠의 틈',    x: -60, z: 40, fac:'void'   },
+  { name:'V04 보이드 게이트',x:  10, z: 70, fac:'void'   },
+  { name:'V05 심연 정거장',  x:  60, z: 40, fac:'void'   },
+  { name:'V06 보이드 외곽',  x:  60, z:-40, fac:'void'   },
+];
+
+// ── Three.js 초기화 ────────────────────────────────────────────────────────
+const vp  = document.getElementById('vp');
+const hud = document.getElementById('hud');
+const BH_ANCHOR  = document.getElementById('blackhole-img-anchor');
+const EA_ANCHOR  = document.getElementById('earth-img-anchor');
+
+let scene, camera, renderer, pivot;
+let meshes = [], links = [], blinkLinks = [], lbls = [];
+let bhMesh, earthMesh;
+let rotY = 0, rotX = 0.28;
+let isDrag = false, pMouse = {x:0,y:0};
+
+function init(){
+  scene  = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(42, vp.clientWidth/vp.clientHeight, 0.1, 1200);
+  camera.position.set(0, 80, 90);
+  camera.lookAt(0,0,0);
+
+  renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(vp.clientWidth, vp.clientHeight);
+  vp.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const sun = new THREE.PointLight(0xffffff, 1.1);
+  sun.position.set(10, 80, 10);
+  scene.add(sun);
+
+  // 배경별
+  const sg = new THREE.BufferGeometry();
+  const sv = [];
+  for(let i=0;i<2500;i++) sv.push((Math.random()-.5)*500,(Math.random()-.5)*500,(Math.random()-.5)*500);
+  sg.setAttribute('position', new THREE.Float32BufferAttribute(sv,3));
+  scene.add(new THREE.Points(sg, new THREE.PointsMaterial({color:0xffffff,size:0.15})));
+
+  // 피벗 (회전용)
+  pivot = new THREE.Object3D();
+  scene.add(pivot);
+
+  buildDiamondGrid();
+  buildPlanets();
+  buildBlackhole();
+  buildConnections();
+
+  // 마우스 드래그 회전
+  renderer.domElement.addEventListener('mousedown', e=>{isDrag=true;pMouse={x:e.clientX,y:e.clientY};});
+  window.addEventListener('mouseup', ()=>isDrag=false);
+  window.addEventListener('mousemove', e=>{
+    if(!isDrag) return;
+    rotY += (e.clientX-pMouse.x)*0.006;
+    rotX += (e.clientY-pMouse.y)*0.006;
+    rotX = Math.max(-0.5, Math.min(0.9, rotX));
+    pMouse={x:e.clientX,y:e.clientY};
+  });
+  // 휠 줌
+  renderer.domElement.addEventListener('wheel', e=>{
+    camera.position.multiplyScalar(1 + e.deltaY*0.001);
+    camera.position.clampLength(40, 250);
+  });
+
+  loop();
+}
+
+// ── 다이아몬드 그리드 배경 ─────────────────────────────────────────────────
+function buildDiamondGrid(){
+  const UNIT = 10, RANGE = 80;
+  const mat = new THREE.LineBasicMaterial({color:0x0a1e3a, transparent:true, opacity:0.65});
+  // "/" 방향 선: z = -x + c (diagonal 1)
+  for(let c=-RANGE*2; c<=RANGE*2; c+=UNIT*2){
+    const pts = [];
+    for(let x=-RANGE; x<=RANGE; x+=RANGE){
+      pts.push(new THREE.Vector3(x, 0, -x+c));
+    }
+    const g = new THREE.BufferGeometry().setFromPoints(pts);
+    pivot.add(new THREE.Line(g, mat));
+  }
+  // "\" 방향 선: z = x + c (diagonal 2)
+  for(let c=-RANGE*2; c<=RANGE*2; c+=UNIT*2){
+    const pts = [];
+    for(let x=-RANGE; x<=RANGE; x+=RANGE){
+      pts.push(new THREE.Vector3(x, 0, x+c));
+    }
+    const g = new THREE.BufferGeometry().setFromPoints(pts);
+    pivot.add(new THREE.Line(g, mat));
+  }
+}
+
+// ── 행성 메시 생성 ─────────────────────────────────────────────────────────
+function buildPlanets(){
+  meshes.forEach(m=>pivot.remove(m));
+  lbls.forEach(l=>{ if(l.el.parentNode) l.el.parentNode.removeChild(l.el); });
+  hud.innerHTML=''; hud.appendChild(BH_ANCHOR); hud.appendChild(EA_ANCHOR);
+  meshes=[]; lbls=[];
+
+  const jitter = parseInt(document.getElementById('jitter').value)/100;
+
+  PLANET_DEF.forEach(p=>{
+    const fac = FAC[p.fac];
+    // 지터 적용 (결정론적: 이름 해시 기반)
+    const h = p.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+    const jx = Math.sin(h*1.3) * 10 * jitter;
+    const jz = Math.cos(h*2.1) * 10 * jitter;
+    const wx = p.x + jx, wz = p.z + jz;
+
+    const isVoid = p.fac==='void';
+    const r = p.isEarth ? 0.65 : isVoid ? 0.35 : 0.45;
+    const geo = new THREE.SphereGeometry(r, 20, 20);
+    const mat = new THREE.MeshPhongMaterial({color:fac.hex, emissive:fac.hex, emissiveIntensity:0.75});
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(wx, 0, wz);
+    mesh._wx = wx; mesh._wz = wz;
+    mesh._data = p;
+    pivot.add(mesh);
+    meshes.push(mesh);
+
+    // HUD 라벨
+    const el = document.createElement('div');
+    el.className = 'star-lbl';
+    el.style.color = fac.col;
+    el.innerText = p.name;
+    hud.appendChild(el);
+    lbls.push({el, mesh});
+
+    if(p.isEarth) earthMesh = mesh;
+  });
+}
+
+// ── 블랙홀 ────────────────────────────────────────────────────────────────
+function buildBlackhole(){
+  if(bhMesh && bhMesh.parent) pivot.remove(bhMesh);
+  // 블랙홀 본체
+  const geo = new THREE.SphereGeometry(2.2, 32, 32);
+  const mat = new THREE.MeshPhongMaterial({
+    color:0x000000, emissive:0x220033, emissiveIntensity:1.0,
+    transparent:true, opacity:0.95
+  });
+  bhMesh = new THREE.Mesh(geo, mat);
+  bhMesh.position.set(0, 0, 0);
+  pivot.add(bhMesh);
+
+  // 블랙홀 광환 (accretion disk)
+  const ringGeo = new THREE.TorusGeometry(3.4, 0.6, 8, 64);
+  const ringMat = new THREE.MeshPhongMaterial({color:0xff6600, emissive:0xff3300, emissiveIntensity:1.5, transparent:true, opacity:0.7});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI/2;
+  pivot.add(ring);
+
+  // 외부 글로우 링
+  const glowGeo = new THREE.TorusGeometry(5, 0.2, 4, 64);
+  const glowMat = new THREE.MeshPhongMaterial({color:0x8833ff, emissive:0x6600ff, emissiveIntensity:2, transparent:true, opacity:0.4});
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  glow.rotation.x = Math.PI/2;
+  pivot.add(glow);
+}
+
+// ── 항로 연결 (인접 행성만, 2블록=20 이내) ─────────────────────────────────
+function buildConnections(){
+  links.forEach(l=>{if(l.parent)pivot.remove(l);}); links=[];
+  blinkLinks.forEach(l=>{if(l.parent)pivot.remove(l);}); blinkLinks=[];
+  meshes.forEach(m=>{m._deg=0;});
+
+  const maxDeg  = parseInt(document.getElementById('diff').value);
+  const blinkOn = document.getElementById('blink-cb').checked;
+  const MAX_DIST = 22; // 2블록 이내
+
+  // 거리 계산
+  function dist(a,b){ const dx=a._wx-b._wx, dz=a._wz-b._wz; return Math.sqrt(dx*dx+dz*dz); }
+
+  const paired = new Set();
+  function addLink(a,b,isQ){
+    const key=[a._data.name,b._data.name].sort().join('|');
+    if(paired.has(key)) return;
+    paired.add(key);
+    a._deg++; b._deg++;
+    const pts=[new THREE.Vector3(a._wx,0,a._wz), new THREE.Vector3(b._wx,0,b._wz)];
+    const geo=new THREE.BufferGeometry().setFromPoints(pts);
+    const mat=isQ
+      ? new THREE.LineDashedMaterial({color:0xff00ff,dashSize:.6,gapSize:.3})
+      : new THREE.LineBasicMaterial({color:0x0088cc,transparent:true,opacity:0.55});
+    const line=new THREE.Line(geo,mat);
+    if(isQ) line.computeLineDistances();
+    pivot.add(line);
+    (isQ?blinkLinks:links).push(line);
+  }
+
+  // PASS1: 고립 방지 — 각 행성 최소 1연결 (최단 인접만)
+  meshes.forEach(a=>{
+    const sorted=[...meshes].filter(b=>b!==a).sort((x,y)=>dist(a,x)-dist(a,y));
+    const nearest=sorted[0];
+    if(nearest) addLink(a,nearest,false);
+  });
+
+  // PASS2: 인접 범위 내 추가 연결 (MAX_DIST 이내, 도수 상한)
+  meshes.forEach(a=>{
+    if(a._deg>=maxDeg) return;
+    const sorted=[...meshes].filter(b=>b!==a&&dist(a,b)<=MAX_DIST).sort((x,y)=>dist(a,x)-dist(a,y));
+    for(const b of sorted){
+      if(a._deg>=maxDeg||b._deg>=maxDeg) continue;
+      addLink(a,b,false);
+    }
+  });
+
+  // BLINK 패스
+  if(blinkOn){
+    for(let i=0;i<meshes.length;i+=3){
+      addLink(meshes[i], meshes[(i+9)%meshes.length], true);
+    }
+  }
+}
+
+// ── 렌더 루프 ─────────────────────────────────────────────────────────────
+function loop(){
+  requestAnimationFrame(loop);
+  const t = Date.now()*0.001;
+
+  // 블랙홀 맥동
+  if(bhMesh) bhMesh.rotation.y = t*0.5;
+
+  // 부드러운 회전 반영
+  pivot.rotation.y = rotY;
+  pivot.rotation.x = rotX;
+
+  // HUD 라벨 투영
+  lbls.forEach(({el,mesh})=>{
+    const wp = mesh.getWorldPosition(new THREE.Vector3());
+    const v  = wp.clone().project(camera);
+    const sx = (v.x*.5+.5)*vp.clientWidth;
+    const sy = (-v.y*.5+.5)*vp.clientHeight;
+    el.style.left = sx+'px';
+    el.style.top  = sy+'px';
+    el.style.display = v.z<1 ? 'block':'none';
+  });
+
+  // 블랙홀 앵커 투영
+  if(bhMesh){
+    const wp=bhMesh.getWorldPosition(new THREE.Vector3());
+    const v=wp.clone().project(camera);
+    const sx=(v.x*.5+.5)*vp.clientWidth, sy=(-v.y*.5+.5)*vp.clientHeight;
+    BH_ANCHOR.style.left=sx+'px'; BH_ANCHOR.style.top=sy+'px';
+    BH_ANCHOR.style.display=v.z<1?'block':'none';
+  }
+
+  // 지구 앵커 투영
+  if(earthMesh){
+    const wp=earthMesh.getWorldPosition(new THREE.Vector3());
+    const v=wp.clone().project(camera);
+    const sx=(v.x*.5+.5)*vp.clientWidth, sy=(-v.y*.5+.5)*vp.clientHeight;
+    EA_ANCHOR.style.left=sx+'px'; EA_ANCHOR.style.top=sy+'px';
+    EA_ANCHOR.style.display=v.z<1?'block':'none';
+  }
+
+  renderer.render(scene, camera);
+}
+
+// ── 이벤트 ────────────────────────────────────────────────────────────────
+document.getElementById('jitter').oninput=function(e){
+  document.getElementById('jitter-lbl').innerText=e.target.value+'%';
+  buildPlanets(); buildConnections();
+};
+document.getElementById('diff').onchange=buildConnections;
+document.getElementById('blink-cb').onchange=buildConnections;
+document.getElementById('cheat-in').oninput=function(e){
+  if(e.target.value.toUpperCase()==='DE')
+    document.getElementById('cheat-zone').style.display='block';
+};
+window.addEventListener('resize',()=>{
+  camera.aspect=vp.clientWidth/vp.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(vp.clientWidth, vp.clientHeight);
+});
+
+init();
+})();
+</script>
+</body>
+</html>

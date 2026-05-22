@@ -1,14 +1,257 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DESTINATION EARTH</title>
+<link rel="stylesheet" href="game.css">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+<div id="de-tooltip"></div>
+<canvas id="star-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+<!-- HUD -->
+<div id="hud">
+  <div style="display:flex;gap:8px;align-items:center">
+    <span style="color:var(--yellow);font-size:16px;font-weight:bold" id="h-co">빅 픽처 스페이스</span>
+    <span style="color:var(--dim);font-size:13px" id="h-pl">| P01</span>
+  </div>
+  <div style="display:flex;gap:16px;font-size:14px">
+    <span style="color:var(--gold)">₡ <span id="h-cr">50,000</span></span>
+    <span style="color:var(--cyan)">VE <span id="h-ve">0</span></span>
+    <span style="color:var(--purple)">VC <span id="h-vc">3</span></span>
+    <span style="color:var(--gold);font-weight:bold">⭐ <span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle">무명</span></span>
+  </div>
+  <div style="color:var(--dim);font-size:13px">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold">전투력 1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)">신참</span></div>
+</div>
+<div id="notif"></div>
+
+<div id="modal-bg">
+  <div class="modal"><div class="modal-t" id="modal-t"></div><div id="modal-b"></div><div id="modal-btns" style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"></div></div>
+</div>
+
+<!-- LOADING -->
+<div class="scr on" id="s-loading">
+  <div style="position:relative;width:220px;height:220px;margin-bottom:10px">
+    <img src="img/chars/baekgu.png" alt="백구"
+      style="width:220px;height:220px;object-fit:contain;animation:pulse 2s infinite;filter:drop-shadow(0 0 18px rgba(0,243,255,.55))"
+      onerror="this.style.display='none';document.getElementById('ld-bk-emoji').style.display='block'">
+    <div id="ld-bk-emoji" style="display:none;font-size:100px;line-height:220px;text-align:center;animation:pulse 2s infinite">🐕</div>
+  </div>
+  <div style="color:var(--yellow);font-size:29px;letter-spacing:6px;margin-top:4px">DESTINATION EARTH</div>
+  <div style="color:var(--dim);font-size:14px;margin:8px 0 20px">데스티네이션 어스 | BIG PICTURE SPACE</div>
+  <div style="width:240px;height:3px;background:var(--card);border-radius:2px"><div id="ld-fill" style="height:100%;background:var(--cyan);border-radius:2px;width:0;transition:width .4s"></div></div>
+  <div id="ld-msg" style="color:var(--dim);font-size:13px;margin-top:8px">초기화 중...</div>
+</div>
+
+<!-- TITLE -->
+<div class="scr" id="s-title" style="z-index:1">
+  <div style="color:var(--cyan);font-size:67px;animation:pulse 3s infinite">🌌</div>
+  <div style="color:var(--yellow);font-size:62px;font-weight:bold;letter-spacing:8px">DESTINATION</div>
+  <div style="color:#fff;font-size:26px;letter-spacing:5px;margin-bottom:6px">EARTH</div>
+  <div style="color:var(--dim);font-size:14px;font-style:italic;margin-bottom:36px;max-width:480px;text-align:center">"내가 폐지 주워서 이만큼 상단 세워놨으니, 지구 구하러 가자."</div>
+  <div style="display:flex;flex-direction:column;gap:14px;align-items:center;width:100%;max-width:400px">
+    <div style="color:var(--dim);font-size:13px;letter-spacing:1px">── 난이도 선택 ──</div>
+    <div id="title-diff-btns" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%">
+      <button id="tdf-easy"    onclick="titleSetDiff('easy')"    class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08);line-height:1.5">😊<br>쉬움</button>
+      <button id="tdf-normal"  onclick="titleSetDiff('normal')"  class="btn btn-sm" style="line-height:1.5">⚔️<br>보통</button>
+      <button id="tdf-hard"    onclick="titleSetDiff('hard')"    class="btn btn-sm" style="line-height:1.5">💀<br>어려움</button>
+      <button id="tdf-extreme" onclick="titleSetDiff('extreme')" class="btn btn-sm" style="line-height:1.5">☠️<br>극악</button>
+    </div>
+    <button class="btn btn-lg" style="width:100%" onclick="goAgeGate()">🚀 새 게임</button>
+    <button class="btn btn-sm" style="width:100%;opacity:.8" onclick="showLoadSlots()">💾 이어하기 (저장 불러오기)</button>
+  <div style="display:flex;gap:8px;margin-top:4px;width:100%;max-width:400px">
+    <button class="btn btn-sm" style="flex:1;opacity:.65;white-space:nowrap" onclick="showCredits()">🎬 크레딧</button>
+    <button class="btn btn-sm" style="flex:1.6;opacity:.65;white-space:nowrap" onclick="showHallOfFame()">🏆 명예의 전당</button>
+    <button class="btn btn-sm" style="flex:1;opacity:.65;white-space:nowrap" onclick="showFeedback()">📬 피드백</button>
+  </div>
+  </div>
+  <div style="position:fixed;bottom:12px;color:var(--muted);font-size:12px;text-align:center">이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%</div>
+</div>
+
+<!-- AGE GATE -->
+<div class="scr" id="s-agegate">
+  <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:24px;max-width:380px;width:90%">
+    <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px">연령 확인</div>
+    <div style="color:var(--dim);font-size:14px;text-align:center;margin-bottom:20px">DESTINATION EARTH는 만 12세 이상 이용 가능합니다.</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input class="inp" id="ag-y" type="number" placeholder="년도(YYYY)" min="1900" max="2015" style="flex:2">
+      <input class="inp" id="ag-m" type="number" placeholder="월" min="1" max="12" style="flex:1">
+      <input class="inp" id="ag-d" type="number" placeholder="일" min="1" max="31" style="flex:1">
+    </div>
+    <div id="ag-err" style="color:var(--red);font-size:13px;min-height:16px;margin-bottom:10px"></div>
+    <button class="btn" style="width:100%" onclick="checkAge()">확인</button>
+  </div>
+</div>
+
+<!-- FTUE -->
+<div class="scr" id="s-ftue">
+  <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:24px;max-width:460px;width:92%">
+    <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px">사령관 등록</div>
+    <div style="display:flex;gap:10px;margin-bottom:18px;padding:12px;background:var(--card);border:1px solid var(--cyan);border-radius:8px">
+      <div style="font-size:29px;flex-shrink:0">🐕</div>
+      <div style="color:var(--yellow);font-size:14px">위장 상단 원장 개설하려면 데이터 패드에 입력해. 빨리.</div>
+    </div>
+    <div style="margin-bottom:13px">
+      <div style="color:var(--dim);font-size:13px;margin-bottom:5px">성별</div>
+      <div style="display:flex;gap:8px">
+        <button id="gb-m" onclick="setGender('male')" style="flex:1;padding:8px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace">👨 남성</button>
+        <button id="gb-f" onclick="setGender('female')" style="flex:1;padding:8px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace">👩 여성</button>
+      </div>
+    </div>
+    <div style="margin-bottom:13px"><div style="color:var(--dim);font-size:13px;margin-bottom:5px">사령관명 *</div><input class="inp" id="ft-nm" placeholder="이름을 입력하세요" maxlength="12"></div>
+    <div style="margin-bottom:13px"><div style="color:var(--dim);font-size:13px;margin-bottom:5px">무역 상단명 *</div><input class="inp" id="ft-co" value="빅 픽처 스페이스" maxlength="20"></div>
+    <div style="margin-bottom:13px"><div style="color:var(--dim);font-size:13px;margin-bottom:5px">초기 함선명</div><input class="inp" id="ft-sh" value="머스탱" maxlength="16"></div>
+    <div style="margin-bottom:13px">
+      <div style="color:var(--dim);font-size:13px;margin-bottom:5px">난이도 선택</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px">
+        <button id="df-easy"    onclick="setDifficulty('easy')"    style="padding:7px 2px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">😊<br>쉬움<br><span style="font-size:11px;color:var(--dim)">적 능력 -10%</span></button>
+        <button id="df-normal"  onclick="setDifficulty('normal')"  style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">⚔️<br>보통<br><span style="font-size:11px;color:var(--dim)">기본</span></button>
+        <button id="df-hard"    onclick="setDifficulty('hard')"    style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">💀<br>어려움<br><span style="font-size:11px;color:var(--dim)">적 능력 +10%</span></button>
+        <button id="df-extreme" onclick="setDifficulty('extreme')" style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">☠️<br>극악<br><span style="font-size:11px;color:var(--dim)">적 ×3 · 능력 +50%</span></button>
+      </div>
+    </div>
+    <div style="background:var(--card);border-radius:6px;padding:10px;margin-bottom:12px;font-size:14px;color:var(--dim)">초기 자산: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3회</span> | <span style="color:var(--yellow)">🛸 S01 머스탱</span></div>
+    <div id="ft-er" style="color:var(--red);font-size:13px;min-height:16px;margin-bottom:8px"></div>
+    <button class="btn btn-lg" style="width:100%" onclick="startGame()">🚀 출발! 지구를 구하러 가자</button>
+  </div>
+</div>
+
+<!-- PROLOGUE -->
+<div class="scr" id="s-prologue">
+  <div style="max-width:620px;width:92%;text-align:center">
+    <div id="pr-char" style="width:180px;height:180px;margin:0 auto 16px;position:relative">
+      <img id="pr-baekgu-img" src="img/chars/baekgu.png" alt="백구"
+        style="width:180px;height:180px;object-fit:contain;animation:pulse 2.5s infinite;filter:drop-shadow(0 0 22px rgba(0,243,255,.6));transition:opacity .4s"
+        onerror="this.style.display='none';document.getElementById('pr-baekgu-emoji').style.display='block'">
+      <div id="pr-baekgu-emoji" style="display:none;font-size:100px;line-height:180px;text-align:center;animation:pulse 2.5s infinite">🐕</div>
+    </div>
+    <div id="pr-lines" style="margin-bottom:24px;min-height:80px"></div>
+    <button class="btn" id="pr-btn" onclick="nextPrologue()" style="display:none">계속 ▶</button>
+  </div>
+</div>
+
+<!-- HUB -->
+<div class="scr" id="s-hub"><div id="hub-planet-bg"></div>
+  <div class="hub-side">
+    <!-- 스크롤 가능한 메뉴 영역 -->
+    <div class="hs-menu-scroll">
+      <div class="hs-profile">
+        <div class="hs-av">🐕</div>
+        <div><div class="hs-co" id="hub-cmd">사령관</div><div class="hs-pl" id="hub-planet-lbl">P01 프록시마 b</div></div>
+      </div>
+      <div class="hs-res">
+        <div class="hs-ri"><span style="color:var(--gold)">₡</span><span id="sb-cr">50,000</span></div>
+        <div class="hs-ri"><span style="color:var(--cyan)">VE</span><span id="sb-ve">0</span></div>
+        <div class="hs-ri"><span style="color:var(--purple)">VC</span><span id="sb-vc">3</span></div>
+      </div>
+      <button class="hn-btn on" id="hn-main" onclick="hubTab('main')"><span class="hn-ic">🏠</span><span>메인 허브</span></button>
+      <!-- 함장 메인서버 -->
+      <div class="hn-folder" id="folder-captain">
+        <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">⭐</span><span>함장 메인서버</span><span class="folder-arrow" id="folder-arrow-captain">▶</span></button>
+        <div class="hn-folder-items" id="folder-items-captain">
+          <button class="hn-btn hn-sub" data-tab="map" onclick="hubTab('map')"><span class="hn-ic">🗺️</span><span>은하 지도</span></button>
+
+          <button class="hn-btn hn-sub" data-tab="clog" onclick="hubTab('clog')"><span class="hn-ic">📋</span><span>전투 기록</span></button>
+          <button class="hn-btn hn-sub" data-tab="codex" onclick="hubTab('codex')"><span class="hn-ic">📖</span><span>탐색 도감</span></button>
+          <button class="hn-btn hn-sub" data-tab="crew-dock" onclick="hubTab('crew')"><span class="hn-ic">👥</span><span>크루 명단</span></button>
+        </div>
+      </div>
+      <!-- 함선 도크 -->
+      <div class="hn-folder" id="folder-dock">
+        <button class="hn-folder-btn" onclick="toggleFolder('dock')"><span class="hn-ic">🚢</span><span>함선 도크</span><span class="folder-arrow" id="folder-arrow-dock">▶</span></button>
+        <div class="hn-folder-items" id="folder-items-dock">
+          <button class="hn-btn hn-sub" data-tab="garage" onclick="hubTab('garage')"><span class="hn-ic">🔧</span><span>함선 정비소</span></button>
+          <button class="hn-btn hn-sub" data-tab="ship" onclick="hubTab('ship')"><span class="hn-ic">🛸</span><span>함선 거래소</span></button>
+          <button class="hn-btn hn-sub" data-tab="craft" onclick="hubTab('craft')"><span class="hn-ic">⚗️</span><span>함선 제작소</span></button>
+          <button class="hn-btn hn-sub" id="hn-gather-search" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12);color:var(--dim);opacity:.45;cursor:default" onclick="doGatherSearch()"><span class="hn-ic">🔭</span><span>잔해 탐색</span></button>
+        </div>
+      </div>
+      <!-- 행성 광장 -->
+      <div class="hn-folder" id="folder-plaza">
+        <button class="hn-folder-btn" onclick="toggleFolder('plaza')"><span class="hn-ic">🏪</span><span>행성 광장</span><span class="folder-arrow" id="folder-arrow-plaza">▶</span></button>
+        <div class="hn-folder-items" id="folder-items-plaza">
+          <button class="hn-btn hn-sub" data-tab="quest" onclick="hubTab('quest')"><span class="hn-ic">🎖️</span><span>제독</span></button>
+          <button class="hn-btn hn-sub" data-tab="tavern" onclick="hubTab('tavern')"><span class="hn-ic">🍺</span><span>주점</span></button>
+          <button class="hn-btn hn-sub" data-tab="trade" onclick="hubTab('trade')"><span class="hn-ic">🏬</span><span>상점</span></button>
+        </div>
+      </div>
+      <!-- 행성 프론트 -->
+      <div class="hn-folder" id="folder-front">
+        <button class="hn-folder-btn" onclick="toggleFolder('front')"><span class="hn-ic">🌍</span><span>행성 프론트</span><span class="folder-arrow" id="folder-arrow-front">▶</span></button>
+        <div class="hn-folder-items" id="folder-items-front">
+          <button class="hn-btn hn-sub" data-tab="auction" onclick="hubTab('auction')"><span class="hn-ic">🔨</span><span>행성경매</span></button>
+          <button class="hn-btn hn-sub" data-tab="planets" onclick="hubTab('planets')"><span class="hn-ic">🌐</span><span>행성현황</span></button>
+        </div>
+      </div>
+
+      <div style="flex:1;min-height:8px"></div>
+    </div>
+    <!-- 하단 고정: 턴종료 + 시스템 메뉴 -->
+    <div style="flex-shrink:0;border-top:1px solid var(--bdr)">
+      <button id="btn-next-turn" class="hn-btn ha" style="font-weight:bold;background:rgba(255,160,40,.07);border:1px solid rgba(255,160,40,.3);border-radius:6px;margin:4px 8px;width:calc(100% - 16px)" onclick="tryNextTurn()"><span class="hn-ic">⏭️</span><span id="btn-next-turn-label">턴 종료</span></button>
+      <div class="hn-sec" id="sys-sec-hdr" onclick="toggleSysMenu()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <span>⚙️ 시스템</span><span id="sys-sec-arrow" style="font-size:12px;color:var(--dim)">▲</span>
+      </div>
+      <div id="sys-menu" style="overflow:hidden;max-height:0;transition:max-height .25s ease">
+        <button class="hn-btn hs" onclick="showSaveSlots()"><span class="hn-ic">💾</span><span>게임 저장</span></button>
+        <button class="hn-btn" onclick="showLoadSlots()"><span class="hn-ic">📂</span><span>게임 불러오기</span></button>
+        <button class="hn-btn" onclick="showSettingsModal()"><span class="hn-ic">⚙️</span><span>설정</span></button>
+        <button class="hn-btn hb" onclick="showTitle()"><span class="hn-ic">🔙</span><span>타이틀로</span></button>
+        <button class="hn-btn" style="color:var(--red);border-top:1px solid rgba(255,60,60,.2);margin-top:4px" onclick="showExitModal()"><span class="hn-ic">🚪</span><span>게임 종료</span></button>
+      </div>
+    </div>
+  </div>
+  <div id="hub-right" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
+    <div class="hub-body" id="hub-body"></div>
+    <!-- 백구 AI + 함대 통합 하단 바 -->
+    <div id="bkdialog">
+  <!-- ◀ 좌: 백구 패널 (2카드 너비 고정 330px) -->
+  <div id="bk-left" style="width:468px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(0,243,255,.2)">
+    <!-- 헤더 (드래그 핸들) -->
+    <div id="bk-toggle-bar">
+      <div style="display:flex;align-items:center;gap:7px">
+        <span style="font-size:17px">🐕</span>
+        <span style="color:var(--cyan);font-size:13px;font-weight:bold;letter-spacing:.5px">백구 AI</span>
+        <span id="bk-status" style="color:var(--green);font-size:11px">● 온라인</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span id="bk-pin-btn" title="분리 모드" onclick="event.stopPropagation();bkToggleFloat()" style="cursor:pointer;color:rgba(0,243,255,.5);font-size:13px;padding:2px 4px;border-radius:3px;user-select:none" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='rgba(0,243,255,.5)'">⊞</span>
+        <button onclick="event.stopPropagation();document.getElementById('bk-msgs').innerHTML=''" style="background:none;border:1px solid rgba(0,243,255,.2);color:var(--muted);font-size:11px;cursor:pointer;padding:1px 6px;border-radius:4px">✕</button>
+      </div>
+    </div>
+    <!-- 리사이즈 핸들 -->
+    <div id="bk-resize-handle"></div>
+    <!-- 바디: 이미지(좌) + 메시지(우) -->
+    <div id="bk-body">
+      <div id="bk-img-area">
+        <img src="img/chars/baekgu.png" alt="백구"
+          onerror="this.style.display='none';document.getElementById('bk-emoji').style.display='flex'"
+          style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block">
+        <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid rgba(0,243,255,.12)">
+        <div id="bk-msgs"></div>
+        <div id="bk-line" style="display:none"></div>
+        <div id="bk-ask-area" style="display:flex;align-items:center;gap:6px;padding:6px 8px;border-top:1px solid rgba(0,243,255,.15);background:rgba(0,10,25,.6);flex-shrink:0;margin-top:auto">
+          <input id="bk-ask-input" type="text" placeholder="백구에게 질문..." maxlength="60"
+            style="flex:1;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.25);color:var(--txt);font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;padding:5px 9px;border-radius:6px;outline:none;caret-color:var(--cyan)"
+            onkeydown="if(event.key==='Enter')askBaekgu()"
+            onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='rgba(0,243,255,.25)'">
+          <button onclick="askBaekgu()" style="background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.35);color:var(--cyan);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace" onmouseover="this.style.background='rgba(0,243,255,.22)'" onmouseout="this.style.background='rgba(0,243,255,.12)'">물어보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ▶ 우: 함대 카드 (그리드 5열, 2줄) -->
+  <div id="bk-fleet" style="flex:1;display:grid;grid-template-columns:repeat(5,1fr);align-content:flex-start;gap:5px;padding:5px 8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent;min-width:0;background:rgba(0,5,15,.3)">
+  </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="game.js"></script>
 </body>
 </html>

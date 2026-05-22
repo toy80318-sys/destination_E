@@ -1,0 +1,13 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#1a1a1a" rx="4"/>
+  <!-- 낡은 사진 효과 -->
+  <rect x="15" y="15" width="226" height="226" fill="#2a2a20" rx="2" opacity="0.8"/>
+  <circle cx="128" cy="100" r="45" fill="#3a3a30" stroke="#888" stroke-width="1"/>
+  <text x="128" y="108" text-anchor="middle" fill="#888" font-size="32">👨‍🔬</text>
+  <text x="128" y="165" text-anchor="middle" fill="#aaa" font-size="12" font-family="serif">이휘소 박사</text>
+  <text x="128" y="180" text-anchor="middle" fill="#888" font-size="10" font-family="serif">李輝昭 / 1935-2076</text>
+  <text x="128" y="200" text-anchor="middle" fill="#666" font-size="9" font-family="monospace">"지구를 구할 마지막 방정식"</text>
+  <text x="128" y="225" text-anchor="middle" fill="#444" font-size="8" font-family="monospace">PLACEHOLDER — DALL-E 4o</text>
+  <!-- 사진 테두리 효과 -->
+  <rect x="14" y="14" width="228" height="228" fill="none" stroke="#666" stroke-width="2" rx="3" opacity="0.5"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="225" fill="#050a1a"/>
+  <!-- 별 배경 -->
+  <circle cx="50" cy="30" r="1" fill="white" opacity="0.8"/>
+  <circle cx="150" cy="20" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="300" cy="50" r="1" fill="white" opacity="0.9"/>
+  <circle cx="370" cy="15" r="1" fill="white" opacity="0.7"/>
+  <circle cx="80" cy="180" r="1" fill="white" opacity="0.5"/>
+  <circle cx="330" cy="190" r="1.5" fill="white" opacity="0.8"/>
+  <!-- 행성 -->
+  <circle cx="200" cy="112" r="70" fill="#1a3a5a" stroke="#00f3ff" stroke-width="1.5"/>
+  <!-- 도시 빛 효과 -->
+  <circle cx="200" cy="112" r="72" fill="none" stroke="#00f3ff" stroke-width="0.5" opacity="0.4"/>
+  <text x="200" y="108" text-anchor="middle" fill="#00f3ff" font-size="28">🌏</text>
+  <text x="200" y="135" text-anchor="middle" fill="#00f3ff" font-size="14" font-family="monospace">P01 프록시마 b</text>
+  <text x="200" y="152" text-anchor="middle" fill="#deff9a" font-size="10" font-family="monospace">수퍼비아 문명권 | 사령관 각성 지점</text>
+  <text x="200" y="168" text-anchor="middle" fill="#444" font-size="9" font-family="monospace">PLACEHOLDER — Gemini Imagen 3</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#0d1117" rx="16"/>
+  <ellipse cx="128" cy="130" rx="60" ry="45" fill="#1a2a4a" stroke="#00f3ff" stroke-width="2"/>
+  <circle cx="128" cy="85" r="35" fill="#1a2a4a" stroke="#00f3ff" stroke-width="2"/>
+  <circle cx="113" cy="82" r="8" fill="#00f3ff" opacity="0.8"/>
+  <circle cx="143" cy="82" r="8" fill="#00f3ff" opacity="0.8"/>
+  <ellipse cx="105" cy="68" rx="8" ry="14" fill="#1a2a4a" stroke="#00f3ff" stroke-width="1.5"/>
+  <ellipse cx="151" cy="68" rx="8" ry="14" fill="#1a2a4a" stroke="#00f3ff" stroke-width="1.5"/>
+  <text x="128" y="185" text-anchor="middle" fill="#deff9a" font-size="12" font-family="monospace">백구 (AI 기계 진돗개)</text>
+  <text x="128" y="201" text-anchor="middle" fill="#666" font-size="10" font-family="monospace">PLACEHOLDER — DALL-E 4o</text>
+</svg>

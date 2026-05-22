@@ -1,0 +1,169 @@
+{
+  "galaxySeed": 1000,
+  "displaySeed": 76626,
+  "mapConfig": {
+    "rings": 6,
+    "verticesPerRing": 5,
+    "totalPlanets": 30,
+    "ringRadii": [65, 130, 195, 260, 325, 390],
+    "jitter": 12,
+    "canvasCenter": { "x": 600, "y": 600 }
+  },
+  "factions": [
+    {
+      "id": "F01",
+      "name": "수퍼비아 문명권",
+      "nameEn": "Superbia",
+      "nameStyle": "북아메리카형",
+      "ring": 2,
+      "color": "#4a90d9",
+      "passive": {
+        "partRecycleReturn": 0.20,
+        "repairCostDiscount": 0.15,
+        "tecBonus": 0.10
+      },
+      "synergy": {
+        "condition": "fleet >= 3",
+        "speedBonus": 0.15,
+        "miningDropBonus": 0.10
+      }
+    },
+    {
+      "id": "F02",
+      "name": "아우레우스 금융 문명권",
+      "nameEn": "Aureus",
+      "nameStyle": "서유럽형 수인족",
+      "ring": 3,
+      "color": "#d4af37",
+      "passive": {
+        "auctionForfeitImmunity": 1,
+        "escrowRefundMs": 0,
+        "taxRevenueBonus": 0.25
+      },
+      "synergy": {
+        "condition": "aureus_governor",
+        "commodityBuyDiscount": 0.15,
+        "loyDecayReduction": 0.30
+      }
+    },
+    {
+      "id": "F03",
+      "name": "메카니카 공학 문명권",
+      "nameEn": "Mechanica",
+      "nameStyle": "슬라브 공업형",
+      "ring": 4,
+      "color": "#7ecbce",
+      "passive": {
+        "adjacencySynergyBonus": 0.15,
+        "intBarrierMaxBonus": 0.15,
+        "shieldAutoChargePerTurn": 0.03
+      },
+      "synergy": {
+        "condition": "scientist_npc >= 2",
+        "powerConsumptionReduction": 0.10
+      }
+    },
+    {
+      "id": "F04",
+      "name": "크리그 용병 부족",
+      "nameEn": "Krieg",
+      "nameStyle": "남아메리카 라틴형",
+      "ring": 5,
+      "color": "#c0392b",
+      "passive": {
+        "captureChanceBonus": 0.15,
+        "criticalMultiplier": 1.8
+      },
+      "synergy": {
+        "condition": "enemy_kill",
+        "fleetShieldAbsorbOnKill": 0.10
+      }
+    },
+    {
+      "id": "F05",
+      "name": "치크스 생체 제국",
+      "nameEn": "Cheeks Empire",
+      "nameStyle": "아시아 관료형",
+      "ring": 1,
+      "color": "#8b00ff",
+      "hostile": true,
+      "passive": {
+        "coreEnvironmentDamageImmunity": 1.0,
+        "warpFuelReduction": 0.30,
+        "hpBonus": 0.20
+      },
+      "synergy": {
+        "condition": "cheeks_ship_in_fleet",
+        "enemyFleeBlock": "first_3_turns"
+      }
+    },
+    {
+      "id": "F06",
+      "name": "지구 저항군 전선",
+      "nameEn": "Earth Resistance",
+      "nameStyle": "한국형",
+      "ring": 6,
+      "color": "#2ecc71",
+      "passive": {
+        "earthSectorDexBonus": 0.20,
+        "finalDamageReduction": 0.10,
+        "loyDefectionImmunity": true
+      },
+      "synergy": {
+        "condition": "Yi_Sunsin + korean_crew_majority",
+        "loyDecayDefectionFullImmunity": true
+      }
+    },
+    {
+      "id": "F07",
+      "name": "보이드 양자 이상점",
+      "nameEn": "Void Rift Anomaly",
+      "nameStyle": "아랍형 (차원 반향체)",
+      "ring": "void",
+      "color": "#00f3ff",
+      "isCivilization": false,
+      "isVoidRift": true,
+      "passive": {
+        "blinkEngineUnlock": true,
+        "longRangeWarpFuelReduction": 0.40,
+        "intAndTecBonus": 0.10
+      },
+      "synergy": {
+        "condition": "P30_owned + Einstein_recruited",
+        "wipeoutAssetLossImmunity": true
+      }
+    }
+  ],
+  "planets": [
+    { "id": "P01", "faction": "F01", "name": "프록시마 b", "nameEn": "Proxima b", "angle": 65, "ring": 2, "baseTax": 5000, "startUnlocked": true, "isCommanderStart": true, "heroRecruit": null },
+    { "id": "P02", "faction": "F01", "name": "센타우리 에코 c", "nameEn": "Centauri Echo c", "angle": 85, "ring": 2, "baseTax": 5000, "startUnlocked": true, "heroRecruit": null },
+    { "id": "P03", "faction": "F01", "name": "바나드 프라임 e", "nameEn": "Barnard Prime e", "angle": 105, "ring": 2, "baseTax": 5000, "startUnlocked": true, "heroRecruit": null },
+    { "id": "P04", "faction": "F01", "name": "로스 128-b", "nameEn": "Ross 128-b", "angle": 115, "ring": 2, "baseTax": 5000, "startUnlocked": true, "heroRecruit": null },
+    { "id": "P05", "faction": "F02", "name": "티가든 금융 b", "nameEn": "Teegarden Finance b", "angle": 130, "ring": 3, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P06", "faction": "F02", "name": "넥서스 프라임", "nameEn": "Nexus Prime", "angle": 145, "ring": 3, "baseTax": 12000, "startUnlocked": false, "heroRecruit": "H02" },
+    { "id": "P07", "faction": "F02", "name": "LHS 1140-b 메인", "nameEn": "LHS 1140-b Main", "angle": 160, "ring": 3, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P08", "faction": "F02", "name": "글리제 667Cc", "nameEn": "Gliese 667Cc", "angle": 170, "ring": 3, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P09", "faction": "F03", "name": "TRAPPIST-1e 제조창", "nameEn": "TRAPPIST-1e Factory", "angle": 10, "ring": 4, "baseTax": 12000, "startUnlocked": false, "heroRecruit": "H07" },
+    { "id": "P10", "faction": "F03", "name": "TRAPPIST-1f 코어", "nameEn": "TRAPPIST-1f Core", "angle": 25, "ring": 4, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P11", "faction": "F03", "name": "케플러-62f 연동소", "nameEn": "Kepler-62f Link", "angle": 40, "ring": 4, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P12", "faction": "F03", "name": "기가-넷 허브", "nameEn": "Giga-Net Hub", "angle": 50, "ring": 4, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P13", "faction": "F04", "name": "Kepler-22b 투기장", "nameEn": "Kepler-22b Arena", "angle": 185, "ring": 5, "baseTax": 12000, "startUnlocked": false, "heroRecruit": "H05" },
+    { "id": "P14", "faction": "F04", "name": "Kepler-442b 요새", "nameEn": "Kepler-442b Fortress", "angle": 205, "ring": 5, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P15", "faction": "F04", "name": "타르타로스 섹터", "nameEn": "Tartaros Sector", "angle": 220, "ring": 5, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P16", "faction": "F04", "name": "아레스-III 전초지", "nameEn": "Ares-III Outpost", "angle": 235, "ring": 5, "baseTax": 12000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P17", "faction": "F05", "name": "TOI-700 d 영토", "nameEn": "TOI-700 d Territory", "angle": 0, "ring": 1, "baseTax": 25000, "startUnlocked": false, "hostile": true, "heroRecruit": null },
+    { "id": "P18", "faction": "F05", "name": "케플러-452b 병참기지", "nameEn": "Kepler-452b Depot", "angle": 72, "ring": 1, "baseTax": 25000, "startUnlocked": false, "hostile": true, "heroRecruit": null },
+    { "id": "P19", "faction": "F05", "name": "우르사-알파 섹터", "nameEn": "Ursa-Alpha Sector", "angle": 144, "ring": 1, "baseTax": 25000, "startUnlocked": false, "hostile": true, "heroRecruit": null },
+    { "id": "P20", "faction": "F05", "name": "오미크론-퍼세이", "nameEn": "Omicron-Persei", "angle": 216, "ring": 1, "baseTax": 25000, "startUnlocked": false, "hostile": true, "heroRecruit": null },
+    { "id": "P21", "faction": "F05", "name": "타이탄-X 황실초소", "nameEn": "Titan-X Imperial Post", "angle": 288, "ring": 1, "baseTax": 25000, "startUnlocked": false, "hostile": true, "heroRecruit": null },
+    { "id": "P22", "faction": "F06", "name": "지하 방공호 본부", "nameEn": "Underground HQ", "angle": 245, "ring": 6, "baseTax": 5000, "startUnlocked": false, "heroRecruit": "H01", "special": "hwiso_note" },
+    { "id": "P23", "faction": "F06", "name": "화성 저항군 전선", "nameEn": "Mars Resistance Front", "angle": 260, "ring": 6, "baseTax": 5000, "startUnlocked": false, "heroRecruit": "H03" },
+    { "id": "P24", "faction": "F06", "name": "달 정찰 정거장", "nameEn": "Moon Scout Station", "angle": 275, "ring": 6, "baseTax": 5000, "startUnlocked": false, "heroRecruit": "H04" },
+    { "id": "P25", "faction": "F06", "name": "유로파 전초기지", "nameEn": "Europa Outpost", "angle": 290, "ring": 6, "baseTax": 5000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P26", "faction": "F06", "name": "타이탄 전술기지", "nameEn": "Titan Tactical Base", "angle": 305, "ring": 6, "baseTax": 5000, "startUnlocked": false, "heroRecruit": null },
+    { "id": "P27", "faction": "F07", "name": "글리제 581g 차원문", "nameEn": "Gliese 581g Gate", "angle": 315, "ring": 2, "baseTax": 0, "startUnlocked": false, "isVoidRift": true, "heroRecruit": "H08", "special": "gate" },
+    { "id": "P28", "faction": "F07", "name": "캅테인 b 균열구역", "nameEn": "Kapteyn b Scar", "angle": 325, "ring": 3, "baseTax": 0, "startUnlocked": false, "isVoidRift": true, "heroRecruit": null, "special": "scar" },
+    { "id": "P29", "faction": "F07", "name": "오리온 차원 균열", "nameEn": "Orion Sinkhole", "angle": 335, "ring": 4, "baseTax": 0, "startUnlocked": false, "isVoidRift": true, "heroRecruit": null, "special": "sinkhole", "legendaryPartsEvery": 5 },
+    { "id": "P30", "faction": "F07", "name": "제타 레티쿨리 싱크", "nameEn": "Zeta Reticuli Ark", "angle": 345, "ring": 5, "baseTax": 0, "startUnlocked": false, "isVoidRift": true, "heroRecruit": "H06", "special": "ark", "wipeoutImmunity": true }
+  ]
+}

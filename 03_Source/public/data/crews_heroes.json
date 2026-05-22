@@ -1,0 +1,114 @@
+{
+  "heroes": [
+    {
+      "id": "H01", "name": "이순신 제독", "nameEn": "Admiral Yi Sun-sin",
+      "class": "Pilot", "recruitPlanet": "P22",
+      "stats": { "DEX": 99, "INT": 150, "TEC": 88, "HP": 120, "LOY": 100 },
+      "skill": { "id": "HAKIKJIN_REFLECT", "name": "학익진 반사", "desc": "반사 방어 포메이션, 적 공격의 80%를 반사" },
+      "recruitCondition": { "item": "G18", "desc": "난중일기 번역본 영인본 제출" },
+      "flagship": "LGD01",
+      "portraitFile": "hero_H01_03_portrait.png"
+    },
+    {
+      "id": "H02", "name": "장영실 대감", "nameEn": "Jang Yeong-sil",
+      "class": "Engineer", "recruitPlanet": "P06",
+      "stats": { "DEX": 60, "INT": 115, "TEC": 70, "HP": 110, "LOY": 100 },
+      "skill": { "id": "AUTO_REPAIR", "name": "자동 수리 프로토콜", "desc": "매 턴 시작 시 기함 HP 5% 자동 회복" },
+      "recruitCondition": { "item": "G08", "desc": "자동수리 나노봇 제출" },
+      "flagship": null,
+      "portraitFile": "hero_H02_03_portrait.png"
+    },
+    {
+      "id": "H03", "name": "광개토대왕", "nameEn": "Gwanggaeto the Great",
+      "class": "Pilot", "recruitPlanet": "P23",
+      "stats": { "DEX": 150, "INT": 80, "TEC": 110, "HP": 140, "LOY": 100 },
+      "skill": { "id": "GOGURYEO_TRUE_DAMAGE", "name": "고구려 트루 대미지", "desc": "방어 무시 고구려 돌격, 5턴마다 발동" },
+      "recruitCondition": { "type": "combat_wins", "count": 50, "desc": "전투 승리 50회 달성" },
+      "flagship": null,
+      "portraitFile": "hero_H03_03_portrait.png"
+    },
+    {
+      "id": "H04", "name": "유리 가가린", "nameEn": "Yuri Gagarin",
+      "class": "Pilot", "recruitPlanet": "P24",
+      "stats": { "DEX": 75, "INT": 100, "TEC": 140, "HP": 90, "LOY": 95 },
+      "skill": { "id": "STEALTH_SHIELD", "name": "스텔스 실드", "desc": "3턴간 기함 스텔스 모드, 피격 불가" },
+      "recruitCondition": { "item": "VE", "amount": 500, "desc": "보이드 에센스 500 VE 제출" },
+      "flagship": null,
+      "portraitFile": "hero_H04_03_portrait.png"
+    },
+    {
+      "id": "H05", "name": "호레이쇼 넬슨", "nameEn": "Horatio Nelson",
+      "class": "Pilot", "recruitPlanet": "P13",
+      "stats": { "DEX": 145, "INT": 65, "TEC": 82, "HP": 85, "LOY": 92 },
+      "skill": { "id": "NAVAL_BLOCKADE", "name": "해상 봉쇄", "desc": "적 도주 5턴간 완전 봉쇄, 함대 이탈 불가" },
+      "recruitCondition": { "item": "G12", "desc": "강습 스파이크 범퍼 제출" },
+      "flagship": null,
+      "portraitFile": "hero_H05_03_portrait.png"
+    },
+    {
+      "id": "H06", "name": "A. 아인슈타인", "nameEn": "Albert Einstein",
+      "class": "Engineer", "recruitPlanet": "P30",
+      "stats": { "DEX": 150, "INT": 150, "TEC": 110, "HP": 100, "LOY": 100 },
+      "skill": { "id": "TIME_REVERSAL_SAVE", "name": "시간 역행 세이브", "desc": "전멸 시 교전 1턴 전 세이브로 타임점프, 자산 손실 0%" },
+      "recruitCondition": { "type": "planet_auction", "planet": "P30", "desc": "P30 제타 레티쿨리 싱크 경매 낙찰" },
+      "flagship": "LGD03",
+      "special": "hwiso_equation_key",
+      "portraitFile": "hero_H06_03_portrait.png"
+    },
+    {
+      "id": "H07", "name": "니콜라 테슬라", "nameEn": "Nikola Tesla",
+      "class": "Engineer", "recruitPlanet": "P09",
+      "stats": { "DEX": 110, "INT": 95, "TEC": 90, "HP": 80, "LOY": 95 },
+      "skill": { "id": "CHAIN_LIGHTNING", "name": "연쇄 번개", "desc": "연쇄 전기 공격, 최대 8개 적 함선에 TEC×2 피해" },
+      "recruitCondition": { "item": "G09", "desc": "고밀도 중수소 분열 배터리 제출" },
+      "flagship": "LGD02",
+      "portraitFile": "hero_H07_03_portrait.png"
+    },
+    {
+      "id": "H08", "name": "마르코 폴로", "nameEn": "Marco Polo",
+      "class": "Merchant", "recruitPlanet": "P27",
+      "stats": { "DEX": 60, "INT": 90, "TEC": 120, "HP": 80, "LOY": 95 },
+      "skill": { "id": "SILKROAD_MONOPOLY", "name": "실크로드 독점", "desc": "3턴간 전체 무역 마진 2배, 특산물 시세 고정" },
+      "recruitCondition": { "item": "G20", "desc": "차원 반향 나침반 제출" },
+      "flagship": null,
+      "portraitFile": "hero_H08_03_portrait.png"
+    }
+  ],
+  "villains": [
+    {
+      "id": "V01", "name": "황제 우르사-렉스", "nameEn": "Emperor Ursa-Rex",
+      "title": "치크스 황제", "appearPlanet": "P17",
+      "hp": 5000000, "intShield": 999999, "tec": 10,
+      "skill": "절대 무적 실드 (이휘소 방정식으로만 파훼)",
+      "phases": 5,
+      "defeatReward": "ending_unlock"
+    },
+    { "id": "V02", "name": "제독 칸 크리스탈", "hp": 320000, "skill": "암흑 이온 포격", "defeatReward": "LGD01_blueprint" },
+    { "id": "V03", "name": "총독 즈하", "hp": 180000, "skill": "세금 징수 드레인", "defeatReward": "credits_5M" },
+    { "id": "V04", "name": "생체공학자 바이오-렉스", "hp": 250000, "skill": "세포 분열 복제", "defeatReward": "VE_3000" },
+    { "id": "V05", "name": "제국 첩보관 그림자-날", "hp": 140000, "skill": "미러 클론 소환", "defeatReward": "G18_hint" },
+    { "id": "V06", "name": "포격함장 볼텍스-9", "hp": 195000, "skill": "중력 폭탄", "defeatReward": "W12_weapon" },
+    { "id": "V07", "name": "봉쇄 사령관 시그마", "hp": 210000, "skill": "성간 안개 강화", "defeatReward": "E12_engine" },
+    { "id": "V08", "name": "황실 근위대 오메가", "hp": 280000, "skill": "황제 방패 전위", "defeatReward": "final_battle_ticket" }
+  ],
+  "gachaConfig": {
+    "rates": {
+      "Normal": 0.700,
+      "Rare": 0.240,
+      "Hero": 0.055,
+      "Legendary": 0.005
+    },
+    "pitySystem": {
+      "hardCap": 80,
+      "slot5Guaranteed": true,
+      "slot5GuaranteedMinRarity": "Hero"
+    },
+    "rerollCostFormula": "1000 * Math.pow(1.2, N)",
+    "rerollResetCondition": "planet_change"
+  },
+  "npcClasses": [
+    { "id": "Pilot", "role": "전투 함장", "slot": "captain", "statBonus": 0.15, "captureBuff": true },
+    { "id": "Engineer", "role": "부선장", "slot": "firstOfficer", "cargoExpand": true, "powerRelax": true },
+    { "id": "Merchant", "role": "총독", "slot": "governor", "commodityDiscount": true, "taxAmplify": true }
+  ]
+}

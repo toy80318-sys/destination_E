@@ -1,0 +1,11 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#0d1117" rx="16"/>
+  <rect x="78" y="50" width="100" height="130" fill="#1a2a4a" stroke="#deff9a" stroke-width="2" rx="8"/>
+  <circle cx="128" cy="75" r="25" fill="#1a2a4a" stroke="#deff9a" stroke-width="2"/>
+  <text x="128" y="82" text-anchor="middle" fill="#deff9a" font-size="24">⚔️</text>
+  <text x="128" y="155" text-anchor="middle" fill="#deff9a" font-size="11" font-family="monospace">H01 이순신 제독</text>
+  <text x="128" y="170" text-anchor="middle" fill="#00f3ff" font-size="10" font-family="monospace">DEX:99 INT:150 TEC:88</text>
+  <text x="128" y="185" text-anchor="middle" fill="#666" font-size="9" font-family="monospace">PLACEHOLDER — DALL-E 4o</text>
+  <rect x="80" y="195" width="96" height="18" fill="#deff9a" opacity="0.15" rx="4"/>
+  <text x="128" y="207" text-anchor="middle" fill="#deff9a" font-size="9" font-family="monospace">학익진 반사 (LEGENDARY)</text>
+</svg>
