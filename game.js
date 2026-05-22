@@ -6481,7 +6481,7 @@ function startCombat(planetDef){
   combatState._sunsinUsed=false;
   // 함선 즉시 등장 (애니메이션 없음)
   combatState._entranceT=1;combatState._entranceDone=true;
-  sfxAlert();_preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=`⚔️ ${isBoss?'우르사 메이저 최종전!':'전투'} — ${planetDef.nm}`;setTimeout(runCombatTurn,600);});
+  sfxAlert();_preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=`⚔️ ${isBoss?'우르사 메이저 최종전!':'전투'} — ${planetDef.nm}`;_cbStartAnimLoop();setTimeout(runCombatTurn,600);});
 }
 function renderCombatView(body){
   body.classList.add('cv');
@@ -6691,6 +6691,26 @@ function _drawShipUnit(ctx,u,x,y,sz){
     _drawShipVector(ctx,x,y,dsz,isEnemy,col,alpha);
     if(!cached)_loadCombatImg(imgSrc,function(){if(typeof drawCombatFrame==='function')drawCombatFrame();});
   }
+  // 쉴드 오라: SH>0이고 살아있는 함선만. SH%에 따라 강도 조절 + 미세 펄스.
+  if(u.hp>0&&(u.sh||0)>0&&(u.maxSH||0)>0){
+    const shR=Math.max(0.1,Math.min(1,(u.sh||0)/(u.maxSH||1)));
+    const pulse=0.85+0.15*Math.sin(Date.now()*0.005);
+    const rx=dsz.w*1.6, ry=dsz.h*1.5;
+    ctx.save();
+    ctx.translate(x,y);
+    // 외곽 글로우
+    ctx.globalAlpha=0.18*shR*pulse;
+    ctx.fillStyle='#66ddff';
+    ctx.shadowColor='#66ddff';ctx.shadowBlur=18;
+    ctx.beginPath();ctx.ellipse(0,0,rx*1.05,ry*1.05,0,0,Math.PI*2);ctx.fill();
+    // 외곽 라인
+    ctx.globalAlpha=0.55*shR*pulse;
+    ctx.strokeStyle='#9ee7ff';
+    ctx.lineWidth=1.4;
+    ctx.shadowBlur=8;
+    ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.stroke();
+    ctx.restore();
+  }
 }
 // ═══ 누락 함수 복구 패치 ════════════════════════════════════════════
 
@@ -6699,14 +6719,14 @@ let _cbEffects=[];  // [{type,...}] beam / exp / shard / shockwave / muzzle
 let _unitPos={};    // {unitId: {x,y}}
 let _cbAnimReq=null;
 
-// 이펙트가 살아있는 동안만 60fps 루프로 캔버스 재그리기.
-// drawCombatFrame은 호출될 때마다 life 1씩 감소시키므로, 루프가 돌아야 effects가 자연스럽게 사라짐.
+// 전투 중이거나 이펙트가 살아있는 동안 60fps 루프로 캔버스 재그리기.
+// (쉴드 오라 펄스 + 이펙트 페이드를 위해 전투 중에는 계속 돌림.)
 function _cbStartAnimLoop(){
   if(_cbAnimReq)return; // 이미 루프 중
   const tick=()=>{
     if(!cbCtx||!cbCV){_cbAnimReq=null;return;}
     drawCombatFrame();
-    if((_cbEffects||[]).length>0){
+    if((combatState&&!combatState.done)||(_cbEffects||[]).length>0){
       _cbAnimReq=requestAnimationFrame(tick);
     } else {
       _cbAnimReq=null;
@@ -6715,24 +6735,54 @@ function _cbStartAnimLoop(){
   _cbAnimReq=requestAnimationFrame(tick);
 }
 
-// 빔/폭발/파편 한 세트를 한 번에 push (격침 여부에 따라 강도 조절)
-function _cbAddBeamAndHit(a1,a2,beamCol,isDead){
-  // 1) 머즐 플래시 (발사 위치에서 짧고 강한 섬광)
-  _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:beamCol,r:8,life:8,maxLife:8});
-  // 2) 레이저 빔 (천천히 페이드 — life 18프레임 ≈ 0.3초)
-  _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:beamCol,life:18,maxLife:18});
-  // 3) 피격 폭발
-  const expCol=isDead?'#ff3300':'#ff7755';
-  const expR=isDead?28:16;
-  _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:expCol,r:expR,life:isDead?36:24,maxLife:isDead?36:24});
+// 빔 한 발 + 피격 + (필요 시) 격침 폭발/파편
+// delay: 발사 시작까지 대기 프레임 수 (순차 발사용)
+// wasShielded: 피격 시점에 타겟의 쉴드가 살아있었는지 (true면 헥사 임팩트)
+function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
+  delay=delay||0;
+  // 1) 머즐 플래시
+  _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:beamCol,r:8,life:8,maxLife:8,delay:delay});
+  // 2) 레이저 빔
+  _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:beamCol,life:18,maxLife:18,delay:delay});
+  // 3) 쉴드 피격 헥사 플래시 (쉴드가 살아있을 때만)
+  if(wasShielded){
+    _cbEffects.push({type:'shieldHit',x:a2.x,y:a2.y,col:'#66ddff',r:26,life:16,maxLife:16,delay:delay+3});
+  }
+  // 4) 선체 피격 폭발 (쉴드가 뚫렸을 때 강도↑)
+  const expCol=isDead?'#ff3300':(wasShielded?'#ffaa66':'#ff7755');
+  const expR=isDead?28:(wasShielded?12:18);
+  _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:expCol,r:expR,life:isDead?36:24,maxLife:isDead?36:24,delay:delay+4});
   if(isDead){
-    // 4) 격침 시: 충격파 링 + 흰 코어 + 파편 8개
-    _cbEffects.push({type:'shockwave',x:a2.x,y:a2.y,col:'#ffaa44',r:50,life:30,maxLife:30});
-    _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffffff',r:14,life:14,maxLife:14});
-    for(let i=0;i<8;i++){
-      const ang=(Math.PI*2*i)/8 + Math.random()*0.3;
-      _cbEffects.push({type:'shard',x:a2.x,y:a2.y,vx:Math.cos(ang)*3.5,vy:Math.sin(ang)*3.5,col:'#ffcc66',life:40,maxLife:40});
+    _cbEffects.push({type:'shockwave',x:a2.x,y:a2.y,col:'#ffaa44',r:50,life:30,maxLife:30,delay:delay+4});
+    _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffffff',r:14,life:14,maxLife:14,delay:delay+4});
+    for(let i=0;i<10;i++){
+      const ang=(Math.PI*2*i)/10 + Math.random()*0.3;
+      _cbEffects.push({type:'shard',x:a2.x,y:a2.y,vx:Math.cos(ang)*3.8,vy:Math.sin(ang)*3.8,col:'#ffcc66',life:42,maxLife:42,delay:delay+4});
     }
+  }
+  _cbStartAnimLoop();
+}
+
+// 미사일 살보 (최대 13발). 각 미사일은 곡선 궤적으로 날아가 타겟에서 폭발.
+// count: 1~13, 자동으로 클램프됨
+function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded){
+  count=Math.max(1,Math.min(13,count|0));
+  baseDelay=baseDelay||0;
+  for(let i=0;i<count;i++){
+    const stagger=baseDelay + i*3; // 미사일 사이 3프레임 간격
+    // 약간씩 다른 곡률(미사일이 부채꼴로 퍼져 날아가게)
+    const spread=(i-(count-1)/2)*8;
+    const midx=(a1.x+a2.x)/2 + spread;
+    const midy=(a1.y+a2.y)/2 - 60 - Math.abs(spread)*0.4; // 위로 호 형성
+    const isLast=(i===count-1);
+    // 발사 머즐
+    _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:salvoCol,r:6,life:6,maxLife:6,delay:stagger});
+    // 미사일 본체
+    _cbEffects.push({
+      type:'missile', x1:a1.x,y1:a1.y, x2:a2.x,y2:a2.y, ctrlx:midx,ctrly:midy,
+      t:0, speed:0.045, col:salvoCol, life:60, maxLife:60, delay:stagger,
+      isLastInSalvo:isLast, isDead:isDead, wasShielded:wasShielded
+    });
   }
   _cbStartAnimLoop();
 }
@@ -6836,8 +6886,55 @@ function drawCombatFrame(){
     _drawShipUnit(cbCtx,u,x,y,null);
     _drawHealthBar(cbCtx,u,x,y,_enemySize(u),true);
   });
-  // 이펙트 렌더링 (beam: 레이저 빔, exp: 폭발, shockwave: 충격파 링, shard: 파편, muzzle: 발사 섬광)
+  // 이펙트 렌더링
+  // 타입: beam(레이저 빔) / exp(폭발) / shockwave(충격파 링) / shard(파편)
+  //        muzzle(발사 섬광) / missile(곡선 궤적 미사일) / shieldHit(헥사 임팩트)
   _cbEffects=(_cbEffects||[]).filter(ef=>{
+    // 발사 대기 (순차/스태거)
+    if(ef.delay&&ef.delay>0){ef.delay--;return true;}
+    // 미사일은 t 기반 진행 — life와 별개로 t>=1이면 즉시 폭발로 변환
+    if(ef.type==='missile'){
+      ef.t+=ef.speed;
+      cbCtx.save();
+      if(ef.t<1){
+        // 2차 Bezier로 위치 계산
+        const T=ef.t,U=1-T;
+        const px=U*U*ef.x1+2*U*T*ef.ctrlx+T*T*ef.x2;
+        const py=U*U*ef.y1+2*U*T*ef.ctrly+T*T*ef.y2;
+        const Tp=Math.max(0,T-0.12),Up=1-Tp;
+        const ppx=Up*Up*ef.x1+2*Up*Tp*ef.ctrlx+Tp*Tp*ef.x2;
+        const ppy=Up*Up*ef.y1+2*Up*Tp*ef.ctrly+Tp*Tp*ef.y2;
+        // 꼬리 (연료 분사)
+        cbCtx.strokeStyle=ef.col;cbCtx.lineWidth=3;
+        cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=10;
+        cbCtx.lineCap='round';
+        cbCtx.beginPath();cbCtx.moveTo(ppx,ppy);cbCtx.lineTo(px,py);cbCtx.stroke();
+        // 머리 (흰 코어)
+        cbCtx.shadowBlur=0;
+        cbCtx.fillStyle='#ffffff';
+        cbCtx.beginPath();cbCtx.arc(px,py,2.8,0,Math.PI*2);cbCtx.fill();
+        cbCtx.restore();
+        return true;
+      } else {
+        // 타겟 도달 — 폭발 트리거
+        const ec=ef.isDead?'#ff3300':(ef.wasShielded?'#ffaa66':'#ff7755');
+        const er=ef.isDead?26:(ef.wasShielded?12:18);
+        _cbEffects.push({type:'exp',x:ef.x2,y:ef.y2,col:ec,r:er,life:ef.isDead?36:22,maxLife:ef.isDead?36:22});
+        if(ef.wasShielded){
+          _cbEffects.push({type:'shieldHit',x:ef.x2,y:ef.y2,col:'#66ddff',r:22,life:14,maxLife:14});
+        }
+        if(ef.isLastInSalvo&&ef.isDead){
+          _cbEffects.push({type:'shockwave',x:ef.x2,y:ef.y2,col:'#ffaa44',r:50,life:30,maxLife:30});
+          _cbEffects.push({type:'exp',x:ef.x2,y:ef.y2,col:'#ffffff',r:14,life:14,maxLife:14});
+          for(let i=0;i<10;i++){
+            const ang=(Math.PI*2*i)/10+Math.random()*0.3;
+            _cbEffects.push({type:'shard',x:ef.x2,y:ef.y2,vx:Math.cos(ang)*3.8,vy:Math.sin(ang)*3.8,col:'#ffcc66',life:42,maxLife:42});
+          }
+        }
+        cbCtx.restore();
+        return false;
+      }
+    }
     ef.life--;
     const a=Math.max(0,ef.life/ef.maxLife);   // 1 → 0 페이드
     const t=1-a;                              // 0 → 1 진행도
@@ -6881,6 +6978,26 @@ function drawCombatFrame(){
       cbCtx.globalAlpha=Math.min(1,a);
       cbCtx.fillStyle=ef.col;
       cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=8*a;
+      cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
+    } else if(ef.type==='shieldHit'){
+      // 쉴드 피격 — 헥사곤 임팩트 + 짧은 광점
+      const radius=ef.r*(0.9+t*0.4);
+      cbCtx.globalAlpha=Math.min(1,a*0.95);
+      cbCtx.strokeStyle=ef.col;
+      cbCtx.lineWidth=Math.max(1,3*a);
+      cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=14*a;
+      cbCtx.beginPath();
+      for(let i=0;i<6;i++){
+        const ang=(Math.PI*2*i)/6;
+        const px=ef.x+Math.cos(ang)*radius;
+        const py=ef.y+Math.sin(ang)*radius;
+        if(i===0)cbCtx.moveTo(px,py); else cbCtx.lineTo(px,py);
+      }
+      cbCtx.closePath();cbCtx.stroke();
+      // 중심 광점
+      cbCtx.globalAlpha=Math.min(1,a);
+      cbCtx.fillStyle='#ffffff';
+      cbCtx.shadowBlur=0;
       cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
     } else {
       // 폭발: 외부 링이 진행에 따라 커지며 페이드
@@ -6947,6 +7064,17 @@ function runCombatTurn(){
   let log=[];
   const W=cbCV?cbCV.width:400, ox=cbOffX, oy=cbOffY;
 
+  // ── 발사 스태거: 각 공격자가 시간 차로 발사하도록 delay 누적 ──
+  // 레이저는 14프레임/회, 미사일은 18프레임/회 간격 (살보가 좀 길어서 더 여유)
+  let _fireDelay=0;
+  // 플레이어 함선의 미사일 파츠 수 (살보 크기 결정용)
+  const _missileCountFor=(ship)=>{
+    if(!ship||!ship.parts)return 0;
+    let n=0;
+    ship.parts.forEach(pid=>{const p=PARTS.find(x=>x.id===pid);if(p&&p.wtype==='missile')n++;});
+    return n;
+  };
+
   // 플레이어 공격
   pl.forEach(p=>{
     if(!en.filter(e=>e.hp>0).length)return;
@@ -6954,16 +7082,29 @@ function runCombatTurn(){
     const rawDmg=Math.max(1,Math.round((+p.ATT||1)-Math.floor((target.armorTier||0)*1.5)));
     const shDmg=Math.min(target.sh||0,rawDmg);
     const hpDmg=rawDmg-shDmg;
+    const wasShielded=(target.sh||0)>0;
     target.sh=Math.max(0,(target.sh||0)-shDmg);
     target.hp=Math.max(0,(target.hp||target.maxHP)-hpDmg);
     const isDead=target.hp<=0;
-    log.push(`🚀 ${p.nm||'아군'} → ${target.nm||'적'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격침!':''));
-    // 레이저 빔 + 피격 폭발 + (격침 시) 충격파/파편
+    const usesMissile=p.wtype==='missile';
+    log.push(`${usesMissile?'🚀':'⚡'} ${p.nm||'아군'} → ${target.nm||'적'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격침!':''));
     const ap=_unitPos[p.id||('P'+0)], ep=_unitPos[target.id];
     if(ap&&ep){
-      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#00f3ff',isDead);
+      const a1=_txPos(ap), a2=_txPos(ep);
+      if(usesMissile){
+        // 미사일 살보 크기: 1 part → 3, 2 → 5, 3 → 7, 4 → 9, 5 → 11, 6+ → 13
+        const mcnt=Math.max(1,Math.min(13,1+_missileCountFor(p)*2));
+        _cbAddMissileSalvo(a1,a2,'#ffcc66',isDead,mcnt,_fireDelay,wasShielded);
+        _fireDelay+=18+mcnt*2;
+      } else {
+        _cbAddBeamAndHit(a1,a2,'#00f3ff',isDead,_fireDelay,wasShielded);
+        _fireDelay+=14;
+      }
     }
   });
+  // 플레이어 사격 끝난 뒤 약간 쉬고 적 사격 시작
+  _fireDelay+=10;
+
   // 적 공격
   en.filter(e=>e.hp>0).forEach(e=>{
     if(!pl.filter(p=>p.hp>0).length)return;
@@ -6972,6 +7113,7 @@ function runCombatTurn(){
     const rawDmg=Math.max(1,Math.round((+e.ATT||1)-armorRed));
     const shDmg=Math.min(target.sh||0,rawDmg);
     const hpDmg=rawDmg-shDmg;
+    const wasShielded=(target.sh||0)>0;
     target.sh=Math.max(0,(target.sh||0)-shDmg);
     target.hp=Math.max(0,target.hp-hpDmg);
     // G.fleet 반영
@@ -6979,10 +7121,10 @@ function runCombatTurn(){
     if(gs){gs.hp=target.hp;gs.sh=target.sh;}
     const isDead=target.hp<=0;
     log.push(`💥 ${e.nm||'적'} → ${target.nm||'아군'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
-    // 적 레이저 빔 + 피격 이펙트
     const ap=_unitPos[e.id], ep=_unitPos[target.id];
     if(ap&&ep){
-      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#cc44ff',isDead);
+      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#cc44ff',isDead,_fireDelay,wasShielded);
+      _fireDelay+=14;
     }
   });
   log.forEach(m=>addCombatLog(m,''));
@@ -6992,16 +7134,18 @@ function runCombatTurn(){
   drawCombatFrame();
   const stEl=document.getElementById('cb-status');
   if(stEl)stEl.textContent=`아군 ${stillAlivePl}/${combatState.players.length} | 적 ${stillAliveEn}/${combatState.enemies.length}`;
+  // 모든 사격이 시각적으로 끝날 때까지 대기 (마지막 이펙트 페이드 포함 ~60프레임 여유)
+  const turnMs=Math.min(3000,Math.max(700,(_fireDelay+60)*16));
   if(!stillAliveEn||!stillAlivePl){
-    setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},800);
+    setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},Math.max(900,turnMs));
   } else {
     // 최대 50턴 제한 (무한 루프 방지)
     if(combatState.turn>=50){
       addCombatLog('⏱️ 50턴 초과 — 강제 종료 (승리 처리)','gold');
       combatState.enemies.forEach(e=>{e.hp=0;});
-      setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},800);
+      setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},900);
     } else {
-      setTimeout(runCombatTurn,700);
+      setTimeout(runCombatTurn,turnMs);
     }
   }
 }
