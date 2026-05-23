@@ -60,10 +60,11 @@
     </div>
     <button class="btn btn-lg" style="width:100%" onclick="goAgeGate()">🚀 새 게임</button>
     <button class="btn btn-sm" style="width:100%;opacity:.8" onclick="showLoadSlots()">💾 이어하기 (저장 불러오기)</button>
-  <div style="display:flex;gap:8px;margin-top:4px;width:100%;max-width:400px">
-    <button class="btn btn-sm" style="flex:1;opacity:.65;white-space:nowrap" onclick="showCredits()">🎬 크레딧</button>
-    <button class="btn btn-sm" style="flex:1.6;opacity:.65;white-space:nowrap" onclick="showHallOfFame()">🏆 명예의 전당</button>
-    <button class="btn btn-sm" style="flex:1;opacity:.65;white-space:nowrap" onclick="showFeedback()">📬 피드백</button>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;width:100%">
+    <button class="btn btn-sm" style="opacity:.75;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showSettingsModal()">⚙️<br>설정</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showCredits()">🎬<br>크레딧</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showHallOfFame()">🏆<br>명예전당</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showFeedback()">📬<br>피드백</button>
   </div>
   </div>
   <div style="position:fixed;bottom:12px;color:var(--muted);font-size:12px;text-align:center">이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%</div>
@@ -105,7 +106,7 @@
     <div style="margin-bottom:13px">
       <div style="color:var(--dim);font-size:13px;margin-bottom:5px">난이도 선택</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px">
-        <button id="df-easy"    onclick="setDifficulty('easy')"    style="padding:7px 2px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">😊<br>쉬움<br><span style="font-size:11px;color:var(--dim)">적 능력 -10%</span></button>
+        <button id="df-easy"    onclick="setDifficulty('easy')"    style="padding:7px 2px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">😊<br>쉬움<br><span style="font-size:11px;color:var(--dim)">적 능력 -75%</span></button>
         <button id="df-normal"  onclick="setDifficulty('normal')"  style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">⚔️<br>보통<br><span style="font-size:11px;color:var(--dim)">기본</span></button>
         <button id="df-hard"    onclick="setDifficulty('hard')"    style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">💀<br>어려움<br><span style="font-size:11px;color:var(--dim)">적 능력 +10%</span></button>
         <button id="df-extreme" onclick="setDifficulty('extreme')" style="padding:7px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;line-height:1.4">☠️<br>극악<br><span style="font-size:11px;color:var(--dim)">적 ×3 · 능력 +50%</span></button>
@@ -151,10 +152,18 @@
         <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">⭐</span><span>함장 메인서버</span><span class="folder-arrow" id="folder-arrow-captain">▶</span></button>
         <div class="hn-folder-items" id="folder-items-captain">
           <button class="hn-btn hn-sub" data-tab="map" onclick="hubTab('map')"><span class="hn-ic">🗺️</span><span>은하 지도</span></button>
-
-          <button class="hn-btn hn-sub" data-tab="clog" onclick="hubTab('clog')"><span class="hn-ic">📋</span><span>전투 기록</span></button>
           <button class="hn-btn hn-sub" data-tab="codex" onclick="hubTab('codex')"><span class="hn-ic">📖</span><span>탐색 도감</span></button>
           <button class="hn-btn hn-sub" data-tab="crew-dock" onclick="hubTab('crew')"><span class="hn-ic">👥</span><span>크루 명단</span></button>
+          <button class="hn-btn hn-sub" data-tab="clog" onclick="hubTab('clog')"><span class="hn-ic">📋</span><span>전투 기록</span></button>
+        </div>
+      </div>
+      <!-- 행성 광장 -->
+      <div class="hn-folder" id="folder-plaza">
+        <button class="hn-folder-btn" onclick="toggleFolder('plaza')"><span class="hn-ic">🏪</span><span>행성 광장</span><span class="folder-arrow" id="folder-arrow-plaza">▶</span></button>
+        <div class="hn-folder-items" id="folder-items-plaza">
+          <button class="hn-btn hn-sub" data-tab="quest" onclick="hubTab('quest')"><span class="hn-ic">🎖️</span><span>제독</span></button>
+          <button class="hn-btn hn-sub" data-tab="tavern" onclick="hubTab('tavern')"><span class="hn-ic">🍺</span><span>주점</span></button>
+          <button class="hn-btn hn-sub" data-tab="trade" onclick="hubTab('trade')"><span class="hn-ic">🏬</span><span>상점</span></button>
         </div>
       </div>
       <!-- 함선 도크 -->
@@ -165,15 +174,6 @@
           <button class="hn-btn hn-sub" data-tab="ship" onclick="hubTab('ship')"><span class="hn-ic">🛸</span><span>함선 거래소</span></button>
           <button class="hn-btn hn-sub" data-tab="craft" onclick="hubTab('craft')"><span class="hn-ic">⚗️</span><span>함선 제작소</span></button>
           <button class="hn-btn hn-sub" id="hn-gather-search" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12);color:var(--dim);opacity:.45;cursor:default" onclick="doGatherSearch()"><span class="hn-ic">🔭</span><span>잔해 탐색</span></button>
-        </div>
-      </div>
-      <!-- 행성 광장 -->
-      <div class="hn-folder" id="folder-plaza">
-        <button class="hn-folder-btn" onclick="toggleFolder('plaza')"><span class="hn-ic">🏪</span><span>행성 광장</span><span class="folder-arrow" id="folder-arrow-plaza">▶</span></button>
-        <div class="hn-folder-items" id="folder-items-plaza">
-          <button class="hn-btn hn-sub" data-tab="quest" onclick="hubTab('quest')"><span class="hn-ic">🎖️</span><span>제독</span></button>
-          <button class="hn-btn hn-sub" data-tab="tavern" onclick="hubTab('tavern')"><span class="hn-ic">🍺</span><span>주점</span></button>
-          <button class="hn-btn hn-sub" data-tab="trade" onclick="hubTab('trade')"><span class="hn-ic">🏬</span><span>상점</span></button>
         </div>
       </div>
       <!-- 행성 프론트 -->

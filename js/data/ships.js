@@ -3,13 +3,13 @@
 const SHIP_CATALOG=[
   // ── 소형 전투선 S01~S08 (초반 개척, 기동 게릴라) ──────────────────
   {id:'S01',nm:'머스탱',tier:'소형',price:5000,maxHP:100,maxSH:50,ATT:20,INT:15,TEC:18,LOY:80,ic:'🛸',desc:'초기 지급 기준함. 1턴 회피율 +5%'},
-  {id:'S02',nm:'배저 스카우트',tier:'소형',price:8000,maxHP:200,maxSH:200,ATT:18,INT:12,TEC:22,LOY:70,ic:'🛸',desc:'빠른 정찰형. 스캔 범위 +1'},
-  {id:'S03',nm:'코요테',tier:'소형',price:14000,maxHP:180,maxSH:150,ATT:25,INT:10,TEC:30,LOY:65,ic:'🛸',desc:'고속 요격기. 선제 공격 확률 +10%'},
-  {id:'S04',nm:'레이더',tier:'소형',price:12000,maxHP:240,maxSH:180,ATT:20,INT:22,TEC:20,LOY:72,ic:'🛸',desc:'탐지 특화. 스캔 범위 +2'},
-  {id:'S05',nm:'팔콘 스카우트',tier:'소형',price:20000,maxHP:350,maxSH:400,ATT:22,INT:20,TEC:28,LOY:75,ic:'🛸',desc:'스텔스 진입 3턴'},
-  {id:'S06',nm:'슬링샷',tier:'소형',price:18000,maxHP:280,maxSH:120,ATT:30,INT:8,TEC:22,LOY:68,ic:'🛸',desc:'첫 공격 대미지 +30%'},
+  {id:'S02',nm:'배저 스카우트',tier:'소형',price:8000,maxHP:200,maxSH:200,ATT:18,INT:12,TEC:22,LOY:70,ic:'🛸',cargoStart:8,desc:'빠른 정찰형. 스캔 범위 +1 · 화물 8칸'},
+  {id:'S03',nm:'코요테',tier:'소형',price:14000,maxHP:180,maxSH:150,ATT:25,INT:10,TEC:30,LOY:65,ic:'🛸',partsRows:3,crewMax:6,desc:'고속 요격기. 선제 공격 확률 +10% · 파츠 6칸 · 크루 6명'},
+  {id:'S04',nm:'레이더',tier:'소형',price:12000,maxHP:240,maxSH:180,ATT:20,INT:22,TEC:20,LOY:72,ic:'🛸',partsRows:3,cargoStart:6,desc:'탐지 특화. 스캔 범위 +2 · 화물 6칸 · 파츠 6칸'},
+  {id:'S05',nm:'팔콘 스카우트',tier:'소형',price:20000,maxHP:350,maxSH:400,ATT:22,INT:20,TEC:28,LOY:75,ic:'🛸',partsRows:3,desc:'스텔스 진입 3턴 · 파츠 6칸'},
+  {id:'S06',nm:'슬링샷',tier:'소형',price:18000,maxHP:280,maxSH:120,ATT:30,INT:8,TEC:22,LOY:68,ic:'🛸',crewMax:6,desc:'첫 공격 대미지 +30% · 크루 6명'},
   {id:'S07',nm:'페레그린',tier:'소형',price:22000,maxHP:300,maxSH:200,ATT:28,INT:15,TEC:35,LOY:72,ic:'🛸',desc:'이동 후 즉시 공격 가능'},
-  {id:'S08',nm:'나이트호크',tier:'소형',price:28000,maxHP:320,maxSH:300,ATT:24,INT:18,TEC:32,LOY:74,ic:'🛸',desc:'스텔스+요격 복합형'},
+  {id:'S08',nm:'나이트호크',tier:'소형',price:28000,maxHP:320,maxSH:300,ATT:24,INT:18,TEC:32,LOY:74,ic:'🛸',partsRows:4,crewMax:8,desc:'스텔스+요격 복합형 · 파츠 8칸 · 크루 8명'},
   // ── 중형 고속함 M01~M10 (상업 화물 + 밸런스) ──────────────────────
   {id:'M01',nm:'그리핀',tier:'중형',price:35000,maxHP:1500,maxSH:800,ATT:32,INT:28,TEC:28,LOY:78,ic:'🚀',desc:'중형 입문형. 균형 스탯'},
   {id:'M02',nm:'불독',tier:'중형',price:42000,maxHP:2000,maxSH:600,ATT:38,INT:22,TEC:24,LOY:76,ic:'🚀',desc:'근접 화력 +20%. 근거리 특화'},
