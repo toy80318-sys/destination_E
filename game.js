@@ -399,36 +399,42 @@ function showShipDetailModal(idx){
   const ATT=(s.ATT||0)+(bonus.att||0)+(crewBonus.att||0);
   const INT2=(s.INT||0)+(bonus.int2||0)+(crewBonus.int2||0);
   const TEC=(s.TEC||0)+(bonus.tec||0)+(crewBonus.tec||0);
-  const modalContent=`<div style="padding:14px;min-width:340px;max-width:540px">
-    <div style="display:flex;gap:14px;margin-bottom:14px;align-items:flex-start">
-      ${imgOrEmoji(shipImgSrc(s),tierIc,96,96,'border-radius:8px;background:rgba(0,0,0,.6);flex-shrink:0')}
+  const cargoSlots=s.cargoSlots||4;
+  const cargoUpPrice=cargoSlots<80?getCargoUpgradePrice(s):0;
+  const groupStyle='background:rgba(0,0,0,.22);border:1px solid var(--bdr);border-radius:8px;padding:9px 11px';
+  const groupTitleStyle='font-size:11px;color:var(--dim);font-weight:bold;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px';
+  const btnRowStyle='display:flex;gap:6px;flex-wrap:wrap;align-items:center';
+  const modalContent=`<div style="padding:14px;min-width:380px;max-width:620px">
+    <!-- 헤더: 이미지 + 정보 -->
+    <div style="display:flex;gap:16px;margin-bottom:14px;align-items:flex-start">
+      ${imgOrEmoji(shipImgSrc(s),tierIc,144,144,'border-radius:10px;background:rgba(0,0,0,.6);flex-shrink:0;border:1px solid '+fc+'66')}
       <div style="flex:1;min-width:0">
-        <div style="font-size:18px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?'⚑ 기함 ':''}${s.nm}</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:8px">${s.tier}</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px">
+        <div style="font-size:19px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?'⚑ 기함 ':''}${s.nm}</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">${s.tier}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:10px">
           <span style="color:var(--red)">⚔️ ATT ${ATT}</span>
           <span style="color:var(--blue)">🔮 INT ${INT2}</span>
           <span style="color:var(--cyan)">⚡ ENG ${TEC}</span>
         </div>
-        <div style="margin-top:4px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span style="font-size:11px;color:var(--dim);min-width:28px">HP</span>
-            <div style="flex:1;height:7px;background:rgba(0,255,100,.12);border-radius:4px">
-              <div style="height:100%;width:${hpP}%;background:${hpC};border-radius:4px;transition:width .3s"></div>
-            </div>
-            <span style="font-size:11px;color:var(--dim)">${s.hp}/${hpMax} (${hpP}%)</span>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span style="font-size:11px;color:var(--dim);min-width:28px">HP</span>
+          <div style="flex:1;height:7px;background:rgba(0,255,100,.12);border-radius:4px">
+            <div style="height:100%;width:${hpP}%;background:${hpC};border-radius:4px;transition:width .3s"></div>
           </div>
-          ${shMax>0?`<div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:11px;color:var(--dim);min-width:28px">SHD</span>
-            <div style="flex:1;height:7px;background:rgba(0,150,255,.12);border-radius:4px">
-              <div style="height:100%;width:${shP}%;background:var(--cyan);border-radius:4px;transition:width .3s"></div>
-            </div>
-            <span style="font-size:11px;color:var(--dim)">${s.sh||0}/${shMax} (${shP}%)</span>
-          </div>`:''}
+          <span style="font-size:11px;color:var(--dim)">${s.hp}/${hpMax} (${hpP}%)</span>
         </div>
+        ${shMax>0?`<div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px;color:var(--dim);min-width:28px">SHD</span>
+          <div style="flex:1;height:7px;background:rgba(0,150,255,.12);border-radius:4px">
+            <div style="height:100%;width:${shP}%;background:var(--cyan);border-radius:4px;transition:width .3s"></div>
+          </div>
+          <span style="font-size:11px;color:var(--dim)">${s.sh||0}/${shMax} (${shP}%)</span>
+        </div>`:''}
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+
+    <!-- 크루 / 파츠 정보 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
       <div>
         <div style="font-size:13px;color:var(--cyan);font-weight:bold;margin-bottom:6px">👥 크루 (${crewIds.length}/${getMaxCrew(s)})</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">${crewHtml}</div>
@@ -438,22 +444,42 @@ function showShipDetailModal(idx){
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">${partsHtml}</div>
       </div>
     </div>
-    <div style="border-top:1px solid var(--bdr);padding-top:10px;display:flex;flex-direction:column;gap:8px">
-      <!-- 파츠/크루/창고/기함 설정 -->
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold)" onclick="pickPartModal(${idx})">⚙️ 파츠 장착</button>
-        <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan)" onclick="pickCrewModal(${idx})">👥 크루 배치</button>
-        ${(s.crewIds||[]).length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88" onclick="unassignCrewModal(${idx},0)">👤 크루 해제</button>`:''}
-        ${(()=>{if((s.cargoSlots||4)>=80)return'<span style="font-size:11px;color:var(--cyan)">📦최대80칸</span>';const cp=getCargoUpgradePrice(s);return`<button class="btn btn-sm" style="border-color:var(--purple);color:var(--purple)" onclick="upgradeCargoSlotFromModal(${idx})" ${G.credits>=cp?'':'disabled'}>📦 창고+2칸 ₡${cp.toLocaleString()} (${s.cargoSlots||4}/80)</button>`;})()}
-        ${!isFlagship?`<button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-weight:bold;background:rgba(212,175,55,.12)" onclick="setAsFlagship(${idx})">⚑ 기함으로 설정</button>`:'<span style="font-size:11px;color:var(--gold);padding:4px 8px;border:1px solid rgba(212,175,55,.4);border-radius:5px">⚑ 현재 기함</span>'}
+
+    <!-- 액션 패널: 3 그룹 (장비 / 함선 / 수리) -->
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="${groupStyle}">
+        <div style="${groupTitleStyle}"><span>⚙️</span><span>장비</span></div>
+        <div style="${btnRowStyle}">
+          <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold)" onclick="pickPartModal(${idx})">⚙️ 파츠 장착</button>
+          <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan)" onclick="pickCrewModal(${idx})">👥 크루 배치</button>
+          ${crewIds.length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88" onclick="unassignCrewModal(${idx},0)">👤 크루 해제</button>`:''}
+        </div>
       </div>
-      <!-- 수리 버튼 -->
-      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-        <span style="font-size:11px;color:var(--dim)">수리:</span>
-        ${rc>0?`<button class="btn btn-sm btn-green" onclick="repairShipModal(${idx},'hp')" ${G.credits>=rc?'':'disabled'}>🔧 HP ₡${rc.toLocaleString()}</button>`:'<span style="font-size:11px;color:var(--green)">✅HP최대</span>'}
-        ${shMax>0&&(s.sh||0)<shMax&&sc>0?`<button class="btn btn-sm" style="border-color:var(--blue);color:var(--blue)" onclick="repairShipModal(${idx},'sh')" ${G.credits>=sc?'':'disabled'}>🛡️실드 ₡${sc.toLocaleString()}</button>`:''}
-        ${(rc+sc)>0?`<button class="btn btn-sm btn-gold" onclick="repairShipFullModal(${idx})" ${G.credits>=(rc+sc)?'':'disabled'}>⚡완전수리 ₡${(rc+sc).toLocaleString()}</button>`:''}
-        <button class="btn btn-sm" onclick="closeModal();hubTab('garage')" style="margin-left:auto;font-size:10px;opacity:.6">🔧 정비소</button>
+      <div style="${groupStyle}">
+        <div style="${groupTitleStyle}"><span>🚀</span><span>함선</span></div>
+        <div style="${btnRowStyle}">
+          ${cargoSlots>=80
+            ? `<span style="font-size:12px;color:var(--cyan);padding:5px 9px;border:1px solid rgba(0,243,255,.3);border-radius:5px">📦 창고 최대 80칸</span>`
+            : `<button class="btn btn-sm" style="border-color:var(--purple);color:var(--purple)" onclick="upgradeCargoSlotFromModal(${idx})" ${G.credits>=cargoUpPrice?'':'disabled'}>📦 창고 +2칸 (${cargoSlots}/80) ₡${cargoUpPrice.toLocaleString()}</button>`}
+          ${isFlagship
+            ? `<span style="font-size:12px;color:var(--gold);padding:5px 9px;border:1px solid rgba(212,175,55,.4);border-radius:5px">⚑ 현재 기함</span>`
+            : `<button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-weight:bold;background:rgba(212,175,55,.12)" onclick="setAsFlagship(${idx})">⚑ 기함 설정</button>`}
+        </div>
+      </div>
+      <div style="${groupStyle}">
+        <div style="${groupTitleStyle}"><span>🔧</span><span>수리</span><span style="margin-left:auto;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:normal">보유 ₡${G.credits.toLocaleString()}</span></div>
+        <div style="${btnRowStyle}">
+          ${rc>0
+            ? `<button class="btn btn-sm btn-green" onclick="repairShipModal(${idx},'hp')" ${G.credits>=rc?'':'disabled'}>🔧 HP 수리 ₡${rc.toLocaleString()}</button>`
+            : `<span style="font-size:12px;color:var(--green);padding:5px 9px;border:1px solid rgba(46,204,113,.3);border-radius:5px">✅ HP 최대</span>`}
+          ${shMax>0&&(s.sh||0)<shMax&&sc>0
+            ? `<button class="btn btn-sm" style="border-color:var(--blue);color:var(--blue)" onclick="repairShipModal(${idx},'sh')" ${G.credits>=sc?'':'disabled'}>🛡️ 실드 수리 ₡${sc.toLocaleString()}</button>`
+            : (shMax>0?`<span style="font-size:12px;color:var(--cyan);padding:5px 9px;border:1px solid rgba(0,243,255,.3);border-radius:5px">✅ 실드 최대</span>`:'')}
+          ${(rc+sc)>0
+            ? `<button class="btn btn-sm btn-gold" onclick="repairShipFullModal(${idx})" ${G.credits>=(rc+sc)?'':'disabled'}>⚡ 완전수리 ₡${(rc+sc).toLocaleString()}</button>`
+            : ''}
+          <button class="btn btn-sm" onclick="closeModal();hubTab('garage')" style="margin-left:auto;opacity:.7">🔧 정비소</button>
+        </div>
       </div>
     </div>
   </div>`;
@@ -525,21 +551,26 @@ function setAsFlagship(idx){
     const d=getDlg();if(!d)return;
     resizing=true;
     const r=d.getBoundingClientRect();
-    resOX=e.clientX;resOY=e.clientY;resW=r.width;resH=r.height;
+    const s=window._gsScale||1;
+    resOX=e.clientX;resOY=e.clientY;resW=r.width/s;resH=r.height/s;
     e.preventDefault();e.stopPropagation();
   });
   document.addEventListener('mousemove',function(e){
     const d=getDlg();if(!d)return;
+    // 스테이지 transform:scale 보정 — 마우스 이동을 스테이지 좌표계로 변환
+    const s=window._gsScale||1;
     if(dragging){
-      const nx=e.clientX-dragOX,ny=e.clientY-dragOY;
-      const mw=window.innerWidth,mh=window.innerHeight;
+      const nx=(e.clientX-dragOX)/s,ny=(e.clientY-dragOY)/s;
+      const mw=(typeof STAGE_W!=='undefined'?STAGE_W:window.innerWidth);
+      const mh=(typeof STAGE_H!=='undefined'?STAGE_H:window.innerHeight);
       const r=d.getBoundingClientRect();
-      d.style.left=Math.max(0,Math.min(nx,mw-r.width))+'px';
+      const rw=r.width/s,rh=r.height/s;
+      d.style.left=Math.max(0,Math.min(nx,mw-rw))+'px';
       d.style.top=Math.max(0,Math.min(ny,mh-36))+'px';
     }
     if(resizing){
-      const nw=Math.max(280,resW+(e.clientX-resOX));
-      const nh=Math.max(80,resH+(e.clientY-resOY));
+      const nw=Math.max(280,resW+(e.clientX-resOX)/s);
+      const nh=Math.max(80,resH+(e.clientY-resOY)/s);
       d.style.width=nw+'px';d.style.height=nh+'px';
     }
   });
@@ -588,10 +619,23 @@ function show(id){SCREENS.forEach(s=>document.getElementById(s)?.classList.remov
   }
 }
 
+// ═══ STAGE FIT ═══════════════════════════════════════════════
+// 1536x864 기본 사이즈 — 뷰포트에 맞춰 비례 축소·확대 (letterbox)
+const STAGE_W=1536,STAGE_H=864;
+window._gsScale=1;
+function fitGameStage(){
+  const sx=window.innerWidth/STAGE_W;
+  const sy=window.innerHeight/STAGE_H;
+  const s=Math.min(sx,sy);
+  window._gsScale=s;
+  document.documentElement.style.setProperty('--gs',s);
+}
+fitGameStage();window.addEventListener('resize',fitGameStage);
+
 // ═══ STARS ════════════════════════════════════════════════════
 (function(){
   const cv=document.getElementById('star-bg'),ctx=cv.getContext('2d');
-  const stars=[];function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}resize();window.addEventListener('resize',resize);
+  const stars=[];function resize(){cv.width=STAGE_W;cv.height=STAGE_H;}resize();window.addEventListener('resize',resize);
   for(let i=0;i<180;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,a:Math.random(),spd:Math.random()*.005+.001,ph:Math.random()*Math.PI*2});
   function draw(t){ctx.clearRect(0,0,cv.width,cv.height);stars.forEach(s=>{const a=s.a*(.4+.6*Math.abs(Math.sin(t*s.spd+s.ph)));ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.beginPath();ctx.arc(s.x*cv.width,s.y*cv.height,s.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(draw);}
   requestAnimationFrame(draw);
@@ -1080,14 +1124,18 @@ function showLoreTip(key,evt){
 function _posLoreTip(evt){
   var tip=document.getElementById('de-tooltip');
   if(!tip||tip.style.display==='none')return;
-  var x=evt.clientX+16,y=evt.clientY+16;
-  tip.style.left=x+'px';
-  tip.style.top=y+'px';
-  // 뷰포트 경계 보정
+  // 뷰포트 좌표를 스테이지 좌표로 변환 (transform:scale 보정)
+  var stage=document.getElementById('game-stage');
+  var sr=stage?stage.getBoundingClientRect():{left:0,top:0,right:window.innerWidth,bottom:window.innerHeight};
+  var s=window._gsScale||1;
+  var sx=(evt.clientX-sr.left)/s, sy=(evt.clientY-sr.top)/s;
+  tip.style.left=(sx+16)+'px';
+  tip.style.top=(sy+16)+'px';
+  // 스테이지 경계 보정 (1536x864 기준)
   requestAnimationFrame(function(){
     var r=tip.getBoundingClientRect();
-    if(r.right>window.innerWidth-8)tip.style.left=(evt.clientX-r.width-12)+'px';
-    if(r.bottom>window.innerHeight-8)tip.style.top=(evt.clientY-r.height-12)+'px';
+    if(r.right>sr.right-8)tip.style.left=(sx-r.width/s-12)+'px';
+    if(r.bottom>sr.bottom-8)tip.style.top=(sy-r.height/s-12)+'px';
   });
 }
 function hideLoreTip(){
@@ -1163,14 +1211,70 @@ function calcPlayerLevel(){
   const crewScore   =Math.min(50, Math.floor(G.crew.length/3)*10);      // 15명→50
   return Math.max(1,Math.min(1000,Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore)));
 }
-// 레벨 기반 적 강화 배율: lv1→×1.00, lv50→×1.37, lv100→×1.80
-function getLevelMult(){return 1.0+((calcPlayerLevel()-1)*0.0008);}
-// 초반 약화 배율: 전투력(레벨)이 낮을 때 적 스탯을 20%까지 감소.
-// Lv1=0.80, Lv30=1.00 으로 선형 보간 → 보스/히든전(isBoss)은 적용 안 함.
+// 레벨 기반 적 강화 배율: 플레이어 전투력 상승에 비례해 적 ATK·HP 증가.
+// lv1→×1.00, lv100→×1.30, lv500→×2.50, lv1000→×4.00 (선형)
+function getLevelMult(){return 1.0+((calcPlayerLevel()-1)*0.003);}
+// ── 적 함선 스펙 미리보기 HTML 생성 (전투 직전 모달용) ────────────────────
+function _formatEnemyPreview(enemies,opts){
+  if(!enemies||!enemies.length)return'';
+  opts=opts||{};
+  // 동일 스탯끼리 그룹화 (HP/ATT/INT/TEC + tier)
+  const groups={};
+  enemies.forEach(e=>{
+    const k=`${e.tier||'-'}|${e.maxHP||e.HP||0}|${e.maxSH||0}|${e.ATT||0}|${e.INT||0}|${e.TEC||0}`;
+    if(!groups[k])groups[k]={tier:e.tier||'-',hp:e.maxHP||e.HP||0,sh:e.maxSH||0,atk:e.ATT||0,intl:e.INT||0,tec:e.TEC||0,nms:[],cnt:0};
+    groups[k].cnt++;
+    if(!groups[k].nms.includes(e.nm))groups[k].nms.push(e.nm);
+  });
+  const _plv=calcPlayerLevel();
+  const fp=calcFleetAvgPower();
+  const rows=Object.values(groups).map(g=>{
+    const lbl=g.cnt>1?`${g.nms[0]} ×${g.cnt}`:g.nms[0]||g.tier;
+    const hpRatio=fp.hp>0?(g.hp/fp.hp):1;
+    const atkRatio=fp.atk>0?(g.atk/fp.atk):1;
+    const hpCol=hpRatio>=1.2?'var(--red)':hpRatio>=0.85?'var(--yellow)':'var(--green)';
+    const atkCol=atkRatio>=1.2?'var(--red)':atkRatio>=0.85?'var(--yellow)':'var(--green)';
+    return`<tr style="border-top:1px solid rgba(255,255,255,.05)">
+      <td style="padding:4px 6px;color:var(--txt);font-size:12px">${lbl}<div style="font-size:10px;color:var(--dim)">${g.tier}</div></td>
+      <td style="padding:4px 6px;font-size:12px;color:${hpCol};text-align:right">${g.hp.toLocaleString()}<span style="color:var(--dim)">/${g.sh.toLocaleString()}</span></td>
+      <td style="padding:4px 6px;font-size:12px;color:${atkCol};text-align:right">${g.atk}</td>
+      <td style="padding:4px 6px;font-size:12px;color:var(--purple);text-align:right">${g.intl}</td>
+      <td style="padding:4px 6px;font-size:12px;color:var(--cyan);text-align:right">${g.tec}</td>
+    </tr>`;
+  }).join('');
+  const total=enemies.length;
+  const totHP=enemies.reduce((s,e)=>s+(e.maxHP||e.HP||0),0);
+  const totATK=enemies.reduce((s,e)=>s+(e.ATT||0),0);
+  return`<div style="background:rgba(255,60,60,.06);border:1px solid rgba(255,60,60,.3);border-radius:8px;padding:8px 10px;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div style="color:var(--red);font-size:13px;font-weight:bold">🎯 적 함선 스펙 (${total}척)</div>
+      <div style="font-size:11px;color:var(--dim)">사령관 전투력 <span style="color:var(--cyan)">${_plv}</span> · 강화 ×${getLevelMult().toFixed(2)}</div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace">
+      <thead><tr style="color:var(--dim);font-size:10px;text-align:left">
+        <th style="padding:2px 6px;font-weight:normal">함종</th>
+        <th style="padding:2px 6px;font-weight:normal;text-align:right">HP/SH</th>
+        <th style="padding:2px 6px;font-weight:normal;text-align:right">ATT</th>
+        <th style="padding:2px 6px;font-weight:normal;text-align:right">INT</th>
+        <th style="padding:2px 6px;font-weight:normal;text-align:right">TEC</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="margin-top:6px;padding-top:5px;border-top:1px dashed rgba(255,255,255,.08);display:flex;justify-content:space-between;font-size:11px;color:var(--dim)">
+      <span>총 HP: <span style="color:var(--yellow)">${totHP.toLocaleString()}</span></span>
+      <span>총 ATT: <span style="color:var(--red)">${totATK.toLocaleString()}</span></span>
+      <span>아군 평균: <span style="color:var(--cyan)">HP ${fp.hp} / ATT ${fp.atk}</span></span>
+    </div>
+  </div>`;
+}
+// 초반 약화 배율: 플레이어 전투력이 낮을 때 모든 적대 세력(치크스·해적·적대 행성) 스탯 감소.
+// Lv≤100: ×0.70 (반드시 30% 약화), Lv100~150: 선형 복귀, Lv≥150: ×1.00.
+// 보스/히든전(isBoss)은 적용 안 함.
 function getEarlyGameMult(){
   const lv=calcPlayerLevel();
-  if(lv>=30)return 1.0;
-  return 0.80 + (lv-1)/29*0.20;
+  if(lv<=100)return 0.70;
+  if(lv>=150)return 1.0;
+  return 0.70 + (lv-100)/50*0.30;
 }
 // 플레이어 함대 평균 전투력 (ATK·HP) — 적 스탯 비례 조정용
 function calcFleetAvgPower(){
@@ -1337,12 +1441,27 @@ function openFolder(name){
 function getPlanetHubThreshold(pid){
   return 15; // 5회마다 광장→도크→프론트 순서 해금 (3단계 × 5)
 }
-// 행성 허브 단계: 0=전부잠금 1=광장 2=도크 3=프론트
-function _getHubThr(pid){
-  // 행성 팩션에 따라 허브 해금 임계값 결정
-  // F01 수퍼비아 귀족: 1/2/3회 (접근성↑), 기타: 광장 5회 / 도크 10회 / 프론트 15회
+// 행성 허브 단계: 0=전부잠금 1/2/3=각 단계 해금
+// 단계가 해금하는 시설은 팩션별로 다름 — _getStageOrder() 참조
+// 기본 순서: 광장 → 도크 → 프론트
+// F01(수퍼비아)/F02(아우레우스)/F03(메카니카): 도크 → 광장 → 프론트
+function _getStageOrder(pid){
   const pd=PLANET_DEF.find(p=>p.id===pid);
-  if(pd&&pd.f==='F01')return{s1:1,s2:2,s3:3};
+  const f=pd?.f;
+  if(f==='F01'||f==='F02'||f==='F03')return['dock','plaza','front'];
+  return['plaza','dock','front'];
+}
+// 카테고리(plaza/dock/front)가 해금되는 단계(1/2/3) 반환
+function _getCategoryStage(pid,cat){
+  return _getStageOrder(pid).indexOf(cat)+1;
+}
+function _getHubThr(pid){
+  // 행성 팩션에 따라 단계별 임계값 결정
+  // F01: 1/2/3회, F02·F03: 2/3/5회, 기타: 5/10/15회
+  const pd=PLANET_DEF.find(p=>p.id===pid);
+  const f=pd?.f;
+  if(f==='F01')return{s1:1,s2:2,s3:3};
+  if(f==='F02'||f==='F03')return{s1:2,s2:3,s3:5};
   return{s1:5,s2:10,s3:15};
 }
 function getPlanetHubStage(pid){
@@ -1369,15 +1488,20 @@ function addHubProgress(pid){
   const pd=PLANET_DEF.find(p=>p.id===pid);
   const nm=pd?.nm||pid;
   const t=_getHubThr(pid);
-  if(cur===t.s1){
-    notify('🔓 '+nm+' — 행성 광장 개방! (제독·주점·상점)','gold');
-    baekgu('광장이 열렸어. 제독 의뢰·주점 가챠·상점 무역 이용 가능해.');
-  } else if(cur===t.s2){
-    notify('🔓 '+nm+' — 함선 도크 개방! (거래소·제작소·정비소)','gold');
-    baekgu('도크 시설이 열렸어. 함선 거래소·제작소·정비소 이용 가능해.');
-  } else if(cur===t.s3){
-    notify('🔓 '+nm+' — 행성 프론트 완전 개방! 모든 시설 이용 가능','gold');
-    baekgu('이 행성 완전 개방이야. 이제 전부 쓸 수 있어.');
+  const order=_getStageOrder(pid);
+  const unlockMsg={
+    plaza:{n:'🔓 '+nm+' — 행성 광장 개방! (제독·주점·상점)',b:'광장이 열렸어. 제독 의뢰·주점 가챠·상점 무역 이용 가능해.'},
+    dock :{n:'🔓 '+nm+' — 함선 도크 개방! (거래소·제작소·정비소)',b:'도크 시설이 열렸어. 함선 거래소·제작소·정비소 이용 가능해.'},
+    front:{n:'🔓 '+nm+' — 행성 프론트 완전 개방! 모든 시설 이용 가능',b:'이 행성 완전 개방이야. 이제 전부 쓸 수 있어.'}
+  };
+  let stageIdx=-1;
+  if(cur===t.s1)stageIdx=0;
+  else if(cur===t.s2)stageIdx=1;
+  else if(cur===t.s3)stageIdx=2;
+  if(stageIdx>=0){
+    const m=unlockMsg[order[stageIdx]];
+    notify(m.n,'gold');
+    baekgu(m.b);
   }
   updateHubLockButtons();
 }
@@ -1385,21 +1509,20 @@ function updateHubLockButtons(){
   const pid=G.currentPlanet;
   const stage=getPlanetHubStage(pid);
   const prog=getPlanetHubProgress(pid);
-  // 광장: stage>=1, 도크: stage>=2, 프론트: stage>=3 (임계값은 팩션별 동적)
+  // 카테고리별 해금 단계는 팩션별 동적 (_getStageOrder)
   const t=_getHubThr(pid);
-  const stageMap={plaza:1,dock:2,front:3};
-  const needMap={plaza:t.s1,dock:t.s2,front:t.s3};
+  const thrByStage={1:t.s1,2:t.s2,3:t.s3};
   ['dock','plaza','front'].forEach(folder=>{
     const btn=document.querySelector('#folder-'+folder+' .hn-folder-btn');
     if(!btn)return;
-    const need=stageMap[folder];
+    const need=_getCategoryStage(pid,folder);
     const unlocked=stage>=need;
     const lbl=btn.querySelector('span:nth-child(2)');
     if(!lbl)return;
     if(!lbl.dataset.origText)lbl.dataset.origText=lbl.textContent.replace(/ 🔒.*$/,'');
     if(!unlocked){
       btn.style.opacity='0.45';
-      lbl.textContent=lbl.dataset.origText+' 🔒 '+prog+'/'+needMap[folder];
+      lbl.textContent=lbl.dataset.origText+' 🔒 '+prog+'/'+thrByStage[need];
     } else {
       btn.style.opacity='';
       lbl.textContent=lbl.dataset.origText;
@@ -1414,14 +1537,14 @@ function hubTab(tab){
     const pid=G.currentPlanet;
     const stage=getPlanetHubStage(pid);
     const prog=getPlanetHubProgress(pid);
-    // 광장계열 (5회), 도크계열 (10회), 프론트계열 (15회)
+    // 카테고리별 단계는 팩션별 동적 (_getCategoryStage)
     const _plazaTabs=['tavern','gacha','trade','quest'];
     const _dockTabs=['ship','craft','garage'];
     const _frontTabs=['front','plaza','planets','auction'];
     let needed=0,stageName='',stageEmoji='🏗️';
-    if(_plazaTabs.includes(tab)){needed=1;stageName='행성 광장';stageEmoji='🏪';}
-    else if(_dockTabs.includes(tab)){needed=2;stageName='함선 도크';stageEmoji='🚀';}
-    else if(_frontTabs.includes(tab)){needed=3;stageName='행성 프론트';stageEmoji='🌐';}
+    if(_plazaTabs.includes(tab)){needed=_getCategoryStage(pid,'plaza');stageName='행성 광장';stageEmoji='🏪';}
+    else if(_dockTabs.includes(tab)){needed=_getCategoryStage(pid,'dock');stageName='함선 도크';stageEmoji='🚀';}
+    else if(_frontTabs.includes(tab)){needed=_getCategoryStage(pid,'front');stageName='행성 프론트';stageEmoji='🌐';}
     if(needed>0&&stage<needed){
       const pd=PLANET_DEF.find(p=>p.id===pid);
       const _thr2=_getHubThr(pid);
@@ -1447,9 +1570,7 @@ function hubTab(tab){
           </div>
           <div style="background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.4);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.9;text-align:left">
             <div style="color:var(--yellow);font-weight:bold;margin-bottom:4px">📋 해금 단계</div>
-            <div style="color:${prog>=_thr.s1?'var(--green)':'var(--dim)'}">${prog>=_thr.s1?'✅':'⬜'} ${_thr.s1}회 → 🏪 행성 광장 (제독·주점·상점)</div>
-            <div style="color:${prog>=_thr.s2?'var(--green)':'var(--dim)'}">${prog>=_thr.s2?'✅':'⬜'} ${_thr.s2}회 → 🚀 함선 도크 (거래소·제작·정비)</div>
-            <div style="color:${prog>=_thr.s3?'var(--green)':'var(--dim)'}">${prog>=_thr.s3?'✅':'⬜'} ${_thr.s3}회 → 🌐 행성 프론트 (경매·현황)</div>
+            ${(()=>{const ord=_getStageOrder(pid);const lbl={plaza:'🏪 행성 광장 (제독·주점·상점)',dock:'🚀 함선 도크 (거래소·제작·정비)',front:'🌐 행성 프론트 (경매·현황)'};const thArr=[_thr.s1,_thr.s2,_thr.s3];return ord.map((cat,i)=>`<div style="color:${prog>=thArr[i]?'var(--green)':'var(--dim)'}">${prog>=thArr[i]?'✅':'⬜'} ${thArr[i]}회 → ${lbl[cat]}</div>`).join('');})()}
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
             <button class="btn btn-sm btn-green" onclick="hubTab('quest')" ${stage>=1?'':'disabled style=\"opacity:.4\"'}>🎖️ 퀘스트 수락</button>
@@ -2047,19 +2168,14 @@ function triggerChixFleet(pd){
   const waveCol=wave>=4?'var(--red)':wave>=2?'var(--purple)':'#cc88ff';
 
   openModal(`🛸 치크스 ${waveLbl} 함대 출몰!`,
-    `<div style="background:rgba(139,0,255,.08);border:1px solid #8b00ff66;border-radius:10px;padding:14px;margin-bottom:12px">
-      <div style="color:${waveCol};font-size:17px;font-weight:bold;margin-bottom:8px">
-        ${wave>=4?'☠️':'⚠️'} ${waveLbl} 출몰 — 전투력 ×${Math.pow(1.20,wave).toFixed(2)}
+    `<div style="background:rgba(139,0,255,.08);border:1px solid #8b00ff66;border-radius:10px;padding:10px 12px;margin-bottom:10px">
+      <div style="color:${waveCol};font-size:15px;font-weight:bold;margin-bottom:5px">
+        ${wave>=4?'☠️':'⚠️'} ${waveLbl} 출몰 — 전투력 ×${Math.pow(1.20,wave).toFixed(2)} · 출몰 ${G.chixWaves}/5
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:13px;color:var(--dim);margin-bottom:10px">
-        <div>함선 수: <span style="color:var(--red);font-weight:bold">${eCount}척</span></div>
-        <div>출몰 횟수: <span style="color:${waveCol}">${G.chixWaves}/5</span></div>
-        <div>HP: <span style="color:var(--cyan)">${eHP.toLocaleString()}</span></div>
-        <div>공격력: <span style="color:var(--red)">${eATK}</span></div>
-      </div>
-      ${wave>=4?'<div style="color:var(--red);font-size:13px;font-weight:bold">⚠️ 최종 함대 — 이 전투가 마지막 기회!</div>':''}
+      ${wave>=4?'<div style="color:var(--red);font-size:12px;font-weight:bold">⚠️ 최종 함대 — 이 전투가 마지막 기회!</div>':''}
     </div>
-    <div style="font-size:13px;color:var(--dim);line-height:1.8">
+    ${_formatEnemyPreview(enemies)}
+    <div style="font-size:12px;color:var(--dim);line-height:1.7">
       🐕 백구: "${wave>=4?'이게 마지막이야. 전멸시키자!':wave>=2?'점점 강해지고 있어. 조심해!':'치크스 함대 출현! 적 행성에서 오래 있으면 안 돼.'}"
     </div>`,
     [{txt:`⚔️ 전투 (${eCount}척)`,fn:()=>{
@@ -2112,16 +2228,16 @@ function triggerPirateRaid(pd){
   };
   // 모달로 경고 먼저
   openModal('💀 해적 기습!',
-    `<div style="text-align:center;padding:12px">
-      <div style="font-size:58px;margin-bottom:10px">☠️</div>
-      <div style="color:var(--red);font-size:19px;font-weight:bold;margin-bottom:8px">${pd?.nm||''} — 해적단 기습!</div>
-      <div style="color:var(--dim);font-size:14px;line-height:1.8">
+    `<div style="text-align:center;padding:6px 4px">
+      <div style="font-size:42px;margin-bottom:6px">☠️</div>
+      <div style="color:var(--red);font-size:17px;font-weight:bold;margin-bottom:6px">${pd?.nm||''} — 해적단 기습!</div>
+      <div style="color:var(--dim);font-size:13px;line-height:1.7">
         같은 행성에 ${G.stayTurns}턴 체류 → 해적 정보 누출!<br>
-        해적 ${eCount}척이 공격해옵니다!<br>
         <span style="color:var(--yellow)">승리시 약탈금 획득 | 패배시 크레딧 손실</span>
       </div>
-      <div style="margin-top:10px;color:var(--cyan);font-size:13px">🐕 백구: "내가 경고했잖아. 싸워!"</div>
-    </div>`,
+    </div>
+    ${_formatEnemyPreview(raidDef._enemies)}
+    <div style="font-size:12px;color:var(--cyan);text-align:center">🐕 백구: "내가 경고했잖아. 싸워!"</div>`,
     [{txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
      {txt:'🚀 도주 (크레딧 -20%)',fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
@@ -5582,8 +5698,14 @@ function showMatSlotTip(el,ev){
   if(c.buy>0) lines.push(`구매가: ${c.buy.toLocaleString()} CR`);
   tip.textContent=lines.join('\n');
   tip.style.display='block';
-  const x=Math.min(ev.clientX+12,window.innerWidth-240);
-  const y=Math.max(ev.clientY-10,4);
+  // 스테이지 transform:scale 보정
+  const stage=document.getElementById('game-stage');
+  const sr=stage?stage.getBoundingClientRect():{left:0,top:0};
+  const s=window._gsScale||1;
+  const sx=(ev.clientX-sr.left)/s, sy=(ev.clientY-sr.top)/s;
+  const mw=(typeof STAGE_W!=='undefined'?STAGE_W:window.innerWidth);
+  const x=Math.min(sx+12,mw-240);
+  const y=Math.max(sy-10,4);
   tip.style.left=x+'px';
   tip.style.top=y+'px';
 }
@@ -6363,8 +6485,14 @@ function renderCodexTab(body){
     // 인벤토리 + 함선에 장착된 파츠 모두 '보유'로 처리
     const _equippedIds=new Set((G.fleet||[]).flatMap(s=>s.parts||[]));
     const haveSet=new Set([...inv.filter(i=>i.qty>0).map(i=>i.id),..._equippedIds]);
-    const catNm={weapon:'⚔️ 무기',shield:'🛡️ 실드',armor:'🛡 장갑',engine:'⚡ 엔진'};
-    const catCol={weapon:'var(--red)',shield:'var(--blue)',armor:'var(--gold)',engine:'var(--cyan)'};
+    // 섹션 정의: 무기를 레이저/미사일로 분리, 레이저 바로 아래 미사일 표시
+    const sections=[
+      {key:'laser',  nm:'⚔️ 레이저 무기',col:'var(--red)',  filter:p=>p.cat==='weapon'&&(p.wtype==='laser'||!p.wtype)},
+      {key:'missile',nm:'🚀 미사일 무기',col:'#ff8844',     filter:p=>p.cat==='weapon'&&p.wtype==='missile'},
+      {key:'shield', nm:'🛡️ 실드',      col:'var(--blue)', filter:p=>p.cat==='shield'},
+      {key:'armor',  nm:'🛡 장갑',       col:'var(--gold)', filter:p=>p.cat==='armor'},
+      {key:'engine', nm:'⚡ 엔진',       col:'var(--cyan)', filter:p=>p.cat==='engine'}
+    ];
     const rarCol=p=>p.rarity==='mythic'?'#ff88ff':p.rarity==='set'?'#c080ff':p.tier>=15?'var(--gold)':p.tier>=11?'#ffa040':p.tier>=6?'var(--cyan)':'var(--txt)';
     const rarBdr=p=>p.rarity==='mythic'?'rgba(255,136,255,.6)':p.rarity==='set'?'rgba(192,128,255,.6)':p.tier>=15?'rgba(255,215,0,.5)':p.tier>=11?'rgba(255,160,64,.4)':p.tier>=6?'rgba(0,243,255,.3)':'var(--bdr)';
     const statTxt=p=>p.cat==='weapon'?`ATT+${p.ATT}`:p.cat==='shield'?`INT+${p.INT}`:p.cat==='armor'?`HP+${p.HP}`:`TEC+${p.TEC}`;
@@ -6376,18 +6504,20 @@ function renderCodexTab(body){
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">완성도</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalHave/PARTS.length*100)}%</div></div>
     </div>
-    ${['weapon','shield','armor','engine'].map(cat=>{
-      const ps=PARTS.filter(p=>p.cat===cat);const hv=ps.filter(p=>haveSet.has(p.id)).length;
+    ${sections.map(sec=>{
+      const ps=PARTS.filter(sec.filter);const hv=ps.filter(p=>haveSet.has(p.id)).length;
+      if(!ps.length)return'';
       return`<div style="margin-bottom:16px">
-        <div style="font-size:13px;color:${catCol[cat]};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${catNm[cat]} <span style="color:var(--dim);font-size:11px">${hv}/${ps.length}</span></div>
+        <div style="font-size:13px;color:${sec.col};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${sec.nm} <span style="color:var(--dim);font-size:11px">${hv}/${ps.length}</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
           ${ps.map(p=>{const have=haveSet.has(p.id);
+            const cat=p.cat;
             const _invQty=inv.find(i=>i.id===p.id)?.qty||0;
             const _eqQty=(G.fleet||[]).flatMap(s=>s.parts||[]).filter(pid=>pid===p.id).length;
             const qty=_invQty+_eqQty;
             const rarityBadge=p.rarity==='mythic'?'<div style="font-size:10px;color:#ff88ff;margin-top:1px">✦ 신화</div>':p.rarity==='set'?'<div style="font-size:10px;color:#c080ff;margin-top:1px">◈ 세트</div>':'';
             return`<div style="background:var(--card);border:1px solid ${have?rarBdr(p):'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.42};position:relative;min-height:148px">
-              <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;margin:0 auto 6px">${imgOrEmoji('img/parts/'+p.id+'.png',cat==='weapon'?'⚔️':cat==='shield'?'🛡️':cat==='armor'?'🛡':'⚡',52,52,'','part_'+p.id)}</div>
+              <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;margin:0 auto 6px">${imgOrEmoji('img/parts/'+p.id+'.png',sec.key==='laser'?'⚔️':sec.key==='missile'?'🚀':cat==='shield'?'🛡️':cat==='armor'?'🛡':'⚡',52,52,'','part_'+p.id)}</div>
               <div style="font-size:12px;font-weight:bold;color:${rarCol(p)};line-height:1.2;word-break:keep-all">${p.nm}</div>
               <div style="font-size:10px;color:var(--dim);margin-top:2px">T${p.tier} · ${statTxt(p)}</div>
               ${rarityBadge}

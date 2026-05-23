@@ -1,6 +1,9 @@
 :root{--bg:#050a1a;--bg2:#0d1117;--panel:#0d1a2a;--card:#111c2e;--bdr:#1a3a5a;--cyan:#00f3ff;--yellow:#deff9a;--gold:#d4af37;--purple:#8b00ff;--green:#2ecc71;--red:#e74c3c;--blue:#4a90d9;--txt:#ccd6f6;--dim:#446677;--muted:#2a3a4a}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;overflow:hidden;width:100vw;height:100vh;user-select:none}
+html{background:#000;width:100vw;height:100vh;overflow:hidden}
+body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;overflow:hidden;width:100vw;height:100vh;user-select:none;display:flex;align-items:center;justify-content:center}
+/* 게임 무대: 1536x864 기본 사이즈, 화면 크기/비율에 따라 비례 축소·확대 (transform:scale) */
+#game-stage{position:relative;width:1536px;height:864px;flex-shrink:0;transform-origin:center center;transform:scale(var(--gs,1));background:var(--bg);overflow:hidden}
 .scr{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:1}.scr.on{display:flex}
 #s-loading{z-index:999;background:var(--bg)}
 .btn{padding:10px 24px;border:1px solid var(--cyan);background:transparent;color:var(--cyan);font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:17px;cursor:pointer;letter-spacing:1px;transition:all .2s;border-radius:5px}
@@ -42,27 +45,27 @@ body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','맑은 �
 #s-hub{padding-top:44px;padding-bottom:0;flex-direction:row;align-items:stretch;justify-content:flex-start;overflow:hidden}
 #hub-planet-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;transition:opacity .4s ease;z-index:0}
 .hub-side,.hub-body{position:relative;z-index:1}
-.hub-side{width:300px;background:rgba(13,26,42,.99);border-right:1px solid var(--bdr);padding:0;display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
-.hs-menu-scroll{flex:1;min-height:0;overflow-y:auto;padding-bottom:6px;display:flex;flex-direction:column}
-.hs-profile{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--bdr)}
-.hs-av{width:38px;height:38px;background:var(--card);border:2px solid var(--cyan);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.hs-co{color:var(--yellow);font-size:14px;font-weight:bold}
-.hs-pl{color:var(--dim);font-size:12px;margin-top:1px}
-.hs-res{display:flex;justify-content:space-around;padding:7px 10px;background:rgba(0,0,0,.25);border-bottom:1px solid var(--bdr)}
-.hs-ri{font-size:12px;color:var(--txt);display:flex;align-items:center;gap:3px}
-.hn-sec{padding:6px 14px 2px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
-.hn-btn{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;color:var(--dim);font-size:16px;border:none;background:transparent;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;transition:all .2s;text-align:left;border-left:3px solid transparent;width:100%;white-space:nowrap;overflow:hidden}
+.hub-side{width:240px;background:rgba(13,26,42,.99);border-right:1px solid var(--bdr);padding:0;display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.hs-menu-scroll{flex:1;min-height:0;overflow-y:auto;padding-bottom:5px;display:flex;flex-direction:column}
+.hs-profile{display:flex;align-items:center;gap:8px;padding:10px 11px;border-bottom:1px solid var(--bdr)}
+.hs-av{width:30px;height:30px;background:var(--card);border:2px solid var(--cyan);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.hs-co{color:var(--yellow);font-size:11px;font-weight:bold}
+.hs-pl{color:var(--dim);font-size:10px;margin-top:1px}
+.hs-res{display:flex;justify-content:space-around;padding:6px 8px;background:rgba(0,0,0,.25);border-bottom:1px solid var(--bdr)}
+.hs-ri{font-size:10px;color:var(--txt);display:flex;align-items:center;gap:3px}
+.hn-sec{padding:5px 11px 2px;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.hn-btn{display:flex;align-items:center;gap:8px;padding:7px 13px;cursor:pointer;color:var(--dim);font-size:13px;border:none;background:transparent;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;transition:all .2s;text-align:left;border-left:3px solid transparent;width:100%;white-space:nowrap;overflow:hidden}
 .hn-btn:hover{color:var(--txt);background:rgba(255,255,255,.04)}
 .hn-btn.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,243,255,.07)}
-.hn-ic{font-size:17px;flex-shrink:0;width:20px;text-align:center}
+.hn-ic{font-size:14px;flex-shrink:0;width:16px;text-align:center}
 .hn-btn.ha{color:var(--blue)}.hn-btn.hs{color:var(--green)}.hn-btn.hb{color:var(--muted)}
-.hn-folder-btn{display:flex;align-items:center;gap:10px;padding:9px 15px;cursor:pointer;color:var(--dim);font-size:16px;border:none;background:transparent;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;transition:all .2s;text-align:left;border-left:3px solid transparent;width:100%;white-space:nowrap;overflow:hidden}
+.hn-folder-btn{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;color:var(--dim);font-size:13px;border:none;background:transparent;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;transition:all .2s;text-align:left;border-left:3px solid transparent;width:100%;white-space:nowrap;overflow:hidden}
 .hn-folder-btn:hover{color:var(--txt);background:rgba(255,255,255,.04)}
 .hn-folder-btn.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,243,255,.07)}
 .hn-folder-items{overflow:hidden;max-height:0;transition:max-height .25s ease}
-.hn-folder-items.open{max-height:200px}
-.hn-sub{padding-left:32px!important;font-size:14px!important}
-.folder-arrow{margin-left:auto;font-size:11px;color:var(--dim);transition:transform .2s;flex-shrink:0}
+.hn-folder-items.open{max-height:160px}
+.hn-sub{padding-left:26px!important;font-size:11px!important}
+.folder-arrow{margin-left:auto;font-size:9px;color:var(--dim);transition:transform .2s;flex-shrink:0}
 .hn-folder.open-folder .folder-arrow{transform:rotate(90deg)}
 .hub-body{flex:1;overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box}
 .hub-body.cv{padding:0!important;padding-bottom:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
