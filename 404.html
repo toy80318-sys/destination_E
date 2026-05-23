@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DESTINATION EARTH</title>
+<style>
+html,body{margin:0;padding:0;width:100vw;height:100vh;background:#050a1a;color:#ccd6f6;
+  font-family:'Malgun Gothic','맑은 고딕',sans-serif;display:flex;align-items:center;
+  justify-content:center;overflow:hidden}
+.box{text-align:center;max-width:420px;padding:24px}
+.title{color:#deff9a;font-size:24px;letter-spacing:4px;font-weight:bold;margin-bottom:8px}
+.sub{color:#446677;font-size:13px;margin-bottom:18px}
+.spin{width:36px;height:36px;border:3px solid rgba(0,243,255,.2);
+  border-top-color:#00f3ff;border-radius:50%;margin:0 auto 14px;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+a{color:#00f3ff;text-decoration:none;font-size:13px}
+a:hover{text-decoration:underline}
+</style>
+<script>
+// 잘못된 경로로 들어온 경우 게임 메인으로 즉시 리다이렉트
+(function(){
+  var root=location.origin+'/';
+  // 무한 루프 방지: 이미 루트면 리다이렉트 안 함
+  if(location.pathname!=='/' && location.pathname!==''){
+    setTimeout(function(){location.replace(root);},800);
+  }
+})();
+</script>
+</head>
+<body>
+<div class="box">
+  <div class="spin"></div>
+  <div class="title">DESTINATION EARTH</div>
+  <div class="sub">메인 화면으로 이동 중...</div>
+  <a href="/">즉시 이동 →</a>
+</div>
+</body>
+</html>
