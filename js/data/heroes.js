@@ -25,12 +25,12 @@ const HERO_LORE={
 const NPC_POOL=[
   {nm:'김철순',cl:'Pilot',f:'F06',ic:'🧑'},{nm:'박소이',cl:'Eng',f:'F06',ic:'👩'},
   {nm:'이강호',cl:'Merch',f:'F06',ic:'🧓'},{nm:'정하연',cl:'Pilot',f:'F06',ic:'👩'},
-  {nm:'James Mackenzie',cl:'Pilot',f:'F01',ic:'🧔'},{nm:'Rosa Delgado',cl:'Merch',f:'F01',ic:'👩'},
-  {nm:'Pierre Dubois',cl:'Merch',f:'F02',ic:'🦊'},{nm:'Sophie Beaumont',cl:'Eng',f:'F02',ic:'🐱'},
-  {nm:'Dmitri Ivanov',cl:'Eng',f:'F03',ic:'🧔'},{nm:'Natasha Petrova',cl:'Pilot',f:'F03',ic:'👩'},
-  {nm:'Carlos Silva',cl:'Pilot',f:'F04',ic:'🧑'},{nm:'Maria Gonzalez',cl:'Merch',f:'F04',ic:'👩'},
-  {nm:'Rashid al-Tariq',cl:'Merch',f:'F07',ic:'👳'},{nm:'Fatima al-Najjar',cl:'Eng',f:'F07',ic:'🧕'},
-  {nm:'Tyler Chen',cl:'Eng',f:'F01',ic:'🧑'},{nm:'Omar al-Farouq',cl:'Eng',f:'F07',ic:'👳'},
-  {nm:'Sergei Volkov',cl:'Merch',f:'F03',ic:'🧔'},{nm:'Diego Ramirez',cl:'Eng',f:'F04',ic:'🧑'},
+  {nm:'제임스 매켄지',cl:'Pilot',f:'F01',ic:'🧔'},{nm:'로사 델가도',cl:'Merch',f:'F01',ic:'👩'},
+  {nm:'피에르 뒤부아',cl:'Merch',f:'F02',ic:'🦊'},{nm:'소피 보몽',cl:'Eng',f:'F02',ic:'🐱'},
+  {nm:'드미트리 이바노브',cl:'Eng',f:'F03',ic:'🧔'},{nm:'나타샤 페트로바',cl:'Pilot',f:'F03',ic:'👩'},
+  {nm:'카를로스 실바',cl:'Pilot',f:'F04',ic:'🧑'},{nm:'마리아 곤잘레스',cl:'Merch',f:'F04',ic:'👩'},
+  {nm:'라시드 알타리크',cl:'Merch',f:'F07',ic:'👳'},{nm:'파티마 알나자르',cl:'Eng',f:'F07',ic:'🧕'},
+  {nm:'타일러 첸',cl:'Eng',f:'F01',ic:'🧑'},{nm:'오마르 알파루크',cl:'Eng',f:'F07',ic:'👳'},
+  {nm:'세르게이 볼코브',cl:'Merch',f:'F03',ic:'🧔'},{nm:'디에고 라미레스',cl:'Eng',f:'F04',ic:'🧑'},
   {nm:'한민석',cl:'Eng',f:'F06',ic:'🧑'},{nm:'최영준',cl:'Pilot',f:'F06',ic:'🧑'}
 ];

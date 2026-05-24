@@ -14,7 +14,7 @@ const PARTS=[
   {id:'S03',cat:'shield',nm:'플라즈마 실드',tier:3,INT:50,maxSH:600,price:7000,desc:'중급 실드'},
   {id:'S06',cat:'shield',nm:'포스 필드',tier:6,INT:90,maxSH:1200,price:22000,desc:'고급 실드'},
   {id:'S10',cat:'shield',nm:'양자 방어막',tier:10,INT:140,maxSH:2500,price:60000,desc:'최고급 실드'},
-  {id:'S15',cat:'shield',nm:'신의 방패',tier:15,INT:220,maxSH:5000,price:900000,desc:'전설 실드'},
+  {id:'S15',cat:'shield',nm:'신의 방패',tier:15,INT:220,maxSH:5000,shieldRegen:0.08,price:900000,desc:'전설 실드. 매 턴 maxSH 8% 자가 충전'},
   // 장갑 A
   {id:'A01',cat:'armor',nm:'기본 합금',tier:1,HP:100,DEF:5,price:1800,desc:'기초 장갑'},
   {id:'A04',cat:'armor',nm:'티타늄 장갑',tier:4,HP:400,DEF:15,price:12000,desc:'중급 장갑'},
@@ -41,12 +41,29 @@ const PARTS=[
 
   // ── 신화급 파츠 (퀘스트 보상 전용 — 상점 판매 없음) ──────────────
   {id:'MW01',cat:'weapon',nm:'허메틱 포 ✦신화',tier:20,wtype:'laser',ATT:320,price:0,desc:'신화급 무기. 연속 공격 확률+40%. 상점 미판매.',rarity:'mythic',quest:true},
-  {id:'MS01',cat:'shield',nm:'크로노스 방벽 ✦신화',tier:20,INT:280,maxSH:8000,price:0,desc:'신화급 실드. 피격 반사 20%. 상점 미판매.',rarity:'mythic',quest:true},
+  {id:'MS01',cat:'shield',nm:'크로노스 방벽 ✦신화',tier:20,INT:280,maxSH:8000,shieldRegen:0.15,price:0,desc:'신화급 실드. 피격 반사 20% + 매 턴 maxSH 15% 자가 복구. 상점 미판매.',rarity:'mythic',quest:true},
   {id:'MA01',cat:'armor',nm:'아다만 선체 ✦신화',tier:20,HP:12000,DEF:120,price:0,desc:'신화급 장갑. 치명타 피해 50% 감소. 상점 미판매.',rarity:'mythic',quest:true},
   {id:'ME01',cat:'engine',nm:'타키온 드라이브 ✦신화',tier:20,TEC:320,price:0,desc:'신화급 엔진. 이동 후 ATT+50 (1턴). 상점 미판매.',rarity:'mythic',quest:true},
   // ── 세트 아이템 (퀘스트 보상 전용 — 2종 보유시 세트 보너스) ───────
   {id:'SW01',cat:'weapon',nm:'거북선 함포 ◈세트',tier:16,wtype:'laser',ATT:180,price:0,desc:'이순신 세트(2종). 보유시 전투 ATT+80 추가.',rarity:'set',setId:'sunsin',quest:true},
   {id:'SA01',cat:'armor',nm:'거북선 갑옷 ◈세트',tier:16,HP:5000,DEF:90,price:0,desc:'이순신 세트(2종). 보유시 전투 ATT+80 추가.',rarity:'set',setId:'sunsin',quest:true},
   {id:'SE01',cat:'engine',nm:'테슬라 드라이브 ◈세트',tier:16,TEC:180,price:0,desc:'테슬라 세트(2종). 보유시 전투 INT+100 추가.',rarity:'set',setId:'tesla',quest:true},
-  {id:'SS01',cat:'shield',nm:'테슬라 장벽 ◈세트',tier:16,INT:200,maxSH:4000,price:0,desc:'테슬라 세트(2종). 보유시 전투 INT+100 추가.',rarity:'set',setId:'tesla',quest:true}
+  {id:'SS01',cat:'shield',nm:'테슬라 장벽 ◈세트',tier:16,INT:200,maxSH:4000,shieldRegen:0.10,price:0,desc:'테슬라 세트(2종). 보유시 전투 INT+100 + 매 턴 maxSH 10% 자가 복구.',rarity:'set',setId:'tesla',quest:true},
+  // ── 자동 수리 로봇 파츠 (5종) — armor 카테고리에 통합 ───────────────
+  // repairRate: 매 턴 종료 시 함선 maxHP의 N% 회복
+  {id:'RB01',cat:'armor',nm:'정비 드론',tier:4,HP:150,DEF:5,repairRate:0.02,price:9000,desc:'기초 자동 수리 드론. 매 턴 maxHP 2% 회복'},
+  {id:'RB02',cat:'armor',nm:'수리 봇',tier:8,HP:500,DEF:12,repairRate:0.04,price:32000,desc:'중급 자동 수리 봇. 매 턴 maxHP 4% 회복'},
+  {id:'RB03',cat:'armor',nm:'자동 정비기',tier:12,HP:1200,DEF:25,repairRate:0.06,price:95000,rarity:'hero',desc:'영웅급 자동 정비기. 매 턴 maxHP 6% 회복'},
+  {id:'RB04',cat:'armor',nm:'수리 군단 ⚡전설',tier:15,HP:2800,DEF:45,repairRate:0.10,price:1100000,rarity:'legend',desc:'전설 자동 수리 군단. 매 턴 maxHP 10% 회복'},
+  {id:'RB05',cat:'armor',nm:'자가 복구 매트릭스 ✦신화',tier:20,HP:8000,DEF:80,repairRate:0.15,price:0,rarity:'mythic',quest:true,desc:'신화 자가 복구 매트릭스. 매 턴 maxHP 15% 회복 + 격침 시 1회 부활(HP 30%). 상점 미판매.'},
+  // ── 흡혈형 자동 수리 로봇 (5종) — 레이저 발사 시 HP/실드 흡수 회복 ─────
+  // laserHealHP / laserHealSH: 레이저 발사 1회당 입힌 피해의 N% 만큼 자가 함선 HP/실드 회복
+  {id:'RB06',cat:'armor',nm:'흡혈 정비 드론',tier:6,HP:300,DEF:8,repairRate:0.03,laserHealHP:0.05,price:14000,desc:'적의 에너지 잔열을 회수하는 정비 드론. 매 턴 maxHP 3% 회복 + 레이저 발사 시 피해의 5%만큼 HP 흡수'},
+  {id:'RB07',cat:'armor',nm:'적응형 회복 봇',tier:10,HP:800,DEF:18,repairRate:0.05,laserHealHP:0.08,laserHealSH:0.05,price:48000,desc:'중급 적응형 회복 봇. 매 턴 maxHP 5% 회복 + 레이저 발사 시 피해의 8%만큼 HP / 5%만큼 실드 흡수'},
+  {id:'RB08',cat:'armor',nm:'듀얼 코어 정비 시스템',tier:14,HP:1800,DEF:35,repairRate:0.08,laserHealHP:0.10,laserHealSH:0.08,price:140000,rarity:'hero',desc:'영웅급 듀얼 코어 정비 시스템. 매 턴 maxHP 8% 회복 + 레이저 발사 시 피해의 10%만큼 HP / 8%만큼 실드 흡수'},
+  {id:'RB09',cat:'armor',nm:'흡혈 폭격 코어 ⚡전설',tier:17,HP:3800,DEF:60,repairRate:0.12,laserHealHP:0.15,laserHealSH:0.12,price:0,rarity:'legend',quest:true,desc:'전설 흡혈 코어. 매 턴 maxHP 12% 회복 + 레이저 발사 시 피해의 15%만큼 HP / 12%만큼 실드 흡수. 상점 미판매 (설계도 제작)'},
+  {id:'RB10',cat:'armor',nm:'영혼 흡수 매트릭스 ✦신화',tier:21,HP:9500,DEF:100,repairRate:0.18,laserHealHP:0.20,laserHealSH:0.18,price:0,rarity:'mythic',quest:true,desc:'신화 영혼 흡수 매트릭스. 매 턴 maxHP 18% 회복 + 레이저 발사 시 피해의 20%만큼 HP / 18%만큼 실드 흡수. 격침 시 1회 부활(HP 50%). 상점 미판매 (설계도 제작)'}
 ];
+// O(1) 파츠 ID 조회 — PARTS.find() 매 호출 선형 탐색을 대체
+const PARTS_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));
+function partById(id){return PARTS_BY_ID[id];}

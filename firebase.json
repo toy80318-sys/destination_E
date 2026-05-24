@@ -1,0 +1,67 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "01_GDD/**",
+      "02_Assets/fonts/**",
+      "02_Assets/images/**",
+      "03_Source/**",
+      "04_Prototype/**",
+      "05_Build/**",
+      "06_Docs/**",
+      "07_Tools/**",
+      "*.md",
+      "package.json",
+      "package-lock.json",
+      "CNAME",
+      "404.html",
+      "screen.png",
+      "20260523_162049.png"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://www.cgstation.kr https://cgstation.kr https://*.tistory.com https://*.blog.naver.com https://blog.naver.com https://*.cgstation.kr" },
+          { "key": "Permissions-Policy", "value": "autoplay=*, fullscreen=*, gamepad=*, clipboard-write=*" }
+        ]
+      },
+      {
+        "source": "/",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        ]
+      },
+      {
+        "source": "/index.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+        ]
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|webp|gif|svg|ico|mp3|ogg|wav)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=86400" }
+        ]
+      }
+    ]
+  }
+}

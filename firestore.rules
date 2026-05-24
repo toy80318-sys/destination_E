@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 세이브: 본인 데이터만 읽기/쓰기 가능
+    match /saves/{uid}/slots/{slotId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // 피드백: 누구나 쓰기 가능 (익명 사용자 포함), 관리자만 읽기
+    match /feedback/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.msg is string
+        && request.resource.data.msg.size() > 0
+        && request.resource.data.msg.size() <= 500;
+      allow read: if request.auth != null
+        && request.auth.token.email == 'toy80318@gmail.com';
+      allow update, delete: if request.auth != null
+        && request.auth.token.email == 'toy80318@gmail.com';
+    }
+
+    // 그 외 모든 경로는 차단
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

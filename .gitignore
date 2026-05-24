@@ -2,3 +2,11 @@ node_modules/
 /G25.png
 .DS_Store
 *.log
+# 로컬 백업 (266MB — GitHub Pages 배포에 불필요)
+img_backup/
+# Firebase 빌드 캐시 / 로컬 설정
+.firebase/
+# 로컬 시나리오 문서
+Doc/
+# 임시 업로드
+en.png

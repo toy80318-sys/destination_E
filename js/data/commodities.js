@@ -31,7 +31,7 @@ const COMMODITIES=[
   {id:'G13',nm:'저항군 군수품',ic:'🎒',buy:500,maxSell:2000,f:'F06'},
   {id:'G14',nm:'전통 발효주',ic:'🍶',buy:1500,maxSell:6750,f:'F06'},
   {id:'G15',nm:'지구 철광석',ic:'🪨',buy:3000,maxSell:15000,f:'F06'},
-  {id:'G18',nm:'난중일기 영인본',ic:'📜',buy:10000,maxSell:0,f:'F06',special:true},
+  {id:'G18',nm:'난중일기 영인본',ic:'📜',buy:10000,maxSell:50000,f:'F06',special:true},
   {id:'G28',nm:'지구 빈티지 씨앗',ic:'🌱',buy:4500,maxSell:22500,f:'F06'},
   // ── F07 보이드 균열 (링0) ─────────────────────────────────────────
   {id:'G19',nm:'보이드 에센스',ic:'💜',buy:12000,maxSell:60000,f:'F07'},
