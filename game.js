@@ -6915,12 +6915,15 @@ function _grantVoidBossRewards(){
       s.sh=s.maxSH||0;
     }
   });
-  // 퀘스트 보상 (크레딧)
+  // 퀘스트 보상 (크레딧) — 명성 티어 배율 적용 (VE>=40 → ×3 = 6억)
+  let _questGrantedCr=0;
   if(combatState&&combatState._questRef){
     const q=combatState._questRef;
-    G.credits+=q.rewardCr||0;
+    const _mult=(typeof getQuestRepTierMult==='function')?getQuestRepTierMult(q):1;
+    _questGrantedCr=Math.round((q.rewardCr||0)*_mult);
+    G.credits+=_questGrantedCr;
     q.status='claimed';
-    notify(`💰 [히든] ${q.rewardCr.toLocaleString()} 크레딧 수령!`,'gold');
+    notify(`💰 [히든] ₡${_questGrantedCr.toLocaleString()} 크레딧 수령! (×${_mult} 명성 배율)`,'gold');
   }
   // ─── 보상 1: 팔콘 스카우트 강제 나포 (운 좋으면 2척) ───
   //    · 나포 거절 설정과 무관하게 무조건 편대에 추가 (히든 보상)
@@ -7000,8 +7003,8 @@ function _grantVoidBossRewards(){
     });
     items.push({ic:'💎',nm:'보이드 크리스탈 (VC)',type:'신화 자원',color:'#cc66ff',stats:`+${_vcGrant}개`,desc:'주점 신화 가챠/제작 핵심 재료. 100회 가챠 가능.',rarity:'mythic'});
     items.push({ic:'⚛️',nm:'보이드 에센스 (VE)',type:'균열 자원',color:'#99ffcc',stats:`+${_veGrant.toLocaleString()}`,desc:'보이드 행성 투자/세트 제작 보조 자원.'});
-    if(combatState&&combatState._questRef){
-      items.unshift({ic:'💰',nm:'히든 의뢰 보상',type:'크레딧',color:'var(--gold)',stats:`+₡${(combatState._questRef.rewardCr||0).toLocaleString()}`,desc:'검은 함선의 약속 — 거대 크레딧.'});
+    if(_questGrantedCr>0){
+      items.unshift({ic:'💰',nm:'히든 의뢰 보상',type:'크레딧',color:'var(--gold)',stats:`+₡${_questGrantedCr.toLocaleString()}`,desc:'검은 함선의 약속 — 거대 크레딧 (명성 배율 적용).'});
     }
     showAcquisitionReport({
       title:'🌑 히든 보스 격파 — 보이드의 선물',
@@ -11268,11 +11271,34 @@ function runCombatTurn(){
     const gs=G.fleet.find(s=>s.id===target.id);
     if(gs){gs.hp=target.hp;gs.sh=target.sh;}
     const isDead=target.hp<=0;
-    log.push(`💥 ${e.nm||'적'} → ${target.nm||'아군'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
+    // ─── 보이드 적함: 테슬라식 번개 + 미사일 무작위 ───
+    const _isVoidEnemy=combatState.isVoidBoss||e.voidBoss||(e.nm||'').includes('팔콘');
+    let _atkKind='beam';  // 'beam' | 'lightning' | 'missile'
+    if(_isVoidEnemy){
+      const r=Math.random();
+      _atkKind=r<0.45?'lightning':r<0.90?'missile':'beam';
+    }
+    const _iconMap={beam:'💥',lightning:'⚡',missile:'🚀'};
+    log.push(`${_iconMap[_atkKind]} ${e.nm||'적'} → ${target.nm||'아군'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
     const ap=_unitPos[e.id], ep=_unitPos[target.id];
     if(ap&&ep){
-      _cbAddBeamAndHit(_txPos(ap),_txPos(ep),'#cc44ff',isDead,_fireDelay,wasShielded);
-      _fireDelay+=14;
+      const a1=_txPos(ap),a2=_txPos(ep);
+      if(_atkKind==='lightning'){
+        // 보이드 번개: 보라 코어 + 자가 가지 (테슬라 시각 효과 재활용)
+        _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:'#cc66ff',r:10,life:8,maxLife:8,delay:_fireDelay});
+        _cbEffects.push({type:'lightning',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:'#cc66ff',life:16,maxLife:16,delay:_fireDelay,thickMul:1.4,seed:Math.random()*9999});
+        if(wasShielded)_cbEffects.push({type:'shieldHit',x:a2.x,y:a2.y,col:'#cc66ff',r:30,life:18,maxLife:18,delay:_fireDelay+4});
+        _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:isDead?'#ff3300':'#cc66ff',r:isDead?32:18,life:isDead?36:24,maxLife:isDead?36:24,delay:_fireDelay+5});
+        try{_cbStartAnimLoop();}catch(_e){}
+        _fireDelay+=15;
+      } else if(_atkKind==='missile'){
+        // 보이드 미사일: 5발 살보 (보라색)
+        _cbAddMissileSalvo(a1,a2,'#cc66ff',isDead,5,_fireDelay,wasShielded,1.2);
+        _fireDelay+=22;
+      } else {
+        _cbAddBeamAndHit(a1,a2,_isVoidEnemy?'#cc66ff':'#cc44ff',isDead,_fireDelay,wasShielded);
+        _fireDelay+=14;
+      }
     }
   });
   log.forEach(m=>addCombatLog(m,''));
