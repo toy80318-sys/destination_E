@@ -6933,15 +6933,15 @@ function _grantVoidBossRewards(){
   }
   // ─── 보상 1: 팔콘 스카우트 강제 나포 (운 좋으면 2척) ───
   //    · 나포 거절 설정과 무관하게 무조건 편대에 추가 (히든 보상)
-  //    · 카탈로그 표기는 보이드 본체와 동일 — 1척당 본체 1/16 스펙 유지
-  const VOID_FLEET_SIZE=16;
+  //    · 능력치: 최소 우르사 메이저(BOSS)의 2배 보장 + 함대 합산 비례 스케일링
+  const _URSA_HP=(typeof BOSS!=='undefined'?BOSS.maxHP:10000000)*2;     // = 20,000,000
+  const _URSA_ATT=(typeof BOSS!=='undefined'?BOSS.ATT:6000)*2;          // = 12,000
+  const _URSA_SH=(typeof BOSS!=='undefined'?BOSS.maxSH:300000)*2;       // = 600,000
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
-  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
-  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));
-  const _capHP=Math.round(_totalHP/VOID_FLEET_SIZE);
-  const _capATT=Math.round(_totalATT/VOID_FLEET_SIZE);
-  const _capSH=Math.round(_totalSH/VOID_FLEET_SIZE);
+  // 우르사 2배 OR 함대 합산 비례 중 큰 값
+  const _capHP=Math.max(_URSA_HP,Math.round((_fp.hp||0)*4));
+  const _capATT=Math.max(_URSA_ATT,Math.round((_fp.atk||0)*2));
+  const _capSH=Math.max(_URSA_SH,Math.round((_fp.sh||0)*2));
   const _lucky=Math.random()<0.30;  // 30% 확률로 2척
   const _capCount=_lucky?2:1;
   const _capturedShips=[];
@@ -6955,9 +6955,9 @@ function _grantVoidBossRewards(){
       partsRowsExtra:1,  // 대형 최대 확장 = +1 row → 6×5=30 파츠 슬롯
       maxHP:_capHP,hp:_capHP,
       maxSH:_capSH,sh:_capSH,
-      ATT:_capATT,INT:Math.round(VOID_BOSS.INT/VOID_FLEET_SIZE),
-      TEC:Math.round(VOID_BOSS.TEC/VOID_FLEET_SIZE),
-      HP:_capHP,LOY:35,DEF:Math.round(VOID_BOSS.DEF/VOID_FLEET_SIZE),
+      ATT:_capATT,INT:Math.max(1200,VOID_BOSS.INT||885),  // 우르사 INT(600)의 2배 보장
+      TEC:Math.max(560,VOID_BOSS.TEC||765),
+      HP:_capHP,LOY:35,DEF:Math.max(400,VOID_BOSS.DEF||200),
       parts:[],crewIds:[],
       cargoSlots:80,  // 시작부터 80칸 화물칸 (보이드 차원 압축 — 신화급)
       _isVoidFalconCaptured:true
@@ -7072,34 +7072,32 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  // 전투용 동적 스케일링 — 플레이어 함대 합산 HP/ATT의 2배 (게임 진행 가능한 도전 강도)
-  // 카탈로그 표기는 렐러티비티의 3배로 유지(스토리/로어용), 실제 전투에서는 함대 비례
-  // 함대: 검은 팔콘 스카우트 16척 (호위 15척 + 기함 1척 — 기함은 호위 1척의 10배 강함)
+  // ─── 보이드 함대 능력치 스케일링 ───
+  //   · 기함 1척: 플레이어 함대 합산의 16배 HP/ATT (사용자 요청 — 10% HP 트리거 전제)
+  //   · 호위 15척: 플레이어 평균 함선 1척과 유사 (균형용)
+  // 카탈로그 고정값(렐러티비티 3배)은 약한 함대 보호용 최소값
   const VOID_FLEET_SIZE=16;
-  const FLAGSHIP_MULT=10;  // 기함 능력치 배율 (호위 1척 대비)
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
-  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
-  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));
-  // 분배: 호위 15척 1× + 기함 1척 10× → 전체 25 단위로 균등 분할
-  // 호위 1척 분 = 전체 / (15 + 10), 기함 1척 분 = 호위 × 10
-  const _escortShareHP=Math.round(_totalHP/(15+FLAGSHIP_MULT));
-  const _escortShareATT=Math.round(_totalATT/(15+FLAGSHIP_MULT));
-  const _escortShareSH=Math.round(_totalSH/(15+FLAGSHIP_MULT));
-  const _flagHP=_escortShareHP*FLAGSHIP_MULT;
-  const _flagATT=_escortShareATT*FLAGSHIP_MULT;
-  const _flagSH=_escortShareSH*FLAGSHIP_MULT;
-  // 1번은 기함(10배 강화 + 보스 로직), 2~16번은 호위 팔콘
+  const _fpAvg=(typeof calcFleetAvgPower==='function')?calcFleetAvgPower():{hp:80,atk:18};
+  // 기함 — 함대 합산 × 16 (HP/ATT), SH는 × 8 (장기전 방지)
+  const _flagHP=Math.max(VOID_BOSS.maxHP*10,Math.round((_fp.hp||0)*16));
+  const _flagATT=Math.max(VOID_BOSS.ATT*10,Math.round((_fp.atk||0)*16));
+  const _flagSH=Math.max(VOID_BOSS.maxSH*10,Math.round((_fp.sh||0)*8));
+  // 호위 — 플레이어 평균 함선 1척 수준 (16척 합 ≈ 플레이어 함대 1배 정도)
+  const _escortHP=Math.max(Math.round(VOID_BOSS.maxHP/8),Math.round((_fpAvg.hp||0)*1.5));
+  const _escortATT=Math.max(Math.round(VOID_BOSS.ATT/8),Math.round((_fpAvg.atk||0)*1.0));
+  const _escortSH=Math.round(_escortHP*0.4);
+  // 1번은 기함(보스 페이즈 + 신화급 표시), 2~16번은 호위 팔콘
   const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
     const isFlagship=(i===0);
-    const _hp=isFlagship?_flagHP:_escortShareHP;
-    const _att=isFlagship?_flagATT:_escortShareATT;
-    const _sh=isFlagship?_flagSH:_escortShareSH;
+    const _hp=isFlagship?_flagHP:_escortHP;
+    const _att=isFlagship?_flagATT:_escortATT;
+    const _sh=isFlagship?_flagSH:_escortSH;
     return {
       ...VOID_BOSS,
       id:`VOID_FALCON_${i+1}`,
-      nm:isFlagship?'팔콘 스카우트 (기함 ◈)':`팔콘 스카우트 ${i+1}`,
-      tier:isFlagship?'대형':'소형',  // 기함은 대형으로 표시 (시각적 크기↑)
+      nm:isFlagship?'팔콘 스카우트 (기함 ✦)':`팔콘 스카우트 ${i+1}`,
+      tier:isFlagship?'신화':'중형',  // 기함=신화(가장 큰 시각적 크기), 호위=중형
       isEnemy:true,
       hp:_hp,maxHP:_hp,HP:_hp,
       sh:_sh,maxSH:_sh,
