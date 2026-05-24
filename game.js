@@ -7066,26 +7066,36 @@ function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
   // 전투용 동적 스케일링 — 플레이어 함대 합산 HP/ATT의 2배 (게임 진행 가능한 도전 강도)
   // 카탈로그 표기는 렐러티비티의 3배로 유지(스토리/로어용), 실제 전투에서는 함대 비례
-  // 함대: 검은 팔콘 스카우트 16척 (1척당 위 스케일링/16 분할)
+  // 함대: 검은 팔콘 스카우트 16척 (호위 15척 + 기함 1척 — 기함은 호위 1척의 10배 강함)
   const VOID_FLEET_SIZE=16;
+  const FLAGSHIP_MULT=10;  // 기함 능력치 배율 (호위 1척 대비)
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
   const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
   const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
   const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));
-  const _perHP=Math.round(_totalHP/VOID_FLEET_SIZE);
-  const _perATT=Math.round(_totalATT/VOID_FLEET_SIZE);
-  const _perSH=Math.round(_totalSH/VOID_FLEET_SIZE);
-  // 1번은 기함(보스 로직 적용 — voidBoss:true), 2~16번은 호위 팔콘 (보스 페이즈 로직 미적용)
+  // 분배: 호위 15척 1× + 기함 1척 10× → 전체 25 단위로 균등 분할
+  // 호위 1척 분 = 전체 / (15 + 10), 기함 1척 분 = 호위 × 10
+  const _escortShareHP=Math.round(_totalHP/(15+FLAGSHIP_MULT));
+  const _escortShareATT=Math.round(_totalATT/(15+FLAGSHIP_MULT));
+  const _escortShareSH=Math.round(_totalSH/(15+FLAGSHIP_MULT));
+  const _flagHP=_escortShareHP*FLAGSHIP_MULT;
+  const _flagATT=_escortShareATT*FLAGSHIP_MULT;
+  const _flagSH=_escortShareSH*FLAGSHIP_MULT;
+  // 1번은 기함(10배 강화 + 보스 로직), 2~16번은 호위 팔콘
   const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
     const isFlagship=(i===0);
+    const _hp=isFlagship?_flagHP:_escortShareHP;
+    const _att=isFlagship?_flagATT:_escortShareATT;
+    const _sh=isFlagship?_flagSH:_escortShareSH;
     return {
       ...VOID_BOSS,
       id:`VOID_FALCON_${i+1}`,
-      nm:isFlagship?'팔콘 스카우트 (기함)':`팔콘 스카우트 ${i+1}`,
+      nm:isFlagship?'팔콘 스카우트 (기함 ◈)':`팔콘 스카우트 ${i+1}`,
+      tier:isFlagship?'대형':'소형',  // 기함은 대형으로 표시 (시각적 크기↑)
       isEnemy:true,
-      hp:_perHP,maxHP:_perHP,HP:_perHP,
-      sh:_perSH,maxSH:_perSH,
-      ATT:_perATT,
+      hp:_hp,maxHP:_hp,HP:_hp,
+      sh:_sh,maxSH:_sh,
+      ATT:_att,
       voidBoss:isFlagship  // 기함만 50%/10% 페이즈 트리거 (외 척은 일반 적함)
     };
   });
@@ -10764,9 +10774,10 @@ function drawCombatFrame(){
       const rank=units.map((u,i)=>({i,t:_tankiness(u)})).sort((a,b)=>b.t-a.t).map(x=>x.i);
       slotForIdx=new Array(n);
       rank.forEach((unitIdx,slotIdx)=>{slotForIdx[unitIdx]=slotIdx;});
-      // 보스 본 함 (우르사 메이저)은 뒤쪽 중앙 슬롯에 강제 배치 — 적 함대의 가장 뒤쪽 가운데
+      // 보스 본 함은 뒤쪽 중앙 슬롯에 강제 배치 — 적 함대의 가장 뒤쪽 가운데
+      // 대상: 우르사 메이저(BOSS_MAIN) + 보이드 보스 기함(voidBoss + '팔콘 스카우트 (기함)')
       if(isEnemy){
-        const bossIdx=units.findIndex(u=>u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사'));
+        const bossIdx=units.findIndex(u=>u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사')||(u.voidBoss&&(u.nm||'').includes('기함'))||u.id==='VOID_FALCON_1');
         if(bossIdx>=0){
           const bossSlot=(cols-1)*rows+Math.floor((rows-1)/2);
           const curBossSlot=slotForIdx[bossIdx];
