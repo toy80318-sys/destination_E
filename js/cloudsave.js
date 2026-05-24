@@ -151,7 +151,7 @@
       let pulled=0;
       snap.forEach(doc=>{
         const d=doc.data();
-        if(!d||!d.data||!d.slotN)return;
+        if(!d||!d.data||d.slotN==null)return;  // slotN===0 가능성 보존
         const local=_readLocal(d.slotN);
         const localTs=local&&local._saved?local._saved:0;
         if(d.savedAt>localTs){

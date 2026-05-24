@@ -1199,7 +1199,7 @@ const LORE_TEXT={
   'part_ML01':'🔨 이강호 박사가 지구 저항군 게릴라 부대 요청으로 개발. "싸고 은밀하게 터지는 걸 원한다"고 했다.\n📜 이름 유래: 열추적 미사일. 경량 열추적 유도. 저항군 게릴라 표준 장비. 은밀하게 작동한다.\n⚔️ 강점: 저렴하고 열원이 있으면 반드시 명중. 단점: 강력한 냉각 시스템을 가진 적엔 무용.\n💬 싸고 잘 맞는다. 이강호 박사가 원하는 게 이것이었다. 적도 원하지 않았으면 좋겠다.',
   'part_ML02':'🔨 파스파토크가 크리그 화산에서 마그마 코어 에너지를 연구하다 "탄두에 봉인하면 어때?"라는 아이디어.\n📜 이름 유래: 마그마 미사일. 크리그 화산 마그마 코어 에너지를 탄두에 봉인. 폭발 온도 태양 이상.\n⚔️ 강점: 폭발 위력 최상. 단점: 탄두가 불안정해 취급 부주의 시 발사자도 위험하다.\n💬 태양보다 뜨거운 폭발. 적이 녹기 전에 파스파토크도 조심해야 한다. 현장에서 멀리 있어야 한다.',
   'part_ML03':'🔨 제리다지리가 보이드 반물질 실험을 하다 "이걸로 미사일을 만들면 거리 관계없이 맞히겠네"라고 했다.\n📜 이름 유래: 보이드 추적 미사일. 반물질로 공간을 왜곡해 목표를 추적. 거리 무관 명중.\n⚔️ 강점: 거리 관계없이 명중. 단점: 비용이 크다. 반물질이 싸지 않다.\n💬 우주 끝에서 발사해도 맞는다. 적이 어디 있는지만 알면 된다. 보이드에서 뭔가 잘못된 거지만 잘 된 거다.',
-  'part_ML04':'🔨 소피아 모렛룥이 중력 연구 중 "집속하면 엔진을 봉인할 수 있을 것 같아"라며 군사용으로 전환했다.\n📜 이름 유래: 중력 집속탄. 명중 후 적 엔진 출력을 일시 봉쇄한다. 도망을 막는 병기.\n⚔️ 강점: 적 기동 봉쇄. 단점: 봉쇄 지속 시간이 짧아 후속 공격이 빠르게 이뤄져야 한다.\n💬 도망치려는 적에게 최고다. 모렛룥이 연구 목적을 물으면 "학문적 탐구"라고 한다.',
+  'part_ML04':'🔨 소피아 모렐이 중력 연구 중 "집속하면 엔진을 봉인할 수 있을 것 같아"라며 군사용으로 전환했다.\n📜 이름 유래: 중력 집속탄. 명중 후 적 엔진 출력을 일시 봉쇄한다. 도망을 막는 병기.\n⚔️ 강점: 적 기동 봉쇄. 단점: 봉쇄 지속 시간이 짧아 후속 공격이 빠르게 이뤄져야 한다.\n💬 도망치려는 적에게 최고다. 모렛룥이 연구 목적을 물으면 "학문적 탐구"라고 한다.',
   'part_ML05':'🔨 드미트리가 AI가 자기보다 포격 실력이 낫다는 걸 알고 분노해서 "AI 미사일 만들어버리겠어"라고 선언.\n📜 이름 유래: AI 자율유도 미사일. 회피 패턴을 실시간 학습해 어떤 함선도 따라잡는다.\n⚔️ 강점: 자율 학습 명중. 단점: AI 오작동 시 엉뚱한 곳을 공격할 수 있다.\n💬 인간 포수보다 AI가 더 잘 맞힌다. 드미트리는 화가 났지만 결과적으로 최고의 무기를 만들었다.',
   'part_ML06':'🔨 마사무네가 아우레우스 태양핵 관측 중 "이걸 발사하면 어떨까"라는 과학자답지 않은 생각을 했다.\n📜 이름 유래: 태양핵 작살. 장갑 관통은 물론 방어막까지 무시하는 전설급 병기.\n⚔️ 강점: 실드+장갑 동시 무시. 단점: 태양핵 연료가 귀해 발사 횟수 제한.\n💬 태양핵이 작살이 됐다. 마사무네는 논문 대신 이걸 발표해서 과학계에서 쫓겨날 뻔했다.',
   'part_ML07':'🔨 정약용이 치크스 결정석 파편을 잔뜩 모아 "한꺼번에 터지면 되겠지"라는 단순한 발상으로 개발.\n📜 이름 유래: 결정석 파쇄탄. 한 발이 터지면 3칸 범위가 동시에 불바다가 된다.\n⚔️ 강점: 광역 폭발. 단점: 결정석 수급이 어려워 충전이 느리다.\n💬 단순함의 승리. 정약용은 복잡한 이론 대신 결정석을 많이 쓰는 방법을 선택했다. 훌륭한 결정이다.',
@@ -1556,15 +1556,16 @@ function getEarlyGameMult(){
 }
 // 플레이어 함대 평균 전투력 (ATK·HP) — 적 스탯 비례 조정용
 function calcFleetAvgPower(){
-  if(!G.fleet||!G.fleet.length)return{atk:18,hp:120};
-  let totalATK=0,totalHP=0;
+  if(!G.fleet||!G.fleet.length)return{atk:18,hp:120,sh:50};
+  let totalATK=0,totalHP=0,totalSH=0;
   G.fleet.forEach(s=>{
     const st=getShipStats(s);
     totalATK+=(st.ATT||18);
     totalHP+=(st.HP||120);
+    totalSH+=(st.maxSH||0);
   });
   const n=G.fleet.length;
-  return{atk:Math.max(10,Math.round(totalATK/n)),hp:Math.max(80,Math.round(totalHP/n))};
+  return{atk:Math.max(10,Math.round(totalATK/n)),hp:Math.max(80,Math.round(totalHP/n)),sh:Math.max(20,Math.round(totalSH/n))};
 }
 // 함대 전체 합산 전투력 (보스 스케일링용) — HP/SH/ATT/DEF 모두 포함
 function calcFleetTotalPower(){
@@ -7090,23 +7091,24 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  // ─── 보이드 함대 능력치 스케일링 (극한 강화 — 진짜 레이저 전투) ───
-  //   · 함대 총합 = 플레이어 함대 ×50 HP, ×10 ATT, ×15 SH
-  //   · 보스 1척 = 호위 1척의 4배
-  //   · 분배: 호위 15 × 1 + 보스 1 × 4 = 19 unit
-  //   · armorTier/shieldTier 50으로 강화 (피해 감소)
+  // ─── 보이드 함대 능력치 스케일링 (해적 알고리즘 응용 — per-ship 평균 비례) ───
+  //   해적: clampEnemyStats(MIN 0.90 ~ MAX 0.95) — 적 1척 = 플레이어 평균 1척의 ~95%
+  //   보이드: 더 강한 적이므로 per-ship 평균에 N배 적용
+  //   · 호위 1척 = 플레이어 평균 함선 × 5 (5배 강함)
+  //   · 보스 1척 = 플레이어 평균 함선 × 40 (40배 강함, 신화급)
+  //   · 16척 총합 = 평균 × (15×5 + 40) = 평균 × 115
+  //     예시 (플레이어 8척, 평균 HP 3M): 호위 15M, 보스 120M, 총 345M
+  //   · armorTier 60 / shieldTier 60 / DEF 800 (보스) — 피해 감소 강화
   const VOID_FLEET_SIZE=16;
-  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(VOID_BOSS.maxHP*50,Math.round((_fp.hp||0)*50));
-  const _totalATT=Math.max(VOID_BOSS.ATT*10,Math.round((_fp.atk||0)*10));
-  const _totalSH=Math.max(VOID_BOSS.maxSH*15,Math.round((_fp.sh||0)*15));
-  const _UNIT=19;  // 호위 15 + 보스 4
-  const _escortHP=Math.round(_totalHP/_UNIT);
-  const _escortATT=Math.round(_totalATT/_UNIT);
-  const _escortSH=Math.round(_totalSH/_UNIT);
-  const _flagHP=_escortHP*4;
-  const _flagATT=_escortATT*4;
-  const _flagSH=_escortSH*4;
+  const _fpAvg=(typeof calcFleetAvgPower==='function')?calcFleetAvgPower():{hp:100,atk:20,sh:50};
+  const ESCORT_MULT=5;
+  const FLAGSHIP_MULT=40;
+  const _escortHP=Math.max(Math.round(VOID_BOSS.maxHP/8),Math.round((_fpAvg.hp||0)*ESCORT_MULT));
+  const _escortATT=Math.max(Math.round(VOID_BOSS.ATT/8),Math.round((_fpAvg.atk||0)*ESCORT_MULT));
+  const _escortSH=Math.max(Math.round(VOID_BOSS.maxSH/8),Math.round((_fpAvg.sh||0)*ESCORT_MULT));
+  const _flagHP=Math.max(VOID_BOSS.maxHP,Math.round((_fpAvg.hp||0)*FLAGSHIP_MULT));
+  const _flagATT=Math.max(VOID_BOSS.ATT,Math.round((_fpAvg.atk||0)*FLAGSHIP_MULT));
+  const _flagSH=Math.max(VOID_BOSS.maxSH,Math.round((_fpAvg.sh||0)*FLAGSHIP_MULT));
   const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
     const isFlagship=(i===0);
     const _hp=isFlagship?_flagHP:_escortHP;
@@ -7778,7 +7780,7 @@ function doCraft(recipeId){
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
         <div style="font-size:16px;color:${q.col}">성능 ×${mult.toFixed(2)}</div>
         ${_addedToReserve?'<div style="font-size:13px;color:var(--cyan);margin-top:6px">📦 활성 편대 가득(16척) — 임시창에 보관 (정비소에서 교체 가능)</div>':''}
-        <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATK:${newShip.atk}</div>
+        <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">편대에 함선이 추가됐습니다</div>`;
       notify(`⚗️ ${newShip.nm} 건조! ${q.label}`,'gold');
       baekgu(mult>=1.1?`함선 완성! ${q.label}이야. 편대 확인해봐!`:`${def.nm} 완성. ${q.label}.`);
@@ -10072,8 +10074,8 @@ function getShipStats(s){
     if(_c&&(_RORD[_c.rarity]||0)>(_RORD[_topR]||0))_topR=_c.rarity;
   });
   const hm=_topR==='S'||_topR==='L'?1.2:_topR==='H'?1.1:1.0;
-  // 아르마다(T02) 보유 시 함대 전체 실드 +20%
-  const hasArmada=G.fleet&&G.fleet.some(sh=>sh.id&&sh.id.startsWith('T02'));
+  // 아르마다(H11) 보유 시 함대 전체 실드 +20%
+  const hasArmada=G.fleet&&G.fleet.some(sh=>sh.id&&(sh.id.startsWith('H11')||(sh.catalogId||sh.catId)==='H11'));
   const armadaMult=hasArmada?1.2:1.0;
   // 영웅 전역 패시브
   const _hp=getHeroPassiveBonus();
