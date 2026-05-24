@@ -6974,7 +6974,17 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  const enemies=[{...VOID_BOSS,id:'VOID_FALCON_1',isEnemy:true}];
+  // 전투용 동적 스케일링 — 플레이어 함대 합산 HP/ATT의 2배 (게임 진행 가능한 도전 강도)
+  // 카탈로그 표기는 렐러티비티의 3배로 유지(스토리/로어용), 실제 전투에서는 함대 비례
+  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
+  const _scaledHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
+  const _scaledATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
+  const _scaledSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));  // 실드는 1배(과도한 장기전 방지)
+  const enemies=[{...VOID_BOSS,id:'VOID_FALCON_1',isEnemy:true,
+    hp:_scaledHP,maxHP:_scaledHP,HP:_scaledHP,
+    sh:_scaledSH,maxSH:_scaledSH,
+    ATT:_scaledATT
+  }];
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wt=_wpn?(_wpn.tier||1):1;const _wtype=_wpn?(_wpn.wtype||'laser'):'laser';const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:s.hp,maxHP:st.HP,sh:s.sh,maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wtype,wpnTier:_wt,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier};});
   combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,isBoss:false,isVoidBoss:true,_questRef:questRef,_rndSeed:Date.now()%9999,_entranceT:0,_entranceDone:false,_planetId:'P30'};
   renderCombatView(document.getElementById('hub-body'));
