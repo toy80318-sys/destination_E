@@ -7019,10 +7019,10 @@ function _grantVoidBossRewards(){
       const pid=mythicParts[idx];
       items.push({ic:'✦',img:`img/parts/${pid}.png`,nm,type:'신화 파츠',color:'#ff88ff',stats:'+1 인벤토리',desc:'신화 등급 장비. 정비소에서 함선에 장착 가능.',rarity:'mythic'});
     });
-    items.push({ic:'💎',nm:'보이드 크리스탈 (VC)',type:'신화 자원',color:'#cc66ff',stats:`+${_vcGrant}개`,desc:'주점 신화 가챠/제작 핵심 재료. 100회 가챠 가능.',rarity:'mythic'});
-    items.push({ic:'⚛️',nm:'보이드 에센스 (VE)',type:'균열 자원',color:'#99ffcc',stats:`+${_veGrant.toLocaleString()}`,desc:'보이드 행성 투자/세트 제작 보조 자원.'});
+    items.push({ic:'🌌',img:'img/commodities/G29.png',nm:'보이드 크리스탈 (VC)',type:'신화 자원',color:'#cc66ff',stats:`+${_vcGrant}개`,desc:'주점 신화 가챠/제작 핵심 재료. 100회 가챠 가능.',rarity:'mythic'});
+    items.push({ic:'💜',img:'img/commodities/G19.png',nm:'보이드 에센스 (VE)',type:'균열 자원',color:'#99ffcc',stats:`+${_veGrant.toLocaleString()}`,desc:'보이드 행성 투자/세트 제작 보조 자원.'});
     if(_questGrantedCr>0){
-      items.unshift({ic:'💰',nm:'히든 의뢰 보상',type:'크레딧',color:'var(--gold)',stats:`+₡${_questGrantedCr.toLocaleString()}`,desc:'검은 함선의 약속 — 거대 크레딧 (명성 배율 적용).'});
+      items.unshift({ic:'💰',img:'img/ui/credit.png',nm:'히든 의뢰 보상',type:'크레딧',color:'var(--gold)',stats:`+₡${_questGrantedCr.toLocaleString()}`,desc:'검은 함선의 약속 — 거대 크레딧 (명성 배율 적용).'});
     }
     showAcquisitionReport({
       title:'🌑 히든 보스 격파 — 보이드의 선물',
