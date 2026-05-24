@@ -6922,7 +6922,94 @@ function _grantVoidBossRewards(){
     q.status='claimed';
     notify(`💰 [히든] ${q.rewardCr.toLocaleString()} 크레딧 수령!`,'gold');
   }
-  baekgu('검은 함선과의 만남 끝났어. 함대 복구됐고, 보상도 받았어. 다음은... 은하계 가운데로 가야 한다는데? 보이드 행성들 100% 투자하면 길이 열릴 것 같아.');
+  // ─── 보상 1: 팔콘 스카우트 강제 나포 (운 좋으면 2척) ───
+  //    · 나포 거절 설정과 무관하게 무조건 편대에 추가 (히든 보상)
+  //    · 카탈로그 표기는 보이드 본체와 동일 — 1척당 본체 1/16 스펙 유지
+  const VOID_FLEET_SIZE=16;
+  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
+  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
+  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));
+  const _capHP=Math.round(_totalHP/VOID_FLEET_SIZE);
+  const _capATT=Math.round(_totalATT/VOID_FLEET_SIZE);
+  const _capSH=Math.round(_totalSH/VOID_FLEET_SIZE);
+  const _lucky=Math.random()<0.30;  // 30% 확률로 2척
+  const _capCount=_lucky?2:1;
+  const _capturedShips=[];
+  for(let i=0;i<_capCount;i++){
+    const ship={
+      id:'CAP_VOIDFALCON_'+Date.now()+'_'+i,
+      catalogId:'VOID_FALCON',  // 전투 이미지: img/ships/S10.png 매칭됨 (catId.startsWith('VOID'))
+      catId:'S10',
+      nm:'🌑 팔콘 스카우트 (나포)'+(_capCount>1?` ${i+1}/${_capCount}`:''),
+      tier:'소형',
+      maxHP:_capHP,hp:_capHP,
+      maxSH:_capSH,sh:_capSH,
+      ATT:_capATT,INT:Math.round(VOID_BOSS.INT/VOID_FLEET_SIZE),
+      TEC:Math.round(VOID_BOSS.TEC/VOID_FLEET_SIZE),
+      HP:_capHP,LOY:35,DEF:Math.round(VOID_BOSS.DEF/VOID_FLEET_SIZE),
+      parts:[],crewIds:[],cargoSlots:5,
+      _isVoidFalconCaptured:true
+    };
+    // 편대 거절 설정 무시 + 만석이어도 강제 합류 (히든 보상이라 일반 나포 규칙 미적용)
+    G.fleet.push(ship);
+    _capturedShips.push(ship);
+  }
+  // ─── 보상 2: 신화 설계도 다수 (LGD03, RB10) + 신화 파츠 인벤토리 ───
+  if(!G.blueprints)G.blueprints={};
+  if(!G.inventory)G.inventory=[];
+  const bpGranted=[];
+  if(!G.blueprints.LGD03){G.blueprints.LGD03=true;bpGranted.push('LGD03 렐러티비티');}
+  if(!G.blueprints.RB10){G.blueprints.RB10=true;bpGranted.push('RB10 영혼 흡수 매트릭스');}
+  if(!G.blueprints.LGD01){G.blueprints.LGD01=true;bpGranted.push('LGD01 거북선');}
+  if(!G.blueprints.LGD02){G.blueprints.LGD02=true;bpGranted.push('LGD02 워덴클리프');}
+  // 신화 파츠 5종 (보스/검은팔콘 보상과 동일)
+  const mythicParts=['MW01','MS01','MA01','ME01','RB10'];
+  const partsGranted=[];
+  mythicParts.forEach(pid=>{
+    const def=(typeof partById==='function')?partById(pid):(PARTS.find(p=>p.id===pid));
+    const inv=G.inventory.find(i=>i.id===pid);
+    if(inv)inv.qty++;else G.inventory.push({id:pid,qty:1});
+    partsGranted.push(def?def.nm:pid);
+  });
+  // ─── 보상 3: 보이드 크리스탈(VC) 대량 ───
+  const _vcGrant=100;  // 100개 (신화 가챠 100회 가능)
+  G.voidCrystal=(G.voidCrystal||0)+_vcGrant;
+  // VE도 추가 (보이드 에센스 — 보이드 행성 투자/뽑기 보조 자원)
+  const _veGrant=5000;
+  G.voidEssence=(G.voidEssence||0)+_veGrant;
+  // ─── 알림 + 백구 대사 ───
+  const _luckMsg=_lucky?' (🍀 행운! 2척)':'';
+  notify(`🏴 팔콘 스카우트 ${_capCount}척 강제 나포!${_luckMsg}`,'pur');
+  if(bpGranted.length>0)notify(`📜 신화 설계도 ${bpGranted.length}개 + 신화 파츠 ${mythicParts.length}종 획득!`,'gold');
+  notify(`💎 VC +${_vcGrant} · ⚛️ VE +${_veGrant.toLocaleString()}`,'pur');
+  baekgu(`검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 ${_capCount}척${_lucky?' (행운 2척!)':''}, 신화 설계도 ${bpGranted.length}장, 신화 파츠 5종, VC ${_vcGrant}개, VE ${_veGrant.toLocaleString()}을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!`);
+  // ─── 획득 보고서 모달 ───
+  if(typeof showAcquisitionReport==='function'){
+    const items=[];
+    _capturedShips.forEach(s=>{
+      items.push({ic:'🏴',nm:s.nm,type:'보이드 정찰함 (나포)',color:'#cc66ff',
+        stats:`HP ${_capHP.toLocaleString()} · SH ${_capSH.toLocaleString()} · ATT ${_capATT}`,
+        desc:'보이드의 작별 선물. 충성도 35로 시작 — 정비소에서 크루 배치 가능.',rarity:'mythic'});
+    });
+    bpGranted.forEach(nm=>{
+      items.push({ic:'📜',nm,type:'신화 설계도',color:'#ff66cc',stats:'제작 가능',desc:'제작소에서 신화급 함선/파츠를 제작할 수 있게 됩니다.',rarity:'mythic'});
+    });
+    partsGranted.forEach(nm=>{
+      items.push({ic:'✦',nm,type:'신화 파츠',color:'#ff88ff',stats:'+1 인벤토리',desc:'신화 등급 장비. 정비소에서 함선에 장착 가능.',rarity:'mythic'});
+    });
+    items.push({ic:'💎',nm:'보이드 크리스탈 (VC)',type:'신화 자원',color:'#cc66ff',stats:`+${_vcGrant}개`,desc:'주점 신화 가챠/제작 핵심 재료. 100회 가챠 가능.',rarity:'mythic'});
+    items.push({ic:'⚛️',nm:'보이드 에센스 (VE)',type:'균열 자원',color:'#99ffcc',stats:`+${_veGrant.toLocaleString()}`,desc:'보이드 행성 투자/세트 제작 보조 자원.'});
+    if(combatState&&combatState._questRef){
+      items.unshift({ic:'💰',nm:'히든 의뢰 보상',type:'크레딧',color:'var(--gold)',stats:`+₡${(combatState._questRef.rewardCr||0).toLocaleString()}`,desc:'검은 함선의 약속 — 거대 크레딧.'});
+    }
+    showAcquisitionReport({
+      title:'🌑 히든 보스 격파 — 보이드의 선물',
+      subtitle:`팔콘 ${_capCount}척 나포${_lucky?' (행운!)':''} · 신화 설계도 ${bpGranted.length}장 · 신화 파츠 5종 · VC ${_vcGrant}`,
+      items,color:'#cc66ff',sfx:null,
+      congrats:'🌑 보이드의 인정! 1000년 만의 강자! 🌑'
+    });
+  }
   // 전투 화면 정리 → 허브 복귀
   combatState=null;
   try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
@@ -6976,15 +7063,29 @@ function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
   // 전투용 동적 스케일링 — 플레이어 함대 합산 HP/ATT의 2배 (게임 진행 가능한 도전 강도)
   // 카탈로그 표기는 렐러티비티의 3배로 유지(스토리/로어용), 실제 전투에서는 함대 비례
+  // 함대: 검은 팔콘 스카우트 16척 (1척당 위 스케일링/16 분할)
+  const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _scaledHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
-  const _scaledATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
-  const _scaledSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));  // 실드는 1배(과도한 장기전 방지)
-  const enemies=[{...VOID_BOSS,id:'VOID_FALCON_1',isEnemy:true,
-    hp:_scaledHP,maxHP:_scaledHP,HP:_scaledHP,
-    sh:_scaledSH,maxSH:_scaledSH,
-    ATT:_scaledATT
-  }];
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
+  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
+  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*1.0));
+  const _perHP=Math.round(_totalHP/VOID_FLEET_SIZE);
+  const _perATT=Math.round(_totalATT/VOID_FLEET_SIZE);
+  const _perSH=Math.round(_totalSH/VOID_FLEET_SIZE);
+  // 1번은 기함(보스 로직 적용 — voidBoss:true), 2~16번은 호위 팔콘 (보스 페이즈 로직 미적용)
+  const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
+    const isFlagship=(i===0);
+    return {
+      ...VOID_BOSS,
+      id:`VOID_FALCON_${i+1}`,
+      nm:isFlagship?'팔콘 스카우트 (기함)':`팔콘 스카우트 ${i+1}`,
+      isEnemy:true,
+      hp:_perHP,maxHP:_perHP,HP:_perHP,
+      sh:_perSH,maxSH:_perSH,
+      ATT:_perATT,
+      voidBoss:isFlagship  // 기함만 50%/10% 페이즈 트리거 (외 척은 일반 적함)
+    };
+  });
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wt=_wpn?(_wpn.tier||1):1;const _wtype=_wpn?(_wpn.wtype||'laser'):'laser';const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:s.hp,maxHP:st.HP,sh:s.sh,maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wtype,wpnTier:_wt,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier};});
   combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,isBoss:false,isVoidBoss:true,_questRef:questRef,_rndSeed:Date.now()%9999,_entranceT:0,_entranceDone:false,_planetId:'P30'};
   renderCombatView(document.getElementById('hub-body'));
@@ -10108,6 +10209,8 @@ function _combatShipImgSrc(u){
   if(isEnemy){
     const isBoss=catId.startsWith('BOSS')||catId==='URSA'||nmLow.includes('우르사');
     if(isBoss)return 'img/combat/enemies/Boss.png';
+    // 히든 보이드 보스 — 팔콘 스카우트 전용 이미지 (S10.png)
+    if(u.voidBoss||catId.startsWith('VOID')||catId.startsWith('FALCON')||nmLow.includes('팔콘'))return 'img/ships/S10.png';
     const base=catId.startsWith('CHIX')||/^E\d/.test(catId)||isChixName?'CHIX':
                isDbrpName?'DBRP':'PIRATE';
     return 'img/combat/enemies/'+base+'_'+_tierKey(u.tier)+'.png';
@@ -11108,9 +11211,10 @@ function runCombatTurn(){
   let _skipNormalEnemyAttack=false;
   if(combatState.isVoidBoss){
     const boss=combatState.enemies[0];
-    if(boss&&boss.hp>0){
-      const hpPct=boss.hp/(boss.maxHP||1);
-      // 10% 페이즈 — 작별 + 철수
+    if(boss){
+      const hpPct=Math.max(0,boss.hp)/(boss.maxHP||1);
+      // 10% 페이즈(또는 오버킬) — 작별 + 철수 → 보상 처리
+      // 핵심: boss.hp가 0이 됐어도(=오버킬) outro가 작동하도록 hp>0 조건 제거
       if(hpPct<=0.10&&!combatState._voidRetreated){
         combatState._voidRetreated=true;
         boss.hp=0;boss.sh=0;
@@ -11121,8 +11225,8 @@ function runCombatTurn(){
         setTimeout(()=>showVoidBossOutro(),1200);
         return;
       }
-      // 50% 페이즈 — 차원 절단광선 (비기함 1척 소멸)
-      if(hpPct<=0.50){
+      // 50% 페이즈 — 차원 절단광선 (보스 생존 시에만)
+      if(boss.hp>0&&hpPct<=0.50){
         if(!combatState._voidSuperLaserAnnounced){
           combatState._voidSuperLaserAnnounced=true;
           addCombatLog(`🌑 [팔콘 스카우트] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!`,'err');
