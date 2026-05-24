@@ -6998,16 +6998,26 @@ function _grantVoidBossRewards(){
   // ─── 획득 보고서 모달 ───
   if(typeof showAcquisitionReport==='function'){
     const items=[];
+    // 나포 팔콘 — S10.png 함선 이미지
     _capturedShips.forEach(s=>{
-      items.push({ic:'🏴',nm:s.nm,type:'보이드 정찰함 (나포)',color:'#cc66ff',
+      items.push({ic:'🏴',img:'img/ships/S10.png',nm:s.nm,type:'보이드 정찰함 (나포)',color:'#cc66ff',
         stats:`HP ${_capHP.toLocaleString()} · SH ${_capSH.toLocaleString()} · ATT ${_capATT}`,
         desc:'보이드의 작별 선물. 충성도 35로 시작 — 정비소에서 크루 배치 가능.',rarity:'mythic'});
     });
+    // 설계도 — 해당 함선/파츠 이미지
+    const _bpImgMap={
+      'LGD03 렐러티비티':'img/ships/LGD03.png',
+      'RB10 영혼 흡수 매트릭스':'img/parts/RB10.png',
+      'LGD01 거북선':'img/ships/LGD01.png',
+      'LGD02 워덴클리프':'img/ships/LGD02.png'
+    };
     bpGranted.forEach(nm=>{
-      items.push({ic:'📜',nm,type:'신화 설계도',color:'#ff66cc',stats:'제작 가능',desc:'제작소에서 신화급 함선/파츠를 제작할 수 있게 됩니다.',rarity:'mythic'});
+      items.push({ic:'📜',img:_bpImgMap[nm]||null,nm,type:'신화 설계도',color:'#ff66cc',stats:'제작 가능',desc:'제작소에서 신화급 함선/파츠를 제작할 수 있게 됩니다.',rarity:'mythic'});
     });
-    partsGranted.forEach(nm=>{
-      items.push({ic:'✦',nm,type:'신화 파츠',color:'#ff88ff',stats:'+1 인벤토리',desc:'신화 등급 장비. 정비소에서 함선에 장착 가능.',rarity:'mythic'});
+    // 신화 파츠 — 각 파츠 이미지 (mythicParts와 partsGranted는 같은 순서)
+    partsGranted.forEach((nm,idx)=>{
+      const pid=mythicParts[idx];
+      items.push({ic:'✦',img:`img/parts/${pid}.png`,nm,type:'신화 파츠',color:'#ff88ff',stats:'+1 인벤토리',desc:'신화 등급 장비. 정비소에서 함선에 장착 가능.',rarity:'mythic'});
     });
     items.push({ic:'💎',nm:'보이드 크리스탈 (VC)',type:'신화 자원',color:'#cc66ff',stats:`+${_vcGrant}개`,desc:'주점 신화 가챠/제작 핵심 재료. 100회 가챠 가능.',rarity:'mythic'});
     items.push({ic:'⚛️',nm:'보이드 에센스 (VE)',type:'균열 자원',color:'#99ffcc',stats:`+${_veGrant.toLocaleString()}`,desc:'보이드 행성 투자/세트 제작 보조 자원.'});
@@ -11236,21 +11246,25 @@ function runCombatTurn(){
   if(combatState.isVoidBoss){
     const boss=combatState.enemies[0];
     if(boss){
-      const hpPct=Math.max(0,boss.hp)/(boss.maxHP||1);
-      // 10% 페이즈(또는 오버킬) — 작별 + 철수 → 보상 처리
-      // 핵심: boss.hp가 0이 됐어도(=오버킬) outro가 작동하도록 hp>0 조건 제거
-      if(hpPct<=0.10&&!combatState._voidRetreated){
+      // 트리거: 전체 적 함대 합산 HP 10% 이하 = 거의 괴멸 직전
+      const _totalCurHP=combatState.enemies.reduce((s,e)=>s+Math.max(0,e.hp||0),0);
+      const _totalMaxHP=combatState.enemies.reduce((s,e)=>s+(e.maxHP||1),0);
+      const fleetHpPct=_totalMaxHP>0?_totalCurHP/_totalMaxHP:0;
+      const bossHpPct=Math.max(0,boss.hp)/(boss.maxHP||1);
+      // 함대 합산 10% OR 보스 0% (보스가 단독으로 마지막에 살아 남았을 때)
+      if((fleetHpPct<=0.10||boss.hp<=0)&&!combatState._voidRetreated){
         combatState._voidRetreated=true;
-        boss.hp=0;boss.sh=0;
-        addCombatLog(`💬 [팔콘 스카우트] 통신 신호 수신... 적 함선이 어둠 속으로 사라진다...`,'gold');
+        // 남은 모든 적함 함께 어둠 속으로 사라짐
+        combatState.enemies.forEach(e=>{e.hp=0;e.sh=0;});
+        addCombatLog(`💬 [팔콘 스카우트] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...`,'gold');
         drawCombatFrame();
         combatState.done=true;  // 일반 finishCombat 흐름 차단
         try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
         setTimeout(()=>showVoidBossOutro(),1200);
         return;
       }
-      // 50% 페이즈 — 차원 절단광선 (보스 생존 시에만)
-      if(boss.hp>0&&hpPct<=0.50){
+      // 50% 페이즈 — 차원 절단광선 (보스 생존 + 함대 50% 이하 시)
+      if(boss.hp>0&&(bossHpPct<=0.50||fleetHpPct<=0.50)){
         if(!combatState._voidSuperLaserAnnounced){
           combatState._voidSuperLaserAnnounced=true;
           addCombatLog(`🌑 [팔콘 스카우트] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!`,'err');
