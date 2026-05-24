@@ -7923,7 +7923,7 @@ function renderCraftTab(body){
           }
           return`<div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:3px 7px;background:${ok?'rgba(0,243,255,.1)':'rgba(255,60,60,.1)'};border:1px solid ${ok?'rgba(0,243,255,.3)':'rgba(255,60,60,.3)'};border-radius:5px">
             <div style="display:flex;align-items:center;gap:4px;font-size:11px">
-              <span>${c?.ic||'💎'}</span>
+              <img src="img/commodities/${m.id}.png" alt="" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span>${c?.ic||'💎'}</span>'">
               <span style="color:var(--dim)">${c?.nm||m.id}</span>
               <span style="font-weight:bold;color:${ok?'var(--cyan)':'var(--red)'}">${have}/${_needShow}${_tdDisc?'<span style=\"color:#d4af37;font-size:9px\">(50%↓)</span>':''}</span>
             </div>
@@ -8039,8 +8039,9 @@ function renderCraftTab(body){
       ${matGridHtml}
 
       <!-- 보유 재료 요약 -->
-      <div style="margin-top:8px;font-size:15px;color:var(--dim)">
-        보유 재료: ${ownedMats.length>0?ownedMats.map(m=>`${m.ic}${m.nm}×${G.materials[m.id]}`).join('  '):'없음 — 행성 상점에서 구매하세요'}
+      <div style="margin-top:8px;font-size:13px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span>보유 재료:</span>
+        ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="img/commodities/${m.id}.png" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${m.nm}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):'없음 — 행성 상점에서 구매하세요'}
       </div>
 
     </div>
@@ -8124,7 +8125,7 @@ function openCraftSlot(idx){
       border:1px solid ${isRec?'rgba(212,175,55,.35)':'var(--bdr)'};border-radius:7px;cursor:pointer;
       ${have===0?'opacity:.45':''}
     " onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='${isRec?'rgba(212,175,55,.35)':'var(--bdr)'}'">
-      <span style="font-size:26px">${m.ic||'💎'}</span>
+      ${imgOrEmoji('img/commodities/'+m.id+'.png',m.ic||'💎',40,40,'border-radius:6px;background:rgba(0,0,0,.3);flex-shrink:0')}
       <div style="flex:1">
         <div style="font-size:14px;color:var(--txt)">${m.nm}${isRec?` <span style="font-size:11px;color:#d4af37">● 필요재료</span>`:''}</div>
         <div style="font-size:12px;color:var(--dim)">${m.desc||''}</div>
