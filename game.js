@@ -8937,6 +8937,48 @@ function showCodexHeroModal(hid){
   openModal('⭐ '+h.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 // 도감 — 함선 상세 모달 (행성·영웅과 동일한 구조)
+function showCodexPartModal(partId){
+  const p=(typeof partById==='function'?partById(partId):(PARTS.find(x=>x.id===partId)));
+  if(!p)return;
+  const rarCol=p.rarity==='mythic'?'#ff88ff':p.rarity==='set'?'#c080ff':p.tier>=15?'var(--gold)':p.tier>=11?'#ffa040':p.tier>=6?'var(--cyan)':'var(--txt)';
+  const rarIc=p.rarity==='mythic'?'✦':p.rarity==='set'?'◈':p.tier>=15?'⚡':'•';
+  const catIc={weapon:p.wtype==='missile'?'🚀':'⚔️',shield:'🛡️',armor:typeof p.repairRate==='number'&&p.repairRate>0?'🤖':'🛡',engine:'⚡'}[p.cat]||'⚙️';
+  const lore=LORE_TEXT['part_'+p.id]||'정보 없음';
+  const lines=String(lore).split('\n');
+  const sec=(ic,fallback)=>{const ln=lines.find(l=>l.startsWith(ic));return ln?ln.replace(ic,'').trim():fallback;};
+  const maker=sec('🔨','정보 없음');
+  const origin=sec('📜','정보 없음');
+  const power=sec('⚔️','정보 없음');
+  const op=sec('💬','...');
+  // 보유 여부
+  const inv=(G.inventory||[]).find(i=>i.id===p.id);
+  const eqQty=(G.fleet||[]).flatMap(s=>s.parts||[]).filter(pid=>pid===p.id).length;
+  const qty=(inv?.qty||0)+eqQty;
+  // 스탯 라인
+  const statText=p.cat==='weapon'?`ATT +${p.ATT}${p.wtype?' ['+p.wtype+']':''}`:
+                p.cat==='shield'?`INT +${p.INT} · SH +${p.maxSH}${p.shieldRegen?' · 재생 '+(p.shieldRegen*100).toFixed(0)+'%/턴':''}`:
+                p.cat==='armor'?`HP +${p.HP}${p.DEF?' · DEF +'+p.DEF:''}${p.repairRate?' · 수리 '+(p.repairRate*100).toFixed(0)+'%/턴':''}${p.laserHealHP?' · 흡혈 HP '+(p.laserHealHP*100).toFixed(0)+'%':''}${p.laserHealSH?' · 흡혈 SH '+(p.laserHealSH*100).toFixed(0)+'%':''}`:
+                p.cat==='engine'?`TEC +${p.TEC}`:'';
+  function row(ic,label,val){return`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:16px;flex-shrink:0">${ic}</span><div><div style="font-size:11px;color:var(--dim);margin-bottom:2px">${label}</div><div style="font-size:13px;color:var(--txt);line-height:1.5">${val}</div></div></div>`;}
+  const html=`<div style="padding:4px 0">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">
+      <div style="width:96px;height:96px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${rarCol};background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center">
+        ${imgOrEmoji('img/parts/'+p.id+'.png',catIc,92,92,'object-fit:contain')}
+      </div>
+      <div>
+        <div style="font-size:18px;font-weight:bold;color:${rarCol}">${rarIc} ${p.nm}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:2px">T${p.tier} ${p.cat==='weapon'?'무기':p.cat==='shield'?'실드':p.cat==='armor'?(typeof p.repairRate==='number'&&p.repairRate>0?'수리 드론':'장갑'):p.cat==='engine'?'엔진':''} · ${p.price?'₡'+p.price.toLocaleString():'상점 미판매'}</div>
+        <div style="font-size:12px;color:${rarCol};margin-top:4px;font-weight:bold">${statText}</div>
+        ${qty>0?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">✅ 보유 ${qty}개 (인벤 ${inv?.qty||0} + 장착 ${eqQty})</span>`:'<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--dim);border:1px solid var(--dim);border-radius:3px;padding:1px 6px">❔ 미보유</span>'}
+      </div>
+    </div>
+    ${row('🔨','제작 일화',maker)}
+    ${row('📜','이름의 유래',origin)}
+    ${row('⚔️','전투 성능',power)}
+    ${row('💬','한마디',op)}
+  </div>`;
+  openModal('⚙️ '+p.nm,html,[{txt:'확인',fn:closeModal,cls:'btn-gold'}],{wide:true});
+}
 function showCodexShipModal(shipId){
   const s=SHIP_CATALOG.find(x=>x.id===shipId);if(!s)return;
   const tierCol={'소형':'var(--cyan)','중형':'var(--blue)','대형':'var(--gold)','전설기함':'#ff66ff','신화':'#cc66ff'};
@@ -9076,7 +9118,7 @@ function renderCodexTab(body){
             const qty=_invQty+_eqQty;
             const rarityBadge=p.rarity==='mythic'?'<div style="font-size:10px;color:#ff88ff;margin-top:1px">✦ 신화</div>':p.rarity==='set'?'<div style="font-size:10px;color:#c080ff;margin-top:1px">◈ 세트</div>':'';
             return`<div style="background:var(--card);border:1px solid ${have?rarBdr(p):'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.42};position:relative;min-height:148px">
-              <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">${imgOrEmoji('img/parts/'+p.id+'.png',sec.key==='laser'?'⚔️':sec.key==='missile'?'🚀':cat==='shield'?'🛡️':cat==='armor'?'🛡':'⚡',78,78,'','part_'+p.id)}</div>
+              <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px;cursor:pointer" onclick="showCodexPartModal('${p.id}')" title="클릭=상세 정보">${imgOrEmoji('img/parts/'+p.id+'.png',sec.key==='laser'?'⚔️':sec.key==='missile'?'🚀':cat==='shield'?'🛡️':cat==='armor'?'🛡':'⚡',78,78,'','part_'+p.id)}</div>
               <div style="font-size:12px;font-weight:bold;color:${rarCol(p)};line-height:1.2;word-break:keep-all">${p.nm}</div>
               <div style="font-size:10px;color:var(--dim);margin-top:2px">T${p.tier} · ${statTxt(p)}</div>
               ${rarityBadge}
