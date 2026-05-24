@@ -1391,6 +1391,12 @@ function shipImgSrc(ship){
   if((ship.catalogId||'').toUpperCase()==='URSA'
      ||sid.startsWith('BOSS_URSA')||sid==='URSA'||sid==='BOSS'||sid==='BOSS_MAIN')
     return 'img/ships/Boss.png';
+  // 0-2) 보이드 팔콘 (나포/보스) — S10.png
+  if((ship.catalogId||'').toUpperCase()==='VOID_FALCON'
+     ||sid.startsWith('CAP_VOIDFALCON')||sid.startsWith('VOID_FALCON')
+     ||ship._isVoidFalconCaptured
+     ||(ship.catId==='S10'&&nm.includes('팔콘')))
+    return 'img/ships/S10.png';
   // 1) 명시적 catalogId / catId — CHIX 계열은 티어 접미사 보정
   if(ship.catalogId){
     if(/^CHIX$/i.test(ship.catalogId))return _chixByTier();
@@ -6942,16 +6948,18 @@ function _grantVoidBossRewards(){
   for(let i=0;i<_capCount;i++){
     const ship={
       id:'CAP_VOIDFALCON_'+Date.now()+'_'+i,
-      catalogId:'VOID_FALCON',  // 전투 이미지: img/ships/S10.png 매칭됨 (catId.startsWith('VOID'))
+      catalogId:'VOID_FALCON',  // shipImgSrc에 보이드 팔콘 전용 분기 추가됨 → img/ships/S10.png 로드
       catId:'S10',
       nm:'🌑 팔콘 스카우트 (나포)'+(_capCount>1?` ${i+1}/${_capCount}`:''),
-      tier:'소형',
+      tier:'대형',  // 대형 함선급 슬롯: 6 cols × 4 rows 기본
+      partsRowsExtra:1,  // 대형 최대 확장 = +1 row → 6×5=30 파츠 슬롯
       maxHP:_capHP,hp:_capHP,
       maxSH:_capSH,sh:_capSH,
       ATT:_capATT,INT:Math.round(VOID_BOSS.INT/VOID_FLEET_SIZE),
       TEC:Math.round(VOID_BOSS.TEC/VOID_FLEET_SIZE),
       HP:_capHP,LOY:35,DEF:Math.round(VOID_BOSS.DEF/VOID_FLEET_SIZE),
-      parts:[],crewIds:[],cargoSlots:5,
+      parts:[],crewIds:[],
+      cargoSlots:80,  // 시작부터 80칸 화물칸 (보이드 차원 압축 — 신화급)
       _isVoidFalconCaptured:true
     };
     // 편대 거절 설정 무시 + 만석이어도 강제 합류 (히든 보상이라 일반 나포 규칙 미적용)
