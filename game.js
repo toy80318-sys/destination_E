@@ -7073,16 +7073,16 @@ function acceptQuest(pid,idx){
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
   // ─── 보이드 함대 능력치 스케일링 ───
-  //   · 기함 1척: 플레이어 함대 합산의 16배 HP/ATT (사용자 요청 — 10% HP 트리거 전제)
+  //   · 기함 1척: 플레이어 함대 합산의 2배 HP/ATT (도전적이지만 클리어 가능)
   //   · 호위 15척: 플레이어 평균 함선 1척과 유사 (균형용)
   // 카탈로그 고정값(렐러티비티 3배)은 약한 함대 보호용 최소값
   const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
   const _fpAvg=(typeof calcFleetAvgPower==='function')?calcFleetAvgPower():{hp:80,atk:18};
-  // 기함 — 함대 합산 × 16 (HP/ATT), SH는 × 8 (장기전 방지)
-  const _flagHP=Math.max(VOID_BOSS.maxHP*10,Math.round((_fp.hp||0)*16));
-  const _flagATT=Math.max(VOID_BOSS.ATT*10,Math.round((_fp.atk||0)*16));
-  const _flagSH=Math.max(VOID_BOSS.maxSH*10,Math.round((_fp.sh||0)*8));
+  // 기함 — 함대 합산 × 2 (HP/ATT/SH 모두)
+  const _flagHP=Math.max(VOID_BOSS.maxHP*2,Math.round((_fp.hp||0)*2));
+  const _flagATT=Math.max(VOID_BOSS.ATT*2,Math.round((_fp.atk||0)*2));
+  const _flagSH=Math.max(VOID_BOSS.maxSH*2,Math.round((_fp.sh||0)*2));
   // 호위 — 플레이어 평균 함선 1척 수준 (16척 합 ≈ 플레이어 함대 1배 정도)
   const _escortHP=Math.max(Math.round(VOID_BOSS.maxHP/8),Math.round((_fpAvg.hp||0)*1.5));
   const _escortATT=Math.max(Math.round(VOID_BOSS.ATT/8),Math.round((_fpAvg.atk||0)*1.0));
