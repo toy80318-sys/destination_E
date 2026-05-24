@@ -873,6 +873,14 @@ const CHAR_PORTRAITS={
   '⚠️ 통신 수신 ⚠️':'img/chars/Void_Hiden.png'
   // 예: '우르사 메이저':'img/chars/ursa.png',
   // 예: '이순신':'img/chars/sunsin.png',
+};
+// 인라인 백구 아이콘 — 이모지 자리에 작은 이미지 노출. 로드 실패 시 🐕 폴백.
+function _baekguIcon(size){
+  size=size||20;
+  return `<img src="img/chars/baekgu.png" alt="백구" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
+}
+const _CHAR_PORTRAITS_DUMMY={ // 아래는 더이상 사용 안 함 (위에서 닫힘) — 호환용 빈 객체
+
   // 예: '광개토대왕':'img/chars/gwanggaeto.png'
 };
 // 화자용 초상 HTML 반환 (이미지가 매핑되어 있으면 <img>, 아니면 폴백 이모지)
@@ -1076,7 +1084,7 @@ function runLoading(){
 function showExitModal(){
   openModal('🚪 게임 종료',
     `<div style="text-align:center;padding:12px">
-      <div style="font-size:58px;margin-bottom:12px">🐕</div>
+      <div style="margin-bottom:12px">${_baekguIcon(58)}</div>
       <div style="color:var(--yellow);font-size:18px;font-weight:bold;margin-bottom:8px">정말 종료하시겠습니까?</div>
       <div style="color:var(--dim);font-size:14px;line-height:1.8">
         현재 진행 상황 TURN ${G.turn}<br>
@@ -2517,7 +2525,7 @@ function triggerTravelPirate(pd){
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 약탈금 획득 | 도주 시 크레딧 -15%</div>
-    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">🐕 백구: "항로에 적이다! 적 스펙 보고 결정해!"</div>`,
+    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "항로에 적이다! 적 스펙 보고 결정해!"</div>`,
     [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
      {txt:'🚀 도주 (-15%)',fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
   );
@@ -2570,7 +2578,7 @@ function triggerEarlyPirate(pd){
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 크레딧 획득 | 패배 시 손실</div>
-    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">🐕 백구: "${G.pirateAppearances>=5?'이제 최강 해적! 각오해!':G.pirateAppearances>=3?'점점 강해져! 조심해!':'해적이야! 스펙 확인해!'}"</div>`,
+    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "${G.pirateAppearances>=5?'이제 최강 해적! 각오해!':G.pirateAppearances>=3?'점점 강해져! 조심해!':'해적이야! 스펙 확인해!'}"</div>`,
     [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
      {txt:'🚀 도주 (-10%)',fn:()=>{closeModal();const p=Math.floor(G.credits*0.1);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
   );
@@ -2627,7 +2635,7 @@ function triggerChixFleet(pd){
     </div>
     ${_formatEnemyPreview(enemies)}
     <div style="font-size:12px;color:var(--dim);line-height:1.7">
-      🐕 백구: "${wave>=4?'이게 마지막이야. 전멸시키자!':wave>=2?'점점 강해지고 있어. 조심해!':'치크스 함대 출현! 적 행성에서 오래 있으면 안 돼.'}"
+      ${_baekguIcon(18)} 백구: "${wave>=4?'이게 마지막이야. 전멸시키자!':wave>=2?'점점 강해지고 있어. 조심해!':'치크스 함대 출현! 적 행성에서 오래 있으면 안 돼.'}"
     </div>`,
     [{txt:`⚔️ 전투 (${eCount}척)`,fn:()=>{
       closeModal();
@@ -2691,7 +2699,7 @@ function triggerPirateRaid(pd){
       </div>
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
-    <div style="font-size:12px;color:var(--cyan);text-align:center">🐕 백구: "내가 경고했잖아. 싸워!"</div>`,
+    <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} 백구: "내가 경고했잖아. 싸워!"</div>`,
     [{txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
      {txt:'🚀 도주 (크레딧 -20%)',fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
@@ -7082,26 +7090,23 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  // ─── 보이드 함대 능력치 스케일링 ───
-  // 사용자 명세:
-  //   · 보이드 함대 총합 = 플레이어 함대 ×2 HP, ×1 SH, ×2 ATT
-  //   · 보스 1척 = 호위 1척의 2배
-  //   · 분배 단위: 15 호위 × 1 + 1 보스 × 2 = 총 17 unit
+  // ─── 보이드 함대 능력치 스케일링 (극한 강화 — 진짜 레이저 전투) ───
+  //   · 함대 총합 = 플레이어 함대 ×50 HP, ×10 ATT, ×15 SH
+  //   · 보스 1척 = 호위 1척의 4배
+  //   · 분배: 호위 15 × 1 + 보스 1 × 4 = 19 unit
+  //   · armorTier/shieldTier 50으로 강화 (피해 감소)
   const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  // 보이드 함대 총합 (최소 카탈로그 보장값)
-  const _totalHP=Math.max(VOID_BOSS.maxHP*2,Math.round((_fp.hp||0)*2));
-  const _totalATT=Math.max(VOID_BOSS.ATT*2,Math.round((_fp.atk||0)*2));
-  const _totalSH=Math.max(VOID_BOSS.maxSH*2,Math.round((_fp.sh||0)*1));  // SH는 ×1
-  // 17 unit으로 분배 (호위 15 + 보스 2)
-  const _UNIT=17;
+  const _totalHP=Math.max(VOID_BOSS.maxHP*50,Math.round((_fp.hp||0)*50));
+  const _totalATT=Math.max(VOID_BOSS.ATT*10,Math.round((_fp.atk||0)*10));
+  const _totalSH=Math.max(VOID_BOSS.maxSH*15,Math.round((_fp.sh||0)*15));
+  const _UNIT=19;  // 호위 15 + 보스 4
   const _escortHP=Math.round(_totalHP/_UNIT);
   const _escortATT=Math.round(_totalATT/_UNIT);
   const _escortSH=Math.round(_totalSH/_UNIT);
-  const _flagHP=_escortHP*2;
-  const _flagATT=_escortATT*2;
-  const _flagSH=_escortSH*2;
-  // 1번은 기함(보스 페이즈 + 신화급 표시), 2~16번은 호위 팔콘
+  const _flagHP=_escortHP*4;
+  const _flagATT=_escortATT*4;
+  const _flagSH=_escortSH*4;
   const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
     const isFlagship=(i===0);
     const _hp=isFlagship?_flagHP:_escortHP;
@@ -7111,12 +7116,15 @@ function startVoidBossCombat(questRef){
       ...VOID_BOSS,
       id:`VOID_FALCON_${i+1}`,
       nm:isFlagship?'팔콘 스카우트 (기함 ✦)':`팔콘 스카우트 ${i+1}`,
-      tier:isFlagship?'신화':'중형',  // 기함=신화(가장 큰 시각적 크기), 호위=중형
+      tier:isFlagship?'신화':'중형',
       isEnemy:true,
       hp:_hp,maxHP:_hp,HP:_hp,
       sh:_sh,maxSH:_sh,
       ATT:_att,
-      voidBoss:isFlagship  // 기함만 50%/10% 페이즈 트리거 (외 척은 일반 적함)
+      DEF:isFlagship?800:300,  // 신화급 장갑
+      armorTier:isFlagship?60:40,  // 피해 감소 강화
+      shieldTier:isFlagship?60:40,
+      voidBoss:isFlagship
     };
   });
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wt=_wpn?(_wpn.tier||1):1;const _wtype=_wpn?(_wpn.wtype||'laser'):'laser';const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:s.hp,maxHP:st.HP,sh:s.sh,maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wtype,wpnTier:_wt,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier};});
@@ -10126,7 +10134,7 @@ function showHostilePlanetBriefing(planetDef){
     </div>
     ${_formatEnemyPreview(enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 행성 정복 + 약탈금 | 패배 시 크레딧 -10%</div>
-    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">🐕 백구: "스펙 확인했지? ${advisor.t.includes('유리')?'밀어붙여!':advisor.t.includes('대등')?'한 방 한 방 신중하게!':'더 강해진 다음에 와도 늦지 않아!'}"</div>`,
+    <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "스펙 확인했지? ${advisor.t.includes('유리')?'밀어붙여!':advisor.t.includes('대등')?'한 방 한 방 신중하게!':'더 강해진 다음에 와도 늦지 않아!'}"</div>`,
     [
       {txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
       {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify('🚀 후퇴 — 다른 행성으로 이동해 주세요','warn');baekgu('한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.');},cls:'btn-sm'}
