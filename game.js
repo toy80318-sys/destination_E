@@ -7278,7 +7278,7 @@ const VOID_BOSS_ID='FALCON_SCOUT_VOID';
 //   ATT 306×3 = 918 / INT 295×3 = 885 / TEC 255×3 = 765
 // 50% 페이즈부터 차원 절단광선으로 비기함 함선 1척씩 즉시 소멸 / 10% 페이즈에서 자진 철수
 const VOID_BOSS={
-  id:VOID_BOSS_ID,nm:'팔콘 스카우트',tier:'소형',isEnemy:true,
+  id:VOID_BOSS_ID,nm:'🌑 블랙팔콘',tier:'소형',isEnemy:true,
   hp:735000,maxHP:735000,sh:270000,maxSH:270000,
   ATT:918,INT:885,TEC:765,DEF:200,HP:735000,LOY:0,parts:[],
   voidBoss:true,catId:'S10',  // img/ships/S10.png (보이드 보스 전용 함선 이미지)
