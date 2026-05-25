@@ -869,27 +869,95 @@ function notify(msg,type='info'){
 // ─── 캐릭터 초상 매핑 (대사 인트로/팝업 공통) ──────────────────
 // 화자 이름 → 이미지 경로. 새 인물 추가 시 img/chars/<file>.png 넣고 여기에 한 줄 추가.
 const CHAR_PORTRAITS={
-  '백구':'img/chars/baekgu.png',
+  '백구':'img/chars/baekgu1.png',
   '블랙팔콘':'img/chars/Void_Hiden.png',
   '팔콘 스카우트':'img/chars/Void_Hiden.png',
   '⚠️ 통신 수신 ⚠️':'img/chars/Void_Hiden.png'
   // 예: '우르사 메이저':'img/chars/ursa.png',
   // 예: '이순신':'img/chars/sunsin.png',
 };
-// 백구 무드 → 이미지 매핑
-//   default: baekgu.png  (정면 차분 — 평소/일반 대화)
-//   explore: baekgu2.png (옆모습 응시 — 탐험/도착/발견)
-//   combat:  baekgu3.png (무기 휴대 — 전투/경고/위험)
+// ─── 백구 무드 → 이미지 매핑 (시리즈 2 다양한 표정 활용) ───
+// 파일명 기반 자동 배정:
+//   default     baekgu1.png              (소형 정면 — 평소)
+//   explore     baekgu2.png              (탐험/도착 — 시리즈2 기본)
+//   combat      baekgu2_fight.png        (전투 자세)
+//   boss        baekgu3.png              (보스급 — 무기 휴대)
+//   smile       baekgu2_smile1.png       (미소 — 일반 칭찬/보상)
+//   smile_big   baekgu2_smile2.png       (큰 미소 — 레벨업/명성 상승)
+//   smile_proud baekgu2_smile4.png       (자랑 — 보스 격파/엔딩 진입)
+//   surprise    baekgu1_surprise.png     (놀람 — 전설/신화/이벤트 발견)
+//   think       baekgu2_think.png        (생각/궁리)
+//   advice      baekgu2_advice.png       (조언/팁/제안)
+//   anger_mild  baekgu2_anger0.png       (가벼운 짜증)
+//   anger       baekgu2_anger1.png       (화남 — 실패/손해)
+//   anger_max   baekgu2_anger2.png       (극대노 — 배신/이탈/완패)
+//   sad         baekgu2_sad.png          (슬픔 — 패배/소실)
+//   sad_happy   baekgu2_sad_happy.png    (희비교차 — 비싼 대가 + 좋은 결과)
+//   sleepy      baekgu2_sleepy.png       (졸림 — 같은 자리 오래)
+//   hungry      baekgu2_hungry.png       (배고픔 — 자원·크레딧 부족)
+//   bothersome  baekgu2_bothersome.png   (귀찮음 — 반복 작업)
+//   ignorant    baekgu2_ignorant_person.png (어이없음 — 잘못된 시도)
 function _baekguSrcByMood(mood){
-  if(mood==='combat')return 'img/chars/baekgu3.png';
-  if(mood==='explore')return 'img/chars/baekgu2.png';
-  return 'img/chars/baekgu.png';
+  const M={
+    combat:'img/chars/baekgu2_fight.png',
+    boss:'img/chars/baekgu3.png',
+    explore:'img/chars/baekgu2.png',
+    smile:'img/chars/baekgu2_smile1.png',
+    smile_big:'img/chars/baekgu2_smile2.png',
+    smile_proud:'img/chars/baekgu2_smile4.png',
+    surprise:'img/chars/baekgu1_surprise.png',
+    think:'img/chars/baekgu2_think.png',
+    advice:'img/chars/baekgu2_advice.png',
+    anger_mild:'img/chars/baekgu2_anger0.png',
+    anger:'img/chars/baekgu2_anger1.png',
+    anger_max:'img/chars/baekgu2_anger2.png',
+    sad:'img/chars/baekgu2_sad.png',
+    sad_happy:'img/chars/baekgu2_sad_happy.png',
+    sleepy:'img/chars/baekgu2_sleepy.png',
+    hungry:'img/chars/baekgu2_hungry.png',
+    bothersome:'img/chars/baekgu2_bothersome.png',
+    ignorant:'img/chars/baekgu2_ignorant_person.png'
+  };
+  return M[mood]||'img/chars/baekgu1.png';
 }
-// 텍스트 키워드로 무드 자동 감지
+// 텍스트 키워드로 무드 자동 감지 — 우선순위 위에서 아래 (첫 매칭 채택)
+// 명확한 결과(성공/실패/배신)를 active engagement(전투)보다 먼저 보고 매칭
 function _detectBaekguMood(text){
   const t=String(text||'');
-  if(/(전투|해적|보스|적|위험|싸|경고|기습|공격|적함|치크스|우르사|블랙팔콘|격파|소멸|위협|☠️|💀|⚠️|💥|⚔️|🏴)/.test(t))return 'combat';
-  if(/(탐험|도착|발견|행성|이동|항해|새로운|진입|착륙|개척|항로|🌍|🛸|🚀|🔭|🌌|🪐)/.test(t))return 'explore';
+  // 1) boss — 최종전·엔딩급
+  if(/(우르사 메이저|블랙팔콘|보이드 보스|최종전|지구 해방|엔딩)/.test(t))return 'boss';
+  // 2) smile_proud — 격파·해방·정복 (전투 종료 후 성공) — combat보다 먼저
+  if(/(격파|섬멸|해방|승리했|클리어|정복|평정|🏆|🥇|👑)/.test(t))return 'smile_proud';
+  // 3) anger_max — 배신·이탈·완패
+  if(/(배신|이탈했|넘어갔|적에게 넘|반란|쿠데타|망했|털렸|뺏겼|완패|치명)/.test(t))return 'anger_max';
+  // 4) surprise — 희귀/대박 발견 (smile류보다 먼저 — "전설 들어왔다" 등)
+  if(/(전설|신화|희귀|레어|초대박|대박|세상에|믿을 수 없|놀라|이럴 수|와우|헐|!!|✨|🎉|🌟|🎁)/.test(t))return 'surprise';
+  // 5) anger — 실패·손해·놓침 (전투 결과로 매칭되도록 combat보다 먼저)
+  if(/(실패|패배|손해|손실|놓쳤|놓치|파괴됐|당했|이런|젠장|쯧|❌|🚫)/.test(t))return 'anger';
+  // 6) sad_happy — 희비교차 (먼저 매칭)
+  if(/(아쉽지만|그래도|간신히|겨우|따돌렸|빠져나왔|살아남았)/.test(t))return 'sad_happy';
+  // 7) sad — 슬픔/소실
+  if(/(슬프|아쉬|안타|사라졌|소멸했|잃었|작별|이별|😢|💔)/.test(t))return 'sad';
+  // 8) combat — 활성 전투 (단어 "전투력"은 제외 위해 \b 또는 negative lookahead)
+  if(/(전투(?!력)|해적|적함|기습|공격해|치크스 함|싸우|격돌|⚔️|🏴|💥|☠️|💀)/.test(t))return 'combat';
+  // 9) smile_big — 레벨업·명성 상승·제작 완료
+  if(/(레벨업|랭크업|명성 상승|명성이 올|진급|승급|제작 완|업그레이드 완|만렙|⭐)/.test(t))return 'smile_big';
+  // 10) smile — 일반 보상·획득·완료
+  if(/(완료|성공|획득|들어왔|보상|축하|좋아|잘했|굿|나이스|충전됐|👍|💰)/.test(t))return 'smile';
+  // 11) hungry — 크레딧·자원 부족
+  if(/(크레딧 거의 없|크레딧 부족|돈이 없|자금 부족|연료 부족|보급 부족|배고프)/.test(t))return 'hungry';
+  // 12) sleepy — 같은 자리/대기/오래
+  if(/(같은 자리|오래 있|체류|대기|머무르|장기|쉬어)/.test(t))return 'sleepy';
+  // 13) ignorant — 어이없음 (의도 다름)
+  if(/(응\?|뭔가 물어|뭐라고|이해 못|모르겠|\?\?\?|🤷)/.test(t))return 'ignorant';
+  // 14) bothersome — 반복/잔소리
+  if(/(또|다시|반복|매번|잔소리|아까도|벌써|이미)/.test(t))return 'bothersome';
+  // 15) advice — 조언·추천·제안
+  if(/(추천|조언|제안|팁|힌트|방법은|이렇게 해|해보면|💡|📋)/.test(t))return 'advice';
+  // 16) think — 생각/주의/확인 (전투력/배치 등은 think로)
+  if(/(생각|준비|주의|조심|살펴|확인|체크|키워|장착|배치|전투력|🤔)/.test(t))return 'think';
+  // 17) explore — 탐험/이동/도착
+  if(/(탐험|도착|발견|이동|항해|새로운|진입|착륙|개척|항로|🌍|🛸|🚀|🔭|🌌|🪐)/.test(t))return 'explore';
   return 'default';
 }
 // 인라인 백구 아이콘 — 이모지 자리에 작은 이미지 노출. 로드 실패 시 🐕 폴백.
@@ -929,8 +997,14 @@ function baekgu(text,mood){
     const img=document.getElementById('bk-portrait-img');
     if(img){
       const newSrc=_baekguSrcByMood(m);
+      // 새 src 적용 직전에 이전 onerror로 숨겨졌을 수 있는 img·emoji 상태를 복구
+      // (한 번이라도 로드 실패하면 display:none이 박혀서 새 이미지도 안 보이는 버그 방지)
+      img.style.display='block';
+      const _em=document.getElementById('bk-emoji');if(_em)_em.style.display='none';
       // 현재 src와 다를 때만 교체 (불필요한 깜빡임 방지)
-      if(!img.src.endsWith(newSrc.replace(/^.*\//,'')))img.src=newSrc;
+      const _tail=newSrc.replace(/^.*\//,'').split('?')[0];
+      const _cur=(img.getAttribute('src')||'').replace(/^.*\//,'').split('?')[0];
+      if(_cur!==_tail)img.src=newSrc;
     }
   }catch(e){}
 }
@@ -1657,7 +1731,7 @@ function showEmailLoadModal(){
   const savedEmail=(window.CloudSave&&CloudSave.getEmail)?CloudSave.getEmail():'';
   const html=`<div style="padding:8px 4px">
     <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--card);border:1px solid #66ddff;border-radius:10px;margin-bottom:14px">
-      <img src="img/chars/baekgu.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
+      <img src="img/chars/baekgu1.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
         <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">백구</div>
         예전에 등록한 이메일 적으면<br>옛 사령관 진행 상황 다 불러올게.<br>새 이메일이면 빈 상태로 시작이야.
@@ -1730,7 +1804,7 @@ function renderPrologue(){
   // 화자 레이블: 백구는 이미지 + 이름, 시스템은 아이콘
   const spHTML=isBaekgu
     ?`<div style="display:inline-flex;align-items:center;gap:7px;margin-bottom:6px">
-        <img src="img/chars/baekgu.png" alt="백구"
+        <img src="img/chars/baekgu1.png" alt="백구"
           style="width:30px;height:30px;object-fit:contain;border-radius:50%;background:var(--panel);border:1px solid var(--cyan)"
           onerror="this.style.display='none'">
         <span style="color:var(--cyan);font-size:13px;font-weight:bold">백구</span>
@@ -2124,7 +2198,7 @@ function renderMain(body){
     <div style="flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
       ${buildSceneHTML(pd,fac)}
       <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(13,26,42,.92);border:1px solid var(--cyan);border-radius:10px;padding:10px 18px;max-width:500px;text-align:center;pointer-events:none;z-index:20">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${imgOrEmoji('img/chars/baekgu.png','🐕',28,28,'border-radius:50%;background:var(--panel)')}<span style="color:var(--cyan);font-size:12px">백구</span></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${imgOrEmoji('img/chars/baekgu1.png','🐕',28,28,'border-radius:50%;background:var(--panel)')}<span style="color:var(--cyan);font-size:12px">백구</span></div>
         <div style="color:var(--yellow);font-size:14px;line-height:1.6">${getBaekguLine()}</div>
       </div>
     </div>
@@ -13014,6 +13088,127 @@ function showBossCelebration(onDone){
 
 // ─── 엔딩 시퀀스: 어두운 화면 → 영웅/주인공 대사 흘러가기 → 스크롤 크레딧 ───
 // onDone: 엔딩 종료 후 콜백 (보이드 페이즈 진입)
+// ─── ACT 5 최종 엔딩 크레딧 ─────────────────────────────────────
+// 보이드의 심연 통과 후 — 스토리 정리 + 제작진 + 영웅 + AI 이미지 + Special thanks
+function showFinalEndingCredits(){
+  const cmdName=G.profile?.name||'사령관';
+  const co=G.profile?.company||'은하상단';
+  const _hl=G.heroes||[];
+  const HERO_NAMES={H01:'이순신',H02:'장영실',H03:'광개토대왕',H04:'유리 가가린',H05:'호레이쇼 넬슨',H06:'아인슈타인',H07:'니콜라 테슬라',H08:'마르코 폴로'};
+  const heroList=_hl.map(h=>HERO_NAMES[h]||h).filter(Boolean);
+  const overlay=document.createElement('div');
+  overlay.id='_final-ending-overlay';
+  overlay.style.cssText=[
+    'position:fixed','left:0','top:0','right:0','bottom:0','width:100vw','height:100vh',
+    'background:#000','z-index:99999','opacity:0','transition:opacity 2.5s ease-in',
+    'display:flex','align-items:flex-start','justify-content:center',
+    'pointer-events:auto','color:#fff','font-family:Malgun Gothic, sans-serif','overflow:hidden'
+  ].join(';');
+  overlay.innerHTML=`
+    <style>
+      @keyframes _finalRoll{from{transform:translateY(100vh)}to{transform:translateY(-220%)}}
+      @keyframes _finalShim{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+      @keyframes _finalStars{from{background-position:0 0}to{background-position:-2000px 0}}
+    </style>
+    <!-- 별 배경 -->
+    <div style="position:absolute;inset:0;background:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#fff,transparent),radial-gradient(1px 1px at 80% 10%,#fff,transparent),radial-gradient(2px 2px at 30% 80%,#fff,transparent),radial-gradient(1px 1px at 90% 50%,#fff,transparent);background-size:200px 200px;opacity:.4;animation:_finalStars 60s linear infinite"></div>
+    <!-- 크레딧 롤 -->
+    <div id="_final-credits" style="position:relative;width:100%;max-width:760px;text-align:center;padding:20px;animation:_finalRoll 90s linear forwards;color:#fff">
+      <div style="height:30vh"></div>
+
+      <div style="font-size:36px;letter-spacing:14px;margin-bottom:12px;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 100%;animation:_finalShim 4s linear infinite">DESTINATION EARTH</div>
+      <div style="font-size:14px;color:#aaa;letter-spacing:10px;margin-bottom:80px">— ACT 5 · 종막 —</div>
+
+      <!-- 스토리 정리 -->
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:14px">— 그동안의 여정 —</div>
+      <div style="font-size:15px;line-height:2.2;color:#dde;text-align:left;background:rgba(255,255,255,.03);padding:24px 28px;border-radius:8px;border:1px solid rgba(255,215,0,.15);margin-bottom:60px;word-break:keep-all">
+        <p style="margin:0 0 14px"><b style="color:#ffd700">ACT 1</b> — 100년의 봉쇄. 우르사 메이저 함대가 지구를 둘러쌌고, 위장 상단 ${co}이(가) 폐지를 주워가며 함대를 일군다. 백구가 ${cmdName}을(를) 깨운다.</p>
+        <p style="margin:0 0 14px"><b style="color:#ffaa44">ACT 2</b> — 일곱 팩션의 우주. 수퍼비아, 아우레우스, 메카니카, 크리그, 치크스, 지구 저항군, 보이드. ${cmdName}은(는) 무역과 전투로 함대를 키우고, 전설의 영웅 ${heroList.length}명을 영입한다.</p>
+        <p style="margin:0 0 14px"><b style="color:#ff66ff">ACT 3</b> — 균열의 너머. 보이드 행성에서 미지의 신호가 잡힌다. 보이드 크리스탈을 모으며 최종전을 준비한다.</p>
+        <p style="margin:0 0 14px"><b style="color:#ff4444">ACT 4</b> — 지구 해방. 우르사 메이저 격파. 100년의 봉쇄가 끝나고, 인류는 다시 우주로 나간다.</p>
+        <p style="margin:0 0 14px"><b style="color:#cc66ff">ACT 5</b> — 보이드의 심연. 1000년의 침묵을 깬 블랙팔콘과의 결투. 모든 시련을 견뎌낸 사령관은 은하 가운데 블랙홀로 들어간다.</p>
+        <p style="margin:0;color:#aaa;font-style:italic">"누구도 여기서 살아서 나가지 못한다.<br>네가 원하는걸 해라."</p>
+      </div>
+
+      <!-- 등장 인물 -->
+      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:10px">총사령관</div>
+      <div style="font-size:24px;margin-bottom:40px;color:#fff">${cmdName} <span style="color:#aaa;font-size:14px;margin-left:6px">— ${co}</span></div>
+
+      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:10px">전속 AI</div>
+      <div style="font-size:20px;margin-bottom:40px">🐕 백구 — AI 진돗개</div>
+
+      ${heroList.length>0?`
+        <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">영입 영웅 (${heroList.length}/8명)</div>
+        <div style="font-size:17px;line-height:2;margin-bottom:40px">
+          ${heroList.map(n=>`<div>⭐ ${n}</div>`).join('')}
+        </div>
+      `:''}
+
+      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">최종 보스</div>
+      <div style="font-size:17px;line-height:1.9;margin-bottom:40px">
+        💀 우르사 메이저 — 치크스 친위대 기함<br>
+        🌑 블랙팔콘 — 보이드의 사자
+      </div>
+
+      <!-- 함대 통계 -->
+      <div style="color:#66ff99;font-size:14px;letter-spacing:6px;margin-bottom:10px">함대 통계</div>
+      <div style="font-size:15px;color:#fff;line-height:2;margin-bottom:60px">
+        소요 턴: <b style="color:#ffd700">${G.turn||0}</b><br>
+        영웅 영입: <b style="color:#ff99ff">${heroList.length}/8</b><br>
+        행성 보유: <b style="color:#66ddff">${Object.values(G.planets||{}).filter(p=>p.owned).length}/30</b><br>
+        최종 크레딧: <b style="color:#ffd700">₡${(G.credits||0).toLocaleString()}</b><br>
+        난이도: <b style="color:#fff">${({easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'})[G.difficulty]||'보통'}</b>
+      </div>
+
+      <!-- 제작진 -->
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:10px">제작진</div>
+      <div style="font-size:16px;line-height:2;margin-bottom:40px">
+        기획·디자인 · ${co}<br>
+        개발 · Destination Earth Team<br>
+        AI 협업 · Claude (Anthropic)
+      </div>
+
+      <!-- AI 이미지 제작 -->
+      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">AI 이미지 제작</div>
+      <div style="font-size:16px;line-height:2;margin-bottom:40px">
+        이규빈 · 나노바나나 · 미드저니
+      </div>
+
+      <!-- Special Thanks -->
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:10px">Special Thanks</div>
+      <div style="font-size:16px;line-height:2;margin-bottom:14px">
+        주식회사 씨드유엔디 — 김우진 대표
+      </div>
+      <div style="font-size:14px;line-height:1.9;color:#bbb;margin-bottom:60px;font-style:italic">
+        그 외에도 테스터로 참여해 주신 모든 분들께 감사드립니다.
+      </div>
+
+      <div style="font-size:14px;color:#666;margin-bottom:8px">— 그리고 모든 인류에게 —</div>
+      <div style="font-size:24px;color:#fff;letter-spacing:8px;margin-bottom:80px">감사합니다</div>
+
+      <div style="font-size:13px;color:#444;letter-spacing:4px">— THE END —</div>
+      <div style="font-size:12px;color:#333;letter-spacing:2px;margin-top:8px">ACT 5 · 보이드의 심연</div>
+      <div style="height:30vh"></div>
+    </div>
+    <!-- 건너뛰기 / 닫기 -->
+    <button id="_final-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">닫기 →</button>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{overlay.style.opacity='1';});
+  const _close=()=>{
+    overlay.style.transition='opacity 1.5s ease-out';
+    overlay.style.opacity='0';
+    setTimeout(()=>{
+      try{overlay.remove();}catch(e){}
+      try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
+      try{setHubNav('main');hubTab('main');}catch(e){}
+    },1500);
+  };
+  overlay.querySelector('#_final-skip').onclick=_close;
+  // 90초 후 자동 종료
+  setTimeout(_close,92000);
+}
+try{if(typeof window!=='undefined')window.showFinalEndingCredits=showFinalEndingCredits;}catch(e){}
+
 function showEndingCredits(onDone){
   const cmdName=G.profile?.name||'사령관';
   const co=G.profile?.company||'은하상단';
@@ -13255,63 +13450,100 @@ function _grantVoidSpear(){
   G._voidSpearObtained=true;
 }
 
-// ─── 블랙홀 마지막 시험: 흰 화면 → 메시지 → 검은 팔콘 + 신화 파츠 ───
+// ─── ACT 5 종료: 보이드의 심연 → 흰 화면 → 엔딩 음악 → 최종 크레딧 ───
 function _enterBlackHoleFinalTest(){
+  // ACT 5 진입 + 엔딩 음악
+  G.act=Math.max(G.act||1,5);
+  try{AudioMgr.playBgm('end');}catch(e){}
   // 1) 흰 화면 전체 오버레이 (페이드인)
   const overlay=document.createElement('div');
   overlay.id='_bh-final-overlay';
   overlay.style.cssText=[
     'position:fixed','left:0','top:0','right:0','bottom:0','width:100vw','height:100vh',
-    'background:#fff','z-index:99999','opacity:0','transition:opacity 1.2s ease-in',
+    'background:radial-gradient(circle at center, #ffffff 0%, #ffeecc 60%, #ffd88a 100%)',
+    'z-index:99999','opacity:0','transition:opacity 2.5s ease-in',
     'display:flex','flex-direction:column','align-items:center','justify-content:center',
-    'pointer-events:auto','color:#000','font-family:Malgun Gothic, sans-serif','padding:40px'
+    'pointer-events:auto','color:#000','font-family:Malgun Gothic, sans-serif','padding:40px',
+    'animation:_bhWhitePulse 4s ease-in-out infinite'
   ].join(';');
   overlay.innerHTML=`
-    <div id="_bh-final-content" style="opacity:0;transition:opacity 1.5s ease-in;max-width:760px;text-align:center">
-      <div style="font-size:14px;color:#666;letter-spacing:6px;margin-bottom:18px">— 은하 가운데 —</div>
-      <div style="font-size:32px;font-weight:bold;color:#222;margin-bottom:24px;letter-spacing:2px">◈ 마지막 시험</div>
-      <div id="_bh-final-msg" style="font-size:18px;color:#222;line-height:2.1;background:rgba(0,0,0,.04);padding:24px 30px;border-radius:8px;border:1px solid #ccc;margin-bottom:20px;word-break:keep-all"></div>
-      <div id="_bh-final-btn-wrap" style="opacity:0;transition:opacity .8s ease-in;margin-top:24px"></div>
+    <style>
+      @keyframes _bhWhitePulse{
+        0%,100%{filter:brightness(1.0)}
+        50%{filter:brightness(1.15)}
+      }
+      @keyframes _bhFadeUp{
+        from{opacity:0;transform:translateY(20px)}
+        to{opacity:1;transform:translateY(0)}
+      }
+    </style>
+    <div id="_bh-final-content" style="opacity:0;transition:opacity 2s ease-in;max-width:820px;text-align:center">
+      <div style="font-size:13px;color:#888;letter-spacing:8px;margin-bottom:22px;text-transform:uppercase">— ACT 5 · 보이드의 심연 —</div>
+      <div style="font-size:36px;font-weight:bold;color:#1a1a1a;margin-bottom:36px;letter-spacing:4px;text-shadow:0 0 24px rgba(255,255,255,.8)">◈ 마지막 메시지</div>
+      <div id="_bh-final-msg" style="font-size:24px;color:#1a1a1a;line-height:2.2;background:rgba(255,255,255,.7);padding:36px 40px;border-radius:12px;border:2px solid rgba(255,200,100,.5);margin-bottom:28px;word-break:keep-all;font-weight:500;letter-spacing:0.5px;box-shadow:0 8px 32px rgba(255,180,80,.3)"></div>
+      <div id="_bh-final-btn-wrap" style="opacity:0;transition:opacity 1s ease-in;margin-top:30px"></div>
     </div>`;
   document.body.appendChild(overlay);
-  // 페이드인 시작
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
-  // 메시지 타이핑 효과
-  const _msgFull=
-    '그대는 마침내 이곳에 도달했다.\n\n'+
-    '100년의 봉쇄, 우주의 균열, 그리고 보이드의 시험까지 —\n\n'+
-    '모든 시련을 견뎌낸 자에게 우리가 약속한 것이 있다.\n\n'+
-    '"검은 팔콘"을 그대에게 맡긴다. 이것은 정찰함의 모습을 하고 있으나,\n'+
-    '그 안에는 보이드 1000년의 기술이 응축되어 있다.\n\n'+
-    '그리고 신화의 파츠 5점을 함께 보낸다 —\n'+
-    '이것으로 그대는 인류의 새 시대를 열어라.';
+  // 메시지 타이핑 효과 — 사용자 명세 텍스트
+  const _msgFull='누구도 여기서 살아서 나가지 못한다.\n\n네가 원하는걸 해라.';
   const contentEl=overlay.querySelector('#_bh-final-content');
   const msgEl=overlay.querySelector('#_bh-final-msg');
   const btnWrap=overlay.querySelector('#_bh-final-btn-wrap');
-  setTimeout(()=>{contentEl.style.opacity='1';},1300);
+  setTimeout(()=>{contentEl.style.opacity='1';},2200);
   setTimeout(()=>{
     let i=0;
     const _typeTick=()=>{
       if(i>=_msgFull.length){
         btnWrap.style.opacity='1';
-        btnWrap.innerHTML='<button id="_bh-final-claim" style="font-size:16px;padding:12px 28px;background:#000;color:#fff;border:none;border-radius:6px;cursor:pointer;letter-spacing:2px">선물을 받는다 →</button>';
+        btnWrap.innerHTML='<button id="_bh-final-claim" style="font-size:16px;padding:14px 32px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:4px;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all .3s" onmouseover="this.style.background=\'#000\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.background=\'#1a1a1a\';this.style.transform=\'translateY(0)\'">엔딩 크레딧 →</button>';
         const claimBtn=overlay.querySelector('#_bh-final-claim');
         claimBtn.onclick=()=>{
-          // 페이드아웃 → 보상 수령 모달
-          overlay.style.transition='opacity 1.5s ease-out';
+          overlay.style.transition='opacity 2.5s ease-out';
           overlay.style.opacity='0';
           setTimeout(()=>{
             try{overlay.remove();}catch(e){}
-            _grantBlackHoleRewards();
-          },1600);
+            // 검은 팔콘 + 신화 파츠 즉시 지급 (보상은 모달 없이 silent)
+            try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
+            // 최종 엔딩 크레딧 — ACT 5 모드
+            G._act5Complete=true;
+            G._finalEndingShown=false;  // 강제 재생
+            saveGame(true);
+            try{showFinalEndingCredits();}catch(e){console.warn(e);}
+          },2700);
         };
         return;
       }
       msgEl.innerHTML=_msgFull.substring(0,++i).replace(/\n/g,'<br>');
-      setTimeout(_typeTick,28);
+      setTimeout(_typeTick,55);
     };
     _typeTick();
-  },2800);
+  },4000);
+}
+// 보상 즉시 지급 (모달 없이) — 엔딩 시퀀스로 바로 진입
+function _grantBlackHoleRewardsSilent(){
+  // 검은 팔콘 + 신화 파츠 5점 지급
+  const lgd3=SHIP_CATALOG.find(s=>s.id==='LGD03')||{maxHP:245000,maxSH:90000,ATT:306,INT:295,TEC:255};
+  const _mul=1.5;
+  const hiddenShip={
+    id:'HIDDEN_FALCON_'+Date.now(),
+    catalogId:'HIDDEN_FALCON',
+    nm:'🌑 검은 팔콘 (보이드 시험 통과)',
+    tier:'소형',
+    maxHP:Math.round(lgd3.maxHP*_mul),hp:Math.round(lgd3.maxHP*_mul),
+    maxSH:Math.round(lgd3.maxSH*_mul),sh:Math.round(lgd3.maxSH*_mul),
+    ATT:Math.round(lgd3.ATT*_mul),INT:Math.round(lgd3.INT*_mul),TEC:Math.round(lgd3.TEC*_mul),
+    HP:Math.round(lgd3.maxHP*_mul),DEF:150,LOY:80,
+    parts:[],crewIds:[],cargoSlots:5,
+    crafted:false,_isHiddenFalcon:true
+  };
+  try{addShipToFleet(hiddenShip);}catch(e){}
+  if(!G.inventory)G.inventory=[];
+  ['MW01','MS01','MA01','ME01','RB10'].forEach(pid=>{
+    const inv=G.inventory.find(i=>i.id===pid);
+    if(inv)inv.qty++;else G.inventory.push({id:pid,qty:1});
+  });
+  G._finalTestComplete=true;
 }
 
 // ─── 마지막 시험 보상: 검은 팔콘 함선 + 신화 파츠 5점 ───

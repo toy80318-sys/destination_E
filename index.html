@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>DESTINATION EARTH</title>
-<link rel="stylesheet" href="game.css?v=20260525035">
+<link rel="stylesheet" href="game.css?v=20260525040">
 </head>
 <body>
 <div id="game-stage">
@@ -40,7 +40,7 @@
 <!-- LOADING -->
 <div class="scr on" id="s-loading">
   <div style="position:relative;width:220px;height:220px;margin-bottom:10px">
-    <img src="img/chars/baekgu.png" alt="백구"
+    <img src="img/chars/baekgu1.png" alt="백구"
       style="width:220px;height:220px;object-fit:contain;animation:pulse 2s infinite;filter:drop-shadow(0 0 18px rgba(0,243,255,.55))"
       onerror="this.style.display='none';document.getElementById('ld-bk-emoji').style.display='block'">
     <div id="ld-bk-emoji" style="display:none;font-size:100px;line-height:220px;text-align:center;animation:pulse 2s infinite">🐕</div>
@@ -98,7 +98,7 @@
   <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:24px;max-width:460px;width:92%">
     <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px">사령관 등록</div>
     <div style="display:flex;gap:12px;margin-bottom:18px;padding:14px;background:var(--card);border:1px solid var(--cyan);border-radius:10px;align-items:flex-start">
-      <img src="img/chars/baekgu.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid var(--cyan)" onerror="this.outerHTML='<div style=\'font-size:32px;flex-shrink:0;line-height:1\'>🐕</div>'">
+      <img src="img/chars/baekgu1.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid var(--cyan)" onerror="this.outerHTML='<div style=\'font-size:32px;flex-shrink:0;line-height:1\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
         <div style="color:var(--cyan);font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">백구</div>
         안녕! 새 사령관이 왔구나.<br>
@@ -140,9 +140,10 @@
 <div class="scr" id="s-prologue">
   <div style="max-width:620px;width:92%;text-align:center">
     <div id="pr-char" style="width:180px;height:180px;margin:0 auto 16px;position:relative">
-      <img id="pr-baekgu-img" src="img/chars/baekgu.png" alt="백구"
+      <img id="pr-baekgu-img" src="img/chars/baekgu1.png" alt="백구"
         style="width:180px;height:180px;object-fit:contain;animation:pulse 2.5s infinite;filter:drop-shadow(0 0 22px rgba(0,243,255,.6));transition:opacity .4s"
-        onerror="this.style.display='none';document.getElementById('pr-baekgu-emoji').style.display='block'">
+        onload="this.style.display='block';var _e=document.getElementById('pr-baekgu-emoji');if(_e)_e.style.display='none'"
+        onerror="this.style.display='none';var _e=document.getElementById('pr-baekgu-emoji');if(_e)_e.style.display='block'">
       <div id="pr-baekgu-emoji" style="display:none;font-size:100px;line-height:180px;text-align:center;animation:pulse 2.5s infinite">🐕</div>
     </div>
     <div id="pr-lines" style="margin-bottom:24px;min-height:80px"></div>
@@ -243,8 +244,9 @@
     <!-- 바디: 이미지(좌) + 메시지(우) -->
     <div id="bk-body">
       <div id="bk-img-area">
-        <img id="bk-portrait-img" src="img/chars/baekgu.png" alt="백구"
-          onerror="this.style.display='none';document.getElementById('bk-emoji').style.display='flex'"
+        <img id="bk-portrait-img" src="img/chars/baekgu1.png" alt="백구"
+          onload="this.style.display='block';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='none'"
+          onerror="this.style.display='none';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='flex'"
           style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s">
         <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
@@ -274,21 +276,21 @@
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
 <script>window._GAME_VER='20260525.0350';</script>
-<script src="js/data/factions.js?v=20260525035"></script>
-<script src="js/data/planets.js?v=20260525035"></script>
-<script src="js/data/heroes.js?v=20260525035"></script>
-<script src="js/data/commodities.js?v=20260525035"></script>
-<script src="js/data/parts.js?v=20260525035"></script>
-<script src="js/data/quests.js?v=20260525035"></script>
-<script src="js/data/cargo.js?v=20260525035"></script>
-<script src="js/data/crafting.js?v=20260525035"></script>
-<script src="js/data/ships.js?v=20260525035"></script>
+<script src="js/data/factions.js?v=20260525040"></script>
+<script src="js/data/planets.js?v=20260525040"></script>
+<script src="js/data/heroes.js?v=20260525040"></script>
+<script src="js/data/commodities.js?v=20260525040"></script>
+<script src="js/data/parts.js?v=20260525040"></script>
+<script src="js/data/quests.js?v=20260525040"></script>
+<script src="js/data/cargo.js?v=20260525040"></script>
+<script src="js/data/crafting.js?v=20260525040"></script>
+<script src="js/data/ships.js?v=20260525040"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <script defer src="js/cloudsave.js?v=20260524100"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260525035"></script>
+<script src="game.js?v=20260525040"></script>
 </body>
 </html>
