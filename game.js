@@ -9649,6 +9649,33 @@ function showCodexHeroModal(hid){
   </div>`;
   openModal('⭐ '+h.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
+// 도감 — 특수 인물(백구·우르사·블랙팔콘) 상세 모달
+function showCodexSpecialCharModal(cid){
+  const c=(typeof SPECIAL_CHARS!=='undefined')?SPECIAL_CHARS.find(x=>x.id===cid):null;
+  if(!c)return;
+  const col=c.id==='NPC_BAEKGU'?'#9ee7ff':c.id==='NPC_URSA'?'#ff66cc':c.id==='NPC_BLACKFALCON'?'#cc66ff':'var(--gold)';
+  function row(ic,label,val){return`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:16px;flex-shrink:0">${ic}</span><div><div style="font-size:11px;color:var(--dim);margin-bottom:2px">${label}</div><div style="font-size:13px;color:var(--txt);line-height:1.6;word-break:keep-all">${val}</div></div></div>`;}
+  const imgHtml=c.img?`<img src="${c.img}" alt="${c.nm}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66;flex-shrink:0" onerror="this.outerHTML='<div style=\\'width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0\\'>${c.ic}</div>'">`:`<div style="width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0">${c.ic}</div>`;
+  const html=`<div style="padding:4px 0">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid ${col}44">
+      ${imgHtml}
+      <div>
+        <div style="font-size:17px;font-weight:bold;color:${col}">${c.ic} ${c.nm}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:3px">${c.role||''}</div>
+      </div>
+    </div>
+    ${row('📍','발견 행성',c.found||'-')}
+    ${row('⚔️','능력치',c.stats||'-')}
+    ${row('✨','장점',`<span style="color:rgba(180,255,200,.95)">${c.pros||'-'}</span>`)}
+    ${row('⚠️','단점',`<span style="color:rgba(255,200,160,.95)">${c.cons||'-'}</span>`)}
+    ${row('🎭','성격',c.personality||'-')}
+    ${c.creator?row('🛠️','창조자/배경',c.creator):''}
+    ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${c.quip||'...'}</span>`)}
+  </div>`;
+  openModal(c.ic+' '+c.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+}
+try{if(typeof window!=='undefined')window.showCodexSpecialCharModal=showCodexSpecialCharModal;}catch(e){}
+
 // 도감 — 함선 상세 모달 (행성·영웅과 동일한 구조)
 function showCodexPartModal(partId){
   const p=(typeof partById==='function'?partById(partId):(PARTS.find(x=>x.id===partId)));
@@ -9736,7 +9763,7 @@ function showCodexShipModal(shipId){
 function switchCodexTab(t){_codexTab=t;rerenderTab(renderCodexTab);}
 function renderCodexTab(body){
   if(!body)return;
-  const tabs=[['ship','🛸 함선'],['parts','⚙️ 파츠'],['heroes','⭐ 영웅'],['planets','🪐 행성'],['comms','💎 특산물'],['civ','🌌 문명']];
+  const tabs=[['ship','🛸 함선'],['parts','⚙️ 파츠'],['heroes','⭐ 인물'],['planets','🪐 행성'],['comms','💎 특산물'],['civ','🌌 문명'],['sys','📚 생존 지식']];
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
     ${tabs.map(([t,lbl])=>`<button onclick="switchCodexTab('${t}')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid ${_codexTab===t?'var(--cyan)':'var(--bdr)'};background:${_codexTab===t?'rgba(0,243,255,.12)':'transparent'};color:${_codexTab===t?'var(--cyan)':'var(--dim)'};cursor:pointer;font-family:inherit">${lbl}</button>`).join('')}
   </div>`;
@@ -9845,14 +9872,35 @@ function renderCodexTab(body){
   else if(_codexTab==='heroes'){
     const heroList=Object.entries(HEROES);
     const recruited=heroList.filter(([id])=>G.heroes.includes(id)).length;
+    const _specials=(typeof SPECIAL_CHARS!=='undefined')?SPECIAL_CHARS:[];
+    // 특수 인물 카드 (백구·우르사·블랙팔콘) — 영웅 카드와 같은 폼팩터, 보스 격파 여부에 따라 표시
+    const _specialCard=(c)=>{
+      const isBaekgu=c.id==='NPC_BAEKGU';
+      const isUrsa=c.id==='NPC_URSA';
+      const isFalcon=c.id==='NPC_BLACKFALCON';
+      const unlocked=isBaekgu||(isUrsa&&G._earthLiberated)||(isFalcon&&G._falconDefeated);
+      const col=isBaekgu?'#9ee7ff':isUrsa?'#ff66cc':isFalcon?'#cc66ff':'var(--gold)';
+      const oc=unlocked?`onclick="showCodexSpecialCharModal('${c.id}')"`:'';
+      const hover=unlocked?'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'"':'';
+      const imgHtml=unlocked&&c.img?`<img src="${c.img}" alt="${c.nm}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66" onerror="this.outerHTML='<div style=\\'width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid ${col}\\'>${c.ic}</div>'">`:`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr)">❔</div>`;
+      return `<div ${oc} ${hover} style="background:var(--card);border:1px solid ${unlocked?col:'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${unlocked?1:.4};min-height:148px;${unlocked?'cursor:pointer':''}">
+        <div style="margin:0 auto 6px;display:flex;justify-content:center">${imgHtml}</div>
+        <div style="font-size:12px;font-weight:bold;color:${unlocked?col:'var(--dim)'};line-height:1.2">${unlocked?c.nm:'???'}</div>
+        <div style="font-size:10px;color:${col};margin-top:2px;opacity:.8">${unlocked?c.role.split('·')[0].trim():'미발견'}</div>
+      </div>`;
+    };
+    const totalChars=heroList.length+_specials.length;
+    const totalUnlocked=recruited+_specials.filter(c=>c.id==='NPC_BAEKGU'||(c.id==='NPC_URSA'&&G._earthLiberated)||(c.id==='NPC_BLACKFALCON'&&G._falconDefeated)).length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">⭐</div>
-      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">영웅 도감</div>
-      <div style="font-size:12px;color:var(--dim)">영입 <span style="color:var(--cyan)">${recruited}</span> / 전체 ${heroList.length}명 · 영입한 영웅은 클릭=상세</div></div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">인물 도감</div>
+      <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${totalUnlocked}</span> / 전체 ${totalChars}명 · 카드 클릭 시 상세</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">완성도</div>
-      <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(recruited/heroList.length*100)}%</div></div>
+      <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalUnlocked/totalChars*100)}%</div></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
+    <!-- 전설 영웅 8인 -->
+    <div style="font-size:13px;color:var(--gold);font-weight:bold;margin-bottom:8px;letter-spacing:1px">⚔️ 전설 영웅 <span style="color:var(--dim);font-size:11px">${recruited}/${heroList.length}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:16px">
       ${heroList.map(([id,h])=>{const have=G.heroes.includes(id);const aboard=G.fleet.find(s=>(s.crewIds||[]).includes(id));
         const cl=have?'cursor:pointer':'';
         const oc=have?`onclick="showCodexHeroModal('${id}')"` :'';
@@ -9864,6 +9912,11 @@ function renderCodexTab(body){
           ${have?`<div style="font-size:10px;color:${aboard?'var(--cyan)':'var(--dim)'};margin-top:2px">🛸 ${aboard?aboard.nm:'미탑승'}</div>`:''}
         </div>`;
       }).join('')}
+    </div>
+    <!-- 특수 인물 (AI·보스·히든) -->
+    <div style="font-size:13px;color:#cc66ff;font-weight:bold;margin-bottom:8px;letter-spacing:1px">🌟 특수 인물 <span style="color:var(--dim);font-size:11px">AI · 보스 · 히든</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
+      ${_specials.map(_specialCard).join('')}
     </div>`;
   }
 
@@ -9983,6 +10036,38 @@ function renderCodexTab(body){
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">문명 도감</div>
       <div style="font-size:12px;color:var(--dim)">은하의 7대 문명 — 시작과 환경, 그리고 위트 한 줄</div></div>
     </div>${cards}`;
+  }
+  else if(_codexTab==='sys'){
+    // 은하계 시스템 생존 필수지식 — 12개 시스템 가이드
+    if(typeof SYSTEM_GUIDE==='undefined'){
+      content='<div style="color:var(--dim);padding:24px;text-align:center">시스템 데이터 미로드</div>';
+    } else {
+      const _sysCard=(s)=>`<div style="background:rgba(0,0,0,.3);border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,243,255,.08)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,243,255,.2)">
+          <div style="font-size:34px">${s.icon||'📘'}</div>
+          <div style="flex:1">
+            <div style="font-size:17px;font-weight:bold;color:var(--cyan);letter-spacing:1px">${s.name}</div>
+            <div style="font-size:11px;color:var(--dim)">${s.location||''}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:12.5px;line-height:1.7;color:var(--txt)">
+          <div style="color:var(--cyan);font-weight:bold;white-space:nowrap">📋 어떤 곳</div><div style="word-break:keep-all">${s.desc||'-'}</div>
+          <div style="color:var(--cyan);font-weight:bold;white-space:nowrap">👤 담당자</div><div style="word-break:keep-all">${s.operator||'-'}</div>
+          <div style="color:var(--green);font-weight:bold;white-space:nowrap">🔓 해금</div><div style="color:rgba(180,255,200,.95);word-break:keep-all">${s.unlock||'-'}</div>
+          <div style="color:var(--cyan);font-weight:bold;white-space:nowrap">✨ 특징</div><div style="word-break:keep-all">${s.features||'-'}</div>
+          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">⚠️ 주의</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${s.warn||'-'}</div>
+        </div>
+        <div style="margin-top:10px;padding:8px 12px;background:rgba(255,215,0,.06);border-left:3px solid var(--gold);border-radius:4px;font-size:12px;line-height:1.7;color:#ffe;font-style:italic;word-break:keep-all">
+          💬 ${s.quip||'-'}
+        </div>
+      </div>`;
+      const cards=SYSTEM_GUIDE.map(_sysCard).join('');
+      content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
+        <div style="font-size:29px">📚</div>
+        <div><div style="font-size:14px;color:var(--txt);font-weight:bold">은하계 시스템 생존 필수지식</div>
+        <div style="font-size:12px;color:var(--dim)">12개 시스템 — 위치·역할·해금·특징·주의·위트</div></div>
+      </div>${cards}`;
+    }
   }
 
   body.innerHTML=`<div class="hub-scroll">
