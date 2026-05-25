@@ -7686,21 +7686,21 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'블랙팔콘 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  // ─── 보이드 함대 능력치 스케일링 (사용자 명세 엄수) ───
-  //   · 적 함대 총 HP = 아군 함대 총 HP × 2 (정확히)
-  //   · 적 함대 총 ATT = 아군 함대 총 ATT × 2
-  //   · 적 함대 총 SH = 아군 함대 총 SH × 2
+  // ─── 보이드 함대 능력치 스케일링 (사용자 명세 — 아군 함대의 10배) ───
+  //   · 적 함대 총 HP = 아군 함대 총 HP × 10
+  //   · 적 함대 총 ATT = 아군 함대 총 ATT × 10
+  //   · 적 함대 총 SH = 아군 함대 총 SH × 10
   //   · 호위 15척 : 보스 1척 = 1 : 4 비율 (보스가 호위 1척의 4배)
   //   · 분배 단위 = 15 + 4 = 19 unit
   //     예시 (아군 23M HP / 77K ATT):
-  //       총 적 = 46M HP / 154K ATT
-  //       호위 1척 = 46M/19 ≈ 2.42M HP / 154K/19 ≈ 8.1K ATT
-  //       보스 1척 = 호위 × 4 ≈ 9.68M HP / 32.4K ATT
+  //       총 적 = 230M HP / 770K ATT
+  //       호위 1척 = 230M/19 ≈ 12.1M HP / 40.5K ATT
+  //       보스 1척 = 호위 × 4 ≈ 48.4M HP / 162K ATT
   const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
-  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
-  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*2));
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*10));
+  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*10));
+  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*10));
   const _UNIT=19;  // 호위 15 × 1 + 보스 1 × 4
   const _escortHP=Math.round(_totalHP/_UNIT);
   const _escortATT=Math.round(_totalATT/_UNIT);
