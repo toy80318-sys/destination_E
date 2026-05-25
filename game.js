@@ -12310,7 +12310,7 @@ function activateSunsinFocus(){
   target.hp=0;target.sh=0;
   addCombatLog(`⚔️ 이순신 일점사! ${target.nm} 즉시 격침! 아군 함대 공격력 ×2 강화!`,'gold');
   notify('⚔️ 이순신 일점사! 아군 ATT ×2','gold');
-  baekgu('와! 이순신 장군 일점사야! 적 선두 한 방에 보내버렸어. 함대 화력 두 배! 학익진 준비할 시간 10초!');
+  baekgu('와! 넬슨의 일점사야! 적 선두 한 방에 보내버렸어. 함대 화력 두 배! 학익진 준비할 시간 10초!');
   const sbtn=document.getElementById('cb-sunsin-btn');
   if(sbtn)sbtn.disabled=true;
   drawCombatFrame();
