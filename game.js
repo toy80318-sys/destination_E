@@ -869,12 +869,37 @@ function notify(msg,type='info'){
 // ─── 캐릭터 초상 매핑 (대사 인트로/팝업 공통) ──────────────────
 // 화자 이름 → 이미지 경로. 새 인물 추가 시 img/chars/<file>.png 넣고 여기에 한 줄 추가.
 const CHAR_PORTRAITS={
+  // 백구 (AI)
   '백구':'img/chars/baekgu1.png',
-  '블랙팔콘':'img/chars/Void_Hiden.png',
-  '팔콘 스카우트':'img/chars/Void_Hiden.png',
-  '⚠️ 통신 수신 ⚠️':'img/chars/Void_Hiden.png'
-  // 예: '우르사 메이저':'img/chars/ursa.png',
-  // 예: '이순신':'img/chars/sunsin.png',
+  // 보스급
+  '우르사 메이저':'img/chars/ursa.png',
+  '블랙팔콘':'img/chars/void_hiden.png',
+  '팔콘 스카우트':'img/chars/void_hiden.png',
+  '⚠️ 통신 수신 ⚠️':'img/chars/void_hiden.png',
+  // 영웅 8인 — 짧은 이름·풀네임·HEROES.nm 의 모든 변형을 같은 이미지로 매핑
+  // H01 이순신
+  '이순신':'img/chars/sunsin.png',
+  '이순신 제독':'img/chars/sunsin.png',
+  // H02 장영실
+  '장영실':'img/chars/yeongsil.png',
+  '장영실 대감':'img/chars/yeongsil.png',
+  // H03 광개토대왕
+  '광개토대왕':'img/chars/gwanggaeto.png',
+  // H04 유리 가가린
+  '가가린':'img/chars/gagarin.png',
+  '유리 가가린':'img/chars/gagarin.png',
+  // H05 호레이쇼 넬슨
+  '넬슨':'img/chars/nelson.png',
+  '호레이쇼 넬슨':'img/chars/nelson.png',
+  // H06 아인슈타인
+  '아인슈타인':'img/chars/einstein.png',
+  'A. 아인슈타인':'img/chars/einstein.png',
+  // H07 니콜라 테슬라
+  '테슬라':'img/chars/tesla.png',
+  '니콜라 테슬라':'img/chars/tesla.png',
+  // H08 마르코 폴로
+  '마르코 폴로':'img/chars/marcopolo.png',
+  '마르코':'img/chars/marcopolo.png'
 };
 // ─── 백구 무드 → 이미지 매핑 (시리즈 2 다양한 표정 활용) ───
 // 파일명 기반 자동 배정:
@@ -920,10 +945,22 @@ function _baekguSrcByMood(mood){
   };
   return M[mood]||'img/chars/baekgu1.png';
 }
-// 전체 백구 무드 이미지를 페이지 로드 시 프리로드 — 스왑 시 깜빡임/이전 잔상 방지
-(function _preloadBaekguAll(){
+// 전체 백구 무드 이미지 + 영웅·보스 초상을 페이지 로드 시 프리로드 — 스왑 깜빡임/이전 잔상 방지
+(function _preloadCharsAll(){
   if(typeof window==='undefined')return;
-  const _arr=['baekgu1.png','baekgu1_surprise.png','baekgu2.png','baekgu2_fight.png','baekgu2_smile1.png','baekgu2_smile2.png','baekgu2_smile4.png','baekgu2_think.png','baekgu2_advice.png','baekgu2_anger0.png','baekgu2_anger1.png','baekgu2_anger2.png','baekgu2_sad.png','baekgu2_sad_happy.png','baekgu2_sleepy.png','baekgu2_hungry.png','baekgu2_bothersome.png','baekgu2_ignorant_person.png','baekgu3.png'];
+  const _arr=[
+    // 백구 19종
+    'baekgu1.png','baekgu1_surprise.png','baekgu2.png','baekgu2_fight.png',
+    'baekgu2_smile1.png','baekgu2_smile2.png','baekgu2_smile4.png','baekgu2_think.png',
+    'baekgu2_advice.png','baekgu2_anger0.png','baekgu2_anger1.png','baekgu2_anger2.png',
+    'baekgu2_sad.png','baekgu2_sad_happy.png','baekgu2_sleepy.png','baekgu2_hungry.png',
+    'baekgu2_bothersome.png','baekgu2_ignorant_person.png','baekgu3.png',
+    // 영웅 8인
+    'sunsin.png','yeongsil.png','gwanggaeto.png','gagarin.png',
+    'nelson.png','einstein.png','tesla.png','marcopolo.png',
+    // 보스급
+    'ursa.png','void_hiden.png'
+  ];
   const _doPreload=()=>{_arr.forEach(f=>{const i=new Image();i.src='img/chars/'+f;});};
   if(document.readyState==='complete'||document.readyState==='interactive')_doPreload();
   else window.addEventListener('DOMContentLoaded',_doPreload,{once:true});
@@ -979,6 +1016,19 @@ const _CHAR_PORTRAITS_DUMMY={ // 아래는 더이상 사용 안 함 (위에서 �
   // 예: '광개토대왕':'img/chars/gwanggaeto.png'
 };
 // 화자용 초상 HTML 반환 (이미지가 매핑되어 있으면 <img>, 아니면 폴백 이모지)
+// 영웅용 원형 초상화 (도감/축하 모달 등) — CHAR_PORTRAITS에 매핑된 이미지 우선,
+// 로드 실패 시 이모지 아이콘으로 폴백. 두 경우 모두 동일한 원형 프레임을 유지.
+function _heroPortrait(h, size, borderColor){
+  size=size||72;
+  borderColor=borderColor||'var(--gold)';
+  const _ic=h&&h.ic||'⚑';
+  const src=h&&CHAR_PORTRAITS[h.nm];
+  const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66`;
+  if(src){
+    return `<img src="${src}" alt="${(h&&h.nm)||''}" style="${_frame};object-fit:cover" onerror="this.outerHTML='<div style=\\'${_frame};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px\\'>${_ic}</div>'">`;
+  }
+  return `<div style="${_frame};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px">${_ic}</div>`;
+}
 function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   size=size||54;
   borderColor=borderColor||'var(--cyan)';
@@ -9111,7 +9161,7 @@ function showCodexHeroModal(hid){
   const foundPlanetNm=foundPlanet?foundPlanet.nm:'불명';
   const html=`<div style="padding:4px 0">
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">
-      <div style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px;background:rgba(0,0,0,.5);border:2px solid var(--gold);flex-shrink:0">${h.ic}</div>
+      ${_heroPortrait(h,64,'var(--gold)')}
       <div>
         <div style="font-size:17px;font-weight:bold;color:var(--gold)">${h.nm}</div>
         <div style="font-size:12px;color:${clCol};margin-top:2px">${clNm} · LOY:${h.LOY}</div>
@@ -9345,7 +9395,7 @@ function renderCodexTab(body){
         const oc=have?`onclick="showCodexHeroModal('${id}')"` :'';
         const hover=have?'onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'"':'';
         return`<div ${oc} ${hover} style="background:var(--card);border:1px solid ${have?'var(--gold)':'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.4};min-height:148px;${cl}">
-          <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:48px;background:rgba(0,0,0,.3)">${have?h.ic:'❔'}</div>
+          <div style="margin:0 auto 6px;display:flex;justify-content:center">${have?_heroPortrait(h,78,'var(--gold)'):`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr);flex-shrink:0">❔</div>`}</div>
           <div style="font-size:12px;font-weight:bold;color:${have?'var(--gold)':'var(--dim)'};line-height:1.2">${have?h.nm:'???'}</div>
           <div style="font-size:10px;color:var(--purple);margin-top:2px">${have?h.sk:'미영입'}</div>
           ${have?`<div style="font-size:10px;color:${aboard?'var(--cyan)':'var(--dim)'};margin-top:2px">🛸 ${aboard?aboard.nm:'미탑승'}</div>`:''}
@@ -9497,7 +9547,7 @@ function showHeroRecruit(heroId){
   // 2) 축하 모달 — 닫기 버튼 1개만, 영입 결과에 영향 없음
   openModal(`${h.ic} 전설 영웅 합류!`,
     `<div style="text-align:center;padding:8px">
-      <div style="font-size:58px;margin-bottom:8px;text-shadow:0 0 24px gold">${h.ic}</div>
+      <div style="display:flex;justify-content:center;margin-bottom:8px;filter:drop-shadow(0 0 24px gold)">${_heroPortrait(h,96,'var(--gold)')}</div>
       <div style="color:var(--gold);font-size:22px;font-weight:bold;margin-bottom:4px">${h.nm}</div>
       <div style="font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:10px">${_ok?'✅ 영입 완료 — 자동으로 함대에 합류했습니다':'⚠️ 영입 조건 미달'}</div>
       <div style="background:var(--card);border-radius:8px;padding:12px;font-size:13px;line-height:2">
