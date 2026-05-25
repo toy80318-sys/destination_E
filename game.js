@@ -7554,7 +7554,7 @@ function _grantVoidBossRewards(){
       id:'CAP_BLACKFALCON_'+Date.now()+'_'+i,
       catalogId:'BLACKFALCON',  // 도감 ship_BLACKFALCON과 매칭 + S10.png 이미지
       catId:'S10',
-      nm:'🌑 블랙팔콘 (나포)'+(_capCount>1?` ${i+1}/${_capCount}`:''),
+      nm:'🌑 블랙팔콘'+(_capCount>1?` ${i+1}/${_capCount}`:''),
       tier:'대형',  // 대형 함선급 슬롯: 6 cols × 4 rows 기본
       partsRowsExtra:1,  // 대형 최대 확장 = +1 row → 6×5=30 파츠 슬롯
       maxHP:_capHP,hp:_capHP,
@@ -7604,7 +7604,7 @@ function _grantVoidBossRewards(){
     const items=[];
     // 나포 팔콘 — S10.png 함선 이미지
     _capturedShips.forEach(s=>{
-      items.push({ic:'🏴',img:'img/ships/S10.png',nm:s.nm,type:'보이드 정찰함 (나포)',color:'#cc66ff',
+      items.push({ic:'🏴',img:'img/ships/S10.png',nm:s.nm,type:'보이드 정찰함',color:'#cc66ff',
         stats:`HP ${_capHP.toLocaleString()} · SH ${_capSH.toLocaleString()} · ATT ${_capATT}`,
         desc:'보이드의 작별 선물. 충성도 35로 시작 — 정비소에서 크루 배치 가능.',rarity:'mythic'});
     });
@@ -12338,7 +12338,7 @@ function _finishCombat(){
       if(!G.fleet)G.fleet=[];
       const _ursaShip={
         id:'BOSS_URSA_CAP_'+Date.now(),
-        nm:'🏴 우르사 메이저 (나포)',
+        nm:'🏴 우르사 메이저',
         tier:'신화',
         maxHP:10000000,hp:10000000,maxSH:300000,sh:300000,
         ATT:6000,INT:600,TEC:280,HP:10000000,DEF:200,LOY:80,
@@ -12448,7 +12448,7 @@ function _finishCombat(){
       // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선
       if(_isBossWin){
         items.push({ic:'💰',nm:'보스 격파 보너스',type:'크레딧',color:'var(--gold)',stats:`+₡10,000,000`,desc:'지구 해방의 대가. 100년 봉쇄의 청산금.'});
-        items.push({ic:'🏴',nm:'우르사 메이저 (나포)',type:'신화급 함선',color:'#ff66cc',stats:`HP 10,000,000 · ATT 6,000 · 신화 파츠 4종 풀세트`,desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
+        items.push({ic:'🏴',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:`HP 10,000,000 · ATT 6,000 · 신화 파츠 4종 풀세트`,desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
         items.push({ic:'⚔️',nm:'허메틱 포 ✦신화',type:'무기',color:'#ff66cc',stats:'ATT +320',desc:'우르사 메이저 주포 노획. 연속 공격 확률 +40%.',rarity:'mythic'});
         items.push({ic:'🛡️',nm:'크로노스 방벽 ✦신화',type:'실드',color:'#ff66cc',stats:'INT +280 · 실드 +8000',desc:'피격 반사 20% + 매 턴 maxSH 15% 자가 복구.',rarity:'mythic'});
         items.push({ic:'🪖',nm:'아다만 선체 ✦신화',type:'장갑',color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:'치명타 피해 50% 감소.',rarity:'mythic'});

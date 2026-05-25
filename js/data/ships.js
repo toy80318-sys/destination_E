@@ -33,7 +33,7 @@ const SHIP_CATALOG=[
   {id:'H09',nm:'갤럭시 호크',tier:'대형',price:580000,maxHP:20000,maxSH:8000,ATT:98,INT:88,TEC:75,LOY:87,ic:'🌟',desc:'고속 중순양함. 추가 턴 오더 +1'},
   {id:'H10',nm:'레비아탄',tier:'대형',price:1200000,maxHP:45000,maxSH:18000,ATT:110,INT:105,TEC:95,LOY:92,ic:'🌟',desc:'전설 대형 전투함. 화력 최강'},
   {id:'H11',nm:'아르마다',tier:'대형',price:950000,maxHP:38000,maxSH:22000,ATT:90,INT:120,TEC:88,LOY:95,ic:'🌟',desc:'방어·지원 특화. 함대 전체 실드+20%'},
-  {id:'H12',nm:'우르사 메이저 파쇄기',tier:'대형',price:2000000,maxHP:75000,maxSH:25000,ATT:120,INT:115,TEC:100,LOY:90,ic:'🌟',desc:'보스전 실드 관통 100,000. 보이드 전용'},
+  {id:'H12',nm:'우르사 파쇄기',tier:'대형',price:2000000,maxHP:75000,maxSH:25000,ATT:120,INT:115,TEC:100,LOY:90,ic:'🌟',desc:'보스전 실드 관통 100,000. 보이드 전용'},
   // ── 신화 함선 LGD01~LGD03 (최고등급 신화함, 제한 없음) ───────────
   {id:'LGD01',nm:'거북선',tier:'신화',price:25000000,maxHP:260000,maxSH:65000,ATT:245,INT:235,TEC:210,LOY:80,ic:'✦',desc:'신화급 전투함. 호위함 ATT/INT +30% · 압도적 내구도'},
   {id:'LGD02',nm:'워덴클리프',tier:'신화',price:22500000,maxHP:175000,maxSH:160000,ATT:323,INT:265,TEC:230,LOY:80,ic:'✦',desc:'신화급 전투함. 매 턴 적 모듈 1개 랜덤 비활성화 · 강화된 실드/화력'},
@@ -44,9 +44,9 @@ const SHIP_CATALOG=[
   {id:'BLACKFALCON',catalogId:'BLACKFALCON',nm:'🌑 블랙팔콘',tier:'신화',price:0,maxHP:9700000,maxSH:300000,ATT:32000,INT:1200,TEC:560,LOY:0,ic:'✦',desc:'보이드의 사자(使者). 1000년의 침묵을 깨고 나타난 검은 정찰함. 히든 보스 격파 후 나포 가능 — 우르사 메이저의 2배 능력치, 신화 최고 등급.'},
   // ── 치크스 노획 함선 (행성 경매로 치크스 행성 1개 이상 보유 시에만 입고) ─
   // 적군 함선 디자인을 노획·역공학 → 아군 전용으로 개조한 시리즈
-  {id:'CHIX_S_BUY',nm:'치크스 정찰기 (노획)',tier:'소형',price:35000,maxHP:480,maxSH:280,ATT:34,INT:18,TEC:30,LOY:60,ic:'🛸',catalogId:'CHIX_S',desc:'노획된 치크스 정찰기. 이질적 생체회로로 INT 회복 +10%/턴'},
-  {id:'CHIX_M_BUY',nm:'치크스 순양함 (노획)',tier:'중형',price:160000,maxHP:3600,maxSH:1600,ATT:58,INT:42,TEC:38,LOY:62,ic:'🚀',catalogId:'CHIX_M',desc:'노획된 치크스 중형 순양함. 치크스 함대 상대로 ATT+25%'},
-  {id:'CHIX_L_BUY',nm:'치크스 모선 (노획)',tier:'대형',price:680000,maxHP:18000,maxSH:8000,ATT:96,INT:88,TEC:72,LOY:65,ic:'🌟',catalogId:'CHIX_L',desc:'노획된 치크스 모선. 전투 시작 시 적 1척 마비(1턴)'},
+  {id:'CHIX_S_BUY',nm:'치크스 정찰기',tier:'소형',price:35000,maxHP:480,maxSH:280,ATT:34,INT:18,TEC:30,LOY:60,ic:'🛸',catalogId:'CHIX_S',desc:'노획된 치크스 정찰기. 이질적 생체회로로 INT 회복 +10%/턴'},
+  {id:'CHIX_M_BUY',nm:'치크스 순양함',tier:'중형',price:160000,maxHP:3600,maxSH:1600,ATT:58,INT:42,TEC:38,LOY:62,ic:'🚀',catalogId:'CHIX_M',desc:'노획된 치크스 중형 순양함. 치크스 함대 상대로 ATT+25%'},
+  {id:'CHIX_L_BUY',nm:'치크스 모선',tier:'대형',price:680000,maxHP:18000,maxSH:8000,ATT:96,INT:88,TEC:72,LOY:65,ic:'🌟',catalogId:'CHIX_L',desc:'노획된 치크스 모선. 전투 시작 시 적 1척 마비(1턴)'},
 ];
 
 // 최종 보스 ─ 우르사 메이저 (신화 풀셋 장착) — HP 1,000만 (현실적 격파 가능 밸런스) / ATT 6000 / SH 30만

@@ -35,7 +35,7 @@ const CRAFT_RECIPES=[
   {id:'H11',type:'ship',tier:'legend',nm:'아르마다 🌟',cat:'대형',
    desc:'방어·지원 특화. HP 38,000 / SH 22,000. 함대 전체 실드+20%.',
    mats:[{id:'R03',qty:25},{id:'R06',qty:20},{id:'R07',qty:15}]},
-  {id:'H12',type:'ship',tier:'legend',nm:'우르사 메이저 파쇄기 🌟',cat:'대형',
+  {id:'H12',type:'ship',tier:'legend',nm:'우르사 파쇄기 🌟',cat:'대형',
    desc:'보이드 전용 함선. HP 75,000. 보스전 실드 관통 특화.',
    mats:[{id:'R01',qty:30},{id:'R08',qty:20},{id:'R02',qty:15}]},
   // ─ 전설 창고 확장 파츠 (제작소 제작 가능) ─
