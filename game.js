@@ -12897,9 +12897,21 @@ function saveGame(silent,slotN){
       notify('⚠️ 저장 크기 '+(payload.length/1024/1024).toFixed(1)+'MB — 일부 데이터 정리 권장','warn');
     }
     // 6) 클라우드 업로드 (디바운스 1초)
-    try{if(window.CloudSave)CloudSave.upload(n,snap);}catch(e){}
-    // 이메일 등록 시 이메일 슬롯에도 동시 업로드 (간편 클라우드)
-    try{if(window.CloudSave&&CloudSave.getEmail&&CloudSave.getEmail())CloudSave.uploadByEmail(n,snap);}catch(e){}
+    try{if(window.CloudSave)CloudSave.upload(n,snap);}catch(e){if(!silent)console.warn('cloud upload error',e);}
+    // 이메일 등록 시 이메일 슬롯에도 동시 업로드 (간편 클라우드) — 실패하면 notify로 알림
+    try{
+      if(window.CloudSave&&CloudSave.getEmail&&CloudSave.getEmail()){
+        CloudSave.uploadByEmail(n,snap).then(r=>{
+          if(r&&r.error&&!silent){
+            // PERMISSION_DENIED는 인증 미완료 가능성 — 가벼운 안내
+            const msg=r.error.includes('PERMISSION')||r.error.includes('permission')?
+              '☁️ 클라우드 동기화 보류 (인증 대기 중)':
+              '☁️ 클라우드 동기화 오류: '+r.error.slice(0,60);
+            notify(msg,'warn');
+          }
+        }).catch(()=>{});
+      }
+    }catch(e){if(!silent)console.warn('email upload error',e);}
     if(!silent)notify('💾 슬롯 '+n+' 저장 완료 ('+Math.round(payload.length/1024)+'KB)','ok');
   }catch(e){
     // 저장 실패 — quota 초과 등. 백업에서 복구 시도
