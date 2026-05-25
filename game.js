@@ -876,30 +876,29 @@ const CHAR_PORTRAITS={
   '블랙팔콘':'img/chars/void_hiden.png',
   '팔콘 스카우트':'img/chars/void_hiden.png',
   '⚠️ 통신 수신 ⚠️':'img/chars/void_hiden.png',
-  // 영웅 8인 — 짧은 이름·풀네임·HEROES.nm 의 모든 변형을 같은 이미지로 매핑
+  // 영웅 8인 — hero01~08.png 번호 구조 (HEROES H01~H08 순서와 1:1)
+  // 짧은 이름·풀네임 둘 다 키로 등록해 대사 화자 변형 모두 커버
   // H01 이순신
-  '이순신':'img/chars/sunsin.png',
-  '이순신 제독':'img/chars/sunsin.png',  // 구버전 세이브 호환
+  '이순신':'img/chars/hero01.png',
   // H02 장영실
-  '장영실':'img/chars/yeongsil.png',
-  '장영실 대감':'img/chars/yeongsil.png',  // 구버전 세이브 호환
+  '장영실':'img/chars/hero02.png',
   // H03 광개토대왕
-  '광개토대왕':'img/chars/gwanggaeto.png',
+  '광개토대왕':'img/chars/hero03.png',
   // H04 유리 가가린
-  '가가린':'img/chars/gagarin.png',
-  '유리 가가린':'img/chars/gagarin.png',
+  '가가린':'img/chars/hero04.png',
+  '유리 가가린':'img/chars/hero04.png',
   // H05 호레이쇼 넬슨
-  '넬슨':'img/chars/nelson.png',
-  '호레이쇼 넬슨':'img/chars/nelson.png',
+  '넬슨':'img/chars/hero05.png',
+  '호레이쇼 넬슨':'img/chars/hero05.png',
   // H06 아인슈타인
-  '아인슈타인':'img/chars/einstein.png',
-  'A. 아인슈타인':'img/chars/einstein.png',
+  '아인슈타인':'img/chars/hero06.png',
+  'A. 아인슈타인':'img/chars/hero06.png',
   // H07 니콜라 테슬라
-  '테슬라':'img/chars/tesla.png',
-  '니콜라 테슬라':'img/chars/tesla.png',
+  '테슬라':'img/chars/hero07.png',
+  '니콜라 테슬라':'img/chars/hero07.png',
   // H08 마르코 폴로
-  '마르코 폴로':'img/chars/marcopolo.png',
-  '마르코':'img/chars/marcopolo.png'
+  '마르코':'img/chars/hero08.png',
+  '마르코 폴로':'img/chars/hero08.png'
 };
 // ─── 백구 무드 → 이미지 매핑 (시리즈 2 다양한 표정 활용) ───
 // 파일명 기반 자동 배정:
@@ -955,9 +954,9 @@ function _baekguSrcByMood(mood){
     'baekgu2_advice.png','baekgu2_anger0.png','baekgu2_anger1.png','baekgu2_anger2.png',
     'baekgu2_sad.png','baekgu2_sad_happy.png','baekgu2_sleepy.png','baekgu2_hungry.png',
     'baekgu2_bothersome.png','baekgu2_ignorant_person.png','baekgu3.png',
-    // 영웅 8인
-    'sunsin.png','yeongsil.png','gwanggaeto.png','gagarin.png',
-    'nelson.png','einstein.png','tesla.png','marcopolo.png',
+    // 영웅 8인 (hero01~08)
+    'hero01.png','hero02.png','hero03.png','hero04.png',
+    'hero05.png','hero06.png','hero07.png','hero08.png',
     // 보스급
     'ursa.png','void_hiden.png'
   ];
@@ -1011,10 +1010,6 @@ function _baekguIcon(size,mood){
   const src=_baekguSrcByMood(mood);
   return `<img src="${src}" alt="백구" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
 }
-const _CHAR_PORTRAITS_DUMMY={ // 아래는 더이상 사용 안 함 (위에서 닫힘) — 호환용 빈 객체
-
-  // 예: '광개토대왕':'img/chars/gwanggaeto.png'
-};
 // 화자용 초상 HTML 반환 (이미지가 매핑되어 있으면 <img>, 아니면 폴백 이모지)
 // 영웅용 원형 초상화 (도감/축하 모달 등) — CHAR_PORTRAITS에 매핑된 이미지 우선,
 // 로드 실패 시 이모지 아이콘으로 폴백. 두 경우 모두 동일한 원형 프레임을 유지.
@@ -1656,7 +1651,6 @@ function crewImgSrc(c){
   return `img/crew/${c.cl||'Merch'}_${gen}.png`;
 }
 function commImgSrc(cid){return `img/commodities/${cid||'generic'}.png`;}
-function charImgSrc(name){return `img/chars/${name}.png`;}
 // ── mkThumb (기존 호환) ──────────────────────────────────────────
 function mkThumb(emoji,bg,size){
   bg=bg||'#0d1a2a';size=size||76;
