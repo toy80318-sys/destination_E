@@ -879,10 +879,10 @@ const CHAR_PORTRAITS={
   // 영웅 8인 — 짧은 이름·풀네임·HEROES.nm 의 모든 변형을 같은 이미지로 매핑
   // H01 이순신
   '이순신':'img/chars/sunsin.png',
-  '이순신 제독':'img/chars/sunsin.png',
+  '이순신 제독':'img/chars/sunsin.png',  // 구버전 세이브 호환
   // H02 장영실
   '장영실':'img/chars/yeongsil.png',
-  '장영실 대감':'img/chars/yeongsil.png',
+  '장영실 대감':'img/chars/yeongsil.png',  // 구버전 세이브 호환
   // H03 광개토대왕
   '광개토대왕':'img/chars/gwanggaeto.png',
   // H04 유리 가가린
@@ -1032,11 +1032,26 @@ function _heroPortrait(h, size, borderColor){
 function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   size=size||54;
   borderColor=borderColor||'var(--cyan)';
-  const src=CHAR_PORTRAITS[speaker];
-  if(src){
-    return `<img src="${src}" alt="${speaker}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;background:var(--panel);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66" onerror="this.outerHTML='<div style=\\'font-size:${Math.round(size*0.85)}px;flex-shrink:0\\'>${fallbackEmoji||'⚑'}</div>'">`;
+  // 영웅 화자라면 화자명 → HEROES.nm 자동 매칭해 본인 ic를 폴백으로 채택
+  // (호출자가 spIc='⚑' 같은 기본값을 넘기더라도 영웅이라면 더 적절한 이모지 사용)
+  if(!fallbackEmoji||fallbackEmoji==='⚑'){
+    try{
+      if(typeof HEROES!=='undefined'){
+        for(const hid in HEROES){
+          const h=HEROES[hid];
+          if(h&&(h.nm===speaker||speaker.includes(h.nm))){fallbackEmoji=h.ic||fallbackEmoji;break;}
+        }
+      }
+    }catch(e){}
   }
-  return `<div style="font-size:${Math.round(size*0.85)}px;flex-shrink:0;width:${size}px;text-align:center">${fallbackEmoji||'⚑'}</div>`;
+  fallbackEmoji=fallbackEmoji||'⚑';
+  const src=CHAR_PORTRAITS[speaker];
+  // 원형 폴백 프레임 — 이미지 로드 실패 시도 동일한 크기·테두리 유지해 레이아웃 흔들림 없음
+  const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px`;
+  if(src){
+    return `<img src="${src}" alt="${speaker}" style="${_frame};object-fit:cover" onerror="this.outerHTML='<div style=\\'${_frame}\\'>${fallbackEmoji}</div>'">`;
+  }
+  return `<div style="${_frame}">${fallbackEmoji}</div>`;
 }
 function baekgu(text,mood){
   const msgs=document.getElementById('bk-msgs');
@@ -1596,7 +1611,21 @@ function shipImgSrc(ship){
 }
 // 행성 아이콘(원형 PNG): P31은 해방 후 P31_free.png 시도 (없으면 onerror로 P31.png fallback)
 function planetImgSrc(pid){
-  if(pid==='P31'&&typeof _isEarthFree==='function'&&_isEarthFree())return 'img/planets/P31_free.png';
+  // P31_free.png는 옵션 파일 — 없으면 기본 P31.png 사용 (이미지가 추가되면 자동으로 활성)
+  // imgOrEmoji/직접 <img>가 onerror 폴백을 처리하지만, 누락 파일에 대한 사전 차단도 한다
+  if(pid==='P31'&&typeof _isEarthFree==='function'&&_isEarthFree()){
+    if(typeof window!=='undefined'){
+      if(window._P31_FREE_AVAIL===true)return 'img/planets/P31_free.png';
+      if(window._P31_FREE_AVAIL===undefined){
+        // 한 번만 존재 여부 검사 (HEAD 대신 Image 객체로 비동기 검증)
+        window._P31_FREE_AVAIL=false;
+        const _t=new Image();
+        _t.onload=()=>{window._P31_FREE_AVAIL=true;};
+        _t.onerror=()=>{window._P31_FREE_AVAIL=false;};
+        _t.src='img/planets/P31_free.png';
+      }
+    }
+  }
   return `img/planets/${pid||'P01'}.png`;
 }
 // 행성 배경 이미지 경로 — P31(지구)은 해방 후 _free 변형 자동 사용 (해당 파일 없으면 기본으로 fallback)
@@ -9595,7 +9624,7 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
     notify('📜 난중일기 영인본 제출 완료.','ok');
   }
   G.heroes.push(heroId);closeModal();notify(`${HEROES[heroId]?.ic} ${HEROES[heroId]?.nm} 영입!`,'pur');baekgu(`${HEROES[heroId]?.nm} 합류. 잘 써.`);
-  // 장영실 대감: 모든 행성 안개 제거
+  // 장영실: 모든 행성 안개 제거
   if(heroId==='H02'){applyJangYeongsilEffect();notify('⚙️ 장영실 효과: 은하계 전 행성 탐색 완료!','gold');}
   saveGame(true);
 }
@@ -10488,7 +10517,7 @@ function initCombatCanvas(){
     sbtn.className='btn btn-sm';
     sbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite';
     sbtn.textContent='⚔️ 일점사';
-    sbtn.title='이순신 제독 전술: 전 함대 화력 집중으로 적함 1척 즉시 격파 (전투 1회)';
+    sbtn.title='이순신 전술: 전 함대 화력 집중으로 적함 1척 즉시 격파 (전투 1회)';
     sbtn.onclick=activateSunsinFocus;
     hdr.appendChild(sbtn);
   }
@@ -13331,12 +13360,12 @@ function showEndingCredits(onDone){
   if(_hl.includes('H01')){
     heroEndings.push({nm:'이순신',ic:'⚔️',col:'#ffd700',tx:'조선의 하늘이 아니군. 하지만… 인류의 하늘이오.'});
     heroBlocks.push({sp:'이순신',col:'#ffd700',ic:'⚔️',tx:'조선의 하늘이 아니군. 하지만… 인류의 하늘이오.'});
-    heroBlocks.push(_bgPage(`이순신 제독을 깨운 날. 그는 100년 잠든 사람치고는 너무 빨리 일어났다.\n첫 마디가 "지구는?", 두 번째가 "이길 수 있는 싸움이오?"였다.\n내가 먼저 답했다 — "이겨야 하는 싸움입니다." ${cmdName}이(가) 내 쪽을 한 번 봤다. 그 시선을 나는 평생 기억하기로 했다.`));
+    heroBlocks.push(_bgPage(`이순신을 깨운 날. 그는 100년 잠든 사람치고는 너무 빨리 일어났다.\n첫 마디가 "지구는?", 두 번째가 "이길 수 있는 싸움이오?"였다.\n내가 먼저 답했다 — "이겨야 하는 싸움입니다." ${cmdName}이(가) 내 쪽을 한 번 봤다. 그 시선을 나는 평생 기억하기로 했다.`));
   }
   if(_hl.includes('H02')){
     heroEndings.push({nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:'거북선이… 돌아왔구나. 내가 만든 배가 지구를 구했어.'});
     heroBlocks.push({sp:'장영실',col:'#9ee7ff',ic:'⚙️',tx:'거북선이… 돌아왔구나. 내가 만든 배가 지구를 구했어.'});
-    heroBlocks.push(_bgPage(`장영실 대감. 100년 동안 도면 하나를 그리고 있던 사람을, 나는 어떻게 위로해야 할지 몰랐다.\n그는 위로받기를 원치 않는 것 같았다.\n다만 ${flagshipName}의 도면을 처음 펼친 순간 — 그의 눈이 100년 만에 처음으로 흔들렸다. 그것이 위로보다 컸다.`));
+    heroBlocks.push(_bgPage(`장영실. 100년 동안 도면 하나를 그리고 있던 사람을, 나는 어떻게 위로해야 할지 몰랐다.\n그는 위로받기를 원치 않는 것 같았다.\n다만 ${flagshipName}의 도면을 처음 펼친 순간 — 그의 눈이 100년 만에 처음으로 흔들렸다. 그것이 위로보다 컸다.`));
   }
   if(_hl.includes('H03')){
     heroEndings.push({nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:'정복자는 땅을 빼앗는다. 그러나 진정한 왕은 땅을 돌려준다. 오늘 나는 땅을 돌려줬소.'});
