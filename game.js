@@ -9949,11 +9949,19 @@ function renderCodexTab(body){
       if(!l)return '';
       const col=f.col||'#888';
       const repName=_repPlanetName(l.rep);
+      const planetImg=`img/planets/${l.rep}.png`;
       return `<div style="background:rgba(0,0,0,.3);border:1px solid ${col}55;border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px ${col}22">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid ${col}44">
-          <div style="font-size:34px">${l.icon||'🪐'}</div>
-          <div style="flex:1">
-            <div style="font-size:18px;font-weight:bold;color:${col};letter-spacing:1px">${f.nm||fid}</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid ${col}44">
+          <!-- 대표 행성 이미지 (있으면 표시, 없으면 이모지) -->
+          <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${col};box-shadow:0 0 16px ${col}66;background:radial-gradient(circle at center, ${col}33, #000);position:relative">
+            <img src="${planetImg}" alt="${repName}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:44px">${l.icon||'🪐'}</div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <span style="font-size:22px">${l.icon||'🪐'}</span>
+              <span style="font-size:18px;font-weight:bold;color:${col};letter-spacing:1px">${f.nm||fid}</span>
+            </div>
             <div style="font-size:11px;color:var(--dim)">대표 행성 · <b style="color:${col}">${repName}</b></div>
           </div>
         </div>
