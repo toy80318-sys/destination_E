@@ -265,6 +265,31 @@
   function _validEmail(em){
     return /^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(em||'');
   }
+  // 인증 완료 대기 — onAuthStateChanged 콜백이 _state.user를 채울 때까지 폴링.
+  // 200ms마다 검사, currentUser 즉시 채택, 5초 경과해도 안 되면 강제 재로그인 시도.
+  // timeoutMs 안에 사용자 객체를 못 얻으면 에러.
+  function _waitForAuth(timeoutMs){
+    timeoutMs=timeoutMs||10000;
+    return new Promise((resolve,reject)=>{
+      // 즉시 currentUser 확인 (onAuthStateChanged 콜백 누락 대비)
+      if(_state.user){return resolve(_state.user);}
+      if(_state.auth&&_state.auth.currentUser){_state.user=_state.auth.currentUser;return resolve(_state.user);}
+      let elapsed=0;
+      const tick=200;
+      let _retried=false;
+      const iv=setInterval(async()=>{
+        elapsed+=tick;
+        if(_state.user){clearInterval(iv);return resolve(_state.user);}
+        if(_state.auth&&_state.auth.currentUser){_state.user=_state.auth.currentUser;clearInterval(iv);return resolve(_state.user);}
+        // 5초 경과 + 아직 인증 안 됨 → 명시적 재로그인 1회 시도
+        if(elapsed>=5000&&!_retried&&_state.auth){
+          _retried=true;
+          try{await _state.auth.signInAnonymously();}catch(e){_log('재로그인 실패',e.message);}
+        }
+        if(elapsed>=timeoutMs){clearInterval(iv);return reject(new Error('auth_timeout_'+timeoutMs+'ms'));}
+      },tick);
+    });
+  }
   // 슬롯 N에 자동 동기화될 이메일 (localStorage 영구 기억)
   function setEmail(email){
     const em=_normalizeEmail(email);
@@ -284,14 +309,8 @@
     if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
     if(!_state.db)return{error:'Firebase 미초기화'};
     // 인증 완료 대기 — Firestore 규칙(request.auth != null) 통과 필수
-    // 익명 로그인이 비동기로 끝나는 동안 호출되면 PERMISSION_DENIED가 됨.
     if(!_state.user){
-      try{
-        await new Promise((resolve,reject)=>{
-          let tries=0;
-          const iv=setInterval(()=>{tries++;if(_state.user){clearInterval(iv);resolve();}else if(tries>40){clearInterval(iv);reject(new Error('auth_timeout'));}},100);
-        });
-      }catch(e){return{error:'인증 대기 시간 초과 — 잠시 후 다시 시도해 주세요'};}
+      try{await _waitForAuth(15000);}catch(e){return{error:'인증 대기 시간 초과 — 페이지 새로고침 후 다시 시도해 주세요 ('+e.message+')'};}
     }
     const em=_normalizeEmail(email);
     if(!_validEmail(em))return{error:'유효한 이메일이 아닙니다'};
@@ -318,15 +337,8 @@
   // 이메일 슬롯에 업로드 (game.js saveGame() 호출 시 자동 트리거)
   async function uploadByEmail(n,obj){
     if(!_state.db)return{error:'Firebase 미초기화'};
-    // 인증 완료 대기 — 익명 로그인이 비동기로 끝나기 때문에 _state.user가 없으면 잠시 기다림.
-    // 누락 시 Firestore 규칙(request.auth != null)에 막혀 PERMISSION_DENIED.
     if(!_state.user){
-      try{
-        await new Promise((resolve,reject)=>{
-          let tries=0;
-          const iv=setInterval(()=>{tries++;if(_state.user){clearInterval(iv);resolve();}else if(tries>40){clearInterval(iv);reject(new Error('auth_timeout'));}},100);
-        });
-      }catch(e){_log('이메일 업로드 — 인증 대기 실패',e.message);return{error:'auth_pending'};}
+      try{await _waitForAuth(15000);}catch(e){_log('이메일 업로드 — 인증 대기 실패',e.message);return{error:'auth_pending'};}
     }
     const em=getEmail();
     if(!em||!_validEmail(em))return{ok:false,skipped:true};  // 이메일 등록 안 됐으면 스킵
