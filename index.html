@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>DESTINATION EARTH</title>
-<link rel="stylesheet" href="game.css?v=20260525034">
+<link rel="stylesheet" href="game.css?v=20260525035">
 </head>
 <body>
 <div id="game-stage">
@@ -243,9 +243,9 @@
     <!-- 바디: 이미지(좌) + 메시지(우) -->
     <div id="bk-body">
       <div id="bk-img-area">
-        <img src="img/chars/baekgu.png" alt="백구"
+        <img id="bk-portrait-img" src="img/chars/baekgu.png" alt="백구"
           onerror="this.style.display='none';document.getElementById('bk-emoji').style.display='flex'"
-          style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+          style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s">
         <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
       </div>
@@ -273,22 +273,22 @@
 </div><!-- /#game-stage -->
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
-<script>window._GAME_VER='20260525.0335';</script>
-<script src="js/data/factions.js?v=20260525034"></script>
-<script src="js/data/planets.js?v=20260525034"></script>
-<script src="js/data/heroes.js?v=20260525034"></script>
-<script src="js/data/commodities.js?v=20260525034"></script>
-<script src="js/data/parts.js?v=20260525034"></script>
-<script src="js/data/quests.js?v=20260525034"></script>
-<script src="js/data/cargo.js?v=20260525034"></script>
-<script src="js/data/crafting.js?v=20260525034"></script>
-<script src="js/data/ships.js?v=20260525034"></script>
+<script>window._GAME_VER='20260525.0350';</script>
+<script src="js/data/factions.js?v=20260525035"></script>
+<script src="js/data/planets.js?v=20260525035"></script>
+<script src="js/data/heroes.js?v=20260525035"></script>
+<script src="js/data/commodities.js?v=20260525035"></script>
+<script src="js/data/parts.js?v=20260525035"></script>
+<script src="js/data/quests.js?v=20260525035"></script>
+<script src="js/data/cargo.js?v=20260525035"></script>
+<script src="js/data/crafting.js?v=20260525035"></script>
+<script src="js/data/ships.js?v=20260525035"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <script defer src="js/cloudsave.js?v=20260524100"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260525034"></script>
+<script src="game.js?v=20260525035"></script>
 </body>
 </html>

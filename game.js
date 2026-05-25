@@ -876,10 +876,27 @@ const CHAR_PORTRAITS={
   // 예: '우르사 메이저':'img/chars/ursa.png',
   // 예: '이순신':'img/chars/sunsin.png',
 };
+// 백구 무드 → 이미지 매핑
+//   default: baekgu.png  (정면 차분 — 평소/일반 대화)
+//   explore: baekgu2.png (옆모습 응시 — 탐험/도착/발견)
+//   combat:  baekgu3.png (무기 휴대 — 전투/경고/위험)
+function _baekguSrcByMood(mood){
+  if(mood==='combat')return 'img/chars/baekgu3.png';
+  if(mood==='explore')return 'img/chars/baekgu2.png';
+  return 'img/chars/baekgu.png';
+}
+// 텍스트 키워드로 무드 자동 감지
+function _detectBaekguMood(text){
+  const t=String(text||'');
+  if(/(전투|해적|보스|적|위험|싸|경고|기습|공격|적함|치크스|우르사|블랙팔콘|격파|소멸|위협|☠️|💀|⚠️|💥|⚔️|🏴)/.test(t))return 'combat';
+  if(/(탐험|도착|발견|행성|이동|항해|새로운|진입|착륙|개척|항로|🌍|🛸|🚀|🔭|🌌|🪐)/.test(t))return 'explore';
+  return 'default';
+}
 // 인라인 백구 아이콘 — 이모지 자리에 작은 이미지 노출. 로드 실패 시 🐕 폴백.
-function _baekguIcon(size){
+function _baekguIcon(size,mood){
   size=size||20;
-  return `<img src="img/chars/baekgu.png" alt="백구" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
+  const src=_baekguSrcByMood(mood);
+  return `<img src="${src}" alt="백구" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
 }
 const _CHAR_PORTRAITS_DUMMY={ // 아래는 더이상 사용 안 함 (위에서 닫힘) — 호환용 빈 객체
 
@@ -895,7 +912,7 @@ function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   }
   return `<div style="font-size:${Math.round(size*0.85)}px;flex-shrink:0;width:${size}px;text-align:center">${fallbackEmoji||'⚑'}</div>`;
 }
-function baekgu(text){
+function baekgu(text,mood){
   const msgs=document.getElementById('bk-msgs');
   if(!msgs)return;
   const el=document.createElement('div');
@@ -906,6 +923,16 @@ function baekgu(text){
   msgs.appendChild(el);
   while(msgs.children.length>10)msgs.removeChild(msgs.firstChild);
   msgs.scrollTop=msgs.scrollHeight;
+  // 무드별 백구 초상화 자동 교체 (텍스트 키워드 자동 감지)
+  try{
+    const m=mood||_detectBaekguMood(text);
+    const img=document.getElementById('bk-portrait-img');
+    if(img){
+      const newSrc=_baekguSrcByMood(m);
+      // 현재 src와 다를 때만 교체 (불필요한 깜빡임 방지)
+      if(!img.src.endsWith(newSrc.replace(/^.*\//,'')))img.src=newSrc;
+    }
+  }catch(e){}
 }
 function askBaekgu(){
   const inp=document.getElementById('bk-ask-input');
