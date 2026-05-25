@@ -10681,7 +10681,31 @@ function initCombatCanvas(){
     hdr.appendChild(sbtn);
   }
   }
+  // 탭 전환 후 복귀 시 — 이미 활성화/사용된 스킬 버튼 상태 복원
+  try{_restoreCombatSkillButtons();}catch(e){console.warn('skill button restore failed',e);}
   drawCombatFrame();
+}
+
+// ── 다른 탭 갔다 와도 일점사/학익진/시간차공격 등 후속 스킬 버튼 상태 복원 ──
+// 원인: 일점사 사용 → 10초 setTimeout → _showHaikjinButton 호출 시점에 cb-hdr이 없어
+//      (다른 탭 화면) 버튼 생성이 silent fail 됨. 복귀해도 setTimeout이 이미 소진됐기 때문에
+//      학익진 버튼이 영영 안 나타남. _xxxReady 플래그를 보고 재생성.
+function _restoreCombatSkillButtons(){
+  if(!combatState||combatState.done)return;
+  // 일점사: 항상 initCombatCanvas에서 추가됨 — 사용 흔적만 반영해 비활성화
+  const sbtn=document.getElementById('cb-sunsin-btn');
+  if(sbtn&&combatState._sunsinUsed)sbtn.disabled=true;
+  // 학익진/시간차공격/테슬라/제네시스/데스티네이션 — ready 또는 used 시 재생성
+  if(combatState._haikjinReady||combatState._haikjinUsed){try{_showHaikjinButton();}catch(e){}}
+  if(combatState._einsteinReady||combatState._einsteinUsed){try{_showEinsteinButton();}catch(e){}}
+  if(combatState._teslaReady||combatState._teslaUsed){try{_showTeslaButton();}catch(e){}}
+  if(combatState._genesisReady||combatState._genesisUsed){try{_showGenesisButton();}catch(e){}}
+  if(combatState._destinationReady||combatState._destinationUsed){try{_showDestinationButton();}catch(e){}}
+  // 이미 사용된 버튼은 비활성화 표시
+  [['haikjin','_haikjinUsed'],['einstein','_einsteinUsed'],['tesla','_teslaUsed'],['genesis','_genesisUsed'],['destination','_destinationUsed']].forEach(([k,flag])=>{
+    const btn=document.getElementById('cb-'+k+'-btn');
+    if(btn&&combatState[flag])btn.disabled=true;
+  });
 }
 // ── 전투 이미지 캐시 (PNG 교체 구조) ──────────────────────────────
 // PNG 파일 위치: img/combat/ships/{catalogId}.png  (플레이어 함선)
@@ -12171,6 +12195,8 @@ function activateSunsinFocus(){
 
 // 학익진 버튼 생성 (일점사 발동 10초 후)
 function _showHaikjinButton(){
+  // Ready 플래그 — 탭 전환 후 복귀 시 _restoreSkillButtons가 이 플래그 보고 재생성
+  if(combatState)combatState._haikjinReady=true;
   if(document.getElementById('cb-haikjin-btn'))return;
   const hdr=document.getElementById('cb-hdr');
   if(!hdr)return;
@@ -12215,6 +12241,7 @@ function activateHaikjin(){
 
 // 아인슈타인 시간차공격 버튼 생성 (학익진 발동 30초 후)
 function _showEinsteinButton(){
+  if(combatState)combatState._einsteinReady=true;
   if(document.getElementById('cb-einstein-btn'))return;
   const hdr=document.getElementById('cb-hdr');
   if(!hdr)return;
@@ -12259,6 +12286,7 @@ function activateEinsteinTimeAttack(){
 
 // 테슬라 초공간 버튼 생성 (시간차공격 발동 10초 후)
 function _showTeslaButton(){
+  if(combatState)combatState._teslaReady=true;
   if(document.getElementById('cb-tesla-btn'))return;
   const hdr=document.getElementById('cb-hdr');
   if(!hdr)return;
@@ -12317,6 +12345,7 @@ function activateTeslaHyperspace(){
 
 // 제네시스 임펙트 버튼 생성 (테슬라 발동 10초 후)
 function _showGenesisButton(){
+  if(combatState)combatState._genesisReady=true;
   if(document.getElementById('cb-genesis-btn'))return;
   const hdr=document.getElementById('cb-hdr');
   if(!hdr)return;
@@ -12361,6 +12390,7 @@ function activateGenesisImpact(){
 
 // 데스티네이션 어스 버튼 생성 (제네시스 발동 10초 후)
 function _showDestinationButton(){
+  if(combatState)combatState._destinationReady=true;
   if(document.getElementById('cb-destination-btn'))return;
   const hdr=document.getElementById('cb-hdr');
   if(!hdr)return;
