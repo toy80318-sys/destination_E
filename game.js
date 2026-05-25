@@ -3048,6 +3048,40 @@ function mergeCargoById(){
   });
   G.cargo=merged;
 }
+// ─── 화물·재료 정합성 검증 (함선 교체·로드 시 자동 호출) ──────────
+// 1) 동일 id+material 슬롯 통합 (mergeCargoById 호출)
+// 2) 0 이하 qty 슬롯 제거
+// 3) G.materials 카운터를 G.cargo의 material 슬롯 qty와 일치시킴
+//    (저장 직렬화/직접 수정 등으로 두 출처가 어긋나면 수정)
+// 4) nm 필드 누락 시 COMMODITIES에서 자동 보완
+function _validateCargoIntegrity(){
+  if(!G.cargo)G.cargo=[];
+  if(!G.materials)G.materials={};
+  // 1) 슬롯 통합
+  mergeCargoById();
+  // 2) 0 이하 qty 슬롯 제거
+  G.cargo=G.cargo.filter(s=>s&&s.qty>0);
+  // 3) material 슬롯 qty를 G.materials 카운터의 단일 출처로 — 더 큰 값 채택
+  //    (재료는 화물칸·재료창고 두 곳에서 카운트되므로 어긋나면 큰 쪽을 유지)
+  const matCargoSums={};
+  G.cargo.forEach(s=>{if(s.material)matCargoSums[s.id]=(matCargoSums[s.id]||0)+s.qty;});
+  Object.keys(matCargoSums).forEach(id=>{
+    const cargoQty=matCargoSums[id];
+    const matQty=G.materials[id]||0;
+    const trueQty=Math.max(cargoQty,matQty);
+    G.materials[id]=trueQty;
+    // cargo의 해당 material 슬롯들의 qty 합이 trueQty가 되도록 조정 (단일 슬롯로 통합되어 있음 — mergeCargoById 후)
+    const slot=G.cargo.find(s=>s.id===id&&s.material);
+    if(slot&&slot.qty!==trueQty)slot.qty=trueQty;
+  });
+  // 4) nm 필드 누락 보완
+  if(typeof COMMODITIES!=='undefined'){
+    G.cargo.forEach(s=>{
+      if(!s.nm){const c=COMMODITIES.find(x=>x.id===s.id);if(c)s.nm=c.nm;}
+    });
+  }
+}
+try{if(typeof window!=='undefined')window._validateCargoIntegrity=_validateCargoIntegrity;}catch(e){}
 function calcSellPrice(cargoItem,sellPlanetId){
   const comm=COMMODITIES.find(c=>c.id===cargoItem.id);
   const marcoMult=(G&&G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
@@ -4808,6 +4842,10 @@ function swapReserveShip(reserveIdx){
   // 교체 (파츠/크루 비어있는 상태로 임시창行)
   G.fleet[fleetIdx]=reserveShip;
   G.reserveFleet[reserveIdx]=activeShip;
+  // 화물·재료 정합성 보정 — 함선 교체 후 cargoSlots 합이 바뀌면서 화물 표시가
+  // 위치 기반으로 재배치돼 뒤엉켜 보일 수 있음. 데이터 자체는 G.cargo에 그대로 있으나
+  // 0-qty 잔존·동일 id 슬롯·material 카운터 불일치를 한 번 정리.
+  try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate failed',e);}
   const _msg=`🔄 ${activeShip.nm} → 임시창 (파츠 ${_partsReturned}개·크루 ${_crewReturned}명 자동 해제) · ${reserveShip.nm} → 선발`;
   notify(_msg,'gold');
   baekgu(`${reserveShip.nm} 출격! ${activeShip.nm} 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.`);
@@ -12701,6 +12739,8 @@ function loadGame(slotN){
     if(!G.heroes)G.heroes=[];
     if(!G.crew)G.crew=[];
     if(!G.planets||!Object.keys(G.planets).length)G.planets={};
+    // 화물·재료 정합성 — 구버전 세이브 호환 + 직렬화 시 어긋난 카운터 자동 보정
+    try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate(load) failed',e);}
     // 불러오기 후 함선 HP 보정
     if(G.fleet&&G.fleet.length){
       G.fleet.forEach(s=>{
