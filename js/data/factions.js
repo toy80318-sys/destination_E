@@ -52,7 +52,7 @@ const SPECIAL_CHARS=[
 // 각 시스템별 위치·역할·담당자·해금조건·특징·주의사항·위트 의견
 const SYSTEM_GUIDE=[
   {
-    key:'map', icon:'🗺️', name:'은하 지도',
+    key:'map', icon:'🗺️', name:'은하 지도', img:'img/hub/route.png',
     location:'⭐ 함장 메인서버 → 🗺️ 은하 지도',
     desc:'은하 전체를 3D로 펼쳐 보여주는 항법 콘솔. 30개 행성과 항로(워프 게이트)가 표시된다. 클릭으로 인접 행성 이동, 마우스 드래그로 회전, 휠로 줌.',
     operator:'백구 (전속 AI). 항로 추천과 위험 구간 경고를 담당.',
@@ -62,7 +62,7 @@ const SYSTEM_GUIDE=[
     quip:'백구는 항상 "이쪽으로 가자"고 하는데, "이쪽"이 어디인지는 매번 다르다. 그래도 결국 맞는 길이긴 하다.'
   },
   {
-    key:'crew', icon:'👥', name:'크루 명단',
+    key:'crew', icon:'👥', name:'크루 명단', img:'img/hub/crew.png',
     location:'⭐ 함장 메인서버 → 👥 크루 명단',
     desc:'영입한 모든 크루·전설 영웅을 한눈에 보고, 함선에 배치하거나 방출하는 인사 콘솔.',
     operator:'본인 사령관. 백구가 정렬·통계 보조.',
@@ -72,7 +72,7 @@ const SYSTEM_GUIDE=[
     quip:'잘 키운 크루 한 명이 함선 두 척보다 낫다. 단, 충성도 80 이상일 때만 그렇다. 그 이하는 미친 짓을 한다.'
   },
   {
-    key:'clog', icon:'📋', name:'전투 기록',
+    key:'clog', icon:'📋', name:'전투 기록', img:'img/hub/clog.png',
     location:'⭐ 함장 메인서버 → 📋 전투 기록',
     desc:'지금까지의 모든 전투 결과(승/패·도망)와 보상 기록을 시간순으로 정리한 항해일지.',
     operator:'백구 자동 기록 — 매 전투 종료 시 자동 추가.',
@@ -82,7 +82,7 @@ const SYSTEM_GUIDE=[
     quip:'백구는 패배 기록도 꼼꼼히 적어 놓는다. 가끔 "이 전투는 미리 도망쳤어야 했어"라는 코멘트가 붙어 있다. 그 말이 맞다.'
   },
   {
-    key:'quest', icon:'🎖️', name:'행성 제독',
+    key:'quest', icon:'🎖️', name:'행성 제독', img:'img/hub/quest.png',
     location:'🏪 행성 광장 → 🎖️ 행성 제독',
     desc:'각 행성의 의뢰인(제독·중개인)이 발주하는 퀘스트 게시판. 전투/배달/탐색/구매 의뢰가 매 턴 자동 갱신된다.',
     operator:'행성별 NPC 제독. 백구가 추천/필터 보조.',
@@ -92,7 +92,7 @@ const SYSTEM_GUIDE=[
     quip:'제독들은 매번 "이건 자네만 할 수 있는 일이야"라고 한다. 옆 카운터에서도 똑같이 말한다. 우리만 할 수 있는 일이 너무 많다.'
   },
   {
-    key:'tavern', icon:'🍺', name:'행성 주점',
+    key:'tavern', icon:'🍺', name:'행성 주점', img:'img/hub/tavern.png',
     location:'🏪 행성 광장 → 🍺 행성 주점',
     desc:'크루 가챠(채용)와 전설 영웅 영입 이벤트가 일어나는 사교 거점. 한 잔 사면 친구가 한 명 생긴다.',
     operator:'주점장 + 가챠 시스템 (보이드 크리스탈 VC로 굴림).',
@@ -102,7 +102,7 @@ const SYSTEM_GUIDE=[
     quip:'주점에서 채용한 크루가 가장 충성스럽다. 술자리에서 한 약속이라 그런 듯하다. 술자리 약속은 무서운 거다.'
   },
   {
-    key:'trade', icon:'🏬', name:'행성 상점 (무역)',
+    key:'trade', icon:'🏬', name:'행성 상점 (무역)', img:'img/hub/trade.png',
     location:'🏪 행성 광장 → 🏬 행성 상점',
     desc:'각 행성의 특산물·제작 재료를 사고파는 무역소. 싸게 사서 다른 행성에서 비싸게 파는 게 핵심 수입원.',
     operator:'행성별 상인. 명성에 따라 재고가 늘어난다.',
@@ -112,7 +112,7 @@ const SYSTEM_GUIDE=[
     quip:'싸게 사서 비싸게 파는 게 무역인데, 어디가 싸고 어디가 비싼지는 매번 다르다. 결국 한 행성을 골라 평생 거기서 사는 게 답일지도.'
   },
   {
-    key:'garage', icon:'🔧', name:'함선 정비소',
+    key:'garage', icon:'🔧', name:'함선 정비소', img:'img/hub/garage.png',
     location:'🚢 함선 도크 → 🔧 함선 정비소',
     desc:'보유 함선의 HP/실드 수리, 파츠·크루 배치, 화물칸 확장이 이루어지는 핵심 시설. 함대 운영의 70%가 여기서 결정된다.',
     operator:'정비공 NPC + 본인 사령관. 백구가 추천 배치 안내.',
@@ -122,7 +122,7 @@ const SYSTEM_GUIDE=[
     quip:'정비소에 들렀다가 한 시간이 지난다. 파츠 배치는 끝이 없다. 가장 마음에 드는 함선에 가장 좋은 파츠를 다 주고 싶다.'
   },
   {
-    key:'ship', icon:'🛸', name:'함선 거래소',
+    key:'ship', icon:'🛸', name:'함선 거래소', img:'img/hub/ship.png',
     location:'🚢 함선 도크 → 🛸 함선 거래소',
     desc:'신규 함선을 사고파는 매장. 전투력에 비례해 살 수 있는 함선 등급이 올라간다.',
     operator:'함선 딜러 + 행성별 재고. 명성·전투력에 따라 입고 등급 변동.',
@@ -132,7 +132,7 @@ const SYSTEM_GUIDE=[
     quip:'새 함선은 항상 마음에 든다. 한 달 뒤엔 또 다른 새 함선이 마음에 든다. 통장이 비어간다.'
   },
   {
-    key:'craft', icon:'⚗️', name:'함선 제작소',
+    key:'craft', icon:'⚗️', name:'함선 제작소', img:'img/hub/craft.png',
     location:'🚢 함선 도크 → ⚗️ 함선 제작소',
     desc:'전설·신화 함선과 파츠를 설계도 + 재료로 직접 제작하는 공방. 행성 상점에선 절대 못 사는 최강 장비가 여기서 나온다.',
     operator:'제작 마이스터 NPC. 백구가 재료 부족 항목 표시.',
@@ -142,7 +142,7 @@ const SYSTEM_GUIDE=[
     quip:'설계도 한 장을 얻으면 그 다음엔 재료 30개가 필요하다. 재료를 다 모으면 또 다른 설계도가 갖고 싶어진다. 끝이 없다.'
   },
   {
-    key:'gather', icon:'🔭', name:'잔해 탐색',
+    key:'gather', icon:'🔭', name:'잔해 탐색', img:'img/hub/route.png',
     location:'🚢 함선 도크 → 🔭 잔해 탐색 (사이드 버튼, 항상 노출)',
     desc:'행성 주변 우주 잔해 구역을 정찰해 아이템·잔해 해적·치크스 정찰대를 만나는 모험 기능.',
     operator:'본인 사령관 직접 발진. 백구가 결과 분석.',
@@ -152,7 +152,7 @@ const SYSTEM_GUIDE=[
     quip:'잔해 탐색을 누르면 30% 확률로 후회한다. 10% 확률로 좋아한다. 60% 확률로 그냥 시간이 흐른다. 인생과 비슷하다.'
   },
   {
-    key:'auction', icon:'🔨', name:'행성 경매',
+    key:'auction', icon:'🔨', name:'행성 경매', img:'img/hub/auction.png',
     location:'🌍 행성 프론트 → 🔨 행성경매',
     desc:'우주 부동산 시장. 행성 자체를 사들여 매 턴 세금 수입을 얻는다. 광개토대왕 영입 시 30% 할인.',
     operator:'경매장 진행자. 명성에 따라 입찰 한도 증가.',
@@ -162,7 +162,7 @@ const SYSTEM_GUIDE=[
     quip:'행성 한 개 가지면 영주가 된 기분. 두 개 가지면 황제가 된 기분. 세 개 가지면 세금 명세서가 무서운 기분.'
   },
   {
-    key:'planets', icon:'🌐', name:'행성 현황',
+    key:'planets', icon:'🌐', name:'행성 현황', img:'img/hub/front.png',
     location:'🌍 행성 프론트 → 🌐 행성현황',
     desc:'보유 행성의 투자 레벨·수입·전쟁 상태·해금 진행도를 한눈에 보는 대시보드.',
     operator:'백구 데이터 콘솔 — 자동 집계.',

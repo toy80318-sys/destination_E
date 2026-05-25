@@ -1607,7 +1607,7 @@ function shipImgSrc(ship){
   const _chixByTier=()=>'img/ships/CHIX_'+({'소형':'S','중형':'M','대형':'L','전설기함':'L','신화':'L'}[ship.tier]||'S')+'.png';
   // 0) 우르사 메이저 보스 본체/나포 — 항상 Boss.png 우선
   //    ※ catalogId='URSA' 또는 id가 'BOSS_URSA'/'URSA'/'BOSS'/'BOSS_MAIN'으로 시작하는 경우만
-  //    ※ 카탈로그 H12(우르사 메이저 파쇄기)는 catalogId='URSA'가 아니므로 자동 제외 → H12.png 사용
+  //    ※ 카탈로그 H12(우르사 파쇄기)는 catalogId='URSA'가 아니므로 자동 제외 → H12.png 사용
   if((ship.catalogId||'').toUpperCase()==='URSA'
      ||sid.startsWith('BOSS_URSA')||sid==='URSA'||sid==='BOSS'||sid==='BOSS_MAIN')
     return 'img/ships/Boss.png';
@@ -7718,7 +7718,7 @@ function startVoidBossCombat(questRef){
     return {
       ...VOID_BOSS,
       id:`VOID_FALCON_${i+1}`,
-      nm:isFlagship?'🌑 블랙팔콘 ✦신화':`팔콘 스카우트 ${i+1}`,
+      nm:isFlagship?'🌑 블랙팔콘 ✦신화':`🌑 블랙팔콘 호위 ${i+1}`,
       tier:isFlagship?'신화':'중형',
       isEnemy:true,
       hp:_hp,maxHP:_hp,HP:_hp,
@@ -10043,10 +10043,17 @@ function renderCodexTab(body){
       content='<div style="color:var(--dim);padding:24px;text-align:center">시스템 데이터 미로드</div>';
     } else {
       const _sysCard=(s)=>`<div style="background:rgba(0,0,0,.3);border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,243,255,.08)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,243,255,.2)">
-          <div style="font-size:34px">${s.icon||'📘'}</div>
-          <div style="flex:1">
-            <div style="font-size:17px;font-weight:bold;color:var(--cyan);letter-spacing:1px">${s.name}</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(0,243,255,.2)">
+          <!-- 좌측 84×84 원형 시스템 배경 이미지 — 문명 카드와 동일 구조 -->
+          <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--cyan);box-shadow:0 0 16px rgba(0,243,255,.4);background:radial-gradient(circle at center, rgba(0,243,255,.2), #000);position:relative">
+            <img src="${s.img||''}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:44px">${s.icon||'📘'}</div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <span style="font-size:22px">${s.icon||'📘'}</span>
+              <span style="font-size:17px;font-weight:bold;color:var(--cyan);letter-spacing:1px">${s.name}</span>
+            </div>
             <div style="font-size:11px;color:var(--dim)">${s.location||''}</div>
           </div>
         </div>
