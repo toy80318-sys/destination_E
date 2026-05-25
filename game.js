@@ -10531,26 +10531,35 @@ function _combatShipImgSrc(u){
   const isChixName=nmLow.includes('치크스')||nmLow.includes('chix');
   const isPirateName=nmLow.includes('해적')||nmLow.includes('pirate');
   const isDbrpName=nmLow.includes('잔해')||nmLow.includes('dbrp');
+  // ── 블랙팔콘 / 보이드 팔콘 / 히든 팔콘(보이드 시험 보상) 공통 — 적/아군 무관하게 S10.png ──
+  // catalogId 변형: BLACKFALCON / VOID_FALCON / HIDDEN_FALCON / FALCON
+  // (catalogId의 '_' 이후가 잘려 'HIDDEN'/'VOID'가 되는 경우까지 포함)
+  const _isFalcon=(()=>{
+    const _cidRawUp=String(u.catalogId||u.catId||u.id||'').toUpperCase();
+    if(/BLACKFALCON|VOIDFALCON|VOID_FALCON|HIDDEN_FALCON|^FALCON/.test(_cidRawUp))return true;
+    if(catId==='HIDDEN'||catId==='VOID'||catId==='FALCON'||catId==='BLACKFALCON'||catId==='VOIDFALCON')return true;
+    if(sid.startsWith('HIDDEN_FALCON')||sid.startsWith('CAP_BLACKFALCON')||sid.startsWith('CAP_VOIDFALCON')||sid.startsWith('BLACKFALCON')||sid.startsWith('VOID_FALCON'))return true;
+    if(u._isHiddenFalcon||u._isVoidFalconCaptured||u.voidBoss)return true;
+    if(nmLow.includes('팔콘')||nmLow.includes('블랙')||nmLow.includes('검은 팔콘')||nmLow.includes('다크팔콘'))return true;
+    return false;
+  })();
+  if(_isFalcon)return 'img/ships/S10.png';
   if(isEnemy){
     const isBoss=catId.startsWith('BOSS')||catId==='URSA'||nmLow.includes('우르사');
     if(isBoss)return 'img/combat/enemies/Boss.png';
-    // 히든 보이드 보스 — 팔콘 스카우트 전용 이미지 (S10.png)
-    if(u.voidBoss||catId.startsWith('VOID')||catId.startsWith('FALCON')||catId.startsWith('BLACKFALCON')||nmLow.includes('팔콘')||nmLow.includes('블랙'))return 'img/ships/S10.png';
     const base=catId.startsWith('CHIX')||/^E\d/.test(catId)||isChixName?'CHIX':
                isDbrpName?'DBRP':'PIRATE';
     return 'img/combat/enemies/'+base+'_'+_tierKey(u.tier)+'.png';
   }
   // 플레이어: catalogId > catId > id (모두 대문자화)
   const cid=String(u.catalogId||u.catId||u.id||'').replace(/_.*$/,'').toUpperCase();
-  // 보스 본체/나포
+  // 보스 본체/나포 (우르사 메이저)
   if(cid==='URSA'||sid.startsWith('BOSS_URSA')||cid==='BOSS'||sid==='BOSS_MAIN')return 'img/combat/ships/Boss.png';
-  // 나포 함선 (CAP_xxx)
+  // 나포 함선 (CAP_xxx, 팔콘은 위에서 이미 처리됨)
   if(cid==='CAP'){
     const _capFac=isChixName?'CHIX':isDbrpName?'DBRP':'PIRATE';
     return 'img/combat/ships/'+_capFac+'_'+_tierKey(u.tier)+'.png';
   }
-  // 히든 팔콘
-  if(cid==='HIDDEN'||sid.startsWith('HIDDEN_FALCON')||u._isHiddenFalcon)return 'img/combat/ships/Boss.png';
   // 치크스 노획 함선 — catalogId='CHIX_S/M/L' → cid='CHIX', 또는 이름에 '치크스'
   if(cid==='CHIX'||cid.startsWith('CHIX')||isChixName){
     return 'img/combat/ships/CHIX_'+_tierKey(u.tier)+'.png';
