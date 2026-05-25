@@ -11115,8 +11115,18 @@ let _cbAnimReq=null;
 // (쉴드 오라 펄스 + 이펙트 페이드를 위해 전투 중에는 계속 돌림.)
 function _cbStartAnimLoop(){
   if(_cbAnimReq)return; // 이미 루프 중
+  // 30fps 다운샘플링 — 이펙트가 적을 때 매 프레임이 아니라 격프레임으로 그려 CPU 절약
+  // 이펙트가 50개 미만이고 모든 이펙트가 페이드 단계(life<maxLife/2)일 때만 적용.
+  // 다이내믹한 폭발·번개가 살아 있을 땐 60fps 유지 → 시각 품질 보존.
+  let _skipToggle=false;
   const tick=()=>{
     if(!cbCtx||!cbCV){_cbAnimReq=null;return;}
+    const _effs=_cbEffects||[];
+    const _calm=_effs.length<50&&_effs.every(e=>!e||(e.life||0)<((e.maxLife||1)/2));
+    if(_calm){
+      _skipToggle=!_skipToggle;
+      if(_skipToggle){_cbAnimReq=requestAnimationFrame(tick);return;}
+    }
     drawCombatFrame();
     if((combatState&&!combatState.done)||(_cbEffects||[]).length>0){
       _cbAnimReq=requestAnimationFrame(tick);
@@ -11221,12 +11231,16 @@ function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,si
 function addCombatLog(msg,cls){
   if(!combatState)return;
   combatState.log.push({msg,cls});
+  // 로그 상한 200줄 — 장기 전투에서 직렬화/메모리 부담 차단
+  if(combatState.log.length>200)combatState.log.splice(0,combatState.log.length-200);
   const el=document.getElementById('cb-log');
   if(!el)return;
   const div=document.createElement('div');
   div.style.cssText=cls==='err'?'color:#ff6b6b':cls==='ok'?'color:#51cf66':cls==='gold'?'color:#ffd43b':cls===''?'color:#adb5bd':'color:#dee2e6';
   div.textContent=msg;
   el.appendChild(div);
+  // DOM 노드도 100개로 제한 — 장기 전투 시 리플로우 비용 차단
+  while(el.children.length>100)el.removeChild(el.firstChild);
   el.scrollTop=el.scrollHeight;
 }
 
@@ -11546,6 +11560,14 @@ function drawCombatFrame(){
   // 이펙트 렌더링
   // 타입: beam(레이저 빔) / exp(폭발) / shockwave(충격파 링) / shard(파편)
   //        muzzle(발사 섬광) / missile(곡선 궤적 미사일) / shieldHit(헥사 임팩트)
+  // ★ 미사일→폭발 변환 시 filter 콜백 내부에서 새 이펙트가 발생 — _newEffs로 수집해 손실 방지
+  const _newEffs=[];
+  // ★ 이펙트 다수일 때 shadowBlur 자동 비활성화 — Canvas GPU 가속 무력화 방지
+  // 인스턴스 프로퍼티로 prototype shadowBlur를 일시 가리는 트릭 (필터 끝나면 delete로 복원)
+  const _heavyMode=(_cbEffects||[]).length>150;
+  if(_heavyMode){
+    try{Object.defineProperty(cbCtx,'shadowBlur',{value:0,writable:true,configurable:true});}catch(e){}
+  }
   _cbEffects=(_cbEffects||[]).filter(ef=>{
     // 발사 대기 (순차/스태거)
     if(ef.delay&&ef.delay>0){ef.delay--;return true;}
@@ -11574,19 +11596,19 @@ function drawCombatFrame(){
         cbCtx.restore();
         return true;
       } else {
-        // 타겟 도달 — 폭발 트리거 (크기 배율 적용)
+        // 타겟 도달 — 폭발 트리거 (크기 배율 적용). _newEffs로 수집 (filter 중 push 손실 방지)
         const ec=ef.isDead?'#ff3300':(ef.wasShielded?'#ffaa66':'#ff7755');
         const er=(ef.isDead?26:(ef.wasShielded?12:18))*_msz;
-        _cbEffects.push({type:'exp',x:ef.x2,y:ef.y2,col:ec,r:er,life:ef.isDead?36:22,maxLife:ef.isDead?36:22});
+        _newEffs.push({type:'exp',x:ef.x2,y:ef.y2,col:ec,r:er,life:ef.isDead?36:22,maxLife:ef.isDead?36:22});
         if(ef.wasShielded){
-          _cbEffects.push({type:'shieldHit',x:ef.x2,y:ef.y2,col:'#66ddff',r:22,life:14,maxLife:14});
+          _newEffs.push({type:'shieldHit',x:ef.x2,y:ef.y2,col:'#66ddff',r:22,life:14,maxLife:14});
         }
         if(ef.isLastInSalvo&&ef.isDead){
-          _cbEffects.push({type:'shockwave',x:ef.x2,y:ef.y2,col:'#ffaa44',r:50,life:30,maxLife:30});
-          _cbEffects.push({type:'exp',x:ef.x2,y:ef.y2,col:'#ffffff',r:14,life:14,maxLife:14});
+          _newEffs.push({type:'shockwave',x:ef.x2,y:ef.y2,col:'#ffaa44',r:50,life:30,maxLife:30});
+          _newEffs.push({type:'exp',x:ef.x2,y:ef.y2,col:'#ffffff',r:14,life:14,maxLife:14});
           for(let i=0;i<10;i++){
             const ang=(Math.PI*2*i)/10+Math.random()*0.3;
-            _cbEffects.push({type:'shard',x:ef.x2,y:ef.y2,vx:Math.cos(ang)*3.8,vy:Math.sin(ang)*3.8,col:'#ffcc66',life:42,maxLife:42});
+            _newEffs.push({type:'shard',x:ef.x2,y:ef.y2,vx:Math.cos(ang)*3.8,vy:Math.sin(ang)*3.8,col:'#ffcc66',life:42,maxLife:42});
           }
         }
         cbCtx.restore();
@@ -11739,6 +11761,12 @@ function drawCombatFrame(){
     cbCtx.restore();
     return ef.life>0;
   });
+  // 미사일→폭발 등 filter 콜백 내부에서 발생한 신규 이펙트 합치기
+  if(_newEffs.length)_cbEffects.push(..._newEffs);
+  // 이펙트 상한 300 — 다중 살보·광역 공격 누적 시 메모리 폭증 차단
+  if(_cbEffects.length>300)_cbEffects.splice(0,_cbEffects.length-300);
+  // heavyMode shadowBlur 오버라이드 해제 — prototype의 shadowBlur 다시 사용
+  if(_heavyMode){try{delete cbCtx.shadowBlur;}catch(e){}}
   cbCtx.restore();
   // TURN 표시
   const tEl=document.getElementById('cb-turn');
