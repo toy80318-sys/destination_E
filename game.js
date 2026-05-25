@@ -11716,6 +11716,8 @@ function _finishCombat(){
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
+  // 잔해 탐색에서 진입한 전투인지 — 승리 후 닫기 시 자동으로 다음 탐색 체인
+  const _wasDebrisCombat=!!combatState._debrisQuestPid||!!(combatState.planetDef&&combatState.planetDef._isDebris);
   let earned=0;
   if(win){
     addCombatLog('🎉 전투 승리!','ok');
@@ -11912,8 +11914,30 @@ function _finishCombat(){
         });
       }),600);
     } else {
+      // 잔해 탐색 → 전투 → 승리 시: 결과 보고 닫는 즉시 다음 탐색을 자동 트리거 (쿨다운 무시)
+      const _debrisChain=_wasDebrisCombat?(()=>{
+        try{
+          window._lastGatherTime=0;       // 잔해 탐색 쿨다운 리셋
+          if(typeof hubTab==='function')hubTab('main');  // 허브 메인 강제
+        }catch(e){}
+        // 1800ms 정리 타이머(combatState=null)가 끝난 뒤 안전하게 다음 탐색 호출
+        setTimeout(()=>{
+          try{
+            if(typeof updateGatherBtn==='function')updateGatherBtn();
+            if(typeof doGatherSearch==='function')doGatherSearch();
+          }catch(e){console.warn('debris chain failed',e);}
+        },400);
+      }):undefined;
       setTimeout(()=>{
-        showAcquisitionReport({title:'🏆 전투 승리 보고',subtitle:`${pd.nm||'알 수 없는 구역'} — TURN ${G.turn}`,items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'});
+        showAcquisitionReport({
+          title:'🏆 전투 승리 보고',
+          subtitle:`${pd.nm||'알 수 없는 구역'} — TURN ${G.turn}`,
+          items:_buildReport(),
+          color:'var(--gold)',
+          sfx:null,
+          congrats:(_wasDebrisCombat?'잔해 격파 — 자동 탐색 계속':'')||(_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'),
+          onClose:_debrisChain
+        });
       },900);
     }
     checkQuestCombatDone();
