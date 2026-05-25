@@ -1060,6 +1060,8 @@ function baekgu(text,mood){
   while(msgs.children.length>10)msgs.removeChild(msgs.firstChild);
   msgs.scrollTop=msgs.scrollHeight;
   // 무드별 백구 초상화 자동 교체 (텍스트 키워드 자동 감지)
+  // ★ 전술 초상 락이 활성화된 동안에는 mood swap 건너뜀 — 화자 얼굴이 그대로 노출되도록
+  if(window._tacticPortraitUntil&&Date.now()<window._tacticPortraitUntil)return;
   try{
     const m=mood||_detectBaekguMood(text);
     const img=document.getElementById('bk-portrait-img');
@@ -1075,6 +1077,44 @@ function baekgu(text,mood){
       if(_cur!==_tail)img.src=newSrc;
     }
   }catch(e){}
+}
+// ── 전술 발동 시 백구 초상 자리에 화자(영웅/주인공) 이미지 표시 ──
+// 락 동안 baekgu()의 mood swap이 건너뛰어 화자 얼굴이 유지됨. duration 후 자연스럽게 백구로 복귀.
+function _showTacticPortrait(src,durationMs){
+  durationMs=durationMs||6000;
+  const img=document.getElementById('bk-portrait-img');
+  if(!img)return;
+  // 안전: emoji 숨김 + img 표시 보장
+  img.style.display='block';
+  const _em=document.getElementById('bk-emoji');if(_em)_em.style.display='none';
+  // 이미지 누락 시 baekgu3.png (전투 자세)으로 폴백 — commander_m/f.png가 아직 없을 때 대비
+  // 임시 onerror로 fallback 처리 (기존 핸들러는 락 종료 후 자연 복구됨)
+  const _origOnError=img.onerror;
+  let _fallbackDone=false;
+  img.onerror=function(){
+    if(_fallbackDone)return;_fallbackDone=true;
+    img.style.display='block';
+    const _em2=document.getElementById('bk-emoji');if(_em2)_em2.style.display='none';
+    img.src='img/chars/baekgu3.png';
+  };
+  img.src=src;
+  window._tacticPortraitUntil=Date.now()+durationMs;
+  // 만료 후 default baekgu로 복귀 + onerror 핸들러 원복
+  setTimeout(()=>{
+    if(window._tacticPortraitUntil&&Date.now()>=window._tacticPortraitUntil){
+      window._tacticPortraitUntil=null;
+      const _img2=document.getElementById('bk-portrait-img');
+      if(_img2){
+        _img2.onerror=_origOnError;  // 원래 핸들러 복원 (index.html의 emoji 폴백)
+        _img2.src='img/chars/baekgu1.png';
+      }
+    }
+  },durationMs+50);
+}
+// 주인공(사령관) 초상화 — 성별 기반 commander_m/f.png, 없으면 baekgu3로 폴백
+function _commanderPortraitSrc(){
+  const g=(G&&G.profile&&G.profile.gender)||'male';
+  return g==='female'?'img/chars/commander_f.png':'img/chars/commander_m.png';
 }
 function askBaekgu(){
   const inp=document.getElementById('bk-ask-input');
@@ -12254,6 +12294,8 @@ function _finishCombat(){
 // 일점사 후 30초 뒤 → 학익진 버튼 활성화 (아군 ATT ×3 추가 강화)
 function activateSunsinFocus(){
   if(!combatState||combatState._sunsinUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 일점사 → 호레이쇼 넬슨 (H05)
+  try{_showTacticPortrait('img/chars/hero05.png',6000);}catch(e){}
   const target=combatState.enemies.filter(e=>e.hp>0)[0];
   if(!target)return;
   combatState._sunsinUsed=true;
@@ -12304,6 +12346,8 @@ function _showHaikjinButton(){
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
 function activateHaikjin(){
   if(!combatState||combatState._haikjinUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 학익진 → 이순신 (H01)
+  try{_showTacticPortrait('img/chars/hero01.png',6000);}catch(e){}
   combatState._haikjinUsed=true;
   combatState._playerAttMult=3;
   if(combatState.players){
@@ -12349,6 +12393,8 @@ function _showEinsteinButton(){
 // 아인슈타인 시간차공격 — 아군 ATT ×4
 function activateEinsteinTimeAttack(){
   if(!combatState||combatState._einsteinUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 시간차공격 → 아인슈타인 (H06)
+  try{_showTacticPortrait('img/chars/hero06.png',6000);}catch(e){}
   combatState._einsteinUsed=true;
   combatState._playerAttMult=4;
   if(combatState.players){
@@ -12394,6 +12440,8 @@ function _showTeslaButton(){
 // 테슬라 초공간 — 아군 ATT ×5
 function activateTeslaHyperspace(){
   if(!combatState||combatState._teslaUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 테슬라 초공간 → 니콜라 테슬라 (H07)
+  try{_showTacticPortrait('img/chars/hero07.png',6000);}catch(e){}
   combatState._teslaUsed=true;
   combatState._playerAttMult=5;
   if(combatState.players){
@@ -12453,6 +12501,8 @@ function _showGenesisButton(){
 // 제네시스 임펙트 — 아군 ATT ×6
 function activateGenesisImpact(){
   if(!combatState||combatState._genesisUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 제네시스 임펙트 → 광개토대왕 (H03)
+  try{_showTacticPortrait('img/chars/hero03.png',6000);}catch(e){}
   combatState._genesisUsed=true;
   combatState._playerAttMult=6;
   if(combatState.players){
@@ -12498,6 +12548,8 @@ function _showDestinationButton(){
 // 데스티네이션 어스 — 아군 ATT ×10 (콤보 최종)
 function activateDestinationEarth(){
   if(!combatState||combatState._destinationUsed||combatState.done)return;
+  // ★ 전술 화자 초상: 데스티네이션 어스 → 주인공 (성별 기반 commander_m/f.png, 없으면 자동 폴백)
+  try{_showTacticPortrait(_commanderPortraitSrc(),7000);}catch(e){}
   combatState._destinationUsed=true;
   combatState._playerAttMult=10;
   if(combatState.players){
