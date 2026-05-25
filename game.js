@@ -7720,6 +7720,9 @@ function updateGatherBtn(){
 
 // ── 잔해/정찰대 탐색 실행 (항상 활성, 30초 쿨다운) ────────────
 function doGatherSearch(){
+  // 이번 호출이 자동 체인인지 확인 (한 번만 사용 후 소거 — 무한 루프 방지)
+  const _isChainCall=!!window._debrisChainNext;
+  if(_isChainCall)window._debrisChainNext=false;
   // 쿨다운 체크
   const _cdLeft=_gatherCooldownLeft();
   if(_cdLeft>0){
@@ -7797,7 +7800,7 @@ function doGatherSearch(){
       ATT:Math.round(eATK*(ring>=7&&i===0?1.5:1.0)),INT:Math.round(eINT*(ring>=7&&i===0?1.3:1.0)),
       TEC:eTEC,HP:_dbrpHP(i),LOY:0,parts:[],crewIds:[]
     }));
-    const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true};
+    const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true,_fromChain:_isChainCall};
     openModal('🏴‍☠️ 잔해 구역 해적 출현!',
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>격파하면 탐색이 계속됩니다.</div>`,
@@ -7872,7 +7875,7 @@ function _grantDebrisReward(ring,q,pid){
 // 잔해 해적 전투 시작
 function startDebrisPirateCombat(raidDef){
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:Math.max(1,s.hp||st.HP),maxHP:st.HP,sh:(s.sh!=null?s.sh:st.maxSH),maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wpn?(_wpn.wtype||'laser'):'laser',wpnTier:_wpn?(_wpn.tier||1):1,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier,tier:s.tier||'소형'};});
-  combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_debrisQuestPid:raidDef._questPid,_debrisQuestId:raidDef._questId,_planetId:G.currentPlanet};
+  combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_debrisQuestPid:raidDef._questPid,_debrisQuestId:raidDef._questId,_fromDebrisChain:!!raidDef._fromChain,_planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
   setHubNav('combat');updateHUD();sfxAlert();
   try{AudioMgr.playBgm('combat');}catch(e){}
@@ -11716,8 +11719,10 @@ function _finishCombat(){
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
-  // 잔해 탐색에서 진입한 전투인지 — 승리 후 닫기 시 자동으로 다음 탐색 체인
-  const _wasDebrisCombat=!!combatState._debrisQuestPid||!!(combatState.planetDef&&combatState.planetDef._isDebris);
+  // 잔해 탐색에서 진입한 전투인지 — 승리 후 닫기 시 자동으로 다음 탐색 체인 (단 1회)
+  // 이미 자동 체인으로 진입한 전투는 _fromDebrisChain 플래그가 있어 재체인 안 함 → 무한 루프 방지
+  const _wasDebrisCombat=(!!combatState._debrisQuestPid||!!(combatState.planetDef&&combatState.planetDef._isDebris))
+                         &&!combatState._fromDebrisChain;
   let earned=0;
   if(win){
     addCombatLog('🎉 전투 승리!','ok');
@@ -11915,6 +11920,7 @@ function _finishCombat(){
       }),600);
     } else {
       // 잔해 탐색 → 전투 → 승리 시: 결과 보고 닫는 즉시 다음 탐색을 자동 트리거 (쿨다운 무시)
+      // ★ 단 1회만 체인 — 자동 체인된 전투는 _fromDebrisChain=true가 되어 재체인 안 함
       const _debrisChain=_wasDebrisCombat?(()=>{
         try{
           window._lastGatherTime=0;       // 잔해 탐색 쿨다운 리셋
@@ -11923,6 +11929,7 @@ function _finishCombat(){
         // 1800ms 정리 타이머(combatState=null)가 끝난 뒤 안전하게 다음 탐색 호출
         setTimeout(()=>{
           try{
+            window._debrisChainNext=true;  // 다음 doGatherSearch가 체인임을 표시
             if(typeof updateGatherBtn==='function')updateGatherBtn();
             if(typeof doGatherSearch==='function')doGatherSearch();
           }catch(e){console.warn('debris chain failed',e);}
