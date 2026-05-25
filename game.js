@@ -11553,6 +11553,8 @@ function _txPos(pos){
 }
 function runCombatTurn(){
   if(!combatState||combatState.done){drawCombatFrame();return;}
+  // 장기 전투 보너스용 타이머 — 첫 턴 시 시각 캡처 (모든 전투 시작점을 통일하기 위해 여기서 단일 처리)
+  if(!combatState._combatStartedAt)combatState._combatStartedAt=Date.now();
   // _unitPos 사전 채우기: 이펙트 좌표 참조 전 반드시 호출
   drawCombatFrame();
   combatState.turn++;
@@ -11817,9 +11819,17 @@ function _finishCombat(){
     if(pd.hostile&&!combatState.isBoss){G.planets[pid]=G.planets[pid]||{};G.planets[pid].hostile_cleared=true;}
     // 호레이쇼 넬슨(H05) 보유 시 전투 보상 +20%
     const _nelsonBonus=(G.heroes||[]).includes('H05')?1.2:1.0;
-    earned=Math.round((1000+G.turn*50)*getDiffMult()*_nelsonBonus);
+    // 장기 전투 보너스: 1분 경과마다 +5%, 최대 +100% (2배) — 20분 = 캡
+    const _elapsedMs=combatState._combatStartedAt?(Date.now()-combatState._combatStartedAt):0;
+    const _elapsedMin=Math.floor(_elapsedMs/60000);
+    const _timeBonus=1+Math.min(1.0,_elapsedMin*0.05);
+    earned=Math.round((1000+G.turn*50)*getDiffMult()*_nelsonBonus*_timeBonus);
     G.credits+=earned;
     addCombatLog(`💰 보상 ₡${earned.toLocaleString()}`,'gold');
+    if(_elapsedMin>=1){
+      const _bonusPct=Math.round((_timeBonus-1)*100);
+      addCombatLog(`⏱️ 장기 전투 보너스 +${_bonusPct}% (${_elapsedMin}분 경과)`,'gold');
+    }
     // 모든 비-보스 전투 승리 시 허브 진행도 +1 (해적/치크스/적대행성/잔해해적 모두 카운트)
     let _kindLbl='⚔️ 적군';
     let _repGained=0;
