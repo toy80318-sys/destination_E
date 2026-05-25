@@ -920,6 +920,14 @@ function _baekguSrcByMood(mood){
   };
   return M[mood]||'img/chars/baekgu1.png';
 }
+// 전체 백구 무드 이미지를 페이지 로드 시 프리로드 — 스왑 시 깜빡임/이전 잔상 방지
+(function _preloadBaekguAll(){
+  if(typeof window==='undefined')return;
+  const _arr=['baekgu1.png','baekgu1_surprise.png','baekgu2.png','baekgu2_fight.png','baekgu2_smile1.png','baekgu2_smile2.png','baekgu2_smile4.png','baekgu2_think.png','baekgu2_advice.png','baekgu2_anger0.png','baekgu2_anger1.png','baekgu2_anger2.png','baekgu2_sad.png','baekgu2_sad_happy.png','baekgu2_sleepy.png','baekgu2_hungry.png','baekgu2_bothersome.png','baekgu2_ignorant_person.png','baekgu3.png'];
+  const _doPreload=()=>{_arr.forEach(f=>{const i=new Image();i.src='img/chars/'+f;});};
+  if(document.readyState==='complete'||document.readyState==='interactive')_doPreload();
+  else window.addEventListener('DOMContentLoaded',_doPreload,{once:true});
+})();
 // 텍스트 키워드로 무드 자동 감지 — 우선순위 위에서 아래 (첫 매칭 채택)
 // 명확한 결과(성공/실패/배신)를 active engagement(전투)보다 먼저 보고 매칭
 function _detectBaekguMood(text){
@@ -8638,7 +8646,7 @@ function renderTavernView(body){
     if(G._voidFalconDefeated){
       return `<div style="background:rgba(0,100,40,.13);border:1px solid rgba(0,255,140,.35);border-radius:8px;padding:10px 12px;margin-top:10px">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
-          <span style="font-size:20px">🐕</span>
+          ${_baekguIcon(20)}
           <div><div style="color:var(--green);font-size:12px;font-weight:bold">백구 — 격파 완료</div></div>
         </div>
         <div style="font-size:12px;color:rgba(180,255,200,.9);line-height:1.6">
@@ -8654,7 +8662,7 @@ function renderTavernView(body){
       '<span style="color:var(--dim)">완료된 퀘스트</span>';
     return `<div style="background:rgba(80,0,120,.13);border:1px solid rgba(180,0,255,.35);border-radius:8px;padding:10px 12px;margin-top:10px">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
-        <span style="font-size:20px">🐕</span>
+        ${_baekguIcon(20)}
         <div>
           <div style="color:var(--purple);font-size:12px;font-weight:bold">백구 — 극비 정보</div>
           <div style="color:var(--dim);font-size:10px">주점 구석에서 속삭인다…</div>
