@@ -599,26 +599,13 @@ function setAsFlagship(idx){
     const r=d.getBoundingClientRect();
     localStorage.setItem(STORE_KEY,JSON.stringify({floating,left:d.style.left,top:d.style.top,width:d.style.width,height:d.style.height}));
   }
-  window.bkToggleFloat=function(){
+  // 분리 모드는 UI 깨짐 문제로 제거됨. 호환을 위해 빈 함수 유지.
+  window.bkToggleFloat=function(){/* deprecated — UI 깨짐 방지 */};
+  // 새 토글: 백구 창 높이 축소/확대 (작게/원래대로)
+  window.bkToggleCollapse=function(){
     const d=getDlg();if(!d)return;
-    floating=!floating;
-    if(floating){
-      // 현재 위치 기준 분리
-      const r=d.getBoundingClientRect();
-      d.classList.add('bk-floating');
-      d.style.left=r.left+'px';d.style.top=r.top+'px';
-      d.style.right='auto';d.style.bottom='auto';
-      d.style.width=r.width+'px';
-      d.style.maxHeight='none';d.style.height=(d.classList.contains('bk-open')?r.height:36)+'px';
-      document.getElementById('bk-pin-btn').textContent='📌';
-    } else {
-      d.classList.remove('bk-floating');
-      d.style.left='';d.style.top='';d.style.right='';d.style.bottom='';
-      d.style.width='';d.style.height='';d.style.maxHeight='';
-      document.getElementById('bk-pin-btn').textContent='⊞';
-      floating=false;
-    }
-    saveState();
+    const collapsed=d.classList.toggle('bk-collapsed');
+    try{localStorage.setItem('de_bk_collapsed',collapsed?'1':'0');}catch(e){}
   };
   // 드래그 (토글바 mousedown)
   document.addEventListener('mousedown',function(e){
@@ -666,23 +653,20 @@ function setAsFlagship(idx){
     if(dragging||resizing)saveState();
     dragging=false;resizing=false;
   });
-  // 저장된 상태 복원
+  // 분리 모드 저장 상태 강제 정리 (이전 분리 상태로 켜진 사용자 보호)
   try{
     const saved=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');
     if(saved.floating){
+      // 옛 floating 상태 클리어
+      localStorage.removeItem(STORE_KEY);
+    }
+  }catch(e){}
+  // collapse 상태 복원
+  try{
+    const collapsed=localStorage.getItem('de_bk_collapsed')==='1';
+    if(collapsed){
       document.addEventListener('DOMContentLoaded',function(){
-        const d=getDlg();if(!d)return;
-        floating=true;
-        d.classList.add('bk-floating');
-        if(saved.left)d.style.left=saved.left;
-        if(saved.top)d.style.top=saved.top;
-        if(saved.right!==undefined)d.style.right=saved.right;
-        d.style.bottom='auto';
-        if(saved.width)d.style.width=saved.width;
-        if(saved.height)d.style.height=saved.height;
-        d.style.maxHeight='none';
-        const pin=document.getElementById('bk-pin-btn');
-        if(pin)pin.textContent='📌';
+        const d=getDlg();if(d)d.classList.add('bk-collapsed');
       });
     }
   }catch(e){}
@@ -7679,6 +7663,7 @@ function startDebrisPirateCombat(raidDef){
   combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_debrisQuestPid:raidDef._questPid,_debrisQuestId:raidDef._questId,_planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
   setHubNav('combat');updateHUD();sfxAlert();
+  try{AudioMgr.playBgm('combat');}catch(e){}
   requestAnimationFrame(()=>{
     initCombatCanvas();
     const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 잔해 해적 전투!';
@@ -7692,6 +7677,7 @@ function startChixPatrolCombat(raidDef){
   combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:false,_chixQuestPid:raidDef._questPid,_chixQuestId:raidDef._questId,_planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
   setHubNav('combat');updateHUD();sfxAlert();
+  try{AudioMgr.playBgm('combat');}catch(e){}
   requestAnimationFrame(()=>{
     initCombatCanvas();
     const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 치크스 정찰대 격퇴!';
