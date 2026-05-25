@@ -7475,7 +7475,7 @@ function showVoidBossOutro(){
     {sp:'블랙팔콘',tx:'선물 하나를 하지.. 은하계 가운데로 가볼 수 있다면 내 마지막 시험을 통과할 것이다.'},
     {sp:'⚠️ 통신 수신 ⚠️',tx:'..... 메시지 전송 끝 .....',fx:'static'},
     {sp:'백구',tx:`${cmdName}, 검은 함선이 사라졌어! 그리고... 어? 우리 격침된 함선들이 다시 살아났어!`},
-    {sp:cmdName,tx:'은하계 가운데... 블랙홀 말이로군. "마지막 시험"이라... 보이드 행성들을 모두 100% 투자해야 갈 수 있다는 뜻일까.'}
+    {sp:cmdName,tx:'은하계 가운데... 블랙홀 말이로군. "마지막 시험"이라... 보이드의 모든 별이 우리 손에 들어와야 한다는 뜻일지도.'}
   ];
   let _idx=0;
   function _renderLine(){
@@ -10518,8 +10518,8 @@ function onMapClick(e){
       const _allVoid100=_voidOwnedAll&&_voidMaxAll;
       const _voidProgress=_voidPlanets.filter(p=>(G.planets[p.id]?.commerce||0)>=10).length;
       if(!G._falconDefeated){
-        baekgu('저곳은... 블랙홀이야. 뭔가 있는 것 같지만 아직 접근할 수 없어. 팔콘 스카우트를 먼저 처치해야 해!');
-        notify('🌑 [잠김] 팔콘 스카우트를 격파해야 진입 가능합니다','err');
+        baekgu('저곳은... 블랙홀이야. 뭔가 있는 것 같아 — 블랙팔콘과 연관된 무엇이. 아직은 접근할 수 없을 거 같아.');
+        notify('🌑 [잠김] 블랙팔콘과 연관된 시험이 남아 있는 것 같다','err');
       } else if(G._finalTestComplete){
         openModal('◈ 보이드의 심연',
           `<div style="text-align:center;padding:16px">
@@ -10554,7 +10554,7 @@ function onMapClick(e){
             <div style="font-size:56px;margin-bottom:10px">🌑</div>
             <div style="color:#dd66ff;font-size:18px;font-weight:bold;margin-bottom:10px">은하 가운데로 가는 문이 닫혀 있다</div>
             <div style="color:#e0d0ff;font-size:14px;line-height:2;background:rgba(0,0,0,.6);padding:12px 16px;border-radius:8px;border:1px solid rgba(180,0,255,.3);margin-bottom:12px">
-              팔콘 스카우트의 메시지를 기억하는가?<br>
+              그날 보이드에서 흘러온 메시지를 기억하는가?<br>
               <span style="color:#cc44ff">"은하 가운데로 가볼 수 있다면 마지막 시험을 통과할 것이다."</span>
             </div>
             <div style="color:var(--yellow);font-size:13px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 14px;line-height:1.8">
