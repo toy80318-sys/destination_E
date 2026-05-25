@@ -7595,7 +7595,7 @@ function _grantVoidBossRewards(){
   G.voidEssence=(G.voidEssence||0)+_veGrant;
   // ─── 알림 + 백구 대사 ───
   const _luckMsg=_lucky?' (🍀 행운! 2척)':'';
-  notify(`🏴 팔콘 스카우트 ${_capCount}척 강제 나포!${_luckMsg}`,'pur');
+  notify(`🏴 블랙팔콘 ${_capCount}척 강제 나포!${_luckMsg}`,'pur');
   if(bpGranted.length>0)notify(`📜 신화 설계도 ${bpGranted.length}개 + 신화 파츠 ${mythicParts.length}종 획득!`,'gold');
   notify(`💎 VC +${_vcGrant} · ⚛️ VE +${_veGrant.toLocaleString()}`,'pur');
   baekgu(`검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 ${_capCount}척${_lucky?' (행운 2척!)':''}, 신화 설계도 ${bpGranted.length}장, 신화 파츠 5종, VC ${_vcGrant}개, VE ${_veGrant.toLocaleString()}을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!`);
@@ -9177,7 +9177,7 @@ function renderTavernView(body){
         "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
         보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
         <span style="color:var(--purple);font-weight:bold">검은 소형함 하나</span>가 나타났대. 아무 식별코드도 없이.<br>
-        현지인들은 <span style="color:#ff66ff;font-weight:bold">팔콘 스카우트</span>라고 불러.<br>
+        현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>이라고 불러.<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
         ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
       </div>
@@ -12158,7 +12158,7 @@ function runCombatTurn(){
         combatState._voidRetreated=true;
         // 남은 모든 적함 함께 어둠 속으로 사라짐
         combatState.enemies.forEach(e=>{e.hp=0;e.sh=0;});
-        addCombatLog(`💬 [팔콘 스카우트] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...`,'gold');
+        addCombatLog(`💬 [블랙팔콘] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...`,'gold');
         drawCombatFrame();
         combatState.done=true;  // 일반 finishCombat 흐름 차단
         try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
@@ -12169,7 +12169,7 @@ function runCombatTurn(){
       if(boss.hp>0&&(bossHpPct<=0.50||fleetHpPct<=0.50)){
         if(!combatState._voidSuperLaserAnnounced){
           combatState._voidSuperLaserAnnounced=true;
-          addCombatLog(`🌑 [팔콘 스카우트] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!`,'err');
+          addCombatLog(`🌑 [블랙팔콘] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!`,'err');
         }
         // 비기함(G.fleet[0] 이외) 중 살아있는 첫 함선을 소멸
         const flagshipId=(G.fleet[0]||{}).id;
