@@ -2008,6 +2008,8 @@ function showHub(){
 }
 const ALL_TABS=['main','map','plaza','front','tavern','gacha','auction','clog','ship','crew','planets','trade','quest','combat','result'];
 function setHubNav(tab){
+  // 잔해 탐색 버튼 라벨 즉시 갱신 (전투 진입/종료 시 합류 호출 모드 전환)
+  try{if(typeof updateGatherBtn==='function')updateGatherBtn();}catch(e){}
   // Clear all active states
   document.querySelectorAll('.hn-btn,.hn-folder-btn').forEach(b=>b.classList.remove('on'));
   if(tab==='main'){const b=document.getElementById('hn-main');if(b)b.classList.add('on');return;}
@@ -7685,6 +7687,26 @@ function updateGatherBtn(){
   if(!btn)return;
   const pid=G.currentPlanet;
   const isCombatQ=(G.quests[pid]||[]).some(q=>q.status==='active'&&q.type==='combat'&&q.nm.includes('치크스'));
+  // 전투 중 모드 — 잔해 해적 합류 호출 (쿨다운 무관, 한 전투당 2회 한도)
+  const _inCombat=(typeof combatState!=='undefined')&&combatState&&!combatState.done;
+  const _joinUsed=_inCombat?(combatState._debrisJoinCount||0):0;
+  const _joinMax=2;
+  if(_inCombat){
+    const _exhausted=_joinUsed>=_joinMax;
+    if(_exhausted){
+      btn.style.background='rgba(80,80,80,.12)';
+      btn.style.borderColor='rgba(255,255,255,.1)';
+      btn.style.color='#888';btn.style.opacity='.55';btn.style.cursor='default';btn.style.animation='none';
+    } else {
+      btn.style.background='rgba(255,60,60,.10)';
+      btn.style.borderColor='rgba(255,80,80,.45)';
+      btn.style.color='rgba(255,150,150,1)';
+      btn.style.opacity='1';btn.style.cursor='pointer';btn.style.animation='pulse 1.8s infinite';
+    }
+    const span2=btn.querySelector('span:last-child');
+    if(span2)span2.textContent=_exhausted?'잔해 합류 한도(2/2)':`🏴‍☠️ 잔해 합류 (${_joinUsed}/${_joinMax})`;
+    return;
+  }
   const left=_gatherCooldownLeft();
   const onCooldown=left>0;
   if(onCooldown){
@@ -7719,11 +7741,81 @@ function updateGatherBtn(){
 }
 
 // ── 잔해/정찰대 탐색 실행 (항상 활성, 30초 쿨다운) ────────────
+// ── 전투 중 잔해 탐색 시 적 함대를 현재 전투에 추가 합류시키는 헬퍼 ──
+// 현재 행성의 링·아군 함대 평균 전투력에 맞춰 1~3척의 잔해 해적을 즉시 스폰
+function spawnDebrisReinforcementToCombat(){
+  if(!combatState||combatState.done)return;
+  const pid=G.currentPlanet;
+  const pd=PLANET_DEF.find(p=>p.id===pid);
+  const ring=pd?.ring||1;
+  // 잔해 해적 능력치 (doGatherSearch의 30% 분기 로직과 동일한 공식 — 50~70% 캡 적용)
+  const dm=getDiffMult(),lm=getLevelMult(),egm=getEarlyGameMult();
+  const _rdHP=Math.round((80+ring*30)*dm*lm*egm);
+  const _rdATK=Math.round((18+ring*5)*dm*lm*egm);
+  const _rdINT=Math.round((12+ring*3)*dm*lm*egm);
+  const _rdTEC=Math.round((8+ring*2)*dm*lm*egm);
+  const _cap=clampEnemyStats(_rdHP,_rdATK,_rdINT,_rdTEC,calcFleetAvgPower());
+  const eHP=_cap.eHP,eATK=_cap.eATK,eINT=_cap.eINT,eTEC=_cap.eTEC;
+  // 합류 척수: 링1-3=1척, 4-6=2척, 7=3척
+  const joinCount=ring>=7?3:ring>=4?2:1;
+  const _tier=(i)=>{
+    if(ring>=7)return i===0?'대형':'중형';
+    if(ring>=5)return '중형';
+    return '소형';
+  };
+  const _nm=(i)=>{
+    if(ring>=7)return i===0?'잔해 모선 (지원)':'잔해 중형 (지원)';
+    if(ring>=5)return '잔해 중형 (지원)'+(joinCount>1?` ${i+1}`:'');
+    return '잔해 해적 (지원)'+(joinCount>1?` ${i+1}`:'');
+  };
+  const _hp=(i)=>Math.round(eHP*(ring>=7&&i===0?2.0:ring>=5&&i===0?1.4:1.0));
+  // 기존 _debrisJoinCount 누적 — 같은 전투에서 두번째 합류일 때 _2 suffix
+  combatState._debrisJoinCount=(combatState._debrisJoinCount||0)+1;
+  const _suffix='_J'+combatState._debrisJoinCount+'_';
+  const newEnemies=[];
+  for(let i=0;i<joinCount;i++){
+    const e={
+      id:'DBRP'+_suffix+i+'_'+Date.now(),
+      nm:_nm(i),
+      tier:_tier(i),
+      isEnemy:true,
+      maxHP:_hp(i),hp:_hp(i),
+      maxSH:Math.floor(_hp(i)*0.3),sh:Math.floor(_hp(i)*0.3),
+      ATT:Math.round(eATK*(ring>=7&&i===0?1.5:1.0)),
+      INT:Math.round(eINT*(ring>=7&&i===0?1.3:1.0)),
+      TEC:eTEC,HP:_hp(i),LOY:0,
+      parts:[],crewIds:[],
+      _joined:true  // 합류 표시 (로그/렌더링용)
+    };
+    newEnemies.push(e);
+  }
+  combatState.enemies.push(...newEnemies);
+  // 로그 + 알림 + 사운드
+  addCombatLog(`🏴‍☠️ 잔해 해적 ${joinCount}척이 전투에 합류! (탐색 신호를 듣고 몰려옴)`,'err');
+  notify(`🏴‍☠️ 잔해 해적 ${joinCount}척 합류!`,'warn');
+  try{baekgu('잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.');}catch(e){}
+  try{sfxAlert();}catch(e){}
+  try{AudioMgr.playSfx('notify',{vol:0.7});}catch(e){}
+  // 잔해 탐색 횟수 허브 진행도에도 카운트 (전투 외 행동과 동일)
+  try{addHubProgress(pid);}catch(e){}
+  // 캔버스 즉시 갱신 — 신규 적 함선 화면에 노출
+  try{if(typeof drawCombatFrame==='function')drawCombatFrame();}catch(e){}
+  // 버튼 라벨 갱신 (잔해 합류 카운트 반영)
+  try{updateGatherBtn();}catch(e){}
+}
+
 function doGatherSearch(){
-  // 이번 호출이 자동 체인인지 확인 (한 번만 사용 후 소거 — 무한 루프 방지)
-  const _isChainCall=!!window._debrisChainNext;
-  if(_isChainCall)window._debrisChainNext=false;
-  // 쿨다운 체크
+  // ── 전투 중이면 잔해 해적 적 함대를 현재 전투에 합류시킴 (지원군 효과) ──
+  // 한 전투당 최대 2회까지만 허용 — 전투가 너무 길어지지 않도록
+  if(typeof combatState!=='undefined'&&combatState&&!combatState.done){
+    if((combatState._debrisJoinCount||0)>=2){
+      notify('⚠️ 이 전투에는 이미 잔해 해적이 충분히 합류했습니다','warn');
+      return;
+    }
+    spawnDebrisReinforcementToCombat();
+    return;
+  }
+  // 쿨다운 체크 (전투 외)
   const _cdLeft=_gatherCooldownLeft();
   if(_cdLeft>0){
     notify(`⏳ 잔해 탐색 쿨다운 ${Math.ceil(_cdLeft/1000)}초 남음`,'warn');
@@ -7800,7 +7892,7 @@ function doGatherSearch(){
       ATT:Math.round(eATK*(ring>=7&&i===0?1.5:1.0)),INT:Math.round(eINT*(ring>=7&&i===0?1.3:1.0)),
       TEC:eTEC,HP:_dbrpHP(i),LOY:0,parts:[],crewIds:[]
     }));
-    const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true,_fromChain:_isChainCall};
+    const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true};
     openModal('🏴‍☠️ 잔해 구역 해적 출현!',
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>격파하면 탐색이 계속됩니다.</div>`,
@@ -7875,7 +7967,7 @@ function _grantDebrisReward(ring,q,pid){
 // 잔해 해적 전투 시작
 function startDebrisPirateCombat(raidDef){
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:Math.max(1,s.hp||st.HP),maxHP:st.HP,sh:(s.sh!=null?s.sh:st.maxSH),maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wpn?(_wpn.wtype||'laser'):'laser',wpnTier:_wpn?(_wpn.tier||1):1,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier,tier:s.tier||'소형'};});
-  combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_debrisQuestPid:raidDef._questPid,_debrisQuestId:raidDef._questId,_fromDebrisChain:!!raidDef._fromChain,_planetId:G.currentPlanet};
+  combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_debrisQuestPid:raidDef._questPid,_debrisQuestId:raidDef._questId,_planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
   setHubNav('combat');updateHUD();sfxAlert();
   try{AudioMgr.playBgm('combat');}catch(e){}
@@ -11719,10 +11811,6 @@ function _finishCombat(){
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
-  // 잔해 탐색에서 진입한 전투인지 — 승리 후 닫기 시 자동으로 다음 탐색 체인 (단 1회)
-  // 이미 자동 체인으로 진입한 전투는 _fromDebrisChain 플래그가 있어 재체인 안 함 → 무한 루프 방지
-  const _wasDebrisCombat=(!!combatState._debrisQuestPid||!!(combatState.planetDef&&combatState.planetDef._isDebris))
-                         &&!combatState._fromDebrisChain;
   let earned=0;
   if(win){
     addCombatLog('🎉 전투 승리!','ok');
@@ -11919,32 +12007,8 @@ function _finishCombat(){
         });
       }),600);
     } else {
-      // 잔해 탐색 → 전투 → 승리 시: 결과 보고 닫는 즉시 다음 탐색을 자동 트리거 (쿨다운 무시)
-      // ★ 단 1회만 체인 — 자동 체인된 전투는 _fromDebrisChain=true가 되어 재체인 안 함
-      const _debrisChain=_wasDebrisCombat?(()=>{
-        try{
-          window._lastGatherTime=0;       // 잔해 탐색 쿨다운 리셋
-          if(typeof hubTab==='function')hubTab('main');  // 허브 메인 강제
-        }catch(e){}
-        // 1800ms 정리 타이머(combatState=null)가 끝난 뒤 안전하게 다음 탐색 호출
-        setTimeout(()=>{
-          try{
-            window._debrisChainNext=true;  // 다음 doGatherSearch가 체인임을 표시
-            if(typeof updateGatherBtn==='function')updateGatherBtn();
-            if(typeof doGatherSearch==='function')doGatherSearch();
-          }catch(e){console.warn('debris chain failed',e);}
-        },400);
-      }):undefined;
       setTimeout(()=>{
-        showAcquisitionReport({
-          title:'🏆 전투 승리 보고',
-          subtitle:`${pd.nm||'알 수 없는 구역'} — TURN ${G.turn}`,
-          items:_buildReport(),
-          color:'var(--gold)',
-          sfx:null,
-          congrats:(_wasDebrisCombat?'잔해 격파 — 자동 탐색 계속':'')||(_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'),
-          onClose:_debrisChain
-        });
+        showAcquisitionReport({title:'🏆 전투 승리 보고',subtitle:`${pd.nm||'알 수 없는 구역'} — TURN ${G.turn}`,items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'});
       },900);
     }
     checkQuestCombatDone();
@@ -11979,6 +12043,8 @@ function _finishCombat(){
     try{_cbCacheClear();}catch(e){}
     _cbEffects=[];_unitPos={};
     if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
+    // 잔해 탐색 버튼을 다시 "탐색" 모드로 복귀
+    try{updateGatherBtn();}catch(e){}
     if(_bossEnding){
       // 보스 엔딩 진행 중: 행성 BGM/허브탭 전환을 showEndingCredits에 위임
       return;
