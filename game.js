@@ -697,22 +697,38 @@ function show(id){SCREENS.forEach(s=>document.getElementById(s)?.classList.remov
 const STAGE_W=1536,STAGE_H=864;
 window._gsScale=1;
 window._gsRotated=false;
+// 디스플레이 모드 — auto(뷰포트 자동) / fhd(1920×1080 캡) / qhd(2560×1440 캡) / mobile(모바일 강제)
+window._displayMode='auto';
+try{const _dm=localStorage.getItem('de_display_mode');if(_dm)window._displayMode=_dm;}catch(e){}
+function setDisplayMode(mode){
+  if(!['auto','fhd','qhd','mobile'].includes(mode))mode='auto';
+  window._displayMode=mode;
+  try{localStorage.setItem('de_display_mode',mode);}catch(e){}
+  fitGameStage();
+}
+try{if(typeof window!=='undefined')window.setDisplayMode=setDisplayMode;}catch(e){}
 function fitGameStage(){
   const vw=window.innerWidth,vh=window.innerHeight;
-  // 세로 모드 감지 (가로보다 세로가 큼) — 모바일/iframe 폭이 좁은 경우
-  const isPortrait=vh>vw;
+  const mode=window._displayMode||'auto';
+  // 모바일 모드: 강제 세로 회전 (사용자 기기 방향 무관)
+  // 그 외: 뷰포트 세로가 더 크면 자동 회전 (이전 동작 유지)
+  const isPortrait=mode==='mobile'?true:(vh>vw);
   const stage=document.getElementById('game-stage');
   if(!stage){window.addEventListener('DOMContentLoaded',fitGameStage,{once:true});return;}
+  // 디스플레이 모드별 최대 스케일 — 1920/2560 폭 캡 (실제 렌더 픽셀 제한)
+  // 1536 base width × cap_scale = 목표 max 폭
+  let maxScale=Infinity;
+  if(mode==='fhd')maxScale=1920/STAGE_W;       // ≈ 1.25 (1920×1080)
+  else if(mode==='qhd')maxScale=2560/STAGE_W;  // ≈ 1.67 (2560×1440)
+  // auto/mobile은 캡 없음
   if(isPortrait){
-    // 세로 모드 → 90도 회전해서 가로로 표시
-    // 회전 후 효과적 폭/높이가 바뀌므로 스케일도 vh→STAGE_W, vw→STAGE_H 기준
     const sx=vh/STAGE_W;
     const sy=vw/STAGE_H;
-    const s=Math.min(sx,sy);
+    let s=Math.min(sx,sy);
+    if(mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=true;
     document.documentElement.style.setProperty('--gs',s);
-    // 회전 + 중앙 정렬
     stage.style.transform=`translate(-50%,-50%) rotate(90deg) scale(${s})`;
     stage.style.transformOrigin='center center';
     stage.style.position='absolute';
@@ -720,14 +736,13 @@ function fitGameStage(){
     stage.style.top='50%';
     document.body.style.overflow='hidden';
   } else {
-    // 가로 모드 — 일반 letterbox
     const sx=vw/STAGE_W;
     const sy=vh/STAGE_H;
-    const s=Math.min(sx,sy);
+    let s=Math.min(sx,sy);
+    if(mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=false;
     document.documentElement.style.setProperty('--gs',s);
-    // 회전 해제
     stage.style.transform=`scale(${s})`;
     stage.style.transformOrigin='center center';
     stage.style.position='';
@@ -12370,6 +12385,28 @@ function showSettingsModal(){
         </div>
       </div>
     </div>
+    <!-- 디스플레이 모드 (화면 해상도) -->
+    ${(()=>{
+      const dm=window._displayMode||'auto';
+      const opts=[
+        {k:'auto',lb:'🖥️ 자동',desc:'뷰포트에 맞춰 비례 확대/축소 (제한 없음)'},
+        {k:'fhd',lb:'🖼️ FHD',desc:'1920×1080 모드 — 가독성 우선'},
+        {k:'qhd',lb:'🖥️ QHD',desc:'2560×1440 모드 — 큰 화면 최적'},
+        {k:'mobile',lb:'📱 모바일',desc:'세로 회전 + 작은 화면 (모바일 / iframe)'}
+      ];
+      const btn=opts.map(o=>{
+        const act=dm===o.k;
+        return `<button onclick="setDisplayMode('${o.k}');showSettingsModal();" style="padding:10px 6px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:bold;text-align:left;line-height:1.4;${act?'background:rgba(0,243,255,.12);border:1px solid var(--cyan);color:var(--cyan)':'background:rgba(80,80,80,.1);border:1px solid #555;color:#aaa'}">
+          ${o.lb}${act?' ✓':''}
+          <div style="font-size:10px;font-weight:normal;margin-top:2px;opacity:.85">${o.desc}</div>
+        </button>`;
+      }).join('');
+      return `<div style="margin-bottom:16px;background:rgba(204,102,255,.04);border:1px solid rgba(204,102,255,.2);border-radius:8px;padding:12px">
+        <div style="font-weight:bold;margin-bottom:8px">🖥️ 디스플레이 해상도</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${btn}</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:8px;line-height:1.5">현재 스케일: <span style="color:var(--cyan)">${(window._gsScale||1).toFixed(2)}x</span> · 기준: 1536×864</div>
+      </div>`;
+    })()}
     ${_inGame?`<div style="margin-bottom:16px">
       <div style="font-weight:bold;margin-bottom:8px">🎮 난이도 <span style="color:var(--cyan);font-size:11px;font-weight:normal">현재: ${({easy:'😊 쉬움',normal:'⚔️ 보통',hard:'💀 어려움',extreme:'☠️ 극악'})[G.difficulty]||'⚔️ 보통'}</span></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
