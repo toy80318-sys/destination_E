@@ -3678,7 +3678,8 @@ function renderShipTab(body){
           const _rb2=p2.rarity==='mythic'?'#ff88ff':p2.rarity==='set'?'var(--cyan)':_cc2;
           const _is2x2=(cell.spanC>=2&&cell.spanR>=2);
           const _is2x1=(cell.spanC>=2&&cell.spanR<2);
-          const _isz=_is2x2?46:_is2x1?36:22;
+          // 1×1 셀(51px)에 더 큰 이미지(40px) — 기존 22px는 너무 작아서 식별 어려움
+          const _isz=_is2x2?94:_is2x1?72:42;
           const _st2=p2.cat==='weapon'?'ATT+'+p2.ATT+(p2.wtype?' ['+p2.wtype+']':''):p2.cat==='shield'?'SHD+'+p2.INT+' SH+'+p2.maxSH:p2.cat==='armor'?'HP+'+p2.HP+(p2.DEF?' DEF+'+p2.DEF:''):'ENG+'+p2.TEC;
           const _tp2=p2.nm+' [T'+p2.tier+(p2.rarity==='mythic'?' ✦신화':p2.rarity==='set'?' ◈세트':'')+']\n'+p2.desc+'\n'+_st2+(cell.forced?' (초과배치)':'')+'\n▶ 클릭=탈착';
           const _nmLabel=(_is2x2||_is2x1)?('<span style="font-size:8px;color:'+_cc2+';pointer-events:none;text-align:center;line-height:1;max-width:'+(cell.spanC*CELL_SZ+3*(cell.spanC-1)-4)+'px;overflow:hidden;white-space:nowrap;display:block">'+p2.nm.slice(0,_is2x2?9:7)+'</span>'):'';
