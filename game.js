@@ -7769,21 +7769,22 @@ function completeQuest(pid,idx){
   // 행성 허브 진행도 추가
   addHubProgress(pid);
   updateHUD();
-  // ── 특별 보상 추첨 ──────────────────────────────────────────────
-  // 명성 100+ → 전설(set 파츠/legend 동료/legend 함선 설계도) 등장
-  // 명성 200+ → 신화(mythic 파츠/mythic 함선 설계도) 등장
+  // ── 특별 보상 추첨 (사용자 피드백 반영: 명성 게이트 완화 + 확률 정상화) ──
+  // 명성 50+ → 전설(set 파츠/legend 동료) 등장
+  // 명성 120+ → 신화(mythic 파츠) 등장
+  // 종전 공식의 비대칭 캡(*0.5-0.10 등)을 제거하고 단조 증가 형태로 정정
   const roll=Math.random();
   const rep=G.reputation||0;
-  const _legendUnlocked=rep>=100;
-  const _mythicUnlocked=rep>=200;
-  // 퀘스트 VE 티어 보너스: VE>=40(명성200급) +10%, VE>=30(명성100급) +5%
+  const _legendUnlocked=rep>=50;
+  const _mythicUnlocked=rep>=120;
+  // 퀘스트 VE 티어 보너스: VE>=40 +10%, VE>=30 +5%
   const _qveBonus=q.rewardVe>=40?0.10:q.rewardVe>=30?0.05:0;
-  // 신화급 파츠 확률: 명성 200+에서만 활성. 최종값에서 -10%p 적용 (누적 -5%p 추가)
-  const mythicRate=_mythicUnlocked?Math.max(0,Math.min(0.22,0.03+rep*0.005+_qveBonus)*0.5-0.10):0;
-  // 세트(전설) 파츠 확률: 명성 100+에서만 활성. 최종값 -5%p 적용
-  const setRate=_legendUnlocked?Math.max(0,Math.min(0.28,0.06+rep*0.005+_qveBonus)-0.05):0;
-  // 전설 동료 확률: 명성 100+에서만 활성
-  const legendRate=_legendUnlocked?Math.min(0.18,0.02+rep*0.003+_qveBonus)*0.5:0;
+  // 신화급 파츠: 120명성=0.5%, 300명성=8% 캡 — 부드러운 단조 증가
+  const mythicRate=_mythicUnlocked?Math.min(0.08,Math.max(0,(rep-120)*0.0006)+0.005+_qveBonus):0;
+  // 세트(전설) 파츠: 50명성=4%, 220명성=25% 캡
+  const setRate=_legendUnlocked?Math.min(0.25,0.04+(rep-50)*0.0014+_qveBonus):0;
+  // 전설 동료: 50명성=2%, 200명성=12% 캡
+  const legendRate=_legendUnlocked?Math.min(0.12,0.02+(rep-50)*0.0007+_qveBonus):0;
 
   let bonusMsg='';
   if(roll<legendRate){
@@ -7858,12 +7859,14 @@ function completeQuest(pid,idx){
   const _bpId=BLUEPRINT_MAP[pid];
   const _bpRecCheck=_bpId&&CRAFT_RECIPES.find(r=>r.id===_bpId);
   const _bpTier=_bpRecCheck?.tier;
+  // 설계도 명성 게이트 (사용자 피드백 — 초중반에도 잡힐 수 있게 완화):
+  // 신화 60→40, 전설/기함 30→15
   const _bpRepOK=
-    _bpTier==='mythic'?(rep>=60):
-    _bpTier==='legend'||_bpTier==='flagship'?(rep>=30):
+    _bpTier==='mythic'?(rep>=40):
+    _bpTier==='legend'||_bpTier==='flagship'?(rep>=15):
     true;
-  // 설계도 드롭 확률 (LGD03 15%, 그 외 12.5%)
-  const _bpDropRate=(_bpId==='LGD03')?0.15:0.125;
+  // 설계도 드롭 확률 상향: LGD03 15→20%, 그 외 12.5→15%
+  const _bpDropRate=(_bpId==='LGD03')?0.20:0.15;
   if(_bpId&&_bpRepOK&&!G.blueprints[_bpId]&&Math.random()<_bpDropRate){
     G.blueprints[_bpId]=true;
     const _bpRec=_bpRecCheck;
