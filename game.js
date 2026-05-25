@@ -5569,9 +5569,177 @@ function autoEquipPartsFlagship(){
   rerenderShipOrGarage();saveGame(true);
 }
 function autoEquipPartsEven(){
-  const r=_smartAutoEquipV2('even');if(!r)return;
-  notify(`🔧 자동 배치 (평균 배분) — 핵심4 ${r.core4} · 세트 ${r.set} · 워프/드론 ${r.small} · 추가 ${r.extra} · 미사일 ${r.missile}`,'gold');
+  const r=_smartAutoEquipEvenV3();if(!r)return;
+  notify(`🔧 평균 배분 — 워프 ${r.warp} · 핵심3 ${r.core3} · 세트 ${r.setBundle} · 라운드 ${r.round} · 수리 ${r.repair} · 작은 ${r.small}`,'gold');
   rerenderShipOrGarage();saveGame(true);
+}
+// ─── 평균 배분 V3 — 사용자 명세 ────────────────────────────────────────
+// STEP 1: 워프엔진(블링크/타키온/테슬라 등) 각 함선 1개씩
+// STEP 2: 신화/전설 무기·실드·장갑 각 함선 1개씩 (세트 제외 — 다음 단계에서 처리)
+// STEP 3: 세트 아이템 → 같은 setId 부속을 한 함선에 묶음 (혹은 이미 그 세트 보유 함선)
+// STEP 4: 남은 신화/전설 라운드로빈 — 첫 함선부터 끝 함선까지 1개씩,
+//         더 남았다면 다른 종류로 다시 한 라운드
+// STEP 5: 수리로봇/수리장갑 각 함선 1개씩
+// STEP 6: 남은 작은 아이템 1개씩, 같은 함선 중복 배치 최소화
+function _smartAutoEquipEvenV3(){
+  if(!G.fleet||!G.fleet.length){notify('함선이 없습니다','err');return null;}
+  _collectAllPartsToPool();
+  function classify(p){
+    if(WARP_ENGINE_IDS.includes(p.id))return 'warp';
+    if(p.cat==='weapon')return p.wtype==='missile'?'missile':'laser';
+    if(p.cat==='armor'&&typeof p.repairRate==='number'&&p.repairRate>0)return 'repair';
+    return p.cat;
+  }
+  function partArea(p){const g=getPartGridSize(p);return g.cols*g.rows;}
+  const rarPri={mythic:0,set:1,legend:2,L:2,hero:3,H:3,R:4,N:5};
+  function rarOf(p){return rarPri[p.rarity]??(p.tier>=15?2:p.tier>=11?3:p.tier>=6?4:5);}
+  function isMythLeg(p){return p&&(p.rarity==='mythic'||p.rarity==='legend'||p.tier>=15);}
+  const sortByPower=arr=>arr.sort((a,b)=>{
+    const aa=partArea(a),ab=partArea(b);
+    if(aa!==ab)return ab-aa;
+    const ra=rarOf(a),rb=rarOf(b);
+    if(ra!==rb)return ra-rb;
+    if(a.tier!==b.tier)return (b.tier||0)-(a.tier||0);
+    return ((b.ATT||0)+(b.HP||0)+(b.INT||0)+(b.TEC||0))-((a.ATT||0)+(a.HP||0)+(a.INT||0)+(a.TEC||0));
+  });
+  const flat=[];
+  (G.inventory||[]).forEach(i=>{const p=PARTS.find(x=>x.id===i.id);if(!p||i.qty<=0)return;for(let k=0;k<i.qty;k++)flat.push(p);});
+  const pools={laser:[],missile:[],shield:[],armor:[],engine:[],warp:[],repair:[]};
+  flat.forEach(p=>{const c=classify(p);if(pools[c])pools[c].push(p);});
+  Object.keys(pools).forEach(k=>sortByPower(pools[k]));
+  // 세트 그룹 — rarity:'set' & setId 보유한 파츠를 setId별로 묶음
+  const setGroups={};
+  flat.forEach(p=>{if(p.rarity==='set'&&p.setId){if(!setGroups[p.setId])setGroups[p.setId]=[];setGroups[p.setId].push(p);}});
+  function _cellsTotal(s){return getShipPartsGridRows(s)*getShipPartsGridCols(s.tier);}
+  function _cellsUsed(s){let u=0;(s.parts||[]).forEach(pid=>{const p=partById(pid);if(p)u+=partArea(p);});return u;}
+  function _slotsLeft(s){return _cellsTotal(s)-_cellsUsed(s);}
+  function _canFit(s,p){return _slotsLeft(s)>=partArea(p);}
+  function _hasCat(s,cat){return (s.parts||[]).some(pid=>{const p=partById(pid);return p&&classify(p)===cat;});}
+  function _hasPartId(s,id){return (s.parts||[]).includes(id);}
+  function _attach(si,partId){const inv=G.inventory.find(i=>i.id===partId&&i.qty>0);if(!inv)return false;attachPartSilent(si,partId);return true;}
+  function _removeFromPool(partId){for(const k in pools){const idx=pools[k].findIndex(x=>x.id===partId);if(idx>=0){pools[k].splice(idx,1);return;}}}
+  const _allShips=()=>G.fleet.map((_,i)=>i);
+  function _pickFitting(arr,s){for(let i=0;i<arr.length;i++){if(_canFit(s,arr[i]))return i;}return -1;}
+  function _pickFittingMythLeg(arr,s){for(let i=0;i<arr.length;i++){if(isMythLeg(arr[i])&&_canFit(s,arr[i]))return i;}return -1;}
+  // 세트 setId가 이미 함선에 1개 이상 있는지
+  function _shipHasSetId(s,setId){return (s.parts||[]).some(pid=>{const p=partById(pid);return p&&p.rarity==='set'&&p.setId===setId;});}
+
+  let _stepWarp=0,_stepCore3=0,_stepSetBundle=0,_stepRound=0,_stepRepair=0,_stepSmall=0;
+
+  // ═════ STEP 1: 워프엔진 — 각 함선 1개씩 ═════
+  for(const si of _allShips()){
+    if(pools.warp.length===0)break;
+    const s=G.fleet[si];
+    if(_slotsLeft(s)<=0)continue;
+    if((s.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid)))continue;
+    const idx=_pickFitting(pools.warp,s);if(idx<0)continue;
+    const wp=pools.warp.splice(idx,1)[0];
+    if(_attach(si,wp.id))_stepWarp++;
+  }
+  // 남은 워프엔진은 일반 엔진 풀로 흡수
+  if(pools.warp.length>0){pools.engine.push(...pools.warp);pools.warp=[];sortByPower(pools.engine);}
+
+  // ═════ STEP 2: 신화/전설 무기·실드·장갑 — 각 함선 1개씩 (세트 제외) ═════
+  for(const cat of ['laser','shield','armor']){
+    for(const si of _allShips()){
+      if(pools[cat].length===0)break;
+      const s=G.fleet[si];
+      if(_slotsLeft(s)<=0)continue;
+      if(_hasCat(s,cat))continue;
+      // 세트 제외 — 신화/전설만
+      let idx=-1;
+      for(let i=0;i<pools[cat].length;i++){
+        const p=pools[cat][i];
+        if(p.rarity==='set')continue;
+        if(!isMythLeg(p))continue;
+        if(_canFit(s,p)){idx=i;break;}
+      }
+      if(idx<0)continue;
+      const part=pools[cat].splice(idx,1)[0];
+      if(_attach(si,part.id))_stepCore3++;
+    }
+  }
+
+  // ═════ STEP 3: 세트 아이템 — 같은 setId 한 함선에 묶음 ═════
+  Object.keys(setGroups).forEach(setId=>{
+    const setParts=setGroups[setId].filter(p=>G.inventory.find(i=>i.id===p.id&&i.qty>0));
+    if(setParts.length<2)return;
+    // 이미 같은 setId 보유한 함선 우선, 없으면 빈 자리 가장 많은 함선
+    let targetSi=-1;
+    for(const si of _allShips()){if(_shipHasSetId(G.fleet[si],setId)){targetSi=si;break;}}
+    if(targetSi<0){
+      const totalArea=setParts.reduce((s,p)=>s+partArea(p),0);
+      const order=_allShips().sort((a,b)=>_slotsLeft(G.fleet[b])-_slotsLeft(G.fleet[a]));
+      for(const si of order){if(_slotsLeft(G.fleet[si])>=totalArea){targetSi=si;break;}}
+    }
+    if(targetSi<0)return;
+    setParts.forEach(p=>{if(_canFit(G.fleet[targetSi],p)&&_attach(targetSi,p.id)){_removeFromPool(p.id);_stepSetBundle++;}});
+  });
+
+  // ═════ STEP 4: 남은 신화/전설 라운드로빈 ═════
+  // 4-1) 카테고리(엔진→무기→실드→장갑→미사일→수리) 순서로 각 함선에 1개씩
+  //      한 라운드 끝나면 다시 한 라운드 (남은 게 있을 때까지, 최대 6라운드)
+  for(let round=0;round<6;round++){
+    let placedThisRound=false;
+    for(const cat of ['engine','laser','shield','armor','missile','repair']){
+      for(const si of _allShips()){
+        if(pools[cat].length===0)break;
+        const s=G.fleet[si];
+        if(_slotsLeft(s)<=0)continue;
+        const idx=_pickFittingMythLeg(pools[cat],s);
+        if(idx<0)continue;
+        const part=pools[cat].splice(idx,1)[0];
+        if(_attach(si,part.id)){_stepRound++;placedThisRound=true;}
+      }
+    }
+    if(!placedThisRound)break;
+  }
+
+  // ═════ STEP 5: 수리로봇/수리장갑 — 각 함선 1개씩 ═════
+  for(const si of _allShips()){
+    if(pools.repair.length===0)break;
+    const s=G.fleet[si];
+    if(_slotsLeft(s)<=0)continue;
+    if(_hasCat(s,'repair'))continue;
+    const idx=_pickFitting(pools.repair,s);if(idx<0)continue;
+    const part=pools.repair.splice(idx,1)[0];
+    if(_attach(si,part.id))_stepRepair++;
+  }
+
+  // ═════ STEP 6: 작은 아이템 — 1개씩, 같은 partId 중복 배치 최소화 ═════
+  // 남은 모든 풀을 한 배열로 모으고, 함선마다 "아직 그 partId가 없는" 것을 우선 선택
+  for(let round=0;round<50;round++){
+    let placed=false;
+    const remaining=[];
+    ['engine','laser','shield','armor','missile','repair'].forEach(c=>{pools[c].forEach(p=>remaining.push({p,cat:c}));});
+    if(remaining.length===0)break;
+    remaining.sort((a,b)=>{
+      const aa=partArea(a.p),bb=partArea(b.p);
+      if(aa!==bb)return bb-aa;
+      return rarOf(a.p)-rarOf(b.p);
+    });
+    for(const si of _allShips()){
+      const s=G.fleet[si];
+      if(_slotsLeft(s)<=0)continue;
+      // ① 함선에 같은 partId가 없는 것 우선 (중복 최소화)
+      let pickedCi=-1;
+      for(let ci=0;ci<remaining.length;ci++){
+        if(!_canFit(s,remaining[ci].p))continue;
+        if(!_hasPartId(s,remaining[ci].p.id)){pickedCi=ci;break;}
+      }
+      // ② 그래도 없으면 그냥 fitting 첫 번째
+      if(pickedCi<0){for(let ci=0;ci<remaining.length;ci++){if(_canFit(s,remaining[ci].p)){pickedCi=ci;break;}}}
+      if(pickedCi<0)continue;
+      const cand=remaining[pickedCi];
+      remaining.splice(pickedCi,1);
+      const pidx=pools[cand.cat].findIndex(x=>x.id===cand.p.id);
+      if(pidx>=0)pools[cand.cat].splice(pidx,1);
+      if(_attach(si,cand.p.id)){_stepSmall++;placed=true;}
+    }
+    if(!placed)break;
+  }
+
+  return{warp:_stepWarp,core3:_stepCore3,setBundle:_stepSetBundle,round:_stepRound,repair:_stepRepair,small:_stepSmall};
 }
 
 // ─────────────────────────────────────────────────────────────────
