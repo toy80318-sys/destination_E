@@ -7833,23 +7833,26 @@ function completeQuest(pid,idx){
     notify(`✦ 신화 파츠 ${p?.nm||partId} 획득!`,'pur');
     baekgu(`신화급 파츠야! ${p?.nm||partId}. 상점에서는 절대 못 사는 거야.`);
   } else if(roll<legendRate+mythicRate+setRate){
-    // 세트 아이템 획득
+    // 세트/전설 파츠 획득 — 풀에 set과 legend(ML06/ML07)이 섞여 있음. 실제 rarity로 라벨 분기
     const partId=QUEST_SET_PARTS[Math.floor(Math.random()*QUEST_SET_PARTS.length)];
     const p=PARTS.find(x=>x.id===partId);
     if(!G.inventory)G.inventory=[];
     const inv=G.inventory.find(i=>i.id===partId);
     if(inv)inv.qty++;else G.inventory.push({id:partId,nm:p.nm,qty:1});
-    // 세트 완성 확인
-    const setId=p?.setId;
-    const setComplete=setId&&PARTS.filter(sp=>sp.setId===setId).every(sp=>G.inventory.find(si=>si.id===sp.id&&si.qty>0)||G.fleet.some(sh=>(sh.parts||[]).includes(sp.id)));
+    const isSet=p?.rarity==='set';
+    // 세트 완성 확인 (세트일 때만)
+    const setId=isSet?p?.setId:null;
+    const setComplete=isSet&&setId&&PARTS.filter(sp=>sp.setId===setId).every(sp=>G.inventory.find(si=>si.id===sp.id&&si.qty>0)||G.fleet.some(sh=>(sh.parts||[]).includes(sp.id)));
+    const _icon=isSet?'◈':'⭐';
+    const _title=isSet?'세트 아이템 획득!':'전설 파츠 획득!';
     bonusMsg=`<div style="margin-top:12px;background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
-      <div style="font-size:26px">◈ 세트 아이템 획득!</div>
+      <div style="font-size:26px">${_icon} ${_title}</div>
       <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${p?.nm||partId}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${p?.desc||''}</div>
       ${setComplete?'<div style="font-size:12px;color:var(--gold);margin-top:3px">🎉 세트 완성! 보너스 효과 활성화</div>':''}
     </div>`;
-    notify(`◈ 세트 파츠 ${p?.nm||partId} 획득!`,'gold');
-    baekgu(`세트 아이템이야! ${p?.nm}. 세트 완성하면 추가 보너스가 붙어.`);
+    notify(`${_icon} ${isSet?'세트':'전설'} 파츠 ${p?.nm||partId} 획득!`,'gold');
+    baekgu(isSet?`세트 아이템이야! ${p?.nm}. 세트 완성하면 추가 보너스가 붙어.`:`전설 파츠야! ${p?.nm}. 상점에서는 못 사는 거야.`);
   }
 
   // ── 설계도 드롭 (5%, 미보유 시에만, 특별 보상과 독립) ──────────────────
@@ -12275,6 +12278,25 @@ function _finishCombat(){
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
+  // ★ 블랙홀 최종 보이드 함대 전투 — 승리 시 보상 지급 + 엔딩 크레딧으로 직행
+  //   일반 보상 모달·1800ms 클린업 우회. 패배 시는 일반 패배 처리.
+  if(win&&combatState._isBlackHoleFinal){
+    addCombatLog('🌌 블랙홀의 사자 격파! 보이드의 최종 시험을 통과했다.','gold');
+    notify('🌌 블랙홀 함대 격파 — 최종 시험 통과!','gold');
+    G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});
+    try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
+    G._act5Complete=true;
+    G._finalEndingShown=false;
+    saveGame(true);
+    setTimeout(()=>{
+      combatState=null;
+      try{_cbCacheClear();}catch(e){}
+      _cbEffects=[];_unitPos={};
+      if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
+      try{showFinalEndingCredits();}catch(e){console.warn(e);}
+    },2500);
+    return;
+  }
   let earned=0;
   if(win){
     addCombatLog('🎉 전투 승리!','ok');
@@ -14228,20 +14250,15 @@ function _enterBlackHoleFinalTest(){
     const _typeTick=()=>{
       if(i>=_msgFull.length){
         btnWrap.style.opacity='1';
-        btnWrap.innerHTML='<button id="_bh-final-claim" style="font-size:16px;padding:14px 32px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:4px;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all .3s" onmouseover="this.style.background=\'#000\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.background=\'#1a1a1a\';this.style.transform=\'translateY(0)\'">엔딩 크레딧 →</button>';
+        btnWrap.innerHTML='<button id="_bh-final-claim" style="font-size:16px;padding:14px 32px;background:linear-gradient(135deg,#1a1a1a,#3a0030);color:#fff;border:2px solid rgba(200,100,255,.5);border-radius:8px;cursor:pointer;letter-spacing:4px;box-shadow:0 4px 16px rgba(180,0,255,.4);transition:all .3s" onmouseover="this.style.background=\'linear-gradient(135deg,#000,#4a0040)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.background=\'linear-gradient(135deg,#1a1a1a,#3a0030)\';this.style.transform=\'translateY(0)\'">⚔️ 마지막 전투 →</button>';
         const claimBtn=overlay.querySelector('#_bh-final-claim');
         claimBtn.onclick=()=>{
           overlay.style.transition='opacity 2.5s ease-out';
           overlay.style.opacity='0';
           setTimeout(()=>{
             try{overlay.remove();}catch(e){}
-            // 검은 팔콘 + 신화 파츠 즉시 지급 (보상은 모달 없이 silent)
-            try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
-            // 최종 엔딩 크레딧 — ACT 5 모드
-            G._act5Complete=true;
-            G._finalEndingShown=false;  // 강제 재생
-            saveGame(true);
-            try{showFinalEndingCredits();}catch(e){console.warn(e);}
+            // ★ 변경: 보상·엔딩으로 바로 가지 않고 블랙홀 보이드 함대 전투 진입
+            try{startBlackHoleFleetCombat();}catch(e){console.warn(e);}
           },2700);
         };
         return;
@@ -14252,6 +14269,83 @@ function _enterBlackHoleFinalTest(){
     _typeTick();
   },4000);
 }
+// ─── 블랙홀 보이드 함대 전투 (ACT 5 최종전) ──────────────────────────
+// 흐름: _enterBlackHoleFinalTest 메시지 → "마지막 전투" 클릭 → 이 함수 호출 →
+//       전투 → 승리 시 _finishCombat에서 _isBlackHoleFinal 플래그 감지 →
+//       _grantBlackHoleRewardsSilent + showFinalEndingCredits
+// 능력치: 아군 함대 총합의 ×15 (히든 보이드 보스 ×10보다 강한 최종 보스 페이즈)
+function startBlackHoleFleetCombat(){
+  const pd={id:'P-BLACKHOLE',nm:'은하 가운데 — 블랙홀의 심연',ring:7,void:true,f:'F07'};
+  const VOID_FLEET_SIZE=16;
+  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
+  const _totalHP=Math.max(8000000,Math.round((_fp.hp||0)*15));
+  const _totalATT=Math.max(60000,Math.round((_fp.atk||0)*15));
+  const _totalSH=Math.max(2000000,Math.round((_fp.sh||0)*15));
+  const _UNIT=19;  // 호위 15 + 보스 4
+  const _escortHP=Math.round(_totalHP/_UNIT);
+  const _escortATT=Math.round(_totalATT/_UNIT);
+  const _escortSH=Math.round(_totalSH/_UNIT);
+  const _flagHP=_escortHP*4;
+  const _flagATT=_escortATT*4;
+  const _flagSH=_escortSH*4;
+  const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
+    const isFlagship=(i===0);
+    const _hp=isFlagship?_flagHP:_escortHP;
+    const _att=isFlagship?_flagATT:_escortATT;
+    const _sh=isFlagship?_flagSH:_escortSH;
+    return {
+      id:`BH_VOID_${i+1}`,
+      nm:isFlagship?'🌌 블랙홀의 사자 ✦신화':`보이드 함선 ${i+1}`,
+      tier:isFlagship?'신화':'중형',
+      isEnemy:true,
+      catId:'S10',
+      voidBoss:isFlagship,
+      hp:_hp,maxHP:_hp,HP:_hp,
+      sh:_sh,maxSH:_sh,
+      ATT:_att,
+      INT:Math.round(_att*0.8),
+      TEC:Math.round(_att*0.5),
+      DEF:isFlagship?1000:400,
+      armorTier:isFlagship?80:55,
+      shieldTier:isFlagship?80:55,
+      LOY:0,parts:[],crewIds:[],
+      _isBlackHoleFleet:true
+    };
+  });
+  const players=G.fleet.map(s=>{
+    const st=getShipStats(s);
+    const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));
+    const _wt=_wpn?(_wpn.tier||1):1;
+    const _wtype=_wpn?(_wpn.wtype||'laser'):'laser';
+    const _wrar=_wpn?(_wpn.rarity||''):'';
+    const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));
+    const _shTier=_shp?(_shp.tier||0):0;
+    const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));
+    const _arTier=_arp?(_arp.tier||0):0;
+    return{...s,isEnemy:false,hp:s.hp,maxHP:st.HP,sh:s.sh,maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wtype,wpnTier:_wt,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier};
+  });
+  combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,
+               isBoss:false,isVoidBoss:false,_isBlackHoleFinal:true,
+               _rndSeed:Date.now()%9999,_entranceT:1,_entranceDone:true,
+               _planetId:G.currentPlanet};
+  renderCombatView(document.getElementById('hub-body'));
+  setHubNav('combat');updateHUD();
+  _cbEffects=[];_unitPos={};
+  if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
+  combatState._sunsinUsed=false;
+  sfxAlert();try{AudioMgr.playBgm('boss');}catch(e){}
+  _preloadCombatImages();
+  requestAnimationFrame(()=>{
+    initCombatCanvas();
+    const t=document.getElementById('cb-title');
+    if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
+    addCombatLog('🌌 블랙홀 너머에서 보이드 함대가 모습을 드러낸다. 마지막 시험이다.','err');
+    try{baekgu('블랙홀 너머에서 함대가 나타났어. 살아 돌아갈 길은 우리가 만드는 거야.');}catch(e){}
+    setTimeout(runCombatTurn,800);
+  });
+}
+try{if(typeof window!=='undefined')window.startBlackHoleFleetCombat=startBlackHoleFleetCombat;}catch(e){}
+
 // 보상 즉시 지급 (모달 없이) — 엔딩 시퀀스로 바로 진입
 function _grantBlackHoleRewardsSilent(){
   // 검은 팔콘 + 신화 파츠 5점 지급

@@ -12,5 +12,8 @@ const QUEST_LEGEND_CREW=[
 ];
 
 // 신화·세트 파츠 보상 풀
-const QUEST_MYTHIC_PARTS=['MW01','MS01','MA01','ME01'];
-const QUEST_SET_PARTS=['SW01','SA01','SS01','SE01','SMIS01','SARM01'];
+// MMB01 (이휘소 방정식 미사일): mythic, quest:true → 퀘스트 전용 신화 미사일
+// ML06 (아우레우스 황금작살) / ML07 (치크스 결정파쇄탄): legend tier 15/16 — 상점 미판매
+// → 퀘스트 풀(전설/세트 통합)에 추가해야 획득 가능
+const QUEST_MYTHIC_PARTS=['MW01','MS01','MA01','ME01','MMB01'];
+const QUEST_SET_PARTS=['SW01','SA01','SS01','SE01','SMIS01','SARM01','ML06','ML07'];
