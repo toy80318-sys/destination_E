@@ -2025,7 +2025,9 @@ function hubTab(tab){
 // ═══ 허브 공간 배경 이미지 배너 ════════════════════════════════
 function hubBanner(tabId,emoji,label,factionId){
   const genSrc='img/hub/'+tabId+'.png';
-  const firstSrc=factionId?'img/hub/'+factionId+'/'+tabId+'.png':genSrc;
+  // 팩션 폴더 우선 시도는 폴더가 없을 경우 onerror 폴백을 거치며 깜빡임 발생 → 기본 이미지만 사용
+  // 팩션별 변형이 필요하면 명시적으로 img/hub/<faction>/<tab>.png 만든 후 코드에서 활성화
+  const firstSrc=genSrc;
   // 시설 NPC 담당자 이미지: trade·quest·tavern·craft·ship·garage·auction 7종 한정
   const _NPC_TABS=['trade','quest','tavern','craft','ship','garage','auction'];
   const _hasNpc=_NPC_TABS.indexOf(tabId)>=0;
