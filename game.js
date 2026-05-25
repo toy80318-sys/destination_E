@@ -7158,24 +7158,28 @@ function acceptQuest(pid,idx){
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
-  // ─── 보이드 함대 능력치 스케일링 (해적 알고리즘 응용 — per-ship 평균 비례) ───
-  //   해적: clampEnemyStats(MIN 0.90 ~ MAX 0.95) — 적 1척 = 플레이어 평균 1척의 ~95%
-  //   보이드: 더 강한 적이므로 per-ship 평균에 N배 적용
-  //   · 호위 1척 = 플레이어 평균 함선 × 5 (5배 강함)
-  //   · 보스 1척 = 플레이어 평균 함선 × 40 (40배 강함, 신화급)
-  //   · 16척 총합 = 평균 × (15×5 + 40) = 평균 × 115
-  //     예시 (플레이어 8척, 평균 HP 3M): 호위 15M, 보스 120M, 총 345M
-  //   · armorTier 60 / shieldTier 60 / DEF 800 (보스) — 피해 감소 강화
+  // ─── 보이드 함대 능력치 스케일링 (사용자 명세 엄수) ───
+  //   · 적 함대 총 HP = 아군 함대 총 HP × 2 (정확히)
+  //   · 적 함대 총 ATT = 아군 함대 총 ATT × 2
+  //   · 적 함대 총 SH = 아군 함대 총 SH × 2
+  //   · 호위 15척 : 보스 1척 = 1 : 4 비율 (보스가 호위 1척의 4배)
+  //   · 분배 단위 = 15 + 4 = 19 unit
+  //     예시 (아군 23M HP / 77K ATT):
+  //       총 적 = 46M HP / 154K ATT
+  //       호위 1척 = 46M/19 ≈ 2.42M HP / 154K/19 ≈ 8.1K ATT
+  //       보스 1척 = 호위 × 4 ≈ 9.68M HP / 32.4K ATT
   const VOID_FLEET_SIZE=16;
-  const _fpAvg=(typeof calcFleetAvgPower==='function')?calcFleetAvgPower():{hp:100,atk:20,sh:50};
-  const ESCORT_MULT=5;
-  const FLAGSHIP_MULT=40;
-  const _escortHP=Math.max(Math.round(VOID_BOSS.maxHP/8),Math.round((_fpAvg.hp||0)*ESCORT_MULT));
-  const _escortATT=Math.max(Math.round(VOID_BOSS.ATT/8),Math.round((_fpAvg.atk||0)*ESCORT_MULT));
-  const _escortSH=Math.max(Math.round(VOID_BOSS.maxSH/8),Math.round((_fpAvg.sh||0)*ESCORT_MULT));
-  const _flagHP=Math.max(VOID_BOSS.maxHP,Math.round((_fpAvg.hp||0)*FLAGSHIP_MULT));
-  const _flagATT=Math.max(VOID_BOSS.ATT,Math.round((_fpAvg.atk||0)*FLAGSHIP_MULT));
-  const _flagSH=Math.max(VOID_BOSS.maxSH,Math.round((_fpAvg.sh||0)*FLAGSHIP_MULT));
+  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*2));
+  const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*2));
+  const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*2));
+  const _UNIT=19;  // 호위 15 × 1 + 보스 1 × 4
+  const _escortHP=Math.round(_totalHP/_UNIT);
+  const _escortATT=Math.round(_totalATT/_UNIT);
+  const _escortSH=Math.round(_totalSH/_UNIT);
+  const _flagHP=_escortHP*4;
+  const _flagATT=_escortATT*4;
+  const _flagSH=_escortSH*4;
   const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
     const isFlagship=(i===0);
     const _hp=isFlagship?_flagHP:_escortHP;
@@ -11281,8 +11285,14 @@ function runCombatTurn(){
 
   // 플레이어 공격
   pl.forEach(p=>{
-    const aliveEn=en.filter(e=>e.hp>0);
+    let aliveEn=en.filter(e=>e.hp>0);
     if(!aliveEn.length)return;
+    // 보이드 전투: 기함(voidBoss=true)은 호위 모두 격파 후에만 공격
+    // 호위가 남아있으면 기함 제외하고 타겟팅
+    if(combatState.isVoidBoss){
+      const nonBoss=aliveEn.filter(e=>!e.voidBoss);
+      if(nonBoss.length>0)aliveEn=nonBoss;  // 호위 살아있으면 호위만 타겟
+    }
     const target=_pickFrontBiased(aliveEn);
     const rawDmg=Math.max(1,Math.round((+p.ATT||1)-Math.floor((target.armorTier||0)*1.5)));
     const shDmg=Math.min(target.sh||0,rawDmg);
