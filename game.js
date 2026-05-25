@@ -2822,14 +2822,14 @@ function triggerTravelPirate(pd){
       </div>
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
-    <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 약탈금 획득 | 도주 시 크레딧 -15%</div>
+    <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 약탈금 획득 | 도주 시 크레딧 -3%</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "항로에 적이다! 적 스펙 보고 결정해!"</div>`,
     [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (-15%)',fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
+     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
   );
 }
 function escapeTravelPirate(){
-  const penalty=Math.floor(G.credits*0.15);
+  const penalty=Math.floor(G.credits*0.03);
   G.credits=Math.max(100,G.credits-penalty);
   changeReputation(-2);
   updateHUD();
@@ -2878,7 +2878,7 @@ function triggerEarlyPirate(pd){
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 크레딧 획득 | 패배 시 손실</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "${G.pirateAppearances>=5?'이제 최강 해적! 각오해!':G.pirateAppearances>=3?'점점 강해져! 조심해!':'해적이야! 스펙 확인해!'}"</div>`,
     [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (-10%)',fn:()=>{closeModal();const p=Math.floor(G.credits*0.1);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
+     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
   );
   saveGame(true);
 }
@@ -2940,9 +2940,9 @@ function triggerChixFleet(pd){
       const raidDef={...pd,_enemies:enemies,_chixWave:wave};
       startChixFleetCombat(raidDef);
     },cls:'btn-red'},
-     {txt:'🚀 도주 (-15%)',fn:()=>{
+     {txt:'🚀 도주 (-3%)',fn:()=>{
       closeModal();
-      const loss=Math.floor(G.credits*0.15);
+      const loss=Math.floor(G.credits*0.03);
       G.credits=Math.max(100,G.credits-loss);
       G.stayTurns=0;changeReputation(-2);updateHUD();
       notify(`🚀 치크스 함대 도주! -₡${loss.toLocaleString()} / 명성 -2`,'err');
@@ -2999,7 +2999,7 @@ function triggerPirateRaid(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} 백구: "내가 경고했잖아. 싸워!"</div>`,
     [{txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (크레딧 -20%)',fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
+     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
   saveGame(true);
 }
@@ -3021,7 +3021,7 @@ function startPirateRaid(raidDef){
   });
 }
 function escapePirateRaid(){
-  const penalty=Math.floor(G.credits*0.2);
+  const penalty=Math.floor(G.credits*0.03);
   G.credits=Math.max(0,G.credits-penalty);
   G.stayTurns=0;
   changeReputation(-2);
@@ -10682,12 +10682,12 @@ function confirmFleeCombat(){
     notify('⚠️ 최종 보스전에서는 도망갈 수 없습니다','err');
     return;
   }
-  const _pen=Math.floor(G.credits*0.15);
+  const _pen=Math.floor(G.credits*0.03);
   openModal('🚀 도망갈까?',
     `<div style="padding:6px 4px">
        <div style="color:var(--yellow);font-size:14px;line-height:1.7;margin-bottom:10px">전투에서 이탈하면 함대 손상 없이 빠져나갈 수 있지만, 페널티가 있어.</div>
        <div style="background:rgba(255,40,40,.08);border:1px solid rgba(255,80,80,.4);border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.9;color:#ff9999">
-         · 크레딧 <b>-₡${_pen.toLocaleString()}</b> (보유 -15%)<br>
+         · 크레딧 <b>-₡${_pen.toLocaleString()}</b> (보유 -3%)<br>
          · 명성 <b>-2</b><br>
          · 전투 보상 없음
        </div>
@@ -10704,7 +10704,7 @@ function fleeCombat(){
   try{AudioMgr.stopAllSfx();}catch(e){}
   try{_cbEffects=[];if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}}catch(e){}
   // 페널티 적용
-  const _pen=Math.floor(G.credits*0.15);
+  const _pen=Math.floor(G.credits*0.03);
   G.credits=Math.max(100,G.credits-_pen);
   try{changeReputation(-2);}catch(e){}
   addCombatLog(`🚀 전투 이탈! 크레딧 -₡${_pen.toLocaleString()} / 명성 -2`,'err');
@@ -10751,8 +10751,8 @@ function renderCombatView(body){
   </div>
   <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a">
     <canvas id="cb-cv"></canvas>
-    <!-- 전투 중 도망가기 (우측 하단) — 크레딧 -15% + 명성 -2 -->
-    <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="크레딧 -15%, 명성 -2 페널티 부담"
+    <!-- 전투 중 도망가기 (우측 하단) — 크레딧 -3% + 명성 -2 -->
+    <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="크레딧 -3%, 명성 -2 페널티 부담"
       style="position:absolute;right:14px;bottom:14px;padding:8px 18px;background:rgba(255,40,40,.15);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;letter-spacing:2px;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.4);transition:all .2s"
       onmouseover="this.style.background='rgba(255,40,40,.28)';this.style.transform='translateY(-1px)'"
       onmouseout="this.style.background='rgba(255,40,40,.15)';this.style.transform='translateY(0)'">🚀 도망가기</button>
