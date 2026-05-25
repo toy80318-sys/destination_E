@@ -10543,6 +10543,69 @@ function startCombat(planetDef){
   sfxAlert();try{AudioMgr.playBgm(isBoss?'boss':'combat');}catch(e){}
   _preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=`⚔️ ${isBoss?'우르사 메이저 최종전!':'전투'} — ${planetDef.nm}`;_cbStartAnimLoop();_updateCombatFleetStats();setTimeout(runCombatTurn,600);});
 }
+// 전투 중 도망가기 — 확인 모달 → fleeCombat 실행
+function confirmFleeCombat(){
+  if(!combatState||combatState.done)return;
+  // 보스급 전투는 도망 불가 (스토리 진행상 후퇴 의미 없음)
+  if(combatState.isBoss||combatState.isVoidBoss){
+    notify('⚠️ 최종 보스전에서는 도망갈 수 없습니다','err');
+    return;
+  }
+  const _pen=Math.floor(G.credits*0.15);
+  openModal('🚀 도망갈까?',
+    `<div style="padding:6px 4px">
+       <div style="color:var(--yellow);font-size:14px;line-height:1.7;margin-bottom:10px">전투에서 이탈하면 함대 손상 없이 빠져나갈 수 있지만, 페널티가 있어.</div>
+       <div style="background:rgba(255,40,40,.08);border:1px solid rgba(255,80,80,.4);border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.9;color:#ff9999">
+         · 크레딧 <b>-₡${_pen.toLocaleString()}</b> (보유 -15%)<br>
+         · 명성 <b>-2</b><br>
+         · 전투 보상 없음
+       </div>
+     </div>`,
+    [
+      {txt:'🚀 도망간다',fn:()=>{closeModal();fleeCombat();},cls:'btn-red'},
+      {txt:'⚔️ 계속 싸운다',fn:closeModal,cls:'btn-sm'}
+    ]);
+}
+function fleeCombat(){
+  if(!combatState||combatState.done)return;
+  combatState.done=true;
+  // 잔여 SFX/이펙트 정리
+  try{AudioMgr.stopAllSfx();}catch(e){}
+  try{_cbEffects=[];if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}}catch(e){}
+  // 페널티 적용
+  const _pen=Math.floor(G.credits*0.15);
+  G.credits=Math.max(100,G.credits-_pen);
+  try{changeReputation(-2);}catch(e){}
+  addCombatLog(`🚀 전투 이탈! 크레딧 -₡${_pen.toLocaleString()} / 명성 -2`,'err');
+  notify(`🚀 도망 성공. ₡${_pen.toLocaleString()} 손실 / 명성 -2`,'err');
+  try{baekgu('도망쳤어. 다음엔 더 강해진 다음에 부딪치자.');}catch(e){}
+  // 아군 함대 HP 동기화 (전투 중 데미지 보존)
+  try{G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});}catch(e){}
+  // 전투 기록 저장 (패배 처리)
+  if(!G.combatHistory)G.combatHistory=[];
+  const _pdef=combatState.planetDef&&combatState.planetDef.nm?combatState.planetDef:(PLANET_DEF.find(p=>p.id===G.currentPlanet)||{});
+  G.combatHistory.push({
+    win:false,fled:true,
+    pid:G.currentPlanet,planetId:G.currentPlanet,
+    planet:_pdef.nm||'알 수 없음',
+    turn:combatState.turn,
+    earned:-_pen,
+    gameTurn:G.turn
+  });
+  updateHUD();saveGame(true);
+  // 1.2초 후 허브로 복귀 (이펙트 페이드 시간)
+  setTimeout(()=>{
+    combatState=null;
+    try{_cbCacheClear();}catch(e){}
+    _cbEffects=[];_unitPos={};
+    if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
+    try{updateGatherBtn();}catch(e){}
+    try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
+    if(typeof hubTab==='function')hubTab('main');
+  },1200);
+}
+try{if(typeof window!=='undefined'){window.confirmFleeCombat=confirmFleeCombat;window.fleeCombat=fleeCombat;}}catch(e){}
+
 function renderCombatView(body){
   body.classList.add('cv');
   document.body.classList.add('combat-mode');  // 알림(notif) 위치 조정용
@@ -10555,7 +10618,14 @@ function renderCombatView(body){
     <div id="cb-fleet-pl" style="color:var(--cyan)">⚓ 아군: 측정 중...</div>
     <div id="cb-fleet-en" style="color:#ff8888;text-align:right">☠️ 적군: 측정 중...</div>
   </div>
-  <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a"><canvas id="cb-cv"></canvas></div>
+  <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a">
+    <canvas id="cb-cv"></canvas>
+    <!-- 전투 중 도망가기 (우측 하단) — 크레딧 -15% + 명성 -2 -->
+    <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="크레딧 -15%, 명성 -2 페널티 부담"
+      style="position:absolute;right:14px;bottom:14px;padding:8px 18px;background:rgba(255,40,40,.15);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;letter-spacing:2px;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.4);transition:all .2s"
+      onmouseover="this.style.background='rgba(255,40,40,.28)';this.style.transform='translateY(-1px)'"
+      onmouseout="this.style.background='rgba(255,40,40,.15)';this.style.transform='translateY(0)'">🚀 도망가기</button>
+  </div>
   <div id="cb-log" class="cb-log" style="height:85px;background:rgba(13,26,42,.98);border-top:1px solid var(--bdr);padding:8px 14px;overflow-y:auto;flex-shrink:0;font-size:13px;line-height:1.7"></div>`;
 }
 let cbCtx,cbCV,cbZoom=1.0,cbOffX=0,cbOffY=0,cbPan=false,cbPanLx=0,cbPanLy=0;
