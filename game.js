@@ -697,11 +697,11 @@ function show(id){SCREENS.forEach(s=>document.getElementById(s)?.classList.remov
 const STAGE_W=1536,STAGE_H=864;
 window._gsScale=1;
 window._gsRotated=false;
-// 디스플레이 모드 — auto(뷰포트 자동) / fhd(1920×1080 캡) / qhd(2560×1440 캡) / mobile(모바일 강제)
+// 디스플레이 모드 — auto / hd(1280×720) / fhd(1920×1080) / qhd(2560×1440) / mobile
 window._displayMode='auto';
 try{const _dm=localStorage.getItem('de_display_mode');if(_dm)window._displayMode=_dm;}catch(e){}
 function setDisplayMode(mode){
-  if(!['auto','fhd','qhd','mobile'].includes(mode))mode='auto';
+  if(!['auto','hd','fhd','qhd','mobile'].includes(mode))mode='auto';
   window._displayMode=mode;
   try{localStorage.setItem('de_display_mode',mode);}catch(e){}
   fitGameStage();
@@ -710,22 +710,24 @@ try{if(typeof window!=='undefined')window.setDisplayMode=setDisplayMode;}catch(e
 function fitGameStage(){
   const vw=window.innerWidth,vh=window.innerHeight;
   const mode=window._displayMode||'auto';
-  // 모바일 모드: 강제 세로 회전 (사용자 기기 방향 무관)
-  // 그 외: 뷰포트 세로가 더 크면 자동 회전 (이전 동작 유지)
-  const isPortrait=mode==='mobile'?true:(vh>vw);
+  // 자동 회전: 실제 뷰포트가 세로(vh > vw)일 때만 90° 회전
+  // 모바일 모드여도 사용자가 폰을 가로로 돌리면 vw > vh → 회전 안 함
+  // (이전 코드는 mode='mobile'이면 무조건 회전해서 가로 모바일에서 깨졌음)
+  const isPortrait=vh>vw;
   const stage=document.getElementById('game-stage');
   if(!stage){window.addEventListener('DOMContentLoaded',fitGameStage,{once:true});return;}
-  // 디스플레이 모드별 최대 스케일 — 1920/2560 폭 캡 (실제 렌더 픽셀 제한)
+  // 디스플레이 모드별 최대 스케일 — 폭 캡 (실제 렌더 픽셀 제한)
   // 1536 base width × cap_scale = 목표 max 폭
   let maxScale=Infinity;
-  if(mode==='fhd')maxScale=1920/STAGE_W;       // ≈ 1.25 (1920×1080)
+  if(mode==='hd')maxScale=1280/STAGE_W;        // ≈ 0.833 (1280×720)
+  else if(mode==='fhd')maxScale=1920/STAGE_W;  // ≈ 1.25 (1920×1080)
   else if(mode==='qhd')maxScale=2560/STAGE_W;  // ≈ 1.67 (2560×1440)
   // auto/mobile은 캡 없음
   if(isPortrait){
     const sx=vh/STAGE_W;
     const sy=vw/STAGE_H;
     let s=Math.min(sx,sy);
-    if(mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
+    if(mode==='hd'||mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=true;
     document.documentElement.style.setProperty('--gs',s);
@@ -739,7 +741,7 @@ function fitGameStage(){
     const sx=vw/STAGE_W;
     const sy=vh/STAGE_H;
     let s=Math.min(sx,sy);
-    if(mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
+    if(mode==='hd'||mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=false;
     document.documentElement.style.setProperty('--gs',s);
@@ -12389,10 +12391,11 @@ function showSettingsModal(){
     ${(()=>{
       const dm=window._displayMode||'auto';
       const opts=[
-        {k:'auto',lb:'🖥️ 자동',desc:'뷰포트에 맞춰 비례 확대/축소 (제한 없음)'},
-        {k:'fhd',lb:'🖼️ FHD',desc:'1920×1080 모드 — 가독성 우선'},
-        {k:'qhd',lb:'🖥️ QHD',desc:'2560×1440 모드 — 큰 화면 최적'},
-        {k:'mobile',lb:'📱 모바일',desc:'세로 회전 + 작은 화면 (모바일 / iframe)'}
+        {k:'auto',lb:'🖥️ 자동',desc:'뷰포트에 맞춰 비례 (제한 없음, 큰 모니터에서 UI도 커짐)'},
+        {k:'hd',lb:'🖼️ HD',desc:'1280×720 모드 — 노트북/소형 모니터, 작고 또렷'},
+        {k:'fhd',lb:'🖼️ FHD',desc:'1920×1080 모드 — 일반 모니터 기본'},
+        {k:'qhd',lb:'🖥️ QHD',desc:'2560×1440 모드 — 큰 모니터 최적'},
+        {k:'mobile',lb:'📱 모바일',desc:'세로 폰 자동 회전 (가로로 들면 일반 표시)'}
       ];
       const btn=opts.map(o=>{
         const act=dm===o.k;
