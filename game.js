@@ -1503,14 +1503,16 @@ function shipImgSrc(ship){
   if((ship.catalogId||'').toUpperCase()==='URSA'
      ||sid.startsWith('BOSS_URSA')||sid==='URSA'||sid==='BOSS'||sid==='BOSS_MAIN')
     return 'img/ships/Boss.png';
-  // 0-2) 블랙팔콘 / 보이드 팔콘 (나포/보스) — S10.png
+  // 0-2) 블랙팔콘 / 보이드 팔콘 / 검은 팔콘(보이드 시험 보상) — 모두 S10.png 공용
   if((ship.catalogId||'').toUpperCase()==='BLACKFALCON'
      ||(ship.catalogId||'').toUpperCase()==='VOID_FALCON'
+     ||(ship.catalogId||'').toUpperCase()==='HIDDEN_FALCON'
      ||sid.startsWith('CAP_BLACKFALCON')||sid.startsWith('CAP_VOIDFALCON')
      ||sid.startsWith('VOID_FALCON')||sid.startsWith('BLACKFALCON')
-     ||ship._isVoidFalconCaptured
+     ||sid.startsWith('HIDDEN_FALCON')
+     ||ship._isVoidFalconCaptured||ship._isHiddenFalcon
      ||(ship.catId==='S10'&&(nm.includes('팔콘')||nm.includes('블랙')))
-     ||nm.includes('블랙팔콘'))
+     ||nm.includes('블랙팔콘')||nm.includes('검은 팔콘')||nm.includes('다크팔콘'))
     return 'img/ships/S10.png';
   // 1) 명시적 catalogId / catId — CHIX 계열은 티어 접미사 보정
   if(ship.catalogId){
@@ -10682,12 +10684,15 @@ function _cbStartAnimLoop(){
 // wasShielded: 피격 시점에 타겟의 쉴드가 살아있었는지 (true면 헥사 임팩트)
 function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
   delay=delay||0;
+  // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
+  const _cs=combatState;
+  const _sfxOk=()=>_cs&&!_cs.done;
   // 발사 사운드 (delay 프레임 후, 1프레임≈16ms)
-  setTimeout(()=>{try{AudioMgr.playSfx('laser_fire',{vol:0.55,cooldown:40});}catch(e){}},delay*16);
+  setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('laser_fire',{vol:0.55,cooldown:40});}catch(e){}},delay*16);
   // 피격 사운드: 빔 도달 시점(delay+3프레임), 쉴드 vs 폭발
   const hitMs=(delay+3)*16;
-  if(wasShielded){setTimeout(()=>{try{AudioMgr.playSfx('shield_hit',{vol:0.55,cooldown:40});}catch(e){}},hitMs);}
-  if(isDead){setTimeout(()=>{try{AudioMgr.playSfx('explosion',{vol:0.75,cooldown:80});}catch(e){}},(delay+5)*16);}
+  if(wasShielded){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('shield_hit',{vol:0.55,cooldown:40});}catch(e){}},hitMs);}
+  if(isDead){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('explosion',{vol:0.75,cooldown:80});}catch(e){}},(delay+5)*16);}
   // 아군 레이저 두께 배율 — 특수공격 단계마다 ×1.5씩 누적
   // 일점사 ×1.5, 학익진 ×2.25, 시간차 ×3.38, 테슬라 ×5.06, 제네시스 ×7.59, 데스티네이션 ×11.39
   // ※ 아군 색상: 평시 #00f3ff (청록), 데스티네이션 발동 시 #ff44ff (핑크/퍼플)
@@ -10736,12 +10741,15 @@ function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,si
   count=Math.max(1,Math.min(13,count|0));
   baseDelay=baseDelay||0;
   sizeMul=Math.max(1,sizeMul||1);
+  // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
+  const _cs=combatState;
+  const _sfxOk=()=>_cs&&!_cs.done;
   // 살보 발사 사운드 (한 번)
-  setTimeout(()=>{try{AudioMgr.playSfx('missile',{vol:0.6,cooldown:60});}catch(e){}},baseDelay*16);
+  setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('missile',{vol:0.6,cooldown:60});}catch(e){}},baseDelay*16);
   // 미사일은 약 60프레임에 걸쳐 도달 → 살보의 마지막이 도착하는 시점에 충돌 sfx
   const lastImpactMs=(baseDelay + (count-1)*3 + 50)*16;
-  if(wasShielded){setTimeout(()=>{try{AudioMgr.playSfx('shield_hit',{vol:0.6,cooldown:80});}catch(e){}},lastImpactMs);}
-  if(isDead){setTimeout(()=>{try{AudioMgr.playSfx('explosion',{vol:0.8,cooldown:80});}catch(e){}},lastImpactMs+50);}
+  if(wasShielded){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('shield_hit',{vol:0.6,cooldown:80});}catch(e){}},lastImpactMs);}
+  if(isDead){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('explosion',{vol:0.8,cooldown:80});}catch(e){}},lastImpactMs+50);}
   for(let i=0;i<count;i++){
     const stagger=baseDelay + i*3; // 미사일 사이 3프레임 간격
     // 약간씩 다른 곡률(미사일이 부채꼴로 퍼져 날아가게)
@@ -10830,6 +10838,7 @@ window.AudioMgr=(function(){
   }
   function stopBgm(){if(curBgmAudio){try{curBgmAudio.pause();curBgmAudio.src='';}catch(e){}}curBgmAudio=null;curBgmName=null;pendingBgm=null;}
   const sfxCooldown={};
+  const _activeSfx=new Set();  // 현재 재생 중인 SFX Audio 인스턴스 (stopAllSfx 용)
   function playSfx(name,opts){
     opts=opts||{};
     if(sfxOff||masterVol<=0||sfxVol<=0)return;
@@ -10839,8 +10848,17 @@ window.AudioMgr=(function(){
     try{
       const a=new Audio(SFX_BASE+name+'.mp3');
       a.volume=Math.min(1,(opts.vol||1)*masterVol*sfxVol);
-      a.play().catch(()=>{});
+      _activeSfx.add(a);
+      const _cleanup=()=>{_activeSfx.delete(a);};
+      a.addEventListener('ended',_cleanup,{once:true});
+      a.addEventListener('error',_cleanup,{once:true});
+      a.play().catch(()=>{_cleanup();});
     }catch(e){}
+  }
+  // 진행 중인 모든 SFX 즉시 정지 (전투 종료 / 엔딩 진입 시 호출)
+  function stopAllSfx(){
+    _activeSfx.forEach(a=>{try{a.pause();a.src='';}catch(e){}});
+    _activeSfx.clear();
   }
   function setMaster(v){masterVol=Math.max(0,Math.min(1,+v||0));if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
   function setBgmVol(v){bgmVol=Math.max(0,Math.min(1,+v||0));if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
@@ -10869,7 +10887,7 @@ window.AudioMgr=(function(){
   // 구버전 호환
   function setMuted(m){setBgmOff(m);setSfxOff(m);}
   return{
-    playBgm,stopBgm,playSfx,setMaster,setBgmVol,setSfxVol,setBgmOff,setSfxOff,setMuted,
+    playBgm,stopBgm,playSfx,stopAllSfx,setMaster,setBgmVol,setSfxVol,setBgmOff,setSfxOff,setMuted,
     get curBgm(){return curBgmName;},
     get master(){return masterVol;},get bgm(){return bgmVol;},get sfx(){return sfxVol;},
     get bgmOff(){return bgmOff;},get sfxOff(){return sfxOff;},
@@ -11601,6 +11619,10 @@ function runCombatTurn(){
 function _finishCombat(){
   if(!combatState)return;
   combatState.done=true;
+  // 전투 종료 — 진행 중인 SFX·잔여 이펙트·애니메이션 즉시 정리
+  // (예약된 setTimeout SFX는 클로저로 combatState.done 체크해서 자동 차단)
+  try{AudioMgr.stopAllSfx();}catch(e){}
+  try{_cbEffects=[];if(typeof _cbAnimReq!=='undefined'&&_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}}catch(e){}
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
@@ -13091,6 +13113,10 @@ function showBossCelebration(onDone){
 // ─── ACT 5 최종 엔딩 크레딧 ─────────────────────────────────────
 // 보이드의 심연 통과 후 — 스토리 정리 + 제작진 + 영웅 + AI 이미지 + Special thanks
 function showFinalEndingCredits(){
+  // 크레딧 진입 — 잔여 전투 SFX/이펙트 차단
+  try{if(typeof combatState!=='undefined'&&combatState)combatState.done=true;}catch(e){}
+  try{AudioMgr.stopAllSfx();}catch(e){}
+  try{if(typeof _cbEffects!=='undefined')_cbEffects=[];}catch(e){}
   const cmdName=G.profile?.name||'사령관';
   const co=G.profile?.company||'은하상단';
   const _hl=G.heroes||[];
@@ -13190,8 +13216,10 @@ function showFinalEndingCredits(){
       <div style="font-size:12px;color:#333;letter-spacing:2px;margin-top:8px">ACT 5 · 보이드의 심연</div>
       <div style="height:30vh"></div>
     </div>
-    <!-- 건너뛰기 / 닫기 -->
-    <button id="_final-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">닫기 →</button>`;
+    <!-- 건너뛰기 (우측 하단, 항상 노출) -->
+    <button id="_final-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">건너뛰기 →</button>
+    <!-- 크레딧 종료 후 표시될 메인 복귀 버튼 (중앙) -->
+    <button id="_final-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22));border:2px solid #ffd700;color:#ffd700;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(255,215,0,.45),inset 0 0 20px rgba(255,215,0,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,215,0,.32),rgba(255,150,80,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22))';this.style.transform='translateX(-50%)'">🌍 게임으로 돌아가기</button>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
   const _close=()=>{
@@ -13204,12 +13232,23 @@ function showFinalEndingCredits(){
     },1500);
   };
   overlay.querySelector('#_final-skip').onclick=_close;
-  // 90초 후 자동 종료
-  setTimeout(_close,92000);
+  overlay.querySelector('#_final-return').onclick=_close;
+  // 90초(크레딧 롤 종료) 후 자동 종료 대신 "게임으로 돌아가기" 버튼 노출
+  setTimeout(()=>{
+    const rb=overlay.querySelector('#_final-return');
+    if(rb){rb.style.display='block';requestAnimationFrame(()=>{rb.style.opacity='1';});}
+    // 건너뛰기 버튼은 작게 유지하되 라벨 변경
+    const sb=overlay.querySelector('#_final-skip');
+    if(sb)sb.textContent='닫기 →';
+  },90000);
 }
 try{if(typeof window!=='undefined')window.showFinalEndingCredits=showFinalEndingCredits;}catch(e){}
 
 function showEndingCredits(onDone){
+  // 엔딩 진입 — 전투 SFX/이펙트 차단
+  try{if(typeof combatState!=='undefined'&&combatState)combatState.done=true;}catch(e){}
+  try{AudioMgr.stopAllSfx();}catch(e){}
+  try{if(typeof _cbEffects!=='undefined')_cbEffects=[];}catch(e){}
   const cmdName=G.profile?.name||'사령관';
   const co=G.profile?.company||'은하상단';
   const shipName=G.profile?.ship||'머스탱';
@@ -13282,8 +13321,10 @@ function showEndingCredits(onDone){
     </div>
     <!-- 크레딧 (롤링) -->
     <div id="_end-credits" style="position:absolute;left:0;right:0;bottom:-100%;width:100%;text-align:center;color:#fff;font-size:18px;line-height:2.2;z-index:2;opacity:0;transition:opacity 1s"></div>
-    <!-- 건너뛰기 버튼 -->
+    <!-- 건너뛰기 버튼 (우측 하단) -->
     <button id="_end-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">건너뛰기 →</button>
+    <!-- 크레딧 종료 후 표시될 메인 복귀 버튼 (중앙) -->
+    <button id="_end-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22));border:2px solid #66ddff;color:#66ddff;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(102,221,255,.45),inset 0 0 20px rgba(102,221,255,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(102,221,255,.32),rgba(102,255,180,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22))';this.style.transform='translateX(-50%)'">🌍 게임으로 돌아가기</button>
     <style>
       @keyframes _endStars{from{background-position:0 0}to{background-position:-2000px 0}}
       @keyframes _endRoll{from{transform:translateY(0)}to{transform:translateY(-200%)}}
@@ -13432,7 +13473,15 @@ function showEndingCredits(onDone){
     creditsEl.style.top='100vh';
     creditsEl.style.opacity='1';
     creditsEl.style.animation='_endRoll 50s linear forwards';
-    setTimeout(_finish,52000);  // 크레딧 + 여유 후 자동 종료
+    // 크레딧 롤 종료 후 자동 종료 대신 "게임으로 돌아가기" 버튼 노출
+    setTimeout(()=>{
+      const rb=overlay.querySelector('#_end-return');
+      if(rb){
+        rb.onclick=_finish;
+        rb.style.display='block';
+        requestAnimationFrame(()=>{rb.style.opacity='1';});
+      }
+    },52000);
   }
   // 첫 대사 시작 (페이드인 2초 후)
   setTimeout(showLine,2200);
@@ -13454,6 +13503,10 @@ function _grantVoidSpear(){
 function _enterBlackHoleFinalTest(){
   // ACT 5 진입 + 엔딩 음악
   G.act=Math.max(G.act||1,5);
+  // 엔딩 진입 — 전투 잔여 SFX·이펙트 완전 종료
+  try{if(typeof combatState!=='undefined'&&combatState)combatState.done=true;}catch(e){}
+  try{AudioMgr.stopAllSfx();}catch(e){}
+  try{if(typeof _cbEffects!=='undefined')_cbEffects=[];}catch(e){}
   try{AudioMgr.playBgm('end');}catch(e){}
   // 1) 흰 화면 전체 오버레이 (페이드인)
   const overlay=document.createElement('div');
