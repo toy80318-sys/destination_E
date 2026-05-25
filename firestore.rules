@@ -7,6 +7,15 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
+    // 이메일 기반 간편 세이브 — 익명 로그인 상태에서만 접근
+    // (이메일 = 식별자, 패스워드 없음 — 캐주얼 게임용 간편 모드)
+    // 형식 검증: 이메일에 @가 있고 100자 이내
+    match /email_saves/{email}/slots/{slotId} {
+      allow read, write: if request.auth != null
+        && email.matches('.*@.*\\..*')
+        && email.size() <= 100;
+    }
+
     // 피드백: 누구나 쓰기 가능 (익명 사용자 포함), 관리자만 읽기
     match /feedback/{docId} {
       allow create: if request.auth != null

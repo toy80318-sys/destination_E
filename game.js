@@ -1603,11 +1603,74 @@ function getRepRank(rep){
 }
 function startGame(){
   const nm=document.getElementById('ft-nm').value.trim(),co=document.getElementById('ft-co').value.trim(),sh=document.getElementById('ft-sh').value.trim();
+  const emailEl=document.getElementById('ft-email');
+  const email=emailEl?emailEl.value.trim():'';
   const err=document.getElementById('ft-er');
   if(!nm){err.textContent='사령관명을 입력해 주세요.';return;}
+  // 이메일 입력 시 형식 검증 + 클라우드 등록
+  if(email){
+    if(!window.CloudSave||!CloudSave._validEmail||!CloudSave._validEmail(email)){
+      err.textContent='이메일 형식이 올바르지 않습니다 (예: name@example.com)';return;
+    }
+    G.profile.email=email.toLowerCase().trim();
+    try{CloudSave.setEmail(email);}catch(e){}
+  }
   G.profile.name=nm;G.profile.company=co||'빅 픽처 스페이스';G.profile.ship=sh||'머스탱';
   err.textContent='';initGame();show('s-prologue');startPrologue();
 }
+
+// 타이틀 → 📧 이메일로 게임 불러오기 모달
+function showEmailLoadModal(){
+  const savedEmail=(window.CloudSave&&CloudSave.getEmail)?CloudSave.getEmail():'';
+  const html=`<div style="padding:8px 4px">
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--card);border:1px solid #66ddff;border-radius:10px;margin-bottom:14px">
+      <img src="img/chars/baekgu.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
+      <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
+        <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">백구</div>
+        예전에 등록한 이메일 적으면<br>옛 사령관 진행 상황 다 불러올게.<br>새 이메일이면 빈 상태로 시작이야.
+      </div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div style="color:var(--dim);font-size:12px;margin-bottom:5px">📧 이메일 입력</div>
+      <input class="inp" id="email-load-input" placeholder="example@email.com" value="${savedEmail}" maxlength="60" type="email" style="font-size:14px" autofocus>
+    </div>
+    <div id="email-load-err" style="color:var(--red);font-size:12px;min-height:16px;margin-bottom:8px"></div>
+    <div id="email-load-ok" style="color:var(--green);font-size:12px;min-height:16px;margin-bottom:8px"></div>
+    <div style="font-size:11px;color:var(--dim);line-height:1.6">
+      💡 같은 이메일로 어디서든 진행 상황 불러오기 가능<br>
+      ⚠️ 보안: 이메일만 알면 누구나 접근 가능 (간편 모드)
+    </div>
+  </div>`;
+  openModal('📧 이메일로 게임 불러오기',html,[
+    {txt:'🔍 불러오기',cls:'btn-cyan',fn:async()=>{
+      const inp=document.getElementById('email-load-input');
+      const err=document.getElementById('email-load-err');
+      const ok=document.getElementById('email-load-ok');
+      const em=(inp&&inp.value||'').trim();
+      err.textContent='';ok.textContent='';
+      if(!em){err.textContent='이메일을 입력하세요';return;}
+      if(!window.CloudSave){err.textContent='클라우드 시스템 미초기화 — 잠시 후 다시 시도';return;}
+      if(!CloudSave._validEmail(em)){err.textContent='이메일 형식이 올바르지 않습니다';return;}
+      ok.textContent='⏳ 불러오는 중...';
+      try{
+        const r=await CloudSave.loadByEmail(em);
+        if(r.error){
+          if(r.empty){
+            err.textContent='해당 이메일로 저장된 게임이 없습니다 — 새 게임으로 시작하세요';
+            ok.textContent='';
+          } else {
+            err.textContent='오류: '+r.error;ok.textContent='';
+          }
+          return;
+        }
+        ok.textContent=`✅ ${r.imported}개 슬롯 복원 완료! 잠시 후 슬롯 목록 표시...`;
+        setTimeout(()=>{closeModal();showLoadSlots();},800);
+      }catch(e){err.textContent='네트워크 오류: '+e.message;ok.textContent='';}
+    }},
+    {txt:'✕ 취소',cls:'btn-sm',fn:closeModal}
+  ]);
+}
+try{if(typeof window!=='undefined')window.showEmailLoadModal=showEmailLoadModal;}catch(e){}
 function getPrologues(){
   const nm=G.profile.name||'사령관';
   const co=G.profile.company||'빅 픽처 스페이스';
@@ -11963,6 +12026,8 @@ function saveGame(silent,slotN){
     }
     // 6) 클라우드 업로드 (디바운스 1초)
     try{if(window.CloudSave)CloudSave.upload(n,snap);}catch(e){}
+    // 이메일 등록 시 이메일 슬롯에도 동시 업로드 (간편 클라우드)
+    try{if(window.CloudSave&&CloudSave.getEmail&&CloudSave.getEmail())CloudSave.uploadByEmail(n,snap);}catch(e){}
     if(!silent)notify('💾 슬롯 '+n+' 저장 완료 ('+Math.round(payload.length/1024)+'KB)','ok');
   }catch(e){
     // 저장 실패 — quota 초과 등. 백업에서 복구 시도

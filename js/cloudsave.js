@@ -253,5 +253,96 @@
     }catch(e){_log('피드백 조회 실패',e.message);return{error:e.message};}
   }
 
-  window.CloudSave={init,upload,pullAll,pushAll,signInGoogle,signOut,onAuthChange,getUser,isReady,sendFeedback,listFeedback,diag};
+  // ══════════════════════════════════════════════════════════════════
+  // 이메일 기반 클라우드 세이브 (간편 로그인 — 패스워드 없음)
+  //   · 이메일을 키로 Firestore /email_saves/{emailLower}/save 에 저장
+  //   · 같은 이메일 입력하면 어디서든 진행 상황 불러오기 가능
+  //   · 본인 이메일을 기억하면 끝 (Google 로그인 안 해도 동작)
+  // ══════════════════════════════════════════════════════════════════
+  function _normalizeEmail(em){
+    return String(em||'').toLowerCase().trim().replace(/[^a-z0-9@._+-]/g,'');
+  }
+  function _validEmail(em){
+    return /^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(em||'');
+  }
+  // 슬롯 N에 자동 동기화될 이메일 (localStorage 영구 기억)
+  function setEmail(email){
+    const em=_normalizeEmail(email);
+    if(!em||!_validEmail(em))return{error:'유효한 이메일 형식이 아닙니다'};
+    try{localStorage.setItem('de_email',em);}catch(e){}
+    return{ok:true,email:em};
+  }
+  function getEmail(){
+    try{return localStorage.getItem('de_email')||'';}catch(e){return '';}
+  }
+  function clearEmail(){
+    try{localStorage.removeItem('de_email');}catch(e){}
+  }
+
+  // 이메일 → Firestore에서 세이브 가져오기
+  async function loadByEmail(email){
+    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
+    if(!_state.db)return{error:'Firebase 미초기화'};
+    const em=_normalizeEmail(email);
+    if(!_validEmail(em))return{error:'유효한 이메일이 아닙니다'};
+    try{
+      const docRef=_state.db.collection('email_saves').doc(em).collection('slots');
+      const snap=await docRef.get();
+      const slots={};
+      snap.forEach(d=>{const v=d.data();if(v&&v.data)slots[d.id]=v;});
+      if(Object.keys(slots).length===0)return{error:'해당 이메일로 저장된 게임이 없습니다',email:em,empty:true};
+      // 로컬에 병합 저장 — 클라우드가 항상 최신으로 가정
+      let imported=0;
+      Object.entries(slots).forEach(([slotId,obj])=>{
+        const n=parseInt(slotId.replace(/[^0-9]/g,''),10)||0;
+        try{
+          _writeLocal(n,obj.data);
+          imported++;
+        }catch(e){_log('슬롯',n,'복원 실패',e.message);}
+      });
+      setEmail(em);
+      return{ok:true,imported,email:em,slots:Object.keys(slots).length};
+    }catch(e){_log('이메일 불러오기 실패',e.message);return{error:e.message};}
+  }
+
+  // 이메일 슬롯에 업로드 (game.js saveGame() 호출 시 자동 트리거)
+  async function uploadByEmail(n,obj){
+    if(!_state.db)return{error:'Firebase 미초기화'};
+    const em=getEmail();
+    if(!em||!_validEmail(em))return{ok:false,skipped:true};  // 이메일 등록 안 됐으면 스킵
+    try{
+      const doc={
+        slotN:n,
+        data:obj,
+        email:em,
+        ver:(obj&&obj._ver)||'',
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        tsClient:Date.now()
+      };
+      await _state.db.collection('email_saves').doc(em).collection('slots').doc('slot'+n).set(doc);
+      return{ok:true};
+    }catch(e){_log('이메일 업로드 실패',e.message);return{error:e.message};}
+  }
+
+  // 이메일 등록 + 즉시 모든 슬롯 업로드 (이메일 처음 연결 시)
+  async function registerEmail(email){
+    const r=setEmail(email);
+    if(r.error)return r;
+    // 로컬 슬롯 전부 클라우드 업로드
+    let uploaded=0;
+    for(let n=0;n<=SLOT_COUNT;n++){
+      const local=_readLocal(n);
+      if(local&&local._saved){
+        const res=await uploadByEmail(n,local);
+        if(res.ok)uploaded++;
+      }
+    }
+    return{ok:true,email:r.email,uploaded};
+  }
+
+  // CloudSave 객체에 이메일 함수 노출
+  window.CloudSave={init,upload,pullAll,pushAll,signInGoogle,signOut,onAuthChange,getUser,isReady,sendFeedback,listFeedback,diag,
+    // 이메일 기반 API
+    setEmail,getEmail,clearEmail,loadByEmail,registerEmail,uploadByEmail,
+    _normalizeEmail,_validEmail};
 })();
