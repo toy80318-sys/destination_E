@@ -6405,8 +6405,8 @@ function renderCrewTab(body){
   const freeShips=G.fleet.filter(sh=>!(sh.crewIds||[]).includes(h)&&(sh.crewIds||[]).length<getMaxCrew(sh));
   const _hrr=getRepRank(G.reputation||0);
   return`<div class="crew-c" style="border:1px solid var(--gold);padding:10px">
-    <div class="crew-av">${hd.ic}</div>
-    <div class="crew-nm" style="color:var(--gold)">${hd.nm}</div>
+    <div class="crew-av" style="padding-top:2px">${_heroPortrait(hd,56,'var(--gold)')}</div>
+    <div class="crew-nm" style="color:var(--gold);margin-top:4px">${hd.nm}</div>
     <div class="crew-cl" style="color:var(--purple)">${hd.sk}</div>
     <div class="cr-L">전설 ×1.2</div>
     <div style="margin-top:4px;font-size:11px;color:${_hrr.col};border:1px solid ${_hrr.col};border-radius:8px;padding:1px 6px;display:inline-block">${_hrr.ic} 명성: ${_hrr.lb}</div>
