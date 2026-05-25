@@ -283,6 +283,16 @@
   async function loadByEmail(email){
     if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
     if(!_state.db)return{error:'Firebase 미초기화'};
+    // 인증 완료 대기 — Firestore 규칙(request.auth != null) 통과 필수
+    // 익명 로그인이 비동기로 끝나는 동안 호출되면 PERMISSION_DENIED가 됨.
+    if(!_state.user){
+      try{
+        await new Promise((resolve,reject)=>{
+          let tries=0;
+          const iv=setInterval(()=>{tries++;if(_state.user){clearInterval(iv);resolve();}else if(tries>40){clearInterval(iv);reject(new Error('auth_timeout'));}},100);
+        });
+      }catch(e){return{error:'인증 대기 시간 초과 — 잠시 후 다시 시도해 주세요'};}
+    }
     const em=_normalizeEmail(email);
     if(!_validEmail(em))return{error:'유효한 이메일이 아닙니다'};
     try{
@@ -308,6 +318,16 @@
   // 이메일 슬롯에 업로드 (game.js saveGame() 호출 시 자동 트리거)
   async function uploadByEmail(n,obj){
     if(!_state.db)return{error:'Firebase 미초기화'};
+    // 인증 완료 대기 — 익명 로그인이 비동기로 끝나기 때문에 _state.user가 없으면 잠시 기다림.
+    // 누락 시 Firestore 규칙(request.auth != null)에 막혀 PERMISSION_DENIED.
+    if(!_state.user){
+      try{
+        await new Promise((resolve,reject)=>{
+          let tries=0;
+          const iv=setInterval(()=>{tries++;if(_state.user){clearInterval(iv);resolve();}else if(tries>40){clearInterval(iv);reject(new Error('auth_timeout'));}},100);
+        });
+      }catch(e){_log('이메일 업로드 — 인증 대기 실패',e.message);return{error:'auth_pending'};}
+    }
     const em=getEmail();
     if(!em||!_validEmail(em))return{ok:false,skipped:true};  // 이메일 등록 안 됐으면 스킵
     try{
@@ -321,7 +341,7 @@
       };
       await _state.db.collection('email_saves').doc(em).collection('slots').doc('slot'+n).set(doc);
       return{ok:true};
-    }catch(e){_log('이메일 업로드 실패',e.message);return{error:e.message};}
+    }catch(e){_log('이메일 업로드 실패',e.code,e.message);return{error:(e.code||'')+': '+e.message};}
   }
 
   // 이메일 등록 + 즉시 모든 슬롯 업로드 (이메일 처음 연결 시)
