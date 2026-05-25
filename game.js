@@ -9736,7 +9736,7 @@ function showCodexShipModal(shipId){
 function switchCodexTab(t){_codexTab=t;rerenderTab(renderCodexTab);}
 function renderCodexTab(body){
   if(!body)return;
-  const tabs=[['ship','🛸 함선'],['parts','⚙️ 파츠'],['heroes','⭐ 영웅'],['planets','🪐 행성'],['comms','💎 특산물']];
+  const tabs=[['ship','🛸 함선'],['parts','⚙️ 파츠'],['heroes','⭐ 영웅'],['planets','🪐 행성'],['comms','💎 특산물'],['civ','🌌 문명']];
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
     ${tabs.map(([t,lbl])=>`<button onclick="switchCodexTab('${t}')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid ${_codexTab===t?'var(--cyan)':'var(--bdr)'};background:${_codexTab===t?'rgba(0,243,255,.12)':'transparent'};color:${_codexTab===t?'var(--cyan)':'var(--dim)'};cursor:pointer;font-family:inherit">${lbl}</button>`).join('')}
   </div>`;
@@ -9938,6 +9938,43 @@ function renderCodexTab(body){
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalDisc/COMMODITIES.length*100)+'%</div></div></div>'
       +commSection('🌟 특산물',normalComms)
       +commSection('⚗️ 제작 재료',matComms);
+  }
+  else if(_codexTab==='civ'){
+    // 문명 도감 — 7개 팩션별 소개 카드
+    const F_ORDER=['F01','F02','F03','F04','F05','F06','F07'];
+    function _repPlanetName(pid){const pd=PLANET_DEF.find(p=>p.id===pid);return pd?`${pid} ${pd.nm}`:pid;}
+    function _facCard(fid){
+      const f=FACTION[fid]||{};
+      const l=(typeof FACTION_LORE!=='undefined')?FACTION_LORE[fid]:null;
+      if(!l)return '';
+      const col=f.col||'#888';
+      const repName=_repPlanetName(l.rep);
+      return `<div style="background:rgba(0,0,0,.3);border:1px solid ${col}55;border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px ${col}22">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid ${col}44">
+          <div style="font-size:34px">${l.icon||'🪐'}</div>
+          <div style="flex:1">
+            <div style="font-size:18px;font-weight:bold;color:${col};letter-spacing:1px">${f.nm||fid}</div>
+            <div style="font-size:11px;color:var(--dim)">대표 행성 · <b style="color:${col}">${repName}</b></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:12.5px;line-height:1.7;color:var(--txt)">
+          <div style="color:${col};font-weight:bold;white-space:nowrap">🚩 시작</div><div>${l.start||'-'}</div>
+          <div style="color:${col};font-weight:bold;white-space:nowrap">🌱 환경</div><div style="word-break:keep-all">${l.env||'-'}</div>
+          <div style="color:${col};font-weight:bold;white-space:nowrap">🎭 특징</div><div style="word-break:keep-all">${l.traits||'-'}</div>
+          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">⚠️ 주의</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${l.warn||'-'}</div>
+          <div style="color:${col};font-weight:bold;white-space:nowrap">👽 생김새</div><div style="word-break:keep-all">${l.look||'-'}</div>
+        </div>
+        <div style="margin-top:10px;padding:8px 12px;background:rgba(255,215,0,.06);border-left:3px solid var(--gold);border-radius:4px;font-size:12px;line-height:1.7;color:#ffe;font-style:italic;word-break:keep-all">
+          💬 ${l.quip||'-'}
+        </div>
+      </div>`;
+    }
+    const cards=F_ORDER.map(_facCard).join('');
+    content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
+      <div style="font-size:29px">🌌</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">문명 도감</div>
+      <div style="font-size:12px;color:var(--dim)">은하의 7대 문명 — 시작과 환경, 그리고 위트 한 줄</div></div>
+    </div>${cards}`;
   }
 
   body.innerHTML=`<div class="hub-scroll">
