@@ -1846,6 +1846,8 @@ function startGame(){
     try{CloudSave.setEmail(email);}catch(e){}
   }
   G.profile.name=nm;G.profile.company=co||'빅 픽처 스페이스';G.profile.ship=sh||'머스탱';
+  // 명예의 전당 — 플레이 시간 기록용
+  if(!G._gameStartedAt)G._gameStartedAt=Date.now();
   err.textContent='';initGame();show('s-prologue');startPrologue();
 }
 
@@ -12287,6 +12289,8 @@ function _finishCombat(){
     try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
     G._act5Complete=true;
     G._finalEndingShown=false;
+    // 🌌 명예의 전당 기록 — ACT 5 (블랙홀의 심연)
+    try{_recordHallOfFameEntry(5,'🌌 ACT 5 — 보이드의 심연');}catch(e){console.warn('HoF act5',e);}
     saveGame(true);
     setTimeout(()=>{
       combatState=null;
@@ -12468,6 +12472,8 @@ function _finishCombat(){
       // 1) ACT 4로 승격 + 지구 해방 플래그 (P31 배경이 P31_free.jpg로 자동 전환)
       if(G.act<4)G.act=4;
       G._earthLiberated=true;
+      // 🏆 명예의 전당 기록 — ACT 4 (지구 해방)
+      try{_recordHallOfFameEntry(4,'🏆 ACT 4 — 지구 해방');}catch(e){console.warn('HoF act4',e);}
       // 2) 함선을 지구(P31)로 즉시 이동 — 엔딩 직후 안착 위치
       //    P31은 일반 행성처럼 경매·세금·투자 가능. 이미지/BGM은 우선 P22 자산 사용(추후 교체).
       G.currentPlanet='P31';
@@ -13090,27 +13096,168 @@ function syncDiffButtons(d){
 
 // ── 크레딧 화면 ─────────────────────────────────────────────────
 function showCredits(){
-  const html=`<div style="text-align:center;line-height:2;padding:8px">
-    <div style="font-size:22px;font-weight:bold;color:var(--yellow);margin-bottom:12px">🌌 데스티네이션 어스</div>
-    <div style="color:var(--dim);margin-bottom:16px">Destination Earth v1.1</div>
-    <div style="margin-bottom:8px"><b>기획</b><br>이완구 (TOY LEE)</div>
-    <hr style="border-color:var(--bdr);margin:12px 0">
-    <div style="margin-bottom:8px"><b>개발</b><br>Toy Lee · 클로드</div>
-    <hr style="border-color:var(--bdr);margin:12px 0">
-    <div style="margin-bottom:8px"><b>이미지</b><br>이규빈 · Toy Lee · 제미나이 · 클로드</div>
-    <hr style="border-color:var(--bdr);margin:12px 0">
-    <div style="margin-bottom:8px"><b>사운드</b><br>Toy Lee · 제미나이 · SUNO AI</div>
-    <hr style="border-color:var(--bdr);margin:12px 0">
-    <div style="color:var(--dim);font-size:13px">이 게임의 내용은 실제와 연관이 없음을 명확히 합니다.</div>
-  </div>`;
-  openModal('🎬 크레딧',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  // 영화 엔딩 스타일 — 아래에서 위로 스크롤하는 전체 화면 크레딧
+  const overlay=document.createElement('div');
+  overlay.id='_credits-roll-overlay';
+  overlay.style.cssText=[
+    'position:fixed','left:0','top:0','right:0','bottom:0','width:100vw','height:100vh',
+    'background:#000','z-index:99998','opacity:0','transition:opacity 1.5s ease-in',
+    'display:flex','align-items:flex-start','justify-content:center',
+    'pointer-events:auto','color:#fff','font-family:Malgun Gothic, sans-serif','overflow:hidden'
+  ].join(';');
+  overlay.innerHTML=`
+    <style>
+      @keyframes _credRoll{from{transform:translateY(100vh)}to{transform:translateY(-200%)}}
+      @keyframes _credShim{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+      @keyframes _credStars{from{background-position:0 0}to{background-position:-2000px 0}}
+    </style>
+    <!-- 별 배경 -->
+    <div style="position:absolute;inset:0;background:radial-gradient(2px 2px at 18% 32%,#fff,transparent),radial-gradient(1px 1px at 62% 68%,#fff,transparent),radial-gradient(1px 1px at 80% 12%,#fff,transparent),radial-gradient(2px 2px at 28% 82%,#fff,transparent),radial-gradient(1px 1px at 88% 48%,#fff,transparent);background-size:200px 200px;opacity:.35;animation:_credStars 60s linear infinite"></div>
+    <!-- 크레딧 롤 -->
+    <div id="_credits-roll" style="position:relative;width:100%;max-width:720px;text-align:center;padding:30px 20px;animation:_credRoll 75s linear forwards;color:#fff">
+      <div style="height:30vh"></div>
+
+      <div style="font-size:42px;letter-spacing:12px;margin-bottom:12px;background:linear-gradient(90deg,#ffd700,#66ffff,#ff66cc,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 100%;animation:_credShim 4s linear infinite">DESTINATION EARTH</div>
+      <div style="font-size:14px;color:#aaa;letter-spacing:8px;margin-bottom:80px">데스티네이션 어스 — v1.1</div>
+
+      <!-- 기획 / 개발 -->
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:8px">기획</div>
+      <div style="font-size:20px;color:#fff;margin-bottom:50px">이완구 (TOY LEE)</div>
+
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:8px">개발</div>
+      <div style="font-size:17px;line-height:2;margin-bottom:50px">Toy Lee<br>Claude (Anthropic)</div>
+
+      <!-- 그래픽 / 사운드 -->
+      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">그래픽</div>
+      <div style="font-size:17px;line-height:2;margin-bottom:50px">이규빈<br>Toy Lee<br>Gemini · Claude<br>Midjourney · 나노바나나</div>
+
+      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">사운드</div>
+      <div style="font-size:17px;line-height:2;margin-bottom:60px">Toy Lee<br>Gemini · SUNO AI</div>
+
+      <!-- 등장 인물 -->
+      <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">— 등장 인물 —</div>
+      <div style="font-size:16px;line-height:2.1;margin-bottom:60px;color:#dde">
+        🐕 <b style="color:#9ee7ff">백구</b> — AI 진돗개<br>
+        (창조: 이휘소 박사)
+      </div>
+
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:14px">— 영웅 8인 —</div>
+      <div style="font-size:16px;line-height:2.1;margin-bottom:60px">
+        ⚔️ 이순신<br>
+        ⚙️ 장영실<br>
+        👑 광개토대왕<br>
+        🚀 유리 가가린<br>
+        🎖️ 호레이쇼 넬슨<br>
+        🧪 A. 아인슈타인<br>
+        ⚡ 니콜라 테슬라<br>
+        🧭 마르코 폴로
+      </div>
+
+      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">— 적대 세력 —</div>
+      <div style="font-size:16px;line-height:2.1;margin-bottom:60px">
+        💀 우르사 메이저 — 치크스 친위대 기함<br>
+        🌑 블랙팔콘 — 보이드의 사자
+      </div>
+
+      <!-- Special thanks -->
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:14px">Special Thanks</div>
+      <div style="font-size:16px;line-height:2;margin-bottom:14px">
+        주식회사 씨드유엔디 — 김우진 대표
+      </div>
+      <div style="font-size:13px;line-height:1.9;color:#bbb;margin-bottom:80px;font-style:italic">
+        그 외에도 테스터로 참여해 주신 모든 분들께 감사드립니다.
+      </div>
+
+      <!-- 면책 -->
+      <div style="font-size:12px;color:#888;line-height:1.8;padding:0 20px;margin-bottom:60px;word-break:keep-all">
+        ※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며,<br>
+        실존 인물 및 단체와는 전혀 관련이 없습니다.
+      </div>
+
+      <div style="font-size:14px;color:#666;letter-spacing:6px;margin-bottom:8px">— 그리고 모든 인류에게 —</div>
+      <div style="font-size:26px;color:#fff;letter-spacing:8px;margin-bottom:80px">감사합니다</div>
+
+      <div style="font-size:13px;color:#444;letter-spacing:4px">— THE END —</div>
+      <div style="height:30vh"></div>
+    </div>
+    <button id="_credits-close" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">닫기 →</button>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{overlay.style.opacity='1';});
+  const _close=()=>{
+    overlay.style.transition='opacity 1.2s ease-out';
+    overlay.style.opacity='0';
+    setTimeout(()=>{try{overlay.remove();}catch(e){}},1300);
+  };
+  overlay.querySelector('#_credits-close').onclick=_close;
+  // 75초 후 자동 종료
+  setTimeout(_close,77000);
+  return;  // 기존 모달 사용 안 함
+  // ── (구버전 모달 — 사용 안 함, 참고용) ──
 }
 
-// ── 명예의 전당 ─────────────────────────────────────────────────
+// ── 명예의 전당 — ACT4/ACT5 클리어 시 기록 ────────────────────────
+function _recordHallOfFameEntry(act, label){
+  if(!G.hallOfFame)G.hallOfFame=[];
+  // 동일 act 중복 방지 (이미 같은 게임에서 같은 액트 클리어 기록 있으면 스킵)
+  const _gid=G._gameStartedAt||0;
+  if(G.hallOfFame.some(h=>h.gid===_gid&&h.act===act))return;
+  const now=Date.now();
+  const elapsedMs=_gid?(now-_gid):0;
+  const _pad=n=>String(n).padStart(2,'0');
+  const _hh=Math.floor(elapsedMs/3600000);
+  const _mm=Math.floor((elapsedMs%3600000)/60000);
+  const _ss=Math.floor((elapsedMs%60000)/1000);
+  const playTime=_hh>0?`${_hh}시간 ${_pad(_mm)}분`:`${_mm}분 ${_pad(_ss)}초`;
+  const d=new Date(now);
+  const dateStr=`${d.getFullYear()}-${_pad(d.getMonth()+1)}-${_pad(d.getDate())}`;
+  G.hallOfFame.push({
+    gid:_gid,
+    act,
+    label:label||`ACT ${act} 클리어`,
+    name:G.profile?.name||'사령관',
+    company:G.profile?.company||'',
+    gender:G.profile?.gender||'',
+    turn:G.turn||0,
+    credits:G.credits||0,
+    reputation:G.reputation||0,
+    heroes:(G.heroes||[]).length,
+    difficulty:G.difficulty||'normal',
+    playTime,
+    playedAt:now,
+    date:dateStr
+  });
+  // 상한 50개 (오래된 것부터 제거)
+  if(G.hallOfFame.length>50)G.hallOfFame.splice(0,G.hallOfFame.length-50);
+  try{saveGame(true);}catch(e){}
+}
+try{if(typeof window!=='undefined')window._recordHallOfFameEntry=_recordHallOfFameEntry;}catch(e){}
+
 function showHallOfFame(){
   const hall=G.hallOfFame||[];
-  const rows=hall.length?hall.slice(-10).reverse().map(h=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span>${h.name||'무명'}</span><span style="color:var(--gold)">₡${(h.credits||0).toLocaleString()}</span><span style="color:var(--dim)">${h.date||''}</span></div>`).join(''):'<div style="color:var(--dim);text-align:center;padding:16px">아직 기록이 없습니다</div>';
-  const html=`<div style="padding:4px 0">${rows}</div>`;
+  const diffLabel={easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'};
+  // 최신 순으로 정렬
+  const sorted=[...hall].sort((a,b)=>(b.playedAt||0)-(a.playedAt||0));
+  const rows=sorted.length?sorted.map(h=>{
+    const actCol=h.act>=5?'#cc66ff':h.act>=4?'#ffd700':'var(--cyan)';
+    const actLbl=h.act>=5?'🌌 ACT 5 — 보이드의 심연':h.act>=4?'🏆 ACT 4 — 지구 해방':`ACT ${h.act}`;
+    return `<div style="border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(0,0,0,.2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="color:${actCol};font-size:13px;font-weight:bold;letter-spacing:1px">${actLbl}</div>
+        <div style="color:var(--dim);font-size:11px">${h.date||''}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:12px;line-height:1.7">
+        <div>👤 <b style="color:var(--yellow)">${h.name||'무명'}</b></div>
+        <div>🏢 ${h.company||'-'}</div>
+        <div>⏱️ 플레이 시간 <b style="color:var(--cyan)">${h.playTime||'-'}</b></div>
+        <div>🔄 턴 수 <b style="color:var(--cyan)">${(h.turn||0).toLocaleString()}</b></div>
+        <div>💰 크레딧 <b style="color:var(--gold)">₡${(h.credits||0).toLocaleString()}</b></div>
+        <div>⭐ 명성 <b style="color:var(--gold)">${(h.reputation||0).toLocaleString()}</b></div>
+        <div>⚔️ 영웅 <b>${h.heroes||0}/8</b></div>
+        <div>📊 난이도 <b>${diffLabel[h.difficulty]||h.difficulty||'-'}</b></div>
+      </div>
+    </div>`;
+  }).join(''):'<div style="color:var(--dim);text-align:center;padding:24px">아직 기록이 없습니다 — ACT 4(지구 해방) 또는 ACT 5(블랙홀의 심연)을 클리어하면 자동 기록됩니다.</div>';
+  const html=`<div style="padding:4px 0;max-height:60vh;overflow-y:auto">${rows}</div>`;
   openModal('🏆 명예의 전당',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
