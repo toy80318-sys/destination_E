@@ -3426,7 +3426,11 @@ function sellComm(idx,qty){
     notify('📜 이 아이템은 판매할 수 없습니다 (영웅 영입 재료)','err');return;
   }
   const sp=calcSellPrice(slot,G.currentPlanet),profit=(sp-slot.buyPrice)*qty;
+  // 매각 취소용 카고 스냅샷 (슬롯 변경 직전)
+  const _cargoSnap=JSON.parse(JSON.stringify(G.cargo));
+  const _commLabel=`${commDef?commDef.nm:slot.id} ${qty}개`;
   G.credits+=sp*qty;slot.qty-=qty;if(slot.qty===0)G.cargo.splice(idx,1);
+  try{_recordSell({type:'cargoSnap',cargoSnap:_cargoSnap,credits:sp*qty,label:_commLabel});}catch(e){}
   // 상점 거래 수익 10만 이상 시 명성 +1 (상거래 평판 보상)
   let _repBonusMsg='';
   if(profit>=100000){
@@ -4512,7 +4516,8 @@ function sellAllPartsBulk(){
   const totalQty=sellable.reduce((s,i)=>s+i.qty,0);
   const totalCr=sellable.reduce((s,i)=>{const p=PARTS.find(x=>x.id===i.id);return s+Math.floor((p.price||0)*0.5*_mul)*i.qty;},0);
   if(!confirm(`⚙️ 파츠 ${totalQty}개를 일괄 매각합니다.\n예상 수익: ₡${totalCr.toLocaleString()}${hasMarco?' (🧭 마르코+10%)':''}\n(전설/신화/세트 제외 · 장착 파츠 제외)\n진행할까요?`))return;
-  // 매각 실행
+  // 매각 실행 + 되돌리기용 스냅샷 (개수까지 깊은 복사)
+  const _undoParts=sellable.map(i=>({id:i.id,qty:i.qty}));
   sellable.forEach(i=>{
     const p=PARTS.find(x=>x.id===i.id);if(!p)return;
     const unit=Math.floor((p.price||0)*0.5*_mul);
@@ -4525,12 +4530,91 @@ function sellAllPartsBulk(){
     if(!p)return false;
     return ['legend','mythic','set','hero'].includes(p.rarity);
   });
+  try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:`파츠 ${totalQty}개 일괄`});}catch(e){}
   updateHUD();
   notify(`🛒 파츠 ${totalQty}개 일괄 매각 +₡${totalCr.toLocaleString()}`,'gold');
   baekgu(`잡파츠 정리 완료. ${totalCr.toLocaleString()} 크레딧 들어왔어.`);
   saveGame(true);
   rerenderShipOrGarage();
 }
+
+// ─── 매각 취소(되돌리기) 시스템 ──────────────────────────────────
+// 사용자가 실수로 함선/파츠/화물을 매각했을 때 마지막 1건을 동일 금액으로 즉시 환원.
+// window._lastSell에 저장 (세이브에 포함 안 됨, 60초 후 자동 만료)
+// 호출 흐름: sellPart/sellShip/sellAllPartsBulk 등 → _recordSell → showUndoSellToast
+function _recordSell(entry){
+  if(!entry||!entry.credits)return;
+  entry.ts=Date.now();
+  window._lastSell=entry;
+  // 기존 만료 타이머 정리
+  if(window._undoSellExpireTimer){clearTimeout(window._undoSellExpireTimer);}
+  window._undoSellExpireTimer=setTimeout(()=>{window._lastSell=null;_renderUndoSellToast();},60000);
+  _renderUndoSellToast();
+}
+function _renderUndoSellToast(){
+  let el=document.getElementById('undo-sell-toast');
+  const ls=window._lastSell;
+  if(!ls){if(el)el.remove();return;}
+  if(!el){
+    el=document.createElement('div');
+    el.id='undo-sell-toast';
+    el.style.cssText='position:fixed;bottom:88px;right:20px;z-index:5000;background:rgba(40,20,60,.92);border:1.5px solid var(--gold);border-radius:8px;padding:10px 14px;color:var(--yellow);font-size:13px;box-shadow:0 6px 22px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;backdrop-filter:blur(4px);animation:pulse 2.5s infinite';
+    document.body.appendChild(el);
+  }
+  el.innerHTML=`<span>↶ 방금 매각: <b style="color:#fff">${ls.label||''}</b></span>
+    <button onclick="undoLastSell()" style="padding:5px 12px;border:1.5px solid var(--gold);background:rgba(255,215,0,.18);color:var(--gold);border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;letter-spacing:1px">매각 취소 (₡${ls.credits.toLocaleString()} 반환)</button>
+    <button onclick="window._lastSell=null;_renderUndoSellToast()" style="padding:3px 7px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--dim);border-radius:4px;cursor:pointer;font-size:11px" title="알림 닫기">✕</button>`;
+}
+function undoLastSell(){
+  const ls=window._lastSell;
+  if(!ls){notify('취소할 매각 기록이 없습니다','warn');return;}
+  // 크레딧 차감 가능한지 확인
+  if(G.credits<ls.credits){
+    notify(`크레딧 부족 — 매각 취소하려면 ₡${ls.credits.toLocaleString()} 필요`,'err');
+    return;
+  }
+  try{
+    if(ls.type==='part'){
+      addToInventory(ls.partId);
+      G.credits-=ls.credits;
+      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+    } else if(ls.type==='bulkPart'){
+      (ls.parts||[]).forEach(p=>{for(let i=0;i<p.qty;i++)addToInventory(p.id);});
+      G.credits-=ls.credits;
+      notify(`↶ 파츠 일괄 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+    } else if(ls.type==='ship'){
+      // 함선 복원: G.fleet에 다시 push (16척 한도 시 reserve로 자동)
+      const _r=addShipToFleet(ls.ship);
+      G.credits-=ls.credits;
+      const _where=_r&&_r.added==='reserve'?' (임시창)':'';
+      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감${_where}`,'ok');
+    } else if(ls.type==='cargoSnap'){
+      // 화물 스냅샷 복원 (G.cargo 전체 깊은 복사 복원)
+      G.cargo=JSON.parse(JSON.stringify(ls.cargoSnap));
+      G.credits-=ls.credits;
+      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+    } else {
+      notify('알 수 없는 매각 종류','warn');return;
+    }
+    window._lastSell=null;
+    if(window._undoSellExpireTimer){clearTimeout(window._undoSellExpireTimer);window._undoSellExpireTimer=null;}
+    _renderUndoSellToast();
+    updateHUD();
+    // 현재 탭에 따라 적절한 화면 갱신 — garage/ship/trade/cargo 등 모두 커버
+    try{
+      const ct=G._currentHubTab;
+      if(ct==='trade'&&typeof renderTradeTab==='function')rerenderTab(renderTradeTab);
+      else if(ct==='cargo'&&typeof renderCargoOnlyTab==='function')rerenderTab(renderCargoOnlyTab);
+      else if(ct==='garage'||ct==='ship'||ct==='craft')rerenderShipOrGarage();
+      else rerenderShipOrGarage();  // 폴백
+    }catch(e){}
+    saveGame(true);
+  }catch(e){
+    console.error('undoLastSell failed',e);
+    notify('매각 취소 실패: '+e.message,'err');
+  }
+}
+try{if(typeof window!=='undefined'){window.undoLastSell=undoLastSell;window._renderUndoSellToast=_renderUndoSellToast;}}catch(e){}
 
 function sellPartFromInventory(partId){
   const p=PARTS.find(x=>x.id===partId);if(!p)return;
@@ -4550,6 +4634,7 @@ function sellPartFromInventory(partId){
     [{txt:`₡${sellVal.toLocaleString()} 받고 매각`,fn:()=>{
       inv.qty--;if(inv.qty<=0)G.inventory.splice(G.inventory.indexOf(inv),1);
       G.credits+=sellVal;
+      try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:p.nm});}catch(e){}
       updateHUD();notify(`⚙️ ${p.nm} 매각 +₡${sellVal.toLocaleString()}`,'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
     },cls:'btn-gold'},{txt:'취소',fn:closeModal,cls:'btn-sm'}]
@@ -4728,8 +4813,11 @@ function discardReserveShip(reserveIdx){
     [
       {txt:'💰 매각 확정',fn:()=>{
         closeModal();
+        // 매각 취소용 깊은 복사 (파츠 회수 전 상태로 복원)
+        const _undoShip=JSON.parse(JSON.stringify(ship));
         G.credits+=sellPrice;
         G.reserveFleet.splice(reserveIdx,1);
+        try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:ship.nm+' (후보)'});}catch(e){}
         notify(`💰 ${ship.nm} 매각 +₡${sellPrice.toLocaleString()} (파츠 ${returnedParts} · 크루 ${returnedCrew} 회수)`,'gold');
         baekgu(`${ship.nm} 정비소에 ₡${sellPrice.toLocaleString()}에 매각했어. 파츠랑 크루는 잘 챙겨놨고.`);
         updateHUD();saveGame(true);
@@ -6168,6 +6256,8 @@ function confirmSellShip(idx){
 function sellShip(idx){
   if(G.fleet.length<=1){notify('함선이 1척뿐입니다','err');return;}
   const s=G.fleet[idx];if(!s)return;
+  // 함선 매각 취소용 깊은 복사 (파츠 분리·크루 하선 직전 상태)
+  const _undoShip=JSON.parse(JSON.stringify(s));
   // 파츠 자동 분리 → 인벤토리 반환
   (s.parts||[]).forEach(pid=>addToInventory(pid));
   s.parts=[];
@@ -6181,6 +6271,7 @@ function sellShip(idx){
   if(idx===0&&G.fleet.length>0){/* index 0 제거 → 자동으로 다음 함선이 기함 */}
   // 임시창 → 선발 자동 승급 (16척 미만 시)
   _promoteReserveIfRoom();
+  try{_recordSell({type:'ship',ship:_undoShip,credits:sp.total,label:s.nm});}catch(e){}
   updateHUD();
   notify(`🪙 ${s.nm} 판매 완료 +₡${sp.total.toLocaleString()}`,'gold');
   baekgu(`${s.nm} 팔았어. ₡${sp.total.toLocaleString()} 들어왔다. 잘 썼네.`);
