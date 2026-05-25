@@ -870,6 +870,7 @@ function notify(msg,type='info'){
 // 화자 이름 → 이미지 경로. 새 인물 추가 시 img/chars/<file>.png 넣고 여기에 한 줄 추가.
 const CHAR_PORTRAITS={
   '백구':'img/chars/baekgu.png',
+  '블랙팔콘':'img/chars/Void_Hiden.png',
   '팔콘 스카우트':'img/chars/Void_Hiden.png',
   '⚠️ 통신 수신 ⚠️':'img/chars/Void_Hiden.png'
   // 예: '우르사 메이저':'img/chars/ursa.png',
@@ -1277,6 +1278,7 @@ const LORE_TEXT={
   'ship_LGD02':'🔨 올로리톨리가 테슬라의 기록을 60년 연구 끝에 함선에 적용. "전자기가 모든 것을 제압한다"\n📜 이름 유래: 워덴클리프. 테슬라의 무선 에너지 전송 프로젝트.\n⚔️ 강점: 매 턴 적 시스템 무력화. 단점: 가격이 신화급.\n💬 매 턴 적 시스템 하나가 꺼진다. 테슬라가 살아있었다면 우주에서 이걸 탔을 것이다.',
   'ship_LGD03':'🔨 보스크 바스크가 아인슈타인 이론을 적용해 항법 시스템을 재설계. "시간을 지배하면 이긴다"\n📜 이름 유래: 리라(상대성). 상대성이론 적용 항법.\n⚔️ 강점: 모든 상황에서 선제 행동. 단점: 매우 비싸다.\n💬 모든 상황에서 가장 먼저 행동할 권리를 갖는다. 시간을 지배하면 전쟁도 지배한다.',
   'ship_URSA':'🔨 치크스 친위대 신경공학자 부족이 50년에 걸쳐 살아있는 함체를 키워냈다. 설계자는 함선이 아니라 "유기체"라고 불렀다.\n📜 이름 유래: 우르사 메이저(큰곰자리). 지구 봉쇄 함대의 기함. 이름만으로 인류를 떨게 했다.\n⚔️ 강점: 신화 풀셋(MW01·MS01·MA01·ME01) 기본 장착, 신화급 화력+내구. 단점: 격파 후 나포해야만 손에 들어온다. 충성도가 0이라 길들이기까지 시간이 걸린다.\n💬 인류 멸망의 상징이 인류 함대의 일원이 됐다. 함체 안에서 가끔 들리는 신음 같은 진동은 무시하는 게 정신 건강에 좋다.',
+  'ship_BLACKFALCON':'🔨 보이드 차원의 자가증식 결정체가 1000년에 걸쳐 함체로 응결된 존재. 누가 만들었는지 아무도 모른다 — 어쩌면 만든 자가 없을지도 모른다.\n📜 이름 유래: 블랙팔콘(Black Falcon). 빛조차 흡수하는 검은 외피와, 어떤 함선보다 민첩한 정찰함의 형태에서. 단순한 명칭이지만 그 누구도 가볍게 부르지 못한다.\n⚔️ 강점: 신화 최고 등급. 우르사 메이저의 2배 능력치. 보이드 차원의 모든 무기·실드·엔진 원형. 단점: 보이드의 사자가 직접 인정해야만 손에 들어온다 — 즉, 격파해야 한다. 격파 자체가 신화.\n💬 보이드의 사자. 1000년의 침묵을 깨고 나타나 "재미있군"이라는 한마디만 남기고 사라졌다. 그 함선이 이제 사령관의 함대에 있다.',
   // ── 치크스 노획 함선 (적군 디자인 역공학) ──
   'ship_CHIX_S_BUY':'🔨 노획된 치크스 정찰기를 메카니카 기술자들이 6개월에 걸쳐 역공학. 생체회로 70%는 그대로, 인터페이스만 인간형으로 교체.\n📜 이름 유래: 치크스 정찰기(노획). 원어 발음은 인간 성대로 재현 불가 — 그래서 그냥 "노획"이라 부른다.\n⚔️ 강점: INT 자가 회복 +10%/턴 — 실드가 끊임없이 재생. 단점: 충성도 60으로 낮음. 가끔 조종간이 멋대로 움직인다.\n💬 함선이 살아 숨쉰다. 도색을 하니 어디선가 항의의 진동이 올라온다. 그래도 잘 싸운다.',
   'ship_CHIX_M_BUY':'🔨 치크스 중형 순양함을 통째로 끌고 와 무기 시스템만 인간형 포탑으로 교체. 외피는 생체 갑각 그대로.\n📜 이름 유래: 치크스 순양함(노획). 갑각이 햇빛에 반짝이면 마치 거대한 갑충이 우주를 헤엄치는 모습이다.\n⚔️ 강점: 치크스 함대 상대 ATT +25% — 동족을 가장 잘 안다. 단점: 외피가 살아있어 수리비가 두 배.\n💬 적의 함선이 적의 약점을 가르쳐준다. 가장 잔인한 무기다. 외피에 상처가 나면 진짜로 아파하는 것 같다.',
@@ -1400,11 +1402,14 @@ function shipImgSrc(ship){
   if((ship.catalogId||'').toUpperCase()==='URSA'
      ||sid.startsWith('BOSS_URSA')||sid==='URSA'||sid==='BOSS'||sid==='BOSS_MAIN')
     return 'img/ships/Boss.png';
-  // 0-2) 보이드 팔콘 (나포/보스) — S10.png
-  if((ship.catalogId||'').toUpperCase()==='VOID_FALCON'
-     ||sid.startsWith('CAP_VOIDFALCON')||sid.startsWith('VOID_FALCON')
+  // 0-2) 블랙팔콘 / 보이드 팔콘 (나포/보스) — S10.png
+  if((ship.catalogId||'').toUpperCase()==='BLACKFALCON'
+     ||(ship.catalogId||'').toUpperCase()==='VOID_FALCON'
+     ||sid.startsWith('CAP_BLACKFALCON')||sid.startsWith('CAP_VOIDFALCON')
+     ||sid.startsWith('VOID_FALCON')||sid.startsWith('BLACKFALCON')
      ||ship._isVoidFalconCaptured
-     ||(ship.catId==='S10'&&nm.includes('팔콘')))
+     ||(ship.catId==='S10'&&(nm.includes('팔콘')||nm.includes('블랙')))
+     ||nm.includes('블랙팔콘'))
     return 'img/ships/S10.png';
   // 1) 명시적 catalogId / catId — CHIX 계열은 티어 접미사 보정
   if(ship.catalogId){
@@ -6942,9 +6947,9 @@ function showVoidBossOutro(){
   const cmdName=G.profile?.name||'사령관';
   const lines=[
     {sp:'⚠️ 통신 수신 ⚠️',tx:'지지직...... 츠츠..',fx:'static'},
-    {sp:'팔콘 스카우트',tx:'음.. 우주에서 이렇게 강한 함대는 1000년만에 처음 만났군.. 좋다..'},
-    {sp:'팔콘 스카우트',tx:'그대들의 목표를 지켜보겠다. 하지만 보이드 문명에 선을 넘지는 말길 바란다..'},
-    {sp:'팔콘 스카우트',tx:'선물 하나를 하지.. 은하계 가운데로 가볼 수 있다면 내 마지막 시험을 통과할 것이다.'},
+    {sp:'블랙팔콘',tx:'음.. 우주에서 이렇게 강한 함대는 1000년만에 처음 만났군.. 좋다..'},
+    {sp:'블랙팔콘',tx:'그대들의 목표를 지켜보겠다. 하지만 보이드 문명에 선을 넘지는 말길 바란다..'},
+    {sp:'블랙팔콘',tx:'선물 하나를 하지.. 은하계 가운데로 가볼 수 있다면 내 마지막 시험을 통과할 것이다.'},
     {sp:'⚠️ 통신 수신 ⚠️',tx:'..... 메시지 전송 끝 .....',fx:'static'},
     {sp:'백구',tx:`${cmdName}, 검은 함선이 사라졌어! 그리고... 어? 우리 격침된 함선들이 다시 살아났어!`},
     {sp:cmdName,tx:'은하계 가운데... 블랙홀 말이로군. "마지막 시험"이라... 보이드 행성들을 모두 100% 투자해야 갈 수 있다는 뜻일까.'}
@@ -7023,10 +7028,10 @@ function _grantVoidBossRewards(){
   const _capturedShips=[];
   for(let i=0;i<_capCount;i++){
     const ship={
-      id:'CAP_VOIDFALCON_'+Date.now()+'_'+i,
-      catalogId:'VOID_FALCON',  // shipImgSrc에 보이드 팔콘 전용 분기 추가됨 → img/ships/S10.png 로드
+      id:'CAP_BLACKFALCON_'+Date.now()+'_'+i,
+      catalogId:'BLACKFALCON',  // 도감 ship_BLACKFALCON과 매칭 + S10.png 이미지
       catId:'S10',
-      nm:'🌑 팔콘 스카우트 (나포)'+(_capCount>1?` ${i+1}/${_capCount}`:''),
+      nm:'🌑 블랙팔콘 (나포)'+(_capCount>1?` ${i+1}/${_capCount}`:''),
       tier:'대형',  // 대형 함선급 슬롯: 6 cols × 4 rows 기본
       partsRowsExtra:1,  // 대형 최대 확장 = +1 row → 6×5=30 파츠 슬롯
       maxHP:_capHP,hp:_capHP,
@@ -7157,7 +7162,7 @@ function acceptQuest(pid,idx){
   else rerenderTab(renderQuestTab);
 }
 function startVoidBossCombat(questRef){
-  const pd={id:'P30',nm:'팔콘 스카우트 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
+  const pd={id:'P30',nm:'블랙팔콘 — 제타 레티쿨리 상공',ring:5,void:true,f:'F07'};
   // ─── 보이드 함대 능력치 스케일링 (사용자 명세 엄수) ───
   //   · 적 함대 총 HP = 아군 함대 총 HP × 2 (정확히)
   //   · 적 함대 총 ATT = 아군 함대 총 ATT × 2
@@ -7188,7 +7193,7 @@ function startVoidBossCombat(questRef){
     return {
       ...VOID_BOSS,
       id:`VOID_FALCON_${i+1}`,
-      nm:isFlagship?'팔콘 스카우트 (기함 ✦)':`팔콘 스카우트 ${i+1}`,
+      nm:isFlagship?'🌑 블랙팔콘 ✦신화':`팔콘 스카우트 ${i+1}`,
       tier:isFlagship?'신화':'중형',
       isEnemy:true,
       hp:_hp,maxHP:_hp,HP:_hp,
@@ -7207,7 +7212,7 @@ function startVoidBossCombat(questRef){
   _cbEffects=[];_unitPos={};if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
   combatState._sunsinUsed=false;
   combatState._entranceT=1;combatState._entranceDone=true;
-  sfxAlert();try{AudioMgr.playBgm('boss');}catch(e){}_preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent='🌑 히든전 — 팔콘 스카우트';setTimeout(runCombatTurn,600);});
+  sfxAlert();try{AudioMgr.playBgm('boss');}catch(e){}_preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent='🌑 히든전 — 블랙팔콘';setTimeout(runCombatTurn,600);});
 }
 // 명성 티어별 퀘스트 보상 배율: VE>=40(명성200) ×3, VE>=30(명성100) ×2, 그 외 ×1
 function getQuestRepTierMult(q){
@@ -10369,7 +10374,7 @@ function _combatShipImgSrc(u){
     const isBoss=catId.startsWith('BOSS')||catId==='URSA'||nmLow.includes('우르사');
     if(isBoss)return 'img/combat/enemies/Boss.png';
     // 히든 보이드 보스 — 팔콘 스카우트 전용 이미지 (S10.png)
-    if(u.voidBoss||catId.startsWith('VOID')||catId.startsWith('FALCON')||nmLow.includes('팔콘'))return 'img/ships/S10.png';
+    if(u.voidBoss||catId.startsWith('VOID')||catId.startsWith('FALCON')||catId.startsWith('BLACKFALCON')||nmLow.includes('팔콘')||nmLow.includes('블랙'))return 'img/ships/S10.png';
     const base=catId.startsWith('CHIX')||/^E\d/.test(catId)||isChixName?'CHIX':
                isDbrpName?'DBRP':'PIRATE';
     return 'img/combat/enemies/'+base+'_'+_tierKey(u.tier)+'.png';
@@ -12018,6 +12023,29 @@ function _getSlotInfo(n){
 }
 
 // 슬롯에 저장 (로컬 + 클라우드)
+// 탭 전환/닫기/리프레시 시 자동 저장 (사이트 끊김 / 새로고침에도 데이터 보호)
+(function _registerAutoSaveHandlers(){
+  if(typeof document==='undefined')return;
+  let lastAutoSave=0;
+  function _safeAutoSave(){
+    if(!window.G||!G.profile||!G.profile.name)return;  // 게임 시작 전이면 스킵
+    const now=Date.now();
+    if(now-lastAutoSave<2000)return;  // 2초 쓰로틀
+    lastAutoSave=now;
+    try{saveGame(true);}catch(e){}
+  }
+  // 탭 숨김 (다른 탭으로 이동 / 모바일 백그라운드)
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')_safeAutoSave();});
+  // 페이지 닫기 / 새로고침 / 다른 URL 이동
+  window.addEventListener('beforeunload',_safeAutoSave);
+  // 모바일 페이지 freeze (iOS Safari, Android Chrome)
+  window.addEventListener('pagehide',_safeAutoSave);
+  // 네트워크 복구 시 클라우드 재동기화
+  window.addEventListener('online',()=>{
+    try{if(window.CloudSave&&CloudSave.pushAll)CloudSave.pushAll();}catch(e){}
+  });
+})();
+
 function saveGame(silent,slotN){
   const n=(slotN!=null)?slotN:1;
   try{
