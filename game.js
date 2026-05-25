@@ -12295,7 +12295,7 @@ function _finishCombat(){
 function activateSunsinFocus(){
   if(!combatState||combatState._sunsinUsed||combatState.done)return;
   // ★ 전술 화자 초상: 일점사 → 호레이쇼 넬슨 (H05)
-  try{_showTacticPortrait('img/chars/hero05.png',6000);}catch(e){}
+  try{_showTacticPortrait('img/chars/hero05.png',12000);}catch(e){}
   const target=combatState.enemies.filter(e=>e.hp>0)[0];
   if(!target)return;
   combatState._sunsinUsed=true;
@@ -12347,7 +12347,7 @@ function _showHaikjinButton(){
 function activateHaikjin(){
   if(!combatState||combatState._haikjinUsed||combatState.done)return;
   // ★ 전술 화자 초상: 학익진 → 이순신 (H01)
-  try{_showTacticPortrait('img/chars/hero01.png',6000);}catch(e){}
+  try{_showTacticPortrait('img/chars/hero01.png',12000);}catch(e){}
   combatState._haikjinUsed=true;
   combatState._playerAttMult=3;
   if(combatState.players){
@@ -12394,7 +12394,7 @@ function _showEinsteinButton(){
 function activateEinsteinTimeAttack(){
   if(!combatState||combatState._einsteinUsed||combatState.done)return;
   // ★ 전술 화자 초상: 시간차공격 → 아인슈타인 (H06)
-  try{_showTacticPortrait('img/chars/hero06.png',6000);}catch(e){}
+  try{_showTacticPortrait('img/chars/hero06.png',12000);}catch(e){}
   combatState._einsteinUsed=true;
   combatState._playerAttMult=4;
   if(combatState.players){
@@ -12441,7 +12441,7 @@ function _showTeslaButton(){
 function activateTeslaHyperspace(){
   if(!combatState||combatState._teslaUsed||combatState.done)return;
   // ★ 전술 화자 초상: 테슬라 초공간 → 니콜라 테슬라 (H07)
-  try{_showTacticPortrait('img/chars/hero07.png',6000);}catch(e){}
+  try{_showTacticPortrait('img/chars/hero07.png',12000);}catch(e){}
   combatState._teslaUsed=true;
   combatState._playerAttMult=5;
   if(combatState.players){
@@ -12502,7 +12502,7 @@ function _showGenesisButton(){
 function activateGenesisImpact(){
   if(!combatState||combatState._genesisUsed||combatState.done)return;
   // ★ 전술 화자 초상: 제네시스 임펙트 → 광개토대왕 (H03)
-  try{_showTacticPortrait('img/chars/hero03.png',6000);}catch(e){}
+  try{_showTacticPortrait('img/chars/hero03.png',12000);}catch(e){}
   combatState._genesisUsed=true;
   combatState._playerAttMult=6;
   if(combatState.players){
@@ -12549,7 +12549,7 @@ function _showDestinationButton(){
 function activateDestinationEarth(){
   if(!combatState||combatState._destinationUsed||combatState.done)return;
   // ★ 전술 화자 초상: 데스티네이션 어스 → 주인공 (성별 기반 commander_m/f.png, 없으면 자동 폴백)
-  try{_showTacticPortrait(_commanderPortraitSrc(),7000);}catch(e){}
+  try{_showTacticPortrait(_commanderPortraitSrc(),14000);}catch(e){}
   combatState._destinationUsed=true;
   combatState._playerAttMult=10;
   if(combatState.players){
