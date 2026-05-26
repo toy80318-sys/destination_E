@@ -10691,7 +10691,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     </div>
     <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none;max-width:96vw;max-height:84vh" tabindex="0"></canvas>
     <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#aaa;font-size:11px;letter-spacing:2px;line-height:1.7;pointer-events:none">
-      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">마우스 이동</b> · <b style="color:#ffcc66">Shift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일(자동조준)
+      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">마우스 이동</b> · <b style="color:#ffcc66">RShift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일 · <b style="color:#ff44ff">LShift</b> 필살기(라이트닝, 10초)
     </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
@@ -10721,6 +10721,8 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     eMissiles:[],  // 적 미사일
     parts:[],      // 폭발 파편
     stars:[],      // 배경 별 (스크롤)
+    ultEffects:[], // 필살기(테슬라 초공간 라이트닝) 잔존 이펙트
+    ultimateCd:0,  // 필살기 쿨다운 (60fps 기준, 600=10초)
     startMs:Date.now(),
     durationMs:50000,  // 50초 — 이 시간 후 맵으로 복귀 가능
     ended:false,
@@ -10831,6 +10833,40 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     });
     state.pMissiles.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:6, vy:0, target, dmg:3, life:140});
     try{AudioMgr.playSfx('missile',{vol:0.5,cooldown:60});}catch(e){}
+  }
+  // 필살기 — 테슬라 초공간 라이트닝 (LeftShift, 10초 쿨다운)
+  // 함선 앞 방향 직선형 빔, 너비 = 함선 크기 ×5, 라인 내 모든 적·소행성 파괴
+  function _fireUltimate(){
+    if(state.ultimateCd>0||state.ended)return;
+    state.ultimateCd=600;  // 600 frames @60fps ≈ 10초
+    const sx=state.ship.x+state.ship.w/2;
+    const sy=state.ship.y;
+    const lineHeight=state.ship.w*5;       // 함선 크기 ×5 너비
+    const halfH=lineHeight/2;
+    // 라인 내 모든 적 함선 파괴
+    for(let i=state.enemies.length-1;i>=0;i--){
+      const e=state.enemies[i];
+      if(e.x>=sx && Math.abs(e.y-sy)<=halfH+e.h/2){
+        _explode(e.x,e.y,'#cc66ff',true);
+        state.kills++;
+        state.enemies.splice(i,1);
+      }
+    }
+    // 라인 내 모든 소행성 파괴
+    for(let i=state.asteroids.length-1;i>=0;i--){
+      const a=state.asteroids[i];
+      if(a.x>=sx && Math.abs(a.y-sy)<=halfH+a.r){
+        _explode(a.x,a.y,'#cc66ff',a.sz==='L');
+        state.kills++;
+        state.asteroids.splice(i,1);
+      }
+    }
+    // 라이트닝 이펙트 (45프레임 잔존)
+    state.ultEffects.push({x:sx,y:sy,halfH,life:45,maxLife:45,seed:Math.random()*9999});
+    // SFX + 백구 발화
+    try{AudioMgr.playSfx('explosion',{vol:0.7});}catch(e){}
+    try{AudioMgr.playSfx('laser_fire',{vol:0.6});}catch(e){}
+    _baekguSay('fight','⚡ 테슬라 초공간! 일점 돌파!',2400,true);
   }
 
   // 적 스폰
@@ -11015,9 +11051,14 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     // 발사 입력
     if(state.laserCd>0)state.laserCd-=dt;
     if(state.missileCd>0)state.missileCd-=dt;
+    if(state.ultimateCd>0)state.ultimateCd-=dt;
     // hold 자동 발사 — 키 또는 마우스 버튼을 누르고 있는 동안 cd마다 계속 발사
-    if(keys.ShiftLeft||keys.ShiftRight||state._mouseDown)_fireLaser();
+    //   레이저: RightShift + 마우스 클릭 (LeftShift는 필살기 전용)
+    //   미사일: Ctrl/Enter
+    //   필살기: LeftShift (테슬라 초공간 라이트닝, 10초 쿨)
+    if(keys.ShiftRight||state._mouseDown)_fireLaser();
     if(keys.ControlLeft||keys.ControlRight||keys.Enter)_fireMissile();
+    if(keys.ShiftLeft)_fireUltimate();
 
     // 스폰
     state.spawnTimerAst+=dt;state.spawnTimerEn+=dt;
@@ -11316,6 +11357,48 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     }
     cx.globalAlpha=1;
 
+    // 필살기 라이트닝 이펙트 (테슬라 초공간) — 함선 앞쪽 직선 빔
+    if(state.ultEffects&&state.ultEffects.length){
+      for(let i=state.ultEffects.length-1;i>=0;i--){
+        const u=state.ultEffects[i];
+        u.life-=dt;
+        if(u.life<=0){state.ultEffects.splice(i,1);continue;}
+        const t=u.life/u.maxLife;
+        cx.save();
+        // 외광 (보라 글로우)
+        cx.globalAlpha=0.35*t;
+        cx.fillStyle='#cc66ff';
+        cx.fillRect(u.x,u.y-u.halfH,W-u.x,u.halfH*2);
+        // 중심 코어 (밝은 자홍색)
+        cx.globalAlpha=0.85*t;
+        cx.fillStyle='#ff44ff';
+        cx.fillRect(u.x,u.y-u.halfH*0.35,W-u.x,u.halfH*0.7);
+        // 메인 라이트닝 zigzag (3줄, 두꺼움)
+        cx.globalAlpha=t;
+        cx.shadowColor='#ff66ff';cx.shadowBlur=24;
+        for(let k=0;k<3;k++){
+          cx.strokeStyle='#ffffff';
+          cx.lineWidth=4+k*2;
+          cx.beginPath();
+          let _y=u.y+(Math.random()-0.5)*u.halfH*0.3;
+          cx.moveTo(u.x,_y);
+          for(let xx=u.x+30;xx<W;xx+=30+Math.random()*40){
+            _y=u.y+(Math.random()-0.5)*u.halfH*0.7;
+            cx.lineTo(xx,_y);
+          }
+          cx.lineTo(W,u.y+(Math.random()-0.5)*20);
+          cx.stroke();
+        }
+        // 흰 화이트 코어 라인
+        cx.shadowBlur=0;
+        cx.globalAlpha=t;
+        cx.strokeStyle='#ffffff';cx.lineWidth=2;
+        cx.beginPath();cx.moveTo(u.x,u.y);cx.lineTo(W,u.y);cx.stroke();
+        cx.restore();
+      }
+      cx.globalAlpha=1;
+    }
+
     // HUD 오버레이 (캔버스 좌상단)
     // HP 바
     cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,10,220,18);
@@ -11325,6 +11408,14 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,32,220,12);
     cx.fillStyle='#66ddff';cx.fillRect(10,32,220*((state.ship.sh||0)/Math.max(1,state.ship.maxSH)),12);
     cx.fillStyle='#fff';cx.font='10px monospace';cx.fillText('SH '+Math.floor(state.ship.sh||0)+'/'+state.ship.maxSH, 16, 41);
+    // 필살기 쿨다운 바 (HP/SH 아래)
+    const _ultReady=state.ultimateCd<=0;
+    const _ultRatio=_ultReady?1:(1-state.ultimateCd/600);
+    cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,48,220,12);
+    cx.fillStyle=_ultReady?'#ff66ff':'#6633aa';
+    cx.fillRect(10,48,220*_ultRatio,12);
+    cx.fillStyle='#fff';cx.font='bold 10px monospace';
+    cx.fillText(_ultReady?'⚡ 필살기 READY (LeftShift)':'⚡ 필살기 '+(state.ultimateCd/60).toFixed(1)+'s', 16, 57);
     // 우상단: 시간·격파
     cx.fillStyle='#66ddff';cx.font='bold 18px monospace';cx.textAlign='right';
     cx.fillText('⏱ '+leftSec+'s', W-14, 26);
