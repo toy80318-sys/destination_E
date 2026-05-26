@@ -10557,7 +10557,7 @@ function startAsteroidBeltMinigame(destPid){
   }
   function _fireMissile(){
     if(state.missileCd>0||state.ended)return;
-    state.missileCd=18;  // ≈300ms (기존 36 → 2× 빠르게)
+    state.missileCd=9;   // ≈150ms (기존 18 → 추가로 2× 빠르게)
     // 가장 가까운 적 타겟 (소행성·해적 합산)
     let target=null,td=1e9;
     [...state.asteroids,...state.enemies].forEach(e=>{
@@ -10576,10 +10576,11 @@ function startAsteroidBeltMinigame(destPid){
     else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=2;}
     else {sz='L';r=34+Math.random()*14;hp=4;}
     const elapsed=(Date.now()-state.startMs)/1000;
-    const speed=2+Math.random()*1.2+Math.min(2,elapsed/8);
+    // 소행성 속도 ½ (사용자 요청)
+    const speed=(2+Math.random()*1.2+Math.min(2,elapsed/8))*0.5;
     state.asteroids.push({
       x:W+r, y:30+Math.random()*(H-60), r, sz, hp, maxHp:hp,
-      vx:-speed, vy:(Math.random()-0.5)*0.4,
+      vx:-speed, vy:(Math.random()-0.5)*0.2,
       rot:Math.random()*Math.PI*2, rotSpeed:(Math.random()-0.5)*0.06
     });
   }
@@ -10591,7 +10592,8 @@ function startAsteroidBeltMinigame(destPid){
     else {sz='L';w=100;h=100;hp=10;fireRate=45;dmg=22;}
     state.enemies.push({
       x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
-      vx:-(1.4+Math.random()*0.8), vy:(Math.random()-0.5)*0.6,
+      // 적 함선 속도 ½ (사용자 요청)
+      vx:-(1.4+Math.random()*0.8)*0.5, vy:(Math.random()-0.5)*0.3,
       fireCd:30+Math.random()*30, fireRate, dmg,
       img:pirateImgs['PIRATE_'+sz]
     });
@@ -10789,33 +10791,72 @@ function startAsteroidBeltMinigame(destPid){
       cx.shadowBlur=0;
     }
 
-    // 아군 미사일 (호밍)
+    // 아군 미사일 (호밍) — 3단계 타게팅 + 근접 폭발(맴돌이 방지) + 적중영역 3배
+    function _findMissileTarget(m){
+      // 3단계 거리 밴드: 1단계 가까움(≤180) → 2단계 중간(≤360) → 3단계 멀음(전체)
+      const all=[...state.asteroids,...state.enemies].filter(e=>e&&e.hp>0&&(e.x===undefined||e.x>-40));
+      if(!all.length)return null;
+      const tiers=[180, 360, Infinity];
+      for(const tierR of tiers){
+        let nt=null, td=Infinity;
+        for(const e of all){
+          const d=Math.hypot(e.x-m.x,e.y-m.y);
+          if(d<=tierR && d<td){td=d;nt=e;}
+        }
+        if(nt)return nt;
+      }
+      return null;
+    }
     for(let i=state.pMissiles.length-1;i>=0;i--){
       const m=state.pMissiles[i];
-      // 타겟이 죽었으면 가장 가까운 적 재탐색
-      if(!m.target||m.target.hp<=0||(m.target.x!==undefined&&m.target.x<-50)){
-        let nt=null,td=1e9;
-        [...state.asteroids,...state.enemies].forEach(e=>{const d=Math.hypot(e.x-m.x,e.y-m.y);if(d<td){td=d;nt=e;}});
-        m.target=nt;
+      // 주기적 재타게팅 (10프레임마다) — 죽은 타겟·범위 이탈 대응 + 항상 가까운 적 우선
+      if(m._retCd===undefined)m._retCd=0;
+      m._retCd-=dt;
+      if(m._retCd<=0||!m.target||m.target.hp<=0||(m.target.x!==undefined&&m.target.x<-40)){
+        m.target=_findMissileTarget(m);
+        m._retCd=10;
       }
       if(m.target){
         const dx=m.target.x-m.x, dy=m.target.y-m.y, d=Math.hypot(dx,dy)||1;
-        m.vx+=(dx/d)*0.7*dt;m.vy+=(dy/d)*0.7*dt;
+        // 가까울수록 더 강한 선회 (맴돌이 방지)
+        const turn=d<80?1.6 : d<180?1.1 : 0.7;
+        m.vx+=(dx/d)*turn*dt; m.vy+=(dy/d)*turn*dt;
         // 속도 클램프
-        const sp=Math.hypot(m.vx,m.vy);if(sp>10){m.vx*=10/sp;m.vy*=10/sp;}
+        const sp=Math.hypot(m.vx,m.vy);if(sp>12){m.vx*=12/sp;m.vy*=12/sp;}
+        // 근접 폭발 — 25px 이내면 즉시 적중 (3배 적중영역의 의미를 살림)
+        if(d<25){
+          if(m.target.r!=null){
+            // 소행성
+            m.target.hp-=m.dmg;
+            if(m.target.hp<=0){
+              _explode(m.target.x,m.target.y,'#ffaa66',true);state.kills++;
+              const ai=state.asteroids.indexOf(m.target);if(ai>=0)state.asteroids.splice(ai,1);
+            }
+          } else if(m.target.w!=null){
+            // 적함
+            m.target.hp-=m.dmg;
+            if(m.target.hp<=0){
+              _explode(m.target.x,m.target.y,'#ff6644',true);state.kills++;
+              const ei=state.enemies.indexOf(m.target);if(ei>=0)state.enemies.splice(ei,1);
+            }
+          }
+          _explode(m.x,m.y,'#ff8844',false);
+          state.pMissiles.splice(i,1);
+          continue;
+        }
       }
       m.x+=m.vx*dt;m.y+=m.vy*dt;m.life-=dt;
       if(m.x>W+30||m.x<-30||m.y<-30||m.y>H+30||m.life<=0){state.pMissiles.splice(i,1);continue;}
-      // 충돌
+      // 직접 충돌 (적중영역 5→15, 3배 확장)
       let hit=false;
       for(let k=state.asteroids.length-1;k>=0;k--){
         const a=state.asteroids[k];
-        if(_circleHit(a,m.x,m.y,5)){a.hp-=m.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',true);state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
+        if(_circleHit(a,m.x,m.y,15)){a.hp-=m.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',true);state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
       }
       if(!hit){
         for(let k=state.enemies.length-1;k>=0;k--){
           const e=state.enemies[k];
-          if(_boxHit(e,m.x,m.y,5)){e.hp-=m.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
+          if(_boxHit(e,m.x,m.y,15)){e.hp-=m.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
         }
       }
       if(hit){_explode(m.x,m.y,'#ff8844',false);state.pMissiles.splice(i,1);continue;}
