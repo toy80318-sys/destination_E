@@ -2188,16 +2188,29 @@ function showOnboardingTutorial(){
 #_tut-popup.req-click #_tut-next{display:none}`;
     document.head.appendChild(_animSt);
   }
-  // 타겟의 stage 내부 좌표 계산 (offsetParent 체인 walking — 회전·스케일 무관)
+  // 타겟의 stage 내부 좌표 계산
+  // ※ 사이드바·#s-hub는 position:fixed 라 offsetParent 체인이 #game-stage에 닿지 않음
+  //    → getBoundingClientRect 기반으로 viewport 좌표를 받아 stage center 기준으로 역변환
+  //    회전 모드(_gsRotated=true)에서는 stage가 90° CW 회전돼 있으므로 inverse rotation 적용
   const _offsetWithinStage=(el)=>{
-    let x=0,y=0,node=el;
-    while(node&&node!==_stageHost){
-      x+=node.offsetLeft||0;
-      y+=node.offsetTop||0;
-      node=node.offsetParent;
-    }
-    if(node!==_stageHost)return null;
-    return {x,y,w:el.offsetWidth,h:el.offsetHeight};
+    if(!el||el.offsetParent===null)return null;
+    const tR=el.getBoundingClientRect();
+    if(tR.width===0||tR.height===0)return null;
+    const sR=_stageHost.getBoundingClientRect();
+    const s=window._gsScale||1;
+    const rotated=!!window._gsRotated;
+    const vcx=sR.left+sR.width/2, vcy=sR.top+sR.height/2;
+    const W2=STAGE_W/2, H2=STAGE_H/2;
+    const toInt=(px,py)=>{
+      const dx=(px-vcx)/s, dy=(py-vcy)/s;
+      // 회전 시: 90° CW 적용된 stage의 역회전 (90° CCW): (dx,dy) → (dy,-dx)
+      return rotated?[dy+W2,-dx+H2]:[dx+W2,dy+H2];
+    };
+    const c1=toInt(tR.left,tR.top), c2=toInt(tR.right,tR.top),
+          c3=toInt(tR.left,tR.bottom), c4=toInt(tR.right,tR.bottom);
+    const xs=[c1[0],c2[0],c3[0],c4[0]], ys=[c1[1],c2[1],c3[1],c4[1]];
+    const x=Math.min(...xs), y=Math.min(...ys);
+    return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y};
   };
   // ── 클릭 강제 어드밴스 ─────────────────────────────────────
   // requireClick 단계에서는 [다음 ▶] 버튼을 숨기고, 강조된 버튼을 사용자가 직접
@@ -16142,44 +16155,40 @@ function _enterBlackHoleFinalTest(){
 // 능력치: 아군 함대 총합의 ×15 (히든 보이드 보스 ×10보다 강한 최종 보스 페이즈)
 function startBlackHoleFleetCombat(){
   const pd={id:'P-BLACKHOLE',nm:'은하 가운데 — 블랙홀의 심연',ring:7,void:true,f:'F07'};
-  // ── 사용자 명세: 우리 함대와 동일한 척수의 신화 등급 미러 함대, 전설 파츠 장착 수준 ──
-  //    + 우리 전술(일점사·학익진·시간차·테슬라 등) 사용 불가 (combatState._tacticsDisabled)
-  // 신화 등급 함선 기본치 + 전설 파츠 4종 누적 보너스(무기 +60ATT / 실드 +50INT+3kSH / 장갑 +5kHP / 엔진 +60TEC)
-  function _mythicLegendStats(tier){
-    const base={
-      '소형':   {HP:90000, SH:35000, ATT:280, INT:200, TEC:170},
-      '중형':   {HP:180000,SH:65000, ATT:480, INT:280, TEC:220},
-      '대형':   {HP:340000,SH:120000,ATT:780, INT:360, TEC:280},
-      '전설기함':{HP:480000,SH:170000,ATT:1100,INT:440, TEC:340},
-      '신화':   {HP:600000,SH:220000,ATT:1400,INT:520, TEC:400}
-    }[tier]||{HP:120000,SH:45000,ATT:320,INT:220,TEC:180};
+  // ── 사용자 명세: 5척 고정 신화 함대 (거북선·워덴클리프·렐러티비티·우르사메이저·블랙팔콘)
+  //    능력치는 카탈로그와 동일, HP만 "우리 함대 총 HP의 2배"가 되도록 비례 스케일
+  //    적은 우리 전술을 사용할 수 없음 (시스템상 적군 측 일점사·학익진 미존재)
+  const _fleetSpec=[
+    {catId:'LGD01',nm:'거북선 ✦신화',         baseHP:260000,  SH:65000,  ATT:245,  INT:235,  TEC:210, DEF:80, armorTier:40, shieldTier:40},
+    {catId:'LGD02',nm:'워덴클리프 ✦신화',     baseHP:175000,  SH:160000, ATT:323,  INT:265,  TEC:230, DEF:80, armorTier:40, shieldTier:50},
+    {catId:'LGD03',nm:'렐러티비티 ✦신화',     baseHP:245000,  SH:90000,  ATT:306,  INT:295,  TEC:255, DEF:80, armorTier:40, shieldTier:40},
+    {catId:'URSA', nm:'우르사 메이저 ✦신화',  baseHP:1000000, SH:120000, ATT:580,  INT:340,  TEC:220, DEF:120,armorTier:60, shieldTier:50},
+    {catId:'BLACKFALCON',nm:'🌑 블랙팔콘 ✦신화',baseHP:9700000,SH:300000, ATT:32000,INT:1200, TEC:560, DEF:200,armorTier:80, shieldTier:60}
+  ];
+  // 우리 함대 총 HP의 2배 = 적 총 HP 목표치. 5척 카탈로그 비율대로 분배
+  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
+  const _playerTotalHP=Math.max(50000,_fp.hp||0);  // 최소 5만 (저레벨 안전장치)
+  const _targetTotalEnemyHP=_playerTotalHP*2;
+  const _totalCatHP=_fleetSpec.reduce((s,sp)=>s+sp.baseHP,0);
+  const _scale=_targetTotalEnemyHP/_totalCatHP;
+  const enemies=_fleetSpec.map((sp,i)=>{
+    const _hp=Math.max(1000,Math.round(sp.baseHP*_scale));
+    const isFlagship=(sp.catId==='BLACKFALCON');  // 블랙팔콘이 기함(보스)
     return {
-      HP:base.HP+5000, SH:base.SH+3000,
-      ATT:base.ATT+60, INT:base.INT+50, TEC:base.TEC+60,
-      DEF:80
-    };
-  }
-  const _myFleet=(G.fleet&&G.fleet.length)?G.fleet:[{tier:'소형'}];
-  const enemies=_myFleet.map((s,i)=>{
-    const _t=s.tier||'소형';
-    const _st=_mythicLegendStats(_t);
-    const isFlagship=(i===0);
-    return {
-      id:`BH_MIRROR_${i+1}`,
-      nm:isFlagship?'🌌 보이드의 거울 (기함) ✦신화':`🌌 보이드 모사함 ${i+1} ✦신화`,
+      id:`BH_${sp.catId}_${Date.now()+i}`,
+      catalogId:sp.catId,
+      catId:sp.catId,
+      nm:sp.nm,
       tier:'신화',
       isEnemy:true,
-      catId:'S10',
       voidBoss:isFlagship,
-      hp:_st.HP,maxHP:_st.HP,HP:_st.HP,
-      sh:_st.SH,maxSH:_st.SH,
-      ATT:_st.ATT,INT:_st.INT,TEC:_st.TEC,
-      DEF:_st.DEF,
-      armorTier:isFlagship?60:45,
-      shieldTier:isFlagship?60:45,
+      hp:_hp,maxHP:_hp,HP:_hp,
+      sh:sp.SH,maxSH:sp.SH,
+      ATT:sp.ATT,INT:sp.INT,TEC:sp.TEC,
+      DEF:sp.DEF,
+      armorTier:sp.armorTier,shieldTier:sp.shieldTier,
       LOY:0,parts:[],crewIds:[],
-      _isBlackHoleFleet:true,
-      _mirrorOfTier:_t
+      _isBlackHoleFleet:true
     };
   });
   const players=G.fleet.map(s=>{
@@ -16209,9 +16218,9 @@ function startBlackHoleFleetCombat(){
     initCombatCanvas();
     const t=document.getElementById('cb-title');
     if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
-    addCombatLog('🌌 블랙홀 너머에서 우리 함대를 그대로 본뜬 신화급 미러 함대가 나타난다 — 보이드의 마지막 시험.','err');
-    addCombatLog('💡 적은 우리 전술(일점사·학익진 등)을 갖지 못한다. 전술 체인을 적극 활용해 돌파!','gold');
-    try{baekgu('적이 우리 함대를 거울처럼 따라했어! 능력치는 막상막하지만, 우리에겐 전술이 있다. 일점사부터!');}catch(e){}
+    addCombatLog('🌌 블랙홀 너머에서 5척의 전설적 신화함이 나타난다 — 거북선·워덴클리프·렐러티비티·우르사 메이저·블랙팔콘.','err');
+    addCombatLog('💡 적 함대 총 HP는 우리 함대의 2배. 전술 체인을 적극 활용해 돌파!','gold');
+    try{baekgu('보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!');}catch(e){}
     setTimeout(runCombatTurn,800);
   });
 }
