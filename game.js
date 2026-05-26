@@ -10480,7 +10480,11 @@ function _routeCrossesAsteroidBelt(fromPid,toPid){
 function startAsteroidBeltMinigame(destPid){
   // 기함 스탯
   const flagship=G.fleet&&G.fleet[0];
-  const flagStat=flagship?getShipStats(flagship):{HP:1000,maxSH:300,ATT:30};
+  // 미니게임 HP 기준 — 기함의 기본 maxHP (파츠 보너스 제외, 함선 본체 스탯)
+  const _baseHP=flagship?(flagship.maxHP||flagship.HP||1000):1000;
+  const _baseSH=flagship?(flagship.maxSH||300):300;
+  const _baseATT=flagship?(flagship.ATT||30):30;
+  const flagStat={HP:_baseHP,maxSH:_baseSH,ATT:_baseATT};
   const shipSrc=flagship?shipImgSrc(flagship):'img/ships/S01.png';
   // 함선 크기 비율 — 소형=1 / 중형=3 / 대형=5 (사용자 명세)
   function _sizeForTier(tier){
