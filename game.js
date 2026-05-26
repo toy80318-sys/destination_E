@@ -10711,7 +10711,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     parts:[],      // 폭발 파편
     stars:[],      // 배경 별 (스크롤)
     startMs:Date.now(),
-    durationMs:30000,  // 30초 — 이 시간 후 맵으로 복귀 가능
+    durationMs:50000,  // 50초 — 이 시간 후 맵으로 복귀 가능
     ended:false,
     spawnTimerAst:0,
     spawnTimerEn:0,
@@ -11300,6 +11300,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     cx.textAlign='left';
 
     // 백구 — 시간 경고 (한 번씩만)
+    if(!state._warn25s && leftSec<=25 && leftSec>20){state._warn25s=true;_baekguSay('think','반환점이야! 페이스 유지!',2000,true);}
     if(!state._warn15s && leftSec<=15 && leftSec>10){state._warn15s=true;_baekguPick('timeWarn',true);}
     if(!state._warn5s && leftSec<=5 && leftSec>0){state._warn5s=true;_baekguSay('fight','5초만 더!',2000,true);}
     // 주기적 조언 (조용할 때만)
@@ -11317,7 +11318,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   }
   setTimeout(()=>{cv.focus();tick();},500);
   notify('⚠️ 소행성대 진입 — 기함 출격!','warn');
-  try{baekgu('소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 20초 버텨!');}catch(e){}
+  try{baekgu('소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!');}catch(e){}
 }
 try{if(typeof window!=='undefined')window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;}catch(e){}
 
@@ -13669,8 +13670,8 @@ function activateSunsinFocus(){
     });
   }
   target.hp=0;target.sh=0;
-  addCombatLog(`⚔️ 이순신 일점사! ${target.nm} 즉시 격침! 아군 함대 공격력 ×2 강화!`,'gold');
-  notify('⚔️ 이순신 일점사! 아군 ATT ×2','gold');
+  addCombatLog(`⚔️ 넬슨 일점사! ${target.nm} 즉시 격침! 아군 함대 공격력 ×2 강화!`,'gold');
+  notify('⚔️ 넬슨 일점사! 아군 ATT ×2','gold');
   baekgu('와! 넬슨의 일점사야! 적 선두 한 방에 보내버렸어. 함대 화력 두 배! 학익진 준비할 시간 10초!');
   const sbtn=document.getElementById('cb-sunsin-btn');
   if(sbtn)sbtn.disabled=true;
