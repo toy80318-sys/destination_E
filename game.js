@@ -2071,79 +2071,85 @@ function showOnboardingTutorial(){
   // 하이라이트된 메뉴를 직접 보면서 설명을 읽도록 유도한다
   const _nav=(folder,tab)=>{try{openFolder(folder);if(tab)hubTab(tab);}catch(e){}};
   const steps=[
-    // ── 인사 (튜토리얼 시작 안내 — 명시적으로 "지금부터 튜토리얼 시작"을 알림) ──
+    // ── 0) 시작 안내 — 클릭 강제 방식 명시 ───────────────────
     {target:null,pos:'center',title:'🎓 튜토리얼 시작',
-     text:'환영합니다, 사령관!\n지금부터 게임 기본 조작과 첫 플레이 흐름을 안내해 드릴게요.\n\n📋 약 15단계 / 2~3분 소요\n  · 화면 구성 → 핵심 메뉴 7개 → 첫 전투·무역 사이클\n  · 각 단계에서 메뉴가 자동으로 열리고, 노란색으로 강조된 위치를 보면 돼요\n\n▶ 시작하려면 [다음 ▶] 클릭\n✕ 나중에 보려면 [건너뛰기] (설정 → 튜토리얼 다시 보기 가능)'},
+     text:'환영합니다, 사령관! 🚀\n지구로 돌아가는 여정의 핵심 메뉴와 첫 플레이 사이클을 알려드릴게요.\n\n📋 진행 방식\n  · 총 11개의 메뉴를 직접 클릭하며 익혀요\n  · 각 단계에서 노란색으로 강조된 버튼을 직접 클릭해야 다음 단계로 진행돼요\n  · 메뉴 위치를 손에 익히기 위한 강제 클릭 가이드입니다\n\n▶ [다음 ▶]을 눌러 시작\n✕ [건너뛰기] (설정 → 튜토리얼 다시 보기 가능)'},
 
-    // ── 1) 상단 정보 (간단히) ────────────────────────────
-    {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN',
-     text:'우상단에 현재 ACT와 턴 표시. 매 20턴마다 ACT가 진행되고, ACT 3부터 지구 진입이 열려.'},
-    {target:'#h-resource-bar',pos:'bottom',title:'재화 (₡ / VE / VC / ⭐)',
-     text:'₡ 크레딧(무역·전투 보상) · VE 보이드 에센스 · VC 보이드 크리스탈 · ⭐ 명성. 각각 게임 진행에 꼭 필요해.'},
+    // ── 1) 상단 정보 (정보 단계) ─────────────────────────
+    {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN — 진행도',
+     text:'우상단에 현재 ACT와 TURN 표시.\n\n• 매 20턴마다 ACT가 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파)가 최종 목표\n\n[다음 ▶]을 눌러 진행하세요.'},
+    {target:'#h-resource-bar',pos:'bottom',title:'재화 4종 — 통화 시스템',
+     text:'• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입 재료\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율 증가\n\n[다음 ▶]을 눌러 진행하세요.'},
 
-    // ── 2) 탐색 도감 — 정보 백과 ─────────────────────────
-    {target:'[data-tab="codex"]',pos:'right',title:'📖 탐색 도감',
-     text:'먼저 도감을 열었어. 행성·문명·시설·아이템·운영법까지 전부 정리돼 있어 — 게임 중 막히면 여기서 검색해서 찾아봐.\n\n좌측 메뉴에서 메인서버 → 탐색 도감으로 언제든 다시 올 수 있어.',
-     onShow:()=>_nav('captain','codex')},
+    // ── 2) [클릭] 탐색 도감 ─────────────────────────────
+    {target:'[data-tab="codex"]',pos:'right',title:'📖 1/11 — 탐색 도감',
+     text:'👆 좌측 사이드바의 [📖 탐색 도감] 버튼을 직접 클릭하세요!\n\n도감에 정리된 정보:\n  · 행성 30+개 / 외계 문명 7개\n  · 시설 11개(은하지도·크루명단·제독·주점·상점 등) 운영법\n  · 함선·파츠·설계도 카탈로그\n\n👀 막힐 때마다 도감에서 검색하세요.',
+     requireClick:true,
+     onShow:()=>_nav('captain')},
 
-    // ── 3) 행성 제독 — 퀘스트 수락 ────────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 행성 제독 — 퀘스트',
-     text:'광장 → 행성 제독. 여기서 퀘스트를 수락하면 ₡ 크레딧·명성·가끔 영웅과 설계도까지 보상으로 받을 수 있어.\n\n마음에 드는 퀘스트 1~2개를 골라 [수락] 버튼을 눌러봐. (목록이 비어있다면 턴 종료 한 번)',
-     onShow:()=>_nav('plaza','quest')},
+    // ── 3) [클릭] 행성 제독 ─────────────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 2/11 — 행성 제독',
+     text:'👆 좌측 사이드바의 [🎖️ 행성 제독] 버튼을 직접 클릭하세요!\n\n행성 제독에서 받는 것:\n  · 퀘스트 수락 → 완료 시 ₡·명성·가끔 영웅·설계도\n  · 행성마다 다른 종류의 퀘스트가 등장\n\n💡 화면 열리면 [수락] 버튼이 보이는 퀘스트를 1~2개 골라보세요.\n(목록이 비어있으면 턴 종료 한 번)',
+     requireClick:true,
+     onShow:()=>_nav('plaza')},
 
-    // ── 4) 행성 주점 — 크루 영입 ──────────────────────────
-    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 행성 주점 — 크루 영입',
-     text:'주점에서 [크루 영입] 버튼을 누르면 새 크루(가끔 전설 영웅)가 합류해.\n\n크루를 함선에 배치하면 능력치 약 +20% 상승 — 함대 강화의 기본은 크루 충원부터야.',
-     onShow:()=>_nav('plaza','tavern')},
+    // ── 4) [클릭] 행성 주점 ─────────────────────────────
+    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 3/11 — 행성 주점',
+     text:'👆 좌측 사이드바의 [🍺 행성 주점] 버튼을 직접 클릭하세요!\n\n주점에서 할 수 있는 것:\n  · 새 크루 영입 (₡ 비용)\n  · 가끔 전설 영웅(이순신·테슬라·아인슈타인 등) 등장\n  · 크루를 함선에 배치하면 능력 +20%\n\n💡 화면이 열리면 [영입] 버튼을 눌러봐요.',
+     requireClick:true,
+     onShow:()=>_nav('plaza')},
 
-    // ── 5) 행성 상점 — 특산물 무역 ───────────────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 행성 상점 — 무역 차익',
-     text:'행성마다 특산물 가격이 달라.\n\n여기서 싸게 사두고 → 다른 행성으로 이동해 비싸게 팔면 차익! 초반 자본을 가장 안정적으로 키우는 방법이야.\n\n지금 특산물 1~2개 사두자.',
-     onShow:()=>_nav('plaza','trade')},
+    // ── 5) [클릭] 행성 상점 ─────────────────────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 4/11 — 행성 상점 (무역)',
+     text:'👆 좌측 사이드바의 [🏬 행성 상점] 버튼을 직접 클릭하세요!\n\n무역 차익 시스템:\n  · 행성마다 특산물 가격이 다름\n  · A행성에서 싸게 사기 → B행성으로 이동 → 비싸게 팔기\n  · 초반 자본을 가장 안정적으로 키우는 방법\n\n💡 지금 화면이 열리면 저렴한 특산물 1~2개를 구매해 두세요.',
+     requireClick:true,
+     onShow:()=>_nav('plaza')},
 
-    // ── 6) 함선 거래소 — 함선 구매 ───────────────────────
-    {target:'[data-tab="ship"]',pos:'right',title:'🛸 함선 거래소 — 함대 확장',
-     text:'도크 → 함선 거래소. 소형(저렴) → 중형(균형) → 대형/전설(고화력) 순서로 등급이 올라가.\n\n예산이 되면 소형 함선 1기를 시험삼아 구매해봐 — 함대가 3척 이상부터 본격 전투가 가능해져.',
-     onShow:()=>_nav('dock','ship')},
-
-    // ── 7) 함선 정비소 — 파츠 탭 + 레이저 구매 ────────────
-    {target:'[data-tab="garage"]',pos:'right',title:'🔧 함선 정비소 — 파츠',
-     text:'정비소에서 상단 [파츠] 탭을 클릭하면 무기·실드·장갑·엔진을 살 수 있어.\n\n가장 저렴한 레이저 무기부터 구매해봐 — 레이저는 ATT를 올려주고, 적 실드에 강해.',
-     onShow:()=>_nav('dock','garage')},
-
-    // ── 8) 정비소 — 파츠 장착 안내 ────────────────────────
-    {target:'[data-tab="garage"]',pos:'right',title:'🔧 파츠 장착하기',
-     text:'구매한 파츠는 함선의 파츠 슬롯(⚔️🛡️⚡)에 끼울 수 있어.\n\n함선 카드 아래 [파츠 장착] 또는 빈 슬롯을 클릭하면 보유 파츠 중에서 선택해 장착돼. 능력치가 즉시 합산돼서 함대 전투력이 올라가.',
-     onShow:()=>_nav('dock','garage')},
-
-    // ── 9) 잔해 탐색 — 첫 전투 ────────────────────────────
-    {target:'#hn-gather-search',pos:'right',title:'🔭 잔해 탐색 — 첫 전투',
-     text:'준비 끝났으면 [잔해 탐색] 버튼을 눌러 첫 전투에 나서자!\n\n쿨다운은 8초. 보상으로 ₡·파츠·가끔 설계도가 나와. 해적이 등장하면 격파해서 명성도 같이 올려.',
+    // ── 6) [클릭] 함선 거래소 ───────────────────────────
+    {target:'[data-tab="ship"]',pos:'right',title:'🛸 5/11 — 함선 거래소',
+     text:'👆 좌측 사이드바의 [🛸 함선 거래소] 버튼을 직접 클릭하세요!\n\n함선 등급별 특징:\n  · 소형 — 저렴, 빠름, HP 낮음\n  · 중형 — 균형, 가성비 (추천)\n  · 대형 — 고화력, 비쌈\n  · 전설/신화 — 최상위, 명성·전투력 요구\n\n💡 함대 3척부터 본격 전투가 가능. 예산 되면 소형 1기라도 추가 구매!',
+     requireClick:true,
      onShow:()=>_nav('dock')},
 
-    // ── 10) 퀘스트 보상 수령 ──────────────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 퀘스트 보상 수령',
-     text:'전투가 끝났으면 다시 행성 제독으로 와봐.\n\n수락했던 퀘스트가 완료됐다면 [보상 수령] 버튼이 활성화돼 있어 — 눌러서 ₡·명성을 챙겨!',
-     onShow:()=>_nav('plaza','quest')},
-
-    // ── 11) 은하 지도 — 이동 ──────────────────────────────
-    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 은하 지도 — 다음 행성',
-     text:'이제 다른 행성으로 가보자.\n\n가까운 인접 행성(예: 센타우리 P02)을 클릭해서 이동! 인접 항로로만 이동 가능하고, 멀어질수록 보상 등급이 올라가.',
-     onShow:()=>_nav('captain','map')},
-
-    // ── 12) 센타우리에서 해적 격파 ────────────────────────
-    {target:'#hn-gather-search',pos:'right',title:'센타우리에서 해적 격파',
-     text:'센타우리 도착했으면 또 [잔해 탐색]. 해적과 전투해서 명성·전리품을 쌓아가자.\n\n해적 격파마다 명성 +1, 허브 해금 진행도도 +1 — 한 행성을 8회 활동하면 광장·도크·프론트가 차례로 열려.',
+    // ── 7) [클릭] 함선 정비소 ───────────────────────────
+    {target:'[data-tab="garage"]',pos:'right',title:'🔧 6/11 — 함선 정비소 (파츠)',
+     text:'👆 좌측 사이드바의 [🔧 함선 정비소] 버튼을 직접 클릭하세요!\n\n정비소에서 할 일:\n  ① 화면 상단 [파츠] 탭 클릭\n  ② 가장 저렴한 [레이저 무기]부터 구매\n  ③ 함선 카드의 빈 슬롯(⚔️🛡️⚡)을 클릭해서 장착\n  ④ 능력치 즉시 합산 → 전투력 상승\n\n💡 무기·실드·장갑·엔진 4종을 골고루 장착하세요.',
+     requireClick:true,
      onShow:()=>_nav('dock')},
 
-    // ── 13) 무역 차익 실현 ────────────────────────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 차익 실현 — 무역 사이클',
-     text:'프록시마에서 사 둔 특산물을 센타우리 상점에서 팔면 차익이 발생!\n\n이 사이클(싸게 사기 → 이동 → 비싸게 팔기)을 반복하면 자본금이 빠르게 늘어. 무역은 초반 가장 든든한 수입원이야.',
-     onShow:()=>_nav('plaza','trade')},
+    // ── 8) [클릭] 잔해 탐색 — 첫 전투 ───────────────────
+    {target:'#hn-gather-search',pos:'right',title:'🔭 7/11 — 잔해 탐색 (첫 전투)',
+     text:'👆 좌측 사이드바의 [🔭 잔해 탐색] 버튼을 직접 클릭하세요!\n\n잔해 탐색 시스템:\n  · 쿨다운 8초 (전설 크루 1명당 -1초)\n  · 해적 함대 등장 → 자동 전투\n  · 보상: ₡·파츠·가끔 설계도\n  · 해적 격파마다 명성 +1, 허브 해금 진행도 +1\n\n💡 전투는 자동으로 진행돼요. 전투 종료 후 다음 단계로!',
+     requireClick:true,
+     onShow:()=>_nav('dock')},
 
-    // ── 마무리 ───────────────────────────────────────────
-    {target:null,pos:'center',title:'준비 완료!',
-     text:'기본 사이클을 익혔어 👏\n\n  ① 퀘스트 수락\n  ② 잔해탐색·전투\n  ③ 보상 수령\n  ④ 행성 이동\n  ⑤ 무역 차익\n\n이 흐름을 반복하며 함대를 키워가면 돼.\n\n지구 진입은 ACT 3부터. 막히면 화면 하단 백구 AI에게 질문해도 답해줘.\n\n행운을 빌어, 사령관!'}
+    // ── 9) [클릭] 퀘스트 보상 수령 ─────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 8/11 — 퀘스트 보상',
+     text:'👆 다시 좌측의 [🎖️ 행성 제독] 버튼을 클릭하세요!\n\n전투 후 보상 수령:\n  · 수락했던 퀘스트가 완료됐다면 [보상 수령] 버튼 활성화\n  · 클릭하면 ₡·명성·아이템 지급\n  · 가끔 영웅 영입·전설 설계도 드랍\n\n💡 보상 수령 시 작은 알림 카드가 우상단에 떠요.',
+     requireClick:true,
+     onShow:()=>_nav('plaza')},
+
+    // ── 10) [클릭] 은하 지도 ────────────────────────────
+    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 9/11 — 은하 지도',
+     text:'👆 좌측 사이드바의 [🗺️ 은하 지도] 버튼을 직접 클릭하세요!\n\n은하 지도 사용법:\n  · 30개 행성이 3D로 표시\n  · 인접 항로로만 이동 가능 (해적 50% 조우)\n  · 워프 엔진(블링크·타키온·테슬라) 장착 시 직접 점프\n  · 멀어질수록 보상 등급 ↑\n\n💡 지도 열리면 가까운 행성(예: 센타우리 P02)을 클릭해 이동!',
+     requireClick:true,
+     onShow:()=>_nav('captain')},
+
+    // ── 11) [클릭] 센타우리에서 잔해 탐색 ───────────────
+    {target:'#hn-gather-search',pos:'right',title:'🔭 10/11 — 새 행성 전투',
+     text:'👆 다시 좌측의 [🔭 잔해 탐색] 버튼을 클릭하세요!\n\n행성 이동 후 전투:\n  · 새 행성마다 해금 진행도 별도 (0부터 시작)\n  · 한 행성에 머물면서 8회 활동 시 광장·도크·프론트 차례로 개방 (수퍼비아는 1/2/3회)\n  · 해적 격파마다 명성 누적 → 가챠 확률 증가\n\n💡 잔해 탐색은 어디서든 가능, 쿨다운만 관리하세요.',
+     requireClick:true,
+     onShow:()=>_nav('dock')},
+
+    // ── 12) [클릭] 무역 차익 실현 ───────────────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 11/11 — 차익 실현',
+     text:'👆 좌측 사이드바의 [🏬 행성 상점] 버튼을 마지막으로 클릭하세요!\n\n무역 사이클 완성:\n  · 프록시마에서 산 특산물을 센타우리 상점에서 매각\n  · 가격 차이만큼 즉시 차익 발생\n  · 5회 반복하면 초기 자본의 2~3배\n\n💡 사이클: 사기(저렴 행성) → 이동 → 팔기(비싼 행성) → 반복',
+     requireClick:true,
+     onShow:()=>_nav('plaza')},
+
+    // ── 마무리 ─────────────────────────────────────────
+    {target:null,pos:'center',title:'🎉 튜토리얼 완료',
+     text:'기본 사이클을 모두 익혔어요 👏\n\n반복할 핵심 루틴:\n  ① 퀘스트 수락 (제독)\n  ② 잔해 탐색·전투\n  ③ 보상 수령 (제독)\n  ④ 행성 이동 (지도)\n  ⑤ 무역 차익 (상점)\n\n중장기 목표:\n  · ACT 3 → 지구 진입 해금\n  · ACT 5 → 우르사 메이저 보스전\n\n막히면 화면 하단 백구 AI에 질문하세요.\n\n행운을 빌어, 사령관!'}
   ];
   let _idx=0;
   // 백드롭 제거 — 하이라이트 box-shadow 만으로 spotlight 효과 (이중 어둡기 방지)
@@ -2157,8 +2163,9 @@ function showOnboardingTutorial(){
     <div id="_tut-highlight" style="position:absolute;border:3px solid #ffd700;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.45),0 0 28px rgba(255,215,0,.85),inset 0 0 16px rgba(255,215,0,.25);transition:all .25s ease;pointer-events:none;display:none;background:transparent"></div>
     <div id="_tut-popup" style="position:absolute;background:linear-gradient(135deg,rgba(15,25,45,.98),rgba(8,12,28,.98));border:2px solid #66ddff;border-radius:12px;padding:14px 18px;max-width:340px;min-width:260px;color:#fff;box-shadow:0 12px 40px rgba(0,243,255,.35);transition:all .25s ease;pointer-events:auto">
       <div id="_tut-title" style="font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:6px"></div>
-      <div id="_tut-text" style="font-size:13px;line-height:1.7;color:#dde;word-break:keep-all;margin-bottom:12px;white-space:pre-wrap"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div id="_tut-text" style="font-size:13px;line-height:1.7;color:#dde;word-break:keep-all;margin-bottom:10px;white-space:pre-wrap"></div>
+      <div id="_tut-click-hint">👆 위에 강조된 노란색 버튼을 직접 클릭하면 다음 단계로 진행됩니다</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px">
         <div id="_tut-pages" style="color:#888;font-size:11px"></div>
         <div style="display:flex;gap:6px">
           <button id="_tut-skip" style="padding:5px 12px;background:rgba(255,80,80,.12);border:1px solid #ff6666;color:#ff6666;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit">건너뛰기</button>
@@ -2169,9 +2176,15 @@ function showOnboardingTutorial(){
     </div>`;
   _stageHost.appendChild(ov);
   // 첫 등장 애니메이션 (사용자가 튜토리얼 시작을 놓치지 않도록 시선 유도)
+  // + 클릭 강제 단계에서 하이라이트 펄스 (사용자 시선이 강조된 버튼으로 향하게)
   if(!document.getElementById('_tut-anim-style')){
     const _animSt=document.createElement('style');_animSt.id='_tut-anim-style';
-    _animSt.textContent=`@keyframes _tutPopIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}60%{transform:translate(-50%,-50%) scale(1.04)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes _tutBorderPulse{0%,100%{box-shadow:0 12px 40px rgba(0,243,255,.35),0 0 0 0 rgba(255,215,0,.7)}50%{box-shadow:0 12px 40px rgba(0,243,255,.55),0 0 0 8px rgba(255,215,0,0)}}#_tut-popup.first-pop{animation:_tutPopIn .45s cubic-bezier(.34,1.56,.64,1),_tutBorderPulse 1.8s ease-in-out 2}`;
+    _animSt.textContent=`@keyframes _tutPopIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}60%{transform:translate(-50%,-50%) scale(1.04)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes _tutBorderPulse{0%,100%{box-shadow:0 12px 40px rgba(0,243,255,.35),0 0 0 0 rgba(255,215,0,.7)}50%{box-shadow:0 12px 40px rgba(0,243,255,.55),0 0 0 8px rgba(255,215,0,0)}}#_tut-popup.first-pop{animation:_tutPopIn .45s cubic-bezier(.34,1.56,.64,1),_tutBorderPulse 1.8s ease-in-out 2}
+@keyframes _tutClickPulse{0%,100%{border-color:#ffd700;box-shadow:0 0 0 9999px rgba(0,0,0,.45),0 0 28px rgba(255,215,0,.85),inset 0 0 16px rgba(255,215,0,.25)}50%{border-color:#fff5b0;box-shadow:0 0 0 9999px rgba(0,0,0,.55),0 0 44px rgba(255,215,0,1),inset 0 0 22px rgba(255,215,0,.5)}}
+#_tut-highlight.click-mode{animation:_tutClickPulse 1.1s ease-in-out infinite}
+#_tut-click-hint{display:none;align-items:center;gap:6px;padding:6px 10px;margin-top:4px;background:rgba(255,215,0,.1);border:1px dashed rgba(255,215,0,.5);border-radius:6px;color:#ffd700;font-size:11px;font-weight:bold;animation:_tutBorderPulse 1.5s ease-in-out infinite}
+#_tut-popup.req-click #_tut-click-hint{display:flex}
+#_tut-popup.req-click #_tut-next{display:none}`;
     document.head.appendChild(_animSt);
   }
   // 타겟의 stage 내부 좌표 계산 (offsetParent 체인 walking — 회전·스케일 무관)
@@ -2185,7 +2198,28 @@ function showOnboardingTutorial(){
     if(node!==_stageHost)return null;
     return {x,y,w:el.offsetWidth,h:el.offsetHeight};
   };
-  const _close=()=>{ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
+  // ── 클릭 강제 어드밴스 ─────────────────────────────────────
+  // requireClick 단계에서는 [다음 ▶] 버튼을 숨기고, 강조된 버튼을 사용자가 직접
+  // 클릭해야만 다음 단계로 넘어가도록 한다. 한 단계당 1회만 발동(detach 즉시).
+  let _clickTgt=null,_clickHandler=null;
+  const _detachClickAdvance=()=>{
+    if(_clickTgt&&_clickHandler){
+      try{_clickTgt.removeEventListener('click',_clickHandler);}catch(e){}
+    }
+    _clickTgt=null;_clickHandler=null;
+  };
+  const _attachClickAdvance=(tgt)=>{
+    _detachClickAdvance();
+    if(!tgt)return;
+    _clickTgt=tgt;
+    _clickHandler=()=>{
+      _detachClickAdvance();
+      // 버튼의 본래 동작(폴더 열기·탭 전환·전투 시작 등)이 먼저 처리되도록 약간 지연
+      setTimeout(()=>{_idx++;if(_idx>=steps.length){_close();return;}_render();},280);
+    };
+    tgt.addEventListener('click',_clickHandler);
+  };
+  const _close=()=>{_detachClickAdvance();ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
   const _render=()=>{
     const s=steps[_idx];
     if(!s){_close();return;}
@@ -2200,6 +2234,10 @@ function showOnboardingTutorial(){
     // 첫 단계에서만 등장 애니메이션 (시선 유도). 재시작으로 다시 0으로 와도 표시
     pop.classList.remove('first-pop');
     if(_idx===0){void pop.offsetWidth;pop.classList.add('first-pop');}
+    // 직전 단계의 클릭 리스너 정리 + 모드 토글 (req-click 클래스로 next 버튼·힌트 자동 토글)
+    _detachClickAdvance();
+    pop.classList.remove('req-click');
+    hl.classList.remove('click-mode');
     // center 모드 — 타겟 없이 화면 가운데
     if(!s.target||s.pos==='center'){
       // 중앙 모드일 때만 box-shadow 백드롭 효과 적용 (화면 가운데 작은 spotlight)
@@ -2260,6 +2298,12 @@ function showOnboardingTutorial(){
       if(py+ph>STAGE_H-10)py=Math.max(10,r.y-ph-18);
     }
     pop.style.left=px+'px';pop.style.top=py+'px';
+    // 클릭 강제 단계 — 강조된 버튼 클릭만 다음 단계로 진행 (다음▶ 숨김 + 펄스)
+    if(s.requireClick){
+      pop.classList.add('req-click');
+      hl.classList.add('click-mode');
+      _attachClickAdvance(tgt);
+    }
   };
   document.getElementById('_tut-next').onclick=()=>{_idx++;if(_idx>=steps.length){_close();return;}_render();};
   document.getElementById('_tut-prev').onclick=()=>{_idx=Math.max(0,_idx-1);_render();};
@@ -7922,8 +7966,8 @@ function startVoidBossCombat(questRef){
   //       보스 1척 = 호위 × 4 ≈ 48.4M HP / 162K ATT
   const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  // 사용자 요청: 블랙팔콘 보스전 HP는 지금의 10배 (아군 비례 스케일 후 ×10)
-  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*10))*10;
+  // 사용자 요청 누적: 블랙팔콘 보스전 HP 추가 ×10 — 함대 전체 ×100 (기존 ×10 + 추가 ×10)
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*10))*100;
   const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*10));
   const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*10));
   const _UNIT=19;  // 호위 15 × 1 + 보스 1 × 4
@@ -12470,9 +12514,9 @@ function startCombat(planetDef){
     const _BASE_ATT=Math.round(BOSS.ATT*3); // 18,000
     const _BASE_SH=BOSS.maxSH*3;           // 900,000
     const _playerDur=_fp.hp+_fp.sh;
-    // 사용자 요청: HP는 지금의 10배 (아군 비례 스케일 후 ×10)
-    let _scaleHP=Math.max(_BASE_HP,Math.round(_playerDur*2.7));   // 기존 식
-    _scaleHP=_scaleHP*10;                                            // ×10 추가 적용
+    // 사용자 요청 누적: 보스 본체 HP ×100 (기존 ×10 + 추가 ×10 = ×100 of base scale)
+    let _scaleHP=Math.max(_BASE_HP,Math.round(_playerDur*2.7));
+    _scaleHP=_scaleHP*100;
     const _scaleATT=Math.max(_BASE_ATT,Math.round(_fp.atk*2.7));    // ATT는 기존 유지
     const _scaleSH=Math.max(_BASE_SH,Math.round(_fp.sh*2.7));       // SH는 기존 유지
     enemies=[{...BOSS,id:'BOSS_MAIN',isEnemy:true,
@@ -12480,8 +12524,12 @@ function startCombat(planetDef){
       sh:_scaleSH,maxSH:_scaleSH,
       ATT:_scaleATT,
       phase:1,_phaseAnn:0,shieldTier:20,armorTier:15}];
+    // 사용자 요청: 우르사 메이저 보스 함대의 호위함 15척 HP도 현재의 ×10 으로 강화
     if(typeof BOSS_ESCORT!=='undefined'){
-      BOSS_ESCORT.forEach(esc=>enemies.push({...esc,shieldTier:10,armorTier:8}));
+      BOSS_ESCORT.forEach(esc=>{
+        const _eHP=(esc.maxHP||esc.HP||1)*10;
+        enemies.push({...esc,hp:_eHP,maxHP:_eHP,HP:_eHP,shieldTier:10,armorTier:8});
+      });
     }
   } else if(planetDef._previewEnemies){
     // 브리핑에서 미리 생성한 적 함대 재사용 (능력치 일관성 보장)
@@ -14066,17 +14114,17 @@ function _finishCombat(){
         const hp=getPlanetHubProgress(pid),thr=_getHubThr(pid);
         items.push({ic:'🏛️',nm:'행성 허브 진행도',type:'해금 진행',color:'var(--cyan)',stats:`${hp}/${thr.s3}`,desc:'광장/도크/프론트 단계적 해금'});
       }
-      // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선
+      // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선 (이미지 추가 — 보상 시각화)
       if(_isBossWin){
         items.push({ic:'💰',nm:'보스 격파 보너스',type:'크레딧',color:'var(--gold)',stats:`+₡10,000,000`,desc:'지구 해방의 대가. 100년 봉쇄의 청산금.'});
-        items.push({ic:'🏴',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:`HP 10,000,000 · ATT 6,000 · 신화 파츠 4종 풀세트`,desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
-        items.push({ic:'⚔️',nm:'허메틱 포 ✦신화',type:'무기',color:'#ff66cc',stats:'ATT +320',desc:'우르사 메이저 주포 노획. 연속 공격 확률 +40%.',rarity:'mythic'});
-        items.push({ic:'🛡️',nm:'크로노스 방벽 ✦신화',type:'실드',color:'#ff66cc',stats:'INT +280 · 실드 +8000',desc:'피격 반사 20% + 매 턴 maxSH 15% 자가 복구.',rarity:'mythic'});
-        items.push({ic:'🪖',nm:'아다만 선체 ✦신화',type:'장갑',color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:'치명타 피해 50% 감소.',rarity:'mythic'});
-        items.push({ic:'⚙️',nm:'타키온 드라이브 ✦신화',type:'엔진',color:'#ff66cc',stats:'TEC +320',desc:'이동 후 ATT +50 (1턴). 모든 행성 즉시 이동 가능.',rarity:'mythic'});
+        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:`HP 10,000,000 · ATT 6,000 · 신화 파츠 4종 풀세트`,desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
+        items.push({ic:'⚔️',img:'img/parts/MW01.png',nm:'허메틱 포 ✦신화',type:'무기',color:'#ff66cc',stats:'ATT +320',desc:'우르사 메이저 주포 노획. 연속 공격 확률 +40%.',rarity:'mythic'});
+        items.push({ic:'🛡️',img:'img/parts/MS01.png',nm:'크로노스 방벽 ✦신화',type:'실드',color:'#ff66cc',stats:'INT +280 · 실드 +8000',desc:'피격 반사 20% + 매 턴 maxSH 15% 자가 복구.',rarity:'mythic'});
+        items.push({ic:'🪖',img:'img/parts/MA01.png',nm:'아다만 선체 ✦신화',type:'장갑',color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:'치명타 피해 50% 감소.',rarity:'mythic'});
+        items.push({ic:'⚙️',img:'img/parts/ME01.png',nm:'타키온 드라이브 ✦신화',type:'엔진',color:'#ff66cc',stats:'TEC +320',desc:'이동 후 ATT +50 (1턴). 모든 행성 즉시 이동 가능.',rarity:'mythic'});
         // 추가 신화 설계도 (미보유 시에만 보상 표시)
         if(G.blueprints&&G.blueprints.RB10){
-          items.push({ic:'📜',nm:'영혼 흡수 매트릭스 설계도 ✦신화',type:'신화 설계도',color:'#cc66ff',stats:'장갑',desc:'제작소에서 영혼 흡수 매트릭스 신화 장갑을 제작 가능. 보스 격파 보너스로 자동 지급.',rarity:'mythic'});
+          items.push({ic:'📜',img:'img/parts/RB10.png',nm:'영혼 흡수 매트릭스 설계도 ✦신화',type:'신화 설계도',color:'#cc66ff',stats:'장갑',desc:'제작소에서 영혼 흡수 매트릭스 신화 장갑을 제작 가능. 보스 격파 보너스로 자동 지급.',rarity:'mythic'});
         }
         if(G.blueprints&&G.blueprints.LGD03){
           items.push({ic:'📜',nm:'렐러티비티 설계도 ✦신화',type:'신화 함선 설계도',color:'#cc66ff',stats:'대형 신화 기함',desc:'제작소에서 렐러티비티 신화 함선을 제작 가능. 보스 격파 보너스로 자동 지급.',rarity:'mythic'});
