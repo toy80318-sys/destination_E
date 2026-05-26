@@ -10482,6 +10482,18 @@ function startAsteroidBeltMinigame(destPid){
   const flagship=G.fleet&&G.fleet[0];
   const flagStat=flagship?getShipStats(flagship):{HP:1000,maxSH:300,ATT:30};
   const shipSrc=flagship?shipImgSrc(flagship):'img/ships/S01.png';
+  // 무기 등급 판정 — 기함 장착 레이저 파츠의 rarity로 분류
+  let weaponTier='normal';  // normal (영웅 이하) / legend (전설·세트) / mythic (신화)
+  if(flagship&&flagship.parts){
+    for(const pid of flagship.parts){
+      const p=PARTS.find(x=>x.id===pid);
+      if(p&&p.cat==='weapon'&&(p.wtype!=='missile')){
+        if(p.rarity==='mythic')weaponTier='mythic';
+        else if(p.rarity==='legend'||p.rarity==='set')weaponTier=(weaponTier==='mythic'?'mythic':'legend');
+        else if(weaponTier==='normal')weaponTier='normal';
+      }
+    }
+  }
   const W=960, H=560;
   // 오버레이
   const overlay=document.createElement('div');
@@ -10538,10 +10550,15 @@ function startAsteroidBeltMinigame(destPid){
   window.addEventListener('keyup',onKU);
   // 마우스 — 입력 모드는 키보드 vs 마우스 추적 (키 떼도 초기 위치로 안 돌아가게)
   state._inputMode='keyboard';  // 시작은 키보드 기준
+  state._mouseDown=false;       // 마우스 누르고 있으면 자동 발사
   const onMM=e=>{const r=cv.getBoundingClientRect();state.mouseX=(e.clientX-r.left)*(W/r.width);state.mouseY=(e.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
-  const onMD=e=>{e.preventDefault();_fireLaser();};  // 클릭=레이저
+  const onMD=e=>{e.preventDefault();state._mouseDown=true;};  // 누르면 hold 시작
+  const onMU=e=>{state._mouseDown=false;};
+  const onML=e=>{state._mouseDown=false;};
   cv.addEventListener('mousemove',onMM);
   cv.addEventListener('mousedown',onMD);
+  cv.addEventListener('mouseup',onMU);
+  cv.addEventListener('mouseleave',onML);
   // 터치 (모바일 대응)
   const onTS=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';_fireLaser();};
   const onTM=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
@@ -10698,7 +10715,8 @@ function startAsteroidBeltMinigame(destPid){
     // 발사 입력
     if(state.laserCd>0)state.laserCd-=dt;
     if(state.missileCd>0)state.missileCd-=dt;
-    if(keys.ShiftLeft||keys.ShiftRight)_fireLaser();
+    // hold 자동 발사 — 키 또는 마우스 버튼을 누르고 있는 동안 cd마다 계속 발사
+    if(keys.ShiftLeft||keys.ShiftRight||state._mouseDown)_fireLaser();
     if(keys.ControlLeft||keys.ControlRight||keys.Enter)_fireMissile();
 
     // 스폰
@@ -10786,10 +10804,46 @@ function startAsteroidBeltMinigame(destPid){
         }
       }
       if(hit){state.pBullets.splice(i,1);continue;}
-      // 그리기
-      cx.strokeStyle='#00f3ff';cx.lineWidth=3;cx.shadowColor='#00f3ff';cx.shadowBlur=10;
-      cx.beginPath();cx.moveTo(b.x-12,b.y);cx.lineTo(b.x,b.y);cx.stroke();
-      cx.shadowBlur=0;
+      // 그리기 — 무기 등급별 분기 (사용자 명세)
+      //   normal(영웅 이하): 기본 청록 빔 (1.5배 확대)
+      //   legend(전설·세트): 지속 전투모드 풍 — 두꺼운 다단 빔 + 강한 글로우
+      //   mythic(신화): 번개 지그재그 + 1.3× 더 두꺼운 빔 + 흰 코어
+      const bLen=18, bThick=4.5;  // 기본 1.5× (기존 12/3)
+      if(weaponTier==='mythic'){
+        // 번개 효과 — 지그재그
+        const segs=4, mult=1.3;
+        cx.save();
+        cx.strokeStyle='#88ddff';cx.shadowColor='#aaeeff';cx.shadowBlur=18;cx.lineWidth=bThick*mult+1;cx.lineCap='round';
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);
+        for(let s=1;s<=segs;s++){
+          const px=b.x-bLen+(bLen/segs)*s;
+          const py=b.y+(s===segs?0:(Math.random()-0.5)*6);
+          cx.lineTo(px,py);
+        }
+        cx.stroke();
+        // 흰 코어
+        cx.strokeStyle='#ffffff';cx.shadowBlur=0;cx.lineWidth=bThick*0.7;
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+        cx.restore();
+      } else if(weaponTier==='legend'){
+        // 전설 — 두꺼운 다단 빔 (지속 전투모드 느낌)
+        cx.save();
+        // 바깥 글로우
+        cx.strokeStyle='#00f3ff';cx.shadowColor='#00f3ff';cx.shadowBlur=20;cx.lineWidth=bThick*1.6;cx.lineCap='round';
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+        // 중간 빔
+        cx.strokeStyle='#aaf6ff';cx.shadowBlur=12;cx.lineWidth=bThick*0.9;
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+        // 코어
+        cx.strokeStyle='#ffffff';cx.shadowBlur=0;cx.lineWidth=bThick*0.4;
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+        cx.restore();
+      } else {
+        // normal — 기본 (1.5×)
+        cx.strokeStyle='#00f3ff';cx.lineWidth=bThick;cx.shadowColor='#00f3ff';cx.shadowBlur=15;
+        cx.beginPath();cx.moveTo(b.x-bLen,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+        cx.shadowBlur=0;
+      }
     }
 
     // 아군 미사일 (호밍) — 3단계 타게팅 + 근접 폭발(맴돌이 방지) + 적중영역 3배
@@ -10897,6 +10951,25 @@ function startAsteroidBeltMinigame(destPid){
       cx.fillStyle='#ff6688';cx.shadowColor='#ff6688';cx.shadowBlur=10;
       cx.beginPath();cx.moveTo(-7,-3);cx.lineTo(7,0);cx.lineTo(-7,3);cx.closePath();cx.fill();
       cx.shadowBlur=0;cx.restore();
+    }
+
+    // 쉴드 시각화 — 매우 옅게(약 10% 투명도) 기함 둘레에 청록 오라
+    if(state.ship.sh>0){
+      const shRatio=Math.max(0,Math.min(1,state.ship.sh/Math.max(1,state.ship.maxSH)));
+      const shAlpha=0.10*shRatio;  // 최대 10%
+      cx.save();
+      cx.globalAlpha=shAlpha;
+      const grd=cx.createRadialGradient(state.ship.x+state.ship.w/2,state.ship.y,state.ship.w*0.3,state.ship.x+state.ship.w/2,state.ship.y,state.ship.w*0.85);
+      grd.addColorStop(0,'rgba(102,221,255,.8)');
+      grd.addColorStop(0.7,'rgba(102,221,255,.4)');
+      grd.addColorStop(1,'rgba(102,221,255,0)');
+      cx.fillStyle=grd;
+      cx.beginPath();cx.ellipse(state.ship.x+state.ship.w/2,state.ship.y,state.ship.w*0.85,state.ship.h*0.7,0,0,Math.PI*2);cx.fill();
+      // 옅은 테두리 (헥사 임팩트 느낌)
+      cx.globalAlpha=shAlpha*1.5;
+      cx.strokeStyle='#66ddff';cx.lineWidth=1.5;
+      cx.beginPath();cx.ellipse(state.ship.x+state.ship.w/2,state.ship.y,state.ship.w*0.8,state.ship.h*0.65,0,0,Math.PI*2);cx.stroke();
+      cx.restore();
     }
 
     // 기함 그리기 (좌측, 우측 향함)
