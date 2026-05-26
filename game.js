@@ -7706,7 +7706,8 @@ function startVoidBossCombat(questRef){
   //       보스 1척 = 호위 × 4 ≈ 48.4M HP / 162K ATT
   const VOID_FLEET_SIZE=16;
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*10));
+  // 사용자 요청: 블랙팔콘 보스전 HP는 지금의 10배 (아군 비례 스케일 후 ×10)
+  const _totalHP=Math.max(VOID_BOSS.maxHP,Math.round((_fp.hp||0)*10))*10;
   const _totalATT=Math.max(VOID_BOSS.ATT,Math.round((_fp.atk||0)*10));
   const _totalSH=Math.max(VOID_BOSS.maxSH,Math.round((_fp.sh||0)*10));
   const _UNIT=19;  // 호위 15 × 1 + 보스 1 × 4
@@ -10891,9 +10892,10 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     let sz, w, h, hp, fireRate, dmg;
     // 크기 비율 1:3:5 + 적함은 동급 아군보다 2× 큼 (S60/M180/L300)
     // HP 2× 유지
-    if(roll<0.5){sz='S';w=60;h=60;hp=6;fireRate=80;dmg=8;}
-    else if(roll<0.85){sz='M';w=180;h=180;hp=10;fireRate=60;dmg=14;}
-    else {sz='L';w=300;h=300;hp=20;fireRate=45;dmg=22;}
+    // 발사 빈도 70% (사용자 요청) — fireRate(쿨다운)는 클수록 발사 느려짐: ×1/0.7 ≈ ×1.43
+    if(roll<0.5){sz='S';w=60;h=60;hp=6;fireRate=114;dmg=8;}
+    else if(roll<0.85){sz='M';w=180;h=180;hp=10;fireRate=86;dmg=14;}
+    else {sz='L';w=300;h=300;hp=20;fireRate=64;dmg=22;}
     state.enemies.push({
       x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
       // 적 함선 속도 ½ (사용자 요청)
@@ -12076,9 +12078,11 @@ function startCombat(planetDef){
     const _BASE_ATT=Math.round(BOSS.ATT*3); // 18,000
     const _BASE_SH=BOSS.maxSH*3;           // 900,000
     const _playerDur=_fp.hp+_fp.sh;
-    const _scaleHP=Math.max(_BASE_HP,Math.round(_playerDur*2.7));   // 함대 총 내구도의 2.7배 (이전 0.9 → 3배)
-    const _scaleATT=Math.max(_BASE_ATT,Math.round(_fp.atk*2.7));    // 함대 총 ATT의 2.7배
-    const _scaleSH=Math.max(_BASE_SH,Math.round(_fp.sh*2.7));       // 함대 총 SH의 2.7배
+    // 사용자 요청: HP는 지금의 10배 (아군 비례 스케일 후 ×10)
+    let _scaleHP=Math.max(_BASE_HP,Math.round(_playerDur*2.7));   // 기존 식
+    _scaleHP=_scaleHP*10;                                            // ×10 추가 적용
+    const _scaleATT=Math.max(_BASE_ATT,Math.round(_fp.atk*2.7));    // ATT는 기존 유지
+    const _scaleSH=Math.max(_BASE_SH,Math.round(_fp.sh*2.7));       // SH는 기존 유지
     enemies=[{...BOSS,id:'BOSS_MAIN',isEnemy:true,
       hp:_scaleHP,maxHP:_scaleHP,HP:_scaleHP,
       sh:_scaleSH,maxSH:_scaleSH,
