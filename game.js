@@ -10389,15 +10389,18 @@ function _initAsteroidParticles(){
   if(_asteroidParticles)return;
   const rng=mulberry32(1729);  // 시드 고정 — 매번 같은 분포
   const N=180;
+  // 갈색 계열 베리에이션 팔레트
+  const browns=['#8b6b4a','#a07a55','#6e5237','#7a5a3e','#9c7a52','#bb8e60','#5e4630','#7c6244'];
   _asteroidParticles=[];
   for(let i=0;i<N;i++){
     _asteroidParticles.push({
       baseAng:rng()*Math.PI*2,
-      baseR:rng(),               // 0~1 (도넛 내·외경 사이)
-      sz:0.6+rng()*1.8,
-      driftSpeed:(0.12+rng()*0.18)*(rng()<0.5?1:-1),  // 시계/반시계 혼합
+      baseR:rng(),                       // 0~1 (도넛 내·외경 사이)
+      sz:(0.6+rng()*1.8)*0.5,            // 크기 절반
+      driftSpeed:(0.12+rng()*0.18)*0.18*(rng()<0.5?1:-1),  // 속도 매우 느리게 (~×0.18)
       phase:rng()*Math.PI*2,
-      tw:0.35+rng()*0.55          // 깜빡임
+      tw:0.35+rng()*0.55,                // 깜빡임
+      col:browns[Math.floor(rng()*browns.length)]  // 갈색 베리에이션
     });
   }
 }
@@ -10424,11 +10427,11 @@ function _renderAsteroidBelt(ctx){
   const sInner=worldToScreen(g.cx+g.innerR,g.cy);
   const screenOR=Math.abs(sOuter.sx-center.sx);
   const screenIR=Math.abs(sInner.sx-center.sx);
-  // 외곽 글로우 (큰 반경)
+  // 외곽 글로우 (큰 반경) — 갈색톤 옅은 띠
   const grd=ctx.createRadialGradient(center.sx,center.sy,screenIR,center.sx,center.sy,screenOR);
-  grd.addColorStop(0,'rgba(180,80,255,0)');
-  grd.addColorStop(0.5,'rgba(180,80,255,.06)');
-  grd.addColorStop(1,'rgba(180,80,255,0)');
+  grd.addColorStop(0,'rgba(140,100,60,0)');
+  grd.addColorStop(0.5,'rgba(140,100,60,.05)');
+  grd.addColorStop(1,'rgba(140,100,60,0)');
   ctx.fillStyle=grd;
   ctx.beginPath();ctx.arc(center.sx,center.sy,screenOR,0,Math.PI*2);ctx.fill();
   // 파티클 드리프트 (시간 기반)
@@ -10443,11 +10446,10 @@ function _renderAsteroidBelt(ctx){
     const s=worldToScreen(wx,wy);
     // 깜빡임
     const tw=0.45+0.55*Math.abs(Math.sin(t*p.tw+p.phase));
-    ctx.globalAlpha=Math.min(1,0.45+tw*0.35);
-    const psz=Math.max(0.6,p.sz*(G.mapZoom||1));
-    // 색상: 외곽쪽일수록 옅고, 안쪽일수록 진한 보랏빛
-    const col=radNorm>0.7?'#cc99ff':radNorm>0.4?'#aa66ff':'#9944dd';
-    ctx.fillStyle=col;
+    ctx.globalAlpha=Math.min(1,0.55+tw*0.35);
+    const psz=Math.max(0.4,p.sz*(G.mapZoom||1));
+    // 색상: 파티클 고유 갈색 베리에이션 (8색 팔레트에서 시드로 배정)
+    ctx.fillStyle=p.col||'#8b6b4a';
     ctx.beginPath();ctx.arc(s.sx,s.sy,psz,0,Math.PI*2);ctx.fill();
   }
   ctx.restore();
@@ -10623,7 +10625,14 @@ function startAsteroidBeltMinigame(destPid){
     window.removeEventListener('keydown',onKD);
     window.removeEventListener('keyup',onKU);
     // 보상
-    const rew=win?Math.round(Math.max(3000,(G.credits||0)*0.05)+state.kills*800):0;
+    // 명성 구간별 보상 비율 — 사용자 명세
+    //   rep  1~10  → 10%
+    //   rep 11~50  →  5%
+    //   rep 51~100 →  3%
+    //   rep 100+   →  1%
+    const _rep=G.reputation||0;
+    const _rewPct=_rep>100?0.01:_rep>=51?0.03:_rep>=11?0.05:_rep>=1?0.10:0.10;
+    const rew=win?Math.round((G.credits||0)*_rewPct+state.kills*800):0;
     const veRew=win?Math.round(20+state.kills*5):0;
     const pen=win?0:Math.round((G.credits||0)*0.03);
     if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}
