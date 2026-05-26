@@ -10477,9 +10477,154 @@ function _routeCrossesAsteroidBelt(fromPid,toPid){
 // 조작: 방향키·WASD 이동, 마우스 위치 추종, Shift=레이저, Ctrl/Enter=미사일(자동조준)
 // 30초 생존 = 승리 (+크레딧 5%+격파×500, +VE 20+격파×4)
 // 기함 HP 0 = 패배 (-크레딧 3%)
-function startAsteroidBeltMinigame(destPid){
-  // 기함 스탯
-  const flagship=G.fleet&&G.fleet[0];
+// 함선 선택 UI — 함대에 2척 이상이면 미니게임 진입 전 선택 화면
+function _showAsteroidShipPicker(destPid, onPick){
+  const picker=document.createElement('div');
+  picker.id='_ab-ship-picker';
+  picker.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:99996;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;padding:20px;overflow-y:auto';
+  let cardsHtml='';
+  G.fleet.forEach((s,idx)=>{
+    const tierBadge=s.tier==='소형'?'<span style="color:#66ddff">소형</span>':s.tier==='중형'?'<span style="color:#ffcc66">중형</span>':'<span style="color:#ff88cc">대형</span>';
+    const _hp=s.maxHP||s.HP||1000;
+    const _sh=s.maxSH||300;
+    const _att=s.ATT||30;
+    const _rar=s.rarity||'';
+    const _rarColor=_rar==='mythic'?'#ff88ff':_rar==='legend'?'#ffcc66':_rar==='set'?'#ff99cc':'#aaa';
+    cardsHtml+=`
+      <div class="ab-ship-card" data-idx="${idx}" style="
+        cursor:pointer;background:rgba(20,10,40,.9);border:2px solid #6633aa;border-radius:10px;
+        padding:14px 16px;min-width:220px;text-align:center;transition:all .15s ease;
+        box-shadow:0 4px 16px rgba(180,80,255,.2)">
+        <img src="${shipImgSrc(s)}" style="width:100px;height:100px;object-fit:contain;image-rendering:pixelated" onerror="this.style.opacity=.3">
+        <div style="margin-top:8px;font-weight:bold;color:${_rarColor};font-size:14px;letter-spacing:1px">${s.nm||'함선 #'+idx}</div>
+        <div style="margin-top:4px;font-size:11px;color:#aaa">${tierBadge} · ATT ${_att}</div>
+        <div style="margin-top:6px;font-size:11px;color:#ff8888">HP ${_hp.toLocaleString()}</div>
+        <div style="font-size:11px;color:#66ddff">SH ${_sh.toLocaleString()}</div>
+      </div>`;
+  });
+  const _bypassCost=Math.max(100,Math.round((G.credits||0)*0.01));
+  const _canBypass=(G.credits||0)>=_bypassCost;
+  picker.innerHTML=`
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="color:#cc66ff;font-size:13px;letter-spacing:6px">— 출격 함선 선택 —</div>
+      <div style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:3px;margin-top:6px">🚀 소행성대 돌파 함선</div>
+      <div style="color:#aaa;font-size:12px;margin-top:6px">함선을 클릭해 출격하거나, 통행세를 지불해 안전 통과</div>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;max-width:1100px">${cardsHtml}</div>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button id="_ab-pick-bypass" ${_canBypass?'':'disabled'} style="
+        padding:12px 32px;background:${_canBypass?'rgba(255,215,0,.18)':'rgba(120,120,120,.15)'};
+        border:1.5px solid ${_canBypass?'#ffd700':'#666'};color:#fff;border-radius:6px;
+        cursor:${_canBypass?'pointer':'not-allowed'};font-size:13px;letter-spacing:2px;
+        opacity:${_canBypass?'1':'.5'}">
+        💰 통행세 지불 무사통과 (-₡${_bypassCost.toLocaleString()} · 자산 1%)
+      </button>
+      <button id="_ab-pick-cancel" style="padding:12px 28px;background:rgba(255,80,80,.15);border:1.5px solid #ff6666;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px">취소 (회피)</button>
+    </div>`;
+  document.body.appendChild(picker);
+  picker.querySelectorAll('.ab-ship-card').forEach(c=>{
+    c.onmouseenter=()=>{c.style.transform='translateY(-4px)';c.style.borderColor='#ffcc66';c.style.boxShadow='0 8px 24px rgba(255,204,102,.4)';};
+    c.onmouseleave=()=>{c.style.transform='';c.style.borderColor='#6633aa';c.style.boxShadow='0 4px 16px rgba(180,80,255,.2)';};
+    c.onclick=()=>{const idx=parseInt(c.dataset.idx,10);picker.remove();onPick(idx);};
+  });
+  picker.querySelector('#_ab-pick-cancel').onclick=()=>{picker.remove();};
+  // 통행세 지불 무사통과 — 1% 지불 + 해금 진행도 +1 효과만 적용
+  const bypassBtn=picker.querySelector('#_ab-pick-bypass');
+  if(bypassBtn&&_canBypass)bypassBtn.onclick=()=>{
+    G.credits=Math.max(0,(G.credits||0)-_bypassCost);
+    if(destPid){try{addHubProgress(destPid);}catch(e){}}
+    try{saveGame(true);}catch(e){}
+    notify('💰 통행세 ₡'+_bypassCost.toLocaleString()+' 지불 — 소행성대 무사통과','gold');
+    try{baekgu('통행세 내고 무사 통과! 안전이 최우선이지~');}catch(e){}
+    picker.remove();
+  };
+}
+
+// 백구 AI HUD 렌더 — 캔버스 하단 가운데 (말풍선 위로)
+function _renderBaekguHud(cx,W,H,state,baekguImgs,now){
+  const b=state.baekgu;if(!b)return;
+  // 만료 시 default로 페이드
+  const remain=b.expireAt-now;
+  let alpha=1;
+  if(remain<400)alpha=Math.max(0,remain/400);
+  // 백구 이미지
+  const moodKey=(remain<=0)?'default':b.mood;
+  const im=baekguImgs[moodKey]||baekguImgs['default'];
+  const size=110;
+  const bx=W/2-size/2, by=H-size-12;
+  cx.save();
+  // 후광 (피격 상태일 때 붉게)
+  if(b.mood==='anger1'||b.mood==='anger2'||b.mood==='sad'){
+    cx.fillStyle='rgba(255,80,80,'+(0.18*alpha)+')';
+    cx.beginPath();cx.arc(W/2,by+size/2,size*0.7,0,Math.PI*2);cx.fill();
+  } else if(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4'){
+    cx.fillStyle='rgba(255,215,0,'+(0.18*alpha)+')';
+    cx.beginPath();cx.arc(W/2,by+size/2,size*0.7,0,Math.PI*2);cx.fill();
+  } else {
+    cx.fillStyle='rgba(102,221,255,0.10)';
+    cx.beginPath();cx.arc(W/2,by+size/2,size*0.65,0,Math.PI*2);cx.fill();
+  }
+  // 원형 마스크 안에 백구 그리기
+  cx.beginPath();cx.arc(W/2,by+size/2,size/2-2,0,Math.PI*2);cx.closePath();
+  cx.fillStyle='rgba(20,10,40,.92)';cx.fill();
+  cx.save();cx.clip();
+  if(im&&im.complete&&im.naturalWidth>0){
+    cx.drawImage(im,bx,by,size,size);
+  }
+  cx.restore();
+  // 테두리
+  cx.lineWidth=2.5;
+  cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#66ddff';
+  cx.beginPath();cx.arc(W/2,by+size/2,size/2-1,0,Math.PI*2);cx.stroke();
+  // 라벨 "백구 AI"
+  cx.fillStyle='rgba(102,221,255,.85)';cx.font='bold 11px monospace';cx.textAlign='center';
+  cx.fillText('🐶 백구 AI',W/2,by+size+14);
+  // 말풍선 (현재 발화 메시지)
+  if(b.msg && remain>0){
+    cx.globalAlpha=alpha;
+    cx.font='bold 14px Malgun Gothic, sans-serif';
+    const tw=cx.measureText(b.msg).width;
+    const bw=Math.max(160,tw+28), bh=42;
+    const bbx=W/2-bw/2, bby=by-bh-12;
+    // 그림자
+    cx.fillStyle='rgba(0,0,0,.6)';
+    _roundRect(cx,bbx+2,bby+2,bw,bh,10);cx.fill();
+    // 배경
+    const grd=cx.createLinearGradient(bbx,bby,bbx,bby+bh);
+    grd.addColorStop(0,'rgba(40,20,60,.95)');grd.addColorStop(1,'rgba(20,10,40,.95)');
+    cx.fillStyle=grd;
+    _roundRect(cx,bbx,bby,bw,bh,10);cx.fill();
+    // 테두리
+    cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#cc66ff';
+    cx.lineWidth=1.5;_roundRect(cx,bbx,bby,bw,bh,10);cx.stroke();
+    // 꼬리 (아래쪽 작은 삼각형)
+    cx.fillStyle=grd;
+    cx.beginPath();cx.moveTo(W/2-8,bby+bh);cx.lineTo(W/2+8,bby+bh);cx.lineTo(W/2,bby+bh+10);cx.closePath();cx.fill();
+    cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#cc66ff';
+    cx.beginPath();cx.moveTo(W/2-8,bby+bh);cx.lineTo(W/2,bby+bh+10);cx.lineTo(W/2+8,bby+bh);cx.stroke();
+    // 텍스트
+    cx.fillStyle='#fff';
+    cx.fillText(b.msg,W/2,bby+bh/2+5);
+    cx.globalAlpha=1;
+  }
+  cx.textAlign='left';
+  cx.restore();
+}
+function _roundRect(cx,x,y,w,h,r){
+  cx.beginPath();cx.moveTo(x+r,y);cx.lineTo(x+w-r,y);cx.quadraticCurveTo(x+w,y,x+w,y+r);
+  cx.lineTo(x+w,y+h-r);cx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  cx.lineTo(x+r,y+h);cx.quadraticCurveTo(x,y+h,x,y+h-r);
+  cx.lineTo(x,y+r);cx.quadraticCurveTo(x,y,x+r,y);cx.closePath();
+}
+
+function startAsteroidBeltMinigame(destPid, shipIdx){
+  // 함선 선택 단계 — 함대에 2척 이상이고 미선택이면 picker 표시
+  if(shipIdx==null && G.fleet && G.fleet.length>1){
+    return _showAsteroidShipPicker(destPid,(idx)=>{startAsteroidBeltMinigame(destPid,idx);});
+  }
+  shipIdx=shipIdx|0;
+  // 기함 스탯 (선택한 함선)
+  const flagship=G.fleet&&G.fleet[shipIdx];
   // 미니게임 HP 기준 — 기함의 기본 maxHP (파츠 보너스 제외, 함선 본체 스탯)
   const _baseHP=flagship?(flagship.maxHP||flagship.HP||1000):1000;
   const _baseSH=flagship?(flagship.maxSH||300):300;
@@ -10544,6 +10689,15 @@ function startAsteroidBeltMinigame(destPid){
   // 이미지 로드
   const shipImg=new Image();shipImg.src=shipSrc;
   const pirateImgs={};['PIRATE_S','PIRATE_M','PIRATE_L'].forEach(k=>{pirateImgs[k]=new Image();pirateImgs[k].src='img/combat/enemies/'+k+'.png';});
+  // 백구 AI 무드 이미지 프리로드
+  const baekguImgs={};
+  ['fight','smile1','smile2','smile4','anger0','anger1','anger2','sad','sad_happy','surprise','advice','think','bothersome','default'].forEach(m=>{
+    const im=new Image();
+    im.src=(m==='surprise')?'img/chars/baekgu1_surprise.png'
+         :(m==='default')?'img/chars/baekgu2.png'
+         :'img/chars/baekgu2_'+m+'.png';
+    baekguImgs[m]=im;
+  });
 
   // 게임 상태
   const state={
@@ -10563,8 +10717,62 @@ function startAsteroidBeltMinigame(destPid){
     spawnTimerEn:0,
     laserCd:0, missileCd:0,
     kills:0, score:0,
-    mouseX:null, mouseY:null
+    mouseX:null, mouseY:null,
+    // 백구 AI HUD — 무드+대사+만료 시각
+    baekgu:{mood:'fight', msg:'준비됐어! 가자!', expireAt:Date.now()+2500, bubbleAlpha:1, lastTriggerMs:0}
   };
+  // 백구 발화 헬퍼 — 우선순위/쿨다운 처리
+  function _baekguSay(mood,msg,durMs,priority){
+    const now=Date.now();
+    // 우선순위 낮은 발화는 쿨다운 600ms 내 무시
+    if(!priority && now-state.baekgu.lastTriggerMs<600)return;
+    state.baekgu.mood=mood||'default';
+    state.baekgu.msg=msg||'';
+    state.baekgu.expireAt=now+(durMs||1800);
+    state.baekgu.bubbleAlpha=1;
+    state.baekgu.lastTriggerMs=now;
+  }
+  // 무작위 대사 풀
+  const _baekguLines={
+    hit:[
+      ['anger1','으윽! 맞았다!'],
+      ['sad','아야! 회피해줘!'],
+      ['anger2','젠장! 실드 잔량 확인!']
+    ],
+    kill:[
+      ['smile2','격파! 좋았어!'],
+      ['fight','적함 격침! 다음!'],
+      ['smile1','명중! 이 맛이지~'],
+      ['smile4','우와아! 한방이야!']
+    ],
+    asteroidKill:[
+      ['smile2','소행성 분쇄!'],
+      ['fight','산산조각 났어!']
+    ],
+    lowHp:[
+      ['anger2','위험해! HP가 거의 없어!'],
+      ['sad','잠깐만! 회복해야 해!']
+    ],
+    enemyApproach:[
+      ['surprise','적함 출현! 우측 주의!'],
+      ['fight','해적이다! 준비해!']
+    ],
+    advice:[
+      ['advice','마우스 클릭으로 자동 연사!'],
+      ['advice','Ctrl 누르면 호밍 미사일!'],
+      ['think','대형 적함은 미사일이 효율적이야'],
+      ['advice','소행성에 부딪히지 마!']
+    ],
+    timeWarn:[
+      ['fight','조금만 더 버텨!'],
+      ['surprise','거의 끝나간다!']
+    ]
+  };
+  function _baekguPick(cat,priority){
+    const arr=_baekguLines[cat];if(!arr||!arr.length)return;
+    const [mood,msg]=arr[Math.floor(Math.random()*arr.length)];
+    _baekguSay(mood,msg,priority?2400:1600,priority);
+  }
   // 별 배경 (3 레이어 패럴랙스)
   for(let i=0;i<140;i++){state.stars.push({x:Math.random()*W, y:Math.random()*H, sz:Math.random()*1.8+0.4, layer:Math.floor(Math.random()*3)});}
 
@@ -10646,6 +10854,9 @@ function startAsteroidBeltMinigame(destPid){
       fireCd:30+Math.random()*30, fireRate, dmg,
       img:pirateImgs['PIRATE_'+sz]
     });
+    // 백구 — 대형 적함 출현 또는 가끔
+    if(sz==='L')_baekguPick('enemyApproach',true);
+    else if(Math.random()<0.35)_baekguPick('enemyApproach');
   }
 
   // 충돌 검사
@@ -10668,8 +10879,12 @@ function startAsteroidBeltMinigame(destPid){
     if(amt>0){state.ship.hp-=amt;state.ship.hitFlash=10;
       cv.style.boxShadow='0 0 36px rgba(255,80,80,.8)';
       setTimeout(()=>{cv.style.boxShadow='0 0 36px rgba(180,80,255,.5)';},150);
+      // 백구 — 피격
+      const hpPct=state.ship.hp/state.ship.maxHP;
+      if(hpPct<0.3)_baekguPick('lowHp',true);
+      else _baekguPick('hit');
     }
-    if(state.ship.hp<=0){state.ship.hp=0;_finish(false);}
+    if(state.ship.hp<=0){state.ship.hp=0;_baekguSay('sad','으아아... 격침이야...',3000,true);_finish(false);}
   }
 
   function _finish(win){
@@ -10860,12 +11075,12 @@ function startAsteroidBeltMinigame(destPid){
       let hit=false;
       for(let k=state.asteroids.length-1;k>=0;k--){
         const a=state.asteroids[k];
-        if(_circleHit(a,b.x,b.y,3)){a.hp-=b.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',a.sz==='L');state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
+        if(_circleHit(a,b.x,b.y,3)){a.hp-=b.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',a.sz==='L');state.kills++;state.asteroids.splice(k,1);if(Math.random()<0.18)_baekguPick('asteroidKill');}hit=true;break;}
       }
       if(!hit){
         for(let k=state.enemies.length-1;k>=0;k--){
           const e=state.enemies[k];
-          if(_boxHit(e,b.x,b.y,3)){e.hp-=b.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
+          if(_boxHit(e,b.x,b.y,3)){e.hp-=b.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);_baekguPick('kill',true);}hit=true;break;}
         }
       }
       if(hit){state.pBullets.splice(i,1);continue;}
@@ -10951,6 +11166,7 @@ function startAsteroidBeltMinigame(destPid){
             if(m.target.hp<=0){
               _explode(m.target.x,m.target.y,'#ffaa66',true);state.kills++;
               const ai=state.asteroids.indexOf(m.target);if(ai>=0)state.asteroids.splice(ai,1);
+              if(Math.random()<0.18)_baekguPick('asteroidKill');
             }
           } else if(m.target.w!=null){
             // 적함
@@ -10958,6 +11174,7 @@ function startAsteroidBeltMinigame(destPid){
             if(m.target.hp<=0){
               _explode(m.target.x,m.target.y,'#ff6644',true);state.kills++;
               const ei=state.enemies.indexOf(m.target);if(ei>=0)state.enemies.splice(ei,1);
+              _baekguPick('kill',true);
             }
           }
           _explode(m.x,m.y,'#ff8844',false);
@@ -10971,12 +11188,12 @@ function startAsteroidBeltMinigame(destPid){
       let hit=false;
       for(let k=state.asteroids.length-1;k>=0;k--){
         const a=state.asteroids[k];
-        if(_circleHit(a,m.x,m.y,15)){a.hp-=m.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',true);state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
+        if(_circleHit(a,m.x,m.y,15)){a.hp-=m.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',true);state.kills++;state.asteroids.splice(k,1);if(Math.random()<0.18)_baekguPick('asteroidKill');}hit=true;break;}
       }
       if(!hit){
         for(let k=state.enemies.length-1;k>=0;k--){
           const e=state.enemies[k];
-          if(_boxHit(e,m.x,m.y,15)){e.hp-=m.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
+          if(_boxHit(e,m.x,m.y,15)){e.hp-=m.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);_baekguPick('kill',true);}hit=true;break;}
         }
       }
       if(hit){_explode(m.x,m.y,'#ff8844',false);state.pMissiles.splice(i,1);continue;}
@@ -11082,8 +11299,20 @@ function startAsteroidBeltMinigame(destPid){
     cx.fillText('격파 '+state.kills, W-14, 46);
     cx.textAlign='left';
 
+    // 백구 — 시간 경고 (한 번씩만)
+    if(!state._warn15s && leftSec<=15 && leftSec>10){state._warn15s=true;_baekguPick('timeWarn',true);}
+    if(!state._warn5s && leftSec<=5 && leftSec>0){state._warn5s=true;_baekguSay('fight','5초만 더!',2000,true);}
+    // 주기적 조언 (조용할 때만)
+    if(!state._lastAdviceMs)state._lastAdviceMs=state.startMs;
+    if(now-state._lastAdviceMs>9000 && now-state.baekgu.lastTriggerMs>3000 && elapsed>3000){
+      state._lastAdviceMs=now;
+      _baekguPick('advice');
+    }
+    // ─── 백구 AI HUD — 캔버스 하단 가운데 ───
+    _renderBaekguHud(cx,W,H,state,baekguImgs,now);
+
     // 종료 판정
-    if(elapsed>=state.durationMs){_finish(true);return;}
+    if(elapsed>=state.durationMs){_baekguSay('smile1','해냈다! 돌파 성공!',2500,true);_finish(true);return;}
     requestAnimationFrame(tick);
   }
   setTimeout(()=>{cv.focus();tick();},500);
@@ -11895,7 +12124,7 @@ function initCombatCanvas(){
 }
 
 // ── 다른 탭 갔다 와도 일점사/학익진/시간차공격 등 후속 스킬 버튼 상태 복원 ──
-// 원인: 일점사 사용 → 10초 setTimeout → _showHaikjinButton 호출 시점에 cb-hdr이 없어
+// 원인: 일점사 사용 → 5초 setTimeout → _showHaikjinButton 호출 시점에 cb-hdr이 없어
 //      (다른 탭 화면) 버튼 생성이 silent fail 됨. 복귀해도 setTimeout이 이미 소진됐기 때문에
 //      학익진 버튼이 영영 안 나타남. _xxxReady 플래그를 보고 재생성.
 function _restoreCombatSkillButtons(){
@@ -13448,17 +13677,17 @@ function activateSunsinFocus(){
   drawCombatFrame();
   const stillAliveEn=combatState.enemies.filter(u=>u.hp>0).length;
   if(!stillAliveEn){setTimeout(_finishCombat,600);return;}
-  // ── 10초 후 학익진 버튼 활성화 (ATT ×3 추가) ──────────────────
+  // ── 5초 후 학익진 버튼 활성화 (ATT ×3 추가) ──────────────────
   combatState._haikjinPending=true;
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._haikjinPending||combatState._haikjinUsed)return;
     _showHaikjinButton();
     addCombatLog(`🦅 진형 변환 가능! 학익진 버튼 활성화 — 클릭 시 아군 ATT ×3`,'gold');
     notify('🦅 학익진 진형 준비 완료!','gold');
-  },10000);
+  },5000);
 }
 
-// 학익진 버튼 생성 (일점사 발동 10초 후)
+// 학익진 버튼 생성 (일점사 발동 5초 후)
 function _showHaikjinButton(){
   // Ready 플래그 — 탭 전환 후 복귀 시 _restoreSkillButtons가 이 플래그 보고 재생성
   if(combatState)combatState._haikjinReady=true;
@@ -13494,7 +13723,7 @@ function activateHaikjin(){
   const hbtn=document.getElementById('cb-haikjin-btn');
   if(hbtn)hbtn.disabled=true;
   drawCombatFrame();
-  // ── 학익진 10초 후 → 아인슈타인 시간차공격 버튼 활성화 (ATT ×4) ──
+  // ── 학익진 5초 후 → 아인슈타인 시간차공격 버튼 활성화 (ATT ×4) ──
   // H06(아인슈타인) 영입 시에만 활성화
   if(!G.heroes||!G.heroes.includes('H06'))return;
   combatState._einsteinPending=true;
@@ -13503,7 +13732,7 @@ function activateHaikjin(){
     _showEinsteinButton();
     addCombatLog(`⏳ 아인슈타인 시간차공격 준비 완료! 클릭 시 아군 ATT ×4`,'gold');
     notify('⏳ 아인슈타인 시간차공격 준비!','gold');
-  },10000);
+  },5000);
 }
 
 // 아인슈타인 시간차공격 버튼 생성 (학익진 발동 30초 후)
@@ -13541,7 +13770,7 @@ function activateEinsteinTimeAttack(){
   const ebtn=document.getElementById('cb-einstein-btn');
   if(ebtn)ebtn.disabled=true;
   drawCombatFrame();
-  // ── 시간차공격 10초 후 → 테슬라 초공간 버튼 활성화 (ATT ×5) ──
+  // ── 시간차공격 5초 후 → 테슬라 초공간 버튼 활성화 (ATT ×5) ──
   // H07(니콜라 테슬라) 영입 시에만 활성화
   if(!G.heroes||!G.heroes.includes('H07'))return;
   combatState._teslaPending=true;
@@ -13550,10 +13779,10 @@ function activateEinsteinTimeAttack(){
     _showTeslaButton();
     addCombatLog(`⚡ 테슬라 초공간 채널 형성 완료! 클릭 시 아군 ATT ×5`,'gold');
     notify('⚡ 테슬라 초공간 준비!','gold');
-  },10000);
+  },5000);
 }
 
-// 테슬라 초공간 버튼 생성 (시간차공격 발동 10초 후)
+// 테슬라 초공간 버튼 생성 (시간차공격 발동 5초 후)
 function _showTeslaButton(){
   if(combatState)combatState._teslaReady=true;
   if(document.getElementById('cb-tesla-btn'))return;
@@ -13602,7 +13831,7 @@ function activateTeslaHyperspace(){
   const tbtn=document.getElementById('cb-tesla-btn');
   if(tbtn)tbtn.disabled=true;
   drawCombatFrame();
-  // ── 테슬라 10초 후 → 제네시스 임펙트 버튼 활성화 (ATT ×6) ──
+  // ── 테슬라 5초 후 → 제네시스 임펙트 버튼 활성화 (ATT ×6) ──
   // 영웅 7명 이상 영입 시에만 활성화
   if(!G.heroes||G.heroes.length<7)return;
   combatState._genesisPending=true;
@@ -13611,10 +13840,10 @@ function activateTeslaHyperspace(){
     _showGenesisButton();
     addCombatLog(`✦ 제네시스 임펙트 차원 정렬 완료! 영웅 ${G.heroes.length}명의 의지가 한 점에 모인다. 클릭 시 아군 ATT ×6`,'gold');
     notify('✦ 제네시스 임펙트 준비!','gold');
-  },10000);
+  },5000);
 }
 
-// 제네시스 임펙트 버튼 생성 (테슬라 발동 10초 후)
+// 제네시스 임펙트 버튼 생성 (테슬라 발동 5초 후)
 function _showGenesisButton(){
   if(combatState)combatState._genesisReady=true;
   if(document.getElementById('cb-genesis-btn'))return;
@@ -13649,7 +13878,7 @@ function activateGenesisImpact(){
   const gbtn=document.getElementById('cb-genesis-btn');
   if(gbtn)gbtn.disabled=true;
   drawCombatFrame();
-  // ── 제네시스 10초 후 → 데스티네이션 어스 버튼 활성화 (ATT ×10) ──
+  // ── 제네시스 5초 후 → 데스티네이션 어스 버튼 활성화 (ATT ×10) ──
   // 영웅 8명 모두 영입 시에만 활성화
   if(!G.heroes||G.heroes.length<8)return;
   combatState._destinationPending=true;
@@ -13658,10 +13887,10 @@ function activateGenesisImpact(){
     _showDestinationButton();
     addCombatLog(`🌍 데스티네이션 어스 — 최종 강하! 영웅 8명 모두의 의지가 집결한다. 클릭 시 아군 ATT ×10`,'gold');
     notify('🌍 데스티네이션 어스 준비!','gold');
-  },10000);
+  },5000);
 }
 
-// 데스티네이션 어스 버튼 생성 (제네시스 발동 10초 후)
+// 데스티네이션 어스 버튼 생성 (제네시스 발동 5초 후)
 function _showDestinationButton(){
   if(combatState)combatState._destinationReady=true;
   if(document.getElementById('cb-destination-btn'))return;
