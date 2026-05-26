@@ -10397,7 +10397,7 @@ function _initAsteroidParticles(){
       baseAng:rng()*Math.PI*2,
       baseR:rng(),                       // 0~1 (도넛 내·외경 사이)
       sz:(0.6+rng()*1.8)*0.5,            // 크기 절반
-      driftSpeed:(0.12+rng()*0.18)*0.18*(rng()<0.5?1:-1),  // 속도 매우 느리게 (~×0.18)
+      driftSpeed:(0.12+rng()*0.18)*0.09*(rng()<0.5?1:-1),  // 속도 추가로 절반 (~×0.09)
       phase:rng()*Math.PI*2,
       tw:0.35+rng()*0.55,                // 깜빡임
       col:browns[Math.floor(rng()*browns.length)]  // 갈색 베리에이션
@@ -10550,13 +10550,13 @@ function startAsteroidBeltMinigame(destPid){
   // 발사
   function _fireLaser(){
     if(state.laserCd>0||state.ended)return;
-    state.laserCd=8;  // ≈130ms @ 60fps
+    state.laserCd=5;  // ≈85ms @ 60fps (기존 8 → 1.5× 빠르게)
     state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:14, dmg:1, life:90});
     try{AudioMgr.playSfx('laser_fire',{vol:0.4,cooldown:30});}catch(e){}
   }
   function _fireMissile(){
     if(state.missileCd>0||state.ended)return;
-    state.missileCd=36;  // ≈600ms
+    state.missileCd=18;  // ≈300ms (기존 36 → 2× 빠르게)
     // 가장 가까운 적 타겟 (소행성·해적 합산)
     let target=null,td=1e9;
     [...state.asteroids,...state.enemies].forEach(e=>{
@@ -10697,7 +10697,7 @@ function startAsteroidBeltMinigame(destPid){
     // 스폰
     state.spawnTimerAst+=dt;state.spawnTimerEn+=dt;
     if(state.spawnTimerAst>=Math.max(14,40-Math.floor(elapsed/2000)*4)){state.spawnTimerAst=0;_spawnAsteroid();}
-    if(state.spawnTimerEn>=Math.max(70,140-Math.floor(elapsed/3000)*15)){state.spawnTimerEn=0;_spawnEnemy();}
+    if(state.spawnTimerEn>=Math.max(140,280-Math.floor(elapsed/3000)*30)){state.spawnTimerEn=0;_spawnEnemy();}
 
     // ─── 렌더 시작 ───
     cx.fillStyle='#000';cx.fillRect(0,0,W,H);
