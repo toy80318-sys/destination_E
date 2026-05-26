@@ -12682,9 +12682,8 @@ function initCombatCanvas(){
       <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:2px 7px;font-size:12px">⌂</button>
       <button class="btn btn-sm" onclick="cbZoom=Math.min(4,cbZoom+.15);drawCombatFrame()" style="padding:2px 7px;font-size:13px">+</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
-  // 이순신 일점사 전술 버튼 (H01 영입 시 + 전술 차단 플래그가 아닐 때만)
-  // 블랙홀 최종전(_tacticsDisabled)에서는 일점사·학익진·시간차 등 전 전술 체인 차단
-  if(G.heroes.includes('H01')&&!document.getElementById('cb-sunsin-btn')&&!combatState._tacticsDisabled){
+  // 이순신 일점사 전술 버튼 (H01 영입 시만 표시)
+  if(G.heroes.includes('H01')&&!document.getElementById('cb-sunsin-btn')){
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
     sbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite';
@@ -14234,7 +14233,6 @@ function _finishCombat(){
 // 일점사 후 30초 뒤 → 학익진 버튼 활성화 (아군 ATT ×3 추가 강화)
 function activateSunsinFocus(){
   if(!combatState||combatState._sunsinUsed||combatState.done)return;
-  if(combatState._tacticsDisabled){notify('🌌 보이드 차원에서는 우리 전술이 봉인됩니다','warn');return;}
   // ★ 전술 화자 초상: 일점사 → 호레이쇼 넬슨 (H05)
   try{_showTacticPortrait('img/chars/hero05.png',12000);}catch(e){}
   const target=combatState.enemies.filter(e=>e.hp>0)[0];
@@ -16182,7 +16180,6 @@ function startBlackHoleFleetCombat(){
   });
   combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,
                isBoss:false,isVoidBoss:false,_isBlackHoleFinal:true,
-               _tacticsDisabled:true,  // 우리 전술(일점사·학익진·시간차 등) 사용 불가
                _rndSeed:Date.now()%9999,_entranceT:1,_entranceDone:true,
                _planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
@@ -16197,8 +16194,8 @@ function startBlackHoleFleetCombat(){
     const t=document.getElementById('cb-title');
     if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
     addCombatLog('🌌 블랙홀 너머에서 우리 함대를 그대로 본뜬 신화급 미러 함대가 나타난다 — 보이드의 마지막 시험.','err');
-    addCombatLog('⚠️ 이 차원에서는 우리 전술(일점사·학익진 등)이 봉인된다. 순수한 함대 전투력으로 돌파!','err');
-    try{baekgu('적이 우리 함대를 거울처럼 따라했어! 게다가 전술도 안 통해. 정공법으로 가자.');}catch(e){}
+    addCombatLog('💡 적은 우리 전술(일점사·학익진 등)을 갖지 못한다. 전술 체인을 적극 활용해 돌파!','gold');
+    try{baekgu('적이 우리 함대를 거울처럼 따라했어! 능력치는 막상막하지만, 우리에겐 전술이 있다. 일점사부터!');}catch(e){}
     setTimeout(runCombatTurn,800);
   });
 }
