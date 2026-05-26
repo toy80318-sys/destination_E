@@ -116,13 +116,18 @@ body.combat-mode #notif{top:138px;max-width:260px}
 @keyframes bkIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .bk-msg{color:var(--yellow);font-size:13px;line-height:1.55;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05);animation:bkIn .35s ease}
 .bk-msg:last-child{border-bottom:none;color:#fffde0}
-#modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center}
+#modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:10px}
 #modal-bg.on{display:flex}
-.modal{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:24px;max-width:520px;width:92%;max-height:82vh;overflow-y:auto}
+/* 모달 레이아웃 — 컬럼 flex: 제목(고정) → 본문(스크롤) → 버튼(고정·잘리지 않음)
+   이전: .modal 자체가 overflow:auto 라 본문+버튼이 함께 스크롤되어 큰 콘텐츠 시
+        하단 버튼이 잘리거나 가려지는 문제. 본문만 스크롤되도록 분리. */
+.modal{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:24px;max-width:520px;width:92%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
 .modal.modal-wide{max-width:624px}
 .modal.modal-report{max-width:720px;padding:14px 16px;max-height:88vh}
 .modal.modal-report .modal-t{font-size:16px;margin-bottom:8px;padding-bottom:4px}
-.modal-t{color:var(--yellow);font-size:19px;font-weight:bold;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--bdr)}
+.modal-t{color:var(--yellow);font-size:19px;font-weight:bold;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+#modal-b{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#modal-btns{flex-shrink:0;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);background:var(--panel);flex-wrap:wrap}
 /* HUB */
 #s-hub{padding-top:44px;padding-bottom:0;flex-direction:row;align-items:stretch;justify-content:flex-start;overflow:hidden}
 #hub-planet-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;transition:opacity .4s ease;z-index:0}
