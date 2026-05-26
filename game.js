@@ -1720,8 +1720,14 @@ function calcPlayerLevel(){
   return Math.max(1,Math.min(1000,Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore)));
 }
 // 레벨 기반 적 강화 배율: 플레이어 전투력 상승에 비례해 적 ATK·HP 증가.
-// lv1→×1.00, lv100→×1.30, lv500→×2.50, lv1000→×4.00 (선형)
-function getLevelMult(){return 1.0+((calcPlayerLevel()-1)*0.003);}
+// sqrt 곡선(체감 감소): 초반은 선형과 유사, 후반에 폭주 방지
+//   lv1→×1.00, lv100→×1.31, lv300→×1.55, lv500→×1.71, lv700→×1.84,
+//   lv1000→×2.00 (기존 ×4.00 대비 50%), lv2000→×2.41
+// — 사용자 피드백: 링7(전투력 1000+)에서 적이 너무 강해 50%로 완화
+function getLevelMult(){
+  const lv=calcPlayerLevel();
+  return 1.0 + Math.sqrt(Math.max(0,lv-1)/1000);
+}
 // ── 적 함선 스펙 미리보기 HTML 생성 (전투 직전 모달용) ────────────────────
 function _formatEnemyPreview(enemies,opts){
   if(!enemies||!enemies.length)return'';
