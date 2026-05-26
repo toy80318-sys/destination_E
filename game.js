@@ -10536,14 +10536,15 @@ function startAsteroidBeltMinigame(destPid){
   const onKU=e=>{keys[e.code]=false;};
   window.addEventListener('keydown',onKD);
   window.addEventListener('keyup',onKU);
-  // 마우스
-  const onMM=e=>{const r=cv.getBoundingClientRect();state.mouseX=(e.clientX-r.left)*(W/r.width);state.mouseY=(e.clientY-r.top)*(H/r.height);};
+  // 마우스 — 입력 모드는 키보드 vs 마우스 추적 (키 떼도 초기 위치로 안 돌아가게)
+  state._inputMode='keyboard';  // 시작은 키보드 기준
+  const onMM=e=>{const r=cv.getBoundingClientRect();state.mouseX=(e.clientX-r.left)*(W/r.width);state.mouseY=(e.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
   const onMD=e=>{e.preventDefault();_fireLaser();};  // 클릭=레이저
   cv.addEventListener('mousemove',onMM);
   cv.addEventListener('mousedown',onMD);
   // 터치 (모바일 대응)
-  const onTS=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);_fireLaser();};
-  const onTM=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);};
+  const onTS=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';_fireLaser();};
+  const onTM=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
   cv.addEventListener('touchstart',onTS,{passive:false});
   cv.addEventListener('touchmove',onTM,{passive:false});
 
@@ -10677,13 +10678,16 @@ function startAsteroidBeltMinigame(destPid){
     if(keys.KeyD||keys.ArrowRight)vx+=SPD;
     if(keys.KeyW||keys.ArrowUp)vy-=SPD;
     if(keys.KeyS||keys.ArrowDown)vy+=SPD;
-    // 마우스가 캔버스 위에 있으면 이동 동시 적용 (lerp)
-    if(state.mouseX!=null&&vx===0&&vy===0){
+    // 키가 눌리면 keyboard 모드로 전환 (마우스 lerp 끊김)
+    if(vx!==0||vy!==0){
+      state._inputMode='keyboard';
+      state.ship.x+=vx*dt;state.ship.y+=vy*dt;
+    } else if(state._inputMode==='mouse'&&state.mouseX!=null){
+      // 마우스 모드에서만 lerp — 키 떼도 위치 유지, 마우스 움직였을 때만 추종
       state.ship.x+=(state.mouseX-state.ship.w/2-state.ship.x)*0.18;
       state.ship.y+=(state.mouseY-state.ship.y)*0.18;
-    } else {
-      state.ship.x+=vx*dt;state.ship.y+=vy*dt;
     }
+    // (둘 다 아니면 현재 위치 그대로 유지 — 초기 위치로 안 돌아감)
     // 클램프 (캔버스 영역)
     state.ship.x=Math.max(0,Math.min(W-state.ship.w-4,state.ship.x));
     state.ship.y=Math.max(state.ship.h/2,Math.min(H-state.ship.h/2,state.ship.y));
