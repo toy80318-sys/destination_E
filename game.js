@@ -10468,167 +10468,433 @@ function _routeCrossesAsteroidBelt(fromPid,toPid){
   return fromPid==='P29'||fromPid==='P30'||toPid==='P29'||toPid==='P30';
 }
 
-// ─── 소행성대 미니게임 ─────────────────────────────────────────────
-// 10초 캔버스 게임 — 위에서 떨어지는 소행성을 클릭/탭으로 격파.
-// 3회 피격 시 패배(-3% 크레딧). 생존 또는 5개+ 격파 시 승리(+크레딧 +VE).
+// ─── 소행성대 미니게임 — 사이드 스크롤 슈터 ─────────────────────────
+// 좌측 기함(우리 함대 0번)이 우측을 바라보고 움직임 / 배경 우→좌 스크롤
+// 우측에서 소행성·해적함이 날아옴. 해적함은 레이저/미사일로 반격.
+// 조작: 방향키·WASD 이동, 마우스 위치 추종, Shift=레이저, Ctrl/Enter=미사일(자동조준)
+// 30초 생존 = 승리 (+크레딧 5%+격파×500, +VE 20+격파×4)
+// 기함 HP 0 = 패배 (-크레딧 3%)
 function startAsteroidBeltMinigame(destPid){
-  // 오버레이 생성
+  // 기함 스탯
+  const flagship=G.fleet&&G.fleet[0];
+  const flagStat=flagship?getShipStats(flagship):{HP:1000,maxSH:300,ATT:30};
+  const shipSrc=flagship?shipImgSrc(flagship):'img/ships/S01.png';
+  const W=960, H=560;
+  // 오버레이
   const overlay=document.createElement('div');
   overlay.id='_ab-mini-overlay';
-  overlay.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:radial-gradient(ellipse at center,#1a0030 0%,#000 70%);z-index:99997;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;opacity:0;transition:opacity 0.6s ease-in';
+  overlay.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:#000;z-index:99997;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;opacity:0;transition:opacity 0.6s ease-in;user-select:none';
   overlay.innerHTML=`
-    <div style="position:absolute;top:18px;left:0;right:0;text-align:center">
-      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px">— 소행성대 미니게임 —</div>
-      <div style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:3px;margin-top:6px">⚠️ 소행성 회피 ⚠️</div>
-      <div id="ab-stat" style="color:#aaa;font-size:13px;margin-top:6px;letter-spacing:2px">HP <b style="color:#66ff66" id="ab-hp">3</b>  ·  격파 <b style="color:#ffcc66" id="ab-score">0</b>  ·  남은 시간 <b style="color:#66ddff" id="ab-time">10</b>s</div>
+    <div style="position:absolute;top:14px;left:0;right:0;text-align:center;pointer-events:none">
+      <div style="color:#cc66ff;font-size:13px;letter-spacing:6px">— 소행성대 침투전 —</div>
+      <div style="color:#fff;font-size:18px;font-weight:bold;letter-spacing:3px;margin-top:4px">🌑 보이드 소행성대 돌파</div>
     </div>
-    <canvas id="ab-cv" width="640" height="480" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 32px rgba(180,80,255,.4);cursor:crosshair;touch-action:none"></canvas>
-    <div style="position:absolute;bottom:24px;left:0;right:0;text-align:center;color:#aaa;font-size:12px;letter-spacing:2px">소행성을 클릭/탭해 격파 — 10초 생존 시 보상</div>`;
+    <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none" tabindex="0"></canvas>
+    <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#aaa;font-size:11px;letter-spacing:2px;line-height:1.7;pointer-events:none">
+      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">마우스 이동</b> · <b style="color:#ffcc66">Shift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일(자동조준)
+    </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
   const cv=overlay.querySelector('#ab-cv'), cx=cv.getContext('2d');
-  const W=cv.width, H=cv.height;
-  // 상태
-  let state={hp:3, score:0, asteroids:[], particles:[], startMs:Date.now(), durationMs:10000, ended:false, spawnTimer:0};
-  // 캔버스 좌표 변환 (HiDPI 안전)
-  function _evtPos(e){
-    const r=cv.getBoundingClientRect();
-    const cx2=e.touches?e.touches[0].clientX:e.clientX;
-    const cy2=e.touches?e.touches[0].clientY:e.clientY;
-    return{x:(cx2-r.left)*(W/r.width), y:(cy2-r.top)*(H/r.height)};
-  }
-  function _hit(pos){
-    for(let i=state.asteroids.length-1;i>=0;i--){
-      const a=state.asteroids[i];
-      if(Math.hypot(pos.x-a.x,pos.y-a.y)<a.r+8){
-        // 파편 파티클
-        for(let k=0;k<10;k++){
-          const ang=Math.random()*Math.PI*2;
-          state.particles.push({x:a.x,y:a.y,vx:Math.cos(ang)*3,vy:Math.sin(ang)*3,life:25,col:'#ffaa44'});
-        }
-        state.asteroids.splice(i,1);
-        state.score++;
-        return true;
-      }
-    }
-    return false;
-  }
-  cv.onclick=e=>{e.preventDefault();_hit(_evtPos(e));};
-  cv.addEventListener('touchstart',e=>{e.preventDefault();_hit(_evtPos(e));},{passive:false});
+  cv.focus();
+  // 이미지 로드
+  const shipImg=new Image();shipImg.src=shipSrc;
+  const pirateImgs={};['PIRATE_S','PIRATE_M','PIRATE_L'].forEach(k=>{pirateImgs[k]=new Image();pirateImgs[k].src='img/combat/enemies/'+k+'.png';});
 
-  function spawnAsteroid(){
-    const r=10+Math.random()*22;
-    const x=20+Math.random()*(W-40);
-    const speed=0.8+Math.random()*1.6+ Math.min(1.5,(Date.now()-state.startMs)/4000);
-    state.asteroids.push({x, y:-r, r, vy:speed, vx:(Math.random()-0.5)*0.6, rot:Math.random()*Math.PI*2, rotSpeed:(Math.random()-0.5)*0.05});
+  // 게임 상태
+  const state={
+    ship:{x:120, y:H/2, vx:0, vy:0, w:80, h:80, hp:flagStat.HP, maxHP:flagStat.HP, sh:flagStat.maxSH, maxSH:flagStat.maxSH, att:flagStat.ATT||30, hitFlash:0},
+    asteroids:[],
+    enemies:[],
+    pBullets:[],   // 아군 레이저
+    pMissiles:[],  // 아군 미사일 (호밍)
+    eBullets:[],   // 적 레이저
+    eMissiles:[],  // 적 미사일
+    parts:[],      // 폭발 파편
+    stars:[],      // 배경 별 (스크롤)
+    startMs:Date.now(),
+    durationMs:30000,  // 30초 — 이 시간 후 맵으로 복귀 가능
+    ended:false,
+    spawnTimerAst:0,
+    spawnTimerEn:0,
+    laserCd:0, missileCd:0,
+    kills:0, score:0,
+    mouseX:null, mouseY:null
+  };
+  // 별 배경 (3 레이어 패럴랙스)
+  for(let i=0;i<140;i++){state.stars.push({x:Math.random()*W, y:Math.random()*H, sz:Math.random()*1.8+0.4, layer:Math.floor(Math.random()*3)});}
+
+  // 키보드
+  const keys={};
+  const onKD=e=>{
+    keys[e.code]=true;
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','ShiftLeft','ShiftRight','ControlLeft','ControlRight','Enter','KeyW','KeyA','KeyS','KeyD'].includes(e.code))e.preventDefault();
+  };
+  const onKU=e=>{keys[e.code]=false;};
+  window.addEventListener('keydown',onKD);
+  window.addEventListener('keyup',onKU);
+  // 마우스
+  const onMM=e=>{const r=cv.getBoundingClientRect();state.mouseX=(e.clientX-r.left)*(W/r.width);state.mouseY=(e.clientY-r.top)*(H/r.height);};
+  const onMD=e=>{e.preventDefault();_fireLaser();};  // 클릭=레이저
+  cv.addEventListener('mousemove',onMM);
+  cv.addEventListener('mousedown',onMD);
+  // 터치 (모바일 대응)
+  const onTS=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);_fireLaser();};
+  const onTM=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);};
+  cv.addEventListener('touchstart',onTS,{passive:false});
+  cv.addEventListener('touchmove',onTM,{passive:false});
+
+  // 발사
+  function _fireLaser(){
+    if(state.laserCd>0||state.ended)return;
+    state.laserCd=8;  // ≈130ms @ 60fps
+    state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:14, dmg:1, life:90});
+    try{AudioMgr.playSfx('laser_fire',{vol:0.4,cooldown:30});}catch(e){}
   }
-  function _drawAsteroid(a){
-    cx.save();cx.translate(a.x,a.y);cx.rotate(a.rot);
-    // 거친 다각형
-    cx.fillStyle='#998877';cx.strokeStyle='#665544';cx.lineWidth=1.5;
-    cx.beginPath();
-    const sides=8;
-    for(let i=0;i<sides;i++){
-      const ang=(i/sides)*Math.PI*2;
-      const rr=a.r*(0.85+0.3*Math.sin(i*7.3));
-      const px=Math.cos(ang)*rr, py=Math.sin(ang)*rr;
-      if(i===0)cx.moveTo(px,py);else cx.lineTo(px,py);
+  function _fireMissile(){
+    if(state.missileCd>0||state.ended)return;
+    state.missileCd=36;  // ≈600ms
+    // 가장 가까운 적 타겟 (소행성·해적 합산)
+    let target=null,td=1e9;
+    [...state.asteroids,...state.enemies].forEach(e=>{
+      const d=Math.hypot(e.x-state.ship.x,e.y-state.ship.y);
+      if(d<td){td=d;target=e;}
+    });
+    state.pMissiles.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:6, vy:0, target, dmg:3, life:140});
+    try{AudioMgr.playSfx('missile',{vol:0.5,cooldown:60});}catch(e){}
+  }
+
+  // 적 스폰
+  function _spawnAsteroid(){
+    const roll=Math.random();
+    let sz, r, hp;
+    if(roll<0.55){sz='S';r=14+Math.random()*8;hp=1;}
+    else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=2;}
+    else {sz='L';r=34+Math.random()*14;hp=4;}
+    const elapsed=(Date.now()-state.startMs)/1000;
+    const speed=2+Math.random()*1.2+Math.min(2,elapsed/8);
+    state.asteroids.push({
+      x:W+r, y:30+Math.random()*(H-60), r, sz, hp, maxHp:hp,
+      vx:-speed, vy:(Math.random()-0.5)*0.4,
+      rot:Math.random()*Math.PI*2, rotSpeed:(Math.random()-0.5)*0.06
+    });
+  }
+  function _spawnEnemy(){
+    const roll=Math.random();
+    let sz, w, h, hp, fireRate, dmg;
+    if(roll<0.5){sz='S';w=50;h=50;hp=3;fireRate=80;dmg=8;}
+    else if(roll<0.85){sz='M';w=70;h=70;hp=5;fireRate=60;dmg=14;}
+    else {sz='L';w=100;h=100;hp=10;fireRate=45;dmg=22;}
+    state.enemies.push({
+      x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
+      vx:-(1.4+Math.random()*0.8), vy:(Math.random()-0.5)*0.6,
+      fireCd:30+Math.random()*30, fireRate, dmg,
+      img:pirateImgs['PIRATE_'+sz]
+    });
+  }
+
+  // 충돌 검사
+  function _circleHit(a,bx,by,br){return Math.hypot(a.x-bx,a.y-by)<a.r+br;}
+  function _boxHit(e,bx,by,br){return bx>=e.x-e.w/2-br&&bx<=e.x+e.w/2+br&&by>=e.y-e.h/2-br&&by<=e.y+e.h/2+br;}
+
+  function _explode(x,y,color,big){
+    const n=big?22:12;
+    for(let k=0;k<n;k++){
+      const ang=Math.random()*Math.PI*2, sp=1+Math.random()*4;
+      state.parts.push({x,y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:25+Math.random()*15,col:color||'#ffaa44'});
     }
-    cx.closePath();cx.fill();cx.stroke();
-    // 표면 디테일
-    cx.fillStyle='#776655';cx.beginPath();cx.arc(-a.r*0.3,-a.r*0.2,a.r*0.18,0,Math.PI*2);cx.fill();
-    cx.beginPath();cx.arc(a.r*0.25,a.r*0.25,a.r*0.12,0,Math.PI*2);cx.fill();
-    cx.restore();
   }
+  function _damageShip(amt){
+    if(state.ship.sh>0){
+      const absorbed=Math.min(state.ship.sh,amt);
+      state.ship.sh-=absorbed;amt-=absorbed;
+    }
+    if(amt>0){state.ship.hp-=amt;state.ship.hitFlash=10;
+      cv.style.boxShadow='0 0 36px rgba(255,80,80,.8)';
+      setTimeout(()=>{cv.style.boxShadow='0 0 36px rgba(180,80,255,.5)';},150);
+    }
+    if(state.ship.hp<=0){state.ship.hp=0;_finish(false);}
+  }
+
   function _finish(win){
     if(state.ended)return;state.ended=true;
-    const rew=win?Math.round(Math.max(2000,(G.credits||0)*0.05)+state.score*500):0;
-    const veRew=win?Math.round(20+state.score*4):0;
+    // 리스너 정리
+    window.removeEventListener('keydown',onKD);
+    window.removeEventListener('keyup',onKU);
+    // 보상
+    const rew=win?Math.round(Math.max(3000,(G.credits||0)*0.05)+state.kills*800):0;
+    const veRew=win?Math.round(20+state.kills*5):0;
     const pen=win?0:Math.round((G.credits||0)*0.03);
-    if(win){
-      G.credits=(G.credits||0)+rew;
-      G.voidEssence=(G.voidEssence||0)+veRew;
-    } else {
-      G.credits=Math.max(100,(G.credits||0)-pen);
-    }
+    if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}
+    else{G.credits=Math.max(100,(G.credits||0)-pen);}
+    // 실제 함대 hp 반영 (전투 결과 보존)
+    if(flagship){flagship.hp=Math.max(1,Math.floor(state.ship.hp));if(flagship.sh!=null)flagship.sh=Math.max(0,Math.floor(state.ship.sh));}
     saveGame(true);
     const msg=win?
-      `<div style="font-size:46px;margin-bottom:10px">🎯</div>
+      `<div style="font-size:48px;margin-bottom:10px">🚀</div>
        <div style="color:#ffd700;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성대 돌파!</div>
-       <div style="color:#66ff99;font-size:14px;line-height:1.9;margin-bottom:10px">격파: <b>${state.score}</b>개 · 생존</div>
+       <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대 · 잔여 HP ${Math.floor(state.ship.hp)}/${state.ship.maxHP}</div>
        <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
-         💰 보상 +₡${rew.toLocaleString()}<br>💎 보이드 에센스 +${veRew}
+         💰 +₡${rew.toLocaleString()}<br>💎 보이드 에센스 +${veRew}
        </div>`:
-      `<div style="font-size:46px;margin-bottom:10px">💥</div>
-       <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성에 피격</div>
-       <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">격파: <b>${state.score}</b>개</div>
+      `<div style="font-size:48px;margin-bottom:10px">💥</div>
+       <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">기함 격침</div>
+       <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대</div>
        <div style="color:#ffaa99;font-size:13px;line-height:1.9;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.3);border-radius:6px;padding:10px 16px">
          💸 크레딧 -₡${pen.toLocaleString()} (-3%)
        </div>`;
     const result=document.createElement('div');
-    result.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,10,40,.96);border:2px solid '+(win?'#ffd700':'#ff6666')+';border-radius:12px;padding:24px 36px;text-align:center;min-width:300px;box-shadow:0 8px 48px rgba(180,80,255,.5);z-index:10';
+    result.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,10,40,.96);border:2px solid '+(win?'#ffd700':'#ff6666')+';border-radius:12px;padding:24px 36px;text-align:center;min-width:320px;box-shadow:0 8px 48px rgba(180,80,255,.5);z-index:10';
     result.innerHTML=msg+'<button style="margin-top:14px;padding:10px 28px;background:rgba(180,80,255,.2);border:1.5px solid #cc66ff;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px" onclick="(function(){var ov=document.getElementById(\'_ab-mini-overlay\');if(ov)ov.remove();})()">계속 →</button>';
     overlay.appendChild(result);
   }
+
   // 메인 루프
   let lastT=Date.now();
   function tick(){
     if(!document.body.contains(overlay))return;
+    if(state.ended)return;
     const now=Date.now();
-    const dt=(now-lastT)/16.67;  // ≈60fps unit
+    const dt=(now-lastT)/16.67;
     lastT=now;
     const elapsed=now-state.startMs;
-    const left=Math.max(0,Math.ceil((state.durationMs-elapsed)/1000));
-    document.getElementById('ab-time').textContent=left;
-    document.getElementById('ab-hp').textContent=state.hp;
-    document.getElementById('ab-score').textContent=state.score;
+    const leftSec=Math.max(0,Math.ceil((state.durationMs-elapsed)/1000));
+
+    // 입력 → 이동
+    let vx=0,vy=0;
+    const SPD=5;
+    if(keys.KeyA||keys.ArrowLeft)vx-=SPD;
+    if(keys.KeyD||keys.ArrowRight)vx+=SPD;
+    if(keys.KeyW||keys.ArrowUp)vy-=SPD;
+    if(keys.KeyS||keys.ArrowDown)vy+=SPD;
+    // 마우스가 캔버스 위에 있으면 이동 동시 적용 (lerp)
+    if(state.mouseX!=null&&vx===0&&vy===0){
+      state.ship.x+=(state.mouseX-state.ship.w/2-state.ship.x)*0.18;
+      state.ship.y+=(state.mouseY-state.ship.y)*0.18;
+    } else {
+      state.ship.x+=vx*dt;state.ship.y+=vy*dt;
+    }
+    // 클램프 (캔버스 영역)
+    state.ship.x=Math.max(0,Math.min(W-state.ship.w-4,state.ship.x));
+    state.ship.y=Math.max(state.ship.h/2,Math.min(H-state.ship.h/2,state.ship.y));
+
+    // 발사 입력
+    if(state.laserCd>0)state.laserCd-=dt;
+    if(state.missileCd>0)state.missileCd-=dt;
+    if(keys.ShiftLeft||keys.ShiftRight)_fireLaser();
+    if(keys.ControlLeft||keys.ControlRight||keys.Enter)_fireMissile();
+
     // 스폰
-    state.spawnTimer+=dt;
-    const spawnInterval=Math.max(12, 36 - Math.floor(elapsed/1500)*3);  // 점점 빨라짐
-    if(state.spawnTimer>=spawnInterval){state.spawnTimer=0;spawnAsteroid();}
-    // 클리어
+    state.spawnTimerAst+=dt;state.spawnTimerEn+=dt;
+    if(state.spawnTimerAst>=Math.max(14,40-Math.floor(elapsed/2000)*4)){state.spawnTimerAst=0;_spawnAsteroid();}
+    if(state.spawnTimerEn>=Math.max(70,140-Math.floor(elapsed/3000)*15)){state.spawnTimerEn=0;_spawnEnemy();}
+
+    // ─── 렌더 시작 ───
     cx.fillStyle='#000';cx.fillRect(0,0,W,H);
-    // 별 배경
-    cx.fillStyle='#445';
-    for(let i=0;i<40;i++){const sx=(i*173)%W, sy=(i*97+elapsed*0.03)%H;cx.fillRect(sx,sy,1.5,1.5);}
+    // 배경 별 스크롤 (우→좌)
+    for(const s of state.stars){
+      s.x-=(0.4+s.layer*0.8)*dt;
+      if(s.x<0)s.x=W;
+      const col=['#445','#778','#abc'][s.layer]||'#789';
+      cx.fillStyle=col;cx.fillRect(s.x,s.y,s.sz,s.sz);
+    }
+
+    // 적 함선 업데이트·렌더
+    for(let i=state.enemies.length-1;i>=0;i--){
+      const e=state.enemies[i];
+      e.x+=e.vx*dt;e.y+=e.vy*dt;
+      if(e.y<e.h/2||e.y>H-e.h/2)e.vy=-e.vy;
+      e.fireCd-=dt;
+      if(e.fireCd<=0&&e.x<W-20){
+        e.fireCd=e.fireRate;
+        // 50% 레이저, 50% 미사일
+        if(Math.random()<0.5){
+          state.eBullets.push({x:e.x-e.w/2,y:e.y,vx:-9,dmg:e.dmg,life:120});
+        } else {
+          state.eMissiles.push({x:e.x-e.w/2,y:e.y,vx:-4,vy:0,target:state.ship,dmg:e.dmg*1.4,life:160});
+        }
+      }
+      if(e.x<-e.w){state.enemies.splice(i,1);continue;}
+      // 그리기
+      if(e.img&&e.img.complete&&e.img.naturalWidth>0){
+        cx.save();cx.translate(e.x,e.y);cx.scale(-1,1);  // 좌측 향하게 반전
+        cx.drawImage(e.img,-e.w/2,-e.h/2,e.w,e.h);cx.restore();
+      } else {
+        cx.fillStyle='#cc4444';cx.beginPath();cx.ellipse(e.x,e.y,e.w/2,e.h/2,0,0,Math.PI*2);cx.fill();
+      }
+      // HP 바 (잔여 비율)
+      if(e.hp<e.maxHp){
+        cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(e.x-e.w/2,e.y-e.h/2-8,e.w,4);
+        cx.fillStyle='#ff6666';cx.fillRect(e.x-e.w/2,e.y-e.h/2-8,e.w*(e.hp/e.maxHp),4);
+      }
+    }
+
     // 소행성 업데이트·렌더
     for(let i=state.asteroids.length-1;i>=0;i--){
       const a=state.asteroids[i];
-      a.y+=a.vy*dt;a.x+=a.vx*dt;a.rot+=a.rotSpeed*dt;
-      if(a.y-a.r>H){
-        // 바닥 닿음 = 피격
-        state.asteroids.splice(i,1);
-        state.hp--;
-        // 화면 흔들림 효과
-        cv.style.transform='translateX('+((Math.random()-0.5)*8)+'px) translateY('+((Math.random()-0.5)*8)+'px)';
-        setTimeout(()=>{cv.style.transform='';},120);
-        if(state.hp<=0){
-          _finish(false);
-          return;
-        }
-        continue;
+      a.x+=a.vx*dt;a.y+=a.vy*dt;a.rot+=a.rotSpeed*dt;
+      if(a.y<a.r||a.y>H-a.r)a.vy=-a.vy;
+      if(a.x<-a.r){state.asteroids.splice(i,1);continue;}
+      // 기함 충돌 = 데미지 (소행성은 자체 폭발)
+      if(Math.hypot(a.x-(state.ship.x+state.ship.w/2),a.y-state.ship.y)<a.r+state.ship.w*0.35){
+        _explode(a.x,a.y,'#ffaa66',a.sz==='L');
+        _damageShip(a.sz==='L'?60:a.sz==='M'?30:15);
+        state.asteroids.splice(i,1);continue;
       }
-      _drawAsteroid(a);
+      // 그리기
+      cx.save();cx.translate(a.x,a.y);cx.rotate(a.rot);
+      cx.fillStyle='#998877';cx.strokeStyle='#665544';cx.lineWidth=1.5;
+      cx.beginPath();
+      const sides=8;
+      for(let k=0;k<sides;k++){const ang=(k/sides)*Math.PI*2;const rr=a.r*(0.85+0.3*Math.sin(k*7.3));const px=Math.cos(ang)*rr,py=Math.sin(ang)*rr;if(k===0)cx.moveTo(px,py);else cx.lineTo(px,py);}
+      cx.closePath();cx.fill();cx.stroke();
+      cx.fillStyle='#776655';cx.beginPath();cx.arc(-a.r*0.3,-a.r*0.2,a.r*0.18,0,Math.PI*2);cx.fill();
+      cx.restore();
     }
+
+    // 아군 레이저
+    for(let i=state.pBullets.length-1;i>=0;i--){
+      const b=state.pBullets[i];b.x+=b.vx*dt;b.life-=dt;
+      if(b.x>W||b.life<=0){state.pBullets.splice(i,1);continue;}
+      // 충돌
+      let hit=false;
+      for(let k=state.asteroids.length-1;k>=0;k--){
+        const a=state.asteroids[k];
+        if(_circleHit(a,b.x,b.y,3)){a.hp-=b.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',a.sz==='L');state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
+      }
+      if(!hit){
+        for(let k=state.enemies.length-1;k>=0;k--){
+          const e=state.enemies[k];
+          if(_boxHit(e,b.x,b.y,3)){e.hp-=b.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
+        }
+      }
+      if(hit){state.pBullets.splice(i,1);continue;}
+      // 그리기
+      cx.strokeStyle='#00f3ff';cx.lineWidth=3;cx.shadowColor='#00f3ff';cx.shadowBlur=10;
+      cx.beginPath();cx.moveTo(b.x-12,b.y);cx.lineTo(b.x,b.y);cx.stroke();
+      cx.shadowBlur=0;
+    }
+
+    // 아군 미사일 (호밍)
+    for(let i=state.pMissiles.length-1;i>=0;i--){
+      const m=state.pMissiles[i];
+      // 타겟이 죽었으면 가장 가까운 적 재탐색
+      if(!m.target||m.target.hp<=0||(m.target.x!==undefined&&m.target.x<-50)){
+        let nt=null,td=1e9;
+        [...state.asteroids,...state.enemies].forEach(e=>{const d=Math.hypot(e.x-m.x,e.y-m.y);if(d<td){td=d;nt=e;}});
+        m.target=nt;
+      }
+      if(m.target){
+        const dx=m.target.x-m.x, dy=m.target.y-m.y, d=Math.hypot(dx,dy)||1;
+        m.vx+=(dx/d)*0.7*dt;m.vy+=(dy/d)*0.7*dt;
+        // 속도 클램프
+        const sp=Math.hypot(m.vx,m.vy);if(sp>10){m.vx*=10/sp;m.vy*=10/sp;}
+      }
+      m.x+=m.vx*dt;m.y+=m.vy*dt;m.life-=dt;
+      if(m.x>W+30||m.x<-30||m.y<-30||m.y>H+30||m.life<=0){state.pMissiles.splice(i,1);continue;}
+      // 충돌
+      let hit=false;
+      for(let k=state.asteroids.length-1;k>=0;k--){
+        const a=state.asteroids[k];
+        if(_circleHit(a,m.x,m.y,5)){a.hp-=m.dmg;if(a.hp<=0){_explode(a.x,a.y,'#ffaa66',true);state.kills++;state.asteroids.splice(k,1);}hit=true;break;}
+      }
+      if(!hit){
+        for(let k=state.enemies.length-1;k>=0;k--){
+          const e=state.enemies[k];
+          if(_boxHit(e,m.x,m.y,5)){e.hp-=m.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);}hit=true;break;}
+        }
+      }
+      if(hit){_explode(m.x,m.y,'#ff8844',false);state.pMissiles.splice(i,1);continue;}
+      // 그리기
+      cx.save();cx.translate(m.x,m.y);cx.rotate(Math.atan2(m.vy,m.vx));
+      cx.fillStyle='#ff66cc';cx.shadowColor='#ff66cc';cx.shadowBlur=12;
+      cx.beginPath();cx.moveTo(-8,-3);cx.lineTo(8,0);cx.lineTo(-8,3);cx.closePath();cx.fill();
+      cx.shadowBlur=0;cx.restore();
+    }
+
+    // 적 레이저
+    for(let i=state.eBullets.length-1;i>=0;i--){
+      const b=state.eBullets[i];b.x+=b.vx*dt;b.life-=dt;
+      if(b.x<-12||b.life<=0){state.eBullets.splice(i,1);continue;}
+      // 기함 충돌
+      if(b.x>=state.ship.x&&b.x<=state.ship.x+state.ship.w&&b.y>=state.ship.y-state.ship.h/2&&b.y<=state.ship.y+state.ship.h/2){
+        _damageShip(b.dmg);_explode(b.x,b.y,'#ff4444',false);state.eBullets.splice(i,1);continue;
+      }
+      cx.strokeStyle='#ff4444';cx.lineWidth=3;cx.shadowColor='#ff4444';cx.shadowBlur=8;
+      cx.beginPath();cx.moveTo(b.x,b.y);cx.lineTo(b.x+12,b.y);cx.stroke();cx.shadowBlur=0;
+    }
+
+    // 적 미사일
+    for(let i=state.eMissiles.length-1;i>=0;i--){
+      const m=state.eMissiles[i];
+      const ty=state.ship.y, tx=state.ship.x+state.ship.w/2;
+      const dx=tx-m.x, dy=ty-m.y, d=Math.hypot(dx,dy)||1;
+      m.vx+=(dx/d)*0.5*dt;m.vy+=(dy/d)*0.5*dt;
+      const sp=Math.hypot(m.vx,m.vy);if(sp>8){m.vx*=8/sp;m.vy*=8/sp;}
+      m.x+=m.vx*dt;m.y+=m.vy*dt;m.life-=dt;
+      if(m.x<-30||m.life<=0){state.eMissiles.splice(i,1);continue;}
+      // 기함 충돌
+      if(Math.hypot(m.x-tx,m.y-ty)<state.ship.w*0.4){
+        _damageShip(m.dmg);_explode(m.x,m.y,'#ff4488',true);state.eMissiles.splice(i,1);continue;
+      }
+      cx.save();cx.translate(m.x,m.y);cx.rotate(Math.atan2(m.vy,m.vx));
+      cx.fillStyle='#ff6688';cx.shadowColor='#ff6688';cx.shadowBlur=10;
+      cx.beginPath();cx.moveTo(-7,-3);cx.lineTo(7,0);cx.lineTo(-7,3);cx.closePath();cx.fill();
+      cx.shadowBlur=0;cx.restore();
+    }
+
+    // 기함 그리기 (좌측, 우측 향함)
+    if(shipImg.complete&&shipImg.naturalWidth>0){
+      cx.save();
+      if(state.ship.hitFlash>0){cx.globalAlpha=0.4+0.3*Math.random();state.ship.hitFlash-=dt;}
+      cx.drawImage(shipImg,state.ship.x,state.ship.y-state.ship.h/2,state.ship.w,state.ship.h);
+      cx.restore();
+    } else {
+      cx.fillStyle='#00f3ff';cx.beginPath();
+      cx.moveTo(state.ship.x+state.ship.w,state.ship.y);
+      cx.lineTo(state.ship.x,state.ship.y-state.ship.h/2);
+      cx.lineTo(state.ship.x+state.ship.w*0.3,state.ship.y);
+      cx.lineTo(state.ship.x,state.ship.y+state.ship.h/2);
+      cx.closePath();cx.fill();
+    }
+    // 엔진 잔염
+    if(state.ship.hitFlash<=0){
+      cx.fillStyle='rgba(102,221,255,'+(0.4+0.4*Math.random())+')';
+      cx.beginPath();cx.ellipse(state.ship.x-8,state.ship.y,12,4,0,0,Math.PI*2);cx.fill();
+    }
+
     // 파편
-    for(let i=state.particles.length-1;i>=0;i--){
-      const p=state.particles[i];
-      p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
-      if(p.life<=0){state.particles.splice(i,1);continue;}
-      cx.fillStyle=p.col;cx.globalAlpha=Math.max(0,p.life/25);
+    for(let i=state.parts.length-1;i>=0;i--){
+      const p=state.parts[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+      if(p.life<=0){state.parts.splice(i,1);continue;}
+      cx.fillStyle=p.col;cx.globalAlpha=Math.max(0,p.life/30);
       cx.beginPath();cx.arc(p.x,p.y,2,0,Math.PI*2);cx.fill();
     }
     cx.globalAlpha=1;
-    // 시간 만료 = 승리
-    if(elapsed>=state.durationMs){
-      _finish(true);
-      return;
-    }
+
+    // HUD 오버레이 (캔버스 좌상단)
+    // HP 바
+    cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,10,220,18);
+    cx.fillStyle='#ff6666';cx.fillRect(10,10,220*(state.ship.hp/state.ship.maxHP),18);
+    cx.fillStyle='#fff';cx.font='bold 11px monospace';cx.fillText('HP '+Math.floor(state.ship.hp)+'/'+state.ship.maxHP, 16, 23);
+    // 실드 바
+    cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,32,220,12);
+    cx.fillStyle='#66ddff';cx.fillRect(10,32,220*((state.ship.sh||0)/Math.max(1,state.ship.maxSH)),12);
+    cx.fillStyle='#fff';cx.font='10px monospace';cx.fillText('SH '+Math.floor(state.ship.sh||0)+'/'+state.ship.maxSH, 16, 41);
+    // 우상단: 시간·격파
+    cx.fillStyle='#66ddff';cx.font='bold 18px monospace';cx.textAlign='right';
+    cx.fillText('⏱ '+leftSec+'s', W-14, 26);
+    cx.fillStyle='#ffcc66';cx.font='bold 14px monospace';
+    cx.fillText('격파 '+state.kills, W-14, 46);
+    cx.textAlign='left';
+
+    // 종료 판정
+    if(elapsed>=state.durationMs){_finish(true);return;}
     requestAnimationFrame(tick);
   }
-  setTimeout(tick,500);  // 0.5초 페이드인 후 시작
-  notify('⚠️ 소행성대 진입 — 소행성을 격파하라!','warn');
-  try{baekgu('소행성대다! 떨어지는 소행성을 클릭해서 격파해! 3번 맞으면 손해 봐.');}catch(e){}
+  setTimeout(()=>{cv.focus();tick();},500);
+  notify('⚠️ 소행성대 진입 — 기함 출격!','warn');
+  try{baekgu('소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 20초 버텨!');}catch(e){}
 }
 try{if(typeof window!=='undefined')window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;}catch(e){}
 
