@@ -2053,7 +2053,125 @@ function showHub(){
     if(Math.random()<0.8){baekgu(getBaekguStoryHint());return;}
     baekgu(tips[Math.floor(Math.random()*tips.length)]);
   },25000);  // 25초 간격 (이전 45초 → 25초)
+  // 첫 게임 진입 시 온보딩 튜토리얼 자동 실행
+  if(!G._tutorialDone){
+    setTimeout(()=>{try{showOnboardingTutorial();}catch(e){console.warn('tutorial',e);}},1200);
+  }
 }
+
+// ═══ 온보딩 튜토리얼 ════════════════════════════════════════════════
+// 첫 게임 진입 시 메뉴/UI를 팝업 툴팁으로 단계별 안내. G._tutorialDone 플래그로 1회만.
+function showOnboardingTutorial(){
+  // 이미 표시 중이면 무시
+  if(document.getElementById('_tutorial-overlay'))return;
+  const steps=[
+    {target:'#h-act',pos:'bottom',title:'ACT / TURN',
+     text:'좌상단에 현재 ACT와 턴이 표시돼. 매 20턴마다 ACT가 진행되고 ACT3에 도달하면 지구 진입이 열려.'},
+    {target:'#h-credits',pos:'bottom',title:'재화 (₡ / VE / VC)',
+     text:'₡ 크레딧은 무역·전투 보상, VE는 보이드 에센스, VC는 보이드 크리스탈. ⭐는 명성으로 가챠·퀘스트 보상에 영향을 줘.'},
+    {target:'#hn-main',pos:'right',title:'메인 허브',
+     text:'현재 행성의 메인 허브. 광장·도크·프론트 잠금 해제 진행도가 표시돼.'},
+    {target:'#folder-captain',pos:'right',title:'함장 메인서버',
+     text:'은하지도·전투·승무원·로그·도감 — 항해와 함대 관리의 핵심. 클릭으로 펼쳐서 사용해.',
+     onShow:()=>{try{openFolder('captain');}catch(e){}}},
+    {target:'#folder-plaza',pos:'right',title:'행성 광장',
+     text:'주점(영웅 영입)·가챠·무역·퀘스트 — 명성과 영웅을 모으는 곳이야. 퀘스트 진행도가 광장 잠금 해제 조건.',
+     onShow:()=>{try{openFolder('plaza');}catch(e){}}},
+    {target:'#folder-dock',pos:'right',title:'함선 도크',
+     text:'함선 거래소·제작소·정비소. 새 함선 구매, 파츠 장착, 수리는 모두 여기에서.',
+     onShow:()=>{try{openFolder('dock');}catch(e){}}},
+    {target:'#folder-front',pos:'right',title:'행성 프론트',
+     text:'행성 경매로 영지를 구매하면 매 턴 세금 수입. 명성 10당 보유 한도 +1.',
+     onShow:()=>{try{openFolder('front');}catch(e){}}},
+    {target:'#bk-fleet',pos:'top',title:'함대 상태바',
+     text:'화면 하단에 함대 카드. HP·SH·ATT가 보이고, 클릭하면 함선 정비 모달이 열려. 4열 그리드로 정렬.'},
+    {target:'#h-resume-combat',pos:'bottom',title:'전투 화면 복귀',
+     text:'전투 중 탭을 옮겨도 우측 상단 ⚔️ 버튼으로 다시 돌아갈 수 있어. 일점사·학익진 등 전술 콤보는 5초 간격으로 활성화돼.',
+     showIfHidden:true},
+    {target:'#bk-msgs',pos:'top',title:'🐕 백구 AI',
+     text:'백구가 상황별 힌트를 띄워줘. 입력창에 질문하면 직접 답변도 가능. 25초마다 자동 조언이 떠.'},
+    {target:null,pos:'center',title:'준비 완료!',
+     text:'기본 안내가 끝났어. 무역으로 크레딧 모으고 → 도크에서 함대 강화 → 퀘스트로 명성·영웅 영입 → ACT 진행. 지구 진입은 ACT3부터. 가자!'}
+  ];
+  let _idx=0;
+  // 백드롭 + 하이라이트 + 팝업
+  const ov=document.createElement('div');
+  ov.id='_tutorial-overlay';
+  ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:99995;pointer-events:auto;font-family:Malgun Gothic,sans-serif';
+  ov.innerHTML=`
+    <div id="_tut-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.65);transition:opacity .25s"></div>
+    <div id="_tut-highlight" style="position:absolute;border:2.5px solid #ffd700;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.65),0 0 24px rgba(255,215,0,.6);transition:all .3s ease;pointer-events:none;display:none"></div>
+    <div id="_tut-popup" style="position:absolute;background:linear-gradient(135deg,rgba(15,25,45,.98),rgba(8,12,28,.98));border:2px solid #66ddff;border-radius:12px;padding:14px 18px;max-width:340px;min-width:260px;color:#fff;box-shadow:0 12px 40px rgba(0,243,255,.35);transition:all .3s ease">
+      <div id="_tut-title" style="font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:6px"></div>
+      <div id="_tut-text" style="font-size:13px;line-height:1.7;color:#dde;word-break:keep-all;margin-bottom:12px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div id="_tut-pages" style="color:#888;font-size:11px"></div>
+        <div style="display:flex;gap:6px">
+          <button id="_tut-skip" style="padding:5px 12px;background:rgba(255,80,80,.12);border:1px solid #ff6666;color:#ff6666;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit">건너뛰기</button>
+          <button id="_tut-prev" style="padding:5px 12px;background:rgba(255,255,255,.06);border:1px solid #555;color:#aaa;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit">◀ 이전</button>
+          <button id="_tut-next" style="padding:5px 14px;background:rgba(0,243,255,.18);border:1px solid #00f3ff;color:#00f3ff;border-radius:5px;cursor:pointer;font-size:11px;font-weight:bold;font-family:inherit">다음 ▶</button>
+        </div>
+      </div>
+      <!-- 화살표 -->
+      <div id="_tut-arrow" style="position:absolute;width:0;height:0;display:none"></div>
+    </div>`;
+  document.body.appendChild(ov);
+  const _close=()=>{ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
+  const _render=()=>{
+    const s=steps[_idx];
+    if(!s){_close();return;}
+    if(s.onShow)try{s.onShow();}catch(e){}
+    document.getElementById('_tut-title').textContent=s.title||'';
+    document.getElementById('_tut-text').textContent=s.text||'';
+    document.getElementById('_tut-pages').textContent=`${_idx+1} / ${steps.length}`;
+    document.getElementById('_tut-prev').style.display=_idx===0?'none':'';
+    document.getElementById('_tut-next').textContent=_idx===steps.length-1?'완료 ✓':'다음 ▶';
+    const hl=document.getElementById('_tut-highlight');
+    const pop=document.getElementById('_tut-popup');
+    if(!s.target||s.pos==='center'){
+      hl.style.display='none';
+      pop.style.left='50%';pop.style.top='50%';pop.style.transform='translate(-50%,-50%)';
+      return;
+    }
+    const tgt=document.querySelector(s.target);
+    if(!tgt){
+      // 타겟 없으면 중앙
+      hl.style.display='none';
+      pop.style.left='50%';pop.style.top='50%';pop.style.transform='translate(-50%,-50%)';
+      return;
+    }
+    const r=tgt.getBoundingClientRect();
+    if(s.showIfHidden!==true && (r.width===0||r.height===0||tgt.offsetParent===null)){
+      // 숨겨진 타겟이면 다음 단계로
+      _idx++;_render();return;
+    }
+    hl.style.display='block';
+    hl.style.left=(r.left-4)+'px';
+    hl.style.top=(r.top-4)+'px';
+    hl.style.width=(r.width+8)+'px';
+    hl.style.height=(r.height+8)+'px';
+    // 팝업 위치 계산 (target 옆)
+    pop.style.transform='';
+    const pw=Math.min(360,window.innerWidth-40);
+    const ph=pop.offsetHeight||160;
+    let px,py;
+    if(s.pos==='right'){px=Math.min(window.innerWidth-pw-10,r.right+18);py=r.top;}
+    else if(s.pos==='left'){px=Math.max(10,r.left-pw-18);py=r.top;}
+    else if(s.pos==='top'){px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));py=Math.max(10,r.top-ph-18);}
+    else /*bottom*/{px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));py=Math.min(window.innerHeight-ph-10,r.bottom+18);}
+    pop.style.left=px+'px';pop.style.top=py+'px';
+  };
+  document.getElementById('_tut-next').onclick=()=>{_idx++;if(_idx>=steps.length){_close();return;}_render();};
+  document.getElementById('_tut-prev').onclick=()=>{_idx=Math.max(0,_idx-1);_render();};
+  document.getElementById('_tut-skip').onclick=_close;
+  document.getElementById('_tut-backdrop').onclick=()=>{};  // 백드롭 클릭 무시 (실수 방지)
+  // ESC로 닫기
+  ov._escHandler=(e)=>{if(e.key==='Escape')_close();};
+  window.addEventListener('keydown',ov._escHandler);
+  _render();
+}
+// 설정에서 다시 보기용
+function replayTutorial(){G._tutorialDone=false;showOnboardingTutorial();}
 const ALL_TABS=['main','map','plaza','front','tavern','gacha','auction','clog','ship','crew','planets','trade','quest','combat','result'];
 function setHubNav(tab){
   // 잔해 탐색 버튼 라벨 즉시 갱신 (전투 진입/종료 시 합류 호출 모드 전환)
@@ -14819,6 +14937,7 @@ function showSettingsModal(){
     <div style="margin-bottom:16px">
       <div style="font-weight:bold;margin-bottom:8px">💾 데이터 관리</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">💾 지금 저장</button>
+      <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">🎓 튜토리얼 다시 보기</button>
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm('모든 저장 데이터를 삭제합니다. 계속하시겠습니까?')){localStorage.removeItem('de_save');notify('저장 데이터 삭제 완료','ok');closeModal();}">🗑️ 저장 데이터 삭제</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">
