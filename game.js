@@ -589,87 +589,29 @@ function setAsFlagship(idx){
   saveGame(true);
   showShipDetailModal(0); // 기함 위치(0)로 팝업 갱신
 }
-// ─── 백구 패널 드래그/리사이즈 ───────────────────────────────
+// ─── 백구 패널 접기 토글 + 상태 복원 ───────────────────────────────
+// (분리/플로팅 모드는 UI 깨짐으로 제거. 옛 mousedown/move/up 리스너 IIFE 전체 삭제 —
+//  floating이 항상 false라 dead code였고 매 mouse 이벤트마다 DOM 쿼리만 발생시켰음)
 (function(){
-  const STORE_KEY='bk_panel_state';
-  let floating=false,dragging=false,resizing=false;
-  // show()에서 floating 상태를 클로저 변수와 동기화하기 위해 외부 접근 허용
-  window._bkSetFloating=function(v){floating=v;};
-  let dragOX=0,dragOY=0,resOX=0,resOY=0,resW=0,resH=0;
-  function getDlg(){return document.getElementById('bkdialog');}
-  function saveState(){
-    const d=getDlg();if(!d||!floating)return;
-    const r=d.getBoundingClientRect();
-    localStorage.setItem(STORE_KEY,JSON.stringify({floating,left:d.style.left,top:d.style.top,width:d.style.width,height:d.style.height}));
-  }
-  // 분리 모드는 UI 깨짐 문제로 제거됨. 호환을 위해 빈 함수 유지.
-  window.bkToggleFloat=function(){/* deprecated — UI 깨짐 방지 */};
-  // 새 토글: 백구 창 높이 축소/확대 (작게/원래대로)
+  // 옛 호출자 호환용 no-op
+  window.bkToggleFloat=function(){/* deprecated */};
+  window._bkSetFloating=function(){/* deprecated — 항상 false */};
+  // 백구 창 접기 토글
   window.bkToggleCollapse=function(){
-    const d=getDlg();if(!d)return;
+    const d=document.getElementById('bkdialog');if(!d)return;
     const collapsed=d.classList.toggle('bk-collapsed');
     try{localStorage.setItem('de_bk_collapsed',collapsed?'1':'0');}catch(e){}
   };
-  // 드래그 (토글바 mousedown)
-  document.addEventListener('mousedown',function(e){
-    const bar=document.getElementById('bk-header-bar');
-    if(!bar||!floating)return;
-    if(!bar.contains(e.target)||e.target.closest('button')||e.target.id==='bk-pin-btn'||e.target.id==='bk-chevron')return;
-    const d=getDlg();if(!d)return;
-    dragging=true;
-    const r=d.getBoundingClientRect();
-    dragOX=e.clientX-r.left;dragOY=e.clientY-r.top;
-    e.preventDefault();
-  });
-  // 리사이즈 (우하단 핸들)
-  document.addEventListener('mousedown',function(e){
-    if(!floating)return;
-    const rh=document.getElementById('bk-resize-handle');
-    if(!rh||!rh.contains(e.target))return;
-    const d=getDlg();if(!d)return;
-    resizing=true;
-    const r=d.getBoundingClientRect();
-    const s=window._gsScale||1;
-    resOX=e.clientX;resOY=e.clientY;resW=r.width/s;resH=r.height/s;
-    e.preventDefault();e.stopPropagation();
-  });
-  document.addEventListener('mousemove',function(e){
-    const d=getDlg();if(!d)return;
-    // 스테이지 transform:scale 보정 — 마우스 이동을 스테이지 좌표계로 변환
-    const s=window._gsScale||1;
-    if(dragging){
-      const nx=(e.clientX-dragOX)/s,ny=(e.clientY-dragOY)/s;
-      const mw=(typeof STAGE_W!=='undefined'?STAGE_W:window.innerWidth);
-      const mh=(typeof STAGE_H!=='undefined'?STAGE_H:window.innerHeight);
-      const r=d.getBoundingClientRect();
-      const rw=r.width/s,rh=r.height/s;
-      d.style.left=Math.max(0,Math.min(nx,mw-rw))+'px';
-      d.style.top=Math.max(0,Math.min(ny,mh-36))+'px';
-    }
-    if(resizing){
-      const nw=Math.max(280,resW+(e.clientX-resOX)/s);
-      const nh=Math.max(80,resH+(e.clientY-resOY)/s);
-      d.style.width=nw+'px';d.style.height=nh+'px';
-    }
-  });
-  document.addEventListener('mouseup',function(){
-    if(dragging||resizing)saveState();
-    dragging=false;resizing=false;
-  });
-  // 분리 모드 저장 상태 강제 정리 (이전 분리 상태로 켜진 사용자 보호)
+  // 옛 floating 저장 상태 정리 (마이그레이션)
   try{
-    const saved=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');
-    if(saved.floating){
-      // 옛 floating 상태 클리어
-      localStorage.removeItem(STORE_KEY);
-    }
+    const saved=JSON.parse(localStorage.getItem('bk_panel_state')||'{}');
+    if(saved.floating)localStorage.removeItem('bk_panel_state');
   }catch(e){}
   // collapse 상태 복원
   try{
-    const collapsed=localStorage.getItem('de_bk_collapsed')==='1';
-    if(collapsed){
+    if(localStorage.getItem('de_bk_collapsed')==='1'){
       document.addEventListener('DOMContentLoaded',function(){
-        const d=getDlg();if(d)d.classList.add('bk-collapsed');
+        const d=document.getElementById('bkdialog');if(d)d.classList.add('bk-collapsed');
       });
     }
   }catch(e){}
@@ -3347,6 +3289,7 @@ function escapePirateRaid(){
   updateHUD();
   notify(`🚀 도주 성공! 크레딧 -₡${penalty.toLocaleString()} / 명성 -2`,'err');
   baekgu('도망쳤어. 다음엔 일찍 움직여.');
+  try{saveGame(true);}catch(e){}  // 페널티 상태 영속화 (이전 누락: 새로고침 시 차감 분실)
   hubTab('main');
 }
 function changeReputation(delta){if(!G.reputation)G.reputation=0;G.reputation=Math.max(0,Math.min(9999,G.reputation+delta));updateHUD();}
@@ -8435,7 +8378,12 @@ function updateGatherBtn(){
   if(onCooldown){
     if(!window._gatherCdTimer){
       window._gatherCdTimer=setInterval(()=>{
-        if(_gatherCooldownLeft()<=0){clearInterval(window._gatherCdTimer);window._gatherCdTimer=null;}
+        // 허브 화면을 떠났으면 타이머 정리 (메모리·DOM 쿼리 누수 방지)
+        const _hubOn=document.getElementById('s-hub')?.classList.contains('on');
+        if(!_hubOn||_gatherCooldownLeft()<=0){
+          clearInterval(window._gatherCdTimer);window._gatherCdTimer=null;
+          if(!_hubOn)return;  // 허브 떠난 상태면 마지막 갱신도 생략
+        }
         updateGatherBtn();
       },1000);
     }
@@ -11388,7 +11336,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
       cv.style.boxShadow='0 0 36px rgba(255,80,80,.8)';
       setTimeout(()=>{cv.style.boxShadow='0 0 36px rgba(180,80,255,.5)';},150);
       // 백구 — 피격
-      const hpPct=state.ship.hp/state.ship.maxHP;
+      const hpPct=state.ship.hp/Math.max(1,state.ship.maxHP);  // maxHP 0 가드 (NaN 방지)
       if(hpPct<0.3)_baekguPick('lowHp',true);
       else _baekguPick('hit');
     }
@@ -11872,7 +11820,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     // HUD 오버레이 (캔버스 좌상단)
     // HP 바
     cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,10,220,18);
-    cx.fillStyle='#ff6666';cx.fillRect(10,10,220*(state.ship.hp/state.ship.maxHP),18);
+    cx.fillStyle='#ff6666';cx.fillRect(10,10,220*(state.ship.hp/Math.max(1,state.ship.maxHP)),18);
     cx.fillStyle='#fff';cx.font='bold 11px monospace';cx.fillText('HP '+Math.floor(state.ship.hp)+'/'+state.ship.maxHP, 16, 23);
     // 실드 바
     cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(10,32,220,12);
@@ -16297,56 +16245,8 @@ function _grantBlackHoleRewardsSilent(){
   G._finalTestComplete=true;
 }
 
-// ─── 마지막 시험 보상: 검은 팔콘 함선 + 신화 파츠 5점 ───
-function _grantBlackHoleRewards(){
-  // LGD03(렐러티비티) 스탯의 1.5배 — 소형 정찰함 형태
-  const lgd3=SHIP_CATALOG.find(s=>s.id==='LGD03')||{maxHP:245000,maxSH:90000,ATT:306,INT:295,TEC:255};
-  const _mul=1.5;
-  const _hp=Math.round(lgd3.maxHP*_mul);
-  const _sh=Math.round(lgd3.maxSH*_mul);
-  const _att=Math.round(lgd3.ATT*_mul);
-  const _int=Math.round(lgd3.INT*_mul);
-  const _tec=Math.round(lgd3.TEC*_mul);
-  const hiddenShip={
-    id:'HIDDEN_FALCON_'+Date.now(),
-    catalogId:'HIDDEN_FALCON',
-    nm:'🌑 검은 팔콘 (보이드 시험 통과)',
-    tier:'소형',
-    maxHP:_hp,hp:_hp,maxSH:_sh,sh:_sh,
-    ATT:_att,INT:_int,TEC:_tec,HP:_hp,DEF:150,LOY:80,
-    parts:[],crewIds:[],cargoSlots:5,
-    crafted:false,_isHiddenFalcon:true
-  };
-  addShipToFleet(hiddenShip);
-  // 신화 파츠 5점 인벤토리 추가 (MW01, MS01, MA01, ME01, RB10)
-  if(!G.inventory)G.inventory=[];
-  const grantedParts=['MW01','MS01','MA01','ME01','RB10'];
-  grantedParts.forEach(pid=>{
-    const inv=G.inventory.find(i=>i.id===pid);
-    if(inv)inv.qty++;else G.inventory.push({id:pid,qty:1});
-  });
-  G._finalTestComplete=true;
-  saveGame(true);
-  // 보상 보고서
-  const items=[
-    {ic:'🌑',nm:'검은 팔콘 (보이드 시험 통과)',type:'소형 정찰함 (히든)',color:'#cc44ff',
-      stats:`HP ${_hp.toLocaleString()} · SH ${_sh.toLocaleString()} · ATT ${_att} · INT ${_int} · TEC ${_tec}`,
-      desc:`보이드 1000년 기술이 응축된 정찰함. 소형 함선의 형태를 하고 있으나 렐러티비티의 1.5배 능력치. ${G.fleet.length>16?'⚠️ 편대 가득 — 임시창 보관.':'편대에 합류함.'}`,rarity:'mythic'},
-    {ic:'⚔️',nm:'허메틱 포 ✦신화',type:'무기',color:'#cc44ff',stats:'ATT +320',desc:'연속 공격 +40%',rarity:'mythic'},
-    {ic:'🛡️',nm:'크로노스 방벽 ✦신화',type:'실드',color:'#cc44ff',stats:'INT +280 · SH +8000',desc:'피격 반사 20% + 매 턴 maxSH 15% 자가 복구',rarity:'mythic'},
-    {ic:'🪖',nm:'아다만 선체 ✦신화',type:'장갑',color:'#cc44ff',stats:'HP +12000 · DEF +120',desc:'치명타 피해 50% 감소',rarity:'mythic'},
-    {ic:'⚙️',nm:'타키온 드라이브 ✦신화',type:'엔진',color:'#cc44ff',stats:'TEC +320',desc:'이동 후 ATT+50 (1턴) · 순간이동',rarity:'mythic'},
-    {ic:'🤖',nm:'영혼 흡수 매트릭스 ✦신화',type:'장갑/자동수리',color:'#cc44ff',stats:'HP +9500 · DEF +100',desc:'매 턴 maxHP 18% + 레이저 흡수 HP/SH 20%/18% + 격침 시 부활',rarity:'mythic'},
-  ];
-  showAcquisitionReport({
-    title:'🌑 보이드 마지막 시험 — 통과 보상',
-    subtitle:'은하 가운데 · 검은 팔콘과 신화 파츠 5점 획득',
-    items,color:'#cc44ff',sfx:null,
-    congrats:'🌑 보이드의 인정! 인류의 새 시대! 🌑'
-  });
-  notify('🌑 검은 팔콘 + 신화 파츠 5종 획득!','gold');
-  baekgu(`${G.profile?.name||'사령관'}, 우리가 해냈어! 검은 팔콘이 우리 편이야! 보이드도 인정한 거지!`);
-}
+// ※ _grantBlackHoleRewards() 죽은 함수 제거 — _grantBlackHoleRewardsSilent와 거의 동일했으나
+//    어디서도 호출되지 않아 dead code였음 (실제 사용 경로는 silent 버전만)
 
 // ── 타이틀 난이도 버튼 ─────────────────────────────────────────
 
