@@ -10501,7 +10501,7 @@ function startAsteroidBeltMinigame(destPid){
       }
     }
   }
-  const W=960, H=560;
+  const W=1440, H=840;  // 1.5× 확대 (기존 960×560)
   // 오버레이
   const overlay=document.createElement('div');
   overlay.id='_ab-mini-overlay';
@@ -10511,7 +10511,7 @@ function startAsteroidBeltMinigame(destPid){
       <div style="color:#cc66ff;font-size:13px;letter-spacing:6px">— 소행성대 침투전 —</div>
       <div style="color:#fff;font-size:18px;font-weight:bold;letter-spacing:3px;margin-top:4px">🌑 보이드 소행성대 돌파</div>
     </div>
-    <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none" tabindex="0"></canvas>
+    <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none;max-width:96vw;max-height:84vh" tabindex="0"></canvas>
     <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#aaa;font-size:11px;letter-spacing:2px;line-height:1.7;pointer-events:none">
       <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">마우스 이동</b> · <b style="color:#ffcc66">Shift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일(자동조준)
     </div>`;
@@ -10655,18 +10655,48 @@ function startAsteroidBeltMinigame(destPid){
     window.removeEventListener('keydown',onKD);
     window.removeEventListener('keyup',onKU);
     // 보상
-    // 명성 구간별 보상 비율 — 사용자 명세
-    //   rep  1~10  → 10%
-    //   rep 11~50  →  5%
-    //   rep 51~100 →  3%
-    //   rep 100+   →  1%
+    // 명성 구간별 보상 비율 — 사용자 명세 (1/10로 축소 + 별도 드롭 보장)
+    //   rep  1~10  → 10% / rep 11~50 → 5% / rep 51~100 → 3% / rep 100+ → 1%
+    //   최종 ×0.1 적용 (드롭 보상이 메인, 크레딧은 소액)
     const _rep=G.reputation||0;
     const _rewPct=_rep>100?0.01:_rep>=51?0.03:_rep>=11?0.05:_rep>=1?0.10:0.10;
-    const rew=win?Math.round((G.credits||0)*_rewPct+state.kills*800):0;
-    const veRew=win?Math.round(20+state.kills*5):0;
+    const rew=win?Math.round(((G.credits||0)*_rewPct+state.kills*800)*0.1):0;
+    const veRew=win?Math.round((20+state.kills*5)*0.1):0;
     const pen=win?0:Math.round((G.credits||0)*0.03);
+    // 랜덤 드롭 (승리 시) — 50% 전설 / 30% 신화 / 20% 설계도(미보유 시)
+    let dropTxt='';
+    if(win){
+      const dropRoll=Math.random();
+      const _bpId=(typeof BLUEPRINT_MAP!=='undefined')?BLUEPRINT_MAP[destPid]:null;
+      const _canBp=_bpId&&!G.blueprints?.[_bpId];
+      if(dropRoll<0.20&&_canBp){
+        if(!G.blueprints)G.blueprints={};
+        G.blueprints[_bpId]=true;
+        const _rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===_bpId):null;
+        dropTxt='📜 설계도 <b style="color:#cc66ff">'+(_rec?.nm||_bpId)+'</b>';
+        notify('📜 설계도 획득: '+(_rec?.nm||_bpId),'gold');
+      } else if(dropRoll<0.50&&typeof QUEST_MYTHIC_PARTS!=='undefined'&&QUEST_MYTHIC_PARTS.length>0){
+        const partId=QUEST_MYTHIC_PARTS[Math.floor(Math.random()*QUEST_MYTHIC_PARTS.length)];
+        if(!G.inventory)G.inventory=[];
+        const inv=G.inventory.find(i=>i.id===partId);
+        if(inv)inv.qty++;else G.inventory.push({id:partId,qty:1});
+        const p=PARTS.find(x=>x.id===partId);
+        dropTxt='✦ 신화 파츠 <b style="color:#ff88ff">'+(p?.nm||partId)+'</b>';
+        notify('✦ 신화 파츠: '+(p?.nm||partId),'gold');
+      } else if(typeof QUEST_SET_PARTS!=='undefined'&&QUEST_SET_PARTS.length>0){
+        const partId=QUEST_SET_PARTS[Math.floor(Math.random()*QUEST_SET_PARTS.length)];
+        if(!G.inventory)G.inventory=[];
+        const inv=G.inventory.find(i=>i.id===partId);
+        if(inv)inv.qty++;else G.inventory.push({id:partId,qty:1});
+        const p=PARTS.find(x=>x.id===partId);
+        dropTxt=(p?.rarity==='set'?'◈ 세트':'⭐ 전설')+' 파츠 <b style="color:var(--gold)">'+(p?.nm||partId)+'</b>';
+        notify((p?.rarity==='set'?'◈ 세트':'⭐ 전설')+' 파츠: '+(p?.nm||partId),'gold');
+      }
+    }
     if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}
     else{G.credits=Math.max(100,(G.credits||0)-pen);}
+    // 퀘스트 1회 효과 — 도착 행성 허브 해금 진행도 +1 (해금 요소 1회 차감)
+    if(win&&destPid){try{addHubProgress(destPid);}catch(e){}}
     // 실제 함대 hp 반영 (전투 결과 보존)
     if(flagship){flagship.hp=Math.max(1,Math.floor(state.ship.hp));if(flagship.sh!=null)flagship.sh=Math.max(0,Math.floor(state.ship.sh));}
     saveGame(true);
@@ -10676,6 +10706,8 @@ function startAsteroidBeltMinigame(destPid){
        <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대 · 잔여 HP ${Math.floor(state.ship.hp)}/${state.ship.maxHP}</div>
        <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
          💰 +₡${rew.toLocaleString()}<br>💎 보이드 에센스 +${veRew}
+         ${dropTxt?'<br>'+dropTxt:''}
+         <br><span style="color:#66ddff;font-size:11px">🏗️ 도착 행성 해금 진행도 +1 (퀘스트 1회 효과)</span>
        </div>`:
       `<div style="font-size:48px;margin-bottom:10px">💥</div>
        <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">기함 격침</div>
