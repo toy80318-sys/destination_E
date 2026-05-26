@@ -2071,9 +2071,9 @@ function showOnboardingTutorial(){
   // 하이라이트된 메뉴를 직접 보면서 설명을 읽도록 유도한다
   const _nav=(folder,tab)=>{try{openFolder(folder);if(tab)hubTab(tab);}catch(e){}};
   const steps=[
-    // ── 인사 ─────────────────────────────────────────────
-    {target:null,pos:'center',title:'환영합니다, 사령관!',
-     text:'지구로 돌아가는 긴 여정의 시작이야.\n화면을 차례로 둘러보면서 핵심 메뉴와 첫 플레이 사이클을 알려줄게.\n\n[다음 ▶]으로 진행, [건너뛰기]로 종료할 수 있어.'},
+    // ── 인사 (튜토리얼 시작 안내 — 명시적으로 "지금부터 튜토리얼 시작"을 알림) ──
+    {target:null,pos:'center',title:'🎓 튜토리얼 시작',
+     text:'환영합니다, 사령관!\n지금부터 게임 기본 조작과 첫 플레이 흐름을 안내해 드릴게요.\n\n📋 약 15단계 / 2~3분 소요\n  · 화면 구성 → 핵심 메뉴 7개 → 첫 전투·무역 사이클\n  · 각 단계에서 메뉴가 자동으로 열리고, 노란색으로 강조된 위치를 보면 돼요\n\n▶ 시작하려면 [다음 ▶] 클릭\n✕ 나중에 보려면 [건너뛰기] (설정 → 튜토리얼 다시 보기 가능)'},
 
     // ── 1) 상단 정보 (간단히) ────────────────────────────
     {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN',
@@ -2168,6 +2168,12 @@ function showOnboardingTutorial(){
       </div>
     </div>`;
   _stageHost.appendChild(ov);
+  // 첫 등장 애니메이션 (사용자가 튜토리얼 시작을 놓치지 않도록 시선 유도)
+  if(!document.getElementById('_tut-anim-style')){
+    const _animSt=document.createElement('style');_animSt.id='_tut-anim-style';
+    _animSt.textContent=`@keyframes _tutPopIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}60%{transform:translate(-50%,-50%) scale(1.04)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes _tutBorderPulse{0%,100%{box-shadow:0 12px 40px rgba(0,243,255,.35),0 0 0 0 rgba(255,215,0,.7)}50%{box-shadow:0 12px 40px rgba(0,243,255,.55),0 0 0 8px rgba(255,215,0,0)}}#_tut-popup.first-pop{animation:_tutPopIn .45s cubic-bezier(.34,1.56,.64,1),_tutBorderPulse 1.8s ease-in-out 2}`;
+    document.head.appendChild(_animSt);
+  }
   // 타겟의 stage 내부 좌표 계산 (offsetParent 체인 walking — 회전·스케일 무관)
   const _offsetWithinStage=(el)=>{
     let x=0,y=0,node=el;
@@ -2191,6 +2197,9 @@ function showOnboardingTutorial(){
     document.getElementById('_tut-next').textContent=_idx===steps.length-1?'완료 ✓':'다음 ▶';
     const hl=document.getElementById('_tut-highlight');
     const pop=document.getElementById('_tut-popup');
+    // 첫 단계에서만 등장 애니메이션 (시선 유도). 재시작으로 다시 0으로 와도 표시
+    pop.classList.remove('first-pop');
+    if(_idx===0){void pop.offsetWidth;pop.classList.add('first-pop');}
     // center 모드 — 타겟 없이 화면 가운데
     if(!s.target||s.pos==='center'){
       // 중앙 모드일 때만 box-shadow 백드롭 효과 적용 (화면 가운데 작은 spotlight)
