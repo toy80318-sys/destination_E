@@ -10604,10 +10604,11 @@ function startAsteroidBeltMinigame(destPid){
   function _boxHit(e,bx,by,br){return bx>=e.x-e.w/2-br&&bx<=e.x+e.w/2+br&&by>=e.y-e.h/2-br&&by<=e.y+e.h/2+br;}
 
   function _explode(x,y,color,big){
-    const n=big?22:12;
+    // 폭발 이펙트 1.5× — 파티클 수·확산 속도·생존 모두 상향
+    const n=Math.round((big?22:12)*1.5);
     for(let k=0;k<n;k++){
-      const ang=Math.random()*Math.PI*2, sp=1+Math.random()*4;
-      state.parts.push({x,y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:25+Math.random()*15,col:color||'#ffaa44'});
+      const ang=Math.random()*Math.PI*2, sp=(1+Math.random()*4)*1.5;
+      state.parts.push({x,y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:Math.round((25+Math.random()*15)*1.2),col:color||'#ffaa44',sz:3});
     }
   }
   function _damageShip(amt){
@@ -10860,10 +10861,10 @@ function startAsteroidBeltMinigame(destPid){
         }
       }
       if(hit){_explode(m.x,m.y,'#ff8844',false);state.pMissiles.splice(i,1);continue;}
-      // 그리기
+      // 그리기 — 미사일 본체 1.5× 확장 + 글로우도 1.5×
       cx.save();cx.translate(m.x,m.y);cx.rotate(Math.atan2(m.vy,m.vx));
-      cx.fillStyle='#ff66cc';cx.shadowColor='#ff66cc';cx.shadowBlur=12;
-      cx.beginPath();cx.moveTo(-8,-3);cx.lineTo(8,0);cx.lineTo(-8,3);cx.closePath();cx.fill();
+      cx.fillStyle='#ff66cc';cx.shadowColor='#ff66cc';cx.shadowBlur=18;
+      cx.beginPath();cx.moveTo(-12,-4.5);cx.lineTo(12,0);cx.lineTo(-12,4.5);cx.closePath();cx.fill();
       cx.shadowBlur=0;cx.restore();
     }
 
@@ -10923,7 +10924,7 @@ function startAsteroidBeltMinigame(destPid){
       const p=state.parts[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
       if(p.life<=0){state.parts.splice(i,1);continue;}
       cx.fillStyle=p.col;cx.globalAlpha=Math.max(0,p.life/30);
-      cx.beginPath();cx.arc(p.x,p.y,2,0,Math.PI*2);cx.fill();
+      cx.beginPath();cx.arc(p.x,p.y,p.sz||3,0,Math.PI*2);cx.fill();
     }
     cx.globalAlpha=1;
 
