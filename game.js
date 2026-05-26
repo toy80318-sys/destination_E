@@ -2065,9 +2065,9 @@ function showOnboardingTutorial(){
   // 이미 표시 중이면 무시
   if(document.getElementById('_tutorial-overlay'))return;
   const steps=[
-    {target:'#h-act',pos:'bottom',title:'ACT / TURN',
-     text:'좌상단에 현재 ACT와 턴이 표시돼. 매 20턴마다 ACT가 진행되고 ACT3에 도달하면 지구 진입이 열려.'},
-    {target:'#h-credits',pos:'bottom',title:'재화 (₡ / VE / VC)',
+    {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN',
+     text:'우상단에 현재 ACT와 턴이 표시돼. 매 20턴마다 ACT가 진행되고 ACT 3에 도달하면 지구 진입이 열려.'},
+    {target:'#h-resource-bar',pos:'bottom',title:'재화 (₡ / VE / VC / ⭐)',
      text:'₡ 크레딧은 무역·전투 보상, VE는 보이드 에센스, VC는 보이드 크리스탈. ⭐는 명성으로 가챠·퀘스트 보상에 영향을 줘.'},
     {target:'#hn-main',pos:'right',title:'메인 허브',
      text:'현재 행성의 메인 허브. 광장·도크·프론트 잠금 해제 진행도가 표시돼.'},
@@ -2085,25 +2085,21 @@ function showOnboardingTutorial(){
      onShow:()=>{try{openFolder('front');}catch(e){}}},
     {target:'#bk-fleet',pos:'top',title:'함대 상태바',
      text:'화면 하단에 함대 카드. HP·SH·ATT가 보이고, 클릭하면 함선 정비 모달이 열려. 4열 그리드로 정렬.'},
-    {target:'#h-resume-combat',pos:'bottom',title:'전투 화면 복귀',
-     text:'전투 중 탭을 옮겨도 우측 상단 ⚔️ 버튼으로 다시 돌아갈 수 있어. 일점사·학익진 등 전술 콤보는 5초 간격으로 활성화돼.',
-     showIfHidden:true},
     {target:'#bk-msgs',pos:'top',title:'🐕 백구 AI',
      text:'백구가 상황별 힌트를 띄워줘. 입력창에 질문하면 직접 답변도 가능. 25초마다 자동 조언이 떠.'},
     {target:null,pos:'center',title:'준비 완료!',
-     text:'기본 안내가 끝났어. 무역으로 크레딧 모으고 → 도크에서 함대 강화 → 퀘스트로 명성·영웅 영입 → ACT 진행. 지구 진입은 ACT3부터. 가자!'}
+     text:'기본 안내가 끝났어. 무역으로 크레딧 모으고 → 도크에서 함대 강화 → 퀘스트로 명성·영웅 영입 → ACT 진행. 지구 진입은 ACT 3부터. 가자!\n\n전투 중에는 우상단 ⚔️ 전투화면 버튼으로 복귀 가능, 일점사·학익진 등 전술 콤보는 5초 간격으로 활성화돼.'}
   ];
   let _idx=0;
-  // 백드롭 + 하이라이트 + 팝업
+  // 백드롭 제거 — 하이라이트 box-shadow 만으로 spotlight 효과 (이중 어둡기 방지)
   const ov=document.createElement('div');
   ov.id='_tutorial-overlay';
-  ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:99995;pointer-events:auto;font-family:Malgun Gothic,sans-serif';
+  ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:99995;pointer-events:none;font-family:Malgun Gothic,sans-serif';
   ov.innerHTML=`
-    <div id="_tut-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.65);transition:opacity .25s"></div>
-    <div id="_tut-highlight" style="position:absolute;border:2.5px solid #ffd700;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.65),0 0 24px rgba(255,215,0,.6);transition:all .3s ease;pointer-events:none;display:none"></div>
-    <div id="_tut-popup" style="position:absolute;background:linear-gradient(135deg,rgba(15,25,45,.98),rgba(8,12,28,.98));border:2px solid #66ddff;border-radius:12px;padding:14px 18px;max-width:340px;min-width:260px;color:#fff;box-shadow:0 12px 40px rgba(0,243,255,.35);transition:all .3s ease">
+    <div id="_tut-highlight" style="position:absolute;border:3px solid #ffd700;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.45),0 0 28px rgba(255,215,0,.85),inset 0 0 16px rgba(255,215,0,.25);transition:all .25s ease;pointer-events:none;display:none;background:transparent"></div>
+    <div id="_tut-popup" style="position:absolute;background:linear-gradient(135deg,rgba(15,25,45,.98),rgba(8,12,28,.98));border:2px solid #66ddff;border-radius:12px;padding:14px 18px;max-width:340px;min-width:260px;color:#fff;box-shadow:0 12px 40px rgba(0,243,255,.35);transition:all .25s ease;pointer-events:auto">
       <div id="_tut-title" style="font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:6px"></div>
-      <div id="_tut-text" style="font-size:13px;line-height:1.7;color:#dde;word-break:keep-all;margin-bottom:12px"></div>
+      <div id="_tut-text" style="font-size:13px;line-height:1.7;color:#dde;word-break:keep-all;margin-bottom:12px;white-space:pre-wrap"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
         <div id="_tut-pages" style="color:#888;font-size:11px"></div>
         <div style="display:flex;gap:6px">
@@ -2112,8 +2108,6 @@ function showOnboardingTutorial(){
           <button id="_tut-next" style="padding:5px 14px;background:rgba(0,243,255,.18);border:1px solid #00f3ff;color:#00f3ff;border-radius:5px;cursor:pointer;font-size:11px;font-weight:bold;font-family:inherit">다음 ▶</button>
         </div>
       </div>
-      <!-- 화살표 -->
-      <div id="_tut-arrow" style="position:absolute;width:0;height:0;display:none"></div>
     </div>`;
   document.body.appendChild(ov);
   const _close=()=>{ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
@@ -2128,9 +2122,15 @@ function showOnboardingTutorial(){
     document.getElementById('_tut-next').textContent=_idx===steps.length-1?'완료 ✓':'다음 ▶';
     const hl=document.getElementById('_tut-highlight');
     const pop=document.getElementById('_tut-popup');
+    // center 모드 — 타겟 없이 화면 가운데
     if(!s.target||s.pos==='center'){
-      hl.style.display='none';
-      pop.style.left='50%';pop.style.top='50%';pop.style.transform='translate(-50%,-50%)';
+      // 중앙 모드일 때만 box-shadow 백드롭 효과 적용 (화면 가운데 작은 spotlight)
+      hl.style.display='block';
+      hl.style.left='50%';hl.style.top='50%';
+      hl.style.width='0';hl.style.height='0';
+      hl.style.transform='translate(-50%,-50%)';
+      pop.style.left='50%';pop.style.top='50%';
+      pop.style.transform='translate(-50%,-50%)';
       return;
     }
     const tgt=document.querySelector(s.target);
@@ -2141,24 +2141,43 @@ function showOnboardingTutorial(){
       return;
     }
     const r=tgt.getBoundingClientRect();
-    if(s.showIfHidden!==true && (r.width===0||r.height===0||tgt.offsetParent===null)){
-      // 숨겨진 타겟이면 다음 단계로
+    if(r.width===0||r.height===0||tgt.offsetParent===null){
+      // 숨겨진 타겟은 다음 단계로 자동 스킵
       _idx++;_render();return;
     }
+    // 패딩 6px (테두리·글로우 가독성 ↑)
+    const pad=6;
     hl.style.display='block';
-    hl.style.left=(r.left-4)+'px';
-    hl.style.top=(r.top-4)+'px';
-    hl.style.width=(r.width+8)+'px';
-    hl.style.height=(r.height+8)+'px';
-    // 팝업 위치 계산 (target 옆)
+    hl.style.transform='';
+    hl.style.left=(r.left-pad)+'px';
+    hl.style.top=(r.top-pad)+'px';
+    hl.style.width=(r.width+pad*2)+'px';
+    hl.style.height=(r.height+pad*2)+'px';
+    // 팝업 위치 계산 (화면 안에 들어오도록 클램프 강화)
     pop.style.transform='';
-    const pw=Math.min(360,window.innerWidth-40);
-    const ph=pop.offsetHeight||160;
+    // 임시로 left/top 설정 후 실제 size 측정
+    pop.style.left='-9999px';pop.style.top='-9999px';
+    const pw=pop.offsetWidth||340;
+    const ph=pop.offsetHeight||180;
     let px,py;
-    if(s.pos==='right'){px=Math.min(window.innerWidth-pw-10,r.right+18);py=r.top;}
-    else if(s.pos==='left'){px=Math.max(10,r.left-pw-18);py=r.top;}
-    else if(s.pos==='top'){px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));py=Math.max(10,r.top-ph-18);}
-    else /*bottom*/{px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));py=Math.min(window.innerHeight-ph-10,r.bottom+18);}
+    if(s.pos==='right'){
+      px=r.right+18;
+      // 우측 공간 부족하면 좌측으로 자동 전환
+      if(px+pw>window.innerWidth-10)px=Math.max(10,r.left-pw-18);
+      py=Math.max(10,Math.min(window.innerHeight-ph-10,r.top));
+    } else if(s.pos==='left'){
+      px=r.left-pw-18;
+      if(px<10)px=Math.min(window.innerWidth-pw-10,r.right+18);
+      py=Math.max(10,Math.min(window.innerHeight-ph-10,r.top));
+    } else if(s.pos==='top'){
+      px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));
+      py=r.top-ph-18;
+      if(py<10)py=Math.min(window.innerHeight-ph-10,r.bottom+18);
+    } else /*bottom*/{
+      px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));
+      py=r.bottom+18;
+      if(py+ph>window.innerHeight-10)py=Math.max(10,r.top-ph-18);
+    }
     pop.style.left=px+'px';pop.style.top=py+'px';
   };
   document.getElementById('_tut-next').onclick=()=>{_idx++;if(_idx>=steps.length){_close();return;}_render();};

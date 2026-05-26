@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>DESTINATION EARTH</title>
-<link rel="stylesheet" href="game.css?v=20260526164">
+<link rel="stylesheet" href="game.css?v=20260526165">
 </head>
 <body>
 <div id="game-stage">
@@ -20,13 +20,13 @@
     <span style="color:var(--yellow);font-size:16px;font-weight:bold" id="h-co">빅 픽처 스페이스</span>
     <span style="color:var(--dim);font-size:13px" id="h-pl">| P01</span>
   </div>
-  <div style="display:flex;gap:16px;font-size:14px">
+  <div id="h-resource-bar" style="display:flex;gap:16px;font-size:14px">
     <span style="color:var(--gold)">₡ <span id="h-cr">50,000</span></span>
     <span style="color:var(--cyan)">VE <span id="h-ve">0</span></span>
     <span style="color:var(--purple)">VC <span id="h-vc">3</span></span>
     <span style="color:var(--gold);font-weight:bold">⭐ <span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle">무명</span></span>
   </div>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+  <div id="h-status-bar" style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
     <div style="color:var(--dim);font-size:13px">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold">전투력 1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)">신참</span></div>
     <button id="h-resume-combat" onclick="resumeCombat()" style="display:none;background:rgba(231,76,60,.18);border:1px solid var(--red);color:var(--red);font-family:inherit;font-size:11px;font-weight:bold;padding:2px 10px;border-radius:4px;cursor:pointer;animation:pulse 1.6s infinite" title="진행 중인 전투로 돌아가기">⚔️ 전투화면</button>
   </div>
@@ -282,21 +282,21 @@
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
 <script>window._GAME_VER='20260525.0350';</script>
-<script src="js/data/factions.js?v=20260526164"></script>
-<script src="js/data/planets.js?v=20260526164"></script>
-<script src="js/data/heroes.js?v=20260526164"></script>
-<script src="js/data/commodities.js?v=20260526164"></script>
-<script src="js/data/parts.js?v=20260526164"></script>
-<script src="js/data/quests.js?v=20260526164"></script>
-<script src="js/data/cargo.js?v=20260526164"></script>
-<script src="js/data/crafting.js?v=20260526164"></script>
-<script src="js/data/ships.js?v=20260526164"></script>
+<script src="js/data/factions.js?v=20260526165"></script>
+<script src="js/data/planets.js?v=20260526165"></script>
+<script src="js/data/heroes.js?v=20260526165"></script>
+<script src="js/data/commodities.js?v=20260526165"></script>
+<script src="js/data/parts.js?v=20260526165"></script>
+<script src="js/data/quests.js?v=20260526165"></script>
+<script src="js/data/cargo.js?v=20260526165"></script>
+<script src="js/data/crafting.js?v=20260526165"></script>
+<script src="js/data/ships.js?v=20260526165"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260526164"></script>
+<script defer src="js/cloudsave.js?v=20260526165"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260526164"></script>
+<script src="game.js?v=20260526165"></script>
 </body>
 </html>
