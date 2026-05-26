@@ -24,15 +24,22 @@ body.combat-mode #notif{top:138px;max-width:260px}
 .ni{background:var(--panel);border-left:3px solid var(--cyan);padding:8px 12px;font-size:14px;border-radius:4px;animation:sli .3s ease;transition:opacity .4s}
 .ni.ok{border-color:var(--green)}.ni.err{border-color:var(--red)}.ni.gold{border-color:var(--gold)}.ni.pur{border-color:var(--purple)}
 @keyframes sli{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
-#bkdialog{height:210px;background:rgba(5,12,26,.97);border:1px solid rgba(0,243,255,.3);border-top:2px solid rgba(0,243,255,.4);border-top-left-radius:10px;border-top-right-radius:10px;display:none;flex-direction:row;overflow:hidden;z-index:450;box-shadow:0 -4px 24px rgba(0,0,0,.6);flex-shrink:0;width:100%}
+#bkdialog{height:210px;background:rgba(5,12,26,.97);border:1px solid rgba(0,243,255,.3);border-top:2px solid rgba(0,243,255,.4);border-top-left-radius:10px;border-top-right-radius:10px;display:none;flex-direction:column;overflow:hidden;z-index:450;box-shadow:0 -4px 24px rgba(0,0,0,.6);flex-shrink:0;width:100%;transition:height .25s ease}
 #bkdialog.bk-open{display:flex}
-#bkdialog.bk-closed{max-height:36px}
+/* 접힘: 헤더만 보이고 본문 숨김. 배경(hub-planet-bg)은 z-index:0 으로 hub 전체를 덮으므로 비어보이지 않음 */
+#bkdialog.bk-collapsed{height:32px}
+#bkdialog.bk-collapsed #bk-content{display:none}
+#bkdialog.bk-collapsed #bk-collapse-arrow{transform:rotate(180deg)}
 #bkdialog.bk-floating{position:fixed;bottom:auto;right:auto;border-radius:10px;transition:none;width:auto}
+/* 전체 폭 헤더 — 접기/펼치기 토글 영역 */
+#bk-header-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;cursor:pointer;background:rgba(0,243,255,.06);border-bottom:1px solid rgba(0,243,255,.15);flex-shrink:0;user-select:none;height:32px;box-sizing:border-box}
+#bk-header-bar:hover{background:rgba(0,243,255,.12)}
+#bk-collapse-arrow{display:inline-block;transition:transform .25s ease}
+/* 본문 — 백구 패널(좌) + 함대 카드(우) */
+#bk-content{display:flex;flex-direction:row;flex:1;min-height:0;overflow:hidden}
 #bk-resize-handle{position:absolute;bottom:0;right:0;width:14px;height:14px;cursor:se-resize;opacity:.5;z-index:10}
 #bk-resize-handle::after{content:'';position:absolute;right:2px;bottom:2px;width:8px;height:8px;border-right:2px solid rgba(0,243,255,.6);border-bottom:2px solid rgba(0,243,255,.6)}
 #bk-body{display:flex;flex-direction:row;flex:1;min-height:0;overflow:hidden}
-#bk-toggle-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;cursor:pointer;background:rgba(0,243,255,.06);border-bottom:1px solid rgba(0,243,255,.15);flex-shrink:0;user-select:none}
-#bk-toggle-bar:hover{background:rgba(0,243,255,.12)}
 #bk-img-area{position:relative;aspect-ratio:1/1;flex-shrink:0;overflow:hidden;background:linear-gradient(180deg,#050f1e,#0a1a30);align-self:stretch}
 #bk-msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:3px;padding:4px 10px 4px;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent}
 #bk-msgs::-webkit-scrollbar{width:3px}#bk-msgs::-webkit-scrollbar-thumb{background:rgba(0,243,255,.25);border-radius:4px}

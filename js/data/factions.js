@@ -53,7 +53,7 @@ const SPECIAL_CHARS=[
 const SYSTEM_GUIDE=[
   {
     key:'map', icon:'🗺️', name:'은하 지도', img:'img/hub/route.png',
-    location:'⭐ 함장 메인서버 → 🗺️ 은하 지도',
+    location:'⭐ 메인서버 → 🗺️ 은하 지도',
     desc:'은하 전체를 3D로 펼쳐 보여주는 항법 콘솔. 30개 행성과 항로(워프 게이트)가 표시된다. 클릭으로 인접 행성 이동, 마우스 드래그로 회전, 휠로 줌.',
     operator:'백구 (전속 AI). 항로 추천과 위험 구간 경고를 담당.',
     unlock:'게임 시작 직후 즉시 사용 가능 — 첫 행성 P01 프록시마 b에서 자동 개방.',
@@ -63,7 +63,7 @@ const SYSTEM_GUIDE=[
   },
   {
     key:'crew', icon:'👥', name:'크루 명단', img:'img/hub/crew.png',
-    location:'⭐ 함장 메인서버 → 👥 크루 명단',
+    location:'⭐ 메인서버 → 👥 크루 명단',
     desc:'영입한 모든 크루·전설 영웅을 한눈에 보고, 함선에 배치하거나 방출하는 인사 콘솔.',
     operator:'본인 사령관. 백구가 정렬·통계 보조.',
     unlock:'게임 시작 직후 즉시 사용 가능.',
@@ -73,7 +73,7 @@ const SYSTEM_GUIDE=[
   },
   {
     key:'clog', icon:'📋', name:'전투 기록', img:'img/hub/clog.png',
-    location:'⭐ 함장 메인서버 → 📋 전투 기록',
+    location:'⭐ 메인서버 → 📋 전투 기록',
     desc:'지금까지의 모든 전투 결과(승/패·도망)와 보상 기록을 시간순으로 정리한 항해일지.',
     operator:'백구 자동 기록 — 매 전투 종료 시 자동 추가.',
     unlock:'첫 전투 종료 시점부터 활성. 그전엔 빈 페이지.',

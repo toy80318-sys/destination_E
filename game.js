@@ -404,7 +404,7 @@ function initGame(){
   G.shopStock={};
   G.mapPositions=generateGalaxy(1000);G.mapConns=buildConnections(G.mapPositions);
   generateShopStock('P01');
-  // 시작 행성 P01(프록시마b): 함선도크(1회)·행성광장(2회) 이미 해금 상태로 시작
+  // 시작 행성 P01(프록시마b·수퍼비아 F01): 광장(1회)·도크(2회) 이미 해금 상태로 시작 (프론트 1회 남음)
   G.planets['P01'].hubProg=2;
 }
 
@@ -415,6 +415,9 @@ function toggleBaekgu(){/* 항상 표시 — 토글 비활성화 */}
 // 함대 바 갱신 (모든 허브 탭에서 하단 바에 함대 카드 표시)
 function updateFleetBar(){
   const el=document.getElementById('bk-fleet');if(!el)return;
+  // 헤더의 함대 수 카운트 (접힘 상태에서도 보임)
+  const _cntEl=document.getElementById('bk-fleet-count');
+  if(_cntEl)_cntEl.textContent=(G&&G.fleet&&G.fleet.length)?`(${G.fleet.length}척)`:'';
   if(!G||!G.fleet||!G.fleet.length){el.innerHTML='<span style="color:var(--dim);font-size:12px">함선 없음</span>';return;}
   const cards=G.fleet.map((s,i)=>{
     const st=getShipStats(s);
@@ -609,7 +612,7 @@ function setAsFlagship(idx){
   };
   // 드래그 (토글바 mousedown)
   document.addEventListener('mousedown',function(e){
-    const bar=document.getElementById('bk-toggle-bar');
+    const bar=document.getElementById('bk-header-bar');
     if(!bar||!floating)return;
     if(!bar.contains(e.target)||e.target.closest('button')||e.target.id==='bk-pin-btn'||e.target.id==='bk-chevron')return;
     const d=getDlg();if(!d)return;
@@ -1146,7 +1149,7 @@ function askBaekgu(){
     // 영웅
     {k:['영웅','hero','특수','스킬','능력'],r:()=>{const hc=(G.heroes||[]).length;return`영웅 ${hc}/8명 보유. 퀘스트 완료 시 10% 확률로 이순신·장영실·광개토·가가린·넬슨·아인슈타인·테슬라·마르코 중 미보유 영웅 영입 이벤트 발생. 영웅마다 고유 스킬 있어.`;}},
     // 행성 허브 잠금
-    {k:['잠금','허브','개방','시설','unlock'],r:()=>{const pid=G.currentPlanet,prog=getPlanetHubProgress(pid),thr=getPlanetHubThreshold(pid);const unlocked=isPlanetHubUnlocked(pid);return`현재 행성 허브 진행: ${prog}/${thr}${unlocked?' ✅ 해금 완료':''}. 모든 행성 10회 해금 필요. 해금 전 해적 100% 출현, 보상 50% 감소. 해금 후 정상 보상 복구.`;}},
+    {k:['잠금','허브','개방','시설','unlock'],r:()=>{const pid=G.currentPlanet,prog=getPlanetHubProgress(pid),thr=getPlanetHubThreshold(pid);const unlocked=isPlanetHubUnlocked(pid);const pd=PLANET_DEF.find(p=>p.id===pid);const isSup=pd?.f==='F01';return`현재 행성 허브 진행: ${prog}/${thr}${unlocked?' ✅ 해금 완료':''}. 진행 트리거: 해적 격파·퀘스트 완료·턴 종료·잔해 탐색. 단계: 광장 → 도크 → 프론트 순서, ${isSup?'1/2/3회 (수퍼비아 특혜)':'2/4/8회 (표준)'}.`;}},
     // 행성/탐험
     {k:['행성','탐험','지도','경로','항로','fog','안개','어둠'],r:()=>`은하 지도에서 인접 행성으로만 이동 가능해. 이동 시 50% 확률로 해적 조우. 3턴 이상 체류하면 해적 기습 발생. 전투력 높여서 여행해.`},
     // 퀘스트
@@ -2035,8 +2038,7 @@ function showHub(){
   })();
   updateHUD();
   const cmd=document.getElementById('hub-cmd');if(cmd)cmd.textContent=G.profile.name||'사령관';
-  // 사이드바 폴더 기본 열기
-  openFolder('captain');openFolder('dock');openFolder('plaza');openFolder('front');
+  // 사이드바 폴더 — 기본 닫힘 (사용자가 직접 펼침) — 현재 활성 탭이 속한 폴더만 setHubNav에서 자동 열림
   hubTab('main');
   // 초기 백구 인사
   const greets=['허브 접속 완료. 무역하든 전투하든 네 마음대로.',
@@ -2064,37 +2066,93 @@ function showHub(){
 function showOnboardingTutorial(){
   // 이미 표시 중이면 무시
   if(document.getElementById('_tutorial-overlay'))return;
+  // 튜토리얼 단계 — 사용자의 첫 플레이 흐름을 따라가는 대화형 가이드
+  // 각 단계의 onShow에서 사이드바 폴더를 펼치고 해당 탭으로 자동 이동시켜
+  // 하이라이트된 메뉴를 직접 보면서 설명을 읽도록 유도한다
+  const _nav=(folder,tab)=>{try{openFolder(folder);if(tab)hubTab(tab);}catch(e){}};
   const steps=[
+    // ── 인사 ─────────────────────────────────────────────
+    {target:null,pos:'center',title:'환영합니다, 사령관!',
+     text:'지구로 돌아가는 긴 여정의 시작이야.\n화면을 차례로 둘러보면서 핵심 메뉴와 첫 플레이 사이클을 알려줄게.\n\n[다음 ▶]으로 진행, [건너뛰기]로 종료할 수 있어.'},
+
+    // ── 1) 상단 정보 (간단히) ────────────────────────────
     {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN',
-     text:'우상단에 현재 ACT와 턴이 표시돼. 매 20턴마다 ACT가 진행되고 ACT 3에 도달하면 지구 진입이 열려.'},
+     text:'우상단에 현재 ACT와 턴 표시. 매 20턴마다 ACT가 진행되고, ACT 3부터 지구 진입이 열려.'},
     {target:'#h-resource-bar',pos:'bottom',title:'재화 (₡ / VE / VC / ⭐)',
-     text:'₡ 크레딧은 무역·전투 보상, VE는 보이드 에센스, VC는 보이드 크리스탈. ⭐는 명성으로 가챠·퀘스트 보상에 영향을 줘.'},
-    {target:'#hn-main',pos:'right',title:'메인 허브',
-     text:'현재 행성의 메인 허브. 광장·도크·프론트 잠금 해제 진행도가 표시돼.'},
-    {target:'#folder-captain',pos:'right',title:'함장 메인서버',
-     text:'은하지도·전투·승무원·로그·도감 — 항해와 함대 관리의 핵심. 클릭으로 펼쳐서 사용해.',
-     onShow:()=>{try{openFolder('captain');}catch(e){}}},
-    {target:'#folder-plaza',pos:'right',title:'행성 광장',
-     text:'주점(영웅 영입)·가챠·무역·퀘스트 — 명성과 영웅을 모으는 곳이야. 퀘스트 진행도가 광장 잠금 해제 조건.',
-     onShow:()=>{try{openFolder('plaza');}catch(e){}}},
-    {target:'#folder-dock',pos:'right',title:'함선 도크',
-     text:'함선 거래소·제작소·정비소. 새 함선 구매, 파츠 장착, 수리는 모두 여기에서.',
-     onShow:()=>{try{openFolder('dock');}catch(e){}}},
-    {target:'#folder-front',pos:'right',title:'행성 프론트',
-     text:'행성 경매로 영지를 구매하면 매 턴 세금 수입. 명성 10당 보유 한도 +1.',
-     onShow:()=>{try{openFolder('front');}catch(e){}}},
-    {target:'#bk-fleet',pos:'top',title:'함대 상태바',
-     text:'화면 하단에 함대 카드. HP·SH·ATT가 보이고, 클릭하면 함선 정비 모달이 열려. 4열 그리드로 정렬.'},
-    {target:'#bk-msgs',pos:'top',title:'🐕 백구 AI',
-     text:'백구가 상황별 힌트를 띄워줘. 입력창에 질문하면 직접 답변도 가능. 25초마다 자동 조언이 떠.'},
+     text:'₡ 크레딧(무역·전투 보상) · VE 보이드 에센스 · VC 보이드 크리스탈 · ⭐ 명성. 각각 게임 진행에 꼭 필요해.'},
+
+    // ── 2) 탐색 도감 — 정보 백과 ─────────────────────────
+    {target:'[data-tab="codex"]',pos:'right',title:'📖 탐색 도감',
+     text:'먼저 도감을 열었어. 행성·문명·시설·아이템·운영법까지 전부 정리돼 있어 — 게임 중 막히면 여기서 검색해서 찾아봐.\n\n좌측 메뉴에서 메인서버 → 탐색 도감으로 언제든 다시 올 수 있어.',
+     onShow:()=>_nav('captain','codex')},
+
+    // ── 3) 행성 제독 — 퀘스트 수락 ────────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 행성 제독 — 퀘스트',
+     text:'광장 → 행성 제독. 여기서 퀘스트를 수락하면 ₡ 크레딧·명성·가끔 영웅과 설계도까지 보상으로 받을 수 있어.\n\n마음에 드는 퀘스트 1~2개를 골라 [수락] 버튼을 눌러봐. (목록이 비어있다면 턴 종료 한 번)',
+     onShow:()=>_nav('plaza','quest')},
+
+    // ── 4) 행성 주점 — 크루 영입 ──────────────────────────
+    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 행성 주점 — 크루 영입',
+     text:'주점에서 [크루 영입] 버튼을 누르면 새 크루(가끔 전설 영웅)가 합류해.\n\n크루를 함선에 배치하면 능력치 약 +20% 상승 — 함대 강화의 기본은 크루 충원부터야.',
+     onShow:()=>_nav('plaza','tavern')},
+
+    // ── 5) 행성 상점 — 특산물 무역 ───────────────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 행성 상점 — 무역 차익',
+     text:'행성마다 특산물 가격이 달라.\n\n여기서 싸게 사두고 → 다른 행성으로 이동해 비싸게 팔면 차익! 초반 자본을 가장 안정적으로 키우는 방법이야.\n\n지금 특산물 1~2개 사두자.',
+     onShow:()=>_nav('plaza','trade')},
+
+    // ── 6) 함선 거래소 — 함선 구매 ───────────────────────
+    {target:'[data-tab="ship"]',pos:'right',title:'🛸 함선 거래소 — 함대 확장',
+     text:'도크 → 함선 거래소. 소형(저렴) → 중형(균형) → 대형/전설(고화력) 순서로 등급이 올라가.\n\n예산이 되면 소형 함선 1기를 시험삼아 구매해봐 — 함대가 3척 이상부터 본격 전투가 가능해져.',
+     onShow:()=>_nav('dock','ship')},
+
+    // ── 7) 함선 정비소 — 파츠 탭 + 레이저 구매 ────────────
+    {target:'[data-tab="garage"]',pos:'right',title:'🔧 함선 정비소 — 파츠',
+     text:'정비소에서 상단 [파츠] 탭을 클릭하면 무기·실드·장갑·엔진을 살 수 있어.\n\n가장 저렴한 레이저 무기부터 구매해봐 — 레이저는 ATT를 올려주고, 적 실드에 강해.',
+     onShow:()=>_nav('dock','garage')},
+
+    // ── 8) 정비소 — 파츠 장착 안내 ────────────────────────
+    {target:'[data-tab="garage"]',pos:'right',title:'🔧 파츠 장착하기',
+     text:'구매한 파츠는 함선의 파츠 슬롯(⚔️🛡️⚡)에 끼울 수 있어.\n\n함선 카드 아래 [파츠 장착] 또는 빈 슬롯을 클릭하면 보유 파츠 중에서 선택해 장착돼. 능력치가 즉시 합산돼서 함대 전투력이 올라가.',
+     onShow:()=>_nav('dock','garage')},
+
+    // ── 9) 잔해 탐색 — 첫 전투 ────────────────────────────
+    {target:'#hn-gather-search',pos:'right',title:'🔭 잔해 탐색 — 첫 전투',
+     text:'준비 끝났으면 [잔해 탐색] 버튼을 눌러 첫 전투에 나서자!\n\n쿨다운은 8초. 보상으로 ₡·파츠·가끔 설계도가 나와. 해적이 등장하면 격파해서 명성도 같이 올려.',
+     onShow:()=>_nav('dock')},
+
+    // ── 10) 퀘스트 보상 수령 ──────────────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 퀘스트 보상 수령',
+     text:'전투가 끝났으면 다시 행성 제독으로 와봐.\n\n수락했던 퀘스트가 완료됐다면 [보상 수령] 버튼이 활성화돼 있어 — 눌러서 ₡·명성을 챙겨!',
+     onShow:()=>_nav('plaza','quest')},
+
+    // ── 11) 은하 지도 — 이동 ──────────────────────────────
+    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 은하 지도 — 다음 행성',
+     text:'이제 다른 행성으로 가보자.\n\n가까운 인접 행성(예: 센타우리 P02)을 클릭해서 이동! 인접 항로로만 이동 가능하고, 멀어질수록 보상 등급이 올라가.',
+     onShow:()=>_nav('captain','map')},
+
+    // ── 12) 센타우리에서 해적 격파 ────────────────────────
+    {target:'#hn-gather-search',pos:'right',title:'센타우리에서 해적 격파',
+     text:'센타우리 도착했으면 또 [잔해 탐색]. 해적과 전투해서 명성·전리품을 쌓아가자.\n\n해적 격파마다 명성 +1, 허브 해금 진행도도 +1 — 한 행성을 8회 활동하면 광장·도크·프론트가 차례로 열려.',
+     onShow:()=>_nav('dock')},
+
+    // ── 13) 무역 차익 실현 ────────────────────────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 차익 실현 — 무역 사이클',
+     text:'프록시마에서 사 둔 특산물을 센타우리 상점에서 팔면 차익이 발생!\n\n이 사이클(싸게 사기 → 이동 → 비싸게 팔기)을 반복하면 자본금이 빠르게 늘어. 무역은 초반 가장 든든한 수입원이야.',
+     onShow:()=>_nav('plaza','trade')},
+
+    // ── 마무리 ───────────────────────────────────────────
     {target:null,pos:'center',title:'준비 완료!',
-     text:'기본 안내가 끝났어. 무역으로 크레딧 모으고 → 도크에서 함대 강화 → 퀘스트로 명성·영웅 영입 → ACT 진행. 지구 진입은 ACT 3부터. 가자!\n\n전투 중에는 우상단 ⚔️ 전투화면 버튼으로 복귀 가능, 일점사·학익진 등 전술 콤보는 5초 간격으로 활성화돼.'}
+     text:'기본 사이클을 익혔어 👏\n\n  ① 퀘스트 수락\n  ② 잔해탐색·전투\n  ③ 보상 수령\n  ④ 행성 이동\n  ⑤ 무역 차익\n\n이 흐름을 반복하며 함대를 키워가면 돼.\n\n지구 진입은 ACT 3부터. 막히면 화면 하단 백구 AI에게 질문해도 답해줘.\n\n행운을 빌어, 사령관!'}
   ];
   let _idx=0;
   // 백드롭 제거 — 하이라이트 box-shadow 만으로 spotlight 효과 (이중 어둡기 방지)
+  // 모바일 세로 모드에서 #game-stage가 90° 회전되므로 오버레이도 stage 자식으로 붙여
+  // 동일 회전·스케일을 공유하게 한다 (그렇지 않으면 튜토리얼이 게임과 90° 어긋나 기울어진 것처럼 보임)
+  const _stageHost=document.getElementById('game-stage')||document.body;
   const ov=document.createElement('div');
   ov.id='_tutorial-overlay';
-  ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:99995;pointer-events:none;font-family:Malgun Gothic,sans-serif';
+  ov.style.cssText=`position:absolute;left:0;top:0;width:${STAGE_W}px;height:${STAGE_H}px;z-index:99995;pointer-events:none;font-family:Malgun Gothic,sans-serif`;
   ov.innerHTML=`
     <div id="_tut-highlight" style="position:absolute;border:3px solid #ffd700;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.45),0 0 28px rgba(255,215,0,.85),inset 0 0 16px rgba(255,215,0,.25);transition:all .25s ease;pointer-events:none;display:none;background:transparent"></div>
     <div id="_tut-popup" style="position:absolute;background:linear-gradient(135deg,rgba(15,25,45,.98),rgba(8,12,28,.98));border:2px solid #66ddff;border-radius:12px;padding:14px 18px;max-width:340px;min-width:260px;color:#fff;box-shadow:0 12px 40px rgba(0,243,255,.35);transition:all .25s ease;pointer-events:auto">
@@ -2109,7 +2167,18 @@ function showOnboardingTutorial(){
         </div>
       </div>
     </div>`;
-  document.body.appendChild(ov);
+  _stageHost.appendChild(ov);
+  // 타겟의 stage 내부 좌표 계산 (offsetParent 체인 walking — 회전·스케일 무관)
+  const _offsetWithinStage=(el)=>{
+    let x=0,y=0,node=el;
+    while(node&&node!==_stageHost){
+      x+=node.offsetLeft||0;
+      y+=node.offsetTop||0;
+      node=node.offsetParent;
+    }
+    if(node!==_stageHost)return null;
+    return {x,y,w:el.offsetWidth,h:el.offsetHeight};
+  };
   const _close=()=>{ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
   const _render=()=>{
     const s=steps[_idx];
@@ -2140,50 +2209,52 @@ function showOnboardingTutorial(){
       pop.style.left='50%';pop.style.top='50%';pop.style.transform='translate(-50%,-50%)';
       return;
     }
-    const r=tgt.getBoundingClientRect();
-    if(r.width===0||r.height===0||tgt.offsetParent===null){
+    if(tgt.offsetParent===null){
       // 숨겨진 타겟은 다음 단계로 자동 스킵
       _idx++;_render();return;
     }
+    // stage 내부 좌표 (회전·스케일 무관) — offsetParent walk
+    const r=_offsetWithinStage(tgt);
+    if(!r||r.w===0||r.h===0){
+      _idx++;_render();return;
+    }
+    const rRight=r.x+r.w, rBottom=r.y+r.h;
     // 패딩 6px (테두리·글로우 가독성 ↑)
     const pad=6;
     hl.style.display='block';
     hl.style.transform='';
-    hl.style.left=(r.left-pad)+'px';
-    hl.style.top=(r.top-pad)+'px';
-    hl.style.width=(r.width+pad*2)+'px';
-    hl.style.height=(r.height+pad*2)+'px';
-    // 팝업 위치 계산 (화면 안에 들어오도록 클램프 강화)
+    hl.style.left=(r.x-pad)+'px';
+    hl.style.top=(r.y-pad)+'px';
+    hl.style.width=(r.w+pad*2)+'px';
+    hl.style.height=(r.h+pad*2)+'px';
+    // 팝업 위치 계산 (stage 내부 좌표 — STAGE_W × STAGE_H 안에서 클램프)
     pop.style.transform='';
-    // 임시로 left/top 설정 후 실제 size 측정
     pop.style.left='-9999px';pop.style.top='-9999px';
     const pw=pop.offsetWidth||340;
     const ph=pop.offsetHeight||180;
     let px,py;
     if(s.pos==='right'){
-      px=r.right+18;
-      // 우측 공간 부족하면 좌측으로 자동 전환
-      if(px+pw>window.innerWidth-10)px=Math.max(10,r.left-pw-18);
-      py=Math.max(10,Math.min(window.innerHeight-ph-10,r.top));
+      px=rRight+18;
+      if(px+pw>STAGE_W-10)px=Math.max(10,r.x-pw-18);
+      py=Math.max(10,Math.min(STAGE_H-ph-10,r.y));
     } else if(s.pos==='left'){
-      px=r.left-pw-18;
-      if(px<10)px=Math.min(window.innerWidth-pw-10,r.right+18);
-      py=Math.max(10,Math.min(window.innerHeight-ph-10,r.top));
+      px=r.x-pw-18;
+      if(px<10)px=Math.min(STAGE_W-pw-10,rRight+18);
+      py=Math.max(10,Math.min(STAGE_H-ph-10,r.y));
     } else if(s.pos==='top'){
-      px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));
-      py=r.top-ph-18;
-      if(py<10)py=Math.min(window.innerHeight-ph-10,r.bottom+18);
+      px=Math.max(10,Math.min(STAGE_W-pw-10,r.x+r.w/2-pw/2));
+      py=r.y-ph-18;
+      if(py<10)py=Math.min(STAGE_H-ph-10,rBottom+18);
     } else /*bottom*/{
-      px=Math.max(10,Math.min(window.innerWidth-pw-10,r.left+r.width/2-pw/2));
-      py=r.bottom+18;
-      if(py+ph>window.innerHeight-10)py=Math.max(10,r.top-ph-18);
+      px=Math.max(10,Math.min(STAGE_W-pw-10,r.x+r.w/2-pw/2));
+      py=rBottom+18;
+      if(py+ph>STAGE_H-10)py=Math.max(10,r.y-ph-18);
     }
     pop.style.left=px+'px';pop.style.top=py+'px';
   };
   document.getElementById('_tut-next').onclick=()=>{_idx++;if(_idx>=steps.length){_close();return;}_render();};
   document.getElementById('_tut-prev').onclick=()=>{_idx=Math.max(0,_idx-1);_render();};
   document.getElementById('_tut-skip').onclick=_close;
-  document.getElementById('_tut-backdrop').onclick=()=>{};  // 백드롭 클릭 무시 (실수 방지)
   // ESC로 닫기
   ov._escHandler=(e)=>{if(e.key==='Escape')_close();};
   window.addEventListener('keydown',ov._escHandler);
@@ -2237,16 +2308,14 @@ function openFolder(name){
 }
 // ── 행성 허브 진행도 헬퍼 ─────────────────────────────────────
 function getPlanetHubThreshold(pid){
-  return 15; // 5회마다 광장→도크→프론트 순서 해금 (3단계 × 5)
+  // 팩션별 최종 단계(s3) 임계값 — F01(수퍼비아):3 / 그 외 모든 팩션:8
+  // 진행 트리거: 해적 격파 · 퀘스트 완료 · 턴 종료 · 잔해 탐색
+  return _getHubThr(pid).s3;
 }
 // 행성 허브 단계: 0=전부잠금 1/2/3=각 단계 해금
-// 단계가 해금하는 시설은 팩션별로 다름 — _getStageOrder() 참조
-// 기본 순서: 광장 → 도크 → 프론트
-// F01(수퍼비아)/F02(아우레우스)/F03(메카니카): 도크 → 광장 → 프론트
+// 해금 순서 — 모든 행성 통일: 광장 → 도크 → 프론트
+// 진행 트리거(공통): 해적 격파 · 퀘스트 완료 · 턴 종료 · 잔해 탐색
 function _getStageOrder(pid){
-  const pd=PLANET_DEF.find(p=>p.id===pid);
-  const f=pd?.f;
-  if(f==='F01'||f==='F02'||f==='F03')return['dock','plaza','front'];
   return['plaza','dock','front'];
 }
 // 카테고리(plaza/dock/front)가 해금되는 단계(1/2/3) 반환
@@ -2254,13 +2323,12 @@ function _getCategoryStage(pid,cat){
   return _getStageOrder(pid).indexOf(cat)+1;
 }
 function _getHubThr(pid){
-  // 행성 팩션에 따라 단계별 임계값 결정
-  // F01: 1/2/3회, F02·F03: 2/3/5회, 기타: 5/10/15회
+  // 팩션별 단계 임계값
+  // F01(수퍼비아): 광장 1회 / 도크 2회 / 프론트 3회 (시작 행성·최저)
+  // 그 외 모든 팩션: 광장 2회 / 도크 4회 / 프론트 8회 (표준)
   const pd=PLANET_DEF.find(p=>p.id===pid);
-  const f=pd?.f;
-  if(f==='F01')return{s1:1,s2:2,s3:3};
-  if(f==='F02'||f==='F03')return{s1:2,s2:3,s3:5};
-  return{s1:5,s2:10,s3:15};
+  if(pd?.f==='F01')return{s1:1,s2:2,s3:3};
+  return{s1:2,s2:4,s3:8};
 }
 function getPlanetHubStage(pid){
   const prog=getPlanetHubProgress(pid);
@@ -2369,7 +2437,7 @@ function hubTab(tab){
           </div>
           <div style="font-size:17px;font-weight:bold;color:var(--red)">🔒 ${stageName} 잠금</div>
           <div style="color:var(--dim);font-size:14px;line-height:1.9">
-            퀘스트 완료 또는 해적 격파 <b style="color:var(--gold)">${nextGoal}회</b> 달성 시 개방
+            퀘스트·잔해탐색·해적격파·턴종료 <b style="color:var(--gold)">${nextGoal}회</b> 누적 시 개방
             &nbsp;·&nbsp; <span style="color:var(--cyan)">현재 ${prog} / ${nextGoal}</span>
           </div>
           <div style="background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.4);border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.9;text-align:left">
@@ -2803,6 +2871,8 @@ function tickAutoRepair(){
 
 function doNextTurn(){
   G.turn++;
+  // 턴 종료 — 현재 행성 허브 해금 진행도 +1 (퀘스트·잔해탐색·해적격파와 동일 카운트)
+  try{addHubProgress(G.currentPlanet);}catch(e){}
   // ACT 자동 전환: 턴 20→ACT2, 턴 40→ACT3, 턴 60→ACT4 (보스 격파 후 후일담)
   if(G.turn%20===0&&G.act<4){
     const prevAct=G.act;
@@ -8139,7 +8209,45 @@ function completeQuest(pid,idx){
     saveGame(true);
     if(_fromTavern)rerenderTab(renderTavernView);
     else rerenderTab(renderQuestTab);
+    // 일반 퀘스트 완료 시 — 작은 확인 팝업 (보상은 이미 지급됨, 확인용)
+    _showQuestRewardToast(_actualCr,_actualVe,_rm,_repMult);
   }
+}
+// 퀘스트 완료 시 작은 보상 안내 팝업 (보너스 없는 일반 완료용)
+// 화면 우상단에 자동 사라지는 카드 형태 — 모달이 아니라 클릭으로 닫을 수 있는 작은 패널
+function _showQuestRewardToast(cr,ve,levelMult,repMult){
+  // 기존 동일 토스트 있으면 제거
+  const old=document.getElementById('_quest-reward-toast');if(old)old.remove();
+  const _hasBonus=(levelMult>1.05)||(repMult>1);
+  const card=document.createElement('div');
+  card.id='_quest-reward-toast';
+  card.style.cssText='position:fixed;top:72px;right:20px;z-index:99996;background:linear-gradient(135deg,rgba(40,30,8,.98),rgba(20,15,5,.98));border:2px solid var(--gold);border-radius:10px;padding:12px 16px;min-width:240px;max-width:300px;color:#fff;font-family:Malgun Gothic,sans-serif;box-shadow:0 8px 24px rgba(255,215,0,.4),0 0 16px rgba(255,215,0,.2);animation:_qrSlide .35s ease-out;cursor:pointer';
+  // CSS 애니메이션 1회 주입
+  if(!document.getElementById('_qr-style')){
+    const st=document.createElement('style');st.id='_qr-style';
+    st.textContent='@keyframes _qrSlide{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes _qrFade{from{opacity:1}to{opacity:0;transform:translateX(20px)}}';
+    document.head.appendChild(st);
+  }
+  card.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div style="font-size:13px;font-weight:bold;color:var(--gold);letter-spacing:1px">🎖️ 퀘스트 완료</div>
+      <div style="color:#888;font-size:14px;line-height:1">✕</div>
+    </div>
+    <div style="font-size:12px;line-height:1.6;color:#dde">
+      <div>💰 +₡<b style="color:#ffd700">${(cr||0).toLocaleString()}</b>${levelMult>1.05?` <span style="color:#88ddff">×${levelMult.toFixed(1)}</span>`:''}</div>
+      ${ve>0?`<div>💎 보이드 에센스 +<b style="color:#cc66ff">${ve}</b></div>`:''}
+      <div>⭐ 명성 +1 (현재 ${G.reputation||0})</div>
+      ${_hasBonus?`<div style="color:#ff88cc;margin-top:3px">✨ 보너스 배율 적용</div>`:''}
+    </div>`;
+  document.body.appendChild(card);
+  // 클릭으로 즉시 닫기
+  card.onclick=()=>{card.remove();};
+  // 4초 후 자동 페이드아웃
+  setTimeout(()=>{
+    if(!document.body.contains(card))return;
+    card.style.animation='_qrFade .4s ease-out forwards';
+    setTimeout(()=>{if(document.body.contains(card))card.remove();},420);
+  },4000);
 }
 function checkQuestCombatDone(){
   let completed=0;
@@ -8159,7 +8267,7 @@ function checkQuestCombatDone(){
 }
 // ── 좌측 탐색 버튼 표시/숨김 업데이트 ──────────────────────────
 // 잔해 탐색은 항상 활성. 기본 10초 쿨다운 + 전설급 크루(또는 영웅) 1명당 1초 감소(최소 5초)
-const GATHER_COOLDOWN_BASE_MS=10000;
+const GATHER_COOLDOWN_BASE_MS=8000;   // 잔해 탐색 최대 쿨타임 8초 (사용자 명세, 기존 10초)
 const GATHER_COOLDOWN_MIN_MS=5000;
 function _gatherCooldownMs(){
   // 전설(L) 크루 + 스토리(S) 영웅 합산
@@ -13829,7 +13937,7 @@ function _finishCombat(){
       }
       addHubProgress(pid);
       _kindLbl=combatState._isChixFleet?'🛸 치크스':combatState.isPirate?'🏴‍☠️ 해적':'⚔️ 적군';
-      addCombatLog(`${_kindLbl} 격파! 허브 진행 ${getPlanetHubProgress(pid)}/15`,'gold');
+      addCombatLog(`${_kindLbl} 격파! 허브 진행 ${getPlanetHubProgress(pid)}/${getPlanetHubThreshold(pid)}`,'gold');
     }
     if(combatState.isBoss){
       addCombatLog('🏆 우르사 메이저 제압! 게임 클리어!','gold');

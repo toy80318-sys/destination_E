@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>DESTINATION EARTH</title>
-<link rel="stylesheet" href="game.css?v=20260526165">
+<link rel="stylesheet" href="game.css?v=20260526200">
 </head>
 <body>
 <div id="game-stage">
@@ -172,9 +172,9 @@
         <div class="hs-ri"><span style="color:var(--purple)">VC</span><span id="sb-vc">3</span></div>
       </div>
       <button class="hn-btn on" id="hn-main" onclick="hubTab('main')"><span class="hn-ic">🏠</span><span>메인 허브</span></button>
-      <!-- 함장 메인서버 -->
+      <!-- 메인서버 -->
       <div class="hn-folder" id="folder-captain">
-        <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">⭐</span><span>함장 메인서버</span><span class="folder-arrow" id="folder-arrow-captain">▶</span></button>
+        <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">⭐</span><span>메인서버</span><span class="folder-arrow" id="folder-arrow-captain">▶</span></button>
         <div class="hn-folder-items" id="folder-items-captain">
           <button class="hn-btn hn-sub" data-tab="map" onclick="hubTab('map')"><span class="hn-ic">🗺️</span><span>은하 지도</span></button>
           <button class="hn-btn hn-sub" data-tab="codex" onclick="hubTab('codex')"><span class="hn-ic">📖</span><span>탐색 도감</span></button>
@@ -231,47 +231,53 @@
     <div class="hub-body" id="hub-body"></div>
     <!-- 백구 AI + 함대 통합 하단 바 -->
     <div id="bkdialog">
-  <!-- ◀ 좌: 백구 패널 (2카드 너비 고정 330px) -->
-  <div id="bk-left" style="width:468px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(0,243,255,.2)">
-    <!-- 헤더 (드래그 핸들) -->
-    <div id="bk-toggle-bar">
-      <div style="display:flex;align-items:center;gap:7px">
-        <img src="img/chars/baekgu1.png" alt="백구" style="width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:17px&quot;>🐕</span>'">
-        <span style="color:var(--cyan);font-size:13px;font-weight:bold;letter-spacing:.5px">백구 AI</span>
-        <span id="bk-status" style="color:var(--green);font-size:11px">● 온라인</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span title="높이 줄이기/늘리기" onclick="event.stopPropagation();bkToggleCollapse()" style="cursor:pointer;color:rgba(0,243,255,.5);font-size:14px;padding:2px 6px;border-radius:3px;user-select:none;line-height:1" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='rgba(0,243,255,.5)'">▾</span>
-        <button onclick="event.stopPropagation();document.getElementById('bk-msgs').innerHTML=''" style="background:none;border:1px solid rgba(0,243,255,.2);color:var(--muted);font-size:11px;cursor:pointer;padding:1px 6px;border-radius:4px">✕</button>
-      </div>
+  <!-- ▭ 전체 폭 헤더 (백구 + 함대 공통) — 클릭 또는 ▾/▴ 버튼으로 접기/펼치기 -->
+  <div id="bk-header-bar" onclick="bkToggleCollapse()" title="클릭하여 펼치기/접기">
+    <div style="display:flex;align-items:center;gap:7px">
+      <img src="img/chars/baekgu1.png" alt="백구" style="width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:17px&quot;>🐕</span>'">
+      <span style="color:var(--cyan);font-size:13px;font-weight:bold;letter-spacing:.5px">백구 AI</span>
+      <span id="bk-status" style="color:var(--green);font-size:11px">● 온라인</span>
+      <span style="color:rgba(255,255,255,.25);margin:0 4px">|</span>
+      <span style="color:var(--yellow);font-size:12px;font-weight:bold">🚀 함대</span>
+      <span id="bk-fleet-count" style="color:var(--dim);font-size:11px"></span>
     </div>
-    <!-- 리사이즈 핸들 -->
-    <div id="bk-resize-handle"></div>
-    <!-- 바디: 이미지(좌) + 메시지(우) -->
-    <div id="bk-body">
-      <div id="bk-img-area">
-        <img id="bk-portrait-img" src="img/chars/baekgu1.png" alt="백구"
-          onload="this.style.display='block';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='none'"
-          onerror="this.style.display='none';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='flex'"
-          style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s">
-        <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
-        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid rgba(0,243,255,.12)">
-        <div id="bk-msgs"></div>
-        <div id="bk-line" style="display:none"></div>
-        <div id="bk-ask-area" style="display:flex;align-items:center;gap:6px;padding:6px 8px;border-top:1px solid rgba(0,243,255,.15);background:rgba(0,10,25,.6);flex-shrink:0;margin-top:auto">
-          <input id="bk-ask-input" type="text" placeholder="백구에게 질문..." maxlength="60"
-            style="flex:1;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.25);color:var(--txt);font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;padding:5px 9px;border-radius:6px;outline:none;caret-color:var(--cyan)"
-            onkeydown="if(event.key==='Enter')askBaekgu()"
-            onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='rgba(0,243,255,.25)'">
-          <button onclick="askBaekgu()" style="background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.35);color:var(--cyan);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace" onmouseover="this.style.background='rgba(0,243,255,.22)'" onmouseout="this.style.background='rgba(0,243,255,.12)'">물어보기</button>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button onclick="event.stopPropagation();document.getElementById('bk-msgs').innerHTML=''" style="background:none;border:1px solid rgba(0,243,255,.2);color:var(--muted);font-size:11px;cursor:pointer;padding:1px 6px;border-radius:4px" title="메시지 지우기">✕</button>
+      <span id="bk-collapse-arrow" title="아래로 접기" style="color:rgba(0,243,255,.65);font-size:15px;padding:2px 8px;border-radius:3px;user-select:none;line-height:1">▾</span>
+    </div>
+  </div>
+  <!-- ▽ 본문 (접히면 숨김) -->
+  <div id="bk-content">
+    <!-- ◀ 좌: 백구 패널 (2카드 너비 고정 468px) -->
+    <div id="bk-left" style="width:468px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(0,243,255,.2)">
+      <!-- 리사이즈 핸들 -->
+      <div id="bk-resize-handle"></div>
+      <!-- 바디: 이미지(좌) + 메시지(우) -->
+      <div id="bk-body">
+        <div id="bk-img-area">
+          <img id="bk-portrait-img" src="img/chars/baekgu1.png" alt="백구"
+            onload="this.style.display='block';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='none'"
+            onerror="this.style.display='none';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='flex'"
+            style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s">
+          <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid rgba(0,243,255,.12)">
+          <div id="bk-msgs"></div>
+          <div id="bk-line" style="display:none"></div>
+          <div id="bk-ask-area" style="display:flex;align-items:center;gap:6px;padding:6px 8px;border-top:1px solid rgba(0,243,255,.15);background:rgba(0,10,25,.6);flex-shrink:0;margin-top:auto">
+            <input id="bk-ask-input" type="text" placeholder="백구에게 질문..." maxlength="60"
+              style="flex:1;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.25);color:var(--txt);font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;padding:5px 9px;border-radius:6px;outline:none;caret-color:var(--cyan)"
+              onkeydown="if(event.key==='Enter')askBaekgu()"
+              onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='rgba(0,243,255,.25)'">
+            <button onclick="askBaekgu()" style="background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.35);color:var(--cyan);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace" onmouseover="this.style.background='rgba(0,243,255,.22)'" onmouseout="this.style.background='rgba(0,243,255,.12)'">물어보기</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- ▶ 우: 함대 카드 (그리드 4열) -->
-  <div id="bk-fleet" style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);align-content:flex-start;gap:5px;padding:5px 8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent;min-width:0;background:rgba(0,5,15,.3)">
+    <!-- ▶ 우: 함대 카드 (그리드 4열) -->
+    <div id="bk-fleet" style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);align-content:flex-start;gap:5px;padding:5px 8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent;min-width:0;background:rgba(0,5,15,.3)">
+    </div>
   </div>
     </div>
   </div>
@@ -282,21 +288,21 @@
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
 <script>window._GAME_VER='20260525.0350';</script>
-<script src="js/data/factions.js?v=20260526165"></script>
-<script src="js/data/planets.js?v=20260526165"></script>
-<script src="js/data/heroes.js?v=20260526165"></script>
-<script src="js/data/commodities.js?v=20260526165"></script>
-<script src="js/data/parts.js?v=20260526165"></script>
-<script src="js/data/quests.js?v=20260526165"></script>
-<script src="js/data/cargo.js?v=20260526165"></script>
-<script src="js/data/crafting.js?v=20260526165"></script>
-<script src="js/data/ships.js?v=20260526165"></script>
+<script src="js/data/factions.js?v=20260526200"></script>
+<script src="js/data/planets.js?v=20260526200"></script>
+<script src="js/data/heroes.js?v=20260526200"></script>
+<script src="js/data/commodities.js?v=20260526200"></script>
+<script src="js/data/parts.js?v=20260526200"></script>
+<script src="js/data/quests.js?v=20260526200"></script>
+<script src="js/data/cargo.js?v=20260526200"></script>
+<script src="js/data/crafting.js?v=20260526200"></script>
+<script src="js/data/ships.js?v=20260526200"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260526165"></script>
+<script defer src="js/cloudsave.js?v=20260526200"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260526165"></script>
+<script src="game.js?v=20260526200"></script>
 </body>
 </html>
