@@ -12642,10 +12642,10 @@ try{if(typeof window!=='undefined'){window.confirmFleeCombat=confirmFleeCombat;w
 function renderCombatView(body){
   body.classList.add('cv');
   document.body.classList.add('combat-mode');  // 알림(notif) 위치 조정용
-  body.innerHTML=`<div id="cb-hdr" style="height:44px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0">
-    <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:16px">⚔️ 전투</div>
-    <div id="cb-turn" style="color:var(--cyan);font-size:14px">TURN 0</div>
-    <div id="cb-status" style="color:var(--dim);font-size:13px">준비 중...</div>
+  body.innerHTML=`<div id="cb-hdr" style="height:38px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 10px;flex-shrink:0;gap:8px;white-space:nowrap;overflow:hidden">
+    <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:13px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">⚔️ 전투</div>
+    <div id="cb-turn" style="color:var(--cyan);font-size:11px;flex-shrink:0">TURN 0</div>
+    <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">준비 중...</div>
   </div>
   <div id="cb-fleet-stats" style="background:rgba(8,16,28,.96);border-bottom:1px solid var(--bdr);padding:6px 14px;flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:11px;font-family:Courier New,monospace">
     <div id="cb-fleet-pl" style="color:var(--cyan)">⚓ 아군: 측정 중...</div>
@@ -12697,17 +12697,17 @@ function initCombatCanvas(){
   const hdr=document.getElementById('cb-hdr');
   if(hdr&&!document.getElementById('cb-zoom-btns')){
     const btns=document.createElement('div');btns.id='cb-zoom-btns';
-    btns.style.cssText='display:flex;gap:4px;align-items:center';
-    btns.innerHTML=`<span style="font-size:11px;color:var(--muted)">🖱️좌드래그=이동|휠=줌</span>
-      <button class="btn btn-sm" onclick="cbZoom=Math.max(0.3,cbZoom-.15);drawCombatFrame()" style="padding:2px 7px;font-size:13px">−</button>
-      <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:2px 7px;font-size:12px">⌂</button>
-      <button class="btn btn-sm" onclick="cbZoom=Math.min(4,cbZoom+.15);drawCombatFrame()" style="padding:2px 7px;font-size:13px">+</button>`;
+    btns.style.cssText='display:flex;gap:3px;align-items:center;flex-shrink:0';
+    btns.innerHTML=`<span style="font-size:10px;color:var(--muted);white-space:nowrap">🖱️드래그=이동|휠=줌</span>
+      <button class="btn btn-sm" onclick="cbZoom=Math.max(0.3,cbZoom-.15);drawCombatFrame()" style="padding:1px 6px;font-size:11px">−</button>
+      <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:1px 6px;font-size:10px">⌂</button>
+      <button class="btn btn-sm" onclick="cbZoom=Math.min(4,cbZoom+.15);drawCombatFrame()" style="padding:1px 6px;font-size:11px">+</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
   // 이순신 일점사 전술 버튼 (H01 영입 시만 표시)
   if(G.heroes.includes('H01')&&!document.getElementById('cb-sunsin-btn')){
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
-    sbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite';
+    sbtn.style.cssText='padding:2px 8px;font-size:11px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite;white-space:nowrap;flex-shrink:0';
     sbtn.textContent='⚔️ 일점사';
     sbtn.title='이순신 전술: 전 함대 화력 집중으로 적함 1척 즉시 격파 (전투 1회)';
     sbtn.onclick=activateSunsinFocus;
@@ -13341,8 +13341,15 @@ function drawCombatFrame(){
     // 사용자 매뉴얼 편성: 4×4 그리드 사용
     const manual=!isEnemy?(G&&G.fleetFormation):null;
     const hasManual=manual&&typeof manual==='object'&&Object.keys(manual).length>0;
+    // 블랙홀 미러 함대(5척 신화) — 1열 5행으로 좁게 보이지 않도록 가로 펼침 모드
+    const _isWideFleet=isEnemy&&units.some(u=>u&&u._isBlackHoleFleet);
     let cols,rows;
     if(hasManual){cols=4;rows=4;}
+    else if(_isWideFleet){
+      // 가로 펼침: 최대 4열, 행은 필요한 만큼 (5척 → 4열 2행)
+      cols=Math.max(1,Math.min(4,n));
+      rows=Math.ceil(n/cols);
+    }
     else{
       // 1열·2열을 먼저 가득 채우도록 컬럼당 최대 5행을 기본값으로 사용
       // n ≤5: 1열 / n 6-10: 2열 / n 11-15: 3열 / n 16-20: 4열
@@ -13376,10 +13383,15 @@ function drawCombatFrame(){
       rank.forEach((unitIdx,slotIdx)=>{slotForIdx[unitIdx]=slotIdx;});
       // 보스 본 함은 뒤쪽 중앙 슬롯에 강제 배치 — 적 함대의 가장 뒤쪽 가운데
       // 대상: 우르사 메이저(BOSS_MAIN) + 보이드 보스 기함(voidBoss + '팔콘 스카우트 (기함)')
+      // 가로 펼침 모드: 블랙팔콘 신화기함도 포함
       if(isEnemy){
-        const bossIdx=units.findIndex(u=>u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사')||(u.voidBoss&&(u.nm||'').includes('기함'))||u.id==='VOID_FALCON_1');
+        const bossIdx=units.findIndex(u=>u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사')||(u.voidBoss&&(u.nm||'').includes('기함'))||u.id==='VOID_FALCON_1'||(u._isBlackHoleFleet&&(u.catalogId==='BLACKFALCON'||(u.nm||'').includes('블랙팔콘'))));
         if(bossIdx>=0){
-          const bossSlot=(cols-1)*rows+Math.floor((rows-1)/2);
+          // row-first(가로 펼침): 뒤쪽(row=rows-1) 중앙 cols 위치
+          // col-first(기본): 마지막 컬럼 중앙
+          const bossSlot=_isWideFleet
+            ? Math.min(n-1,(rows-1)*cols+Math.floor((cols-1)/2))
+            : (cols-1)*rows+Math.floor((rows-1)/2);
           const curBossSlot=slotForIdx[bossIdx];
           if(curBossSlot!==bossSlot){
             // 보스 슬롯을 차지하고 있던 함선과 교환
@@ -13393,8 +13405,9 @@ function drawCombatFrame(){
     return units.map((u,i)=>{
       const slot=slotForIdx[i];
       if(slot<0){u._frontRank=99;return{x:xAnchor,y:0};}
-      const slotCol=Math.floor(slot/rows);
-      const slotRow=slot%rows;
+      // 가로 펼침 모드는 row-first 매핑: slotCol=slot%cols, slotRow=floor(slot/cols)
+      const slotCol=_isWideFleet?(slot%cols):Math.floor(slot/rows);
+      const slotRow=_isWideFleet?Math.floor(slot/cols):(slot%rows);
       u._frontRank=slot;
       u._fleetCols=cols;
       const xLocal=xAnchor + (isEnemy?+1:-1)*slotCol*cellW;
@@ -14304,7 +14317,7 @@ function _showHaikjinButton(){
   const hbtn=document.createElement('button');
   hbtn.id='cb-haikjin-btn';
   hbtn.className='btn btn-sm';
-  hbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.12);animation:pulse 1.4s infinite;margin-left:4px';
+  hbtn.style.cssText='padding:2px 8px;font-size:11px;border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.12);animation:pulse 1.4s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
   hbtn.textContent='🦅 학익진';
   hbtn.title='이순신 학익진: 함대 진형 변환으로 공격력 ×3 (일점사 ×2와 별도 누적, 전투 1회)';
   hbtn.onclick=activateHaikjin;
@@ -14351,7 +14364,7 @@ function _showEinsteinButton(){
   const ebtn=document.createElement('button');
   ebtn.id='cb-einstein-btn';
   ebtn.className='btn btn-sm';
-  ebtn.style.cssText='padding:3px 10px;font-size:13px;border-color:#cc66ff;color:#cc66ff;background:rgba(204,102,255,.12);animation:pulse 1.2s infinite;margin-left:4px';
+  ebtn.style.cssText='padding:2px 8px;font-size:11px;border-color:#cc66ff;color:#cc66ff;background:rgba(204,102,255,.12);animation:pulse 1.2s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
   ebtn.textContent='⏳ 시간차공격';
   ebtn.title='아인슈타인 시간차공격: 상대성 이론을 이용한 동시 다중 시간축 타격. 공격력 ×4 (전투 1회)';
   ebtn.onclick=activateEinsteinTimeAttack;
@@ -14398,7 +14411,7 @@ function _showTeslaButton(){
   const tbtn=document.createElement('button');
   tbtn.id='cb-tesla-btn';
   tbtn.className='btn btn-sm';
-  tbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:#66ffff;color:#66ffff;background:rgba(0,255,255,.12);animation:pulse 1s infinite;margin-left:4px;text-shadow:0 0 6px rgba(0,255,255,.6)';
+  tbtn.style.cssText='padding:2px 8px;font-size:11px;border-color:#66ffff;color:#66ffff;background:rgba(0,255,255,.12);animation:pulse 1s infinite;margin-left:3px;text-shadow:0 0 6px rgba(0,255,255,.6);white-space:nowrap;flex-shrink:0';
   tbtn.textContent='⚡ 테슬라 초공간';
   tbtn.title='테슬라 초공간 채널링: 전자기 초공간 도관을 열어 광속 너머의 충격파 전송. 공격력 ×5 (전투 1회)';
   tbtn.onclick=activateTeslaHyperspace;
@@ -14459,7 +14472,7 @@ function _showGenesisButton(){
   const gbtn=document.createElement('button');
   gbtn.id='cb-genesis-btn';
   gbtn.className='btn btn-sm';
-  gbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:#ff66cc;color:#ff66cc;background:rgba(255,102,204,.15);animation:pulse .9s infinite;margin-left:4px;text-shadow:0 0 8px rgba(255,102,204,.7)';
+  gbtn.style.cssText='padding:2px 8px;font-size:11px;border-color:#ff66cc;color:#ff66cc;background:rgba(255,102,204,.15);animation:pulse .9s infinite;margin-left:3px;text-shadow:0 0 8px rgba(255,102,204,.7);white-space:nowrap;flex-shrink:0';
   gbtn.textContent='✦ 제네시스 임펙트';
   gbtn.title='제네시스 임펙트: 창세의 일격. 공격력 ×6 (전투 1회)';
   gbtn.onclick=activateGenesisImpact;
@@ -14506,7 +14519,7 @@ function _showDestinationButton(){
   const dbtn=document.createElement('button');
   dbtn.id='cb-destination-btn';
   dbtn.className='btn btn-sm';
-  dbtn.style.cssText='padding:4px 12px;font-size:13px;border:2px solid #ffd700;color:#ffd700;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,100,200,.18),rgba(102,255,255,.18));animation:pulse .7s infinite;margin-left:4px;text-shadow:0 0 10px gold;font-weight:bold';
+  dbtn.style.cssText='padding:2px 10px;font-size:11px;border:2px solid #ffd700;color:#ffd700;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,100,200,.18),rgba(102,255,255,.18));animation:pulse .7s infinite;margin-left:3px;text-shadow:0 0 10px gold;font-weight:bold;white-space:nowrap;flex-shrink:0';
   dbtn.textContent='🌍 데스티네이션 어스';
   dbtn.title='데스티네이션 어스: 인류의 운명을 건 최종 강하. 공격력 ×10 (전투 1회)';
   dbtn.onclick=activateDestinationEarth;
