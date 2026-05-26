@@ -10693,6 +10693,33 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   //   legend/set:      30% 느림 → ×1.43 (1/0.7)
   //   mythic:          10% 빠름 → ×0.91 (1/1.1)
   const _missileCdMul=missileTier==='mythic'?(1/1.1):missileTier==='legend'?(1/0.7):2.0;
+  // ── 장착 무기 특성 → 미니게임 효과 매핑 ─────────────────────────────────
+  // 1) 레이저/미사일 데미지 — 등급별 차등 (1발당 적·소행성 HP 비례 격파력)
+  const _laserDmg=weaponTier==='mythic'?4:weaponTier==='legend'?2:1;
+  const _missileDmg=missileTier==='mythic'?8:missileTier==='legend'?5:3;
+  // 2) 신화 무기 — 다단발사 (40% 확률로 1발 더 발사, 허메틱 포 MW01 효과)
+  const _laserMultiShotRate=weaponTier==='mythic'?0.40:0;
+  // 3) 흡혈 효과 — 흡혈 폭격 코어(RB09, 전설)/영혼 흡수 매트릭스(RB10, 신화) 장착 시
+  //    레이저 명중 시 HP/SH 일부 회복
+  let _leechHpPct=0,_leechShPct=0;
+  if(flagship&&flagship.parts){
+    for(const pid of flagship.parts){
+      if(pid==='RB10'){_leechHpPct=0.020;_leechShPct=0.018;break;}      // 신화: HP 2% / SH 1.8%
+      if(pid==='RB09'){_leechHpPct=0.015;_leechShPct=0.012;}            // 전설: HP 1.5% / SH 1.2%
+    }
+  }
+  // 4) 실드 회복률 — 실드 파츠 등급별 (피격 없을 때 천천히 차오름)
+  let _shieldRegen=0;  // 1프레임당 회복량
+  if(flagship&&flagship.parts){
+    for(const pid of flagship.parts){
+      const p=PARTS.find(x=>x.id===pid);
+      if(p&&p.cat==='shield'){
+        if(p.rarity==='mythic')_shieldRegen=Math.max(_shieldRegen,flagStat.maxSH*0.0015);
+        else if(p.rarity==='legend'||p.rarity==='set')_shieldRegen=Math.max(_shieldRegen,flagStat.maxSH*0.0008);
+        else _shieldRegen=Math.max(_shieldRegen,flagStat.maxSH*0.0003);
+      }
+    }
+  }
   const W=1440, H=840;  // 1.5× 확대 (기존 960×560)
   // 오버레이
   const overlay=document.createElement('div');
@@ -10833,7 +10860,12 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   function _fireLaser(){
     if(state.laserCd>0||state.ended)return;
     state.laserCd=5;  // ≈85ms @ 60fps (기존 8 → 1.5× 빠르게)
-    state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:14, dmg:1, life:90});
+    state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:14, dmg:_laserDmg, life:90});
+    // 신화 무기 — 40% 확률 다단발사 (약간 위/아래 스프레드)
+    if(_laserMultiShotRate>0&&Math.random()<_laserMultiShotRate){
+      const _offY=(Math.random()-0.5)*16;
+      state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y+_offY, vx:14, dmg:_laserDmg, life:90});
+    }
     try{AudioMgr.playSfx('laser_fire',{vol:0.4,cooldown:30});}catch(e){}
   }
   function _fireMissile(){
@@ -10848,7 +10880,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
       const d=Math.hypot(e.x-state.ship.x,e.y-state.ship.y);
       if(d<td){td=d;target=e;}
     });
-    state.pMissiles.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:6, vy:0, target, dmg:3, life:140});
+    state.pMissiles.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:6, vy:0, target, dmg:_missileDmg, life:140});
     try{AudioMgr.playSfx('missile',{vol:0.5,cooldown:60});}catch(e){}
   }
   // 필살기 — 테슬라 초공간 라이트닝 (LeftShift, 10초 쿨다운)
@@ -11070,6 +11102,10 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     if(state.laserCd>0)state.laserCd-=dt;
     if(state.missileCd>0)state.missileCd-=dt;
     if(state.ultimateCd>0)state.ultimateCd-=dt;
+    // 실드 자연 회복 — 장착 실드 파츠 등급별 (피격 직후엔 회복 안 함)
+    if(_shieldRegen>0 && state.ship.hitFlash<=0 && state.ship.sh<state.ship.maxSH){
+      state.ship.sh=Math.min(state.ship.maxSH,state.ship.sh+_shieldRegen*dt);
+    }
     // hold 자동 발사 — 키 또는 마우스 버튼을 누르고 있는 동안 cd마다 계속 발사
     //   레이저: RightShift + 마우스 클릭 (LeftShift는 필살기 전용)
     //   미사일: Ctrl/Enter
@@ -11174,6 +11210,11 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
           const e=state.enemies[k];
           if(_boxHit(e,b.x,b.y,3)){e.hp-=b.dmg;if(e.hp<=0){_explode(e.x,e.y,'#ff6644',true);state.kills++;state.enemies.splice(k,1);_baekguPick('kill',true);}hit=true;break;}
         }
+      }
+      // 흡혈 — 레이저 명중 시 maxHP/maxSH 일부 회복 (RB09/RB10 장착 효과)
+      if(hit && (_leechHpPct>0||_leechShPct>0)){
+        if(_leechHpPct>0)state.ship.hp=Math.min(state.ship.maxHP,state.ship.hp+state.ship.maxHP*_leechHpPct);
+        if(_leechShPct>0)state.ship.sh=Math.min(state.ship.maxSH,(state.ship.sh||0)+state.ship.maxSH*_leechShPct);
       }
       if(hit){state.pBullets.splice(i,1);continue;}
       // 그리기 — 무기 등급별 분기 (사용자 명세)
