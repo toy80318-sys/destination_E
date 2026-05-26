@@ -12165,12 +12165,20 @@ function onMapClick(e){
           `<div style="text-align:center;padding:16px">
             <div style="font-size:48px;margin-bottom:10px">🌑</div>
             <div style="color:#cc44ff;font-size:18px;font-weight:bold;margin-bottom:8px">보이드의 심연 — 시험 통과</div>
-            <div style="color:#fff;font-size:15px;line-height:2;background:#000;padding:12px 16px;border-radius:8px;border:1px solid #cc44ff">
+            <div style="color:#fff;font-size:15px;line-height:2;background:#000;padding:12px 16px;border-radius:8px;border:1px solid #cc44ff;margin-bottom:10px">
               그대는 이미 마지막 시험을 통과하였다.<br>
               <span style="color:#cc44ff">검은 팔콘은 그대의 의지를 따른다.</span>
             </div>
+            <div style="color:var(--dim);font-size:12px;line-height:1.7">아래 [다시 도전]으로 미러 함대전에 재도전 가능합니다.</div>
           </div>`,
-          [{txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
+          [{txt:'⚔️ 다시 도전',fn:()=>{
+            closeModal();
+            // 재도전 시 통과 플래그만 임시 해제 (검은 팔콘 함선·신화 파츠 보상은 유지)
+            G._finalTestComplete=false;
+            try{saveGame(true);}catch(e){}
+            _enterBlackHoleFinalTest();
+          },cls:'btn-gold'},
+           {txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
       } else if(!G._voidSpearObtained){
         // 1차 보상: 보이드의 창 (기존 흐름)
         openModal('◈ 보이드의 심연',
@@ -13957,6 +13965,14 @@ function _finishCombat(){
   // ★ 블랙홀 최종 보이드 함대 전투 — 승리 시 보상 지급 + 엔딩 크레딧으로 직행
   //   일반 보상 모달·1800ms 클린업 우회. 패배 시는 일반 패배 처리.
   if(win&&combatState._isBlackHoleFinal){
+    // 방어 코드: 0턴 자동 승리(적이 등장도 못함) 차단 — 최소 1턴 진행해야 보상 인정
+    if((combatState.turn||0)<1){
+      console.warn('[BlackHole] auto-win on turn 0 detected — ignoring (likely a regen/state bug). enemies count:',combatState.enemies?.length);
+      addCombatLog('⚠️ 적 함대가 등장하지 않아 전투 무효 처리. 다시 도전해 주세요.','warn');
+      notify('⚠️ 블랙홀 전투 무효 — 재진입 필요','err');
+      try{setTimeout(()=>{combatState=null;hubTab('map');},800);}catch(e){}
+      return;
+    }
     addCombatLog('🌌 블랙홀의 사자 격파! 보이드의 최종 시험을 통과했다.','gold');
     notify('🌌 블랙홀 함대 격파 — 최종 시험 통과!','gold');
     G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});
