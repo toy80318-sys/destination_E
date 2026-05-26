@@ -10670,16 +10670,29 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   const _shipSpdMul=_shipSpdFactor*_engineMul;  // 최종 배율
   // 무기 등급 판정 — 기함 장착 레이저 파츠의 rarity로 분류
   let weaponTier='normal';  // normal (영웅 이하) / legend (전설·세트) / mythic (신화)
+  // 미사일 등급 판정 — 기함 장착 미사일 파츠의 rarity로 분류 (미사일 cd 배율 결정)
+  let missileTier='normal';
   if(flagship&&flagship.parts){
     for(const pid of flagship.parts){
       const p=PARTS.find(x=>x.id===pid);
-      if(p&&p.cat==='weapon'&&(p.wtype!=='missile')){
+      if(!p)continue;
+      if(p.cat==='weapon'&&(p.wtype!=='missile')){
         if(p.rarity==='mythic')weaponTier='mythic';
         else if(p.rarity==='legend'||p.rarity==='set')weaponTier=(weaponTier==='mythic'?'mythic':'legend');
         else if(weaponTier==='normal')weaponTier='normal';
       }
+      // 미사일 (cat==='missile' 또는 weapon+wtype==='missile')
+      if(p.cat==='missile'||(p.cat==='weapon'&&p.wtype==='missile')){
+        if(p.rarity==='mythic')missileTier='mythic';
+        else if(p.rarity==='legend'||p.rarity==='set')missileTier=(missileTier==='mythic'?'mythic':'legend');
+      }
     }
   }
+  // 미사일 cd 배율 (작을수록 빠름) — 사용자 명세
+  //   normal/영웅 이하: 50% 느림 → ×2.0
+  //   legend/set:      30% 느림 → ×1.43 (1/0.7)
+  //   mythic:          10% 빠름 → ×0.91 (1/1.1)
+  const _missileCdMul=missileTier==='mythic'?(1/1.1):missileTier==='legend'?(1/0.7):2.0;
   const W=1440, H=840;  // 1.5× 확대 (기존 960×560)
   // 오버레이
   const overlay=document.createElement('div');
@@ -10825,7 +10838,10 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   }
   function _fireMissile(){
     if(state.missileCd>0||state.ended)return;
-    state.missileCd=9;   // ≈150ms (기존 18 → 추가로 2× 빠르게)
+    // 미사일 등급별 발사 속도 배율 적용
+    //   base=9 (≈150ms @60fps) × _missileCdMul
+    //   normal=18, legend≈13, mythic≈8
+    state.missileCd=Math.round(9*_missileCdMul);
     // 가장 가까운 적 타겟 (소행성·해적 합산)
     let target=null,td=1e9;
     [...state.asteroids,...state.enemies].forEach(e=>{
