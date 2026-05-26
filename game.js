@@ -14332,16 +14332,26 @@ function _renderSlotCard(n,mode){
       ${actionBtn}
     </div>`;
   }
+  // ACT 정보 (1~5) — ACT별 색상·라벨
+  const _act=info.act||1;
+  const _actLabel={1:'ACT 1 · 시작',2:'ACT 2 · 확장',3:'ACT 3 · 전쟁',4:'ACT 4 · 보이드',5:'ACT 5 · 엔딩'}[_act]||('ACT '+_act);
+  const _actColor={1:'#88ccff',2:'#66ddff',3:'#ffcc66',4:'#ff88cc',5:'#ff66ff'}[_act]||'#66ddff';
+  const _rep=info.reputation||0;
+  const _heroCnt=(info.heroes||[]).length;
+  const _ownedCnt=(info.ownedPlanets||[]).length;
   return `<div style="background:${cardBg};border:${cardBorder};border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
     <div style="font-size:18px;flex-shrink:0;align-self:flex-start;margin-top:2px">${slotEmoji}</div>
     ${flagImgHtml}
     <div style="flex:1;min-width:0">
-      <div style="font-weight:bold;font-size:13px;margin-bottom:2px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">⚑ ${flagName}</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px">
+        <div style="font-weight:bold;font-size:13px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0">⚑ ${flagName}</div>
+        <span style="background:${_actColor}22;color:${_actColor};border:1px solid ${_actColor}66;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:bold;letter-spacing:1px;flex-shrink:0">${_actLabel}</span>
+      </div>
       <div style="font-size:12px;color:var(--cyan);margin-bottom:1px">
-        TURN ${info.turn||0} &nbsp;|&nbsp; ₡${Number(info.credits||0).toLocaleString()} &nbsp;|&nbsp; 함선 ${(info.fleet||[]).length}척
+        TURN ${info.turn||0} &nbsp;|&nbsp; ₡${Number(info.credits||0).toLocaleString()} &nbsp;|&nbsp; 함선 ${(info.fleet||[]).length}척 &nbsp;|&nbsp; ⭐ ${_rep}
         ${planetName?`&nbsp;|&nbsp; 📍 ${planetName}`:''}
       </div>
-      <div style="color:var(--dim);font-size:11px">${dateStr}</div>
+      <div style="color:var(--dim);font-size:11px">${dateStr} · 영웅 ${_heroCnt}/8 · 영지 ${_ownedCnt}</div>
     </div>
     ${actionBtn}
   </div>`;
