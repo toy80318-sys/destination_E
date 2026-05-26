@@ -12212,6 +12212,8 @@ function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
 // count: 1~13, 자동으로 클램프됨
 function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,sizeMul){
   count=Math.max(1,Math.min(13,count|0));
+  // 미사일 발사 파티클(살보 내 미사일 본체+머즐 플래시) 절반으로 — 사용자 요청
+  count=Math.max(1,Math.floor(count*0.5));
   baseDelay=baseDelay||0;
   sizeMul=Math.max(1,sizeMul||1);
   // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
