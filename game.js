@@ -10380,6 +10380,258 @@ function isConnected(a,b){if(!G.mapConns)return false;return G.mapConns.some(c=>
 function isWithinHops(from,to,maxHops,visited){if(!visited)visited=new Set();if(from===to)return true;if(maxHops<=0)return false;visited.add(from);const nbrs=G.mapConns.filter(c=>c.a===from||c.b===from).map(c=>c.a===from?c.b:c.a);if(nbrs.includes(to))return true;if(maxHops<=1)return false;return nbrs.some(n=>!visited.has(n)&&isWithinHops(n,to,maxHops-1,visited));}
 function hasLegendaryEngineOnAny(){return G.fleet.some(s=>(s.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid)));}
 function travelCost(f,t){const pa=G.mapPositions[f],pb=G.mapPositions[t];if(!pa||!pb)return 0;return Math.min(5000,Math.max(200,Math.floor(Math.hypot(pa.x-pb.x,pa.y-pb.y)*3.5)));}
+// ─── 도넛 소행성대 (P29 오리온 균열 + P30 제타 레티쿨리 주변) ──────────
+// 두 보이드 행성을 둘러싸는 환형(annulus) 분포의 작은 소행성 파티클.
+// 항로가 이 지대를 통과하면 미니게임 트리거 (확률 기반).
+let _asteroidParticles=null;  // [{baseAng, baseR, sz, driftSpeed, phase}]
+function _initAsteroidParticles(){
+  if(_asteroidParticles)return;
+  const rng=mulberry32(1729);  // 시드 고정 — 매번 같은 분포
+  const N=180;
+  _asteroidParticles=[];
+  for(let i=0;i<N;i++){
+    _asteroidParticles.push({
+      baseAng:rng()*Math.PI*2,
+      baseR:rng(),               // 0~1 (도넛 내·외경 사이)
+      sz:0.6+rng()*1.8,
+      driftSpeed:(0.12+rng()*0.18)*(rng()<0.5?1:-1),  // 시계/반시계 혼합
+      phase:rng()*Math.PI*2,
+      tw:0.35+rng()*0.55          // 깜빡임
+    });
+  }
+}
+// 도넛 중심 (P29·P30 중점)과 내·외경 계산
+function _asteroidBeltGeom(){
+  const p29=G.mapPositions&&G.mapPositions['P29'];
+  const p30=G.mapPositions&&G.mapPositions['P30'];
+  if(!p29||!p30)return null;
+  const cx=(p29.x+p30.x)/2;
+  const cy=(p29.y+p30.y)/2;
+  const dx=p30.x-p29.x, dy=p30.y-p29.y;
+  const halfDist=Math.hypot(dx,dy)/2;
+  const outerR=halfDist+90;   // 외곽 (두 행성 모두 포함하고 여유)
+  const innerR=halfDist-30;   // 내경 (두 행성 사이 안쪽 빈 공간)
+  return{cx,cy,innerR:Math.max(40,innerR),outerR};
+}
+function _renderAsteroidBelt(ctx){
+  const g=_asteroidBeltGeom();
+  if(!g)return;
+  _initAsteroidParticles();
+  // 도넛 영역 옅은 색감 (배경 보라/청 그라데이션)
+  const center=worldToScreen(g.cx,g.cy);
+  const sOuter=worldToScreen(g.cx+g.outerR,g.cy);
+  const sInner=worldToScreen(g.cx+g.innerR,g.cy);
+  const screenOR=Math.abs(sOuter.sx-center.sx);
+  const screenIR=Math.abs(sInner.sx-center.sx);
+  // 외곽 글로우 (큰 반경)
+  const grd=ctx.createRadialGradient(center.sx,center.sy,screenIR,center.sx,center.sy,screenOR);
+  grd.addColorStop(0,'rgba(180,80,255,0)');
+  grd.addColorStop(0.5,'rgba(180,80,255,.06)');
+  grd.addColorStop(1,'rgba(180,80,255,0)');
+  ctx.fillStyle=grd;
+  ctx.beginPath();ctx.arc(center.sx,center.sy,screenOR,0,Math.PI*2);ctx.fill();
+  // 파티클 드리프트 (시간 기반)
+  const t=performance.now()/1000;
+  ctx.save();
+  for(const p of _asteroidParticles){
+    const ang=p.baseAng+p.driftSpeed*t;
+    const radNorm=p.baseR;  // 0~1
+    const r=g.innerR+(g.outerR-g.innerR)*radNorm;
+    const wx=g.cx+Math.cos(ang)*r;
+    const wy=g.cy+Math.sin(ang)*r;
+    const s=worldToScreen(wx,wy);
+    // 깜빡임
+    const tw=0.45+0.55*Math.abs(Math.sin(t*p.tw+p.phase));
+    ctx.globalAlpha=Math.min(1,0.45+tw*0.35);
+    const psz=Math.max(0.6,p.sz*(G.mapZoom||1));
+    // 색상: 외곽쪽일수록 옅고, 안쪽일수록 진한 보랏빛
+    const col=radNorm>0.7?'#cc99ff':radNorm>0.4?'#aa66ff':'#9944dd';
+    ctx.fillStyle=col;
+    ctx.beginPath();ctx.arc(s.sx,s.sy,psz,0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+  ctx.globalAlpha=1;
+  // 맵 탭에 있을 때만 드리프트 애니메이션 유지
+  if(G._currentHubTab==='map'&&!window._asteroidAnimReq){
+    window._asteroidAnimReq=requestAnimationFrame(()=>{
+      window._asteroidAnimReq=null;
+      if(G._currentHubTab==='map')renderMap();
+    });
+  }
+}
+
+// 항로가 소행성대를 통과하는지 검사 (선분-환 교차 단순 판정)
+function _routeCrossesAsteroidBelt(fromPid,toPid){
+  if(fromPid===toPid)return false;
+  // 통과 판정: 출발/도착 중 하나라도 P29/P30이면 무조건 통과로 본다.
+  // (정밀 선분-환 교차는 비용 대비 효용이 낮음 — 보이드 양 행성 진입·이탈을 트리거로 사용)
+  return fromPid==='P29'||fromPid==='P30'||toPid==='P29'||toPid==='P30';
+}
+
+// ─── 소행성대 미니게임 ─────────────────────────────────────────────
+// 10초 캔버스 게임 — 위에서 떨어지는 소행성을 클릭/탭으로 격파.
+// 3회 피격 시 패배(-3% 크레딧). 생존 또는 5개+ 격파 시 승리(+크레딧 +VE).
+function startAsteroidBeltMinigame(destPid){
+  // 오버레이 생성
+  const overlay=document.createElement('div');
+  overlay.id='_ab-mini-overlay';
+  overlay.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:radial-gradient(ellipse at center,#1a0030 0%,#000 70%);z-index:99997;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;opacity:0;transition:opacity 0.6s ease-in';
+  overlay.innerHTML=`
+    <div style="position:absolute;top:18px;left:0;right:0;text-align:center">
+      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px">— 소행성대 미니게임 —</div>
+      <div style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:3px;margin-top:6px">⚠️ 소행성 회피 ⚠️</div>
+      <div id="ab-stat" style="color:#aaa;font-size:13px;margin-top:6px;letter-spacing:2px">HP <b style="color:#66ff66" id="ab-hp">3</b>  ·  격파 <b style="color:#ffcc66" id="ab-score">0</b>  ·  남은 시간 <b style="color:#66ddff" id="ab-time">10</b>s</div>
+    </div>
+    <canvas id="ab-cv" width="640" height="480" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 32px rgba(180,80,255,.4);cursor:crosshair;touch-action:none"></canvas>
+    <div style="position:absolute;bottom:24px;left:0;right:0;text-align:center;color:#aaa;font-size:12px;letter-spacing:2px">소행성을 클릭/탭해 격파 — 10초 생존 시 보상</div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{overlay.style.opacity='1';});
+  const cv=overlay.querySelector('#ab-cv'), cx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  // 상태
+  let state={hp:3, score:0, asteroids:[], particles:[], startMs:Date.now(), durationMs:10000, ended:false, spawnTimer:0};
+  // 캔버스 좌표 변환 (HiDPI 안전)
+  function _evtPos(e){
+    const r=cv.getBoundingClientRect();
+    const cx2=e.touches?e.touches[0].clientX:e.clientX;
+    const cy2=e.touches?e.touches[0].clientY:e.clientY;
+    return{x:(cx2-r.left)*(W/r.width), y:(cy2-r.top)*(H/r.height)};
+  }
+  function _hit(pos){
+    for(let i=state.asteroids.length-1;i>=0;i--){
+      const a=state.asteroids[i];
+      if(Math.hypot(pos.x-a.x,pos.y-a.y)<a.r+8){
+        // 파편 파티클
+        for(let k=0;k<10;k++){
+          const ang=Math.random()*Math.PI*2;
+          state.particles.push({x:a.x,y:a.y,vx:Math.cos(ang)*3,vy:Math.sin(ang)*3,life:25,col:'#ffaa44'});
+        }
+        state.asteroids.splice(i,1);
+        state.score++;
+        return true;
+      }
+    }
+    return false;
+  }
+  cv.onclick=e=>{e.preventDefault();_hit(_evtPos(e));};
+  cv.addEventListener('touchstart',e=>{e.preventDefault();_hit(_evtPos(e));},{passive:false});
+
+  function spawnAsteroid(){
+    const r=10+Math.random()*22;
+    const x=20+Math.random()*(W-40);
+    const speed=0.8+Math.random()*1.6+ Math.min(1.5,(Date.now()-state.startMs)/4000);
+    state.asteroids.push({x, y:-r, r, vy:speed, vx:(Math.random()-0.5)*0.6, rot:Math.random()*Math.PI*2, rotSpeed:(Math.random()-0.5)*0.05});
+  }
+  function _drawAsteroid(a){
+    cx.save();cx.translate(a.x,a.y);cx.rotate(a.rot);
+    // 거친 다각형
+    cx.fillStyle='#998877';cx.strokeStyle='#665544';cx.lineWidth=1.5;
+    cx.beginPath();
+    const sides=8;
+    for(let i=0;i<sides;i++){
+      const ang=(i/sides)*Math.PI*2;
+      const rr=a.r*(0.85+0.3*Math.sin(i*7.3));
+      const px=Math.cos(ang)*rr, py=Math.sin(ang)*rr;
+      if(i===0)cx.moveTo(px,py);else cx.lineTo(px,py);
+    }
+    cx.closePath();cx.fill();cx.stroke();
+    // 표면 디테일
+    cx.fillStyle='#776655';cx.beginPath();cx.arc(-a.r*0.3,-a.r*0.2,a.r*0.18,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(a.r*0.25,a.r*0.25,a.r*0.12,0,Math.PI*2);cx.fill();
+    cx.restore();
+  }
+  function _finish(win){
+    if(state.ended)return;state.ended=true;
+    const rew=win?Math.round(Math.max(2000,(G.credits||0)*0.05)+state.score*500):0;
+    const veRew=win?Math.round(20+state.score*4):0;
+    const pen=win?0:Math.round((G.credits||0)*0.03);
+    if(win){
+      G.credits=(G.credits||0)+rew;
+      G.voidEssence=(G.voidEssence||0)+veRew;
+    } else {
+      G.credits=Math.max(100,(G.credits||0)-pen);
+    }
+    saveGame(true);
+    const msg=win?
+      `<div style="font-size:46px;margin-bottom:10px">🎯</div>
+       <div style="color:#ffd700;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성대 돌파!</div>
+       <div style="color:#66ff99;font-size:14px;line-height:1.9;margin-bottom:10px">격파: <b>${state.score}</b>개 · 생존</div>
+       <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
+         💰 보상 +₡${rew.toLocaleString()}<br>💎 보이드 에센스 +${veRew}
+       </div>`:
+      `<div style="font-size:46px;margin-bottom:10px">💥</div>
+       <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성에 피격</div>
+       <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">격파: <b>${state.score}</b>개</div>
+       <div style="color:#ffaa99;font-size:13px;line-height:1.9;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.3);border-radius:6px;padding:10px 16px">
+         💸 크레딧 -₡${pen.toLocaleString()} (-3%)
+       </div>`;
+    const result=document.createElement('div');
+    result.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,10,40,.96);border:2px solid '+(win?'#ffd700':'#ff6666')+';border-radius:12px;padding:24px 36px;text-align:center;min-width:300px;box-shadow:0 8px 48px rgba(180,80,255,.5);z-index:10';
+    result.innerHTML=msg+'<button style="margin-top:14px;padding:10px 28px;background:rgba(180,80,255,.2);border:1.5px solid #cc66ff;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px" onclick="(function(){var ov=document.getElementById(\'_ab-mini-overlay\');if(ov)ov.remove();})()">계속 →</button>';
+    overlay.appendChild(result);
+  }
+  // 메인 루프
+  let lastT=Date.now();
+  function tick(){
+    if(!document.body.contains(overlay))return;
+    const now=Date.now();
+    const dt=(now-lastT)/16.67;  // ≈60fps unit
+    lastT=now;
+    const elapsed=now-state.startMs;
+    const left=Math.max(0,Math.ceil((state.durationMs-elapsed)/1000));
+    document.getElementById('ab-time').textContent=left;
+    document.getElementById('ab-hp').textContent=state.hp;
+    document.getElementById('ab-score').textContent=state.score;
+    // 스폰
+    state.spawnTimer+=dt;
+    const spawnInterval=Math.max(12, 36 - Math.floor(elapsed/1500)*3);  // 점점 빨라짐
+    if(state.spawnTimer>=spawnInterval){state.spawnTimer=0;spawnAsteroid();}
+    // 클리어
+    cx.fillStyle='#000';cx.fillRect(0,0,W,H);
+    // 별 배경
+    cx.fillStyle='#445';
+    for(let i=0;i<40;i++){const sx=(i*173)%W, sy=(i*97+elapsed*0.03)%H;cx.fillRect(sx,sy,1.5,1.5);}
+    // 소행성 업데이트·렌더
+    for(let i=state.asteroids.length-1;i>=0;i--){
+      const a=state.asteroids[i];
+      a.y+=a.vy*dt;a.x+=a.vx*dt;a.rot+=a.rotSpeed*dt;
+      if(a.y-a.r>H){
+        // 바닥 닿음 = 피격
+        state.asteroids.splice(i,1);
+        state.hp--;
+        // 화면 흔들림 효과
+        cv.style.transform='translateX('+((Math.random()-0.5)*8)+'px) translateY('+((Math.random()-0.5)*8)+'px)';
+        setTimeout(()=>{cv.style.transform='';},120);
+        if(state.hp<=0){
+          _finish(false);
+          return;
+        }
+        continue;
+      }
+      _drawAsteroid(a);
+    }
+    // 파편
+    for(let i=state.particles.length-1;i>=0;i--){
+      const p=state.particles[i];
+      p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+      if(p.life<=0){state.particles.splice(i,1);continue;}
+      cx.fillStyle=p.col;cx.globalAlpha=Math.max(0,p.life/25);
+      cx.beginPath();cx.arc(p.x,p.y,2,0,Math.PI*2);cx.fill();
+    }
+    cx.globalAlpha=1;
+    // 시간 만료 = 승리
+    if(elapsed>=state.durationMs){
+      _finish(true);
+      return;
+    }
+    requestAnimationFrame(tick);
+  }
+  setTimeout(tick,500);  // 0.5초 페이드인 후 시작
+  notify('⚠️ 소행성대 진입 — 소행성을 격파하라!','warn');
+  try{baekgu('소행성대다! 떨어지는 소행성을 클릭해서 격파해! 3번 맞으면 손해 봐.');}catch(e){}
+}
+try{if(typeof window!=='undefined')window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;}catch(e){}
+
 function renderMap(){
   if(!mapCtx||!mapCV)return;
   const ctx=mapCtx,W=mapCV.width,H=mapCV.height;
@@ -10402,6 +10654,10 @@ function renderMap(){
     drawList.push({p,proj,z:p3.z});
   });
   drawList.sort((a,b)=>b.z-a.z);
+
+  // ─── 오리온 균열(P29) + 제타 레티쿨리(P30) 도넛 소행성대 ──────────────
+  // 두 보이드 행성을 둘러싸는 환형 파티클. 클릭/항로 통과 시 미니게임 트리거.
+  try{_renderAsteroidBelt(ctx);}catch(e){}
 
   // Connections
   if(G.mapConns)G.mapConns.forEach(c=>{
@@ -10820,6 +11076,16 @@ function travelTo(){
   randomBaekgu('travel');notify(`🚀 ${pd.nm} 도착`,'ok');
   if(pd.hostile&&!G.planets[pd.id]?.hostile_cleared){setTimeout(()=>showHostilePlanetBriefing(pd),800);return;}
   if(pd.hostile&&G.planets[pd.id]?.hostile_cleared){notify('🏠 '+pd.nm+' — 합병된 영토 도착','ok');}
+  // ─── 소행성대 미니게임 트리거 — P29 오리온 균열·P30 제타 레티쿨리 출입 시 ─
+  // 도넛 소행성대를 통과해야 하는 항로 → 60% 확률로 미니게임 진입
+  try{
+    if(_routeCrossesAsteroidBelt&&_routeCrossesAsteroidBelt(G._prevPlanet||G.currentPlanet,pid)&&Math.random()<0.6){
+      G._prevPlanet=pid;
+      setTimeout(()=>startAsteroidBeltMinigame(pid),600);
+      return;
+    }
+  }catch(e){console.warn('asteroid trigger',e);}
+  G._prevPlanet=pid;
   // 랜덤 해적 조우 (턴 3 이후, 비적대 행성)
   if(G.turn>2){
     // 허브 미해금 시 해적 조우 100% 보장 (해금 퀘스트 반드시 10회 진행)
