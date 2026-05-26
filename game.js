@@ -2070,87 +2070,119 @@ function showOnboardingTutorial(){
   // 각 단계의 onShow에서 사이드바 폴더를 펼치고 해당 탭으로 자동 이동시켜
   // 하이라이트된 메뉴를 직접 보면서 설명을 읽도록 유도한다
   const _nav=(folder,tab)=>{try{openFolder(folder);if(tab)hubTab(tab);}catch(e){}};
+  // 12단계 종합 튜토리얼:
+  //  · 사이드바 메뉴 단계 = requireClick (사용자가 직접 클릭하면 다음으로)
+  //  · 행동 안내 단계 = 일반 [다음 ▶] (사용자가 구매·전투·이동 완료 후 수동 진행)
+  //  · 잔해 탐색은 requireClick 제거 — 클릭하면 전투 시작되는데 즉시 다음 단계 onShow가
+  //    hubTab을 호출하면 전투 화면이 죽기 때문. 사용자가 전투 종료 후 [다음 ▶] 수동 클릭.
   const steps=[
-    // ── 0) 시작 안내 — 클릭 강제 방식 명시 ───────────────────
+    // ── 도입 (3단계) ─────────────────────────────────────
     {target:null,pos:'center',title:'🎓 튜토리얼 시작',
-     text:'환영합니다, 사령관! 🚀\n지구로 돌아가는 여정의 핵심 메뉴와 첫 플레이 사이클을 알려드릴게요.\n\n📋 진행 방식\n  · 총 11개의 메뉴를 직접 클릭하며 익혀요\n  · 각 단계에서 노란색으로 강조된 버튼을 직접 클릭해야 다음 단계로 진행돼요\n  · 메뉴 위치를 손에 익히기 위한 강제 클릭 가이드입니다\n\n▶ [다음 ▶]을 눌러 시작\n✕ [건너뛰기] (설정 → 튜토리얼 다시 보기 가능)'},
+     text:'환영합니다, 사령관! 🚀\n지구로 돌아가는 여정의 핵심 메뉴와 첫 플레이 사이클을 익혀봅시다.\n\n📋 진행 방식\n  · 약 24단계 / 10분 소요\n  · 노란색으로 강조된 사이드바 버튼 → 직접 클릭하면 자동 진행\n  · 행동 안내 단계(💡) → 동작 완료 후 [다음 ▶] 수동 진행\n\n▶ [다음 ▶]으로 시작\n✕ [건너뛰기] (설정 → 다시 보기 가능)'},
 
-    // ── 1) 상단 정보 (정보 단계) ─────────────────────────
-    // ※ #hud는 position:fixed라 stage 좌표계 walk가 불가능 → pos:'center'로 변경 (자동 스킵 방지)
     {target:null,pos:'center',title:'ACT / TURN — 진행도',
-     text:'우상단의 ACT와 TURN 영역을 확인해 주세요.\n\n• 매 20턴마다 ACT가 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파)가 최종 목표\n\n[다음 ▶]을 눌러 진행하세요.'},
+     text:'우상단의 ACT와 TURN 표시.\n\n• 매 20턴마다 ACT 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파) 최종 목표\n\n[다음 ▶]'},
+
     {target:null,pos:'center',title:'재화 4종 — 통화 시스템',
-     text:'우상단 재화 표시:\n\n• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입 재료\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율 증가\n\n[다음 ▶]을 눌러 진행하세요.'},
+     text:'우상단 재화:\n\n• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율\n\n[다음 ▶]'},
 
-    // ── 2) [클릭] 탐색 도감 ─────────────────────────────
-    {target:'[data-tab="codex"]',pos:'right',title:'📖 1/11 — 탐색 도감',
-     text:'👆 좌측 사이드바의 [📖 탐색 도감] 버튼을 직접 클릭하세요!\n\n도감에 정리된 정보:\n  · 행성 30+개 / 외계 문명 7개\n  · 시설 11개(은하지도·크루명단·제독·주점·상점 등) 운영법\n  · 함선·파츠·설계도 카탈로그\n\n👀 막힐 때마다 도감에서 검색하세요.',
-     requireClick:true,
-     onShow:()=>_nav('captain')},
+    // ── 1) 탐색 도감 (클릭만, 단순 안내) ──────────────────
+    {target:'[data-tab="codex"]',pos:'right',title:'📖 1/12 — 탐색 도감',
+     text:'👆 좌측 [📖 탐색 도감]을 직접 클릭하세요!\n\n행성·외계 문명·시설·아이템 정보가 정리돼 있어요.\n게임 중 막히면 도감에서 검색해 보세요.',
+     requireClick:true,onShow:()=>_nav('captain')},
 
-    // ── 3) [클릭] 행성 제독 ─────────────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 2/11 — 행성 제독',
-     text:'👆 좌측 사이드바의 [🎖️ 행성 제독] 버튼을 직접 클릭하세요!\n\n행성 제독에서 받는 것:\n  · 퀘스트 수락 → 완료 시 ₡·명성·가끔 영웅·설계도\n  · 행성마다 다른 종류의 퀘스트가 등장\n\n💡 화면 열리면 [수락] 버튼이 보이는 퀘스트를 1~2개 골라보세요.\n(목록이 비어있으면 턴 종료 한 번)',
-     requireClick:true,
-     onShow:()=>_nav('plaza')},
+    // ── 2) 행성 제독 → 퀘스트 수락 ────────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 2/12 — 행성 제독',
+     text:'👆 좌측 [🎖️ 행성 제독]을 클릭하세요!\n\n퀘스트 수락 시 ₡·명성·가끔 영웅·설계도 보상.',
+     requireClick:true,onShow:()=>_nav('plaza')},
 
-    // ── 4) [클릭] 행성 주점 ─────────────────────────────
-    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 3/11 — 행성 주점',
-     text:'👆 좌측 사이드바의 [🍺 행성 주점] 버튼을 직접 클릭하세요!\n\n주점에서 할 수 있는 것:\n  · 새 크루 영입 (₡ 비용)\n  · 가끔 전설 영웅(이순신·테슬라·아인슈타인 등) 등장\n  · 크루를 함선에 배치하면 능력 +20%\n\n💡 화면이 열리면 [영입] 버튼을 눌러봐요.',
-     requireClick:true,
-     onShow:()=>_nav('plaza')},
+    {target:null,pos:'center',title:'💡 퀘스트 수락',
+     text:'화면의 퀘스트 목록에서 마음에 드는 항목의\n[수락] 버튼을 눌러 1~2개 수락해 보세요.\n\n(목록이 비어있다면 그냥 다음으로)\n\n완료 후 [다음 ▶]'},
 
-    // ── 5) [클릭] 행성 상점 ─────────────────────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 4/11 — 행성 상점 (무역)',
-     text:'👆 좌측 사이드바의 [🏬 행성 상점] 버튼을 직접 클릭하세요!\n\n무역 차익 시스템:\n  · 행성마다 특산물 가격이 다름\n  · A행성에서 싸게 사기 → B행성으로 이동 → 비싸게 팔기\n  · 초반 자본을 가장 안정적으로 키우는 방법\n\n💡 지금 화면이 열리면 저렴한 특산물 1~2개를 구매해 두세요.',
-     requireClick:true,
-     onShow:()=>_nav('plaza')},
+    // ── 3) 행성 주점 → 크루 영입 ──────────────────────────
+    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 3/12 — 행성 주점',
+     text:'👆 좌측 [🍺 행성 주점]을 클릭하세요!\n\n크루(가끔 전설 영웅) 영입 — 함선에 배치 시 능력 +20%.',
+     requireClick:true,onShow:()=>_nav('plaza')},
 
-    // ── 6) [클릭] 함선 거래소 ───────────────────────────
-    {target:'[data-tab="ship"]',pos:'right',title:'🛸 5/11 — 함선 거래소',
-     text:'👆 좌측 사이드바의 [🛸 함선 거래소] 버튼을 직접 클릭하세요!\n\n함선 등급별 특징:\n  · 소형 — 저렴, 빠름, HP 낮음\n  · 중형 — 균형, 가성비 (추천)\n  · 대형 — 고화력, 비쌈\n  · 전설/신화 — 최상위, 명성·전투력 요구\n\n💡 함대 3척부터 본격 전투가 가능. 예산 되면 소형 1기라도 추가 구매!',
-     requireClick:true,
+    {target:null,pos:'center',title:'💡 크루 영입',
+     text:'화면의 [영입] 버튼을 눌러 크루를 1명 영입해 보세요.\n\n(₡ 부족하면 그냥 다음으로)\n\n완료 후 [다음 ▶]'},
+
+    // ── 4) 행성 상점 → 특산물 구매 ────────────────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 4/12 — 행성 상점',
+     text:'👆 좌측 [🏬 행성 상점]을 클릭하세요!\n\n특산물 거래로 차익 실현 — 행성마다 가격이 달라요.',
+     requireClick:true,onShow:()=>_nav('plaza')},
+
+    {target:null,pos:'center',title:'💡 특산물 구매',
+     text:'마음에 드는 특산물의 [구매] 버튼을 눌러\n1~2개 사 두세요.\n\n💎 나중에 다른 행성에서 비싸게 팔아 차익을 챙길 거예요!\n\n완료 후 [다음 ▶]'},
+
+    // ── 5) 함선 거래소 → 함선 구매 ────────────────────────
+    {target:'[data-tab="ship"]',pos:'right',title:'🛸 5/12 — 함선 거래소',
+     text:'👆 좌측 [🛸 함선 거래소]를 클릭하세요!\n\n소형(저렴) → 중형(균형·추천) → 대형/전설(고화력) 순.',
+     requireClick:true,onShow:()=>_nav('dock')},
+
+    {target:null,pos:'center',title:'💡 함선 구매',
+     text:'예산이 되면 소형 함선 1척을 [구매]해 보세요.\n\n🚀 함대 3척 이상부터 본격 전투 가능.\n(꼭 사지 않아도 OK — 다음으로 진행 가능)\n\n완료 후 [다음 ▶]'},
+
+    // ── 6) 함선 정비소 → 파츠 구매·장착 ───────────────────
+    {target:'[data-tab="garage"]',pos:'right',title:'🔧 6/12 — 함선 정비소',
+     text:'👆 좌측 [🔧 함선 정비소]를 클릭하세요!\n\n파츠 구매와 함선 슬롯 장착의 모든 것.',
+     requireClick:true,onShow:()=>_nav('dock')},
+
+    {target:null,pos:'center',title:'💡 파츠 구매 + 장착',
+     text:'① 화면 상단 [파츠] 탭 클릭\n② 가장 저렴한 [레이저] 무기 [구매]\n③ 함선 카드의 빈 슬롯(⚔️)을 눌러 보유 파츠에서 장착\n\n⚡ 능력치가 즉시 합산돼서 전투력이 올라가요!\n\n완료 후 [다음 ▶]'},
+
+    // ── 7) 잔해 탐색 (전투) — requireClick 없음, 사용자가 전투 후 수동 진행 ──
+    {target:'#hn-gather-search',pos:'right',title:'🔭 7/12 — 잔해 탐색 (전투)',
+     text:'👆 좌측 [🔭 잔해 탐색] 버튼을 직접 클릭해서 첫 전투 시작!\n\n• 쿨다운 8초\n• 해적 등장 → 자동 전투 진행\n• 보상: ₡·파츠·가끔 설계도, 명성 +1\n\n⚠️ 전투가 완전히 끝난 후 [다음 ▶]을 누르세요.\n(이 단계는 자동 진행되지 않음)',
      onShow:()=>_nav('dock')},
 
-    // ── 7) [클릭] 함선 정비소 ───────────────────────────
-    {target:'[data-tab="garage"]',pos:'right',title:'🔧 6/11 — 함선 정비소 (파츠)',
-     text:'👆 좌측 사이드바의 [🔧 함선 정비소] 버튼을 직접 클릭하세요!\n\n정비소에서 할 일:\n  ① 화면 상단 [파츠] 탭 클릭\n  ② 가장 저렴한 [레이저 무기]부터 구매\n  ③ 함선 카드의 빈 슬롯(⚔️🛡️⚡)을 클릭해서 장착\n  ④ 능력치 즉시 합산 → 전투력 상승\n\n💡 무기·실드·장갑·엔진 4종을 골고루 장착하세요.',
-     requireClick:true,
-     onShow:()=>_nav('dock')},
+    // ── 8) 퀘스트 보상 수령 ───────────────────────────────
+    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 8/12 — 퀘스트 보상',
+     text:'👆 다시 좌측 [🎖️ 행성 제독]을 클릭하세요!\n\n전투 후 완료된 퀘스트의 [보상 수령] 버튼이 활성화돼 있어요.',
+     requireClick:true,onShow:()=>_nav('plaza')},
 
-    // ── 8) [클릭] 잔해 탐색 — 첫 전투 ───────────────────
-    {target:'#hn-gather-search',pos:'right',title:'🔭 7/11 — 잔해 탐색 (첫 전투)',
-     text:'👆 좌측 사이드바의 [🔭 잔해 탐색] 버튼을 직접 클릭하세요!\n\n잔해 탐색 시스템:\n  · 쿨다운 8초 (전설 크루 1명당 -1초)\n  · 해적 함대 등장 → 자동 전투\n  · 보상: ₡·파츠·가끔 설계도\n  · 해적 격파마다 명성 +1, 허브 해금 진행도 +1\n\n💡 전투는 자동으로 진행돼요. 전투 종료 후 다음 단계로!',
-     requireClick:true,
-     onShow:()=>_nav('dock')},
+    {target:null,pos:'center',title:'💡 보상 수령',
+     text:'완료된 퀘스트의 [보상 수령] 버튼을 눌러\n₡·명성·아이템을 챙기세요.\n\n(우상단에 작은 보상 카드가 떠요)\n\n완료 후 [다음 ▶]'},
 
-    // ── 9) [클릭] 퀘스트 보상 수령 ─────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 8/11 — 퀘스트 보상',
-     text:'👆 다시 좌측의 [🎖️ 행성 제독] 버튼을 클릭하세요!\n\n전투 후 보상 수령:\n  · 수락했던 퀘스트가 완료됐다면 [보상 수령] 버튼 활성화\n  · 클릭하면 ₡·명성·아이템 지급\n  · 가끔 영웅 영입·전설 설계도 드랍\n\n💡 보상 수령 시 작은 알림 카드가 우상단에 떠요.',
+    // ── 9) 행성 경매 → 입찰 (프론트 잠금 강제 해제) ───────
+    {target:'[data-tab="auction"]',pos:'right',title:'🔨 9/12 — 행성 경매',
+     text:'👆 좌측 [🔨 행성 경매]를 클릭하세요!\n\n행성을 낙찰받으면 매 턴 세금 수입.\n명성 10당 보유 한도 +1.',
      requireClick:true,
-     onShow:()=>_nav('plaza')},
+     onShow:()=>{
+       // 튜토리얼 진행용 — 프론트 폴더가 잠겨있어도 진입 가능하도록 진행도 보장
+       try{
+         const pid=G.currentPlanet;
+         if(!G.planets[pid])G.planets[pid]={};
+         const _thr=_getHubThr(pid);
+         const _need=_thr.s3;  // 프론트 해금 임계값
+         if((G.planets[pid].hubProg||0)<_need)G.planets[pid].hubProg=_need;
+         updateHubLockButtons();
+       }catch(e){}
+       _nav('front');
+     }},
 
-    // ── 10) [클릭] 은하 지도 ────────────────────────────
-    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 9/11 — 은하 지도',
-     text:'👆 좌측 사이드바의 [🗺️ 은하 지도] 버튼을 직접 클릭하세요!\n\n은하 지도 사용법:\n  · 30개 행성이 3D로 표시\n  · 인접 항로로만 이동 가능 (해적 50% 조우)\n  · 워프 엔진(블링크·타키온·테슬라) 장착 시 직접 점프\n  · 멀어질수록 보상 등급 ↑\n\n💡 지도 열리면 가까운 행성(예: 센타우리 P02)을 클릭해 이동!',
-     requireClick:true,
-     onShow:()=>_nav('captain')},
+    {target:null,pos:'center',title:'💡 경매 입찰',
+     text:'화면의 행성 목록에서 마음에 드는 곳에\n[입찰] 버튼을 눌러 보세요.\n\n💰 낙찰되면 매 턴 자동 세금 수입.\n\n완료 후 [다음 ▶]'},
 
-    // ── 11) [클릭] 센타우리에서 잔해 탐색 ───────────────
-    {target:'#hn-gather-search',pos:'right',title:'🔭 10/11 — 새 행성 전투',
-     text:'👆 다시 좌측의 [🔭 잔해 탐색] 버튼을 클릭하세요!\n\n행성 이동 후 전투:\n  · 새 행성마다 해금 진행도 별도 (0부터 시작)\n  · 한 행성에 머물면서 8회 활동 시 광장·도크·프론트 차례로 개방 (수퍼비아는 1/2/3회)\n  · 해적 격파마다 명성 누적 → 가챠 확률 증가\n\n💡 잔해 탐색은 어디서든 가능, 쿨다운만 관리하세요.',
-     requireClick:true,
-     onShow:()=>_nav('dock')},
+    // ── 10) 은하 지도 → 행성 이동 ─────────────────────────
+    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 10/12 — 은하 지도',
+     text:'👆 좌측 [🗺️ 은하 지도]를 클릭하세요!\n\n인접 항로로만 이동 가능 (해적 50% 조우).',
+     requireClick:true,onShow:()=>_nav('captain')},
 
-    // ── 12) [클릭] 무역 차익 실현 ───────────────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 11/11 — 차익 실현',
-     text:'👆 좌측 사이드바의 [🏬 행성 상점] 버튼을 마지막으로 클릭하세요!\n\n무역 사이클 완성:\n  · 프록시마에서 산 특산물을 센타우리 상점에서 매각\n  · 가격 차이만큼 즉시 차익 발생\n  · 5회 반복하면 초기 자본의 2~3배\n\n💡 사이클: 사기(저렴 행성) → 이동 → 팔기(비싼 행성) → 반복',
-     requireClick:true,
-     onShow:()=>_nav('plaza')},
+    {target:null,pos:'center',title:'💡 행성 이동',
+     text:'가까운 인접 행성(예: 센타우리 P02)을\n지도에서 클릭하여 이동하세요.\n\n도착 후 [다음 ▶]'},
 
-    // ── 마무리 ─────────────────────────────────────────
-    {target:null,pos:'center',title:'🎉 튜토리얼 완료',
-     text:'기본 사이클을 모두 익혔어요 👏\n\n반복할 핵심 루틴:\n  ① 퀘스트 수락 (제독)\n  ② 잔해 탐색·전투\n  ③ 보상 수령 (제독)\n  ④ 행성 이동 (지도)\n  ⑤ 무역 차익 (상점)\n\n중장기 목표:\n  · ACT 3 → 지구 진입 해금\n  · ACT 5 → 우르사 메이저 보스전\n\n막히면 화면 하단 백구 AI에 질문하세요.\n\n행운을 빌어, 사령관!'}
+    // ── 11) 새 행성 상점 → 판매 (차익 실현) ───────────────
+    {target:'[data-tab="trade"]',pos:'right',title:'🏬 11/12 — 판매·차익',
+     text:'👆 새 행성에서 좌측 [🏬 행성 상점]을 클릭하세요!',
+     requireClick:true,onShow:()=>_nav('plaza')},
+
+    {target:null,pos:'center',title:'💡 차익 실현',
+     text:'이전 행성에서 사 둔 특산물의\n[판매] 버튼을 눌러 매각하세요.\n\n💎 가격 차이만큼 즉시 차익!\n무역 사이클 완성.\n\n완료 후 [다음 ▶]'},
+
+    // ── 마무리 ────────────────────────────────────────────
+    {target:null,pos:'center',title:'🎉 12/12 — 튜토리얼 완료',
+     text:'기본 사이클을 모두 익혔어요 👏\n\n반복할 핵심 루틴:\n  ① 퀘스트 수락 (제독)\n  ② 잔해 탐색·전투\n  ③ 보상 수령 (제독)\n  ④ 경매 입찰 (프론트)\n  ⑤ 행성 이동 (지도)\n  ⑥ 무역 차익 (상점)\n\n중장기 목표:\n  · ACT 3 → 지구 진입\n  · ACT 5 → 우르사 메이저 보스전\n\n막히면 화면 하단 백구 AI에 질문하세요.\n\n행운을 빌어, 사령관!'}
   ];
   let _idx=0;
   // 백드롭 제거 — 하이라이트 box-shadow 만으로 spotlight 효과 (이중 어둡기 방지)
@@ -4662,7 +4694,7 @@ function renderShipTab(body){
             const bdrCol=p.rarity==='mythic'?'rgba(255,136,255,.5)':p.rarity==='set'?'rgba(192,128,255,.5)':'var(--bdr)';
             return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
               <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
-                <div style="font-size:13px;font-weight:bold;color:${nmCol}">${p.nm}</div>
+                <div style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all">${p.nm}</div>
                 <div style="display:flex;gap:4px">
                   <span style="font-size:10px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:0 4px">T${p.tier}</span>
                   <span style="color:var(--dim);font-size:10px">재고:${qty}</span>
@@ -4699,8 +4731,8 @@ function renderShipTab(body){
             const statLine=cat==='weapon'?`⚔ ATT +${p.ATT}${p.wtype?' ['+p.wtype+']':''}`:cat==='shield'?`🛡 SHD +${p.INT} SH+${p.maxSH}`:cat==='armor'?`❤ HP +${p.HP}${p.DEF?' DEF+'+p.DEF:''}`:cat==='engine'?`⚙ ENG +${p.TEC}`:'';
             return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
               <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
-                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                  <span style="font-size:13px;font-weight:bold;color:${nmCol};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${p.nm}</span>${rarBadge}
+                <div style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap">
+                  <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${p.nm}</span>${rarBadge}
                 </div>
                 <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
                   <span style="font-size:10px;color:${catCol};border:1px solid ${catCol};border-radius:3px;padding:0 4px">T${p.tier}</span>
@@ -4796,8 +4828,8 @@ function renderShipTab(body){
         const btnId='sell-inv-'+i.id;
         return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
           <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
-            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-              <span style="font-size:13px;font-weight:bold;color:${nmCol};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${p2.nm}</span>${rarBadge}
+            <div style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap">
+              <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${p2.nm}</span>${rarBadge}
             </div>
             <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
               <span style="font-size:10px;color:${catCol};border:1px solid ${catCol};border-radius:3px;padding:0 4px">T${p2.tier}</span>
