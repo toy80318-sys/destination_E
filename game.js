@@ -7870,8 +7870,9 @@ function completeQuest(pid,idx){
     _bpTier==='mythic'?(rep>=40):
     _bpTier==='legend'||_bpTier==='flagship'?(rep>=15):
     true;
-  // 설계도 드롭 확률 상향: LGD03 15→20%, 그 외 12.5→15%
-  const _bpDropRate=(_bpId==='LGD03')?0.20:0.15;
+  // 설계도 드롭 확률 — 전설급이 신화급보다 5%p 높게 (사용자 요청)
+  //   전설(legend): 20%   /   신화(mythic): 15%
+  const _bpDropRate=(_bpTier==='mythic')?0.15:0.20;
   if(_bpId&&_bpRepOK&&!G.blueprints[_bpId]&&Math.random()<_bpDropRate){
     G.blueprints[_bpId]=true;
     const _bpRec=_bpRecCheck;
