@@ -11002,7 +11002,20 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     // 스폰
     state.spawnTimerAst+=dt;state.spawnTimerEn+=dt;
     if(state.spawnTimerAst>=Math.max(14,40-Math.floor(elapsed/2000)*4)){state.spawnTimerAst=0;_spawnAsteroid();}
-    if(state.spawnTimerEn>=Math.max(140,280-Math.floor(elapsed/3000)*30)){state.spawnTimerEn=0;_spawnEnemy();}
+    // 마지막 20초(러시 구간): 적 스폰 간격 절반 + 매 스폰마다 2척 (총 2배)
+    const _isRush=(state.durationMs-elapsed)<=20000;
+    const _enThresh=Math.max(140,280-Math.floor(elapsed/3000)*30)*(_isRush?0.5:1);
+    if(state.spawnTimerEn>=_enThresh){
+      state.spawnTimerEn=0;
+      _spawnEnemy();
+      if(_isRush)_spawnEnemy();
+      // 러시 진입 시점에 한 번만 경고
+      if(_isRush&&!state._rushAnnounced){
+        state._rushAnnounced=true;
+        _baekguSay('anger2','마지막 20초! 적 함대 증원이야!',2800,true);
+        try{notify('⚠️ 마지막 20초 — 적 증원 2배!','warn');}catch(e){}
+      }
+    }
 
     // ─── 렌더 시작 ───
     cx.fillStyle='#000';cx.fillRect(0,0,W,H);
