@@ -657,21 +657,24 @@ function fitGameStage(){
   const mode=window._displayMode||'auto';
   // 자동 회전: 실제 뷰포트가 세로(vh > vw)일 때만 90° 회전
   // 모바일 모드여도 사용자가 폰을 가로로 돌리면 vw > vh → 회전 안 함
-  // (이전 코드는 mode='mobile'이면 무조건 회전해서 가로 모바일에서 깨졌음)
   const isPortrait=vh>vw;
   const stage=document.getElementById('game-stage');
   if(!stage){window.addEventListener('DOMContentLoaded',fitGameStage,{once:true});return;}
   // 디스플레이 모드별 최대 스케일 — 폭 캡 (실제 렌더 픽셀 제한)
-  // 1536 base width × cap_scale = 목표 max 폭
   let maxScale=Infinity;
   if(mode==='hd')maxScale=1280/STAGE_W;        // ≈ 0.833 (1280×720)
   else if(mode==='fhd')maxScale=1920/STAGE_W;  // ≈ 1.25 (1920×1080)
   else if(mode==='qhd')maxScale=2560/STAGE_W;  // ≈ 1.67 (2560×1440)
-  // auto/mobile은 캡 없음
+  // 모바일 가독성 — 작은 뷰포트(폰)에서는 최소 스케일 보장
+  // contain-fit이 0.4 이하면 버튼이 손가락으로 못 눌릴 정도가 됨 → 0.6 이상 보장
+  // 초과분은 letterbox(가운데 정렬) 처리, 양옆이 살짝 잘려도 가독성을 우선
+  const isSmallViewport=(vw<=600||vh<=600);
+  const MIN_MOBILE_SCALE=0.6;
   if(isPortrait){
     const sx=vh/STAGE_W;
     const sy=vw/STAGE_H;
     let s=Math.min(sx,sy);
+    if(isSmallViewport&&mode==='auto')s=Math.max(s,MIN_MOBILE_SCALE);
     if(mode==='hd'||mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=true;
@@ -686,6 +689,7 @@ function fitGameStage(){
     const sx=vw/STAGE_W;
     const sy=vh/STAGE_H;
     let s=Math.min(sx,sy);
+    if(isSmallViewport&&mode==='auto')s=Math.max(s,MIN_MOBILE_SCALE);
     if(mode==='hd'||mode==='fhd'||mode==='qhd')s=Math.min(s,maxScale);
     window._gsScale=s;
     window._gsRotated=false;
@@ -697,9 +701,23 @@ function fitGameStage(){
     stage.style.top='';
   }
 }
+// 리사이즈 디바운스 — 모바일 URL바 등장/사라짐으로 인한 잦은 리플로우 방지 (UI 떨림)
+let _fitDebounce=null;
+function _fitGameStageDebounced(){
+  if(_fitDebounce)clearTimeout(_fitDebounce);
+  _fitDebounce=setTimeout(()=>{_fitDebounce=null;fitGameStage();},120);
+}
+// 모바일/터치 디바이스 감지 → body에 클래스 추가 (CSS 분기·UX 최적화용)
+try{
+  if(('ontouchstart' in window)||navigator.maxTouchPoints>0||window.matchMedia('(pointer:coarse)').matches){
+    document.documentElement.classList.add('touch-device');
+    document.body&&document.body.classList.add('touch-device');
+  }
+}catch(e){}
 fitGameStage();
-window.addEventListener('resize',fitGameStage);
-window.addEventListener('orientationchange',()=>setTimeout(fitGameStage,200));
+// 디바운스된 리사이즈 — 모바일 URL바 등장/숨김으로 인한 잦은 fit 호출이 UI를 떨리게 만드는 문제 해결
+window.addEventListener('resize',_fitGameStageDebounced);
+window.addEventListener('orientationchange',()=>setTimeout(fitGameStage,250));
 
 // ═══ STARS ════════════════════════════════════════════════════
 (function(){
