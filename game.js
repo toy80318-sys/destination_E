@@ -5236,9 +5236,9 @@ function renderCargoOnlyTab(body){
     if(slots<80){const cp=getCargoUpgradePrice(s);btn=`<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 10px" onclick="upgradeCargoSlot(${idx})" ${G.credits>=cp?'':'disabled'}>📦 창고+2칸 ₡${cp.toLocaleString()}</button>`;}
     else btn='<span style="font-size:11px;color:var(--cyan)">✅ 화물칸 최대 (80칸)</span>';
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
-      <div style="width:60px;flex-shrink:0;text-align:center">
-        <div style="font-size:30px">${tierIc}</div>
-        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:2px">${s.tier}</div>
+      <div style="width:64px;flex-shrink:0;text-align:center">
+        ${imgOrEmoji(shipImgSrc(s),tierIc,60,60,'border-radius:6px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:cover',shipLoreKey(s))}
+        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:3px">${s.tier}</div>
       </div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
