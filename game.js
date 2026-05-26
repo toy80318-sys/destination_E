@@ -665,11 +665,12 @@ function fitGameStage(){
   if(mode==='hd')maxScale=1280/STAGE_W;        // ≈ 0.833 (1280×720)
   else if(mode==='fhd')maxScale=1920/STAGE_W;  // ≈ 1.25 (1920×1080)
   else if(mode==='qhd')maxScale=2560/STAGE_W;  // ≈ 1.67 (2560×1440)
-  // 모바일 가독성 — 작은 뷰포트(폰)에서는 최소 스케일 보장
-  // contain-fit이 0.4 이하면 버튼이 손가락으로 못 눌릴 정도가 됨 → 0.6 이상 보장
-  // 초과분은 letterbox(가운데 정렬) 처리, 양옆이 살짝 잘려도 가독성을 우선
+  // 모바일 가독성 우선
+  //  · CSS 미디어쿼리에서 버튼/사이드바 등 베이스 사이즈를 2배 키웠으므로
+  //    contain-fit(자연 스케일)로 충분히 큰 터치 타깃 확보 가능
+  //  · 그래도 너무 작은 화면(vw<400 또는 vh<400)은 0.5 floor로 가독성 보장 — 오버플로우 시 스크롤 허용
   const isSmallViewport=(vw<=600||vh<=600);
-  const MIN_MOBILE_SCALE=0.6;
+  const MIN_MOBILE_SCALE=0.5;
   if(isPortrait){
     const sx=vh/STAGE_W;
     const sy=vw/STAGE_H;
@@ -684,7 +685,9 @@ function fitGameStage(){
     stage.style.position='absolute';
     stage.style.left='50%';
     stage.style.top='50%';
-    document.body.style.overflow='hidden';
+    // stage가 viewport보다 크면 스크롤 허용 (모바일 가독성 우선)
+    const _vH=STAGE_W*s, _vW=STAGE_H*s;  // 회전 후 viewport 차지 크기
+    document.body.style.overflow=(_vH>vh||_vW>vw)?'auto':'hidden';
   } else {
     const sx=vw/STAGE_W;
     const sy=vh/STAGE_H;
@@ -699,6 +702,9 @@ function fitGameStage(){
     stage.style.position='';
     stage.style.left='';
     stage.style.top='';
+    // landscape 모바일에서 오버플로우 시 스크롤 허용
+    const _vW=STAGE_W*s, _vH=STAGE_H*s;
+    document.body.style.overflow=(_vW>vw||_vH>vh)?'auto':'hidden';
   }
 }
 // 리사이즈 디바운스 — 모바일 URL바 등장/사라짐으로 인한 잦은 리플로우 방지 (UI 떨림)
