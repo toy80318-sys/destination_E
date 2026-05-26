@@ -10630,10 +10630,11 @@ function startAsteroidBeltMinigame(destPid){
   function _spawnEnemy(){
     const roll=Math.random();
     let sz, w, h, hp, fireRate, dmg;
-    // 크기 비율 1:3:5 (소형 30, 중형 90, 대형 150) + HP 2× (사용자 명세)
-    if(roll<0.5){sz='S';w=30;h=30;hp=6;fireRate=80;dmg=8;}
-    else if(roll<0.85){sz='M';w=90;h=90;hp=10;fireRate=60;dmg=14;}
-    else {sz='L';w=150;h=150;hp=20;fireRate=45;dmg=22;}
+    // 크기 비율 1:3:5 + 적함은 동급 아군보다 2× 큼 (S60/M180/L300)
+    // HP 2× 유지
+    if(roll<0.5){sz='S';w=60;h=60;hp=6;fireRate=80;dmg=8;}
+    else if(roll<0.85){sz='M';w=180;h=180;hp=10;fireRate=60;dmg=14;}
+    else {sz='L';w=300;h=300;hp=20;fireRate=45;dmg=22;}
     state.enemies.push({
       x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
       // 적 함선 속도 ½ (사용자 요청)
