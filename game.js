@@ -10721,8 +10721,8 @@ function startAsteroidBeltMinigame(destPid){
       e.fireCd-=dt;
       if(e.fireCd<=0&&e.x<W-20){
         e.fireCd=e.fireRate;
-        // 50% 레이저, 50% 미사일
-        if(Math.random()<0.5){
+        // 75% 레이저, 25% 미사일 — 사용자 요청 "미사일 발사속도 절반" 반영
+        if(Math.random()<0.75){
           state.eBullets.push({x:e.x-e.w/2,y:e.y,vx:-9,dmg:e.dmg,life:120});
         } else {
           state.eMissiles.push({x:e.x-e.w/2,y:e.y,vx:-4,vy:0,target:state.ship,dmg:e.dmg*1.4,life:160});
