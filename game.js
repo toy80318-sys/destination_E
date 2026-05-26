@@ -1157,7 +1157,7 @@ function askBaekgu(){
     // 설계도/제작
     {k:['설계도','제작','craft','만들기','전설 아이템','신화 아이템','제작소'],r:()=>`퀘스트 클리어 시 5% 확률로 설계도 드랍. 도크 → 제작소에서 특산물 재료 소모해 전설/신화 함선·파츠 제작 가능. 전설 창고 확장 파츠도 링4+ 행성 퀘스트 3% 확률.`},
     // 보이드
-    {k:['보이드','void','에센스','균열','7링'],r:()=>`보이드 에센스(VE)는 7링 균열지대(P27~P30) 탐험 보상. VE 1000마다 경매 추가 낙찰 1개. 보이드 허브는 퀘스트/해적 10회 달성 필요. 전설기함도 판매해.`},
+    {k:['보이드','void','에센스','균열','7링'],r:()=>`보이드 에센스(VE)는 7링 균열지대(P27~P30) 탐험 보상. VE 1000마다 경매 추가 낙찰 1개. 보이드 허브는 활동 8회(F01:3회) 달성 시 해금 — 퀘스트·잔해탐색·해적격파·턴종료가 모두 카운트. 전설기함도 판매해.`},
     // 치크스/전투
     {k:['치크스','chix','적','전투','combat','싸움'],r:()=>`치크스(보라색 적대 행성) 격파 시 크레딧+명성 획득. 나포 확률 있어 — 적 HP 50% 이하에서 23% 이하 확률. 함선 파츠·크루 충분히 갖춰야 이겨.`},
     // 보스/최종전
@@ -2076,10 +2076,11 @@ function showOnboardingTutorial(){
      text:'환영합니다, 사령관! 🚀\n지구로 돌아가는 여정의 핵심 메뉴와 첫 플레이 사이클을 알려드릴게요.\n\n📋 진행 방식\n  · 총 11개의 메뉴를 직접 클릭하며 익혀요\n  · 각 단계에서 노란색으로 강조된 버튼을 직접 클릭해야 다음 단계로 진행돼요\n  · 메뉴 위치를 손에 익히기 위한 강제 클릭 가이드입니다\n\n▶ [다음 ▶]을 눌러 시작\n✕ [건너뛰기] (설정 → 튜토리얼 다시 보기 가능)'},
 
     // ── 1) 상단 정보 (정보 단계) ─────────────────────────
-    {target:'#h-status-bar',pos:'bottom',title:'ACT / TURN — 진행도',
-     text:'우상단에 현재 ACT와 TURN 표시.\n\n• 매 20턴마다 ACT가 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파)가 최종 목표\n\n[다음 ▶]을 눌러 진행하세요.'},
-    {target:'#h-resource-bar',pos:'bottom',title:'재화 4종 — 통화 시스템',
-     text:'• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입 재료\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율 증가\n\n[다음 ▶]을 눌러 진행하세요.'},
+    // ※ #hud는 position:fixed라 stage 좌표계 walk가 불가능 → pos:'center'로 변경 (자동 스킵 방지)
+    {target:null,pos:'center',title:'ACT / TURN — 진행도',
+     text:'우상단의 ACT와 TURN 영역을 확인해 주세요.\n\n• 매 20턴마다 ACT가 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파)가 최종 목표\n\n[다음 ▶]을 눌러 진행하세요.'},
+    {target:null,pos:'center',title:'재화 4종 — 통화 시스템',
+     text:'우상단 재화 표시:\n\n• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입 재료\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율 증가\n\n[다음 ▶]을 눌러 진행하세요.'},
 
     // ── 2) [클릭] 탐색 도감 ─────────────────────────────
     {target:'[data-tab="codex"]',pos:'right',title:'📖 1/11 — 탐색 도감',
@@ -2219,7 +2220,12 @@ function showOnboardingTutorial(){
     };
     tgt.addEventListener('click',_clickHandler);
   };
-  const _close=()=>{_detachClickAdvance();ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}};
+  const _close=()=>{
+    _detachClickAdvance();
+    // ESC 핸들러 정리 — 다시보기 반복 시 누적되어 한 번의 ESC가 중복 발동되는 버그 방지
+    try{if(ov._escHandler)window.removeEventListener('keydown',ov._escHandler);}catch(e){}
+    ov.remove();G._tutorialDone=true;try{saveGame(true);}catch(e){}
+  };
   const _render=()=>{
     const s=steps[_idx];
     if(!s){_close();return;}
@@ -11282,10 +11288,10 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   function _spawnAsteroid(){
     const roll=Math.random();
     let sz, r, hp;
-    // 소행성 HP 2× (사용자 명세) — 크기는 그대로 유지
-    if(roll<0.55){sz='S';r=14+Math.random()*8;hp=2;}
-    else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=4;}
-    else {sz='L';r=34+Math.random()*14;hp=8;}
+    // 소행성 HP — 사용자 누적 요청으로 추가 ×2 적용 (S:2→4 / M:4→8 / L:8→16). 크기는 그대로
+    if(roll<0.55){sz='S';r=14+Math.random()*8;hp=4;}
+    else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=8;}
+    else {sz='L';r=34+Math.random()*14;hp=16;}
     const elapsed=(Date.now()-state.startMs)/1000;
     // 소행성 속도 ½ (사용자 요청)
     const speed=(2+Math.random()*1.2+Math.min(2,elapsed/8))*0.5;
@@ -11299,11 +11305,11 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     const roll=Math.random();
     let sz, w, h, hp, fireRate, dmg;
     // 크기 비율 1:3:5 + 적함은 동급 아군보다 2× 큼 (S60/M180/L300)
-    // HP 2× 유지
+    // HP — 사용자 누적 요청으로 추가 ×2 적용 (S:6→12 / M:10→20 / L:20→40)
     // 발사 빈도 70% (사용자 요청) — fireRate(쿨다운)는 클수록 발사 느려짐: ×1/0.7 ≈ ×1.43
-    if(roll<0.5){sz='S';w=60;h=60;hp=6;fireRate=114;dmg=8;}
-    else if(roll<0.85){sz='M';w=180;h=180;hp=10;fireRate=86;dmg=14;}
-    else {sz='L';w=300;h=300;hp=20;fireRate=64;dmg=22;}
+    if(roll<0.5){sz='S';w=60;h=60;hp=12;fireRate=114;dmg=8;}
+    else if(roll<0.85){sz='M';w=180;h=180;hp=20;fireRate=86;dmg=14;}
+    else {sz='L';w=300;h=300;hp=40;fireRate=64;dmg=22;}
     state.enemies.push({
       x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
       // 적 함선 속도 ½ (사용자 요청)
