@@ -10411,6 +10411,26 @@ function _initAsteroidParticles(){
     });
   }
 }
+let _earthBeltParticles=null;
+function _initEarthBeltParticles(){
+  if(_earthBeltParticles)return;
+  const rng=mulberry32(2718);
+  const N=60;  // P29/P30의 1/3 수준
+  // 회색·검은 계열 (지구 봉쇄 잔해 — 우주쓰레기 풍)
+  const greys=['#5a5a60','#6e6e75','#444448','#3a3a40','#52525a','#6a6a72'];
+  _earthBeltParticles=[];
+  for(let i=0;i<N;i++){
+    _earthBeltParticles.push({
+      baseAng:rng()*Math.PI*2,
+      baseR:rng(),
+      sz:(0.5+rng()*1.4)*0.5,
+      driftSpeed:(0.15+rng()*0.20)*0.12*(rng()<0.5?1:-1),
+      phase:rng()*Math.PI*2,
+      tw:0.4+rng()*0.5,
+      col:greys[Math.floor(rng()*greys.length)]
+    });
+  }
+}
 // 도넛 중심 (P29·P30 중점)과 내·외경 계산
 function _asteroidBeltGeom(){
   const p29=G.mapPositions&&G.mapPositions['P29'];
@@ -10423,6 +10443,12 @@ function _asteroidBeltGeom(){
   const outerR=halfDist+90;   // 외곽 (두 행성 모두 포함하고 여유)
   const innerR=halfDist-30;   // 내경 (두 행성 사이 안쪽 빈 공간)
   return{cx,cy,innerR:Math.max(40,innerR),outerR};
+}
+// 지구 P31 주변 작은 소행성대 — 행성 봉쇄 잔재 (P29/P30 도넛의 약 1/3 크기)
+function _earthBeltGeom(){
+  const p31=G.mapPositions&&G.mapPositions['P31'];
+  if(!p31)return null;
+  return{cx:p31.x, cy:p31.y, innerR:30, outerR:80};
 }
 function _renderAsteroidBelt(ctx){
   const g=_asteroidBeltGeom();
@@ -10461,6 +10487,8 @@ function _renderAsteroidBelt(ctx){
   }
   ctx.restore();
   ctx.globalAlpha=1;
+  // 지구(P31) 주변 작은 소행성대도 함께 렌더
+  _renderEarthBelt(ctx);
   // 맵 탭에 있을 때만 드리프트 애니메이션 유지
   if(G._currentHubTab==='map'&&!window._asteroidAnimReq){
     window._asteroidAnimReq=requestAnimationFrame(()=>{
@@ -10469,13 +10497,47 @@ function _renderAsteroidBelt(ctx){
     });
   }
 }
+// 지구 P31 주변 작은 소행성대 렌더 — 회색·우주쓰레기 톤
+function _renderEarthBelt(ctx){
+  const g=_earthBeltGeom();if(!g)return;
+  _initEarthBeltParticles();
+  const center=worldToScreen(g.cx,g.cy);
+  const sOuter=worldToScreen(g.cx+g.outerR,g.cy);
+  const sInner=worldToScreen(g.cx+g.innerR,g.cy);
+  const screenOR=Math.abs(sOuter.sx-center.sx);
+  const screenIR=Math.abs(sInner.sx-center.sx);
+  // 옅은 회색 띠
+  const grd=ctx.createRadialGradient(center.sx,center.sy,screenIR,center.sx,center.sy,screenOR);
+  grd.addColorStop(0,'rgba(100,100,108,0)');
+  grd.addColorStop(0.5,'rgba(100,100,108,.07)');
+  grd.addColorStop(1,'rgba(100,100,108,0)');
+  ctx.fillStyle=grd;
+  ctx.beginPath();ctx.arc(center.sx,center.sy,screenOR,0,Math.PI*2);ctx.fill();
+  const t=performance.now()/1000;
+  ctx.save();
+  for(const p of _earthBeltParticles){
+    const ang=p.baseAng+p.driftSpeed*t;
+    const r=g.innerR+(g.outerR-g.innerR)*p.baseR;
+    const wx=g.cx+Math.cos(ang)*r;
+    const wy=g.cy+Math.sin(ang)*r;
+    const s=worldToScreen(wx,wy);
+    const tw=0.45+0.55*Math.abs(Math.sin(t*p.tw+p.phase));
+    ctx.globalAlpha=Math.min(1,0.5+tw*0.35);
+    const psz=Math.max(0.3,p.sz*(G.mapZoom||1));
+    ctx.fillStyle=p.col||'#5a5a60';
+    ctx.beginPath();ctx.arc(s.sx,s.sy,psz,0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+  ctx.globalAlpha=1;
+}
 
 // 항로가 소행성대를 통과하는지 검사 (선분-환 교차 단순 판정)
 function _routeCrossesAsteroidBelt(fromPid,toPid){
   if(fromPid===toPid)return false;
-  // 통과 판정: 출발/도착 중 하나라도 P29/P30이면 무조건 통과로 본다.
-  // (정밀 선분-환 교차는 비용 대비 효용이 낮음 — 보이드 양 행성 진입·이탈을 트리거로 사용)
-  return fromPid==='P29'||fromPid==='P30'||toPid==='P29'||toPid==='P30';
+  // 통과 판정: 출발/도착 중 하나라도 P29/P30/P31이면 무조건 통과로 본다.
+  // (정밀 선분-환 교차는 비용 대비 효용이 낮음 — 보이드 양 행성·지구 진입·이탈을 트리거로 사용)
+  return fromPid==='P29'||fromPid==='P30'||fromPid==='P31'
+       ||toPid==='P29'||toPid==='P30'||toPid==='P31';
 }
 
 // ─── 소행성대 미니게임 — 사이드 스크롤 슈터 ─────────────────────────
@@ -11847,15 +11909,22 @@ function onMapClick(e){
   }
 
   // (이전 장식용 지구 클릭 핸들러는 제거 — P31이 PLANET_DEF의 일반 행성으로 처리됨)
-  // 보스 격파 전 P31 클릭 → tryBossEntry, 격파 후 → 일반 이동 (아래 PLANET_DEF.forEach에서 자동 처리)
-  // 따라서 PLANET_DEF.forEach 결과로 P31이 closest로 선택되면 미리 처리:
+  // P31 클릭 처리:
+  //   - 격파 전 + ACT<3:  진입 차단
+  //   - 격파 전 + ACT>=3: 첫 진입 → 우르사 메이저 보스전 강제 발동 (보이드 크리스탈 미요구)
+  //   - 격파 후:          일반 이동 (아래 PLANET_DEF.forEach에서 처리)
   if(G&&!G._earthLiberated&&G.mapPositions&&G.mapPositions['P31']){
     const _p31w=G.mapPositions['P31'];
     const _p31_3d=rotate3D(_p31w.x,_p31w.y,0,map3dRotX,map3dRotY);
     const _p31p=project3D(_p31_3d.x,_p31_3d.y,_p31_3d.z);
     const _p31r=Math.max(8,12*G.mapZoom);
     if(Math.hypot(_p31p.sx-mx,_p31p.sy-my)<_p31r*2.5){
-      baekgu('지구야... 우르사 메이저를 격파해야 봉쇄가 풀려. 치크스 행성 3개 이상 공략하면 최종전 진입 가능해!');
+      if((G.act||1)<3){
+        notify('🌍 지구 진입은 ACT 3부터 가능합니다','warn');
+        baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT '+(G.act||1)+')');
+        return;
+      }
+      baekgu('지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!');
       tryBossEntry();
       return;
     }
@@ -11927,6 +11996,18 @@ function refreshFloatBtn(){
 }
 function travelTo(){
   const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
+  // P31 (지구) 진입 게이트 — ACT/봉쇄 상태 검증
+  if(pid==='P31'&&!G._earthLiberated){
+    if((G.act||1)<3){
+      notify('🌍 지구 진입은 ACT 3부터 가능합니다 (현재 ACT '+(G.act||1)+')','warn');
+      baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!');
+      return;
+    }
+    // ACT3+ 첫 지구 도착 → 우르사 메이저 보스전 강제 진입
+    baekgu('지구다... 우르사 메이저가 기다린다. 모든 화력 준비!');
+    tryBossEntry();
+    return;
+  }
   const pd=PLANET_DEF.find(p=>p.id===pid),cost=travelCost(G.currentPlanet,pid);
   const blink=hasBlinkOnAll();
   // 블링크 엔진 없을 때 연결 항로 체크
@@ -15100,15 +15181,21 @@ async function cloudSignOut(){
 
 // ── 보스 진입 / 보이드 창 ────────────────────────────────────────
 function tryBossEntry(){
-  if(!G.voidCrystal||G.voidCrystal<=0){notify('보이드 크리스탈이 없습니다','err');return;}
+  const _isFirst=!G._earthLiberated;  // 첫 도전 = ACT3+ 첫 지구 진입
+  // 첫 도전이 아니라면 (재도전) 보이드 크리스탈 필요
+  if(!_isFirst&&(!G.voidCrystal||G.voidCrystal<=0)){
+    notify('보이드 크리스탈이 없습니다 (재도전용)','err');return;
+  }
+  const _hint=_isFirst
+    ?'<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">⚡ 첫 지구 진입 — 우르사 메이저가 봉쇄를 끝낼 마지막 저항</div><div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 미요구 (첫 보스전 무료 진입).<br>승리 시 지구 봉쇄 해제 + 시설 해금!</div>'
+    :'<div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>승리 시 게임 클리어!</div><div style="font-size:13px;color:var(--yellow)">보유 크리스탈: '+(G.voidCrystal||0)+'개</div>';
   openModal('☠️ 우르사 메이저 — 최종 보스전',
     `<div style="text-align:center;padding:12px">
       <div style="font-size:48px;margin-bottom:8px">🌀</div>
       <div style="color:var(--red);font-weight:bold;margin-bottom:8px">경고: 극도로 위험한 전투</div>
-      <div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>승리 시 게임 클리어!</div>
-      <div style="font-size:13px;color:var(--yellow)">보유 크리스탈: ${G.voidCrystal}개</div>
+      ${_hint}
     </div>`,
-    [{txt:'⚔️ 전투 돌입!',fn:()=>{G.voidCrystal--;closeModal();showUrsaMajorIntro();},cls:'btn-red'},
+    [{txt:'⚔️ 전투 돌입!',fn:()=>{if(!_isFirst)G.voidCrystal--;closeModal();showUrsaMajorIntro();},cls:'btn-red'},
      {txt:'취소',fn:closeModal,cls:'btn-sm'}]);
 }
 // 우르사 메이저 보스 대사 인트로 (8단계) → 전투 진입
