@@ -10477,14 +10477,16 @@ function _routeCrossesAsteroidBelt(fromPid,toPid){
 // 조작: 방향키·WASD 이동, 마우스 위치 추종, Shift=레이저, Ctrl/Enter=미사일(자동조준)
 // 30초 생존 = 승리 (+크레딧 5%+격파×500, +VE 20+격파×4)
 // 기함 HP 0 = 패배 (-크레딧 3%)
-// 함선 선택 UI — 함대에 2척 이상이면 미니게임 진입 전 선택 화면
+// 함선 선택 UI — 행당 8척, 작은 카드 (기존 크기의 약 절반)
 function _showAsteroidShipPicker(destPid, onPick){
   const picker=document.createElement('div');
   picker.id='_ab-ship-picker';
-  picker.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:99996;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;padding:20px;overflow-y:auto';
+  picker.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:99996;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Malgun Gothic,sans-serif;padding:14px;overflow-y:auto';
+  // 카드: 가로 약 116px → 행당 8장(8×116 + gap×7×6 = 970px), max-width 1000px
   let cardsHtml='';
-  G.fleet.forEach((s,idx)=>{
-    const tierBadge=s.tier==='소형'?'<span style="color:#66ddff">소형</span>':s.tier==='중형'?'<span style="color:#ffcc66">중형</span>':'<span style="color:#ff88cc">대형</span>';
+  (G.fleet||[]).forEach((s,idx)=>{
+    const t=s.tier||'소형';
+    const tierBadge=t==='소형'?'<span style="color:#66ddff">소형</span>':t==='중형'?'<span style="color:#ffcc66">중형</span>':'<span style="color:#ff88cc">대형</span>';
     const _hp=s.maxHP||s.HP||1000;
     const _sh=s.maxSH||300;
     const _att=s.ATT||30;
@@ -10492,39 +10494,39 @@ function _showAsteroidShipPicker(destPid, onPick){
     const _rarColor=_rar==='mythic'?'#ff88ff':_rar==='legend'?'#ffcc66':_rar==='set'?'#ff99cc':'#aaa';
     cardsHtml+=`
       <div class="ab-ship-card" data-idx="${idx}" style="
-        cursor:pointer;background:rgba(20,10,40,.9);border:2px solid #6633aa;border-radius:10px;
-        padding:14px 16px;min-width:220px;text-align:center;transition:all .15s ease;
-        box-shadow:0 4px 16px rgba(180,80,255,.2)">
-        <img src="${shipImgSrc(s)}" style="width:100px;height:100px;object-fit:contain;image-rendering:pixelated" onerror="this.style.opacity=.3">
-        <div style="margin-top:8px;font-weight:bold;color:${_rarColor};font-size:14px;letter-spacing:1px">${s.nm||'함선 #'+idx}</div>
-        <div style="margin-top:4px;font-size:11px;color:#aaa">${tierBadge} · ATT ${_att}</div>
-        <div style="margin-top:6px;font-size:11px;color:#ff8888">HP ${_hp.toLocaleString()}</div>
-        <div style="font-size:11px;color:#66ddff">SH ${_sh.toLocaleString()}</div>
+        cursor:pointer;background:rgba(20,10,40,.9);border:1.5px solid #6633aa;border-radius:7px;
+        padding:7px 8px;width:104px;text-align:center;transition:all .15s ease;
+        box-shadow:0 2px 8px rgba(180,80,255,.15)">
+        <img src="${shipImgSrc(s)}" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated" onerror="this.style.opacity=.3">
+        <div style="margin-top:4px;font-weight:bold;color:${_rarColor};font-size:10px;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.nm||'#'+idx}</div>
+        <div style="margin-top:2px;font-size:9px;color:#aaa">${tierBadge} · ATT ${_att}</div>
+        <div style="margin-top:2px;font-size:9px;color:#ff8888">HP ${_hp>=10000?Math.round(_hp/1000)+'k':_hp}</div>
+        <div style="font-size:9px;color:#66ddff">SH ${_sh>=10000?Math.round(_sh/1000)+'k':_sh}</div>
       </div>`;
   });
   const _bypassCost=Math.max(100,Math.round((G.credits||0)*0.01));
   const _canBypass=(G.credits||0)>=_bypassCost;
   picker.innerHTML=`
-    <div style="text-align:center;margin-bottom:18px">
-      <div style="color:#cc66ff;font-size:13px;letter-spacing:6px">— 출격 함선 선택 —</div>
-      <div style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:3px;margin-top:6px">🚀 소행성대 돌파 함선</div>
-      <div style="color:#aaa;font-size:12px;margin-top:6px">함선을 클릭해 출격하거나, 통행세를 지불해 안전 통과</div>
+    <div style="text-align:center;margin-bottom:10px">
+      <div style="color:#cc66ff;font-size:11px;letter-spacing:4px">— 출격 함선 선택 —</div>
+      <div style="color:#fff;font-size:16px;font-weight:bold;letter-spacing:2px;margin-top:3px">🚀 소행성대 돌파</div>
+      <div style="color:#aaa;font-size:10px;margin-top:3px">함선을 클릭해 출격하거나 통행세 지불</div>
     </div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;max-width:1100px">${cardsHtml}</div>
-    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <div style="display:grid;grid-template-columns:repeat(8,104px);gap:6px;justify-content:center;max-width:920px">${cardsHtml}</div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
       <button id="_ab-pick-bypass" ${_canBypass?'':'disabled'} style="
-        padding:12px 32px;background:${_canBypass?'rgba(255,215,0,.18)':'rgba(120,120,120,.15)'};
-        border:1.5px solid ${_canBypass?'#ffd700':'#666'};color:#fff;border-radius:6px;
-        cursor:${_canBypass?'pointer':'not-allowed'};font-size:13px;letter-spacing:2px;
+        padding:7px 18px;background:${_canBypass?'rgba(255,215,0,.18)':'rgba(120,120,120,.15)'};
+        border:1px solid ${_canBypass?'#ffd700':'#666'};color:#fff;border-radius:5px;
+        cursor:${_canBypass?'pointer':'not-allowed'};font-size:11px;letter-spacing:1px;
         opacity:${_canBypass?'1':'.5'}">
-        💰 통행세 지불 무사통과 (-₡${_bypassCost.toLocaleString()} · 자산 1%)
+        💰 통행세 -₡${_bypassCost.toLocaleString()} (자산 1%)
       </button>
-      <button id="_ab-pick-cancel" style="padding:12px 28px;background:rgba(255,80,80,.15);border:1.5px solid #ff6666;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px">취소 (회피)</button>
+      <button id="_ab-pick-cancel" style="padding:7px 16px;background:rgba(255,80,80,.15);border:1px solid #ff6666;color:#fff;border-radius:5px;cursor:pointer;font-size:11px;letter-spacing:1px">취소 (회피)</button>
     </div>`;
   document.body.appendChild(picker);
   picker.querySelectorAll('.ab-ship-card').forEach(c=>{
-    c.onmouseenter=()=>{c.style.transform='translateY(-4px)';c.style.borderColor='#ffcc66';c.style.boxShadow='0 8px 24px rgba(255,204,102,.4)';};
-    c.onmouseleave=()=>{c.style.transform='';c.style.borderColor='#6633aa';c.style.boxShadow='0 4px 16px rgba(180,80,255,.2)';};
+    c.onmouseenter=()=>{c.style.transform='translateY(-3px)';c.style.borderColor='#ffcc66';c.style.boxShadow='0 6px 18px rgba(255,204,102,.35)';};
+    c.onmouseleave=()=>{c.style.transform='';c.style.borderColor='#6633aa';c.style.boxShadow='0 2px 8px rgba(180,80,255,.15)';};
     c.onclick=()=>{const idx=parseInt(c.dataset.idx,10);picker.remove();onPick(idx);};
   });
   picker.querySelector('#_ab-pick-cancel').onclick=()=>{picker.remove();};
@@ -10543,68 +10545,71 @@ function _showAsteroidShipPicker(destPid, onPick){
 // 백구 AI HUD 렌더 — 캔버스 하단 가운데 (말풍선 위로)
 function _renderBaekguHud(cx,W,H,state,baekguImgs,now){
   const b=state.baekgu;if(!b)return;
-  // 만료 시 default로 페이드
   const remain=b.expireAt-now;
   let alpha=1;
   if(remain<400)alpha=Math.max(0,remain/400);
-  // 백구 이미지
   const moodKey=(remain<=0)?'default':b.mood;
   const im=baekguImgs[moodKey]||baekguImgs['default'];
-  const size=110;
-  const bx=W/2-size/2, by=H-size-12;
+  // 좌측 하단 배치 — 이름 라벨 잘리지 않도록 충분한 하단 마진 확보
+  const size=100;
+  const marginL=18, marginB=28;          // 이름 라벨 들어갈 공간(아래쪽) 확보
+  const cxCircle=marginL+size/2;
+  const cyCircle=H-marginB-size/2;
+  const bx=cxCircle-size/2, by=cyCircle-size/2;
   cx.save();
-  // 후광 (피격 상태일 때 붉게)
-  if(b.mood==='anger1'||b.mood==='anger2'||b.mood==='sad'){
-    cx.fillStyle='rgba(255,80,80,'+(0.18*alpha)+')';
-    cx.beginPath();cx.arc(W/2,by+size/2,size*0.7,0,Math.PI*2);cx.fill();
-  } else if(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4'){
-    cx.fillStyle='rgba(255,215,0,'+(0.18*alpha)+')';
-    cx.beginPath();cx.arc(W/2,by+size/2,size*0.7,0,Math.PI*2);cx.fill();
-  } else {
-    cx.fillStyle='rgba(102,221,255,0.10)';
-    cx.beginPath();cx.arc(W/2,by+size/2,size*0.65,0,Math.PI*2);cx.fill();
-  }
-  // 원형 마스크 안에 백구 그리기
-  cx.beginPath();cx.arc(W/2,by+size/2,size/2-2,0,Math.PI*2);cx.closePath();
+  // 후광
+  const moodCol=(b.mood==='anger1'||b.mood==='anger2'||b.mood==='sad')?'#ff6666'
+              :(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#66ddff';
+  const glowAlpha=(b.mood==='anger1'||b.mood==='anger2'||b.mood==='sad')?0.18*alpha
+                :(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?0.18*alpha:0.10;
+  cx.fillStyle=(b.mood==='anger1'||b.mood==='anger2'||b.mood==='sad')?'rgba(255,80,80,'+glowAlpha+')'
+              :(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'rgba(255,215,0,'+glowAlpha+')'
+              :'rgba(102,221,255,'+glowAlpha+')';
+  cx.beginPath();cx.arc(cxCircle,cyCircle,size*0.7,0,Math.PI*2);cx.fill();
+  // 원형 배경
+  cx.beginPath();cx.arc(cxCircle,cyCircle,size/2-2,0,Math.PI*2);cx.closePath();
   cx.fillStyle='rgba(20,10,40,.92)';cx.fill();
+  // 이미지 (원형 클립)
   cx.save();cx.clip();
-  if(im&&im.complete&&im.naturalWidth>0){
-    cx.drawImage(im,bx,by,size,size);
-  }
+  if(im&&im.complete&&im.naturalWidth>0){cx.drawImage(im,bx,by,size,size);}
   cx.restore();
   // 테두리
-  cx.lineWidth=2.5;
-  cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#66ddff';
-  cx.beginPath();cx.arc(W/2,by+size/2,size/2-1,0,Math.PI*2);cx.stroke();
-  // 라벨 "백구 AI"
-  cx.fillStyle='rgba(102,221,255,.85)';cx.font='bold 11px monospace';cx.textAlign='center';
-  cx.fillText('🐶 백구 AI',W/2,by+size+14);
-  // 말풍선 (현재 발화 메시지)
+  cx.lineWidth=2.5;cx.strokeStyle=moodCol;
+  cx.beginPath();cx.arc(cxCircle,cyCircle,size/2-1,0,Math.PI*2);cx.stroke();
+  // 이름 라벨 (원 아래, 화면 안에 들어오도록)
+  cx.fillStyle='rgba(102,221,255,.9)';cx.font='bold 12px monospace';cx.textAlign='center';
+  cx.fillText('🐶 백구 AI',cxCircle,cyCircle+size/2+18);
+  // 말풍선 — 이미지 우측에 배치
   if(b.msg && remain>0){
     cx.globalAlpha=alpha;
     cx.font='bold 14px Malgun Gothic, sans-serif';
     const tw=cx.measureText(b.msg).width;
-    const bw=Math.max(160,tw+28), bh=42;
-    const bbx=W/2-bw/2, bby=by-bh-12;
+    const bw=Math.max(180,tw+28), bh=44;
+    // 우측에 배치: 원 오른쪽 가장자리에서 14px 간격
+    const bbx=cxCircle+size/2+14;
+    const bby=cyCircle-bh/2;
     // 그림자
     cx.fillStyle='rgba(0,0,0,.6)';
     _roundRect(cx,bbx+2,bby+2,bw,bh,10);cx.fill();
-    // 배경
+    // 배경 그라데이션
     const grd=cx.createLinearGradient(bbx,bby,bbx,bby+bh);
     grd.addColorStop(0,'rgba(40,20,60,.95)');grd.addColorStop(1,'rgba(20,10,40,.95)');
-    cx.fillStyle=grd;
-    _roundRect(cx,bbx,bby,bw,bh,10);cx.fill();
+    cx.fillStyle=grd;_roundRect(cx,bbx,bby,bw,bh,10);cx.fill();
     // 테두리
-    cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#cc66ff';
-    cx.lineWidth=1.5;_roundRect(cx,bbx,bby,bw,bh,10);cx.stroke();
-    // 꼬리 (아래쪽 작은 삼각형)
+    cx.strokeStyle=moodCol;cx.lineWidth=1.5;
+    _roundRect(cx,bbx,bby,bw,bh,10);cx.stroke();
+    // 좌측 꼬리 (원을 향함)
     cx.fillStyle=grd;
-    cx.beginPath();cx.moveTo(W/2-8,bby+bh);cx.lineTo(W/2+8,bby+bh);cx.lineTo(W/2,bby+bh+10);cx.closePath();cx.fill();
-    cx.strokeStyle=(b.mood==='anger1'||b.mood==='anger2')?'#ff6666':(b.mood==='smile1'||b.mood==='smile2'||b.mood==='smile4')?'#ffd700':'#cc66ff';
-    cx.beginPath();cx.moveTo(W/2-8,bby+bh);cx.lineTo(W/2,bby+bh+10);cx.lineTo(W/2+8,bby+bh);cx.stroke();
+    cx.beginPath();
+    cx.moveTo(bbx,cyCircle-8);cx.lineTo(bbx,cyCircle+8);cx.lineTo(bbx-10,cyCircle);
+    cx.closePath();cx.fill();
+    cx.strokeStyle=moodCol;
+    cx.beginPath();
+    cx.moveTo(bbx,cyCircle-8);cx.lineTo(bbx-10,cyCircle);cx.lineTo(bbx,cyCircle+8);
+    cx.stroke();
     // 텍스트
-    cx.fillStyle='#fff';
-    cx.fillText(b.msg,W/2,bby+bh/2+5);
+    cx.fillStyle='#fff';cx.textAlign='left';
+    cx.fillText(b.msg,bbx+14,bby+bh/2+5);
     cx.globalAlpha=1;
   }
   cx.textAlign='left';
@@ -10898,22 +10903,30 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     //   최종 ×0.1 적용 (드롭 보상이 메인, 크레딧은 소액)
     const _rep=G.reputation||0;
     const _rewPct=_rep>100?0.01:_rep>=51?0.03:_rep>=11?0.05:_rep>=1?0.10:0.10;
-    const rew=win?Math.round(((G.credits||0)*_rewPct+state.kills*800)*0.1):0;
-    const veRew=win?Math.round((20+state.kills*5)*0.1):0;
+    // 격파 대수 기반 보상 배율 — 1대=10%, 100대 이상=100%, 그 사이 선형
+    //   kills=1   → 0.1 + 0.9 * 0.01  ≈ 0.109  (≈10%)
+    //   kills=50  → 0.55
+    //   kills=100+ → 1.0 (캡)
+    const _killScale=Math.min(1, 0.1 + 0.9*Math.min(1,Math.max(0,state.kills)/100));
+    // 드롭 확률 보너스 — 격파 30대당 +1% (legend/mythic/blueprint 각각 독립)
+    const _dropBonus=Math.floor(state.kills/30)*0.01;
+    const rew=win?Math.round(((G.credits||0)*_rewPct+state.kills*800)*0.1*_killScale):0;
+    const veRew=win?Math.round((20+state.kills*5)*0.1*_killScale):0;
     const pen=win?0:Math.round((G.credits||0)*0.03);
-    // 랜덤 드롭 (승리 시) — 50% 전설 / 30% 신화 / 20% 설계도(미보유 시)
+    // 랜덤 드롭 (승리 시) — 각 등급 독립 roll + 격파 보너스
+    //   설계도 20% + bonus / 신화 30% + bonus / 전설·세트 50% + bonus (우선순위 BP→신화→전설)
     let dropTxt='';
     if(win){
-      const dropRoll=Math.random();
       const _bpId=(typeof BLUEPRINT_MAP!=='undefined')?BLUEPRINT_MAP[destPid]:null;
       const _canBp=_bpId&&!G.blueprints?.[_bpId];
-      if(dropRoll<0.20&&_canBp){
+      const _rBp=Math.random(), _rMy=Math.random(), _rLg=Math.random();
+      if(_rBp<(0.20+_dropBonus)&&_canBp){
         if(!G.blueprints)G.blueprints={};
         G.blueprints[_bpId]=true;
         const _rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===_bpId):null;
         dropTxt='📜 설계도 <b style="color:#cc66ff">'+(_rec?.nm||_bpId)+'</b>';
         notify('📜 설계도 획득: '+(_rec?.nm||_bpId),'gold');
-      } else if(dropRoll<0.50&&typeof QUEST_MYTHIC_PARTS!=='undefined'&&QUEST_MYTHIC_PARTS.length>0){
+      } else if(_rMy<(0.30+_dropBonus)&&typeof QUEST_MYTHIC_PARTS!=='undefined'&&QUEST_MYTHIC_PARTS.length>0){
         const partId=QUEST_MYTHIC_PARTS[Math.floor(Math.random()*QUEST_MYTHIC_PARTS.length)];
         if(!G.inventory)G.inventory=[];
         const inv=G.inventory.find(i=>i.id===partId);
@@ -10921,7 +10934,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
         const p=PARTS.find(x=>x.id===partId);
         dropTxt='✦ 신화 파츠 <b style="color:#ff88ff">'+(p?.nm||partId)+'</b>';
         notify('✦ 신화 파츠: '+(p?.nm||partId),'gold');
-      } else if(typeof QUEST_SET_PARTS!=='undefined'&&QUEST_SET_PARTS.length>0){
+      } else if(_rLg<(0.50+_dropBonus)&&typeof QUEST_SET_PARTS!=='undefined'&&QUEST_SET_PARTS.length>0){
         const partId=QUEST_SET_PARTS[Math.floor(Math.random()*QUEST_SET_PARTS.length)];
         if(!G.inventory)G.inventory=[];
         const inv=G.inventory.find(i=>i.id===partId);
@@ -10943,8 +10956,9 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
        <div style="color:#ffd700;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성대 돌파!</div>
        <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대 · 잔여 HP ${Math.floor(state.ship.hp)}/${state.ship.maxHP}</div>
        <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
-         💰 +₡${rew.toLocaleString()}<br>💎 보이드 에센스 +${veRew}
+         💰 +₡${rew.toLocaleString()} <span style="color:#aaa;font-size:11px">(보상 배율 ${Math.round(_killScale*100)}%)</span><br>💎 보이드 에센스 +${veRew}
          ${dropTxt?'<br>'+dropTxt:''}
+         <br><span style="color:#cc99ff;font-size:11px">🎲 드롭 보너스 +${Math.round(_dropBonus*100)}% (30대당 +1%)</span>
          <br><span style="color:#66ddff;font-size:11px">🏗️ 도착 행성 해금 진행도 +1 (퀘스트 1회 효과)</span>
        </div>`:
       `<div style="font-size:48px;margin-bottom:10px">💥</div>
