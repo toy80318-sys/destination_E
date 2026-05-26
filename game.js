@@ -10489,6 +10489,24 @@ function startAsteroidBeltMinigame(destPid){
     return 30;  // 소형 또는 기타
   }
   const flagSize=flagship?_sizeForTier(flagship.tier):30;
+  // 함선 tier별 속도 배율 — 소형=1.0, 중형=0.7, 대형=0.5 (사용자 명세)
+  function _spdFactorForTier(tier){
+    if(tier==='중형')return 0.7;
+    if(tier==='대형'||tier==='전설기함'||tier==='신화')return 0.5;
+    return 1.0;
+  }
+  // 엔진 등급별 속도 배율 — 영웅 이하=1, 전설/세트=1.5, 신화=2 (사용자 명세)
+  let _engineMul=1;
+  if(flagship&&flagship.parts){
+    for(const pid of flagship.parts){
+      const p=PARTS.find(x=>x.id===pid);
+      if(!p||p.cat!=='engine')continue;
+      if(p.rarity==='mythic')_engineMul=Math.max(_engineMul,2);
+      else if(p.rarity==='legend'||p.rarity==='set')_engineMul=Math.max(_engineMul,1.5);
+    }
+  }
+  const _shipSpdFactor=flagship?_spdFactorForTier(flagship.tier):1.0;
+  const _shipSpdMul=_shipSpdFactor*_engineMul;  // 최종 배율
   // 무기 등급 판정 — 기함 장착 레이저 파츠의 rarity로 분류
   let weaponTier='normal';  // normal (영웅 이하) / legend (전설·세트) / mythic (신화)
   if(flagship&&flagship.parts){
@@ -10732,9 +10750,9 @@ function startAsteroidBeltMinigame(destPid){
     const elapsed=now-state.startMs;
     const leftSec=Math.max(0,Math.ceil((state.durationMs-elapsed)/1000));
 
-    // 입력 → 이동
+    // 입력 → 이동 (tier × engine 등급 배율 적용)
     let vx=0,vy=0;
-    const SPD=5;
+    const SPD=5*_shipSpdMul;
     if(keys.KeyA||keys.ArrowLeft)vx-=SPD;
     if(keys.KeyD||keys.ArrowRight)vx+=SPD;
     if(keys.KeyW||keys.ArrowUp)vy-=SPD;
@@ -10744,9 +10762,10 @@ function startAsteroidBeltMinigame(destPid){
       state._inputMode='keyboard';
       state.ship.x+=vx*dt;state.ship.y+=vy*dt;
     } else if(state._inputMode==='mouse'&&state.mouseX!=null){
-      // 마우스 모드에서만 lerp — 키 떼도 위치 유지, 마우스 움직였을 때만 추종
-      state.ship.x+=(state.mouseX-state.ship.w/2-state.ship.x)*0.18;
-      state.ship.y+=(state.mouseY-state.ship.y)*0.18;
+      // 마우스 모드에서만 lerp — 배율 함께 적용 (0.04~0.50 클램프)
+      const _lerp=Math.max(0.04,Math.min(0.50,0.18*_shipSpdMul));
+      state.ship.x+=(state.mouseX-state.ship.w/2-state.ship.x)*_lerp;
+      state.ship.y+=(state.mouseY-state.ship.y)*_lerp;
     }
     // (둘 다 아니면 현재 위치 그대로 유지 — 초기 위치로 안 돌아감)
     // 클램프 (캔버스 영역)
