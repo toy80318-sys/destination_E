@@ -1,5 +1,15 @@
 {
+  "name": "destination-earth",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "deploy": "firebase deploy --only hosting --project cgstation-d8178 --non-interactive && npm run cleanup",
+    "deploy:full": "firebase deploy --project cgstation-d8178 --non-interactive && npm run cleanup",
+    "cleanup": "node scripts/firebase-cleanup.js 5",
+    "cleanup:aggressive": "node scripts/firebase-cleanup.js 3"
+  },
   "dependencies": {
     "puppeteer-core": "^25.0.4"
   }
 }
+
