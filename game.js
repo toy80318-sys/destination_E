@@ -12682,8 +12682,9 @@ function initCombatCanvas(){
       <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:2px 7px;font-size:12px">⌂</button>
       <button class="btn btn-sm" onclick="cbZoom=Math.min(4,cbZoom+.15);drawCombatFrame()" style="padding:2px 7px;font-size:13px">+</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
-  // 이순신 일점사 전술 버튼 (H01 영입 시만 표시)
-  if(G.heroes.includes('H01')&&!document.getElementById('cb-sunsin-btn')){
+  // 이순신 일점사 전술 버튼 (H01 영입 시 + 전술 차단 플래그가 아닐 때만)
+  // 블랙홀 최종전(_tacticsDisabled)에서는 일점사·학익진·시간차 등 전 전술 체인 차단
+  if(G.heroes.includes('H01')&&!document.getElementById('cb-sunsin-btn')&&!combatState._tacticsDisabled){
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
     sbtn.style.cssText='padding:3px 10px;font-size:13px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite';
@@ -13832,8 +13833,11 @@ function runCombatTurn(){
       const _totalMaxHP=combatState.enemies.reduce((s,e)=>s+(e.maxHP||1),0);
       const fleetHpPct=_totalMaxHP>0?_totalCurHP/_totalMaxHP:0;
       const bossHpPct=Math.max(0,boss.hp)/(boss.maxHP||1);
-      // 함대 합산 10% OR 보스 0% (보스가 단독으로 마지막에 살아 남았을 때)
-      if((fleetHpPct<=0.10||boss.hp<=0)&&!combatState._voidRetreated){
+      // 버그픽스: 일점사로 flagship(보스) 즉시 격침 시 boss.hp<=0 단독 조건이
+      // OR로 묶여 있어 호위함 15척이 멀쩡한데도 자진 철수가 발동되던 문제 해결.
+      // 보스 단독 생존 의도를 살리려면 "다른 적이 모두 죽었을 때"만 트리거.
+      const _aliveEnemies=combatState.enemies.filter(e=>e.hp>0).length;
+      if((fleetHpPct<=0.10||(boss.hp<=0&&_aliveEnemies<=0))&&!combatState._voidRetreated){
         combatState._voidRetreated=true;
         // 남은 모든 적함 함께 어둠 속으로 사라짐
         combatState.enemies.forEach(e=>{e.hp=0;e.sh=0;});
@@ -14230,6 +14234,7 @@ function _finishCombat(){
 // 일점사 후 30초 뒤 → 학익진 버튼 활성화 (아군 ATT ×3 추가 강화)
 function activateSunsinFocus(){
   if(!combatState||combatState._sunsinUsed||combatState.done)return;
+  if(combatState._tacticsDisabled){notify('🌌 보이드 차원에서는 우리 전술이 봉인됩니다','warn');return;}
   // ★ 전술 화자 초상: 일점사 → 호레이쇼 넬슨 (H05)
   try{_showTacticPortrait('img/chars/hero05.png',12000);}catch(e){}
   const target=combatState.enemies.filter(e=>e.hp>0)[0];
@@ -16123,40 +16128,44 @@ function _enterBlackHoleFinalTest(){
 // 능력치: 아군 함대 총합의 ×15 (히든 보이드 보스 ×10보다 강한 최종 보스 페이즈)
 function startBlackHoleFleetCombat(){
   const pd={id:'P-BLACKHOLE',nm:'은하 가운데 — 블랙홀의 심연',ring:7,void:true,f:'F07'};
-  const VOID_FLEET_SIZE=16;
-  const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
-  const _totalHP=Math.max(8000000,Math.round((_fp.hp||0)*15));
-  const _totalATT=Math.max(60000,Math.round((_fp.atk||0)*15));
-  const _totalSH=Math.max(2000000,Math.round((_fp.sh||0)*15));
-  const _UNIT=19;  // 호위 15 + 보스 4
-  const _escortHP=Math.round(_totalHP/_UNIT);
-  const _escortATT=Math.round(_totalATT/_UNIT);
-  const _escortSH=Math.round(_totalSH/_UNIT);
-  const _flagHP=_escortHP*4;
-  const _flagATT=_escortATT*4;
-  const _flagSH=_escortSH*4;
-  const enemies=Array.from({length:VOID_FLEET_SIZE},(_,i)=>{
-    const isFlagship=(i===0);
-    const _hp=isFlagship?_flagHP:_escortHP;
-    const _att=isFlagship?_flagATT:_escortATT;
-    const _sh=isFlagship?_flagSH:_escortSH;
+  // ── 사용자 명세: 우리 함대와 동일한 척수의 신화 등급 미러 함대, 전설 파츠 장착 수준 ──
+  //    + 우리 전술(일점사·학익진·시간차·테슬라 등) 사용 불가 (combatState._tacticsDisabled)
+  // 신화 등급 함선 기본치 + 전설 파츠 4종 누적 보너스(무기 +60ATT / 실드 +50INT+3kSH / 장갑 +5kHP / 엔진 +60TEC)
+  function _mythicLegendStats(tier){
+    const base={
+      '소형':   {HP:90000, SH:35000, ATT:280, INT:200, TEC:170},
+      '중형':   {HP:180000,SH:65000, ATT:480, INT:280, TEC:220},
+      '대형':   {HP:340000,SH:120000,ATT:780, INT:360, TEC:280},
+      '전설기함':{HP:480000,SH:170000,ATT:1100,INT:440, TEC:340},
+      '신화':   {HP:600000,SH:220000,ATT:1400,INT:520, TEC:400}
+    }[tier]||{HP:120000,SH:45000,ATT:320,INT:220,TEC:180};
     return {
-      id:`BH_VOID_${i+1}`,
-      nm:isFlagship?'🌌 블랙홀의 사자 ✦신화':`보이드 함선 ${i+1}`,
-      tier:isFlagship?'신화':'중형',
+      HP:base.HP+5000, SH:base.SH+3000,
+      ATT:base.ATT+60, INT:base.INT+50, TEC:base.TEC+60,
+      DEF:80
+    };
+  }
+  const _myFleet=(G.fleet&&G.fleet.length)?G.fleet:[{tier:'소형'}];
+  const enemies=_myFleet.map((s,i)=>{
+    const _t=s.tier||'소형';
+    const _st=_mythicLegendStats(_t);
+    const isFlagship=(i===0);
+    return {
+      id:`BH_MIRROR_${i+1}`,
+      nm:isFlagship?'🌌 보이드의 거울 (기함) ✦신화':`🌌 보이드 모사함 ${i+1} ✦신화`,
+      tier:'신화',
       isEnemy:true,
       catId:'S10',
       voidBoss:isFlagship,
-      hp:_hp,maxHP:_hp,HP:_hp,
-      sh:_sh,maxSH:_sh,
-      ATT:_att,
-      INT:Math.round(_att*0.8),
-      TEC:Math.round(_att*0.5),
-      DEF:isFlagship?1000:400,
-      armorTier:isFlagship?80:55,
-      shieldTier:isFlagship?80:55,
+      hp:_st.HP,maxHP:_st.HP,HP:_st.HP,
+      sh:_st.SH,maxSH:_st.SH,
+      ATT:_st.ATT,INT:_st.INT,TEC:_st.TEC,
+      DEF:_st.DEF,
+      armorTier:isFlagship?60:45,
+      shieldTier:isFlagship?60:45,
       LOY:0,parts:[],crewIds:[],
-      _isBlackHoleFleet:true
+      _isBlackHoleFleet:true,
+      _mirrorOfTier:_t
     };
   });
   const players=G.fleet.map(s=>{
@@ -16173,6 +16182,7 @@ function startBlackHoleFleetCombat(){
   });
   combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,
                isBoss:false,isVoidBoss:false,_isBlackHoleFinal:true,
+               _tacticsDisabled:true,  // 우리 전술(일점사·학익진·시간차 등) 사용 불가
                _rndSeed:Date.now()%9999,_entranceT:1,_entranceDone:true,
                _planetId:G.currentPlanet};
   renderCombatView(document.getElementById('hub-body'));
@@ -16186,8 +16196,9 @@ function startBlackHoleFleetCombat(){
     initCombatCanvas();
     const t=document.getElementById('cb-title');
     if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
-    addCombatLog('🌌 블랙홀 너머에서 보이드 함대가 모습을 드러낸다. 마지막 시험이다.','err');
-    try{baekgu('블랙홀 너머에서 함대가 나타났어. 살아 돌아갈 길은 우리가 만드는 거야.');}catch(e){}
+    addCombatLog('🌌 블랙홀 너머에서 우리 함대를 그대로 본뜬 신화급 미러 함대가 나타난다 — 보이드의 마지막 시험.','err');
+    addCombatLog('⚠️ 이 차원에서는 우리 전술(일점사·학익진 등)이 봉인된다. 순수한 함대 전투력으로 돌파!','err');
+    try{baekgu('적이 우리 함대를 거울처럼 따라했어! 게다가 전술도 안 통해. 정공법으로 가자.');}catch(e){}
     setTimeout(runCombatTurn,800);
   });
 }
