@@ -10482,6 +10482,13 @@ function startAsteroidBeltMinigame(destPid){
   const flagship=G.fleet&&G.fleet[0];
   const flagStat=flagship?getShipStats(flagship):{HP:1000,maxSH:300,ATT:30};
   const shipSrc=flagship?shipImgSrc(flagship):'img/ships/S01.png';
+  // 함선 크기 비율 — 소형=1 / 중형=3 / 대형=5 (사용자 명세)
+  function _sizeForTier(tier){
+    if(tier==='중형')return 90;
+    if(tier==='대형'||tier==='전설기함'||tier==='신화')return 150;
+    return 30;  // 소형 또는 기타
+  }
+  const flagSize=flagship?_sizeForTier(flagship.tier):30;
   // 무기 등급 판정 — 기함 장착 레이저 파츠의 rarity로 분류
   let weaponTier='normal';  // normal (영웅 이하) / legend (전설·세트) / mythic (신화)
   if(flagship&&flagship.parts){
@@ -10518,7 +10525,7 @@ function startAsteroidBeltMinigame(destPid){
 
   // 게임 상태
   const state={
-    ship:{x:120, y:H/2, vx:0, vy:0, w:80, h:80, hp:flagStat.HP, maxHP:flagStat.HP, sh:flagStat.maxSH, maxSH:flagStat.maxSH, att:flagStat.ATT||30, hitFlash:0},
+    ship:{x:120, y:H/2, vx:0, vy:0, w:flagSize, h:flagSize, hp:flagStat.HP, maxHP:flagStat.HP, sh:flagStat.maxSH, maxSH:flagStat.maxSH, att:flagStat.ATT||30, hitFlash:0},
     asteroids:[],
     enemies:[],
     pBullets:[],   // 아군 레이저
@@ -10589,9 +10596,10 @@ function startAsteroidBeltMinigame(destPid){
   function _spawnAsteroid(){
     const roll=Math.random();
     let sz, r, hp;
-    if(roll<0.55){sz='S';r=14+Math.random()*8;hp=1;}
-    else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=2;}
-    else {sz='L';r=34+Math.random()*14;hp=4;}
+    // 소행성 HP 2× (사용자 명세) — 크기는 그대로 유지
+    if(roll<0.55){sz='S';r=14+Math.random()*8;hp=2;}
+    else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=4;}
+    else {sz='L';r=34+Math.random()*14;hp=8;}
     const elapsed=(Date.now()-state.startMs)/1000;
     // 소행성 속도 ½ (사용자 요청)
     const speed=(2+Math.random()*1.2+Math.min(2,elapsed/8))*0.5;
@@ -10604,9 +10612,10 @@ function startAsteroidBeltMinigame(destPid){
   function _spawnEnemy(){
     const roll=Math.random();
     let sz, w, h, hp, fireRate, dmg;
-    if(roll<0.5){sz='S';w=50;h=50;hp=3;fireRate=80;dmg=8;}
-    else if(roll<0.85){sz='M';w=70;h=70;hp=5;fireRate=60;dmg=14;}
-    else {sz='L';w=100;h=100;hp=10;fireRate=45;dmg=22;}
+    // 크기 비율 1:3:5 (소형 30, 중형 90, 대형 150) + HP 2× (사용자 명세)
+    if(roll<0.5){sz='S';w=30;h=30;hp=6;fireRate=80;dmg=8;}
+    else if(roll<0.85){sz='M';w=90;h=90;hp=10;fireRate=60;dmg=14;}
+    else {sz='L';w=150;h=150;hp=20;fireRate=45;dmg=22;}
     state.enemies.push({
       x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
       // 적 함선 속도 ½ (사용자 요청)
