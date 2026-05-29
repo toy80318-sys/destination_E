@@ -4997,7 +4997,7 @@ function renderShipTab(body){
             var canBuyFinal=canBuy&&!lvLock;
             var cardBdr=s.tier==='신화'?'rgba(204,102,255,.5)':s.tier==='전설기함'?'rgba(212,175,55,.5)':s.tier==='대형'?'rgba(212,175,55,.3)':'var(--bdr)';
             var cardBg=s.tier==='신화'?'rgba(139,0,255,.05)':s.tier==='전설기함'?'rgba(212,175,55,.04)':'var(--card)';
-            var cargoCnt=s.tier==='소형'?4:s.tier==='중형'?8:s.tier==='대형'?12:s.tier==='전설기함'?16:20;
+            var cargoCnt=(typeof s.cargoStart==='number')?s.cargoStart:(s.tier==='소형'?4:s.tier==='중형'?8:s.tier==='대형'?12:s.tier==='전설기함'?16:20);
             return '<div style="background:'+cardBg+';border:1px solid '+cardBdr+';border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch'+(farLocked?';filter:brightness(.35) grayscale(.6);opacity:.7':'')+'">'+
               // ── 왼쪽: 정보 ──
               '<div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">'+
@@ -8140,28 +8140,27 @@ function doGacha(n,useCr,crCost,minRarity){
   // 🎉 8인의 전설 영웅 등장 시 — 가챠 결과 카드 표시 후 영입 모달 순차 호출
   const _heroRolls=results.filter(r=>r._heroRoll).map(r=>r._heroRoll);
   if(_heroRolls.length>0){
-    try{
-      AudioMgr.playSfx('gacha_pull',{vol:1.0,cooldown:50});
-      setTimeout(()=>{try{AudioMgr.playSfx('notify',{vol:0.9,cooldown:60});}catch(e){}},250);
-    }catch(e){}
+    try{_fireFireworks();}catch(e){}  // 전설 영웅 등장 — 폭죽 + 효과음 (사용자 요청)
     // 각 영웅마다 1초 간격으로 모달 호출 (수동 영입 결정)
     _heroRolls.forEach((hid,i)=>{
       setTimeout(()=>{try{showHeroRecruit(hid);}catch(e){console.error(e);}},900+i*500);
     });
     notify(`⭐ 전설 영웅 ${_heroRolls.length}명 등장!`,'gold');
   }
-  // 🎉 영웅/전설/신화 크루 등장 시 축하 효과음 + 팝업
-  const rareResults=results.filter(r=>!r._rejected&&!r._heroRoll&&(r.rarity==='L'||r.rarity==='H'||r.rarity==='S'));
-  if(rareResults.length>0){
-    // 효과음: 전설은 더 강조
-    try{
-      const hasLegend=rareResults.some(r=>r.rarity==='L'||r.rarity==='S');
-      AudioMgr.playSfx(hasLegend?'gacha_pull':'notify',{vol:hasLegend?1.0:0.85,cooldown:50});
-      setTimeout(()=>{try{AudioMgr.playSfx('notify',{vol:0.9,cooldown:60});}catch(e){}},200);
-    }catch(e){}
+  // 🎉 영웅/전설 크루 등장 처리 (사용자 요청)
+  //  · 영웅(H): 팝업 없이 알림(토스트)만 — 연속 구매가 끊기지 않도록
+  //  · 전설(L)·스토리(S): 폭죽 연출 + 획득 리포트로 강조
+  const heroResults=results.filter(r=>!r._rejected&&!r._heroRoll&&r.rarity==='H');
+  const legendResults=results.filter(r=>!r._rejected&&!r._heroRoll&&(r.rarity==='L'||r.rarity==='S'));
+  if(heroResults.length>0){
+    try{AudioMgr.playSfx('notify',{vol:0.85,cooldown:50});}catch(e){}
+    notify(`⭐ 영웅급 크루 ${heroResults.length}명 영입! (${heroResults.map(c=>c.nm).join(', ')})`,'gold');
+  }
+  if(legendResults.length>0){
+    try{_fireFireworks();}catch(e){}  // 전설 등장 — 폭죽 + 효과음
     setTimeout(()=>{
       const _crewBonusLbl={Pilot:{att:8,int2:2,tec:4},Eng:{att:2,int2:5,tec:8},Merch:{att:3,int2:7,tec:4},Sniper:{att:10,int2:0,tec:3},Mage:{att:0,int2:10,tec:3},Engineer:{att:1,int2:3,tec:10},Commander:{att:5,int2:5,tec:5}};
-      const items=rareResults.map(c=>{
+      const items=legendResults.map(c=>{
         const cl=c.cl||'Merch';
         const mult=RARITY_MULT[c.rarity]||1;
         const cb=_crewBonusLbl[cl]||{att:3,int2:3,tec:3};
@@ -8170,14 +8169,13 @@ function doGacha(n,useCr,crCost,minRarity){
         const imgSrc='img/crew/'+(c.cl||'Merch')+'_'+gen+'.png';
         return{ic:c.ic||'🧑',img:imgSrc,nm:c.nm,type:`${cl} · LOY ${c.LOY||80}`,rarity:c.rarity,stats:bonusTxt,desc:c.desc||c.sk||''};
       });
-      const hasL=rareResults.some(r=>r.rarity==='L'||r.rarity==='S');
       showAcquisitionReport({
-        title:hasL?'⭐ 전설급 크루 등장!':'⭐ 영웅급 크루 영입!',
+        title:'⭐ 전설급 크루 등장!',
         subtitle:'주점 가챠 결과',
         items,
-        color:hasL?'var(--gold)':'var(--purple)',
-        sfx:null,  // 이미 위에서 재생함
-        congrats:hasL?'대박! 전설급 동료가 합류!':'영웅급 동료가 합류!'
+        color:'var(--gold)',
+        sfx:null,
+        congrats:'대박! 전설급 동료가 합류!'
       });
     },600);
   }
