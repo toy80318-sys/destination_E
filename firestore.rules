@@ -28,6 +28,22 @@ service cloud.firestore {
         && request.auth.token.email == 'toy80318@gmail.com';
     }
 
+    // 🏆 명예의 전당 (글로벌 리더보드) — 누구나 조회, 본인 uid 로만 작성
+    //  · ACT4(지구 해방)·ACT5(보이드의 심연) 클리어 시 자동 업로드
+    //  · 조작/삭제는 관리자만 가능
+    match /hall_of_fame/{docId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.act is int
+        && request.resource.data.act >= 4
+        && request.resource.data.act <= 5
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 20;
+      allow update, delete: if request.auth != null
+        && request.auth.token.email == 'toy80318@gmail.com';
+    }
+
     // 그 외 모든 경로는 차단
     match /{document=**} {
       allow read, write: if false;

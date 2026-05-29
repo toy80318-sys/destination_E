@@ -6,72 +6,6 @@
 /*  · touch-action:pan-x pan-y = 모바일 줌(핀치) 차단, 스크롤은 허용                  */
 html{background:#000;width:100vw;height:100vh;height:100dvh;overflow:hidden;overscroll-behavior:none}
 body{background:var(--bg);color:var(--txt);font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;overflow:hidden;width:100vw;height:100vh;height:100dvh;user-select:none;display:flex;align-items:center;justify-content:center;overscroll-behavior:none;touch-action:pan-x pan-y;-webkit-tap-highlight-color:transparent}
-/* ════════════════════════════════════════════════════════════════
-   📱 모바일 최적화 v2 — 사용자 요청 "2배" 반영
-   기준: 스테이지가 ~0.5 스케일로 축소되므로 베이스 사이즈를 2배로 키워
-        실 화면상 Material 48dp / Apple HIG 44pt 이상 보장
-   참고: Star Traders / Pixel Starships / Slay the Spire / Out There /
-         FTL / Stellaris Nexus / Galaxy on Fire / Dead Cells
-   ════════════════════════════════════════════════════════════════ */
-@media (max-width:768px),(pointer:coarse){
-  /* ───── 모바일 폰트 — 사용자 추가 ×2 요청 ────────────────────
-     · 직전 32px 기준 → 64px (스테이지 ~0.5 스케일 시 화면 ~32px)
-     · 버튼 사이즈도 폰트에 맞춰 비례 확대
-     · 폴더 펼침은 큰 sub 버튼 4개 수용 위해 800px로 확장
-     ───────────────────────────────────────────────────────────── */
-  .btn{padding:26px 52px;font-size:64px;min-height:140px;border-width:3px;font-weight:bold;border-radius:12px;line-height:1.2;letter-spacing:0}
-  .btn-sm{padding:20px 38px;font-size:52px;min-height:114px;border-width:2px;font-weight:bold;border-radius:10px;line-height:1.2}
-  .btn-lg{padding:32px 72px;font-size:80px;min-height:170px;font-weight:bold;border-width:4px;border-radius:16px;line-height:1.2}
-  .inp{font-size:60px;padding:26px 30px;min-height:124px;border-width:3px;border-radius:10px}
-  /* — 사이드바 (좌측 메뉴) — 사용자 추가 ×1.5 요청 (480→720) — */
-  .hub-side{width:720px}
-  .hn-btn,.hn-folder-btn{padding:26px 22px;font-size:64px;min-height:130px;gap:18px;font-weight:bold;border-left-width:5px;line-height:1.2}
-  .hn-sub{padding:20px 56px!important;font-size:52px!important;min-height:110px;font-weight:bold;line-height:1.2}
-  .hn-ic{font-size:72px!important;width:78px!important;flex-shrink:0}
-  .folder-arrow{font-size:30px}
-  /* 폴더 펼침: 모바일 sub 버튼 ~110px × 최대 4개 + 여유 → 800px 보장 */
-  .hn-folder-items.open{max-height:800px}
-  .hs-profile{padding:22px 18px;gap:18px}
-  .hs-av{width:84px;height:84px;font-size:54px;border-width:3px}
-  .hs-co{font-size:52px;font-weight:bold;line-height:1.2}
-  .hs-pl{font-size:40px;margin-top:5px}
-  .hs-res{padding:18px 16px;gap:14px}
-  .hs-ri{font-size:46px;font-weight:bold;gap:7px}
-  .hn-sec{font-size:40px;padding:16px 22px 7px;letter-spacing:0;font-weight:bold}
-  /* — 상단 HUD — */
-  #hud{height:120px!important;padding:0 24px}
-  #h-co{font-size:60px!important;font-weight:bold}
-  #h-pl{font-size:48px!important}
-  #h-resource-bar{gap:28px}
-  #h-resource-bar > span{font-size:56px!important;font-weight:bold}
-  #h-rep-rank{font-size:32px!important;padding:3px 12px!important}
-  #h-status-bar > div{font-size:48px!important;font-weight:bold}
-  #h-resume-combat{font-size:36px!important;padding:11px 24px!important;font-weight:bold;min-height:68px}
-  #s-hub{padding-top:120px!important}
-  /* — 모달 — */
-  .modal{max-width:96%;width:96%;padding:32px 26px;max-height:90vh}
-  .modal-t{font-size:64px;margin-bottom:26px;padding-bottom:16px;font-weight:bold;line-height:1.2}
-  /* — 정보 칩 — */
-  .ic{padding:18px 28px;border-radius:10px;border-width:2px}
-  .icl{font-size:38px;font-weight:bold}
-  .icv{font-size:56px;font-weight:bold}
-  /* — 알림 — */
-  #notif{top:138px;right:18px;max-width:760px}
-  .ni{font-size:46px;padding:24px 28px;border-width:2px;font-weight:bold;border-radius:12px;line-height:1.3}
-  /* — 백구 하단바 헤더 — */
-  #bk-header-bar{height:84px;padding:16px 24px}
-  #bk-header-bar > div span{font-size:46px!important;font-weight:bold}
-  #bk-msgs{font-size:46px;padding:14px 22px;line-height:1.5}
-  .bk-msg{font-size:50px;line-height:1.5;padding:8px 0}
-  #bk-ask-input{font-size:50px!important;padding:20px 24px!important;min-height:90px}
-  #bk-ask-area button{font-size:46px!important;padding:20px 32px!important;font-weight:bold;min-height:90px}
-  /* — 함대 카드 — */
-  #bk-fleet{gap:16px;padding:16px 22px}
-  /* — 허브 본문 — */
-  .hub-t{font-size:62px;margin-bottom:26px;padding-bottom:16px;font-weight:bold;line-height:1.2}
-  .hub-scroll{padding:30px 36px}
-  .hub-body{font-size:42px;line-height:1.5}
-}
 /* 게임 무대: 1536x864 기본 사이즈, 화면 크기/비율에 따라 비례 축소·확대 (transform:scale) */
 #game-stage{position:relative;width:1536px;height:864px;flex-shrink:0;transform-origin:center center;transform:scale(var(--gs,1));background:var(--bg);overflow:hidden}
 .scr{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:1}.scr.on{display:flex}
@@ -96,9 +30,10 @@ body.combat-mode #notif{top:138px;max-width:260px}
 @keyframes sli{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 #bkdialog{height:210px;background:rgba(5,12,26,.97);border:1px solid rgba(0,243,255,.3);border-top:2px solid rgba(0,243,255,.4);border-top-left-radius:10px;border-top-right-radius:10px;display:none;flex-direction:column;overflow:hidden;z-index:450;box-shadow:0 -4px 24px rgba(0,0,0,.6);flex-shrink:0;width:100%;transition:height .25s ease}
 #bkdialog.bk-open{display:flex}
-/* 접힘: 헤더만 보이고 본문 숨김. 배경(hub-planet-bg)은 z-index:0 으로 hub 전체를 덮으므로 비어보이지 않음 */
-#bkdialog.bk-collapsed{height:32px}
+/* 접힘: 헤더만 남기고 본문 숨김. 패널 자체는 투명화하여 행성 배경 이미지가 헤더 뒤로 그대로 보이도록 (잘림 방지) */
+#bkdialog.bk-collapsed{height:32px;background:transparent;border:none;box-shadow:none}
 #bkdialog.bk-collapsed #bk-content{display:none}
+#bkdialog.bk-collapsed #bk-header-bar{background:rgba(5,12,26,.55);border:1px solid rgba(0,243,255,.35);border-radius:8px;backdrop-filter:blur(3px)}
 #bkdialog.bk-collapsed #bk-collapse-arrow{transform:rotate(180deg)}
 #bkdialog.bk-floating{position:fixed;bottom:auto;right:auto;border-radius:10px;transition:none;width:auto}
 /* 전체 폭 헤더 — 접기/펼치기 토글 영역 */
@@ -123,11 +58,18 @@ body.combat-mode #notif{top:138px;max-width:260px}
         하단 버튼이 잘리거나 가려지는 문제. 본문만 스크롤되도록 분리. */
 .modal{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:24px;max-width:520px;width:92%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
 .modal.modal-wide{max-width:624px}
-.modal.modal-report{max-width:720px;padding:14px 16px;max-height:88vh}
+/* 보스 인트로/엔딩 — 긴 대사 줄바꿈 어색함 완화, wide 대비 1.1× (624→686) */
+.modal.modal-bossfight{max-width:686px}
+/* 사용자 요청: 전투 승리 보고 가로 폭 ×0.8 (720→576) */
+.modal.modal-report{max-width:576px;padding:14px 16px;max-height:88vh}
+/* 사용자 요청: 모든 팝업 확인/액션 버튼 1.5배 크기 — 손가락 터치 친화 */
+#modal-btns .btn{font-size:21px;padding:9px 24px;min-height:42px;letter-spacing:1.5px;border-radius:6px}
+#modal-btns .btn-sm{font-size:17px;padding:7px 18px;min-height:34px}
 .modal.modal-report .modal-t{font-size:16px;margin-bottom:8px;padding-bottom:4px}
 .modal-t{color:var(--yellow);font-size:19px;font-weight:bold;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--bdr);flex-shrink:0}
 #modal-b{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 #modal-btns{flex-shrink:0;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);background:var(--panel);flex-wrap:wrap}
+#modal-btns:empty{display:none}
 /* HUB */
 #s-hub{padding-top:44px;padding-bottom:0;flex-direction:row;align-items:stretch;justify-content:flex-start;overflow:hidden}
 #hub-planet-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.18;pointer-events:none;transition:opacity .4s ease;z-index:0}
@@ -187,9 +129,9 @@ body.combat-mode #notif{top:138px;max-width:260px}
 /* 결과 패널 — 배경 위에 올라옴 */
 .gc-result{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;overflow:hidden}
 .gc-result-hdr{padding:12px 18px 10px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;background:rgba(5,10,22,.7);backdrop-filter:blur(4px)}
-.gc-result-body{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-content:flex-start;justify-content:flex-start}
+.gc-result-body{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-content:flex-start;justify-content:center}
 .gc-empty{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:10px;color:var(--dim);width:100%}
-.gc-char{width:88px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 6px;border-radius:8px;background:rgba(8,16,36,.82);border:1px solid var(--bdr);animation:bkIn .4s ease;backdrop-filter:blur(2px);text-align:center;position:relative}
+.gc-char{width:176px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border-radius:8px;background:rgba(8,16,36,.82);border:1px solid var(--bdr);animation:bkIn .4s ease;backdrop-filter:blur(2px);text-align:center;position:relative}
 .gc-char.rL{border-color:var(--gold);background:rgba(30,22,4,.85);box-shadow:0 0 18px rgba(212,175,55,.25)}
 .gc-char.rH{border-color:var(--purple);background:rgba(20,4,36,.85);box-shadow:0 0 14px rgba(139,0,255,.2)}
 .gc-char.rR{border-color:var(--blue);background:rgba(4,16,36,.82)}
@@ -212,3 +154,89 @@ body.combat-mode #notif{top:138px;max-width:260px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes _voidPulse{0%,100%{box-shadow:0 0 12px rgba(204,102,255,.35),inset 0 0 10px rgba(204,102,255,.06);border-color:#cc66ff}50%{box-shadow:0 0 22px rgba(204,102,255,.7),inset 0 0 16px rgba(204,102,255,.14);border-color:#dd88ff}}
 #de-tooltip{position:fixed;z-index:99999;background:rgba(4,12,28,.97);border:1px solid rgba(0,243,255,.5);border-radius:9px;padding:11px 15px;max-width:300px;font-size:12px;line-height:1.75;color:rgba(220,235,255,.95);pointer-events:none;display:none;box-shadow:0 0 28px rgba(0,243,255,.18),0 4px 20px rgba(0,0,0,.7);font-family:'Malgun Gothic','맑은 고딕',sans-serif;word-break:keep-all;white-space:pre-line}
+/* ════════════════════════════════════════════════════════════════
+   📱 모바일 최적화 v3 — PC 비율 보존 + 유기적 스케일
+   ── 설계 원칙 ─────────────────────────────────────────────
+   1. game-stage(1536×864)는 모바일 회전 시 자연 contain-fit 으로
+      스케일 ≈ 0.40~0.55 사이가 됨 (390×844 → ~0.45)
+   2. CSS 베이스 사이즈는 PC의 ≈2× 로 잡아 그 스케일을 거치면
+      화면상 PC 와 비슷한 크기로 보이게 함 (font 32 × 0.45 ≈ 14px ≒ PC 15px on-screen)
+   3. 직전 ×4 버전(font 64 등) 대비 정확히 절반 — 사용자 요청 "0.5배 작게"
+   4. PC의 padding/font 비율을 그대로 따라 버튼이 늘어지거나 정사각 박스화 되지 않게
+   5. ※ 파일 맨 끝에 위치 — 같은 specificity의 PC 기본 규칙이 뒤에 와 mobile 을
+        덮어쓰던 버그 수정 (이 블록을 항상 cascade 마지막에 두어야 함)
+   ──────────────────────────────────────────────────────────── */
+@media (max-width:768px),(pointer:coarse){
+  /* ───── 버튼 (사용자 요청 v4) ──────────────────────────────────
+     · 세로(상하 padding/min-height): 직전 대비 50% 축소 — 손가락 누름 가능 최소치
+     · 가로(좌우 padding): 직전 대비 1.3× 확대 — 가독성/터치 영역 유지
+     · 폰트는 그대로 (가독성 우선)
+     ─ 기본 픽셀 ─ .btn 10×59 / .btn-sm 7×34 / .btn-lg 13×104
+     ─ min-height ─ .btn 37 / .btn-sm 30 / .btn-lg 46
+     ────────────────────────────────────────────────────────── */
+  /* ───── 폰트 평준화 v5 — 평균 ≈22~24px 대역에 모이도록 ─────
+     ─ 이전: 25~40px 산발 (특히 .btn-lg 40, .hn-ic 34 등 비정상적으로 큼)
+     ─ 현재: 18~28px 범위로 normalize, 가장 큰 .btn-lg 도 28px 까지만
+     ─ 버튼 padding: 세로 -50%, 가로 ×1.3 정책 유지 (사용자 요청)
+     ──────────────────────────────────────────────────────── */
+  .btn{padding:8px 51px;font-size:24px;min-height:32px;border-width:2px;font-weight:bold;border-radius:8px;line-height:1.2;letter-spacing:0}
+  .btn-sm{padding:6px 29px;font-size:20px;min-height:26px;border-width:2px;font-weight:bold;border-radius:6px;line-height:1.2}
+  .btn-lg{padding:10px 73px;font-size:28px;min-height:38px;font-weight:bold;border-width:3px;border-radius:10px;line-height:1.2}
+  .inp{font-size:22px;padding:7px 26px;min-height:28px;border-width:2px;border-radius:6px}
+  /* — 사이드바 — 직전 384px × 70% ≈ 269px (사용자 요청 폭 축소) */
+  .hub-side{width:269px}
+  .hn-btn,.hn-folder-btn{padding:6px 26px;font-size:22px;min-height:28px;gap:12px;font-weight:bold;border-left-width:4px;line-height:1.2}
+  .hn-sub{padding:5px 48px!important;font-size:18px!important;min-height:22px;font-weight:bold;line-height:1.2}
+  .hn-ic{font-size:24px!important;width:30px!important;flex-shrink:0}
+  .folder-arrow{font-size:14px}
+  /* 폴더 펼침: sub 버튼 ~24px × 최대 5개 + 여유 → 160px */
+  .hn-folder-items.open{max-height:160px}
+  .hs-profile{padding:12px 14px;gap:10px}
+  .hs-av{width:44px;height:44px;font-size:26px;border-width:2px}
+  .hs-co{font-size:20px;font-weight:bold;line-height:1.2}
+  .hs-pl{font-size:17px;margin-top:3px}
+  .hs-res{padding:8px 10px;gap:8px}
+  .hs-ri{font-size:18px;font-weight:bold;gap:5px}
+  .hn-sec{font-size:16px;padding:8px 14px 4px;letter-spacing:0;font-weight:bold}
+  /* — 상단 HUD — 폰트만 직전 대비 50% (사용자 요청) — 회사·행성·VE·VC·명성 라인 전체 */
+  #hud{height:48px!important;padding:0 16px}
+  #h-co{font-size:15px!important;font-weight:bold}
+  #h-pl{font-size:12px!important}
+  #h-resource-bar{gap:10px}
+  #h-resource-bar > span{font-size:14px!important;font-weight:bold}
+  #h-rep-rank{font-size:9px!important;padding:1px 5px!important}
+  #h-status-bar > div{font-size:12px!important;font-weight:bold}
+  #h-resume-combat{font-size:10px!important;padding:4px 11px!important;font-weight:bold;min-height:22px}
+  #s-hub{padding-top:48px!important}
+  /* — 모달 — 폭은 화면 비율, 본문/버튼 분리 스크롤 유지 */
+  .modal{max-width:96%;width:96%;padding:16px 14px;max-height:88vh}
+  .modal-t{font-size:24px;margin-bottom:10px;padding-bottom:7px;font-weight:bold;line-height:1.2;order:0}
+  /* 모바일은 모달 하단이 브라우저 툴바·하단바에 잘려 안 보이므로, 확인/취소 버튼을
+     제목 바로 아래(우측 상단)로 올려 큰 버튼으로 고정 — 본문은 그 아래에서 스크롤 */
+  #modal-btns{order:1;margin:0 0 8px!important;padding:0 0 10px;border-top:none;border-bottom:1px solid rgba(255,255,255,.08);justify-content:flex-end;flex-wrap:wrap;gap:10px}
+  #modal-b{order:2;padding-top:2px}
+  #modal-btns .btn,#modal-btns .btn-sm{font-size:20px;padding:13px 26px;min-height:56px;letter-spacing:1px}
+  /* — 정보 칩 — */
+  .ic{padding:7px 13px;border-radius:6px;border-width:1px}
+  .icl{font-size:14px;font-weight:bold}
+  .icv{font-size:20px;font-weight:bold}
+  /* — 알림 — */
+  #notif{top:56px;right:10px;max-width:380px}
+  .ni{font-size:18px;padding:10px 14px;border-width:2px;font-weight:bold;border-radius:8px;line-height:1.3}
+  /* — 백구 하단바 헤더 — 폰트 50% 축소 (사용자 요청 "백구AI·온라인·함대(1척)") */
+  #bk-header-bar{height:30px;padding:5px 14px}
+  #bk-header-bar > div span{font-size:12px!important;font-weight:bold}
+  #bk-msgs{font-size:18px;padding:7px 11px;line-height:1.5}
+  .bk-msg{font-size:18px;line-height:1.5;padding:3px 0}
+  #bk-ask-input{font-size:18px!important;padding:8px 12px!important;min-height:36px}
+  #bk-ask-area button{font-size:18px!important;padding:8px 14px!important;font-weight:bold;min-height:36px}
+  /* — 함대 카드 — */
+  #bk-fleet{gap:7px;padding:7px 10px}
+  /* — 허브 본문 — */
+  .hub-t{font-size:24px;margin-bottom:12px;padding-bottom:7px;font-weight:bold;line-height:1.2}
+  .hub-scroll{padding:14px 18px}
+  .hub-body{font-size:18px;line-height:1.5}
+  /* — 백구 다이얼로그 본체 — 16:9 무대 안에서 안전한 높이 (잘림 방지) */
+  #bkdialog{height:180px}
+  #bkdialog.bk-collapsed{height:30px}
+}

@@ -10,3 +10,5 @@ img_backup/
 Doc/
 # 임시 업로드
 en.png
+# 로컬 UI 검증 스크린샷 (mobile-audit.js / mobile-screenshot.js 출력)
+.screens/

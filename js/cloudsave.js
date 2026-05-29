@@ -372,9 +372,74 @@
     return{ok:true,email:r.email,uploaded};
   }
 
+  // ══════════════════════════════════════════════════════════════════
+  // 🏆 명예의 전당 (글로벌 리더보드) — ACT4/ACT5 클리어 기록 공유
+  //   · 컬렉션: hall_of_fame/{auto-id} — 누구나 조회 가능, 본인만 작성
+  //   · 중복 방지: gid+act 조합 키, 동일 게임 1회만 업로드
+  // ══════════════════════════════════════════════════════════════════
+  async function uploadHallOfFame(entry){
+    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
+    if(!_state.db)return{error:'Firebase 미초기화'};
+    if(!_state.user){
+      try{await _waitForAuth(10000);}catch(e){return{error:'auth_pending'};}
+    }
+    if(!entry||typeof entry.act!=='number')return{error:'invalid_entry'};
+    try{
+      const doc={
+        act:entry.act,
+        label:String(entry.label||'').slice(0,80),
+        name:String(entry.name||'사령관').slice(0,20),
+        company:String(entry.company||'').slice(0,30),
+        gender:String(entry.gender||'').slice(0,8),
+        turn:Number(entry.turn||0),
+        credits:Number(entry.credits||0),
+        reputation:Number(entry.reputation||0),
+        heroes:Number(entry.heroes||0),
+        difficulty:String(entry.difficulty||'normal').slice(0,12),
+        playTime:String(entry.playTime||'').slice(0,30),
+        playedAt:Number(entry.playedAt||Date.now()),
+        date:String(entry.date||'').slice(0,16),
+        // 중복 방지 키 — uid+gid+act (같은 게임에서 같은 액트 1회만)
+        dedupKey:_state.user.uid+'_'+(entry.gid||0)+'_'+entry.act,
+        uid:_state.user.uid,
+        anon:!!_state.user.isAnonymous,
+        ts:firebase.firestore.FieldValue.serverTimestamp(),
+        tsClient:Date.now()
+      };
+      // dedupKey 로 기존 기록 확인 — 있으면 스킵 (게임당 1회 보장)
+      try{
+        const existing=await _state.db.collection('hall_of_fame').where('dedupKey','==',doc.dedupKey).limit(1).get();
+        if(!existing.empty){_log('HoF 이미 등록됨',doc.dedupKey);return{ok:true,skipped:true};}
+      }catch(e){/* 인덱스 없을 수도 — 무시하고 업로드 진행 */}
+      await _state.db.collection('hall_of_fame').add(doc);
+      _log('HoF 업로드 완료 act='+entry.act);
+      return{ok:true};
+    }catch(e){_log('HoF 업로드 실패',e.code,e.message);return{error:(e.code||'')+': '+e.message};}
+  }
+  async function listHallOfFame(opts){
+    opts=opts||{};
+    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
+    if(!_state.db)return{error:'Firebase 미초기화'};
+    if(!_state.user){
+      try{await _waitForAuth(10000);}catch(e){return{error:'auth_pending'};}
+    }
+    try{
+      // 최근순 정렬, 상위 N (기본 100)
+      let q=_state.db.collection('hall_of_fame');
+      if(opts.act){q=q.where('act','==',opts.act);}
+      q=q.orderBy('tsClient','desc').limit(opts.limit||100);
+      const snap=await q.get();
+      const items=[];
+      snap.forEach(d=>{const v=d.data();items.push({id:d.id,...v});});
+      return{items};
+    }catch(e){_log('HoF 조회 실패',e.message);return{error:e.message};}
+  }
+
   // CloudSave 객체에 이메일 함수 노출
   window.CloudSave={init,upload,pullAll,pushAll,signInGoogle,signOut,onAuthChange,getUser,isReady,sendFeedback,listFeedback,diag,
     // 이메일 기반 API
     setEmail,getEmail,clearEmail,loadByEmail,registerEmail,uploadByEmail,
+    // 글로벌 명예의 전당
+    uploadHallOfFame,listHallOfFame,
     _normalizeEmail,_validEmail};
 })();

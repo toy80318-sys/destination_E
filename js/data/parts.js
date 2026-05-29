@@ -44,6 +44,8 @@ const PARTS=[
   {id:'MS01',cat:'shield',nm:'크로노스 방벽 ✦신화',tier:20,INT:280,maxSH:8000,shieldRegen:0.15,price:0,desc:'신화급 실드. 피격 반사 20% + 매 턴 maxSH 15% 자가 복구. 상점 미판매.',rarity:'mythic',quest:true},
   {id:'MA01',cat:'armor',nm:'아다만 선체 ✦신화',tier:20,HP:12000,DEF:120,price:0,desc:'신화급 장갑. 치명타 피해 50% 감소. 상점 미판매.',rarity:'mythic',quest:true},
   {id:'ME01',cat:'engine',nm:'타키온 드라이브 ✦신화',tier:20,TEC:320,price:0,desc:'신화급 엔진. 이동 후 ATT+50 (1턴). 상점 미판매.',rarity:'mythic',quest:true},
+  // 보이드의 창 — 최강 신화급 미사일. 30초마다 1회 적 함선 1대 즉시 파괴
+  {id:'MMV01',cat:'weapon',nm:'보이드의 창 ✦신화',tier:21,wtype:'missile',ATT:500,price:0,rarity:'mythic',quest:true,voidSpear:true,voidSpearCdMs:30000,desc:'[신화급 최강 미사일] 보이드 차원의 에너지를 응축한 거대 창. 에너지 충전 후 적 함선 1대를 무조건 즉시 파괴 (재발사 쿨다운 30초). DEF·SHD 완전 관통.'},
   // ── 세트 아이템 (퀘스트 보상 전용 — 2종 보유시 세트 보너스) ───────
   {id:'SW01',cat:'weapon',nm:'거북선 함포 ◈세트',tier:16,wtype:'laser',ATT:180,price:0,desc:'이순신 세트(2종). 보유시 전투 ATT+80 추가.',rarity:'set',setId:'sunsin',quest:true},
   {id:'SA01',cat:'armor',nm:'거북선 갑옷 ◈세트',tier:16,HP:5000,DEF:90,price:0,desc:'이순신 세트(2종). 보유시 전투 ATT+80 추가.',rarity:'set',setId:'sunsin',quest:true},

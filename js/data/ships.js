@@ -23,7 +23,7 @@ const SHIP_CATALOG=[
   {id:'M10',nm:'어벤저',tier:'중형',price:130000,maxHP:6000,maxSH:2500,ATT:58,INT:52,TEC:48,LOY:90,ic:'🚀',desc:'영웅 스탯 +15%'},
   // ── 대형 순양함 H01~H12 (엔드게임 보스 격돌) ─────────────────────
   {id:'H01',nm:'크루세이더',tier:'대형',price:260000,maxHP:10000,maxSH:4000,ATT:72,INT:68,TEC:58,LOY:85,ic:'🌟',desc:'중장갑 순양함. 탑승 크루 LOY+10'},
-  {id:'H02',nm:'레기온',tier:'대형',price:290000,maxHP:11000,maxSH:5000,ATT:75,INT:62,TEC:55,LOY:84,ic:'🌟',desc:'편대 지원 강화. 아군 회복+15%'},
+  {id:'H02',nm:'레기온',tier:'대형',price:290000,maxHP:11000,maxSH:5000,ATT:75,INT:62,TEC:55,LOY:84,ic:'🌟',desc:'편대 지원형. 매 턴 종료 시 함대 전 함선 HP +1.5%/레기온 (최대 +15%, 10척 보유 시 캡)'},
   {id:'H03',nm:'아이언클래드',tier:'대형',price:320000,maxHP:13000,maxSH:3500,ATT:68,INT:72,TEC:52,LOY:86,ic:'🌟',desc:'극중장갑. 피해 감쇄 +20%'},
   {id:'H04',nm:'드레드노트',tier:'대형',price:480000,maxHP:16000,maxSH:7000,ATT:88,INT:82,TEC:62,LOY:88,ic:'🌟',desc:'무기 4개 이상 시 크리티컬 +15%'},
   {id:'H05',nm:'노바 캐논',tier:'대형',price:380000,maxHP:12000,maxSH:5500,ATT:95,INT:70,TEC:60,LOY:82,ic:'🌟',desc:'원거리 포격 특화. ATT 최고급'},
@@ -42,11 +42,36 @@ const SHIP_CATALOG=[
   {id:'URSA',catalogId:'URSA',nm:'우르사 메이저',tier:'신화',price:0,maxHP:1000000,maxSH:120000,ATT:580,INT:340,TEC:220,LOY:0,ic:'✦',desc:'치크스 친위대 기함. 보스전 격파 후 나포 가능. 신화급 풀셋(MW01·MS01·MA01·ME01) 기본 장착 · 보이드 차원의 거대 함선'},
   // ── 블랙팔콘 — 히든 보스 (보이드의 사자, 신화 최고 등급) ──────────────
   {id:'BLACKFALCON',catalogId:'BLACKFALCON',nm:'🌑 블랙팔콘',tier:'신화',price:0,maxHP:9700000,maxSH:300000,ATT:32000,INT:1200,TEC:560,LOY:0,ic:'✦',desc:'보이드의 사자(使者). 1000년의 침묵을 깨고 나타난 검은 정찰함. 히든 보스 격파 후 나포 가능 — 우르사 메이저의 2배 능력치, 신화 최고 등급.'},
-  // ── 치크스 노획 함선 (행성 경매로 치크스 행성 1개 이상 보유 시에만 입고) ─
-  // 적군 함선 디자인을 노획·역공학 → 아군 전용으로 개조한 시리즈
-  {id:'CHIX_S_BUY',nm:'치크스 정찰기',tier:'소형',price:35000,maxHP:480,maxSH:280,ATT:34,INT:18,TEC:30,LOY:60,ic:'🛸',catalogId:'CHIX_S',desc:'노획된 치크스 정찰기. 이질적 생체회로로 INT 회복 +10%/턴'},
-  {id:'CHIX_M_BUY',nm:'치크스 순양함',tier:'중형',price:160000,maxHP:3600,maxSH:1600,ATT:58,INT:42,TEC:38,LOY:62,ic:'🚀',catalogId:'CHIX_M',desc:'노획된 치크스 중형 순양함. 치크스 함대 상대로 ATT+25%'},
-  {id:'CHIX_L_BUY',nm:'치크스 모선',tier:'대형',price:680000,maxHP:18000,maxSH:8000,ATT:96,INT:88,TEC:72,LOY:65,ic:'🌟',catalogId:'CHIX_L',desc:'노획된 치크스 모선. 전투 시작 시 적 1척 마비(1턴)'},
+  // ── 문명권별 전용 함선 (각 문명 행성에서만 구매 · 클래스 최상위급 성능 / F07 보이드 최강) ─
+  // 이미지: img/ships/F0X_S/M/L.png · 가격은 기존 최고가보다 상회 (영웅급 프리미엄)
+  // ── F01 수퍼비아 (귀족·정치 — INT/LOY 강세, 외교 보너스) ──
+  {id:'F01_S',civ:'F01',nm:'임페리오 호위정',tier:'소형',price:65000,maxHP:540,maxSH:480,ATT:38,INT:36,TEC:36,LOY:95,ic:'🛸',desc:'수퍼비아 황실 친위 정찰기. 명성 획득 +10% · LOY 95 (소형 최상)'},
+  {id:'F01_M',civ:'F01',nm:'노블레스 가디언',tier:'중형',price:280000,maxHP:6800,maxSH:3000,ATT:62,INT:60,TEC:52,LOY:96,ic:'🚀',desc:'수퍼비아 귀족 호위 순양함. 함대 LOY +5 · 행성 세금 -10%'},
+  {id:'F01_L',civ:'F01',nm:'임페리얼 솔라리스',tier:'대형',price:1050000,maxHP:23000,maxSH:10000,ATT:104,INT:108,TEC:82,LOY:98,ic:'🌟',desc:'수퍼비아 황제 친위 기함. 명성 +20% · 외교 협상 우대'},
+  // ── F02 아우레우스 (금융 — 화물·크레딧) ──
+  {id:'F02_S',civ:'F02',nm:'골드 베인',tier:'소형',price:62000,maxHP:520,maxSH:460,ATT:38,INT:32,TEC:38,LOY:88,ic:'🛸',cargoStart:12,desc:'아우레우스 무역 호위기. 화물 12칸 · 거래 수익 +5%'},
+  {id:'F02_M',civ:'F02',nm:'머카타일 갤리언',tier:'중형',price:285000,maxHP:7000,maxSH:2900,ATT:60,INT:58,TEC:52,LOY:92,ic:'🚀',cargoStart:18,desc:'아우레우스 상단 호위 순양함. 화물 18칸 · 무역 수익 +20%'},
+  {id:'F02_L',civ:'F02',nm:'골드 페가서스',tier:'대형',price:1100000,maxHP:22500,maxSH:9500,ATT:102,INT:100,TEC:82,LOY:95,ic:'🌟',desc:'아우레우스 황금 페가서스 기함. 격파 시 크레딧 +30% · 거래 +15%'},
+  // ── F03 메카니카 (기계 — TEC/INT, 자동수리) ──
+  {id:'F03_S',civ:'F03',nm:'코어 드론',tier:'소형',price:68000,maxHP:500,maxSH:520,ATT:36,INT:40,TEC:48,LOY:82,ic:'🛸',desc:'메카니카 자율 정찰 드론. TEC 48 (소형 최상) · 매 턴 INT +5'},
+  {id:'F03_M',civ:'F03',nm:'기어 헤드',tier:'중형',price:295000,maxHP:6800,maxSH:3100,ATT:62,INT:60,TEC:64,LOY:92,ic:'🚀',partsRows:5,desc:'메카니카 산업 중형함. 파츠 슬롯 10개 · TEC 최강 · 자동 수리 1%/턴'},
+  {id:'F03_L',civ:'F03',nm:'옴니코어 프라임',tier:'대형',price:1150000,maxHP:23500,maxSH:9800,ATT:104,INT:118,TEC:100,LOY:94,ic:'🌟',desc:'메카니카 슈퍼AI 기함. INT 118 · TEC 100 · 매 턴 적 1척 TEC -10%'},
+  // ── F04 크리그 (전사 — ATT 최강) ──
+  {id:'F04_S',civ:'F04',nm:'워액스',tier:'소형',price:70000,maxHP:580,maxSH:380,ATT:52,INT:22,TEC:38,LOY:85,ic:'🛸',desc:'크리그 돌격 정찰기. ATT 52 (소형 최강) · 첫 턴 크리티컬 +15%'},
+  {id:'F04_M',civ:'F04',nm:'블러드해머',tier:'중형',price:305000,maxHP:7200,maxSH:2700,ATT:78,INT:50,TEC:56,LOY:93,ic:'🚀',desc:'크리그 전투 순양함. ATT 78 (중형 최강) · 근접 ATT +25%'},
+  {id:'F04_L',civ:'F04',nm:'블레이드 오브 크리그',tier:'대형',price:1200000,maxHP:24000,maxSH:9200,ATT:122,INT:92,TEC:85,LOY:95,ic:'🌟',desc:'크리그 군단 기함. ATT 122 (대형 최강) · 전투 시작 시 적 기함 ATT -15%'},
+  // ── F05 치크스 (해적 — 노획 함선) — 기존 CHIX 라인 → 문명권 최상위 수치로 동급 상향 ──
+  {id:'CHIX_S_BUY',civ:'F05',nm:'치크스 정찰기',tier:'소형',price:65000,maxHP:560,maxSH:420,ATT:42,INT:30,TEC:38,LOY:75,ic:'🛸',catalogId:'CHIX_S',desc:'노획된 치크스 정찰기. 이질적 생체회로로 INT 회복 +10%/턴'},
+  {id:'CHIX_M_BUY',civ:'F05',nm:'치크스 순양함',tier:'중형',price:290000,maxHP:6700,maxSH:2800,ATT:70,INT:56,TEC:54,LOY:88,ic:'🚀',catalogId:'CHIX_M',desc:'노획된 치크스 중형 순양함. 치크스 함대 상대로 ATT +25%'},
+  {id:'CHIX_L_BUY',civ:'F05',nm:'치크스 모선',tier:'대형',price:1080000,maxHP:22500,maxSH:9500,ATT:106,INT:100,TEC:82,LOY:90,ic:'🌟',catalogId:'CHIX_L',desc:'노획된 치크스 모선. 전투 시작 시 적 1척 마비(1턴)'},
+  // ── F06 지구저항군 (회복·내구 — HP 최강) ──
+  {id:'F06_S',civ:'F06',nm:'자유의 횃불',tier:'소형',price:58000,maxHP:620,maxSH:440,ATT:38,INT:28,TEC:36,LOY:96,ic:'🛸',desc:'지구저항군 정찰기. HP 620 (소형 최상) · 매 턴 HP +1% · LOY 96'},
+  {id:'F06_M',civ:'F06',nm:'게릴라 와스프',tier:'중형',price:275000,maxHP:7500,maxSH:2800,ATT:64,INT:56,TEC:56,LOY:95,ic:'🚀',desc:'화성·달 게릴라 순양함. HP 7500 (중형 최상) · 수리 효율 +25% · 자국령 ATT +10%'},
+  {id:'F06_L',civ:'F06',nm:'어스 다이어울프',tier:'대형',price:1020000,maxHP:25000,maxSH:9300,ATT:108,INT:100,TEC:86,LOY:98,ic:'🌟',desc:'지구저항군 결사 기함. HP 25000 · 함대 HP +1%/턴 · 자국령 행성당 INT +1% (캡 +10%)'},
+  // ── F07 보이드 (균열 — 모든 클래스 최강 / 사용자 명세 ★) ──
+  {id:'F07_S',civ:'F07',nm:'보이드 위스퍼',tier:'소형',price:95000,maxHP:640,maxSH:560,ATT:56,INT:48,TEC:52,LOY:98,ic:'🛸',desc:'★ 보이드 최상위 정찰기. 전 스탯 소형 최강 · 회피율 +12% · 보이드 행성에서 ATT +10%'},
+  {id:'F07_M',civ:'F07',nm:'리프트 시커',tier:'중형',price:450000,maxHP:7800,maxSH:3500,ATT:82,INT:78,TEC:68,LOY:98,ic:'🚀',desc:'★ 보이드 최상위 중형함. 전 스탯 중형 최강 · 전투 시작 시 적 INT -10% (전투 내내)'},
+  {id:'F07_L',civ:'F07',nm:'메아리 군주',tier:'대형',price:1650000,maxHP:26000,maxSH:12000,ATT:128,INT:128,TEC:105,LOY:100,ic:'🌟',desc:'★★ 보이드 최강 기함. 전 스탯 대형 최강 · INT/TEC 압도 · 매 턴 적 1척 회피율 -20% · 실드 침투 +10%'},
 ];
 
 // 최종 보스 ─ 우르사 메이저 (신화 풀셋 장착) — HP 1,000만 (현실적 격파 가능 밸런스) / ATT 6000 / SH 30만
