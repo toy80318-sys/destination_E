@@ -9949,14 +9949,33 @@ function renderCraftTab(body){
         // 로어 설명
         const _lore=(typeof ITEM_LORE!=='undefined'?ITEM_LORE['part_'+selRec.id]:'')||'';
         const _loreHtml=_lore?`<div style="font-size:11px;color:var(--dim);margin-top:6px;line-height:1.6;white-space:pre-wrap;background:rgba(0,0,0,.25);padding:6px 9px;border-radius:5px">${_lore}</div>`:'';
-        return `<div style="background:rgba(5,12,26,.85);border:1px solid ${_tierColor};border-radius:8px;padding:10px 12px;margin-bottom:10px;box-shadow:0 0 12px ${_tierColor}33">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-            <span style="font-size:11px;color:${_tierColor};font-weight:bold;letter-spacing:1px">${_tierLabel}</span>
-            <span style="font-size:15px;font-weight:bold;color:var(--txt)">${selRec.nm}</span>
+        // 제작 대상(파츠/함선) 이미지 미리보기 — 제작 전 상단에 이미지+정보 함께 노출 (사용자 요청)
+        let _pvImg='',_pvFb='⚗️',_pvLore=null;
+        if(selRec.type==='part'){
+          const _pp=(typeof PARTS!=='undefined'?PARTS:[]).find(x=>x.id===selRec.id);
+          _pvImg=(typeof partImgSrc==='function')?partImgSrc(selRec.id):'img/parts/'+selRec.id+'.png';
+          _pvFb=_pp&&_pp.cat==='weapon'?'⚔️':_pp&&_pp.cat==='shield'?'🛡️':_pp&&_pp.cat==='armor'?'🛡':_pp&&_pp.cat==='engine'?'⚡':'⚙️';
+          _pvLore='part_'+selRec.id;
+        } else if(selRec.type==='ship'){
+          const _ss=(typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[]).find(x=>x.id===selRec.id);
+          _pvImg=(typeof shipImgSrc==='function')?shipImgSrc({id:selRec.id,catalogId:selRec.id,tier:_ss?_ss.tier:'대형'}):'img/ships/'+selRec.id+'.png';
+          _pvFb='🚀';_pvLore='ship_'+selRec.id;
+        } else if(selRec.type==='cargo'){
+          const _scp=(typeof SPECIAL_CARGO_PARTS!=='undefined'?SPECIAL_CARGO_PARTS:[]).find(c=>c.id===selRec.id);
+          _pvImg='img/parts/'+selRec.id+'.png';_pvFb=(_scp&&_scp.ic)||'📦';
+        }
+        const _pvImgHtml=_pvImg?imgOrEmoji(_pvImg,_pvFb,100,100,'border-radius:10px;background:rgba(0,0,0,.45);border:1px solid '+_tierColor+'66;flex-shrink:0',_pvLore):'';
+        return `<div style="background:rgba(5,12,26,.85);border:1px solid ${_tierColor};border-radius:8px;padding:10px 12px;margin-bottom:10px;box-shadow:0 0 12px ${_tierColor}33;display:flex;gap:12px;align-items:flex-start">
+          ${_pvImgHtml}
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+              <span style="font-size:11px;color:${_tierColor};font-weight:bold;letter-spacing:1px">${_tierLabel}</span>
+              <span style="font-size:15px;font-weight:bold;color:var(--txt)">${selRec.nm}</span>
+            </div>
+            ${_effectHtml}
+            ${_heroReqHtml}
+            ${_loreHtml}
           </div>
-          ${_effectHtml}
-          ${_heroReqHtml}
-          ${_loreHtml}
         </div>`;
       })()}
 
