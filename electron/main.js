@@ -4,6 +4,9 @@ const { app, BrowserWindow, Menu, shell, ipcMain, dialog } = require('electron')
 const path = require('path');
 const fs = require('fs');
 
+// BGM autoplay 정책 해제 — 게임 시작 즉시 배경음악 재생 (app.ready 전에 호출)
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
 const isDev = !app.isPackaged;
 const WINDOW_STATE_FILE = 'window-state.json';
 

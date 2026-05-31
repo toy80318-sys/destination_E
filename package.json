@@ -51,9 +51,13 @@
       "manifest.json",
       "js/**/*",
       "img/**/*",
+      "02_Assets/audio/**/*",
       "!img_backup/**",
       "!.screens/**",
       "!Doc/**",
+      "!07_Tools/**",
+      "!02_Assets/**/*.txt",
+      "!02_Assets/**/*.md",
       "!**/*.map",
       "!service-worker.js"
     ],
