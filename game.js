@@ -2781,13 +2781,14 @@ function updateHubLockButtons(){
     const unlocked=stage>=need;
     const lbl=btn.querySelector('span:nth-child(2)');
     if(!lbl)return;
-    if(!lbl.dataset.origText)lbl.dataset.origText=lbl.textContent.replace(/ 🔒.*$/,'');
+    // 캐시 대신 매번 신선한 origText 계산 — 행성 재방문 시 이전 행성 진행도 텍스트 잔존 차단
+    const _orig=lbl.textContent.replace(/ 🔒.*$/,'');
     if(!unlocked){
       btn.style.opacity='0.45';
-      lbl.textContent=lbl.dataset.origText+' 🔒 '+prog+'/'+thrByStage[need];
+      lbl.textContent=_orig+' 🔒 '+prog+'/'+thrByStage[need];
     } else {
       btn.style.opacity='';
-      lbl.textContent=lbl.dataset.origText;
+      lbl.textContent=_orig;
     }
   });
 }
@@ -2814,6 +2815,8 @@ function hubTab(tab){
       G._currentHubTab='main';
       setHubNav('main');
       updateFleetBar();
+      // 잠금 화면 표시 시 사이드바 잠금 카운트도 즉시 갱신 (일관성)
+      try{updateHubLockButtons();}catch(e){}
       // 잠금 화면에서는 행성 배경 이미지를 어둡게 처리해 가독성 확보
       const hubBg=document.getElementById('hub-planet-bg');
       if(hubBg)hubBg.style.opacity='0.18';
@@ -14805,6 +14808,8 @@ function travelTo(){
   // ACT 전환 체크 — 이동도 턴을 소모하므로 doNextTurn 과 동일 트리거 필요 (버그 수정)
   try{_checkActAdvance();}catch(e){}
   updateHUD();renderMap();G.mapSelected=null;
+  // 행성 도착 즉시 사이드바 잠금/진행도 표시 갱신 (이전 행성 상태 잔존 차단)
+  try{updateHubLockButtons();}catch(e){}
   const goBtn=document.getElementById('map-go');if(goBtn)goBtn.disabled=true;
   const fl=document.getElementById('map-float');if(fl)fl.style.display='none';
   boostLoyalty('travel'); // ← 충성도 증가 (이동)
