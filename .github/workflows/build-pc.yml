@@ -50,19 +50,12 @@ jobs:
         run: npm run icons
         continue-on-error: true
 
-      - name: Windows .exe 빌드 + 퍼블리시
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if ('${{ github.event_name }}' -eq 'push' -or '${{ inputs.publish_release }}' -eq 'true') {
-            npm run release:win
-          } else {
-            npm run dist:win
-          }
+      - name: Windows .exe 빌드 (publish 제외)
+        run: npm run dist:win
         shell: pwsh
 
-      - name: Artifact 업로드 (실패 케이스 보강 — 빌드 산출물 항상 보존)
-        if: always() && hashFiles('dist/*.exe') != ''
+      - name: ⭐ Artifact 업로드 (publish 성공·실패 무관 — 무조건 보존)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
@@ -71,4 +64,12 @@ jobs:
             dist/*.blockmap
             dist/latest.yml
           retention-days: 14
-          if-no-files-found: ignore
+          if-no-files-found: warn
+
+      - name: GitHub Release에 업로드 (선택)
+        if: success() && (github.event_name == 'push' || inputs.publish_release == true)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --win --publish=always -c.publish.provider=github
+        continue-on-error: true
+        shell: pwsh
