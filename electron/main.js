@@ -47,6 +47,7 @@ function createWindow() {
     title: 'DESTINATION EARTH',
     icon: path.join(__dirname, '..', 'img', 'icons', 'icon-512.png'),
     autoHideMenuBar: true,
+    show: false, // 흰 첫 frame 차단: 콘텐츠 준비 후에만 표시
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -62,6 +63,12 @@ function createWindow() {
 
   // 게임 로드 (Phase 1은 로컬 파일 그대로)
   mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
+
+  // 콘텐츠가 그릴 준비가 되면 표시 — 검은 우주 배경 → boot-splash 순서로 자연스럽게
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+    if (isDev) mainWindow.focus();
+  });
 
   // 외부 링크는 기본 브라우저로 열기
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
