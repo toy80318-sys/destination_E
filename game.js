@@ -18164,6 +18164,15 @@ function showSettingsModal(){
         </div>
       </div>
     </div>
+    <!-- 언어 선택 (i18n) — 게임 안/시작화면 모두 표시 -->
+    ${(typeof I18N!=='undefined')?`<div style="margin-bottom:16px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:12px">
+      <div style="font-weight:bold;margin-bottom:8px">${I18N.t('lang.label')}</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" onclick="I18N.setLang('ko')" style="flex:1;${I18N.getLang()==='ko'?'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold':''}">${I18N.t('lang.ko')}${I18N.getLang()==='ko'?' ✓':''}</button>
+        <button class="btn btn-sm" onclick="I18N.setLang('en')" style="flex:1;${I18N.getLang()==='en'?'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold':''}">${I18N.t('lang.en')}${I18N.getLang()==='en'?' ✓':''}</button>
+      </div>
+      <div style="font-size:10px;color:var(--dim);margin-top:8px;line-height:1.5">${I18N.t('lang.changeHint')}</div>
+    </div>`:''}
     <!-- 디스플레이 모드 (화면 해상도) -->
     ${(()=>{
       const dm=window._displayMode||'auto';
