@@ -2250,10 +2250,15 @@ function showHub(){
     },800);
   }
   // 배경 이미지 즉시 프리로드 (깜빡임 방지)
+  // 행성이 바뀐 경우 이전 배경을 즉시 제거하여 재방문 시 옛 이미지가 잠시 보이는 문제 방지
   (function(){
     const hubBg=document.getElementById('hub-planet-bg');
     const _key=G.currentPlanet+(G.currentPlanet==='P31'&&_isEarthFree()?'#free':'');
-    if(!hubBg||hubBg._loadedPlanet===_key)return;
+    if(!hubBg)return;
+    if(hubBg._loadedPlanet===_key)return;
+    // 다른 행성 → 이전 이미지 즉시 제거 + 페이드아웃 (preload 비동기 동안 잔존 차단)
+    hubBg.style.backgroundImage='';
+    hubBg.style.opacity='0';
     const src=planetBgSrc(G.currentPlanet);
     const pre=new Image();
     pre.onload=function(){
@@ -2277,6 +2282,8 @@ function showHub(){
   const cmd=document.getElementById('hub-cmd');if(cmd)cmd.textContent=G.profile.name||'사령관';
   // 사이드바 폴더 — 기본 닫힘 (사용자가 직접 펼침) — 현재 활성 탭이 속한 폴더만 setHubNav에서 자동 열림
   hubTab('main');
+  // 안전망: 행성 재방문 시 사이드바 잠금 표시 즉시 갱신 (이전 행성 상태 잔존 방지)
+  try{updateHubLockButtons();}catch(e){}
   // 초기 백구 인사
   const greets=['허브 접속 완료. 무역하든 전투하든 네 마음대로.',
     '빅 픽처 스페이스 허브. 크레딧 벌어야 지구 구한다.',
