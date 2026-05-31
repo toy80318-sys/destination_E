@@ -12,3 +12,8 @@ Doc/
 en.png
 # 로컬 UI 검증 스크린샷 (mobile-audit.js / mobile-screenshot.js 출력)
 .screens/
+# Electron 빌드 산출물
+dist/
+out/
+# 임시 스크린샷 업로드
+git01.png

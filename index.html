@@ -310,11 +310,13 @@
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <script defer src="js/cloudsave.js?v=20260528500"></script>
+<!-- ═══ DESKTOP (Electron) BRIDGE — 데스크탑일 때만 동작 ═══ -->
+<script src="js/desktop-bridge.js?v=20260531110"></script>
 <!-- ═══ GAME LOGIC ═══ -->
 <script src="game.js?v=20260531110"></script>
-<!-- ═══ PWA SERVICE WORKER 등록 ═══ -->
+<!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !window.desktopAPI) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('service-worker.js').then(function (reg) {
       // 새 버전 감지 시 자동으로 갱신 적용

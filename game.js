@@ -8,6 +8,7 @@ window._GAME_VER=window._GAME_VER||'20260531.plaza_arrival';
 // 모든 이미지 helper 가 _mobileLod() 를 거쳐 모바일에서는 ~10% 크기의 사본을 로드 (총 22MB → 2MB)
 window.IS_MOBILE=(function(){
   try{
+    if(window.desktopAPI)return false; // Electron PC 빌드: 항상 PC 모드(고해상도)
     const ua=navigator.userAgent||'';
     const mobileUA=/Mobi|Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(ua);
     const narrow=Math.min(window.innerWidth||9999,window.screen?.width||9999)<=820;
@@ -18190,6 +18191,7 @@ function showSettingsModal(){
       <div style="font-weight:bold;margin-bottom:8px">💾 데이터 관리</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">💾 지금 저장</button>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">🎓 튜토리얼 다시 보기</button>
+      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">📁 세이브 폴더 열기 (PC)</button>`:''}
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm('모든 저장 데이터를 삭제합니다. 계속하시겠습니까?')){localStorage.removeItem('de_save');notify('저장 데이터 삭제 완료','ok');closeModal();}">🗑️ 저장 데이터 삭제</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">
