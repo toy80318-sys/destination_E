@@ -24,17 +24,13 @@ const CARGO_ITEMS=[
    desc:'허블 망원경 잔해에서 발견된 고대 외계 기술. 공간 자체를 왜곡해 사실상 무한에 가까운 적재 공간을 생성한다. 퀘스트 보상으로만 획득 가능.'},
 ];
 
-// ── 특수 창고 확장 파츠 (SC01-SC10) ─────────────────────────────────
-// buyCargoExtPart() 로 구매 시 바로 기함에 적용
+// ── 특수 창고 확장 파츠 (SC01-SC05) — 5종 ──────────────────────────
+// 구매 시 인벤토리 적립 → 정비소에서 함선별 「창고 확장 전용 슬롯」(최대 8칸)에 장착.
+// 장착 1개 = 전용 슬롯 1칸 점유 + 해당 함선 화물칸 +cargoBonus.
 const SPECIAL_CARGO_PARTS=[
-  {id:'SC01',cat:'cargo_ext',nm:'[일반] 소형 화물 컨테이너',tier:1,price:2000,cargoBonus:2,ic:'📦',rarity:'common',desc:'[일반] 소형 규격 화물 컨테이너. 기함 창고 +2칸.'},
-  {id:'SC02',cat:'cargo_ext',nm:'[일반+] 모듈형 표준 창고',tier:3,price:6000,cargoBonus:4,ic:'🗃️',rarity:'uncommon',desc:'[일반+] 표준 모듈 규격 창고. 기함 창고 +4칸.'},
-  {id:'SC03',cat:'cargo_ext',nm:'[고급] 확장형 물류 박스',tier:5,price:15000,cargoBonus:6,ic:'📫',rarity:'rare',desc:'[고급] 진동 흡수 설계 확장 물류 박스. 기함 창고 +6칸.'},
-  {id:'SC04',cat:'cargo_ext',nm:'[고급] 고밀도 압축 창고',tier:7,price:30000,cargoBonus:8,ic:'🗜️',rarity:'rare',desc:'[고급] 고밀도 분자 압축 창고. 기함 창고 +8칸.'},
-  {id:'SC05',cat:'cargo_ext',nm:'[희귀] 중력 집속 시스템',tier:9,price:60000,cargoBonus:10,ic:'🌀',rarity:'epic',desc:'[희귀] 중력장 재배열 화물 집속 시스템. 기함 창고 +10칸.'},
-  {id:'SC06',cat:'cargo_ext',nm:'[희귀] 보이드 공간 포켓',tier:11,price:120000,cargoBonus:12,ic:'🌌',rarity:'epic',desc:'[희귀] 보이드 차원 접기 기술 응용 포켓 창고. 기함 창고 +12칸.'},
-  {id:'SC07',cat:'cargo_ext',nm:'[영웅] 양자 압축 창고',tier:13,price:200000,cargoBonus:14,ic:'⚛️',rarity:'hero',desc:'[영웅] 이휘소 박사 설계 양자 중첩 압축 창고. 기함 창고 +14칸.'},
-  {id:'SC08',cat:'cargo_ext',nm:'[전설] 광자 차원 확장 모듈 ⚡',tier:14,price:350000,cargoBonus:16,ic:'💡',rarity:'legend',desc:'[전설] 광자 파동 차원 확장 모듈. 기함 창고 +16칸. 제작소 제작 가능.'},
-  {id:'SC09',cat:'cargo_ext',nm:'[전설] 초공간 화물 매트릭스 ⚡',tier:16,price:600000,cargoBonus:20,ic:'⚡',rarity:'legend',desc:'[전설] 초공간 연속 접힘 화물 매트릭스. 기함 창고 +20칸. 제작소 제작 가능.'},
-  {id:'SC10',cat:'cargo_ext',nm:'[신화] 시공간 압축 무한 창고 ✦',tier:20,price:2000000,cargoBonus:24,ic:'🔭',rarity:'mythic',desc:'[신화] 시공간 왜곡 기반 사실상 무한 적재 창고. 기함 창고 +24칸.'},
+  {id:'SC01',cat:'cargo_ext',nm:'[일반] 소형 화물 컨테이너',tier:1,price:2000,cargoBonus:4,ic:'📦',rarity:'common',desc:'[일반] 표준 규격 소형 화물 컨테이너. 장착 함선 화물 +4칸.'},
+  {id:'SC02',cat:'cargo_ext',nm:'[고급] 모듈형 확장 창고',tier:5,price:12000,cargoBonus:10,ic:'🗃️',rarity:'rare',desc:'[고급] 진동 흡수 모듈형 확장 창고. 장착 함선 화물 +10칸.'},
+  {id:'SC03',cat:'cargo_ext',nm:'[희귀] 중력 압축 화물고',tier:9,price:45000,cargoBonus:20,ic:'🌀',rarity:'epic',desc:'[희귀] 중력장 재배열 압축 화물고. 장착 함선 화물 +20칸.'},
+  {id:'SC04',cat:'cargo_ext',nm:'[전설] 초공간 화물 매트릭스 ⚡',tier:14,price:200000,cargoBonus:32,ic:'⚡',rarity:'legend',desc:'[전설] 초공간 연속 접힘 화물 매트릭스. 장착 함선 화물 +32칸. 제작소 제작 가능.'},
+  {id:'SC05',cat:'cargo_ext',nm:'[신화] 시공간 압축 무한 창고 ✦',tier:20,price:1200000,cargoBonus:48,ic:'🔭',rarity:'mythic',desc:'[신화] 시공간 왜곡 기반 사실상 무한 적재 창고. 장착 함선 화물 +48칸.'},
 ];

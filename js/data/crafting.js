@@ -28,6 +28,9 @@ const CRAFT_RECIPES=[
   {id:'ME01',type:'part',tier:'mythic',nm:'타키온 드라이브 ✦신화',cat:'engine',
    desc:'신화 엔진. TEC +320. 이동 후 ATT+50(1턴).',
    mats:[{id:'R01',qty:30},{id:'R07',qty:20},{id:'R08',qty:15},{id:'R03',qty:10}]},
+  {id:'MMB01',type:'part',tier:'mythic',nm:'이휘소 방정식 미사일 ❖신화',cat:'weapon',
+   desc:'신화 미사일. ATT +380. DEF/SHD 관통 + 크리티컬 +30%. 다각도 다중 충격파.',
+   mats:[{id:'R06',qty:30},{id:'R04',qty:20},{id:'R08',qty:15},{id:'R02',qty:10}]},
   // ─ 전설 함선 ─
   {id:'H10',type:'ship',tier:'legend',nm:'레비아탄 🌟',cat:'대형',
    desc:'전설 대형 전투함. HP 45,000 / SH 18,000. 화력 최강.',
@@ -39,12 +42,9 @@ const CRAFT_RECIPES=[
    desc:'보이드 전용 함선. HP 75,000. 보스전 실드 관통 특화.',
    mats:[{id:'R01',qty:30},{id:'R08',qty:20},{id:'R02',qty:15}]},
   // ─ 전설 창고 확장 파츠 (제작소 제작 가능) ─
-  {id:'SC08',type:'cargo',tier:'legend',nm:'[전설] 광자 차원 확장 모듈 ⚡',cat:'cargo_ext',
-   desc:'전설급 광자 파동 차원 확장 모듈. 창고 +16칸.',
+  {id:'SC04',type:'cargo',tier:'legend',nm:'[전설] 초공간 화물 매트릭스 ⚡',cat:'cargo_ext',
+   desc:'전설급 초공간 연속 접힘 화물 매트릭스. 장착 함선 화물 +16칸.',
    mats:[{id:'R07',qty:20},{id:'R05',qty:15},{id:'R03',qty:10}]},
-  {id:'SC09',type:'cargo',tier:'legend',nm:'[전설] 초공간 화물 매트릭스 ⚡',cat:'cargo_ext',
-   desc:'전설급 초공간 화물 매트릭스. 창고 +20칸.',
-   mats:[{id:'R08',qty:20},{id:'R06',qty:15},{id:'R04',qty:10}]},
   // ─ 신화 함선 (최고등급, 제한 없음) ─
   {id:'LGD01',type:'ship',tier:'mythic',nm:'거북선 ✦신화',cat:'대형',
    desc:'신화급 전투함. HP 200,000 / SH 65,000. 호위함 능력치+30%.',
@@ -74,6 +74,6 @@ const BLUEPRINT_MAP={
   P09:'E15',  P10:'W15',  P11:'S15',  P12:'A15',   // F03 메카니카 → 전설파츠
   P13:'LGD01',P14:'MW01', P15:'MS01', P16:'MA01',  // F04 크리그 → 기함/신화
   P17:'MW01', P18:'MS01', P19:'MA01', P20:'ME01', P21:'LGD03', // F05 치크스 → 신화
-  P22:'LGD01',P23:'LGD02',P24:'H10', P25:'RB09', P26:'H12',   // F06 저항군 → 전설(+ 흡혈 전설 로봇)
+  P22:'LGD01',P23:'LGD02',P24:'MMB01',P25:'RB09', P26:'H12',  // F06 저항군 → 전설/신화(이휘소 미사일·흡혈 전설 로봇)
   P27:'ME01', P28:'LGD02',P29:'LGD03',P30:'RB10'  // F07 보이드 → 신화/기함(+ 흡혈 신화 로봇)
 };
