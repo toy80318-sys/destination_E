@@ -18,6 +18,48 @@
 <link rel="stylesheet" href="game.css?v=20260528500">
 </head>
 <body>
+<!-- ═══ BOOT SPLASH — PWA/Electron 부팅 시 검은 화면 대신 표시 ═══ -->
+<div id="boot-splash" aria-hidden="false">
+  <div class="bs-stars"></div>
+  <div class="bs-content">
+    <img src="img/icons/icon-512.png" alt="" class="bs-icon" draggable="false">
+    <div class="bs-title">DESTINATION EARTH</div>
+    <div class="bs-subtitle" id="bs-msg">우주를 준비하는 중...</div>
+    <div class="bs-spinner"></div>
+  </div>
+</div>
+<style>
+#boot-splash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0a1a3a 0%,#020510 100%);transition:opacity .6s ease, visibility 0s .6s linear;user-select:none;-webkit-user-select:none}
+#boot-splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#boot-splash .bs-stars{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.85) 1px,rgba(255,255,255,0) 2px);background-size:90px 90px;opacity:.18;animation:bsStars 9s linear infinite}
+#boot-splash .bs-content{position:relative;text-align:center;padding:0 16px}
+#boot-splash .bs-icon{width:160px;height:160px;border-radius:28px;box-shadow:0 0 60px rgba(0,243,255,.5),0 0 120px rgba(0,243,255,.2);animation:bsPulse 2.2s ease-in-out infinite}
+#boot-splash .bs-title{margin-top:26px;font-size:28px;color:#00f3ff;letter-spacing:8px;font-weight:bold;text-shadow:0 0 22px rgba(0,243,255,.7);font-family:Arial Black,Helvetica,sans-serif}
+#boot-splash .bs-subtitle{margin-top:10px;font-size:13px;color:#87c8ff;letter-spacing:1px}
+#boot-splash .bs-spinner{margin:32px auto 0;width:42px;height:42px;border:3px solid rgba(0,243,255,.15);border-top-color:#00f3ff;border-radius:50%;animation:bsSpin 1s linear infinite}
+@keyframes bsPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.04);opacity:.9}}
+@keyframes bsSpin{to{transform:rotate(360deg)}}
+@keyframes bsStars{from{background-position:0 0}to{background-position:0 -90px}}
+@media (max-width:600px){
+  #boot-splash .bs-icon{width:128px;height:128px}
+  #boot-splash .bs-title{font-size:22px;letter-spacing:5px}
+}
+</style>
+<script>
+// game.js·이미지 로딩 완료 후 자동 페이드아웃. game.js 부팅 함수에서 hideBootSplash() 호출 가능.
+window.hideBootSplash=function(){var el=document.getElementById('boot-splash');if(el)el.classList.add('hidden');};
+window.addEventListener('load',function(){
+  // window.IS_DESKTOP(Electron)이면 백업 복구 시간 확보를 위해 약간 길게
+  var d=(window.desktopAPI?2200:1500);
+  setTimeout(window.hideBootSplash,d);
+});
+// 백업 복구 완료 시 로딩 메시지 갱신
+window.addEventListener('desktop-save-restored',function(e){
+  var m=document.getElementById('bs-msg');
+  if(m)m.textContent='세이브 복원 완료 ('+(e.detail&&e.detail.count||0)+'개)';
+});
+</script>
+
 <div id="game-stage">
 <div id="de-tooltip"></div>
 <canvas id="star-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
