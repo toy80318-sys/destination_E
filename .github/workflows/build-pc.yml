@@ -25,14 +25,26 @@ jobs:
       - name: 소스 체크아웃
         uses: actions/checkout@v4
 
-      - name: Node.js 20 설정
+      - name: Node.js 22 설정
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
-      - name: 의존성 설치
-        run: npm ci
+      - name: 의존성 설치 (ECONNRESET 대비 3회 재시도)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $maxAttempts = 3
+          for ($i = 1; $i -le $maxAttempts; $i++) {
+            Write-Host "▶ npm ci 시도 $i/$maxAttempts"
+            npm ci --no-audit --no-fund --prefer-offline
+            if ($LASTEXITCODE -eq 0) { Write-Host "✅ 의존성 설치 성공"; exit 0 }
+            Write-Host "⚠ 시도 $i 실패 (exit $LASTEXITCODE). 5초 후 재시도..."
+            Start-Sleep -Seconds 5
+          }
+          Write-Host "❌ $maxAttempts 회 모두 실패"
+          exit 1
 
       - name: 앱 아이콘 재생성 (선택)
         run: npm run icons
@@ -49,8 +61,8 @@ jobs:
           }
         shell: pwsh
 
-      - name: Artifact 업로드 (수동 실행시 다운로드용)
-        if: github.event_name == 'workflow_dispatch' && inputs.publish_release != true
+      - name: Artifact 업로드 (실패 케이스 보강 — 빌드 산출물 항상 보존)
+        if: always() && hashFiles('dist/*.exe') != ''
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
@@ -59,3 +71,4 @@ jobs:
             dist/*.blockmap
             dist/latest.yml
           retention-days: 14
+          if-no-files-found: ignore
