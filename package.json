@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.1.0",
+  "version": "1.0.0-beta.1",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -8,11 +8,13 @@
   "scripts": {
     "electron": "electron .",
     "electron:dev": "electron . --enable-logging",
+    "icons": "node scripts/gen-app-icons.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
     "dist:linux": "electron-builder --linux",
+    "release:win": "electron-builder --win --publish=always",
     "deploy": "firebase deploy --only hosting --project cgstation-d8178 --non-interactive && npm run cleanup",
     "deploy:full": "firebase deploy --project cgstation-d8178 --non-interactive && npm run cleanup",
     "cleanup": "node scripts/firebase-cleanup.js 5",
@@ -23,15 +25,24 @@
   },
   "devDependencies": {
     "electron": "^33.4.11",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "png2icons": "^2.0.1"
   },
   "build": {
     "appId": "kr.cgtation.destinationearth",
     "productName": "Destination Earth",
     "copyright": "Copyright © 2026 toy80318",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "toy80318-sys",
+        "repo": "destination_E"
+      }
+    ],
     "files": [
       "electron/**/*",
       "index.html",
@@ -61,7 +72,7 @@
           ]
         }
       ],
-      "icon": "img/icons/icon-512.png"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -83,14 +94,14 @@
         }
       ],
       "category": "public.app-category.games",
-      "icon": "img/icons/icon-512.png"
+      "icon": "build/icon.icns"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
       "category": "Game",
-      "icon": "img/icons/icon-512.png"
+      "icon": "build/icon.png"
     }
   }
 }

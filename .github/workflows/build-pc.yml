@@ -1,0 +1,61 @@
+name: Build PC Release (Windows)
+
+# 트리거:
+# 1. v로 시작하는 태그 푸시 (v1.0.0-beta.1 등) → 자동 빌드 + GitHub Release 생성
+# 2. Actions 페이지에서 수동 실행 (workflow_dispatch) → 빌드 후 artifact만 업로드
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: 'GitHub Release에 업로드'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write  # Release 생성·업로드용
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: 소스 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 20 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 앱 아이콘 재생성 (선택)
+        run: npm run icons
+        continue-on-error: true
+
+      - name: Windows .exe 빌드 + 퍼블리시
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ('${{ github.event_name }}' -eq 'push' -or '${{ inputs.publish_release }}' -eq 'true') {
+            npm run release:win
+          } else {
+            npm run dist:win
+          }
+        shell: pwsh
+
+      - name: Artifact 업로드 (수동 실행시 다운로드용)
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_release != true
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: |
+            dist/*.exe
+            dist/*.blockmap
+            dist/latest.yml
+          retention-days: 14
