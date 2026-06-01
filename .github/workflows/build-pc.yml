@@ -66,10 +66,18 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
 
-      - name: GitHub Release에 업로드 (선택)
+      - name: GitHub Release 생성·업로드 (이미 빌드된 dist 파일 첨부)
         if: success() && (github.event_name == 'push' || inputs.publish_release == true)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.exe
+            dist/*.blockmap
+            dist/latest.yml
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx electron-builder --win --publish=always -c.publish.provider=github
-        continue-on-error: true
-        shell: pwsh
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
