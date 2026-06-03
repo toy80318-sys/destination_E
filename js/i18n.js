@@ -94,5 +94,41 @@ window.I18N = (function () {
     }
   }
 
-  return { t, setLang, getLang, register, has, tier, rarity, SUPPORTED, DEFAULT_LANG };
+  // ── DOM 자동 적용 ────────────────────────────────────────────────
+  // [data-i18n="key"]        → element.textContent = I18N.t(key)
+  // [data-i18n-html="key"]   → element.innerHTML  = I18N.t(key)
+  // [data-i18n-title="key"]  → element.title      = I18N.t(key)
+  // [data-i18n-attr="key"]   → element.setAttribute(...) (e.g., placeholder)
+  // 호출: applyI18nToDOM() — 페이지 로드 시 / 언어 전환 시 자동 호출
+  function applyI18nToDOM(root) {
+    root = root || document;
+    try {
+      root.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (key) el.textContent = t(key);
+      });
+      root.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (key) el.innerHTML = t(key);
+      });
+      root.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (key) el.title = t(key);
+      });
+      root.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (key) el.setAttribute('placeholder', t(key));
+      });
+    } catch (e) { /* ignore — DOM may not be ready */ }
+  }
+  // DOMContentLoaded 시 자동 적용 (이미 로드됐으면 즉시)
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => applyI18nToDOM());
+    } else {
+      setTimeout(() => applyI18nToDOM(), 0);
+    }
+  }
+
+  return { t, setLang, getLang, register, has, tier, rarity, applyI18nToDOM, SUPPORTED, DEFAULT_LANG };
 })();
