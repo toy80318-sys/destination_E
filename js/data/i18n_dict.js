@@ -201,6 +201,7 @@ I18N.register({
   'tier.medium':      { ko: '중형', en: 'Medium' },
   'tier.large':       { ko: '대형', en: 'Large' },
   'tier.mythic':      { ko: '신화', en: 'Mythic' },
+  'tier.legendFlagship': { ko: '전설기함', en: 'Legend Flagship' },
   'tier.classSuffix': { ko: '급',   en: '-class' },
   'ship.capturedLabel': { ko: '{tier}급 나포함선', en: '{tier}-class Captured Ship' },
 

@@ -62,7 +62,7 @@ window.I18N = (function () {
 
   // 한국어 tier enum('소형'/'중형'/'대형'/'신화') → 번역. 데이터 비교(예: s.tier==='소형')는 한국어 enum 유지.
   // 사용: I18N.tier(ship.tier) — UI 표시 사이트에서만 호출
-  const _TIER_KEY = { '소형': 'tier.small', '중형': 'tier.medium', '대형': 'tier.large', '신화': 'tier.mythic' };
+  const _TIER_KEY = { '소형': 'tier.small', '중형': 'tier.medium', '대형': 'tier.large', '신화': 'tier.mythic', '전설기함': 'tier.legendFlagship' };
   function tier(value) {
     if (!value) return value;
     const k = _TIER_KEY[value];

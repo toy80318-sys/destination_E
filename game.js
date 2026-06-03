@@ -12076,11 +12076,11 @@ function showCodexPlanetModal(pid){
         </div>
       </div>
     </div>
-    ${row('🌌','은하계상 위치',l.loc||'정보 없음')}
-    ${row('🏛️','문명권',l.civ||'정보 없음')}
-    ${row('🌍','행성 특징',l.feat||'정보 없음')}
+    ${row('🌌','은하계상 위치',l.loc||I18N.t('ui.noInfo'))}
+    ${row('🏛️','문명권',l.civ||I18N.t('ui.noInfo'))}
+    ${row('🌍','행성 특징',l.feat||I18N.t('ui.noInfo'))}
     ${row('⚠️','주의사항',`<span style="color:#ffaa44">${l.warn||'특별한 위험 없음'}</span>`)}
-    ${row('💰','혜택',`<span style="color:var(--gold)">${l.benefit||'정보 없음'}</span>`)}
+    ${row('💰','혜택',`<span style="color:var(--gold)">${l.benefit||I18N.t('ui.noInfo')}</span>`)}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
   openModal('🪐 '+p.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
@@ -12114,10 +12114,10 @@ function showCodexHeroModal(hid){
         </div>
       </div>
     </div>
-    ${row('📜','이름의 유래',l.origin||'정보 없음')}
+    ${row('📜','이름의 유래',l.origin||I18N.t('ui.noInfo'))}
     ${row('📍','발견 행성',`${l.found||foundPlanetNm}`)}
     ${row('⚔️','능력치',l.stats||`ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}`)}
-    ${row('🎭','장단점 · 성격',l.char||'정보 없음')}
+    ${row('🎭','장단점 · 성격',l.char||I18N.t('ui.noInfo'))}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
   openModal('⭐ '+h.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
@@ -12221,12 +12221,12 @@ function showCodexPartModal(partId){
   const rarCol=p.rarity==='mythic'?'#ff88ff':p.rarity==='set'?'#c080ff':p.tier>=15?'var(--gold)':p.tier>=11?'#ffa040':p.tier>=6?'var(--cyan)':'var(--txt)';
   const rarIc=p.rarity==='mythic'?'✦':p.rarity==='set'?'◈':p.tier>=15?'⚡':'•';
   const catIc={weapon:p.wtype==='missile'?'🚀':'⚔️',shield:'🛡️',armor:typeof p.repairRate==='number'&&p.repairRate>0?'🤖':'🛡',engine:'⚡'}[p.cat]||'⚙️';
-  const lore=LORE_TEXT['part_'+p.id]||'정보 없음';
+  const lore=LORE_TEXT['part_'+p.id]||I18N.t('ui.noInfo');
   const lines=String(lore).split('\n');
   const sec=(ic,fallback)=>{const ln=lines.find(l=>l.startsWith(ic));return ln?ln.replace(ic,'').trim():fallback;};
-  const maker=sec('🔨','정보 없음');
-  const origin=sec('📜','정보 없음');
-  const power=sec('⚔️','정보 없음');
+  const maker=sec('🔨',I18N.t('ui.noInfo'));
+  const origin=sec('📜',I18N.t('ui.noInfo'));
+  const power=sec('⚔️',I18N.t('ui.noInfo'));
   const op=sec('💬','...');
   // 보유 여부
   const inv=(G.inventory||[]).find(i=>i.id===p.id);
@@ -12292,12 +12292,12 @@ function showCodexShipModal(shipId){
   const tierCol={'소형':'var(--cyan)','중형':'var(--blue)','대형':'var(--gold)','전설기함':'#ff66ff','신화':'#cc66ff'};
   const fc=tierCol[s.tier]||'var(--dim)';
   const tierIc={신화:'✦',전설기함:'⚑',대형:'🌟',중형:'🚀',소형:'🛸'}[s.tier]||'🛸';
-  const lore=LORE_TEXT['ship_'+(s.catalogId||s.id)]||LORE_TEXT['ship_'+s.id]||'정보 없음';
+  const lore=LORE_TEXT['ship_'+(s.catalogId||s.id)]||LORE_TEXT['ship_'+s.id]||I18N.t('ui.noInfo');
   // 줄별 (🔨/📜/⚔️/💬) 분리
   const lines=String(lore).split('\n');
   const sec=(ic,fallback)=>{const ln=lines.find(l=>l.startsWith(ic));return ln?ln.replace(ic,'').trim():fallback;};
-  const maker=sec('🔨','정보 없음');
-  const origin=sec('📜','정보 없음');
+  const maker=sec('🔨',I18N.t('ui.noInfo'));
+  const origin=sec('📜',I18N.t('ui.noInfo'));
   const power=sec('⚔️',`ATT:${s.ATT} INT:${s.INT} TEC:${s.TEC} · HP:${s.maxHP} SH:${s.maxSH}`);
   const op=sec('💬','...');
   const owned=G.fleet.some(f=>(f.catalogId||f.id||'').replace(/_(?:\d+|main)$/,'')===s.id);
