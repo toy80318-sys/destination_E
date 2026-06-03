@@ -636,7 +636,7 @@ function showShipDetailModal(idx){
         <div style="${groupTitleStyle}"><span>⚙️</span><span>장비</span></div>
         <div style="${btnRowStyle}">
           <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold)" onclick="pickPartModal(${idx})">⚙️ 파츠 장착</button>
-          <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan)" onclick="pickCrewModal(${idx})">👥 크루 배치</button>
+          <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan)" onclick="pickCrewModal(${idx})">${I18N.t('ui.crewAssign')}</button>
           ${crewIds.length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88" onclick="unassignCrewModal(${idx},0)">👤 크루 해제</button>`:''}
         </div>
       </div>
@@ -4721,7 +4721,7 @@ function renderShipTab(body){
             +'</div>';
         }else{
           return '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0">'
-            +'<button onclick="pickCrewForSlot('+idx+')" title="크루 배치" style="background:rgba(0,243,255,.03);border:1px dashed rgba(0,243,255,.2);border-radius:6px;cursor:pointer;width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;display:flex;align-items:center;justify-content:center;color:rgba(0,243,255,.3);font-size:24px;line-height:1" onmouseover="this.style.background=\'rgba(0,243,255,.08)\'" onmouseout="this.style.background=\'rgba(0,243,255,.03)\'">+</button>'
+            +'<button onclick="pickCrewForSlot('+idx+')" title="'+I18N.t('ui.crewAssignBtn')+'" style="background:rgba(0,243,255,.03);border:1px dashed rgba(0,243,255,.2);border-radius:6px;cursor:pointer;width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;display:flex;align-items:center;justify-content:center;color:rgba(0,243,255,.3);font-size:24px;line-height:1" onmouseover="this.style.background=\'rgba(0,243,255,.08)\'" onmouseout="this.style.background=\'rgba(0,243,255,.03)\'">+</button>'
             +'<span style="font-size:8px;color:rgba(255,255,255,.18);text-align:center;max-width:51px;line-height:1">'+I18N.t('ui.emptySlot')+'</span>'
             +'</div>';
         }
@@ -4833,7 +4833,7 @@ function renderShipTab(body){
             ${_cextCells}
           </div>`;
           const _partsCol=`<div style="flex:1;min-width:${_partsGridW}px;padding-right:6px;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">⚙️ <b style="color:var(--gold)">파츠 장비</b> ${(s.parts||[]).length}개 · ${PART_ROWS}×${PART_COLS} 슬롯 <span style="opacity:.45;font-size:9px">클릭=탈착</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">⚙️ <b style="color:var(--gold)">${I18N.t('ui.partsEquip')}</b> ${(s.parts||[]).length}개 · ${PART_ROWS}×${PART_COLS} 슬롯 <span style="opacity:.45;font-size:9px">클릭=탈착</span></div>
             <div style="flex-shrink:0;overflow-x:auto;max-width:100%;display:flex;align-items:flex-start">${partsGridHtml}${_cargoExtCol}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0">
@@ -4870,7 +4870,7 @@ function renderShipTab(body){
             <div style="display:grid;grid-template-columns:repeat(${crewCols},51px);grid-template-rows:repeat(${_crewRows},51px);gap:3px;flex-shrink:0">${crewGrid}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;justify-content:flex-start;align-self:flex-start;max-width:100%">
-              <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:3px 8px;white-space:nowrap" onclick="pickCrewForSlot(${idx})">+ 크루 배치</button>
+              <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:3px 8px;white-space:nowrap" onclick="pickCrewForSlot(${idx})">${I18N.t('ui.crewAssignPlus')}</button>
               ${_crewExtBtn}
               ${(s.crewIds||[]).length>0?`<button class="btn btn-sm" style="border-color:#f88;color:#f88;font-size:11px;padding:3px 8px;white-space:nowrap" onclick="unassignAllCrew(${idx})">👤 전원 하선</button>`:''}
             </div>
@@ -4922,12 +4922,12 @@ function renderShipTab(body){
           </div>
           <!-- Col 2: Parts 그리드 -->
           <div style="flex-shrink:0;padding:8px 10px;border-right:1px solid var(--bdr)">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">⚙️ <b style="color:var(--gold)">파츠 장비</b> ${(s.parts||[]).length}개 <span style="opacity:.45;font-size:9px">클릭=탈착</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">⚙️ <b style="color:var(--gold)">${I18N.t('ui.partsEquip')}</b> ${(s.parts||[]).length}개 <span style="opacity:.45;font-size:9px">클릭=탈착</span></div>
             ${partsGridHtml}
           </div>
           <!-- Col 3: Crew 그리드 -->
           <div style="flex-shrink:0;padding:8px 10px;border-right:1px solid var(--bdr)">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">👥 <b style="color:var(--green)">크루 배치</b> ${(s.crewIds||[]).length}/${maxCrew}명 <span style="opacity:.45;font-size:9px">클릭=배치</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">👥 <b style="color:var(--green)">${I18N.t('ui.crewAssignBtn')}</b> ${(s.crewIds||[]).length}/${maxCrew}명 <span style="opacity:.45;font-size:9px">클릭=배치</span></div>
             <div style="display:grid;grid-template-columns:repeat(${crewCols},51px);gap:4px">${crewGrid}</div>
           </div>
           <!-- Col 4: Cargo 그리드 -->
@@ -5839,8 +5839,8 @@ function renderCargoOnlyTab(body){
       </button>
     </div>
     <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap">
-      <span style="font-size:13px;color:var(--cyan)"><b>전체 보유</b> ${usedSlots}/${totalSlots}칸</span>
-      <span style="font-size:13px;color:var(--gold)"><b>총 가치</b> ₡${totalValue.toLocaleString()}</span>
+      <span style="font-size:13px;color:var(--cyan)"><b>${I18N.t('ui.totalOwned')}</b> ${usedSlots}/${totalSlots}칸</span>
+      <span style="font-size:13px;color:var(--gold)"><b>${I18N.t('ui.totalValue')}</b> ₡${totalValue.toLocaleString()}</span>
       <span style="font-size:12px;color:var(--dim);margin-left:auto">함선별 화물칸 관리 · 빈칸 클릭으로 개별 확장</span>
     </div>
     ${shipCards||`<div style="text-align:center;color:var(--dim);padding:30px">${I18N.t('ui.noShips')}</div>`}
@@ -11617,10 +11617,10 @@ function renderAuctionView(body){
           <div style="font-size:16px;font-weight:bold">${p.nm}</div>
           <div style="font-size:12px;color:${f.col};margin-top:2px">${f.nm} | 링${p.ring}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 ₡${p.tax.toLocaleString()}/턴 | 회수 ${roi}턴</div>
-          <div style="font-size:12px;margin-top:3px">시작가 <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-sm btn-gold" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'} title="100% 낙찰 확정" style="white-space:nowrap;font-size:11px;padding:4px 8px">즉시낙찰<br>₡${instBid.toLocaleString()}</button>
+          <button class="btn btn-sm btn-gold" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'} title="100% 낙찰 확정" style="white-space:nowrap;font-size:11px;padding:4px 8px">${I18N.t('ui.instantWin')}<br>₡${instBid.toLocaleString()}</button>
           <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="customBid('${p.id}',${startBid})" ${G.credits>=startBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.directBidProb')}</button>
           <input class="inp" type="number" id="bid-${p.id}" placeholder="₡${startBid.toLocaleString()} 이상" min="${startBid}" style="width:80px;height:28px;font-size:11px">
         </div>
@@ -11645,7 +11645,7 @@ function renderAuctionView(body){
           <div style="font-size:16px;font-weight:bold;color:#cc66ff">${p.nm} <span style="font-size:11px;background:#8b00ff33;border:1px solid #8b00ff66;padding:1px 5px;border-radius:6px">⚔️ 합병</span></div>
           <div style="font-size:12px;color:${f.col};margin-top:2px">${f.nm} | 링${p.ring} | 전투 승리 ✅</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 ₡${p.tax.toLocaleString()}/턴 | 회수 ${roi}턴</div>
-          <div style="font-size:12px;margin-top:3px">시작가 <span style="color:#cc66ff">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:#cc66ff">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:#cc66ff;margin-top:2px">${I18N.t('ui.mergedSafeVisit')}</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
@@ -11673,11 +11673,11 @@ function renderAuctionView(body){
           <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${p.nm} <span style="font-size:11px;background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.4);padding:1px 5px;border-radius:6px">🌌 균열지대</span></div>
           <div style="font-size:12px;color:var(--cyan);margin-top:2px">보이드 | 링${p.ring} | 균열 지대</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 <b style="color:var(--cyan)">₡${p.tax.toLocaleString()}/턴</b> — 치크스 2배 💰 | 회수 ${roi}턴</div>
-          <div style="font-size:12px;margin-top:3px">시작가 <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">✦신화 파츠 4종 + 신화/전설기함 함선 보유 조건 충족</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>즉시낙찰<br>₡${instBid.toLocaleString()}</button>
+          <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.instantWin')}<br>₡${instBid.toLocaleString()}</button>
           <button class="btn btn-sm" style="border-color:rgba(0,243,255,.5);color:var(--cyan);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="customBid('${p.id}',${startBid})" ${G.credits>=startBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.directBidProb')}</button>
           <input class="inp" type="number" id="bid-${p.id}" placeholder="₡${startBid.toLocaleString()} 이상" min="${startBid}" style="width:90px;height:28px;font-size:11px">
         </div>
@@ -11730,7 +11730,7 @@ function renderAuctionView(body){
   // 우측: 입찰 중 행성 (기존 카드들)
   const biddingHtml=`<div style="display:flex;flex-direction:column;height:100%;min-height:0">
     <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--dim);margin-bottom:10px;line-height:1.6;flex-shrink:0">
-      💡 <b style="color:var(--gold)">즉시낙찰</b> +30% 프리미엄 100% 확정 · <b style="color:var(--cyan)">직접입찰</b> 60~90% 확률<br>
+      💡 <b style="color:var(--gold)">${I18N.t('ui.instantWin')}</b> +30% 프리미엄 100% 확정 · <b style="color:var(--cyan)">직접입찰</b> 60~90% 확률<br>
       💡 난이도 ${{easy:'쉬움 +5%',normal:'보통 +15%',hard:'어려움 +22%',extreme:'극악 +30%'}[G.difficulty]||'보통 +15%'} · 턴당 2회 입찰
     </div>
     ${G.heroes.includes('H03')?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--gold);margin-bottom:8px;flex-shrink:0">👑 광개토대왕 효과: 경매가 30% 할인</div>`:''}
@@ -12224,7 +12224,7 @@ function renderCodexTab(body){
     const totalHave=PARTS.filter(p=>haveSet.has(p.id)).length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">⚙️</div>
-      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">파츠 도감</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.partsCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">보유 <span style="color:var(--cyan)">${totalHave}</span> / 전체 ${PARTS.length}종</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalHave/PARTS.length*100)}%</div></div>
@@ -12293,7 +12293,7 @@ function renderCodexTab(body){
     const totalUnlocked=1+recruited+_specials.filter(c=>c.id==='NPC_BAEKGU'||(c.id==='NPC_URSA'&&G._earthLiberated)||(c.id==='NPC_BLACKFALCON'&&G._falconDefeated)).length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">⭐</div>
-      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">인물 도감</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.heroCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${totalUnlocked}</span> / 전체 ${totalChars}명 · 카드 클릭 시 상세</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalUnlocked/totalChars*100)}%</div></div>
@@ -12369,7 +12369,7 @@ function renderCodexTab(body){
     }).join('');
     content='<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">'
       +'<div style="font-size:29px">🪐</div>'
-      +'<div><div style="font-size:14px;color:var(--txt);font-weight:bold">행성 도감</div>'
+      +`<div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.planetCodex')}</div>`
       +'<div style="font-size:12px;color:var(--dim)">방문 <span style="color:var(--cyan)">'+totalVisited+'</span> / 전체 '+PLANET_DEF.length+'개 · 클릭하면 상세 정보</div></div>'
       +'<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">탐험도</div>'
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalVisited/PLANET_DEF.length*100)+'%</div></div></div>'
