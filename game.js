@@ -3521,7 +3521,7 @@ function startChixFleetCombat(raidDef){
     initCombatCanvas();
     const waveLbl=['1차','2차','3차','4차','5차 최종'][wave];
     const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.titleChixWave',{wave:waveLbl,nm:raidDef.nm});
-    setTimeout(()=>{addCombatLog(`🛸 치크스 ${waveLbl} 함대 ${raidDef._enemies.length}척 출현!`,'');runCombatTurn();},400);
+    setTimeout(()=>{addCombatLog(I18N.t('combat.chixFleetAppear',{wave:waveLbl,n:raidDef._enemies.length}),'');runCombatTurn();},400);
   });
 }
 
@@ -9821,7 +9821,7 @@ function spawnDebrisReinforcementToCombat(){
   }
   combatState.enemies.push(...newEnemies);
   // 로그 + 알림 + 사운드
-  addCombatLog(`🏴‍☠️ 잔해 해적 ${joinCount}척이 전투에 합류! (탐색 신호를 듣고 몰려옴)`,'err');
+  addCombatLog(I18N.t('combat.debrisPiratesJoin',{n:joinCount}),'err');
   notify(`🏴‍☠️ 잔해 해적 ${joinCount}척 합류!`,'warn');
   try{baekgu(I18N.t('baekgu.debrisPirates'));}catch(e){}
   try{sfxAlert();}catch(e){}
@@ -15071,7 +15071,7 @@ function fleeCombat(){
   G.credits=Math.max(100,G.credits-_pen);
   try{changeReputation(-_repLoss);}catch(e){}
   const _tecNote=_penMul<0.95?` (엔진 우위 ${Math.round((1-_penMul)*100)}% 감면)`:'';
-  addCombatLog(`🚀 전투 이탈! 크레딧 -₡${_pen.toLocaleString()} / 명성 -${_repLoss}${_tecNote}`,'err');
+  addCombatLog(I18N.t('combat.fleeWithPenalty',{pen:_pen.toLocaleString(),rep:_repLoss,tec:_tecNote}),'err');
   notify(`🚀 도망 성공. ₡${_pen.toLocaleString()} 손실 / 명성 -${_repLoss}${_tecNote}`,'err');
   try{baekgu(I18N.t('baekgu.fledStronger'));}catch(e){}
   // 아군 함대 HP 동기화 (전투 중 데미지 보존)
@@ -16399,7 +16399,7 @@ function runCombatTurn(){
         _tgt._origATT_LGD2=_tgt.ATT;
         _tgt.ATT=Math.max(1,Math.round((_tgt.ATT||1)*0.5));
         _tgt._wardClyffeDebuffTurn=combatState.turn;
-        addCombatLog(`⚡ 워덴클리프 — ${_tgt.nm||'적'} 모듈 비활성화! 이번 턴 ATT 50% 감소`,'gold');
+        addCombatLog(I18N.t('combat.wardenclyffe',{nm:_tgt.nm||I18N.t('combat.enemyLabel')}),'gold');
       }
     }
   }
@@ -16411,10 +16411,10 @@ function runCombatTurn(){
     const _enTec=en.reduce((s,u)=>s+(u.TEC||0),0);
     if(_plTec >= _enTec*1.2 && _plTec>0){
       pl.forEach(p=>{if(!p._origATT)p._origATT=p.ATT; p.ATT=Math.round(p.ATT*1.2);});
-      addCombatLog(`⚡ 선제공격! 아군 함대 엔진 우위 (TEC ${_plTec} vs ${_enTec}) — 이번 턴 ATT ×1.2`,'gold');
+      addCombatLog(I18N.t('combat.firstStrikeAlly',{pl:_plTec,en:_enTec}),'gold');
     } else if(_enTec >= _plTec*1.2 && _enTec>0){
       en.forEach(e=>{e.ATT=Math.round((e.ATT||1)*1.2);});
-      addCombatLog(`⚠️ 적 선제공격! 적 함대 엔진 우위 (TEC ${_enTec} vs ${_plTec}) — 이번 턴 적 ATT ×1.2`,'err');
+      addCombatLog(I18N.t('combat.firstStrikeEnemy',{en:_enTec,pl:_plTec}),'err');
     }
   }
   // ── 일점사(집중사격) 타겟 승계 — 이전 타겟 격침 시 다음 가장 앞쪽 적으로 자동 전환 ──
@@ -16430,7 +16430,7 @@ function runCombatTurn(){
           return ar-br;
         })[0];
       combatState._focusTargetId=_next?_next.id:null;
-      if(_next)addCombatLog(`⚔️ 집중사격 타겟 승계 — ${_next.nm}`,'gold');
+      if(_next)addCombatLog(I18N.t('combat.focusTargetSwitch',{nm:_next.nm}),'gold');
     }
   }
 
@@ -16480,7 +16480,7 @@ function runCombatTurn(){
             }
             try{_cbStartAnimLoop();}catch(_e){}
             try{AudioMgr.playSfx('gacha_pull',{vol:0.4});}catch(e){}
-            addCombatLog(`✦ ${p.nm||'아군'} ▶ 보이드의 창 — 충전 중...`,'gold');
+            addCombatLog(I18N.t('combat.voidSpearCharging',{nm:p.nm||I18N.t('combat.allyLabel')}),'gold');
           }
         } else if(_now>=p._voidSpearChargeFireAt){
           // 충전 완료 — 발사
@@ -16499,7 +16499,7 @@ function runCombatTurn(){
           tgt.sh=0; tgt.hp=0;
           const gs=G.fleet.find(s=>s.id===p.id);  // (참조용 — 데미지는 enemy 상태에만)
           log.push(`💥 ${p.nm||'아군'} ▶ 보이드의 창 발사! ${tgt.nm||'적'} 즉시 파괴 ✦`);
-          addCombatLog(`💥 ${p.nm||'아군'} ▶ 보이드의 창! ${tgt.nm||'적'} 즉시 파괴 ✦`,'gold');
+          addCombatLog(I18N.t('combat.voidSpearFired',{nm:p.nm||I18N.t('combat.allyLabel'),tgt:tgt.nm||I18N.t('combat.enemyLabel')}),'gold');
           if(ap&&ep){
             const a1=_txPos(ap), a2=_txPos(ep);
             // 충전 글로우 (붉은색)
@@ -16644,7 +16644,7 @@ function runCombatTurn(){
         G._falconDefeated=true;
         // 남은 모든 적함 함께 어둠 속으로 사라짐
         combatState.enemies.forEach(e=>{e.hp=0;e.sh=0;});
-        addCombatLog(`💬 [블랙팔콘] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...`,'gold');
+        addCombatLog(I18N.t('combat.blackfalconRetreatLog'),'gold');
         drawCombatFrame();
         combatState.done=true;  // 일반 finishCombat 흐름 차단
         try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
