@@ -3995,7 +3995,7 @@ function buyComm(id,_silent=false){
   }
   const totalQty=G.cargo.reduce((s,c)=>s+c.qty,0);
   const cargoMax=getCargoMax();
-  if(totalQty>=cargoMax){notify(`화물창 만석 (${totalQty}/${cargoMax}) — 함선 거래소에서 창고 확장`,'err');return;}
+  if(totalQty>=cargoMax){notify(I18N.t('notify.cargoFullN',{n:totalQty,max:cargoMax}),'err');return;}
   // 구매 취소(undo)용 스냅샷 — cargo + stock + 차감된 크레딧 (사용자 요청: 구매 취소 시 이전 상태로)
   const _undoSnap=!_silent?{
     type:'buyCargoSnap',
@@ -4025,7 +4025,7 @@ function buyCargoItem(id){
   if(ci.quest){notify(I18N.t('notify.questRewardItem'),'err');return;}
   const stock=G.shopStock[G.currentPlanet];
   if(!stock||!stock['cargo_'+id]||stock['cargo_'+id]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
-  if(G.credits<ci.price){notify(`크레딧 부족 (필요: ₡${ci.price.toLocaleString()})`, 'err');return;}
+  if(G.credits<ci.price){notify(I18N.t('notify.needCreditsCost',{cost:ci.price.toLocaleString()}),'err');return;}
   // 인벤토리 슬롯 체크 (hero/legend는 2칸)
   const invSlotUsed=(G.inventory||[]).reduce(function(s,iv){
     const p=PARTS.find(function(p){return p.id===iv.id;});
@@ -4307,7 +4307,7 @@ function upgradeCrewMax(shipIdx,fromModal){
     return;
   }
   const cost=getCrewMaxUpgradePrice(s);
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;
   s.crewMaxExtra=((+s.crewMaxExtra)||0)+CREW_EXT_PER;
   updateHUD();
@@ -4427,7 +4427,7 @@ function upgradePartsRow(shipIdx,fromModal){
     return;
   }
   const cost=getPartsUpgradePrice(s);
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`, 'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;
   s.partsRowsExtra=cur+1;
   const newRows=getShipPartsGridRows(s);
@@ -5462,7 +5462,7 @@ function undoLastSell(){
   if(!ls){notify(I18N.t('notify.noTradesToUndo'),'warn');return;}
   // 매각 취소는 크레딧 차감 필요 — 구매 취소(buyCargoSnap)는 크레딧 환불이므로 사전 검사 불필요
   if(ls.type!=='buyCargoSnap'&&G.credits<ls.credits){
-    notify(`크레딧 부족 — 매각 취소하려면 ₡${ls.credits.toLocaleString()} 필요`,'err');
+    notify(I18N.t('notify.needCreditsRefund',{cost:ls.credits.toLocaleString()}),'err');
     return;
   }
   try{
@@ -5853,7 +5853,7 @@ function upgradeAllCargo(){
   const targets=G.fleet.map((s,i)=>({s,i})).filter(x=>(x.s.cargoSlots||4)<80);
   if(targets.length===0){notify(I18N.t('notify.allShipsHoldsMax'),'warn');return;}
   const total=targets.reduce((s,x)=>s+getCargoUpgradePrice(x.s),0);
-  if((G.credits||0)<total){notify(`크레딧 부족 — 총 비용 ₡${total.toLocaleString()}`,'err');return;}
+  if((G.credits||0)<total){notify(I18N.t('notify.needCreditsTotal',{cost:total.toLocaleString()}),'err');return;}
   G.credits-=total;
   targets.forEach(x=>{x.s.cargoSlots=Math.min(80,(x.s.cargoSlots||4)+2);});
   notify(`📦 ${targets.length}척 +2칸 확장 (-₡${total.toLocaleString()})`,'gold');
@@ -5968,7 +5968,7 @@ function applyShipSkin(shipIdx, skinId){
   const sk=(SHIP_CATALOG||[]).find(x=>x.id===skinId);
   if(!sk){notify(I18N.t('notify.skinNone'),'err');return;}
   const price=Math.max(100,Math.floor((sk.price||0)*0.10));
-  if(G.credits<price){notify(`크레딧 부족 — 필요 ₡${price.toLocaleString()}`,'err');return;}
+  if(G.credits<price){notify(I18N.t('notify.needCreditsShort',{cost:price.toLocaleString()}),'err');return;}
   G.credits-=price;
   // catalogId 가 있으면 그것을, 없으면 id 를 사용 (URSA, CHIX_S 등의 별칭 처리)
   s._skinCatId=sk.catalogId||skinId;
@@ -6141,14 +6141,14 @@ function doShipEnhance(shipIdx){
   if(curLv>=10){notify('이미 최대 +10 강화','warn');return;}
   const nextLv=curLv+1;
   const cost=_enhanceCost(curLv,s);
-  if((G.credits||0)<cost){notify(`크레딧 부족 — ₡${cost.toLocaleString()}`,'err');return;}
+  if((G.credits||0)<cost){notify(I18N.t('notify.needCreditsAmt',{cost:cost.toLocaleString()}),'err');return;}
   // 강화 시도 효과음 (사용자 요청)
   try{AudioMgr.playSfx('UI_click',{vol:0.5,cooldown:30});}catch(e){}
   try{AudioMgr.playSfx('gacha_pull',{vol:0.6,cooldown:0});}catch(e){}
   const mats=_enhanceMatsFor(s,curLv);
   if(!G.materials)G.materials={};
   for(const m of mats){
-    if((G.materials[m]||0)<1){const c=COMMODITIES.find(x=>x.id===m);notify(`재료 부족: ${c?.nm||m}`,'err');return;}
+    if((G.materials[m]||0)<1){const c=COMMODITIES.find(x=>x.id===m);notify(I18N.t('notify.needMaterial',{nm:c?.nm||m}),'err');return;}
   }
   // 자원 소모
   G.credits-=cost;
@@ -6442,7 +6442,7 @@ function renderFleetFormationTab(body){
 function repairAllShips(){
   const totalCost=G.fleet.reduce((sum,s)=>sum+repairCost(s)+shRepairCost(s),0);
   if(totalCost===0){notify(I18N.t('notify.allShipsRepaired'),'warn');return;}
-  if(G.credits<totalCost){notify(`크레딧 부족 (필요: ₡${totalCost.toLocaleString()})`, 'err');return;}
+  if(G.credits<totalCost){notify(I18N.t('notify.needCreditsCost',{cost:totalCost.toLocaleString()}),'err');return;}
   G.credits-=totalCost;
   let repaired=0;
   G.fleet.forEach(s=>{
@@ -6457,7 +6457,7 @@ function repairShip(idx,type){
   const b=getPartBonus(s);
   const cost=type==='hp'?repairCost(s):shRepairCost(s);
   if(cost===0){notify(I18N.t('notify.alreadyMaxed'),'warn');return;}
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
@@ -6469,7 +6469,7 @@ function repairShipModal(idx,type){
   const b=getPartBonus(s);
   const cost=type==='hp'?repairCost(s):shRepairCost(s);
   if(cost===0){notify(I18N.t('notify.alreadyMaxed'),'warn');showShipDetailModal(idx);return;}
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');showShipDetailModal(idx);return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');showShipDetailModal(idx);return;}
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
@@ -6481,7 +6481,7 @@ function repairShipFullModal(idx){
   const b=getPartBonus(s);
   const cost=repairCost(s)+shRepairCost(s);
   if(cost===0){notify(I18N.t('notify.alreadyFullyRepaired'),'warn');showShipDetailModal(idx);return;}
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');showShipDetailModal(idx);return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');showShipDetailModal(idx);return;}
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
   updateHUD();notify(`⚡ ${s.nm} 완전수리 (-₡${cost.toLocaleString()})`,'gold');
@@ -7876,7 +7876,7 @@ function repairShipFull(idx){
   const b=getPartBonus(s);
   const cost=repairCost(s)+shRepairCost(s);
   if(cost===0){notify(I18N.t('notify.alreadyFullyRepaired'),'warn');return;}
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);
   if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
@@ -7893,7 +7893,7 @@ function assignCrew(shipIdx){
   // 이미 이 함선에 탑승 중
   if(s.crewIds.includes(cid)){notify(I18N.t('notify.alreadyAboard'),'warn');return;}
   // 최대 탑승 인원 체크 (10명)
-  const _maxC=getMaxCrew(s);if(s.crewIds.length>=_maxC){notify(`이 함선은 최대 ${_maxC}명까지 탑승 가능합니다 (현재 ${s.crewIds.length}명)`,'err');return;}
+  const _maxC=getMaxCrew(s);if(s.crewIds.length>=_maxC){notify(I18N.t('notify.maxCrewReached',{max:_maxC,cur:s.crewIds.length}),'err');return;}
   // 다른 함선에서 자동 이전
   G.fleet.forEach(sh=>{if(sh!==s&&sh.crewIds){const i=sh.crewIds.indexOf(cid);if(i>=0){sh.crewIds.splice(i,1);}}});
   const _stBefAC=getShipStats(s);
@@ -8141,7 +8141,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
   }
   if(cur+2>80){notify(`화물칸 최대 80칸 한도 — +${80-cur}칸만 추가 가능`,'err');return;}
   const cost=getCargoUpgradePrice(s);
-  if(G.credits<cost){notify(`크레딧 부족 (필요: ₡${cost.toLocaleString()})`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;s.cargoSlots=Math.min(80,cur+2);
   updateHUD();notify(`📦 ${s.nm} 창고 확장! (${s.cargoSlots}칸) -₡${cost.toLocaleString()}`,'ok');
   baekgu(`${s.nm} 창고 ${s.cargoSlots}칸으로 확장. ${s.cargoSlots>=80?'이제 최대야!':'다음 확장은 더 비싸질 거야.'}`);

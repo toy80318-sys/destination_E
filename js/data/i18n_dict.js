@@ -773,6 +773,24 @@ I18N.register({
   'emailLoad.baekguHint':{ ko: '예전에 등록한 이메일 적으면<br>옛 사령관 진행 상황 다 불러올게.<br>새 이메일이면 빈 상태로 시작이야.',
                            en: 'Enter a previously registered email<br>and I’ll restore the old Commander’s progress.<br>A new email starts blank.' },
 
+  // ── G27: 동적 notify 템플릿 ───────────────────────────────────────
+  'notify.cargoFullN':       { ko: '화물창 만석 ({n}/{max}) — 함선 거래소에서 창고 확장',
+                               en: 'Cargo full ({n}/{max}) — expand at Ship Trade' },
+  'notify.needCreditsCost':  { ko: '크레딧 부족 (필요: ₡{cost})',
+                               en: 'Not enough credits (need: ₡{cost})' },
+  'notify.needCreditsRefund':{ ko: '크레딧 부족 — 매각 취소하려면 ₡{cost} 필요',
+                               en: 'Not enough credits — need ₡{cost} to cancel sale' },
+  'notify.needCreditsTotal': { ko: '크레딧 부족 — 총 비용 ₡{cost}',
+                               en: 'Not enough credits — total cost ₡{cost}' },
+  'notify.needCreditsShort': { ko: '크레딧 부족 — 필요 ₡{cost}',
+                               en: 'Not enough credits — need ₡{cost}' },
+  'notify.needCreditsAmt':   { ko: '크레딧 부족 — ₡{cost}',
+                               en: 'Not enough credits — ₡{cost}' },
+  'notify.needMaterial':     { ko: '재료 부족: {nm}',
+                               en: 'Missing material: {nm}' },
+  'notify.maxCrewReached':   { ko: '이 함선은 최대 {max}명까지 탑승 가능합니다 (현재 {cur}명)',
+                               en: 'This ship can carry at most {max} crew (currently {cur})' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
