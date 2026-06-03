@@ -3553,7 +3553,7 @@ function triggerTravelPirate(pd){
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${pd?.nm||''} 항로 — 해적단 조우!</div>
       <div style="color:var(--dim);font-size:12px;line-height:1.7">
         이동 중 해적 ${eCount}척에게 기습당했습니다!<br>
-        <span style="color:var(--muted);font-size:11px">조우 확률: ${chance}% (링${ring} · ${({easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'})[G.difficulty]||'보통'})</span>
+        <span style="color:var(--muted);font-size:11px">조우 확률: ${chance}% (링${ring} · ${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')})</span>
       </div>
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
@@ -4730,7 +4730,7 @@ function renderShipTab(body){
     // 정비 서브탭: parts(파츠+크루) / cargo(화물칸 전용) / formation(편대)
     const _isMaintain=_garageSubTab!=='formation'&&_garageSubTab!=='cargo';
     const garageSubNav=G._garageMode?`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-      ${[{k:'parts',lb:'🔧 함선 정비'},{k:'cargo',lb:'📦 화물 관리'},{k:'formation',lb:'⚓ 편대 편성'},{k:'skin',lb:'✨ 함선 스킨'},{k:'enhance',lb:'⚡ 함선 강화'}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
+      ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
     </div>`:'';
     const sortBar=garageSubNav+`<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
       <span style="font-size:12px;color:var(--dim)">정렬:</span>
@@ -5944,7 +5944,7 @@ function renderCargoOnlyTab(body){
   G._garageMode=true;
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    ${[{k:'parts',lb:'🔧 함선 정비'},{k:'cargo',lb:'📦 화물 관리'},{k:'formation',lb:'⚓ 편대 편성'},{k:'skin',lb:'✨ 함선 스킨'},{k:'enhance',lb:'⚡ 함선 강화'}].map(t=>{
+    ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(t=>{
       const act=(t.k===_garageSubTab);
       return`<button onclick="_garageSubTab='${t.k}';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid ${act?'var(--cyan)':'var(--bdr)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'var(--dim)'};border-radius:6px;cursor:pointer;font-size:12px;font-weight:${act?'bold':'normal'}">${t.lb}</button>`;
     }).join('')}
@@ -6069,7 +6069,7 @@ function renderShipSkinTab(body){
   if(!body)return;
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    ${[{k:'parts',lb:'🔧 함선 정비'},{k:'cargo',lb:'📦 화물 관리'},{k:'formation',lb:'⚓ 편대 편성'},{k:'skin',lb:'✨ 함선 스킨'},{k:'enhance',lb:'⚡ 함선 강화'}].map(t=>{
+    ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(t=>{
       const act=(t.k===_garageSubTab);
       return`<button onclick="_garageSubTab='${t.k}';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid ${act?'var(--cyan)':'var(--bdr)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'var(--dim)'};border-radius:6px;cursor:pointer;font-size:12px;font-weight:${act?'bold':'normal'}">${t.lb}</button>`;
     }).join('')}
@@ -6211,7 +6211,7 @@ function renderShipEnhanceTab(body){
   if(!body)return;
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    ${[{k:'parts',lb:'🔧 함선 정비'},{k:'cargo',lb:'📦 화물 관리'},{k:'formation',lb:'⚓ 편대 편성'},{k:'skin',lb:'✨ 함선 스킨'},{k:'enhance',lb:'⚡ 함선 강화'}].map(t=>{
+    ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(t=>{
       const act=(t.k===_garageSubTab);
       return`<button onclick="_garageSubTab='${t.k}';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid ${act?'var(--cyan)':'var(--bdr)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'var(--dim)'};border-radius:6px;cursor:pointer;font-size:12px;font-weight:${act?'bold':'normal'}">${t.lb}</button>`;
     }).join('')}
@@ -6495,7 +6495,7 @@ function renderFleetFormationTab(body){
   // 정비소 서브탭: 함선 정비 + 화물 관리 + 편대 편성 (3개 통합)
   const _isMaintain=_garageSubTab!=='formation'&&_garageSubTab!=='cargo';
   const subNav=`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    ${[{k:'parts',lb:'🔧 함선 정비'},{k:'cargo',lb:'📦 화물 관리'},{k:'formation',lb:'⚓ 편대 편성'},{k:'skin',lb:'✨ 함선 스킨'},{k:'enhance',lb:'⚡ 함선 강화'}].map(t=>{
+    ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(t=>{
       const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));
       return`<button onclick="_garageSubTab='${t.k}';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid ${act?'var(--cyan)':'var(--bdr)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'var(--dim)'};border-radius:6px;cursor:pointer;font-size:12px;font-weight:${act?'bold':'normal'}">${t.lb}</button>`;
     }).join('')}
@@ -15066,7 +15066,7 @@ function showHostilePlanetBriefing(planetDef){
       <div style="font-size:42px;margin-bottom:4px">⚠️</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${planetDef.nm} — 적군 함대 포착</div>
       <div style="color:var(--dim);font-size:12px;line-height:1.7">
-        링 ${planetDef.ring||2} · ${({easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'})[G.difficulty]||'보통'} 난이도<br>
+        링 ${planetDef.ring||2} · ${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')} 난이도<br>
         <span style="color:${advisor.c};font-weight:bold">⚖️ 전력 평가: ${advisor.t}</span>
       </div>
     </div>
@@ -18125,7 +18125,7 @@ function _hofRowsHtml(list,diffLabel){
   }).join('');
 }
 function _renderHofTab(tab){
-  const diffLabel={easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'};
+  const diffLabel={easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')};
   const body=document.getElementById('hof-body');if(!body)return;
   if(tab==='mine'){
     const hall=G.hallOfFame||[];
@@ -19029,7 +19029,7 @@ function showFinalEndingCredits(){
         영웅 영입: <b style="color:#ff99ff">${heroList.length}/8</b><br>
         행성 보유: <b style="color:#66ddff">${Object.values(G.planets||{}).filter(p=>p.owned).length}/30</b><br>
         최종 크레딧: <b style="color:#ffd700">₡${(G.credits||0).toLocaleString()}</b><br>
-        난이도: <b style="color:#fff">${({easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'})[G.difficulty]||'보통'}</b>
+        난이도: <b style="color:#fff">${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')}</b>
       </div>
 
       <!-- 제작진 -->
@@ -19320,7 +19320,7 @@ function showEndingCredits(onDone){
           영웅 영입: <b style="color:#ff99ff">${(G.heroes||[]).length}/8</b><br>
           행성 보유: <b style="color:#66ddff">${Object.values(G.planets).filter(p=>p.owned).length}/30</b><br>
           최종 크레딧: <b style="color:#ffd700">₡${(G.credits||0).toLocaleString()}</b><br>
-          난이도: <b style="color:#fff">${({easy:'쉬움',normal:'보통',hard:'어려움',extreme:'극악'})[G.difficulty]||'보통'}</b>
+          난이도: <b style="color:#fff">${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')}</b>
         </div>
 
         <div style="color:#aaa;font-size:14px;letter-spacing:6px;margin-bottom:6px">격파 적함</div>

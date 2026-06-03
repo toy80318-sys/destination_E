@@ -124,13 +124,38 @@ I18N.register({
 
   // ── 자주 쓰이는 UI 라벨 ──────────────────────────────────────────────
   'ui.noInfo':         { ko: '정보 없음',     en: 'No info' },
+  'ui.unknown':        { ko: '알 수 없음',   en: 'Unknown' },
+  'ui.none':           { ko: '없음',          en: 'None' },
   'ui.legendFlagship': { ko: '전설기함',      en: 'Legendary Flagship' },
   'ui.allies':         { ko: '아군',          en: 'Allies' },
   'ui.enemies':        { ko: '적',            en: 'Enemies' },
   'ui.crew':           { ko: '크루',          en: 'Crew' },
   'ui.admiral':        { ko: '제독',          en: 'Admiral' },
+  'ui.broker':         { ko: '브로커',        en: 'Broker' },
   'ui.heroLabel':      { ko: '영웅',          en: 'Hero' },
+  'ui.shipLabel':      { ko: '함선',          en: 'Ship' },
+  'ui.mothership':     { ko: '모선',          en: 'Mothership' },
   'ui.shipGarage':     { ko: '함선 정비소',   en: 'Ship Garage' },
+  'ui.nameLabel':      { ko: '🔤 이름',       en: '🔤 Name' },
+  'ui.buy':            { ko: '구매',          en: 'Buy' },
+  'ui.partLabel':      { ko: '파츠',          en: 'Part' },
+  'ui.weapon':         { ko: '무기',          en: 'Weapon' },
+  'ui.shield':         { ko: '실드',          en: 'Shield' },
+  'ui.engine':         { ko: '엔진',          en: 'Engine' },
+  'ui.continueArrow':  { ko: '계속 ▶',        en: 'Continue ▶' },
+
+  // ── 정비소 5개 탭 라벨 ───────────────────────────────────────────────
+  'garage.shipMaint':  { ko: '🔧 함선 정비',  en: '🔧 Ship Maintenance' },
+  'garage.cargo':      { ko: '📦 화물 관리',  en: '📦 Cargo' },
+  'garage.formation':  { ko: '⚓ 편대 편성',  en: '⚓ Formation' },
+  'garage.shipSkin':   { ko: '✨ 함선 스킨',  en: '✨ Ship Skins' },
+  'garage.shipEnhance':{ ko: '⚡ 함선 강화',  en: '⚡ Ship Enhance' },
+
+  // ── 난이도 라벨 ──────────────────────────────────────────────────────
+  'difficulty.easy':    { ko: '쉬움',    en: 'Easy' },
+  'difficulty.normal':  { ko: '보통',    en: 'Normal' },
+  'difficulty.hard':    { ko: '어려움',  en: 'Hard' },
+  'difficulty.extreme': { ko: '극악',    en: 'Extreme' },
 
   // ── G3: 빈출 baekgu() 대사 25종 ────────────────────────────────────
   'baekgu.askMore':              { ko: '응? 뭔가 물어봐야 대답하지.',
