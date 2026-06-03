@@ -103,6 +103,35 @@ I18N.register({
   'notify.noTempShip':          { ko: '임시함선 없음',                    en: 'No temporary ship' },
   'notify.noEquippableParts':   { ko: '인벤토리에 장착 가능한 파츠가 없습니다', en: 'No equippable parts in inventory' },
 
+  // ── 희귀도(rarity) 라벨 — I18N.rarity() 헬퍼에서 참조 ────────────────
+  'rarity.common':   { ko: '일반',   en: 'Common' },
+  'rarity.uncommon': { ko: '고급',   en: 'Uncommon' },
+  'rarity.rare':     { ko: '희귀',   en: 'Rare' },
+  'rarity.hero':     { ko: '영웅',   en: 'Hero' },
+  'rarity.legend':   { ko: '전설',   en: 'Legend' },
+  'rarity.mythic':   { ko: '신화',   en: 'Mythic' },
+  'rarity.set':      { ko: '세트',   en: 'Set' },
+  'rarity.story':    { ko: '스토리', en: 'Story' },
+
+  // ── 화자(speaker) 라벨 — 대사 모달의 sp 필드 ────────────────────────
+  'speaker.baekgu':     { ko: '백구',           en: 'Baekgu' },
+  'speaker.commander':  { ko: '사령관',         en: 'Commander' },
+  'speaker.system':     { ko: '시스템',         en: 'System' },
+  'speaker.ursaMajor':  { ko: '우르사 메이저',  en: 'Ursa Major' },
+  'speaker.blackfalcon':{ ko: '블랙팔콘',       en: 'Blackfalcon' },
+  'speaker.unknown':    { ko: '???',            en: '???' },
+  'speaker.commsTransmission': { ko: '⚠️ 통신 수신 ⚠️', en: '⚠️ Incoming Transmission ⚠️' },
+
+  // ── 자주 쓰이는 UI 라벨 ──────────────────────────────────────────────
+  'ui.noInfo':         { ko: '정보 없음',     en: 'No info' },
+  'ui.legendFlagship': { ko: '전설기함',      en: 'Legendary Flagship' },
+  'ui.allies':         { ko: '아군',          en: 'Allies' },
+  'ui.enemies':        { ko: '적',            en: 'Enemies' },
+  'ui.crew':           { ko: '크루',          en: 'Crew' },
+  'ui.admiral':        { ko: '제독',          en: 'Admiral' },
+  'ui.heroLabel':      { ko: '영웅',          en: 'Hero' },
+  'ui.shipGarage':     { ko: '함선 정비소',   en: 'Ship Garage' },
+
   // ── G3: 빈출 baekgu() 대사 25종 ────────────────────────────────────
   'baekgu.askMore':              { ko: '응? 뭔가 물어봐야 대답하지.',
                                    en: 'Hm? You have to ask something for me to answer.' },

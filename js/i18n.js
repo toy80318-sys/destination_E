@@ -68,6 +68,22 @@ window.I18N = (function () {
     const k = _TIER_KEY[value];
     return k ? t(k) : value;
   }
+  // 희귀도(rarity) 코드 + 한국어 라벨 양방향 지원 → 번역.
+  //  · 코드 입력: 'N'·'R'·'H'·'L'·'S' (크루) 또는 'common'·'uncommon'·'rare'·'hero'·'legend'·'mythic'·'set' (파츠/장비)
+  //  · 한국어 라벨 입력: '일반'·'희귀'·'영웅'·'전설'·'신화'·'세트'·'스토리'
+  // 사용: I18N.rarity(c.rarity) — UI 표시 사이트에서 호출 (데이터 비교는 그대로 유지)
+  const _RARITY_KEY = {
+    'N': 'rarity.common', 'R': 'rarity.rare', 'H': 'rarity.hero', 'L': 'rarity.legend', 'S': 'rarity.story',
+    'common': 'rarity.common', 'uncommon': 'rarity.uncommon', 'rare': 'rarity.rare',
+    'hero': 'rarity.hero', 'legend': 'rarity.legend', 'mythic': 'rarity.mythic', 'set': 'rarity.set',
+    '일반': 'rarity.common', '고급': 'rarity.uncommon', '희귀': 'rarity.rare',
+    '영웅': 'rarity.hero', '전설': 'rarity.legend', '신화': 'rarity.mythic', '세트': 'rarity.set', '스토리': 'rarity.story'
+  };
+  function rarity(value) {
+    if (!value) return value;
+    const k = _RARITY_KEY[value];
+    return k ? t(k) : value;
+  }
 
   function register(dict) {
     if (!dict || typeof dict !== 'object') return;
@@ -78,5 +94,5 @@ window.I18N = (function () {
     }
   }
 
-  return { t, setLang, getLang, register, has, tier, SUPPORTED, DEFAULT_LANG };
+  return { t, setLang, getLang, register, has, tier, rarity, SUPPORTED, DEFAULT_LANG };
 })();

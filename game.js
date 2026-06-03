@@ -4525,12 +4525,11 @@ function buildCrewManifest(s,idx){
   const ids=s.crewIds||[];
   if(ids.length===0)return'<div style="font-size:11px;color:var(--dim)">탑승 크루 없음</div>';
   const RC={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
-  const RN={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'};
   const rows=ids.map((cid,ci)=>{
     const c=G.crew.find(x=>x.id===cid)||G.heroes.map(h=>({...HEROES[h],id:h,isHero:true,rarity:'S'})).find(x=>x.id===cid);
     if(!c)return'';
     const rc=RC[c.rarity]||'#888';
-    const rnm=RN[c.rarity]||'';
+    const rnm=I18N.rarity(c.rarity)||'';
     const cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
     const m2=RARITY_MULT[c.rarity]||1;
     const slotCost2={N:1,R:1,H:2,L:4,S:4}[c.rarity]||1;
@@ -4880,7 +4879,7 @@ function renderShipTab(body){
           const _cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
           const _m2=RARITY_MULT[c.rarity]||1;
           const _bn=[_cb2.att?'ATT+'+Math.round(_cb2.att*_m2):'',_cb2.int2?'SHD+'+Math.round(_cb2.int2*_m2):'',_cb2.tec?'ENG+'+Math.round(_cb2.tec*_m2):'',(_cb2.def||0)>0?'DEF+'+Math.round((_cb2.def||0)*_m2):''].filter(Boolean).join(' ');
-          const _rarNm={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'}[c.rarity]||'';
+          const _rarNm=I18N.rarity(c.rarity)||'';
           const _tip=c.nm+' ['+_rarNm+' '+(c.cl||'')+']\n'+_bn+(c.isHero?' ⭐':'')+'\n'+cost+'칸 점유\n▶ 클릭=하선';
           var _csz,_hSz,_igsz,_cspan;
           if(cost===4){_csz=CELL_SZ*2+4;_hSz=_csz;_igsz=72;_cspan=';grid-column:span 2;grid-row:span 2';}
@@ -8510,7 +8509,7 @@ function renderCrewTab(body){
     :`<div class="crew-grid">${sorted.map(c=>{
       const gen=(c.ic||'👩').includes('👩')||c.nm?.endsWith('a')?'f':'m';
       const assignedShip=G.fleet.find(sh=>(sh.crewIds||[]).includes(c.id));
-      const rarityNm={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'}[c.rarity]||c.rarity;
+      const rarityNm=I18N.rarity(c.rarity)||c.rarity;
       const rarityCol={N:'var(--dim)',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'}[c.rarity]||'var(--dim)';
       const cb=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3,hp:0,sh:0};
       const m=RARITY_MULT[c.rarity]||1;
@@ -8778,14 +8777,13 @@ function doGacha(n,useCr,crCost,minRarity){
   const swapCandidates=results.filter(r=>r._swapCandidate);
   if(swapCandidates.length>0){
     const sc=swapCandidates[0];
-    const RARLBL={L:'전설',H:'영웅',R:'희귀',N:'일반',S:'스토리'};
     const RARCOL={L:'var(--gold)',H:'var(--purple)',R:'var(--blue)',N:'var(--dim)',S:'#ff6ec7'};
     const CREW_BONUS_LBL={Pilot:{att:8,int2:2,tec:4},Eng:{att:2,int2:5,tec:8},Merch:{att:3,int2:7,tec:4},Sniper:{att:10,int2:0,tec:3},Mage:{att:0,int2:10,tec:3},Engineer:{att:1,int2:3,tec:10},Commander:{att:5,int2:5,tec:5}};
     const tgt=sc._swapTarget;
     function _crewCard(c,roleColor,roleBg,roleLabel){
       const rar=c.rarity||'N';
       const rcol=RARCOL[rar]||'var(--dim)';
-      const rlbl=RARLBL[rar]||rar;
+      const rlbl=I18N.rarity(rar)||rar;
       const cl=c.cl||'-';
       const mult=RARITY_MULT[rar]||1;
       const cb=CREW_BONUS_LBL[cl]||{att:3,int2:3,tec:3};
@@ -9788,7 +9786,6 @@ function completeQuest(pid,idx){
           const _RORDER={L:4,H:3,R:2,N:1};
           const _assignedIds=new Set(G.fleet.flatMap(s=>s.crewIds||[]));
           const _lowest=[...G.crew].filter(c=>!_assignedIds.has(c.id)).sort((a,b)=>(_RORDER[a.rarity]||1)-(_RORDER[b.rarity]||1))[0];
-          const _RARLBL={L:'전설',H:'영웅',R:'희귀',N:'일반'};
           if(_lowest){
             const _lowImg=(typeof crewImgSrc==='function')?crewImgSrc(_lowest):'';
             const _pendImg=(typeof crewImgSrc==='function')?crewImgSrc(_pend):'';
@@ -9799,7 +9796,7 @@ function completeQuest(pid,idx){
                   <div style="text-align:center;padding:10px;background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;min-width:110px">
                     <img src="${_lowImg}" alt="${_lowest.nm}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--red);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_lowest.ic||'🧑'}'+'</div>'">
                     <div style="font-size:13px;font-weight:bold;margin-top:4px">${_lowest.nm}</div>
-                    <div style="font-size:11px;color:var(--dim)">${_RARLBL[_lowest.rarity]||_lowest.rarity} 등급</div>
+                    <div style="font-size:11px;color:var(--dim)">${I18N.rarity(_lowest.rarity)||_lowest.rarity} 등급</div>
                   </div>
                   <div style="font-size:22px;color:var(--dim)">→</div>
                   <div style="text-align:center;padding:10px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;min-width:110px">
@@ -11597,7 +11594,6 @@ function renderTavernView(body){
   }
   // 최근 영입 크루 카드 (5장 가로 행)
   const _RC2={N:'var(--muted)',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
-  const _RNM={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'};
   const _lcList=(G._lastTavernCrewList||[]).map(c=>({
     img:c.img,ic:c.ic||'🧑',name:c.nm+(c.isHero?' ⭐':''),color:_RC2[c.rarity]||'var(--cyan)'
   }));
@@ -11715,7 +11711,6 @@ function renderGachaView(body){renderTavernView(body);}
 
 function renderGachaCards(results){
   const c=document.getElementById('gc-result-body');if(!c)return;
-  const rarityNm={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리'};
   const rarityCol={N:'var(--dim)',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
   const CREW_BONUS={Pilot:{att:8,int2:2,tec:4},Eng:{att:2,int2:5,tec:8},Merch:{att:3,int2:7,tec:4}};
   // 결과 없으면 빈 상태 복원 (가챠 안 했을 때)
@@ -11726,7 +11721,7 @@ function renderGachaCards(results){
   // 컴팩트 카드 — 1행 8명, 왼쪽에서부터 영입 순서대로
   c.innerHTML=results.map((r,i)=>{
     const rKey='r'+r.rarity;
-    const rnm=rarityNm[r.rarity]||'';
+    const rnm=I18N.rarity(r.rarity)||'';
     const rcol=rarityCol[r.rarity]||'var(--dim)';
     const cb=CREW_BONUS[r.cl]||{att:3,int2:3,tec:3};
     const m=RARITY_MULT[r.rarity]||1;
@@ -15948,7 +15943,6 @@ function sfxAlert(){AudioMgr.playSfx('notify',{cooldown:300});}
 //   showAcquisitionReport({title, subtitle, items, color, sfx, congrats})
 //   items: [{ic, nm, type, rarity, desc, color, badge}]
 // ══════════════════════════════════════════════════════════════════
-const RARITY_LABEL_KR={N:'일반',R:'희귀',H:'영웅',L:'전설',S:'스토리',legend:'전설',mythic:'신화',set:'세트',hero:'영웅'};
 const RARITY_COLOR={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7',legend:'var(--gold)',mythic:'#ff88ff',set:'#c080ff',hero:'var(--purple)'};
 function showAcquisitionReport(opts){
   opts=opts||{};
@@ -15972,7 +15966,7 @@ function showAcquisitionReport(opts){
   const _descFs=_many?10:11;
   const itemRows=items.map(it=>{
     const rc=it.color||RARITY_COLOR[it.rarity]||'var(--txt)';
-    const rl=RARITY_LABEL_KR[it.rarity]||'';
+    const rl=I18N.rarity(it.rarity)||'';
     const badge=it.badge||(rl?`<span style="font-size:9px;color:${rc};border:1px solid ${rc};border-radius:3px;padding:0 5px;margin-left:5px">${rl}</span>`:'');
     const ic=it.ic||'📦';
     const imgHtml=it.img
