@@ -1391,45 +1391,45 @@ function getBaekguStoryHint(){
   // 최우선 1: 워프 엔진 미완성 유도 (소소한 미흡 안내)
   if(fleetSize>1&&!blink){
     const lacking=G.fleet.filter(s=>!(s.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid))).length;
-    return `📍 다음 할 일: 워프 엔진을 ${lacking}척에 더 장착하면 은하 어디든 순간이동! (블링크 ₡750k 또는 타키온/테슬라 퀘스트 보상)`;
+    return I18N.t('hint.warpEngineNeeded',{lacking});
   }
   // ACT 1 힌트 (조건: 20턴 안에 ACT 2 진입)
   if(G.act===1){
-    if(heroCount===0)return '📍 다음 할 일: 첫 영웅 영입! 행성을 탐험하고 퀘스트 클리어 — 30% 확률로 전설 영웅 등장.';
-    if(fleetSize<3)return '📍 다음 할 일: 함선 3척 이상으로! 함선 도크 → 거래소에서 중형함 구매 (M01 그리핀 ₡35k).';
-    if(G.credits<50000)return '📍 다음 할 일: 크레딧 모으기! 행성 상점에서 특산물 무역 또는 퀘스트 수락 (₡200k 목표).';
-    if(ownedCount===0)return '📍 다음 할 일: 행성 1개 낙찰! 행성 프론트 → 경매에서 매입 → 턴마다 세금 ₡들어옴.';
-    return `🎯 ACT 1 목표 → ACT 2 (20턴 도달): 영웅 1명+ · 함선 3척+ · ₡50k+ · 행성 1개+ | 현재 ${G.turn}/20턴, 전투력 ${plv}`;
+    if(heroCount===0)return I18N.t('hint.act1.firstHero');
+    if(fleetSize<3)return I18N.t('hint.act1.fleet3');
+    if(G.credits<50000)return I18N.t('hint.act1.credits50k');
+    if(ownedCount===0)return I18N.t('hint.act1.ownPlanet1');
+    return I18N.t('hint.act1.goal',{turn:G.turn,plv});
   }
   // ACT 2 힌트 (조건: 40턴 안에 ACT 3 진입)
   if(G.act===2){
-    if(heroCount<4)return `📍 다음 할 일: 영웅 4명 영입! 현재 ${heroCount}/4명. 행성마다 1명씩 숨어있음 (행성당 최대 2명, 명성 100+ 시 가챠도).`;
-    if(chix===0)return '📍 다음 할 일: 치크스(보라색 1링) 행성 첫 접근! TOI-700d·케플러-452b·우르사-알파 중 하나로 이동.';
-    if(ownedCount<3)return `📍 다음 할 일: 행성 3개 소유! 현재 ${ownedCount}개. 세금 자동 수입으로 자금 안정화.`;
-    if(rep<100)return `📍 다음 할 일: 명성 100+! 현재 ${rep}. 퀘스트/해적 격파/대량 거래로 누적 → 전설 설계도 해금.`;
-    if(chix>=5)return `📍 다음 할 일: ACT 3까지 ${40-G.turn}턴! 치크스 ${chix}회 격파 — 영웅 6명·함대 6척·₡50만 갖춰.`;
-    return `🎯 ACT 2 목표 → ACT 3 (40턴 도달): 치크스 5회+ 격파 · 영웅 6명+ · 행성 3개+ · 명성 100+ | 현재 ${G.turn}/40턴`;
+    if(heroCount<4)return I18N.t('hint.act2.hero4',{heroCount});
+    if(chix===0)return I18N.t('hint.act2.chixFirst');
+    if(ownedCount<3)return I18N.t('hint.act2.own3',{ownedCount});
+    if(rep<100)return I18N.t('hint.act2.rep100',{rep});
+    if(chix>=5)return I18N.t('hint.act2.chix5',{turnsLeft:40-G.turn,chix});
+    return I18N.t('hint.act2.goal',{turn:G.turn});
   }
   // ACT 3 힌트 (조건: 60턴 자동 ACT 4 또는 우르사 메이저 격파)
   if(G.act===3){
     const cheeksCleared=(G.combatHistory||[]).filter(c=>c.win&&(c.planet.includes('치크스')||c.planet.includes('TOI')||c.planet.includes('케플러-452')||c.planet.includes('우르사-알파')||c.planet.includes('오미크론')||c.planet.includes('타이탄-X'))).length;
-    if(heroCount<8){const m=8-heroCount;return `📍 다음 할 일: 영웅 ${heroCount}/8명 — ${m}명 더 영입! 행성당 최대 2명 + 가챠 전설의 30%.`;}
-    if(cheeksCleared===0)return `📍 다음 할 일: 치크스 적대 행성 1개라도 격파! (TOI-700d, 케플러-452b 등 보라색 1링)`;
-    if(cheeksCleared<5)return `📍 다음 할 일: 치크스 ${cheeksCleared}/5개 격파! ${5-cheeksCleared}개 더 처리 → 최종전 자격.`;
-    if(fleetSize<6)return `📍 다음 할 일: 함대 ${fleetSize}/6척! 거래소·제작소에서 중·대형 함선 추가.`;
-    if(G.credits<500000)return `📍 다음 할 일: ₡${G.credits.toLocaleString()} → ₡500,000 모으기! 거래/세금/퀘스트.`;
-    if(!G.voidCrystal||G.voidCrystal<1)return `📍 다음 할 일: 보이드 크리스탈 확보! 7링 균열지대(P27~P30) 탐험 → 보스전 진입 재료.`;
-    return `🎯 최종전 준비 완료! 은하 지도에서 🌍 지구 클릭 → 우르사 메이저 격파 → ACT 4 해방기 시작!`;
+    if(heroCount<8){const m=8-heroCount;return I18N.t('hint.act3.heroN8',{heroCount,remaining:m});}
+    if(cheeksCleared===0)return I18N.t('hint.act3.cheeksFirst');
+    if(cheeksCleared<5)return I18N.t('hint.act3.cheeksProg',{cleared:cheeksCleared,remaining:5-cheeksCleared});
+    if(fleetSize<6)return I18N.t('hint.act3.fleet6',{fleetSize});
+    if(G.credits<500000)return I18N.t('hint.act3.credits500k',{credits:G.credits.toLocaleString()});
+    if(!G.voidCrystal||G.voidCrystal<1)return I18N.t('hint.act3.voidCrystal');
+    return I18N.t('hint.act3.ready');
   }
   // ACT 4 힌트 (엔드게임)
   if(G.act>=4){
-    if(ownedCount<20)return `📍 다음 할 일: 행성 ${ownedCount}/30 정복! 명성 ${rep} → ${Math.max(0,30-rep%10)}만 더 모으면 +1 보유 한도.`;
+    if(ownedCount<20)return I18N.t('hint.act4.planet20',{ownedCount,rep,needed:Math.max(0,30-rep%10)});
     const _ursaCap=G.fleet.some(s=>s.id&&s.id.startsWith('BOSS_URSA'))||G.reserveFleet?.some(s=>s.id&&s.id.startsWith('BOSS_URSA'));
-    if(!_ursaCap)return `📍 다음 할 일: 우르사 메이저 함선 획득! 지구 클릭으로 보스전 재도전 (이미 클리어해도 보너스).`;
-    if(heroCount<8)return `📍 다음 할 일: 영웅 ${heroCount}/8 컴플릿! 마지막 영웅 영입으로 턴 쿨다운 -80초.`;
-    return `🌟 ACT 4 엔드게임! 자유 항해 — 보이드 7링 균열 완전 정복 · 신화 함선 컴플릿 · 명성 500+ 도전!`;
+    if(!_ursaCap)return I18N.t('hint.act4.ursaShip');
+    if(heroCount<8)return I18N.t('hint.act4.hero8',{heroCount});
+    return I18N.t('hint.act4.endgame');
   }
-  return '📍 은하계 경로에서 미탐험 행성 찾아봐. 모든 행성 30개가 다 발견 대기 중!';
+  return I18N.t('hint.default');
 }
 function openModal(title,bodyHTML,buttons=[],opts={}){
   document.getElementById('modal-t').textContent=title;
