@@ -17669,10 +17669,10 @@ function _renderSlotCard(n,mode){
       const src=shipImgSrc(flagship);
       const tierIc={신화:'✦',전설기함:'⚑',대형:'🌟',중형:'🚀',소형:'🛸'}[flagship.tier]||'🛸';
       flagImgHtml=imgOrEmoji(src,tierIc,60,60,'border-radius:6px;background:rgba(0,0,0,.6);object-fit:contain;flex-shrink:0');
-      flagName=flagship.nm||'함선';
+      flagName=flagship.nm||I18N.t('slot.shipDefault');
     } else {
       flagImgHtml=`<div style="width:60px;height:60px;border-radius:6px;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🛸</div>`;
-      flagName='함선 없음';
+      flagName=I18N.t('slot.shipNone');
     }
     // 현재 행성 이름
     if(info.currentPlanet){
@@ -17687,31 +17687,31 @@ function _renderSlotCard(n,mode){
   if(mode==='save'){
     actionBtn=`<button class="btn btn-sm ${hasData?'btn-red':''}" style="flex-shrink:0;padding:3px 10px;font-size:12px"
       onclick="saveGame(false,${n});showSaveSlots()">
-      ${hasData?'덮어쓰기':'💾 저장'}
+      ${hasData?I18N.t('slot.overwrite'):I18N.t('slot.save')}
     </button>`;
   } else {
     if(hasData){
       actionBtn=`<button class="btn btn-sm btn-gold" style="flex-shrink:0;padding:3px 10px;font-size:12px"
-        onclick="(function(){try{if(loadGame(${n})){try{closeModal();}catch(e){}try{showHub();}catch(e){console.error('[load] showHub failed',e);notify('⚠️ 메인 화면 복귀 실패: '+e.message,'err');}try{notify('📂 슬롯 ${n} 불러오기 완료','ok');}catch(e){}}}catch(e){console.error('[load] click handler',e);notify('❌ 불러오기 처리 오류: '+e.message,'err');}})()">
-        📂 불러오기
+        onclick="(function(){try{if(loadGame(${n})){try{closeModal();}catch(e){}try{showHub();}catch(e){console.error('[load] showHub failed',e);notify(I18N.t('slot.hubFail')+': '+e.message,'err');}try{notify(I18N.t('slot.loadComplete',{n:${n}}),'ok');}catch(e){}}}catch(e){console.error('[load] click handler',e);notify(I18N.t('slot.loadFail')+': '+e.message,'err');}})()">
+        ${I18N.t('slot.load')}
       </button>`;
     } else {
-      actionBtn=`<button class="btn btn-sm" disabled style="flex-shrink:0;padding:3px 10px;font-size:12px;opacity:.35">비어있음</button>`;
+      actionBtn=`<button class="btn btn-sm" disabled style="flex-shrink:0;padding:3px 10px;font-size:12px;opacity:.35">${I18N.t('slot.empty')}</button>`;
     }
   }
   if(!hasData){
     return `<div style="background:${cardBg};border:${cardBorder};border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
       <div style="font-size:20px;flex-shrink:0">${slotEmoji}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-weight:bold;font-size:13px;margin-bottom:2px;color:var(--txt)">슬롯 ${n}</div>
-        <div style="color:var(--dim);font-size:12px">— 비어있음 —</div>
+        <div style="font-weight:bold;font-size:13px;margin-bottom:2px;color:var(--txt)">${I18N.t('slot.label',{n})}</div>
+        <div style="color:var(--dim);font-size:12px">${I18N.t('slot.emptyDash')}</div>
       </div>
       ${actionBtn}
     </div>`;
   }
   // ACT 정보 (1~5) — ACT별 색상·라벨
   const _act=info.act||1;
-  const _actLabel={1:'ACT 1 · 시작',2:'ACT 2 · 확장',3:'ACT 3 · 전쟁',4:'ACT 4 · 보이드',5:'ACT 5 · 엔딩'}[_act]||('ACT '+_act);
+  const _actLabel={1:I18N.t('slot.act1'),2:I18N.t('slot.act2'),3:I18N.t('slot.act3'),4:I18N.t('slot.act4'),5:I18N.t('slot.act5')}[_act]||('ACT '+_act);
   const _actColor={1:'#88ccff',2:'#66ddff',3:'#ffcc66',4:'#ff88cc',5:'#ff66ff'}[_act]||'#66ddff';
   const _rep=info.reputation||0;
   const _heroCnt=(info.heroes||[]).length;
@@ -17725,10 +17725,10 @@ function _renderSlotCard(n,mode){
         <span style="background:${_actColor}22;color:${_actColor};border:1px solid ${_actColor}66;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:bold;letter-spacing:1px;flex-shrink:0">${_actLabel}</span>
       </div>
       <div style="font-size:12px;color:var(--cyan);margin-bottom:1px">
-        TURN ${info.turn||0} &nbsp;|&nbsp; ₡${Number(info.credits||0).toLocaleString()} &nbsp;|&nbsp; 함선 ${(info.fleet||[]).length}척 &nbsp;|&nbsp; ⭐ ${_rep}
+        TURN ${info.turn||0} &nbsp;|&nbsp; ₡${Number(info.credits||0).toLocaleString()} &nbsp;|&nbsp; ${I18N.t('slot.shipsCount',{n:(info.fleet||[]).length})} &nbsp;|&nbsp; ⭐ ${_rep}
         ${planetName?`&nbsp;|&nbsp; 📍 ${planetName}`:''}
       </div>
-      <div style="color:var(--dim);font-size:11px">${dateStr} · 영웅 ${_heroCnt}/8 · 영지 ${_ownedCnt}</div>
+      <div style="color:var(--dim);font-size:11px">${dateStr} · ${I18N.t('slot.heroesCount',{n:_heroCnt})} · ${I18N.t('slot.domainsCount',{n:_ownedCnt})}</div>
     </div>
     ${actionBtn}
   </div>`;
