@@ -106,28 +106,28 @@ window.addEventListener('desktop-save-restored',function(e){
   <div style="color:var(--cyan);font-size:67px;animation:pulse 3s infinite">🌌</div>
   <div style="color:var(--yellow);font-size:62px;font-weight:bold;letter-spacing:8px">DESTINATION</div>
   <div style="color:#fff;font-size:26px;letter-spacing:5px;margin-bottom:6px">EARTH</div>
-  <div style="color:var(--dim);font-size:14px;font-style:italic;margin-bottom:36px;max-width:480px;text-align:center">"내가 폐지 주워서 이만큼 상단 세워놨으니, 지구 구하러 가자."</div>
+  <div style="color:var(--dim);font-size:14px;font-style:italic;margin-bottom:36px;max-width:480px;text-align:center" data-i18n="title.tagline">"내가 폐지 주워서 이만큼 상단 세워놨으니, 지구 구하러 가자."</div>
   <div style="display:flex;flex-direction:column;gap:14px;align-items:center;width:100%;max-width:400px">
-    <div style="color:var(--dim);font-size:13px;letter-spacing:1px">── 난이도 선택 ──</div>
+    <div style="color:var(--dim);font-size:13px;letter-spacing:1px" data-i18n="title.divDifficulty">── 난이도 선택 ──</div>
     <div id="title-diff-btns" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%">
-      <button id="tdf-easy"    onclick="titleSetDiff('easy')"    class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08);line-height:1.5">😊<br>쉬움</button>
-      <button id="tdf-normal"  onclick="titleSetDiff('normal')"  class="btn btn-sm" style="line-height:1.5">⚔️<br>보통</button>
-      <button id="tdf-hard"    onclick="titleSetDiff('hard')"    class="btn btn-sm" style="line-height:1.5">💀<br>어려움</button>
-      <button id="tdf-extreme" onclick="titleSetDiff('extreme')" class="btn btn-sm" style="line-height:1.5">☠️<br>극악</button>
+      <button id="tdf-easy"    onclick="titleSetDiff('easy')"    class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08);line-height:1.5" data-i18n-html="title.diffEasy">😊<br>쉬움</button>
+      <button id="tdf-normal"  onclick="titleSetDiff('normal')"  class="btn btn-sm" style="line-height:1.5" data-i18n-html="title.diffNormal">⚔️<br>보통</button>
+      <button id="tdf-hard"    onclick="titleSetDiff('hard')"    class="btn btn-sm" style="line-height:1.5" data-i18n-html="title.diffHard">💀<br>어려움</button>
+      <button id="tdf-extreme" onclick="titleSetDiff('extreme')" class="btn btn-sm" style="line-height:1.5" data-i18n-html="title.diffExtreme">☠️<br>극악</button>
     </div>
-    <button class="btn btn-lg" style="width:100%" onclick="goAgeGate()">🚀 새 게임</button>
-    <button class="btn btn-sm" style="width:100%;opacity:.8" onclick="showLoadSlots()">💾 이어하기 (저장 불러오기)</button>
-    <button class="btn btn-sm" style="width:100%;border-color:#66ddff;color:#66ddff;background:rgba(102,221,255,.08)" onclick="showEmailLoadModal()">📧 이메일로 게임 불러오기</button>
+    <button class="btn btn-lg" style="width:100%" onclick="goAgeGate()" data-i18n="title.btnNewGame">🚀 새 게임</button>
+    <button class="btn btn-sm" style="width:100%;opacity:.8" onclick="showLoadSlots()" data-i18n="title.btnContinue">💾 이어하기 (저장 불러오기)</button>
+    <button class="btn btn-sm" style="width:100%;border-color:#66ddff;color:#66ddff;background:rgba(102,221,255,.08)" onclick="showEmailLoadModal()" data-i18n="title.btnEmailLoad">📧 이메일로 게임 불러오기</button>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;width:100%">
-    <button class="btn btn-sm" style="opacity:.75;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showSettingsModal()">⚙️<br>설정</button>
-    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showCredits()">🎬<br>크레딧</button>
-    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showHallOfFame()">🏆<br>명예전당</button>
-    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showFeedback()">📬<br>피드백</button>
+    <button class="btn btn-sm" style="opacity:.75;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showSettingsModal()" data-i18n-html="title.btnSettings">⚙️<br>설정</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showCredits()" data-i18n-html="title.btnCredits">🎬<br>크레딧</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showHallOfFame()" data-i18n-html="title.btnHallOfFame">🏆<br>명예전당</button>
+    <button class="btn btn-sm" style="opacity:.65;font-size:12px;padding:6px 2px;line-height:1.4;min-width:0" onclick="showFeedback()" data-i18n-html="title.btnFeedback">📬<br>피드백</button>
   </div>
   </div>
   <div style="position:fixed;bottom:8px;left:0;right:0;color:var(--muted);font-size:11px;text-align:center;line-height:1.65;padding:0 14px;word-break:keep-all">
-    <div style="opacity:.78;margin-bottom:2px">※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.</div>
-    <div>이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%</div>
+    <div style="opacity:.78;margin-bottom:2px" data-i18n="title.disclaimer">※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.</div>
+    <div data-i18n="title.ratingLine">이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%</div>
   </div>
 </div>
 
@@ -135,11 +135,11 @@ window.addEventListener('desktop-save-restored',function(e){
 <div class="scr" id="s-agegate">
   <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:24px;max-width:380px;width:90%">
     <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px" data-i18n="ui.ageCheck">연령 확인</div>
-    <div style="color:var(--dim);font-size:14px;text-align:center;margin-bottom:20px">DESTINATION EARTH는 만 12세 이상 이용 가능합니다.</div>
+    <div style="color:var(--dim);font-size:14px;text-align:center;margin-bottom:20px" data-i18n="agegate.notice">DESTINATION EARTH는 만 12세 이상 이용 가능합니다.</div>
     <div style="display:flex;gap:8px;margin-bottom:8px">
-      <input class="inp" id="ag-y" type="number" placeholder="년도(YYYY)" min="1900" max="2015" value="2000" style="flex:2">
-      <input class="inp" id="ag-m" type="number" placeholder="월" min="1" max="12" value="1" style="flex:1">
-      <input class="inp" id="ag-d" type="number" placeholder="일" min="1" max="31" value="1" style="flex:1">
+      <input class="inp" id="ag-y" type="number" data-i18n-placeholder="agegate.placeholderYear" placeholder="년도(YYYY)" min="1900" max="2015" value="2000" style="flex:2">
+      <input class="inp" id="ag-m" type="number" data-i18n-placeholder="agegate.placeholderMonth" placeholder="월" min="1" max="12" value="1" style="flex:1">
+      <input class="inp" id="ag-d" type="number" data-i18n-placeholder="agegate.placeholderDay" placeholder="일" min="1" max="31" value="1" style="flex:1">
     </div>
     <div id="ag-err" style="color:var(--red);font-size:13px;min-height:16px;margin-bottom:10px"></div>
     <button class="btn" style="width:100%" onclick="checkAge()" data-i18n="ui.confirm">확인</button>
@@ -154,13 +154,13 @@ window.addEventListener('desktop-save-restored',function(e){
       <img src="img/chars/baekgu1.png" alt="백구" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid var(--cyan)" onerror="this.outerHTML='<div style=\'font-size:28px;flex-shrink:0;line-height:1\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:13px;line-height:1.55;word-break:keep-all">
         <div style="color:var(--cyan);font-size:10px;font-weight:bold;margin-bottom:2px;letter-spacing:1px" data-i18n="speaker.baekgu">백구</div>
-        안녕! 새 사령관이 왔구나.<br>
-        함대 운영 원장 만들려면 데이터 패드에<br>이름이랑 정보 좀 입력해줘. 어서!
+        <span data-i18n-html="ftue.baekguGreeting">안녕! 새 사령관이 왔구나.<br>
+        함대 운영 원장 만들려면 데이터 패드에<br>이름이랑 정보 좀 입력해줘. 어서!</span>
       </div>
     </div>
     <!-- 이메일 입력 (선택) — 클라우드 세이브 자동 연결 -->
     <div style="margin-bottom:9px;background:rgba(102,221,255,.05);border:1px solid rgba(102,221,255,.25);border-radius:6px;padding:8px 10px">
-      <div style="color:#66ddff;font-size:12px;margin-bottom:4px;font-weight:bold">📧 이메일 (선택) — 클라우드 저장 / 다른 기기 동기화</div>
+      <div style="color:#66ddff;font-size:12px;margin-bottom:4px;font-weight:bold" data-i18n="ftue.emailHint">📧 이메일 (선택) — 클라우드 저장 / 다른 기기 동기화</div>
       <input class="inp" id="ft-email" placeholder="example@email.com (비워두면 익명 저장)" maxlength="60" type="email" style="font-size:12px;padding:5px 8px">
       <div style="color:var(--dim);font-size:10px;margin-top:4px;line-height:1.5">이메일 등록 시 같은 이메일로 어디서든 진행 상황 불러오기 가능. 안 적어도 게임 진행 가능.</div>
     </div>
@@ -339,26 +339,26 @@ window.addEventListener('desktop-save-restored',function(e){
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
 <script>window._GAME_VER='20260603.bg_p25_p30';</script>
 <!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
-<script src="js/i18n.js?v=20260603440"></script>
-<script src="js/data/i18n_dict.js?v=20260603440"></script>
-<script src="js/data/factions.js?v=20260603440"></script>
-<script src="js/data/planets.js?v=20260603440"></script>
-<script src="js/data/heroes.js?v=20260603440"></script>
-<script src="js/data/commodities.js?v=20260603440"></script>
-<script src="js/data/parts.js?v=20260603440"></script>
-<script src="js/data/quests.js?v=20260603440"></script>
-<script src="js/data/cargo.js?v=20260603440"></script>
-<script src="js/data/crafting.js?v=20260603440"></script>
-<script src="js/data/ships.js?v=20260603440"></script>
+<script src="js/i18n.js?v=20260603450"></script>
+<script src="js/data/i18n_dict.js?v=20260603450"></script>
+<script src="js/data/factions.js?v=20260603450"></script>
+<script src="js/data/planets.js?v=20260603450"></script>
+<script src="js/data/heroes.js?v=20260603450"></script>
+<script src="js/data/commodities.js?v=20260603450"></script>
+<script src="js/data/parts.js?v=20260603450"></script>
+<script src="js/data/quests.js?v=20260603450"></script>
+<script src="js/data/cargo.js?v=20260603450"></script>
+<script src="js/data/crafting.js?v=20260603450"></script>
+<script src="js/data/ships.js?v=20260603450"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260603440"></script>
+<script defer src="js/cloudsave.js?v=20260603450"></script>
 <!-- ═══ DESKTOP (Electron) BRIDGE — 데스크탑일 때만 동작 ═══ -->
-<script src="js/desktop-bridge.js?v=20260603440"></script>
+<script src="js/desktop-bridge.js?v=20260603450"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260603440"></script>
+<script src="game.js?v=20260603450"></script>
 <!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
 if ('serviceWorker' in navigator && !window.desktopAPI) {
