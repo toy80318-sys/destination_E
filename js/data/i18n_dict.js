@@ -670,6 +670,19 @@ I18N.register({
   'quest.buy.desc4':  { ko: '브로커 클라우드: 의뢰자가 급해. 특산물 N개를 즉시 회수해서 가져와. 보상은 시세의 2배.',
                         en: 'Broker Cloud: The client is in a hurry. Grab N specialty units now — reward is 2× market.' },
 
+  // ── G19: 잔여 정비소·도감 라벨 ────────────────────────────────────
+  'ui.crewAssign':       { ko: '👥 크루 배치',     en: '👥 Assign Crew' },
+  'ui.crewAssignBtn':    { ko: '크루 배치',       en: 'Assign Crew' },
+  'ui.crewAssignPlus':   { ko: '+ 크루 배치',     en: '+ Assign Crew' },
+  'ui.partsEquip':       { ko: '파츠 장비',       en: 'Parts' },
+  'ui.totalOwned':       { ko: '전체 보유',       en: 'Total Owned' },
+  'ui.totalValue':       { ko: '총 가치',         en: 'Total Value' },
+  'ui.startingPrice':    { ko: '시작가',           en: 'Starting Price' },
+  'ui.instantWin':       { ko: '즉시낙찰',         en: 'Instant Win' },
+  'ui.partsCodex':       { ko: '파츠 도감',       en: 'Parts Codex' },
+  'ui.heroCodex':        { ko: '인물 도감',       en: 'Hero Codex' },
+  'ui.planetCodex':      { ko: '행성 도감',       en: 'Planet Codex' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
