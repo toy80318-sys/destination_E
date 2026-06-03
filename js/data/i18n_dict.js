@@ -1033,6 +1033,21 @@ I18N.register({
   'agegate.invalidDate':      { ko: '올바른 생년월일을 입력해 주세요.', en: 'Please enter a valid date of birth.' },
   'agegate.under12':          { ko: '만 12세 이상만 이용 가능합니다.',   en: 'Only ages 12 and over may play.' },
 
+  // ── G39: 동적 notify 변수 결합 패턴 ──────────────────────────────
+  'notify.errorPrefix':       { ko: '[오류] {msg}',                  en: '[Error] {msg}' },
+  'notify.combatReturnFail':  { ko: '전투 복귀 실패: {err}',           en: 'Combat return failed: {err}' },
+  'notify.difficultyChanged': { ko: '🎮 난이도 변경: {lbl}',           en: '🎮 Difficulty changed: {lbl}' },
+  'notify.loyaltyAtRisk':     { ko: '⚠️ {nm} 충성도 위험! (LOY {loy}) — 크루를 탑승시키세요!',
+                                en: '⚠️ {nm} loyalty critical! (LOY {loy}) — assign crew!' },
+  'notify.loyaltyMax':        { ko: '💖 {nm} 충성도 100! 전 스탯 +10% 영구 적용!',
+                                en: '💖 {nm} loyalty 100! All stats +10% permanently applied!' },
+  'notify.loyaltyCollapse':   { ko: '💔 [충성도 붕괴] {nm} — 적에게 나포되었습니다! (LOY {loy}%, HP {hp}%)',
+                                en: '💔 [Loyalty Collapse] {nm} — captured by the enemy! (LOY {loy}%, HP {hp}%)' },
+  'notify.fleeWithCr':        { ko: '🚀 도주. ₡{cr} 손실 / 명성 -2',  en: '🚀 Fled. -₡{cr} / Reputation -2' },
+  'notify.buyBlocked':        { ko: '구매 불가: {reason}',             en: 'Cannot buy: {reason}' },
+  'notify.cancelSaleFail':    { ko: '매각 취소 실패: {err}',           en: 'Cancel sale failed: {err}' },
+  'notify.shipFullCount':     { ko: '만석입니다 ({n}명)',              en: 'Full ({n})' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

@@ -30,7 +30,7 @@ let _lastDismissedCrew=null; // 되돌리기용 마지막 내보낸 크루
 // 전역 미처리 오류 캐처 — 화면 멈춤 방지
 window.onerror=function(msg,src,line,col,err){
   console.error('[GLOBAL ERROR]',msg,'at line',line,err);
-  try{notify('[오류] '+msg.substring(0,60),'err');}catch(e){}
+  try{notify(I18N.t('notify.errorPrefix',{msg:msg.substring(0,60)}),'err');}catch(e){}
   return false; // 기본 오류 동작 유지
 };
 window.addEventListener('unhandledrejection',function(e){
@@ -875,7 +875,7 @@ function resumeCombat(){
     notify(I18N.t('combat.returnToScreen'),'ok');
   }catch(e){
     console.error('resumeCombat failed',e);
-    notify('전투 복귀 실패: '+e.message,'err');
+    notify(I18N.t('notify.combatReturnFail',{err:e.message}),'err');
   }
   _updateResumeBtn();
 }
@@ -1516,7 +1516,7 @@ function setDifficulty(d){
 function changeDifficultyFromSettings(d){
   G.difficulty=d;
   const lbl={easy:'😊 쉬움',normal:'⚔️ 보통',hard:'💀 어려움',extreme:'☠️ 극악'}[d]||d;
-  notify('🎮 난이도 변경: '+lbl,'ok');
+  notify(I18N.t('notify.difficultyChanged',{lbl}),'ok');
   saveGame(true);
   // 설정 모달 다시 렌더 (활성 표시 갱신)
   showSettingsModal();
@@ -3029,7 +3029,7 @@ function tickLoyalty(){
       const prevLoy=s.LOY||80;
       s.LOY=Math.max(1,prevLoy-3);
       if(s.LOY<=10&&s.LOY!==prevLoy){
-        notify('⚠️ '+s.nm+' 충성도 위험! (LOY '+s.LOY+') — 크루를 탑승시키세요!','err');
+        notify(I18N.t('notify.loyaltyAtRisk',{nm:s.nm,loy:s.LOY}),'err');
         baekgu(s.nm+' 충성도 '+s.LOY+'야. 곧 이탈할 수도 있어. 빨리 크루 태워.');
       }
     }
@@ -3057,7 +3057,7 @@ function boostLoyalty(reason){
         s.maxHP=Math.round((s.maxHP||1000)*1.1);
         s.hp=Math.min(s.hp||s.maxHP,s.maxHP);
         s._loyBonusApplied=true;
-        notify('💖 '+s.nm+' 충성도 100! 전 스탯 +10% 영구 적용!','gold');
+        notify(I18N.t('notify.loyaltyMax',{nm:s.nm}),'gold');
         baekgu(s.nm+' 충성도 만렙이야. 이제 한층 더 강해졌어!');
       }
     }
@@ -3075,7 +3075,7 @@ function checkLoyaltyCapture(){
       // 나포 확률: 매 턴 15%
       if(Math.random()<0.15){
         toRemove.push(idx);
-        notify('💔 [충성도 붕괴] '+s.nm+' — 적에게 나포되었습니다! (LOY '+loy+'%, HP '+Math.round(hpRatio*100)+'%)','err');
+        notify(I18N.t('notify.loyaltyCollapse',{nm:s.nm,loy,hp:Math.round(hpRatio*100)}),'err');
         baekgu(s.nm+' 충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.');
         // 전투 기록에 나포 사건 남기기
         if(!G.combatHistory)G.combatHistory=[];
@@ -3438,7 +3438,7 @@ function triggerEarlyPirate(pd){
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 크레딧 획득 | 패배 시 손실</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "${G.pirateAppearances>=5?'이제 최강 해적! 각오해!':G.pirateAppearances>=3?'점점 강해져! 조심해!':'해적이야! 스펙 확인해!'}"</div>`,
     [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:I18N.t('ui.flee'),fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
+     {txt:I18N.t('ui.flee'),fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify(I18N.t('notify.fleeWithCr',{cr:p.toLocaleString()}),'err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
   );
   saveGame(true);
 }
@@ -4081,7 +4081,7 @@ function buyCommMax(id){
     notify(`🛒 ${comm.nm} ${bought}개 전체구매 완료 (-₡${totalCost.toLocaleString()})${blockedReason?' · '+blockedReason:''}`,'ok');
     rerenderTab(renderTradeTab);saveGame(true);
   } else {
-    notify('구매 불가: '+blockedReason,'err');
+    notify(I18N.t('notify.buyBlocked',{reason:blockedReason}),'err');
   }
 }
 function buyAllComm(){
@@ -5511,7 +5511,7 @@ function undoLastSell(){
     saveGame(true);
   }catch(e){
     console.error('undoLastSell failed',e);
-    notify('매각 취소 실패: '+e.message,'err');
+    notify(I18N.t('notify.cancelSaleFail',{err:e.message}),'err');
   }
 }
 try{if(typeof window!=='undefined'){window.undoLastSell=undoLastSell;window._renderUndoSellToast=_renderUndoSellToast;}}catch(e){}
@@ -7812,7 +7812,7 @@ function pickPartModal(shipIdx){
 function pickCrewModal(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const maxC=getMaxCrew(s);
-  if((s.crewIds||[]).length>=maxC){notify('만석입니다 ('+maxC+'명)','err');showShipDetailModal(shipIdx);return;}
+  if((s.crewIds||[]).length>=maxC){notify(I18N.t('notify.shipFullCount',{n:maxC}),'err');showShipDetailModal(shipIdx);return;}
   const allCrew=[...G.crew,...(G.heroes||[]).map(hid=>Object.assign({},HEROES[hid],{id:hid,rarity:'S',isHero:true}))];
   if(allCrew.length===0){notify(I18N.t('notify.noCrew'),'warn');showShipDetailModal(shipIdx);return;}
   const RC3={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
@@ -7959,7 +7959,7 @@ let _crewPickSort='rarity'; // rarity | cl | name
 function pickCrewForSlot(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const maxC=getMaxCrew(s);
-  if((s.crewIds||[]).length>=maxC){notify('만석입니다 ('+maxC+'명)','err');return;}
+  if((s.crewIds||[]).length>=maxC){notify(I18N.t('notify.shipFullCount',{n:maxC}),'err');return;}
   const allCrew=[...G.crew,...G.heroes.map(hid=>Object.assign({},HEROES[hid],{id:hid,rarity:'S',isHero:true}))];
   if(allCrew.length===0){notify(I18N.t('notify.noCrew'),'warn');return;}
   const RC3={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
