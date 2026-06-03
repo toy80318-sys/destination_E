@@ -4196,8 +4196,8 @@ function buyComm(id,_silent=false){
 }
 function buyCargoItem(id){
   const ci=CARGO_ITEMS.find(function(c){return c.id===id;});
-  if(!ci){notify('아이템 정보 없음','err');return;}
-  if(ci.quest){notify('퀘스트 보상 전용 아이템','err');return;}
+  if(!ci){notify(I18N.t('notify.noItemInfo'),'err');return;}
+  if(ci.quest){notify(I18N.t('notify.questRewardItem'),'err');return;}
   const stock=G.shopStock[G.currentPlanet];
   if(!stock||!stock['cargo_'+id]||stock['cargo_'+id]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
   if(G.credits<ci.price){notify(`크레딧 부족 (필요: ₡${ci.price.toLocaleString()})`, 'err');return;}
@@ -4281,7 +4281,7 @@ function buyAllComm(){
     total+=bought;
   });
   if(total>0){notify(`🛒 총 ${total}개 일괄 구매 완료`,'ok');rerenderTab(renderTradeTab);saveGame(true);}
-  else notify('구매 가능한 특산물이 없습니다','err');
+  else notify(I18N.t('notify.noCommToBuy'),'err');
 }
 // 인벤토리 특수 아이템(난중일기 영인본 등) 판매 — 영입 보존용 1개는 항상 잔존 (사용자 명세)
 function sellInventoryItem(id, qty){
@@ -5567,7 +5567,7 @@ function renderShipTab(body){
 }
 // 인벤토리의 일반/희귀/영웅 파츠 일괄 매각 (전설/신화/세트 제외, 함선 장착 파츠는 인벤토리에 없음 → 자동 제외)
 function sellAllPartsBulk(){
-  if(!G.inventory||G.inventory.length===0){notify('보유 파츠가 없습니다','warn');return;}
+  if(!G.inventory||G.inventory.length===0){notify(I18N.t('notify.noPartsOwned'),'warn');return;}
   const hasMarco=G.heroes&&G.heroes.includes('H08');
   const _mul=hasMarco?1.1:1;
   const sellable=G.inventory.filter(i=>{
@@ -5634,7 +5634,7 @@ function _renderUndoSellToast(){
 }
 function undoLastSell(){
   const ls=window._lastSell;
-  if(!ls){notify('취소할 거래 기록이 없습니다','warn');return;}
+  if(!ls){notify(I18N.t('notify.noTradesToUndo'),'warn');return;}
   // 매각 취소는 크레딧 차감 필요 — 구매 취소(buyCargoSnap)는 크레딧 환불이므로 사전 검사 불필요
   if(ls.type!=='buyCargoSnap'&&G.credits<ls.credits){
     notify(`크레딧 부족 — 매각 취소하려면 ₡${ls.credits.toLocaleString()} 필요`,'err');
@@ -5669,7 +5669,7 @@ function undoLastSell(){
       }
       notify(`↶ ${ls.label} 구매 취소 — ₡${ls.credits.toLocaleString()} 환불`,'ok');
     } else {
-      notify('알 수 없는 매각 종류','warn');return;
+      notify(I18N.t('notify.unknownSellKind'),'warn');return;
     }
     window._lastSell=null;
     if(window._undoSellExpireTimer){clearTimeout(window._undoSellExpireTimer);window._undoSellExpireTimer=null;}
@@ -5837,7 +5837,7 @@ function swapReserveShip(reserveIdx){
   if(!G.reserveFleet||!G.reserveFleet[reserveIdx]){notify(I18N.t('notify.noTempShip'),'err');return;}
   const sel=document.getElementById('resvSwap_'+reserveIdx);
   const fleetIdx=parseInt(sel?.value);
-  if(isNaN(fleetIdx)||fleetIdx<0||fleetIdx>=G.fleet.length){notify('교체할 선발 함선을 선택하세요','warn');return;}
+  if(isNaN(fleetIdx)||fleetIdx<0||fleetIdx>=G.fleet.length){notify(I18N.t('notify.selectStarterSwap'),'warn');return;}
   // 기함 교체 시 경고
   if(fleetIdx===0){
     if(!confirm('⭐ 기함을 임시창으로 보내고 새 함선이 기함이 됩니다. 진행할까요?'))return;
@@ -6026,7 +6026,7 @@ function renderCargoOnlyTab(body){
 function upgradeAllCargo(){
   if(!Array.isArray(G.fleet))return;
   const targets=G.fleet.map((s,i)=>({s,i})).filter(x=>(x.s.cargoSlots||4)<80);
-  if(targets.length===0){notify('모든 함선의 창고가 최대입니다','warn');return;}
+  if(targets.length===0){notify(I18N.t('notify.allShipsHoldsMax'),'warn');return;}
   const total=targets.reduce((s,x)=>s+getCargoUpgradePrice(x.s),0);
   if((G.credits||0)<total){notify(`크레딧 부족 — 총 비용 ₡${total.toLocaleString()}`,'err');return;}
   G.credits-=total;
@@ -6405,7 +6405,7 @@ function clearAllFormation(){
 }
 // 방어력/체력/실드 높은 함선을 1열부터 자동 배치 (4열×4행, 슬롯 0~3=1열)
 function autoArrangeFormation(){
-  if(!G.fleet||G.fleet.length===0){notify('편대에 함선이 없습니다','warn');return;}
+  if(!G.fleet||G.fleet.length===0){notify(I18N.t('notify.fleetEmpty'),'warn');return;}
   // 함선 방어력 점수 계산 (HP + DEF*10 + maxSH*1.5 + armorTier*30 + shieldTier*15)
   function _defScore(s){
     const st=(typeof getShipStats==='function')?getShipStats(s):{};
@@ -6616,7 +6616,7 @@ function renderFleetFormationTab(body){
 
 function repairAllShips(){
   const totalCost=G.fleet.reduce((sum,s)=>sum+repairCost(s)+shRepairCost(s),0);
-  if(totalCost===0){notify('모든 함선이 이미 완전 상태입니다','warn');return;}
+  if(totalCost===0){notify(I18N.t('notify.allShipsRepaired'),'warn');return;}
   if(G.credits<totalCost){notify(`크레딧 부족 (필요: ₡${totalCost.toLocaleString()})`, 'err');return;}
   G.credits-=totalCost;
   let repaired=0;
@@ -8342,9 +8342,9 @@ const CARGO_EXT_MAX=4;
 function _shipCargoExt(s){if(!s.cargoExtParts)s.cargoExtParts=[];return s.cargoExtParts;}
 function equipCargoExt(shipIdx,partId){
   const s=G.fleet[shipIdx];if(!s)return;
-  const sc=SPECIAL_CARGO_PARTS.find(c=>c.id===partId);if(!sc){notify('창고 확장 파츠 정의 없음','err');return;}
+  const sc=SPECIAL_CARGO_PARTS.find(c=>c.id===partId);if(!sc){notify(I18N.t('notify.holdExpDefMissing'),'err');return;}
   const inv=(G.inventory||[]).find(i=>i.id===partId&&i.qty>0);
-  if(!inv){notify('보유한 창고 확장 파츠가 없습니다','err');return;}
+  if(!inv){notify(I18N.t('notify.noHoldExpansion'),'err');return;}
   const ext=_shipCargoExt(s);
   if(ext.length>=CARGO_EXT_MAX){notify(`창고 확장 슬롯 가득 (${CARGO_EXT_MAX}칸)`,'err');return;}
   inv.qty--;if(inv.qty<=0)G.inventory=G.inventory.filter(i=>i!==inv);
@@ -8905,7 +8905,7 @@ function dismissLowestCrew(n){
     return (assignedIds.has(a.id)?1:0)-(assignedIds.has(b.id)?1:0);
   });
   const targets=candidates.slice(0,n);
-  if(targets.length===0){notify('내보낼 크루가 없습니다','warn');return;}
+  if(targets.length===0){notify(I18N.t('notify.noCrewToDismiss'),'warn');return;}
   const names=targets.map(c=>c.nm+(assignedIds.has(c.id)?'⚓':'')).join(', ');
   const rarSummary=[...targets.reduce((m,c)=>{m.set(c.rarity,(m.get(c.rarity)||0)+1);return m;},new Map())].map(([r,cnt])=>`${r}×${cnt}`).join(' / ');
   const assignedCount=targets.filter(c=>assignedIds.has(c.id)).length;
@@ -8944,9 +8944,9 @@ function assignCrewFromCrewTab(cid){
   const sel=document.getElementById('cs_'+cid);
   // 함선이 1개이면 자동 선택 (idx 0)
   if(sel&&(sel.value===''||sel.options.length===1)&&G.fleet.length===1)sel.value='0';
-  if(!sel||sel.value===''){notify('탑승할 함선을 먼저 선택하세요','warn');return;}
+  if(!sel||sel.value===''){notify(I18N.t('notify.selectBoardShipFirst'),'warn');return;}
   const shipIdx=parseInt(sel.value);
-  if(isNaN(shipIdx)){notify('함선 선택 오류','err');return;}
+  if(isNaN(shipIdx)){notify(I18N.t('notify.shipSelectError'),'err');return;}
   const s=G.fleet[shipIdx];
   if(!s){notify(I18N.t('notify.shipNotFound'),'err');return;}
   if(!s.crewIds)s.crewIds=[];
@@ -9021,7 +9021,7 @@ function renderPlanetsTab(body){
 }
 function investPlanet(pid){
   const pd=PLANET_DEF.find(p=>p.id===pid),st=G.planets[pid];if(!pd||!st||!st.owned)return;
-  const lv=st.commerce||0;if(lv>=10){notify('최대 레벨','err');return;}
+  const lv=st.commerce||0;if(lv>=10){notify(I18N.t('notify.maxLevel'),'err');return;}
   // 화면에 표시된 비용과 정확히 동일한 공식 사용 (이전 버그: 2.15^lv*1.0 사용으로 큰 금액 차감됨)
   const cost=Math.floor(_planetBaseTax(pd)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
   if(G.credits<cost){notify(`투자비용 ₡${cost.toLocaleString()} 부족`,'err');return;}
@@ -9824,7 +9824,7 @@ function completeQuest(pid,idx){
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
               },cls:'btn-sm'}]);
           } else {
-            notify('크루 명단이 가득 찼고 배정 해제 가능한 크루가 없습니다.','err');
+            notify(I18N.t('notify.crewListFull'),'err');
             if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
           }
         } else {
@@ -10086,7 +10086,7 @@ function doGatherSearch(){
         `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">탐색 중 치크스 정찰대와 조우했습니다!</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>격퇴하면 퀘스트 완료 처리됩니다.</div>`,
         [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
-         {txt:'🚀 도주',fn:()=>{closeModal();notify('치크스 정찰대 도주','warn');},cls:'btn-sm'}]);
+         {txt:'🚀 도주',fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
     } else {
       notify('탐색 완료 — 정찰대 미발견. 다시 탐색하세요.','warn');
       baekgu(I18N.t('baekgu.searchNothing'));
@@ -10127,7 +10127,7 @@ function doGatherSearch(){
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>격파하면 탐색이 계속됩니다.</div>`,
       [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
-       {txt:'🚀 도주 (탐색 중단)',fn:()=>{closeModal();notify('탐색 중단','warn');},cls:'btn-sm'}]);
+       {txt:'🚀 도주 (탐색 중단)',fn:()=>{closeModal();notify(I18N.t('notify.searchAborted'),'warn');},cls:'btn-sm'}]);
 
   } else if(roll<0.40){
     // 10%: 아이템 또는 함선 획득 (전설급 포함)
@@ -10242,7 +10242,7 @@ function checkDeliveryQuests(arrivedPid){
   });
 }
 function takeLoan(){
-  if((G.loan||0)>=20000){notify('대출 한도 초과. 퀘스트로 자금을 마련하세요.','err');return;}
+  if((G.loan||0)>=20000){notify(I18N.t('notify.loanLimitExceeded'),'err');return;}
   var amt=5000;G.loan=(G.loan||0)+amt;G.credits+=amt;
   updateHUD();notify('백구 긴급 대출 '+amt.toLocaleString()+' (누적 '+G.loan.toLocaleString()+')','ok');
   baekgu(I18N.t('baekgu.loanGranted'));
@@ -10320,7 +10320,7 @@ function selectCraftMat(matId){
 }
 function doCraft(recipeId){
   const rec=CRAFT_RECIPES.find(r=>r.id===recipeId);
-  if(!rec){notify('레시피 없음','err');return;}
+  if(!rec){notify(I18N.t('notify.noRecipe'),'err');return;}
   if(!G.materials)G.materials={};
   if(!G.blueprints)G.blueprints={};
 
@@ -10374,7 +10374,7 @@ function doCraft(recipeId){
       baekgu(mult>=1.1?`대박! ${q.label}이야. 능력치 +${Math.round((mult-1)*100)}% 상승!`:mult<1.0?`아쉽지만 ${q.label}이 나왔어. 다시 도전해봐.`:`${rec.nm} 완성! ${q.label}.`);
     } else if(rec.type==='cargo'){
       const scDef=SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id);
-      if(!scDef){notify('창고 파츠 정의 없음','err');return;}
+      if(!scDef){notify(I18N.t('notify.holdDefMissing'),'err');return;}
       // 일괄 적용 → 인벤토리 적립. 정비소 파츠창의 창고 확장 슬롯에 함선별 장착.
       addToInventory(rec.id,1);
       resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${scDef.nm}</div>
@@ -10386,7 +10386,7 @@ function doCraft(recipeId){
       baekgu(`${scDef.nm} 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +${scDef.cargoBonus} 늘어나.`);
     } else {
       const def=SHIP_CATALOG.find(s=>s.id===rec.id);
-      if(!def){notify('함선 데이터 오류','err');return;}
+      if(!def){notify(I18N.t('notify.shipDataError'),'err');return;}
       const newShip={
         id:rec.id+'_craft_'+Date.now(),
         catalogId:rec.id,
@@ -11356,12 +11356,12 @@ function _pickBpByTier(bpTierKey){
 function openMysteryBox(tier){
   tier=tier||1;
   const cfg=MYSTERY_BOX_TIERS[tier];
-  if(!cfg){notify('잘못된 박스 등급','err');return;}
+  if(!cfg){notify(I18N.t('notify.invalidBoxTier'),'err');return;}
   if(!G||(G.credits||0)<cfg.cr){notify(`크레딧 부족 (필요 ₡${cfg.cr.toLocaleString()})`,'err');return;}
   if(cfg.vc>0&&(G.voidCrystal||0)<cfg.vc){notify(`보이드 크리스탈 부족 (필요 VC×${cfg.vc})`,'err');return;}
   if(cfg.ve>0&&(G.voidEssence||0)<cfg.ve){notify(`보이드 에센스 부족 (필요 VE ${cfg.ve.toLocaleString()})`,'err');return;}
   const pid=G.currentPlanet;
-  if(!_isBlackMarketZawaHere(pid)){notify('이 행성에는 블랙마켓 자와가 없습니다','err');return;}
+  if(!_isBlackMarketZawaHere(pid)){notify(I18N.t('notify.noBlackmarketHere'),'err');return;}
   // ── 실제 소모 (크레딧/VC/VE) — 사용자 요청 반영 ─────────────────
   G.credits=Math.max(0,(G.credits||0)-cfg.cr);
   if(cfg.vc>0)G.voidCrystal=Math.max(0,(G.voidCrystal||0)-cfg.vc);
@@ -12814,7 +12814,7 @@ function boardHeroToShip(hid){
   const sel=document.getElementById('hero-ship-'+hid);
   // 함선이 1개이면 자동 선택
   if(sel&&sel.value===''&&G.fleet.length===1)sel.value='0';
-  if(!sel||sel.value===''){notify('탑승할 함선을 선택하세요','warn');return;}
+  if(!sel||sel.value===''){notify(I18N.t('notify.selectBoardShip'),'warn');return;}
   const shipIdx=parseInt(sel.value);
   const s=G.fleet[shipIdx];if(!s)return;
   // 이미 다른 함선 탑승 중이면 자동 이전 (먼저 빼고 체크)
