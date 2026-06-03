@@ -1024,6 +1024,15 @@ I18N.register({
                                en: 'At the midnight the boss’s shell collapsed, Earth’s blockade also lifted.' },
   'ui.appearedNoCode':       { ko: '가 나타났대. 아무 식별코드도 없이.', en: 'appeared. With no identification code.' },
 
+  // ── G38: 로딩/연령확인/시스템 라벨 ───────────────────────────────
+  'loading.msg1':             { ko: '은하 지도 생성 중...',    en: 'Generating galaxy map...' },
+  'loading.msg2':             { ko: '백구 AI 초기화 중...',    en: 'Initializing Baekgu AI...' },
+  'loading.msg3':             { ko: '우주 데이터 로드 중...',  en: 'Loading space data...' },
+  'loading.msg4':             { ko: '전투 시스템 준비 중...',  en: 'Preparing combat system...' },
+  'loading.msg5':             { ko: '완료!',                  en: 'Done!' },
+  'agegate.invalidDate':      { ko: '올바른 생년월일을 입력해 주세요.', en: 'Please enter a valid date of birth.' },
+  'agegate.under12':          { ko: '만 12세 이상만 이용 가능합니다.',   en: 'Only ages 12 and over may play.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

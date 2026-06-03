@@ -1458,7 +1458,7 @@ function closeModal(){
 // ═══ LOADING ════════════════════════════════════════════════════
 function runLoading(){
   const fill=document.getElementById('ld-fill'),msg=document.getElementById('ld-msg');
-  const msgs=['은하 지도 생성 중...','백구 AI 초기화 중...','우주 데이터 로드 중...','전투 시스템 준비 중...','완료!'];
+  const msgs=[I18N.t('loading.msg1'),I18N.t('loading.msg2'),I18N.t('loading.msg3'),I18N.t('loading.msg4'),I18N.t('loading.msg5')];
   let i=0;const iv=setInterval(()=>{i++;fill.style.width=(i*20)+'%';msg.textContent=msgs[Math.min(i-1,msgs.length-1)];
     if(i>=5){clearInterval(iv);setTimeout(()=>{showTitle();if(localStorage.getItem('de_save'))notify('💾 저장 데이터 있음. 이어하기 가능.','ok');},400);}},400);
 }
@@ -1487,10 +1487,10 @@ function goAgeGate(){show('s-agegate');}
 function checkAge(){
   const y=parseInt(document.getElementById('ag-y').value),m=parseInt(document.getElementById('ag-m').value),d=parseInt(document.getElementById('ag-d').value);
   const err=document.getElementById('ag-err');
-  if(!y||!m||!d||y<1900||y>2015){err.textContent='올바른 생년월일을 입력해 주세요.';return;}
+  if(!y||!m||!d||y<1900||y>2015){err.textContent=I18N.t('agegate.invalidDate');return;}
   const birth=new Date(y,m-1,d),now=new Date();let age=now.getFullYear()-birth.getFullYear();
   if(now.getMonth()<birth.getMonth()||(now.getMonth()===birth.getMonth()&&now.getDate()<birth.getDate()))age--;
-  if(age<12){err.textContent='만 12세 이상만 이용 가능합니다.';return;}
+  if(age<12){err.textContent=I18N.t('agegate.under12');return;}
   if(age<18)G.isMinor=true;err.textContent='';syncDiffButtons(_titleDiff);setDifficulty(_titleDiff);show('s-ftue');
 }
 function setGender(g){
