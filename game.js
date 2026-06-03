@@ -1348,7 +1348,7 @@ function askBaekgu(){
   // 현재 행성 관련 질문
   if(Q.includes('여기')||Q.includes('이 행성')||Q.includes('현재')||Q.includes('지금')){
     const fac=pd?FACTION[pd.f]:null;
-    setTimeout(()=>baekgu(`지금 위치: ${pd?.nm||'?'} (${fac?.nm||'?'} 팩션, 링 ${pd?.ring||'?'}). 행성 광장에서 퀘스트·상점·주점 이용 가능.`),300);
+    setTimeout(()=>baekgu(I18N.t('baekgu.locationInfo',{nm:pd?.nm||'?',fac:fac?.nm||'?',ring:pd?.ring||'?'})),300);
     return;
   }
   let found=false;
@@ -5422,7 +5422,7 @@ function sellAllPartsBulk(){
   try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:`파츠 ${totalQty}개 일괄`});}catch(e){}
   updateHUD();
   notify(`🛒 파츠 ${totalQty}개 일괄 매각 +₡${totalCr.toLocaleString()}`,'gold');
-  baekgu(`잡파츠 정리 완료. ${totalCr.toLocaleString()} 크레딧 들어왔어.`);
+  baekgu(I18N.t('baekgu.scrapSold',{cr:totalCr.toLocaleString()}));
   saveGame(true);
   rerenderShipOrGarage();
 }
@@ -6180,10 +6180,10 @@ function doShipEnhance(shipIdx){
     s._enhanceLv=newLv;
     if(regress>0){
       notify(`💔 ${s.nm} +${nextLv} 강화 실패! ${regress}단계 후퇴 → +${newLv}`,'err');
-      try{baekgu(`강화 실패... ${s.nm}이(가) ${regress}단계 후퇴해서 +${newLv}이 됐어. 재료를 더 모아서 다시 도전해.`);}catch(e){}
+      try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:s.nm,regress,newLv}));}catch(e){}
     } else {
       notify(`💔 ${s.nm} +${nextLv} 강화 실패 (후퇴 없음)`,'err');
-      try{baekgu(`강화 실패... 다음엔 운이 따르길.`);}catch(e){}
+      try{baekgu(I18N.t('baekgu.enhanceFailSimple'));}catch(e){}
     }
   }
   updateHUD();saveGame(true);rerenderTab(renderGarageTab);
@@ -9227,7 +9227,7 @@ function _grantVoidBossRewards(){
   notify(`🏴 블랙팔콘 ${_capCount}척 강제 나포!${_luckMsg}`,'pur');
   if(bpGranted.length>0)notify(`📜 신화 설계도 ${bpGranted.length}개 + 신화 파츠 ${mythicParts.length}종 획득!`,'gold');
   notify(`💎 VC +${_vcGrant} · ⚛️ VE +${_veGrant.toLocaleString()}`,'pur');
-  baekgu(`검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 ${_capCount}척${_lucky?' (행운 2척!)':''}, 신화 설계도 ${bpGranted.length}장, 신화 파츠 5종, VC ${_vcGrant}개, VE ${_veGrant.toLocaleString()}을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!`);
+  baekgu(I18N.t('baekgu.voidGifts',{cap:_capCount,luck:_lucky?I18N.t('baekgu.luckyTwo'):'',bp:bpGranted.length,vc:_vcGrant,ve:_veGrant.toLocaleString()}));
   // ─── 획득 보고서 모달 ───
   if(typeof showAcquisitionReport==='function'){
     const items=[];
@@ -9469,7 +9469,7 @@ function completeQuest(pid,idx){
         <div style="font-size:12px;color:#ff88ff;margin-top:3px">함선 거래소 → 파츠 탭에서 장착하세요</div>
       </div>`;
       notify(`✦ 신화 파츠 ${p.nm||partId} 획득!`,'pur');
-      baekgu(`신화급 파츠야! ${p.nm||partId}. 상점에서는 절대 못 사는 거야.`);
+      baekgu(I18N.t('baekgu.mythicPart',{nm:p.nm||partId}));
     }
   } else if(roll<legendRate+mythicRate+setRate){
     // 세트/전설 파츠 획득 — 풀에 set과 legend(ML06/ML07)이 섞여 있음. 실제 rarity로 라벨 분기
@@ -9523,7 +9523,7 @@ function completeQuest(pid,idx){
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
     notify(`📜 설계도 획득: ${_bpRec?.nm||_bpId}`,'gold');
-    baekgu(`설계도 드랍! ${_bpRec?.nm||_bpId} 설계도야. 재료 모아서 제작소에서 만들어봐!`);
+    baekgu(I18N.t('baekgu.blueprintDrop',{nm:_bpRec?.nm||_bpId}));
   }
   // ── 전설 창고 확장 설계도 드롭 (링4+ 행성에서 3% 확률, 명성 100+) ──
   const _pd4=PLANET_DEF.find(p=>p.id===pid);
@@ -17161,7 +17161,7 @@ function activateSunsinFocus(){
   }
   addCombatLog(`⚔️ 넬슨 일점사 — ${target.nm} 집중사격 개시! 아군 함대 공격력 ×2`,'gold');
   notify('⚔️ 넬슨 일점사! 전 함선 집중사격','gold');
-  baekgu(`넬슨의 일점사야! 전 함대, ${target.nm} 한 척에 화력 집중! ATT 두 배!`);
+  baekgu(I18N.t('baekgu.focusFireOn',{nm:target.nm}));
   const sbtn=document.getElementById('cb-sunsin-btn');
   if(sbtn)sbtn.disabled=true;
   drawCombatFrame();
@@ -18362,7 +18362,7 @@ function _doGrantMythicSet(){
   if(!G.blueprints.RB10){G.blueprints.RB10=true;bpAdded.push('RB10 영혼 흡수 매트릭스');}
   updateHUD();saveGame(true);
   notify('✦ 신화 풀세트 지급 — '+grantedNames.length+'종 +설계도 '+bpAdded.length+'종','pur');
-  if(typeof baekgu==='function')baekgu(`신화 5종(${grantedNames.join(', ')}) 받았어. 정비소에서 장착해.`+(bpAdded.length?` · 추가 설계도 ${bpAdded.join(', ')} — 제작소 가능.`:''));
+  if(typeof baekgu==='function')baekgu(I18N.t('baekgu.mythicSetGranted',{names:grantedNames.join(', ')})+(bpAdded.length?I18N.t('baekgu.bpAdded',{names:bpAdded.join(', ')}):''));
 }
 function cheatGrantMythicSet(){_cheatUnlock(_doGrantMythicSet);}
 
