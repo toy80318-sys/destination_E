@@ -2372,99 +2372,99 @@ function showOnboardingTutorial(){
   //    hubTab을 호출하면 전투 화면이 죽기 때문. 사용자가 전투 종료 후 [다음 ▶] 수동 클릭.
   const steps=[
     // ── 도입 (3단계) ─────────────────────────────────────
-    {target:null,pos:'center',title:'🎓 튜토리얼 시작',
-     text:'환영합니다, 사령관! 🚀\n지구로 돌아가는 여정의 핵심 메뉴와 첫 플레이 사이클을 익혀봅시다.\n\n📋 진행 방식\n  · 약 24단계 / 10분 소요\n  · 노란색으로 강조된 사이드바 버튼 → 직접 클릭하면 자동 진행\n  · 행동 안내 단계(💡) → 동작 완료 후 [다음 ▶] 수동 진행\n\n▶ [다음 ▶]으로 시작\n✕ [건너뛰기] (설정 → 다시 보기 가능)'},
+    {target:null,pos:'center',title:I18N.t('tutorial.s01.title'),
+     text:I18N.t('tutorial.s01.text')},
 
-    {target:null,pos:'center',title:'ACT / TURN — 진행도',
-     text:'우상단의 ACT와 TURN 표시.\n\n• 매 20턴마다 ACT 자동 진행\n• ACT 3부터 지구 진입 가능\n• ACT 5(보스 격파) 최종 목표\n\n[다음 ▶]'},
+    {target:null,pos:'center',title:I18N.t('tutorial.s02.title'),
+     text:I18N.t('tutorial.s02.text')},
 
-    {target:null,pos:'center',title:'재화 4종 — 통화 시스템',
-     text:'우상단 재화:\n\n• ₡ 크레딧 — 무역·전투 보상 (기본 통화)\n• VE 보이드 에센스 — 보이드 행성 진입\n• VC 보이드 크리스탈 — 보스전 진입 키\n• ⭐ 명성 — 퀘스트·가챠 보상 배율\n\n[다음 ▶]'},
+    {target:null,pos:'center',title:I18N.t('tutorial.s03.title'),
+     text:I18N.t('tutorial.s03.text')},
 
     // ── 1) 탐색 도감 (클릭만, 단순 안내) ──────────────────
-    {target:'[data-tab="codex"]',pos:'right',title:'📖 1/12 — 탐색 도감',
-     text:'👆 좌측 [📖 탐색 도감]을 직접 클릭하세요!\n\n행성·외계 문명·시설·아이템 정보가 정리돼 있어요.\n게임 중 막히면 도감에서 검색해 보세요.',
+    {target:'[data-tab="codex"]',pos:'right',title:I18N.t('tutorial.s04.title'),
+     text:I18N.t('tutorial.s04.text'),
      requireClick:true,onShow:()=>_nav('captain')},
 
     // ── 2) 행성 제독 → 퀘스트 수락 ────────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 2/12 — 행성 제독',
-     text:'👆 좌측 [🎖️ 행성 제독]을 클릭하세요!\n\n퀘스트 수락 시 ₡·명성·가끔 영웅·설계도 보상.',
+    {target:'[data-tab="quest"]',pos:'right',title:I18N.t('tutorial.s05.title'),
+     text:I18N.t('tutorial.s05.text'),
      requireClick:true,onShow:()=>_nav('plaza')},
 
     // 가장 첫 번째 퀘스트의 [✓ 수락] 버튼 — 클릭해야 다음 단계
-    {target:'button[onclick^="acceptQuest"]',pos:'left',title:'💡 첫 번째 퀘스트 수락',
-     text:'👆 강조된 첫 번째 퀘스트의 [✓ 수락] 버튼을 직접 클릭하세요.\n\n수락 즉시 다음 단계로 진행됩니다.',
+    {target:'button[onclick^="acceptQuest"]',pos:'left',title:I18N.t('tutorial.s06.title'),
+     text:I18N.t('tutorial.s06.text'),
      requireClick:true,onShow:()=>_nav('plaza','quest')},
 
     // ── 3) 행성 주점 → 크루 영입 ──────────────────────────
-    {target:'[data-tab="tavern"]',pos:'right',title:'🍺 3/12 — 행성 주점',
-     text:'👆 좌측 [🍺 행성 주점]을 클릭하세요!\n\n크루(가끔 전설 영웅) 영입 — 함선에 배치 시 능력 +20%.',
+    {target:'[data-tab="tavern"]',pos:'right',title:I18N.t('tutorial.s07.title'),
+     text:I18N.t('tutorial.s07.text'),
      requireClick:true,onShow:()=>_nav('plaza')},
 
     // 가장 첫 번째 [💰 영입 ₡500] 가챠 버튼 — 클릭해야 다음
-    {target:'.gc-action',pos:'bottom',title:'💡 크루 영입 (₡500)',
-     text:'👆 강조된 [💰 영입 ₡500] 버튼을 직접 클릭하세요.\n\n일반~전설 크루 중 1명 영입됩니다.',
+    {target:'.gc-action',pos:'bottom',title:I18N.t('tutorial.s08.title'),
+     text:I18N.t('tutorial.s08.text'),
      requireClick:true,onShow:()=>_nav('plaza','tavern')},
 
     // ── 4) 행성 상점 → 특산물 구매 ────────────────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 4/12 — 행성 상점',
-     text:'👆 좌측 [🏬 행성 상점]을 클릭하세요!\n\n특산물 거래로 차익 실현 — 행성마다 가격이 달라요.',
+    {target:'[data-tab="trade"]',pos:'right',title:I18N.t('tutorial.s09.title'),
+     text:I18N.t('tutorial.s09.text'),
      requireClick:true,onShow:()=>_nav('plaza')},
 
     // 가장 첫 번째 특산물의 [구매] 버튼
-    {target:'button[onclick^="buyCommN"]',pos:'left',title:'💡 첫 번째 특산물 구매',
-     text:'👆 강조된 첫 번째 특산물의 [구매] 버튼을 직접 클릭하세요.\n\n구매 후 다음 단계로 진행됩니다.',
+    {target:'button[onclick^="buyCommN"]',pos:'left',title:I18N.t('tutorial.s10.title'),
+     text:I18N.t('tutorial.s10.text'),
      requireClick:true,onShow:()=>_nav('plaza','trade')},
 
     // ── 5) 함선 거래소 → 함선 구매 (단계별) ────────────────
-    {target:'[data-tab="ship"]',pos:'right',title:'🛸 5/12 — 함선 거래소',
-     text:'👆 좌측 [🛸 함선 거래소]를 직접 클릭하세요.',
+    {target:'[data-tab="ship"]',pos:'right',title:I18N.t('tutorial.s11.title'),
+     text:I18N.t('tutorial.s11.text'),
      requireClick:true,onShow:()=>_nav('dock')},
 
     // 함선 구매 서브탭 버튼 (이미 기본값이지만 절차상 명시 클릭)
-    {target:'button[onclick="switchShipTab(\'buy\')"]',pos:'bottom',title:'💰 5-1 — [💰 함선 구매] 탭',
-     text:'👆 상단 [💰 함선 구매] 탭을 직접 클릭하세요.\n(이미 선택된 상태면 한 번 더 클릭하면 됩니다)',
+    {target:'button[onclick="switchShipTab(\'buy\')"]',pos:'bottom',title:I18N.t('tutorial.s12.title'),
+     text:I18N.t('tutorial.s12.text'),
      requireClick:true},
 
     // 첫 번째 (가장 저렴한) 함선 구매
-    {target:'button[onclick^="buyShip"]',pos:'left',title:'💡 5-2 — 가장 저렴한 함선 [구매]',
-     text:'👆 가장 상단(가장 저렴한) 함선의 [구매] 버튼을 직접 클릭하세요.',
+    {target:'button[onclick^="buyShip"]',pos:'left',title:I18N.t('tutorial.s13.title'),
+     text:I18N.t('tutorial.s13.text'),
      requireClick:true},
 
     // ── 6) 함선 거래소의 ⚙️ 파츠 구매 서브탭 ─────────────
     //   (직전 '함선 정비소'로 가던 안내 → 함선 거래소의 '⚙️ 파츠 구매' 서브탭으로 정정. 사용자 혼동 해결)
-    {target:'button[onclick="switchShipTab(\'parts\')"]',pos:'bottom',title:'⚙️ 6/12 — [⚙️ 파츠 구매] 탭',
-     text:'👆 함선 거래소 상단의 [⚙️ 파츠 구매] 탭을 직접 클릭하세요.\n\n※ 파츠는 [🛸 함선 거래소] 안의 서브탭에서 삽니다 (정비소가 아님).',
+    {target:'button[onclick="switchShipTab(\'parts\')"]',pos:'bottom',title:I18N.t('tutorial.s14.title'),
+     text:I18N.t('tutorial.s14.text'),
      requireClick:true,onShow:()=>_nav('dock','ship')},
 
     // 첫 번째 파츠 구매
-    {target:'button[onclick^="buyPart"]',pos:'left',title:'💡 6-1 — 가장 저렴한 파츠 [구매]',
-     text:'👆 가장 상단(가장 저렴한) 파츠의 [구매] 버튼을 직접 클릭하세요.\n\n구매 후 [🔧 함선 정비소]에서 슬롯에 장착하면 능력치 즉시 반영됩니다.',
+    {target:'button[onclick^="buyPart"]',pos:'left',title:I18N.t('tutorial.s15.title'),
+     text:I18N.t('tutorial.s15.text'),
      requireClick:true},
 
     // ── 6-2) 함선 정비소 (장착) ──────────────────────────
-    {target:'[data-tab="garage"]',pos:'right',title:'🔧 6-2 — 함선 정비소 진입',
-     text:'👆 좌측 [🔧 함선 정비소]를 직접 클릭하세요.\n\n구매한 파츠를 함선 슬롯에 장착할 수 있습니다.',
+    {target:'[data-tab="garage"]',pos:'right',title:I18N.t('tutorial.s16.title'),
+     text:I18N.t('tutorial.s16.text'),
      requireClick:true,onShow:()=>_nav('dock')},
 
     // ── 7) 잔해 탐색 (전투) — 클릭 후 전투 자동 진행, 전투 중 팝업 숨김 → 종료 후 [다음 ▶] ──
-    {target:'#hn-gather-search',pos:'right',title:'🔭 7/12 — 잔해 탐색 (전투)',
-     text:'👆 좌측 [🔭 잔해 탐색] 버튼을 직접 클릭하세요!\n\n• 해적 등장 → 자동 전투 진행\n• 전투 중 튜토리얼 팝업은 자동으로 숨겨졌다가 종료 후 다시 표시됩니다\n• 보상: ₡·파츠·가끔 설계도, 명성 +1',
+    {target:'#hn-gather-search',pos:'right',title:I18N.t('tutorial.s17.title'),
+     text:I18N.t('tutorial.s17.text'),
      requireClick:true,onShow:()=>_nav('dock')},
 
     // ── 8) 퀘스트 보상 수령 ───────────────────────────────
-    {target:'[data-tab="quest"]',pos:'right',title:'🎖️ 8/12 — 행성 제독 (다시)',
-     text:'👆 좌측 [🎖️ 행성 제독]을 직접 클릭하세요.\n\n전투 후 완료된 퀘스트의 [💰 보상] 버튼이 활성화돼 있습니다.',
+    {target:'[data-tab="quest"]',pos:'right',title:I18N.t('tutorial.s18.title'),
+     text:I18N.t('tutorial.s18.text'),
      requireClick:true,onShow:()=>_nav('plaza')},
 
     // 완료된 퀘스트의 [💰 보상] 버튼 — 실제 클릭 필요
-    {target:'button[onclick^="completeQuest"]',pos:'left',title:'💡 8-1 — [💰 보상] 클릭',
-     text:'👆 완료된 퀘스트의 [💰 보상 +₡…] 버튼을 직접 클릭하세요.\n\n수령 즉시 다음 단계로 진행됩니다.',
+    {target:'button[onclick^="completeQuest"]',pos:'left',title:I18N.t('tutorial.s19.title'),
+     text:I18N.t('tutorial.s19.text'),
      requireClick:true},
 
     // ── 9) 행성 경매 → 입찰 ──────────────────────────────
-    {target:'[data-tab="auction"]',pos:'right',title:'🔨 9/12 — 행성 경매',
-     text:'👆 좌측 [🔨 행성 경매]를 직접 클릭하세요.\n\n행성을 낙찰받으면 매 턴 세금 수입. 명성 10당 보유 한도 +1.',
+    {target:'[data-tab="auction"]',pos:'right',title:I18N.t('tutorial.s20.title'),
+     text:I18N.t('tutorial.s20.text'),
      requireClick:true,
      onShow:()=>{
        try{
@@ -2479,33 +2479,33 @@ function showOnboardingTutorial(){
      }},
 
     // 즉시낙찰 또는 직접입찰 버튼 클릭
-    {target:'button[onclick^="doBid"], button[onclick^="customBid"]',pos:'left',title:'💡 9-1 — [즉시낙찰] 또는 [직접입찰]',
-     text:'👆 행성 목록에서 마음에 드는 곳의 [즉시낙찰] 또는 [직접입찰] 버튼을 직접 클릭하세요.\n\n클릭 즉시 다음 단계로 진행됩니다.',
+    {target:'button[onclick^="doBid"], button[onclick^="customBid"]',pos:'left',title:I18N.t('tutorial.s21.title'),
+     text:I18N.t('tutorial.s21.text'),
      requireClick:true},
 
     // ── 10) 은하 지도 → 행성 이동 ─────────────────────────
-    {target:'[data-tab="map"]',pos:'right',title:'🗺️ 10/12 — 은하 지도',
-     text:'👆 좌측 [🗺️ 은하 지도]를 직접 클릭하세요.\n\n인접 항로로만 이동 가능 (해적 50% 조우).',
+    {target:'[data-tab="map"]',pos:'right',title:I18N.t('tutorial.s22.title'),
+     text:I18N.t('tutorial.s22.text'),
      requireClick:true,onShow:()=>_nav('captain')},
 
     // 우측 상단 [🚀 이동] 버튼 — 행성 선택 후 클릭
-    {target:'#map-go',pos:'left',title:'💡 10-1 — [🚀 이동] 클릭',
-     text:'① 지도에서 인접 행성(예: 센타우리 P02)을 클릭해 선택하세요.\n② 우측 상단의 [🚀 이동] 버튼을 직접 클릭하면 이동합니다.\n\n이동 후 다음 단계로 진행됩니다.',
+    {target:'#map-go',pos:'left',title:I18N.t('tutorial.s23.title'),
+     text:I18N.t('tutorial.s23.text'),
      requireClick:true},
 
     // ── 11) 새 행성 상점 → 판매 (차익 실현) ───────────────
-    {target:'[data-tab="trade"]',pos:'right',title:'🏬 11/12 — 행성 상점 (판매)',
-     text:'👆 새 행성에서 좌측 [🏬 행성 상점]을 직접 클릭하세요.',
+    {target:'[data-tab="trade"]',pos:'right',title:I18N.t('tutorial.s24.title'),
+     text:I18N.t('tutorial.s24.text'),
      requireClick:true,onShow:()=>_nav('plaza')},
 
     // 보유 화물의 [전량] 또는 [1개] 판매 버튼
-    {target:'button[onclick^="sellComm"]',pos:'right',title:'💡 11-1 — [판매] 클릭',
-     text:'👆 화면 좌측 보유 화물 칸의 [전량] 또는 [1개] 판매 버튼을 직접 클릭하세요.\n\n💎 가격 차이만큼 즉시 차익!',
+    {target:'button[onclick^="sellComm"]',pos:'right',title:I18N.t('tutorial.s25.title'),
+     text:I18N.t('tutorial.s25.text'),
      requireClick:true},
 
     // ── 마무리 ────────────────────────────────────────────
-    {target:null,pos:'center',title:'🎉 12/12 — 튜토리얼 완료',
-     text:'기본 사이클을 모두 익혔어요 👏\n\n반복할 핵심 루틴:\n  ① 퀘스트 수락 (제독)\n  ② 잔해 탐색·전투\n  ③ 보상 수령 (제독)\n  ④ 경매 입찰 (프론트)\n  ⑤ 행성 이동 (지도)\n  ⑥ 무역 차익 (상점)\n\n중장기 목표:\n  · ACT 3 → 지구 진입\n  · ACT 5 → 우르사 메이저 보스전\n\n막히면 화면 하단 백구 AI에 질문하세요.\n\n행운을 빌어, 사령관!'}
+    {target:null,pos:'center',title:I18N.t('tutorial.s26.title'),
+     text:I18N.t('tutorial.s26.text')}
   ];
   let _idx=0;
   // 백드롭 제거 — 하이라이트 box-shadow 만으로 spotlight 효과 (이중 어둡기 방지)
