@@ -17159,7 +17159,7 @@ function activateSunsinFocus(){
       p.ATT=Math.round(p._origATT*2);
     });
   }
-  addCombatLog(`⚔️ 넬슨 일점사 — ${target.nm} 집중사격 개시! 아군 함대 공격력 ×2`,'gold');
+  addCombatLog(I18N.t('combat.focusFireLog',{nm:target.nm}),'gold');
   notify('⚔️ 넬슨 일점사! 전 함선 집중사격','gold');
   baekgu(I18N.t('baekgu.focusFireOn',{nm:target.nm}));
   const sbtn=document.getElementById('cb-sunsin-btn');
@@ -17174,7 +17174,7 @@ function activateSunsinFocus(){
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._haikjinPending||combatState._haikjinUsed)return;
     _showHaikjinButton();
-    addCombatLog(`🦅 진형 변환 가능! 학익진 버튼 활성화 — 클릭 시 아군 ATT ×3`,'gold');
+    addCombatLog(I18N.t('combat.haikjinReady'),'gold');
     notify('🦅 학익진 진형 준비 완료!','gold');
   },5000);
 }
@@ -17209,7 +17209,7 @@ function activateHaikjin(){
       p.ATT=Math.round(p._origATT*3);
     });
   }
-  addCombatLog(`🦅 학익진 전개! 아군 함대 공격력 ×3 강화! 전 함대, 적을 양익으로 포위하라!`,'gold');
+  addCombatLog(I18N.t('combat.haikjinActivate'),'gold');
   notify('🦅 학익진! 아군 ATT ×3','gold');
   baekgu(I18N.t('baekgu.haikjin'));
   const hbtn=document.getElementById('cb-haikjin-btn');
@@ -17222,7 +17222,7 @@ function activateHaikjin(){
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._einsteinPending||combatState._einsteinUsed)return;
     _showEinsteinButton();
-    addCombatLog(`⏳ 아인슈타인 시간차공격 준비 완료! 클릭 시 아군 ATT ×4`,'gold');
+    addCombatLog(I18N.t('combat.einsteinReady'),'gold');
     notify('⏳ 아인슈타인 시간차공격 준비!','gold');
   },5000);
 }
@@ -17256,7 +17256,7 @@ function activateEinsteinTimeAttack(){
       p.ATT=Math.round(p._origATT*4);
     });
   }
-  addCombatLog(`⏳ 아인슈타인 시간차공격! 상대성 이론에 따라 다중 시간축 동시 타격! 아군 공격력 ×4!`,'gold');
+  addCombatLog(I18N.t('combat.einsteinActivate'),'gold');
   notify('⏳ 시간차공격! 아군 ATT ×4','gold');
   baekgu(I18N.t('baekgu.einsteinRelativity'));
   const ebtn=document.getElementById('cb-einstein-btn');
@@ -17269,7 +17269,7 @@ function activateEinsteinTimeAttack(){
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._teslaPending||combatState._teslaUsed)return;
     _showTeslaButton();
-    addCombatLog(`⚡ 테슬라 초공간 채널 형성 완료! 클릭 시 아군 ATT ×5`,'gold');
+    addCombatLog(I18N.t('combat.teslaReady'),'gold');
     notify(I18N.t('notify.teslaReady'),'gold');
   },5000);
 }
@@ -17303,7 +17303,7 @@ function activateTeslaHyperspace(){
       p.ATT=Math.round(p._origATT*5);
     });
   }
-  addCombatLog(`⚡ 테슬라 초공간 채널 개방! 전자기 도관을 통한 광속 너머 번개 충격파! 아군 공격력 ×5!`,'gold');
+  addCombatLog(I18N.t('combat.teslaActivate'),'gold');
   notify('⚡ 테슬라 초공간! 아군 ATT ×5 + 번개 충격파','gold');
   baekgu(I18N.t('baekgu.teslaHyperspace'));
   // 발동 순간 전기장 플래시 — 모든 아군 함선 위치에 번개 폭발
@@ -17330,7 +17330,7 @@ function activateTeslaHyperspace(){
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._genesisPending||combatState._genesisUsed)return;
     _showGenesisButton();
-    addCombatLog(`✦ 제네시스 임펙트 차원 정렬 완료! 영웅 ${G.heroes.length}명의 의지가 한 점에 모인다. 클릭 시 아군 ATT ×6`,'gold');
+    addCombatLog(I18N.t('combat.genesisReady',{n:G.heroes.length}),'gold');
     notify('✦ 제네시스 임펙트 준비!','gold');
   },5000);
 }
@@ -17364,7 +17364,7 @@ function activateGenesisImpact(){
       p.ATT=Math.round(p._origATT*6);
     });
   }
-  addCombatLog(`✦ 제네시스 임펙트! 창세의 일격이 적함을 시공간에서 분리한다! 아군 공격력 ×6!`,'gold');
+  addCombatLog(I18N.t('combat.genesisActivate'),'gold');
   notify('✦ 제네시스 임펙트! 아군 ATT ×6','gold');
   baekgu(I18N.t('baekgu.genesisImpact'));
   const gbtn=document.getElementById('cb-genesis-btn');
@@ -17377,7 +17377,7 @@ function activateGenesisImpact(){
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._destinationPending||combatState._destinationUsed)return;
     _showDestinationButton();
-    addCombatLog(`🌍 데스티네이션 어스 — 최종 강하! 영웅 8명 모두의 의지가 집결한다. 클릭 시 아군 ATT ×10`,'gold');
+    addCombatLog(I18N.t('combat.destinationReady'),'gold');
     notify('🌍 데스티네이션 어스 준비!','gold');
   },5000);
 }
@@ -17411,7 +17411,7 @@ function activateDestinationEarth(){
       p.ATT=Math.round(p._origATT*10);
     });
   }
-  addCombatLog(`🌍 데스티네이션 어스! 100년 봉쇄를 깨뜨린 인류의 의지 — 아군 공격력 ×10! 모든 화력을 쏟아부어라!`,'gold');
+  addCombatLog(I18N.t('combat.destinationActivate'),'gold');
   notify('🌍 데스티네이션 어스! 아군 ATT ×10','gold');
   baekgu(I18N.t('baekgu.destinationEarth'));
   const dbtn=document.getElementById('cb-destination-btn');
