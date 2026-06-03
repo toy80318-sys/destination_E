@@ -4597,7 +4597,7 @@ function renderShipTab(body){
         <span style="font-size:10px;color:var(--dim);margin-left:auto">${anyDamaged?'<b style="color:var(--gold)">₡'+totalRepairCost.toLocaleString()+'</b>':'<span style="color:var(--green)">✅ 최적</span>'}</span>
       </div>
       ${G.heroes&&G.heroes.includes('H02')?'<div style="font-size:9px;color:#9ee7ff;text-align:center;line-height:1.1">⚙️ 장영실 -40%</div>':''}
-      ${anyDamaged?'<button class="btn btn-gold" style="font-size:10px;padding:3px 6px;width:100%;min-height:0;letter-spacing:0" onclick="repairAllShips()" '+( G.credits>=totalRepairCost?'':'disabled')+'>⚡ 완전수리</button>':'<div style="font-size:10px;color:var(--green);text-align:center">수리 불필요</div>'}
+      ${anyDamaged?'<button class="btn btn-gold" style="font-size:10px;padding:3px 6px;width:100%;min-height:0;letter-spacing:0" onclick="repairAllShips()" '+( G.credits>=totalRepairCost?'':'disabled')+`>${I18N.t('ui.completeRepair')}</button>`:`<div style="font-size:10px;color:var(--green);text-align:center">${I18N.t('ui.repairUnneeded')}</div>`}
     </div>
     ${(()=>{
       // 사용자 요청: 단일 토글 버튼 — 클릭 시 나포허용 ↔ 나포매각 전환
@@ -5051,7 +5051,7 @@ function renderShipTab(body){
       content=`<div style="background:var(--card);border:1px dashed var(--red);border-radius:8px;padding:20px;text-align:center">
         <div style="font-size:38px;margin-bottom:8px">⚠️</div>
         <div style="color:var(--red);font-size:16px">치크스 적대구역 — 함선 구매 불가</div>
-        <div style="color:var(--dim);font-size:13px;margin-top:6px">안전 행성으로 이동하세요</div>
+        <div style="color:var(--dim);font-size:13px;margin-top:6px">${I18N.t('ui.goToSafePlanet')}</div>
       </div>`;
     } else if(availShips.length===0){
       content=`<div style="color:var(--dim);font-size:14px;text-align:center;padding:20px">현재 행성에 입고된 함선이 없습니다.</div>`;
@@ -5073,7 +5073,7 @@ function renderShipTab(body){
         <button onclick="_setShopShipSort('tier')" title="${_shopShipSort==='tier'?'다시 클릭 시 방향 전환':'등급으로 정렬'}" style="padding:4px 12px;border:1px solid ${_shopShipSort==='tier'?'var(--cyan)':'var(--bdr)'};background:${_shopShipSort==='tier'?'rgba(0,243,255,.12)':'transparent'};color:${_shopShipSort==='tier'?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">🏷️ 등급${_shopShipSort==='tier'?' '+_arrow:''}</button>
         <span style="font-size:10px;color:var(--muted);margin-left:auto">${sortedAvailShips.length}척 입고</span>
       </div>`;
-      const _fleetFullNote=fleetFull?`<div style="background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.45);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--yellow);line-height:1.6">📦 선발 편대 16척 만석 — 구매한 함선은 <b>임시 보관함</b>에 보관됩니다. 정비소에서 교체·승급하세요.</div>`:'';
+      const _fleetFullNote=fleetFull?`<div style="background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.45);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--yellow);line-height:1.6">${I18N.t('ui.reserveStorageNote')}</div>`:'';
       content=_fleetFullNote+voidHintBuy+_mythicHint+_shopSortBar+(function(){
         // 거래소 함선 (우측 컬럼용) — 2열 그리드
         var _curPlv2=calcPlayerLevel();
@@ -9448,7 +9448,7 @@ function completeQuest(pid,idx){
           <div style="font-size:22px">⭐ 전설급 동료 획득!</div>
           <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${lucky.nm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
-          <div style="font-size:12px;color:var(--yellow);margin-top:3px">크루 명단에서 함선에 탑승시키세요</div>
+          <div style="font-size:12px;color:var(--yellow);margin-top:3px">${I18N.t('ui.boardCrewFromList')}</div>
         </div>`;
         notify(`⭐ 전설 동료 ${lucky.nm} 합류!`,'gold');
         baekgu(`${lucky.nm}가 합류했어! 전설급이야. 함선에 태워봐.`);
@@ -10908,7 +10908,7 @@ function renderFrontView(body){
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('front','🌍','행성 프론트',pd?.f)}
 <div class="hub-t">${I18N.t('hub.planetFrontT')} — ${pd?pd.nm:''}</div>
-<div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">행성 점령 현황을 확인하고 경매에 참가하세요</div>
+<div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">${I18N.t('ui.auctionIntro')}</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:0 auto">
 ${cards.map(c=>`<button onclick="hubTab('${c.tab}')" style="background:${c.bg};border:2px solid ${c.bdr};border-radius:14px;padding:20px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
 <div style="font-size:38px">${c.ic}</div>
@@ -11474,7 +11474,7 @@ function renderTavernView(body){
                   <span style="font-size:18px">🎁</span>
                   <div style="flex:1;min-width:0">
                     <div style="color:#ff66bb;font-size:11px;font-weight:bold">자와 등장 — ${pd?.nm||'이곳'}</div>
-                    <div style="color:var(--dim);font-size:10px;line-height:1.4">다음 턴엔 사라진다</div>
+                    <div style="color:var(--dim);font-size:10px;line-height:1.4">${I18N.t('ui.fadesNextTurn')}</div>
                   </div>
                 </div>
                 ${_bmBtn(0)}${_bmBtn(1)}${_bmBtn(2)}
@@ -11737,7 +11737,7 @@ function renderAuctionView(body){
     ${bidsLeft<=0?`<div style="background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.3);border-radius:6px;padding:8px;text-align:center;color:var(--red);font-size:12px;margin-bottom:8px;flex-shrink:0">${I18N.t('ui.bidsExhausted')}</div>`:''}
     ${_planetsAtLimit?`<div style="background:rgba(255,165,0,.07);border:1px solid rgba(255,165,0,.3);border-radius:6px;padding:8px;text-align:center;color:var(--yellow);font-size:12px;margin-bottom:8px;flex-shrink:0">🔒 행성 한도 도달 (${_ownedCnt2}/${_maxPlanets2})</div>`:''}
     <div data-scroll-id="auct-bid" style="flex:1;overflow-y:auto;min-height:0;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">
-      ${noNormal&&noHostile?`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim)">경매 가능한 행성 없음<br><span style="font-size:13px">은하 지도에서 탐험하고 치크스 행성을 공략하세요</span></div>`:''}
+      ${noNormal&&noHostile?`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim)">${I18N.t('ui.noAuctionPlanets')}<br><span style="font-size:13px">${I18N.t('ui.exploreThenChix')}</span></div>`:''}
       ${noNormal?'':`<div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:8px">🌐 일반 행성</div><div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px">`+avail.map(normalCard).join('')+`</div>`}
       ${noHostile?`<div style="background:rgba(139,0,255,.04);border:1px dashed #8b00ff44;border-radius:8px;padding:12px;text-align:center;color:#8b00ff88;font-size:12px;margin-bottom:14px">⚔️ 치크스 행성 전투 승리 시 합병 가능</div>`:
         `<div style="font-size:13px;font-weight:bold;color:#cc66ff;margin-bottom:8px">💀 치크스 전략 합병</div><div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px">`+hostileAvail.map(hostileCard).join('')+`</div>`}
@@ -14464,7 +14464,7 @@ function onMapClick(e){
         openModal(I18N.t('modal.voidAbyssFinalTest'),
           `<div style="text-align:center;padding:20px;background:linear-gradient(180deg,#0a0015,#1a0030);border-radius:10px;border:1px solid rgba(180,0,255,.4)">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
-            <div style="color:#dd66ff;font-size:18px;font-weight:bold;margin-bottom:10px">은하 가운데로 가는 문이 닫혀 있다</div>
+            <div style="color:#dd66ff;font-size:18px;font-weight:bold;margin-bottom:10px">${I18N.t('ui.galaxyCenterClosed')}</div>
             <div style="color:#e0d0ff;font-size:14px;line-height:2;background:rgba(0,0,0,.6);padding:12px 16px;border-radius:8px;border:1px solid rgba(180,0,255,.3);margin-bottom:12px">
               그날 보이드에서 흘러온 메시지를 기억하는가?<br>
               <span style="color:#cc44ff">"은하 가운데로 가볼 수 있다면 마지막 시험을 통과할 것이다."</span>
@@ -18229,7 +18229,7 @@ function _cheatUnlock(onOk){
   openModal(I18N.t('modal.cheatLock'),
     `<div style="padding:14px;text-align:center">
       <div style="font-size:40px;margin-bottom:8px">🔐</div>
-      <div style="font-size:14px;color:var(--yellow);margin-bottom:10px">치트 모드 비밀번호를 입력하세요</div>
+      <div style="font-size:14px;color:var(--yellow);margin-bottom:10px">${I18N.t('ui.enterCheatPassword')}</div>
       <input type="password" id="_cheat-pw" placeholder="비밀번호" autofocus
         style="width:80%;padding:10px;font-size:16px;background:rgba(0,0,0,.5);border:1px solid var(--cyan);color:#fff;border-radius:6px;text-align:center;font-family:inherit"
         onkeydown="if(event.key==='Enter')document.getElementById('_cheat-ok').click()">

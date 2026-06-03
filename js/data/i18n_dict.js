@@ -918,6 +918,20 @@ I18N.register({
   'combat.destinationActivate':{ ko: '🌍 데스티네이션 어스! 100년 봉쇄를 깨뜨린 인류의 의지 — 아군 공격력 ×10! 모든 화력을 쏟아부어라!',
                                  en: '🌍 Destination Earth! Humanity’s will that broke the century-long blockade — Ally ATT ×10! Pour all firepower!' },
 
+  // ── G33: 잔여 인라인 안내문 12키 ────────────────────────────────
+  'ui.repairUnneeded':     { ko: '수리 불필요', en: 'Repair not needed' },
+  'ui.completeRepair':     { ko: '⚡ 완전수리', en: '⚡ Repair All' },
+  'ui.goToSafePlanet':     { ko: '안전 행성으로 이동하세요', en: 'Move to a safe planet' },
+  'ui.reserveStorageNote': { ko: '📦 선발 편대 16척 만석 — 구매한 함선은 <b>임시 보관함</b>에 보관됩니다. 정비소에서 교체·승급하세요.',
+                             en: '📦 Active fleet 16 ships full — purchased ships go to the <b>reserve hold</b>. Swap or promote at the Garage.' },
+  'ui.boardCrewFromList':  { ko: '크루 명단에서 함선에 탑승시키세요', en: 'Assign crew from the roster to a ship' },
+  'ui.auctionIntro':       { ko: '행성 점령 현황을 확인하고 경매에 참가하세요', en: 'Review planet ownership and join the auction' },
+  'ui.fadesNextTurn':      { ko: '다음 턴엔 사라진다', en: 'Fades next turn' },
+  'ui.noAuctionPlanets':   { ko: '경매 가능한 행성 없음', en: 'No planets available for auction' },
+  'ui.exploreThenChix':    { ko: '은하 지도에서 탐험하고 치크스 행성을 공략하세요', en: 'Explore the galaxy map and strike Chiks planets' },
+  'ui.galaxyCenterClosed': { ko: '은하 가운데로 가는 문이 닫혀 있다', en: 'The gate to the galactic core is closed' },
+  'ui.enterCheatPassword': { ko: '치트 모드 비밀번호를 입력하세요', en: 'Enter the cheat-mode password' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
