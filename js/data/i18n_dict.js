@@ -580,6 +580,21 @@ I18N.register({
   'credits.toHumanity':  { ko: '— 그리고 모든 인류에게 —', en: '— And to all of humanity —' },
   'credits.closeArrow':  { ko: '닫기 →',                  en: 'Close →' },
 
+  // ── G17: 프롤로그 (게임 시작 6단계) ────────────────────────────────
+  'prologue.l1':   { ko: '양자 전송 패킷 수신 완료... {nm} 사령관 정신 동기화 99.8%...',
+                     en: 'Quantum transmission received... Commander {nm} mental sync 99.8%...' },
+  'prologue.l2':   { ko: '어라, 깨어났네? 100년을 기다렸는데 막상 깨어나니까 시시하다.',
+                     en: 'Oh, you’re awake? Waited a century, and now that you’re up it feels anticlimactic.' },
+  'prologue.l3':   { ko: '내가 누구냐고? 백구. AI 진돗개. 100년째 폐지 주으면서 위장 상단 세워놨다.',
+                     en: 'Who am I? Baekgu. AI Jindo. Been picking up scrap and running a cover company for a century.' },
+  'prologue.l4':   { ko: '{co} 총사령관 {nm}! 할 일은 하나야. 우주 무역·부동산·전투로 돈 벌고 지구 봉쇄한 우르사 메이저 박살내.',
+                     en: 'Supreme Commander {nm} of {co}! Your job is simple: earn through trade, real estate, and combat, then smash Ursa Major who blockades Earth.' },
+  'prologue.l5':   { ko: '내가 폐지 주워서 이만큼 세워놨으니, {nm}! 함선 {ship}에 올라타서 전설 영웅들 징발해서 지구 구하러 가자고!',
+                     en: 'I scraped together this much from junk — so {nm}, hop on ship {ship}, conscript the legendary heroes, and let’s go save Earth!' },
+  'prologue.l6':   { ko: 'P01 프록시마 b — {nm} 사령관 각성. {co} 허브 접속 중...',
+                     en: 'P01 Proxima b — Commander {nm} awakening. Connecting to {co} hub...' },
+  'prologue.systemLabel': { ko: '⚡ 시스템',         en: '⚡ System' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
