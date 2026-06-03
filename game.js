@@ -8863,47 +8863,22 @@ function investPlanet(pid){
 
 // ═══ QUEST SYSTEM ════════════════════════════════════════════════
 const QUEST_TEMPLATES=[
-  {type:'combat',ic:'⚔️',npc:'제독',npcIc:'🎖️',
-   titles:['해적 함대 소탕','치크스 정찰대 격퇴','밀수선 차단','항로 순찰 지원'],
-   descs:[
-     '제독 로한: 이 항로에 해적단이 자리 잡았어. 우리 상선이 매일 털리고 있다네. 자네 함대로 쓸어버려 주게. 사례는 두둑이 챙겨두겠네.',
-     '제독 로한: 치크스 정찰대 몇 척이 우리 영공에 들어왔다. 격퇴하고 잔해 보고만 해주면 보상은 약속하지. 무리하지 말게.',
-     '제독 로한: 비밀 정보야. 밀수선 한 척이 곧 이 항로를 지난다. 차단해서 화물을 압수해주면 분담금을 후하게 쳐주지.',
-     '제독 로한: 우리 순찰대가 손이 모자라네. 자네가 같이 한 바퀴 돌아주면 정식 보수는 챙겨주마. 어렵지 않은 일이야.'
-   ]},
-  {type:'delivery',ic:'📦',npc:'브로커',npcIc:'🕴️',
-   titles:['긴급 화물 배달','기밀 문서 전달','의약품 이송','부품 조달'],
-   descs:[
-     '운송업자 마키: 시간이 없어요. 이 화물을 인접 행성에 그대로 갖다 주시면 됩니다. 운임은 두둑이 드릴 테니 빨리 부탁드려요.',
-     '브로커 클라우드: 외교 채널이 막혔어. 자네라면 들키지 않게 문서를 전달할 수 있겠지. 누구한테도 말하지 말고, 그쪽 담당자에게 직접 건네주게.',
-     '상인 케인: 내 의약품을 인접 행성으로 배달해줄 수 있겠나? 사례는 하겠네. 가는 동안 해적을 조심하게.',
-     '공장장 마티아스: 생산 라인이 멈췄소. 부품 좀 인접 행성에서 가져다 주시면 그 자리에서 현금 박치기 하리다.'
-   ]},
-  {type:'gather',ic:'⛏️',npc:'브로커',npcIc:'🕴️',
-   titles:['희귀 광물 채취','방사선 데이터 수집','잔해 탐색','물자 회수'],
-   descs:[
-     '광물상 라파엘: 인근 소행성대에 희귀 광물이 떴다는 정보야. 2턴 정도 캐오면 시세대로 사겠네. 욕심 부리지 말고 안전하게.',
-     '연구원 헬렌: 항성풍 방사선 데이터가 필요해요. 2턴 정도 측정 장비 돌려주시면 자료비 깔끔하게 드릴게요. 측정 중에 해적 만나면 즉시 후퇴하세요.',
-     '고철상 로건: 전투 잔해 구역에 갈 사람을 찾고 있소. 2턴 탐색에 챙겨오는 만큼 나누지. 살아서만 돌아오게.',
-     '민병대장 호크: 치크스 잔해에 우리 물자가 남아 있소. 회수해 오면 사례하지. 2턴 정도 걸릴 거요 — 정찰대 마주칠 수도 있으니 조심하시오.'
-   ]},
-  {type:'explore',ic:'🔭',npc:'제독',npcIc:'🎖️',
-   titles:['항로 탐색 임무','성계 측량 지원','미지 구역 탐사','위성 궤도 조사'],
-   descs:[
-     '제독 로한: 신항로 후보를 자네가 직접 둘러봐 주게. 좌측 [잔해 탐색] 버튼을 누르면 자네 함대가 출동하지. 발견하는 만큼 보고해 주게.',
-     '항법사 클레어: 이 성계의 좌표 보정이 안 돼 있어요. [잔해 탐색] 버튼 두어 번이면 끝나니까 도와주세요. 보너스로 항법 데이터 사본 드릴게요.',
-     '제독 로한: 기록이 비어 있는 구역이 있다. 자네가 가서 데이터를 채워 와. 위험하면 후퇴해도 좋다 — 자네 생환이 우선이야.',
-     '관제관 시오: 위성 궤도 일부가 흔들린다고 보고가 들어왔어요. 한 바퀴 돌면서 어디가 문제인지 확인해 주실래요? 정밀 조사료 따로 챙겨드립니다.'
-   ]},
+  {type:'combat',ic:'⚔️',npc:I18N.t('quest.npc.admiral'),npcIc:'🎖️',
+   titles:[I18N.t('quest.combat.title1'),I18N.t('quest.combat.title2'),I18N.t('quest.combat.title3'),I18N.t('quest.combat.title4')],
+   descs:[I18N.t('quest.combat.desc1'),I18N.t('quest.combat.desc2'),I18N.t('quest.combat.desc3'),I18N.t('quest.combat.desc4')]},
+  {type:'delivery',ic:'📦',npc:I18N.t('quest.npc.broker'),npcIc:'🕴️',
+   titles:[I18N.t('quest.delivery.title1'),I18N.t('quest.delivery.title2'),I18N.t('quest.delivery.title3'),I18N.t('quest.delivery.title4')],
+   descs:[I18N.t('quest.delivery.desc1'),I18N.t('quest.delivery.desc2'),I18N.t('quest.delivery.desc3'),I18N.t('quest.delivery.desc4')]},
+  {type:'gather',ic:'⛏️',npc:I18N.t('quest.npc.broker'),npcIc:'🕴️',
+   titles:[I18N.t('quest.gather.title1'),I18N.t('quest.gather.title2'),I18N.t('quest.gather.title3'),I18N.t('quest.gather.title4')],
+   descs:[I18N.t('quest.gather.desc1'),I18N.t('quest.gather.desc2'),I18N.t('quest.gather.desc3'),I18N.t('quest.gather.desc4')]},
+  {type:'explore',ic:'🔭',npc:I18N.t('quest.npc.admiral'),npcIc:'🎖️',
+   titles:[I18N.t('quest.explore.title1'),I18N.t('quest.explore.title2'),I18N.t('quest.explore.title3'),I18N.t('quest.explore.title4')],
+   descs:[I18N.t('quest.explore.desc1'),I18N.t('quest.explore.desc2'),I18N.t('quest.explore.desc3'),I18N.t('quest.explore.desc4')]},
   // 특산물 구매 의뢰 — 보상 = 시세 판매가의 2배
-  {type:'buy',ic:'🛒',npc:'브로커',npcIc:'🕴️',
-   titles:['특산물 매수 의뢰','진귀품 수집','대량 발주','거래 보조'],
-   descs:[
-     '거상 이장: 특산물 N개 구해 오시면 시세의 2배로 사들이겠소. 어디서 구해오든 상관없소.',
-     '수집가 야마다: 진귀한 특산물 N개를 모아 주시오. 거래 기록 남기지 않고 2배 가격에 매입하겠소.',
-     '도매상 에르마: 우리 거래소에 N개 납품해주시면 시세 2배로 결제합니다. 빠르게 부탁해요.',
-     '브로커 클라우드: 의뢰자가 급해. 특산물 N개를 즉시 회수해서 가져와. 보상은 시세의 2배.'
-   ]},
+  {type:'buy',ic:'🛒',npc:I18N.t('quest.npc.broker'),npcIc:'🕴️',
+   titles:[I18N.t('quest.buy.title1'),I18N.t('quest.buy.title2'),I18N.t('quest.buy.title3'),I18N.t('quest.buy.title4')],
+   descs:[I18N.t('quest.buy.desc1'),I18N.t('quest.buy.desc2'),I18N.t('quest.buy.desc3'),I18N.t('quest.buy.desc4')]},
 ];
 const VOID_BOSS_ID='FALCON_SCOUT_VOID';
 // 능력치 = 렐러티비티(LGD03)의 3배
