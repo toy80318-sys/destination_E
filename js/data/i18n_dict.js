@@ -748,6 +748,27 @@ I18N.register({
   'map.planetInfo':     { ko: '📍 행성 정보', en: '📍 Planet Info' },
   'map.selectForList':  { ko: '행성을 선택하면 판매 목록이 표시됩니다', en: 'Select a planet to view its goods' },
 
+  // ── G25: 전투 UI ──────────────────────────────────────────────────
+  'combat.title.default':  { ko: '⚔️ 전투',           en: '⚔️ Battle' },
+  'combat.title.bossUrsa': { ko: '⚔️ 우르사 메이저 최종전!', en: '⚔️ Final Battle — Ursa Major!' },
+  'combat.title.pirateRaid':{ ko: '⚔️ 해적 기습!',     en: '⚔️ Pirate Raid!' },
+  'combat.title.debris':   { ko: '⚔️ 잔해 해적 전투!', en: '⚔️ Wreckage Pirate Combat!' },
+  'combat.title.chixScout':{ ko: '⚔️ 치크스 정찰대 격퇴!', en: '⚔️ Repel Chiks Scouts!' },
+  'combat.statusPreparing':{ ko: '준비 중...',         en: 'Preparing...' },
+  'combat.alliesMeasuring':{ ko: '⚓ 아군: 측정 중...', en: '⚓ Allies: measuring...' },
+  'combat.enemyMeasuring': { ko: '☠️ 적군: 측정 중...', en: '☠️ Enemies: measuring...' },
+  'combat.controlsHint':   { ko: '🖱️드래그=이동|휠=줌', en: '🖱️Drag=move | Wheel=zoom' },
+  'combat.flee':           { ko: '🚀 도망가기',         en: '🚀 Flee' },
+  'combat.fleeTooltip':    { ko: '크레딧 -3%, 명성 -2 페널티 부담', en: 'Penalty: -3% credits, -2 reputation' },
+  'combat.focusFire':      { ko: '⚔️ 일점사',           en: '⚔️ Focus Fire' },
+  'combat.focusFireTip':   { ko: '{by} 전술: 전 함대 화력 집중으로 적함 1척 즉시 격파 (전투 1회)', en: '{by} tactic: concentrate all fleet fire on 1 enemy ship for instant defeat (once per battle)' },
+  'combat.titleChixWave':  { ko: '⚔️ 치크스 {wave} 함대 — {nm}', en: '⚔️ Chiks {wave} Fleet — {nm}' },
+  'combat.titleBoss':      { ko: '⚔️ {bossTitle} — {nm}', en: '⚔️ {bossTitle} — {nm}' },
+  'combat.returnToScreen': { ko: '⚔️ 전투 화면으로 복귀', en: '⚔️ Returned to combat screen' },
+  'combat.btnReturnTooltip':{ ko: '진행 중인 전투로 돌아가기', en: 'Return to active combat' },
+  'combat.btnAlreadyOnScreen':{ ko: '이미 전투 화면입니다',     en: 'Already on combat screen' },
+  'combat.btnNoneInProgress':{ ko: '진행 중인 전투가 없습니다', en: 'No combat in progress' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

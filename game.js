@@ -872,7 +872,7 @@ function resumeCombat(){
         try{AudioMgr.playBgm(combatState.isBoss?'boss':'combat');}catch(e){}
       }catch(e){console.error('combat resume failed',e);}
     });
-    notify('⚔️ 전투 화면으로 복귀','ok');
+    notify(I18N.t('combat.returnToScreen'),'ok');
   }catch(e){
     console.error('resumeCombat failed',e);
     notify('전투 복귀 실패: '+e.message,'err');
@@ -891,7 +891,7 @@ function _updateResumeBtn(){
   btn.style.animation=enabled?'pulse 1.6s infinite':'none';
   btn.style.boxShadow=enabled?'0 2px 12px rgba(255,80,80,.45)':'0 2px 6px rgba(0,0,0,.3)';
   btn.style.cursor=enabled?'pointer':'not-allowed';
-  btn.title=enabled?'진행 중인 전투로 돌아가기':(hasActiveCombat?'이미 전투 화면입니다':'진행 중인 전투가 없습니다');
+  btn.title=enabled?I18N.t('combat.btnReturnTooltip'):(hasActiveCombat?I18N.t('combat.btnAlreadyOnScreen'):I18N.t('combat.btnNoneInProgress'));
 }
 function updateHUD(){updateGatherBtn();_updateResumeBtn();
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
@@ -3520,7 +3520,7 @@ function startChixFleetCombat(raidDef){
   requestAnimationFrame(()=>{
     initCombatCanvas();
     const waveLbl=['1차','2차','3차','4차','5차 최종'][wave];
-    const t=document.getElementById('cb-title');if(t)t.textContent=`⚔️ 치크스 ${waveLbl} 함대 — ${raidDef.nm}`;
+    const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.titleChixWave',{wave:waveLbl,nm:raidDef.nm});
     setTimeout(()=>{addCombatLog(`🛸 치크스 ${waveLbl} 함대 ${raidDef._enemies.length}척 출현!`,'');runCombatTurn();},400);
   });
 }
@@ -3577,7 +3577,7 @@ function startPirateRaid(raidDef){
   const _plv=calcPlayerLevel(),_plm=getLevelMult();
   requestAnimationFrame(()=>{
     initCombatCanvas();
-    const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 해적 기습!';
+    const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.pirateRaid');
     setTimeout(function(){
       if(combatState&&!combatState.done){
         addCombatLog('🏴‍☠️ 해적 기습! 사령관 Lv.'+_plv+' | 적 강화 ×'+_plm.toFixed(2),'');
@@ -10003,7 +10003,7 @@ function startDebrisPirateCombat(raidDef){
   try{AudioMgr.playBgm('combat');}catch(e){}
   requestAnimationFrame(()=>{
     initCombatCanvas();
-    const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 잔해 해적 전투!';
+    const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.debris');
     setTimeout(()=>{addCombatLog(I18N.t('combat.debrisPiratesAppear'),'');runCombatTurn();},400);
   });
 }
@@ -10017,7 +10017,7 @@ function startChixPatrolCombat(raidDef){
   try{AudioMgr.playBgm('combat');}catch(e){}
   requestAnimationFrame(()=>{
     initCombatCanvas();
-    const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 치크스 정찰대 격퇴!';
+    const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.chixScout');
     setTimeout(()=>{addCombatLog(I18N.t('combat.chixScoutsAppear'),'');runCombatTurn();},400);
   });
 }
@@ -15029,7 +15029,7 @@ function startCombat(planetDef){
   // 함선 즉시 등장 (애니메이션 없음)
   combatState._entranceT=1;combatState._entranceDone=true;
   sfxAlert();try{AudioMgr.playBgm(isBoss?'boss':'combat');}catch(e){}
-  _preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=`⚔️ ${isBoss?'우르사 메이저 최종전!':'전투'} — ${planetDef.nm}`;_cbStartAnimLoop();_updateCombatFleetStats();setTimeout(runCombatTurn,600);});
+  _preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.titleBoss',{bossTitle:isBoss?I18N.t('combat.title.bossUrsa'):I18N.t('combat.title.default'),nm:planetDef.nm});_cbStartAnimLoop();_updateCombatFleetStats();setTimeout(runCombatTurn,600);});
 }
 // 전투 중 도망가기 — 확인 모달 → fleeCombat 실행
 function confirmFleeCombat(){
@@ -15105,13 +15105,13 @@ function renderCombatView(body){
   body.classList.add('cv');
   document.body.classList.add('combat-mode');  // 알림(notif) 위치 조정용
   body.innerHTML=`<div id="cb-hdr" style="min-height:57px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:4px 10px;flex-shrink:0;gap:8px;white-space:nowrap;overflow:hidden">
-    <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:13px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">⚔️ 전투</div>
+    <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:13px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.title.default')}</div>
     <div id="cb-turn" style="color:var(--cyan);font-size:11px;flex-shrink:0">TURN 0</div>
-    <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">준비 중...</div>
+    <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.statusPreparing')}</div>
   </div>
   <div id="cb-fleet-stats" style="background:rgba(8,16,28,.96);border-bottom:1px solid var(--bdr);padding:6px 14px;flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:11px;font-family:Courier New,monospace">
-    <div id="cb-fleet-pl" style="color:var(--cyan)">⚓ 아군: 측정 중...</div>
-    <div id="cb-fleet-en" style="color:#ff8888;text-align:right">☠️ 적군: 측정 중...</div>
+    <div id="cb-fleet-pl" style="color:var(--cyan)">${I18N.t('combat.alliesMeasuring')}</div>
+    <div id="cb-fleet-en" style="color:#ff8888;text-align:right">${I18N.t('combat.enemyMeasuring')}</div>
   </div>
   <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a">
     <canvas id="cb-cv"></canvas>
@@ -15157,19 +15157,19 @@ function initCombatCanvas(){
     const btns=document.createElement('div');btns.id='cb-zoom-btns';
     btns.style.cssText='display:flex;gap:3px;align-items:center;flex-shrink:0';
     // 사용자 요청: 상단 -, + 줌 버튼 삭제. 시점 리셋(⌂) 만 유지. 줌은 휠·핀치로 계속 가능.
-    btns.innerHTML=`<span style="font-size:10px;color:var(--muted);white-space:nowrap">🖱️드래그=이동|휠=줌</span>
+    btns.innerHTML=`<span style="font-size:10px;color:var(--muted);white-space:nowrap">${I18N.t('combat.controlsHint')}</span>
       <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:3px 11px;font-size:16px;min-height:34px" title="${I18N.t('map.resetView')}">⌂</button>
-      <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="크레딧 -3%, 명성 -2 페널티 부담"
-        style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">🚀 도망가기</button>`;
+      <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="${I18N.t('combat.fleeTooltip')}"
+        style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${I18N.t('combat.flee')}</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
   // 일점사 전술 버튼 — H01(이순신) OR H05(넬슨) 영입 시 표시 (사용자 요청: 넬슨 단독도 OK)
   if((G.heroes.includes('H01')||G.heroes.includes('H05'))&&!document.getElementById('cb-sunsin-btn')){
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
     sbtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite;white-space:nowrap;flex-shrink:0';
-    sbtn.textContent='⚔️ 일점사';
+    sbtn.textContent=I18N.t('combat.focusFire');
     const _by=G.heroes.includes('H01')?'이순신':'넬슨';
-    sbtn.title=`${_by} 전술: 전 함대 화력 집중으로 적함 1척 즉시 격파 (전투 1회)`;
+    sbtn.title=I18N.t('combat.focusFireTip',{by:_by});
     sbtn.onclick=activateSunsinFocus;
     hdr.appendChild(sbtn);
   }
