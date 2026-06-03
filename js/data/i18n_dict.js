@@ -485,6 +485,7 @@ I18N.register({
   'settings.fileSaveHelp':  { ko: '📥 다운로드: <b>DestinationEarth_save_*.json</b> 파일이 저장됩니다<br>📤 불러오기: 파일을 선택하면 자동으로 슬롯에 복원됩니다', en: '📥 Download: a <b>DestinationEarth_save_*.json</b> file is saved<br>📤 Load: selecting a file auto-restores into a slot' },
   'settings.cheatMode':     { ko: '🎁 치트 모드',     en: '🎁 Cheat Mode' },
   'settings.cheatHint':     { ko: '— 비번 "de" 1회 입력', en: '— enter password "de" once' },
+  'settings.localDeleteAll':{ ko: '🗑️ 로컬 전체 삭제',   en: '🗑️ Delete All Local' },
 
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
