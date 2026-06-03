@@ -517,6 +517,19 @@ I18N.register({
   'ui.legendTier':         { ko: '전설 등급',                    en: 'Legend tier' },
   'ui.shipCodex':          { ko: '함선 도감',                    en: 'Ship Codex' },
 
+  // ── 허브 섹션 헤더 (hub-t) ─────────────────────────────────────────
+  'hub.combatLog':         { ko: '⚔️ 전투 기록',                  en: '⚔️ Combat Log' },
+  'hub.exploredPlanets':   { ko: '🌍 탐험한 행성',                en: '🌍 Explored Planets' },
+  'hub.exploreCodex':      { ko: '📖 탐색 도감',                  en: '📖 Explorer Codex' },
+  'hub.shipGarageT':       { ko: '🔧 함선 정비소',                en: '🔧 Ship Garage' },
+  'hub.shipTradeT':        { ko: '🛸 함선 거래소',                en: '🛸 Ship Trade' },
+  'hub.shipEnhanceT':      { ko: '⚡ 함선 강화',                  en: '⚡ Ship Enhance' },
+  'hub.shipSkinT':         { ko: '✨ 함선 스킨',                  en: '✨ Ship Skin' },
+  'hub.planetFrontT':      { ko: '🌍 행성 프론트',                en: '🌍 Planet Front' },
+  'hub.planetPlazaT':      { ko: '🏪 행성 광장',                  en: '🏪 Planet Plaza' },
+  'hub.planetAuctionT':    { ko: '🏛️ 행성 경매',                  en: '🏛️ Planet Auction' },
+  'hub.recruitedHeroes':   { ko: '⚡ 영입된 전설 영웅',           en: '⚡ Recruited Legendary Heroes' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
