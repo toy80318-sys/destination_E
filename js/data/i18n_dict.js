@@ -729,6 +729,17 @@ I18N.register({
   'ui.openBox':         { ko: '개봉',   en: 'Open' },
   'ui.recruit':         { ko: '영입',   en: 'Recruit' },
 
+  // ── G23: 도감/전투 동적 통계 라벨 ────────────────────────────────
+  'ui.mythicBadge':     { ko: '신화',  en: 'Mythic' },
+  'ui.setBadge':        { ko: '세트',  en: 'Set' },
+  'ui.discoveredN':     { ko: '발견 {n}/{total}', en: 'Discovered {n}/{total}' },
+  'ui.discoveredOwned': { ko: '발견 {disc} · 보유 {own} / 전체 {total}종', en: 'Discovered {disc} · Owned {own} / {total} total' },
+  'ui.discoveredHero':  { ko: '발견 {n} / 전체 {total}명 · 카드 클릭 시 상세', en: 'Discovered {n} / {total} total · click cards for details' },
+  'ui.discoveredComm':  { ko: '발견 {n} / 전체 {total}종', en: 'Discovered {n} / {total} total' },
+  'ui.discoveredCiv':   { ko: '발견 {n} / 전체 {total}개 문명 — 해당 문명권 행성 방문 시 해금', en: 'Discovered {n} / {total} civilizations — unlock by visiting their planets' },
+  'ui.shipsKilled':     { ko: '격파 <b>{n}</b>대 · 잔여 HP {hp}/{max}', en: 'Defeated <b>{n}</b> · HP {hp}/{max}' },
+  'ui.shipsKilledShort':{ ko: '격파 <b>{n}</b>대', en: 'Defeated <b>{n}</b>' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

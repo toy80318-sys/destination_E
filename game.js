@@ -5309,7 +5309,7 @@ function renderShipTab(body){
     });
     if(invParts.length>0){
       const marcoNote=hasMarcoInv?'<span style="color:var(--gold);font-size:11px;margin-left:6px">🧭+10%</span>':'';
-      const rarityLabel=p2=>{if(p2.rarity==='mythic')return'<span style="color:#ff88ff;font-size:11px;border:1px solid #ff88ff;border-radius:3px;padding:1px 4px;margin-left:4px">신화</span>';if(p2.rarity==='set')return'<span style="color:var(--gold);font-size:11px;border:1px solid var(--gold);border-radius:3px;padding:1px 4px;margin-left:4px">세트</span>';return'';};
+      const rarityLabel=p2=>{if(p2.rarity==='mythic')return'<span style="color:#ff88ff;font-size:11px;border:1px solid #ff88ff;border-radius:3px;padding:1px 4px;margin-left:4px">'+I18N.t('ui.mythicBadge')+'</span>';if(p2.rarity==='set')return'<span style="color:var(--gold);font-size:11px;border:1px solid var(--gold);border-radius:3px;padding:1px 4px;margin-left:4px">'+I18N.t('ui.setBadge')+'</span>';return'';};
       const rows=invParts.map(i=>{
         const p2=PARTS.find(x=>x.id===i.id);if(!p2)return'';
         const marcoM=hasMarcoInv?1.10:1.0;
@@ -12199,7 +12199,7 @@ function renderCodexTab(body){
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">🛸</div>
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.shipCodex')}</div>
-      <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${totalSeen}</span> · 보유 <span style="color:var(--green)">${totalOwned}</span> / 전체 ${totalShips}종</div></div>
+      <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.discoveredOwned',{disc:`<span style="color:var(--cyan)">${totalSeen}</span>`,own:`<span style="color:var(--green)">${totalOwned}</span>`,total:totalShips})}</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalSeen/totalShips*100)}%</div></div>
     </div>${sections}${capSection}`;
@@ -12294,7 +12294,7 @@ function renderCodexTab(body){
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">⭐</div>
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.heroCodex')}</div>
-      <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${totalUnlocked}</span> / 전체 ${totalChars}명 · 카드 클릭 시 상세</div></div>
+      <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.discoveredHero',{n:`<span style="color:var(--cyan)">${totalUnlocked}</span>`,total:totalChars})}</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalUnlocked/totalChars*100)}%</div></div>
     </div>
@@ -12406,7 +12406,7 @@ function renderCodexTab(body){
     content='<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">'
       +'<div style="font-size:29px">💎</div>'
       +'<div><div style="font-size:14px;color:var(--txt);font-weight:bold">특산물·재료 도감</div>'
-      +'<div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">'+totalDisc+'</span> / 전체 '+COMMODITIES.length+'종</div></div>'
+      +'<div style="font-size:12px;color:var(--dim)">'+I18N.t('ui.discoveredComm',{n:`<span style="color:var(--cyan)">${totalDisc}</span>`,total:COMMODITIES.length})+'</div></div>'
       +'<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">수집률</div>'
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalDisc/COMMODITIES.length*100)+'%</div></div></div>'
       +commSection('🌟 특산물',normalComms)
@@ -12472,7 +12472,7 @@ function renderCodexTab(body){
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">🌌</div>
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.civCodex')}</div>
-      <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${_discCount}</span> / 전체 ${F_ORDER.length}개 문명 — 해당 문명권 행성 방문 시 해금</div></div>
+      <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.discoveredCiv',{n:`<span style="color:var(--cyan)">${_discCount}</span>`,total:F_ORDER.length})}</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">탐험도</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(_discCount/F_ORDER.length*100)}%</div></div>
     </div>${cards}`;
@@ -13601,7 +13601,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     const msg=win?
       `<div style="font-size:48px;margin-bottom:10px">🚀</div>
        <div style="color:#ffd700;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">소행성대 돌파!</div>
-       <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대 · 잔여 HP ${Math.floor(state.ship.hp)}/${state.ship.maxHP}</div>
+       <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">${I18N.t('ui.shipsKilled',{n:state.kills,hp:Math.floor(state.ship.hp),max:state.ship.maxHP})}</div>
        <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
          💰 +₡${rew.toLocaleString()} <span style="color:#aaa;font-size:11px">(보상 배율 ${Math.round(_killScale*100)}%)</span><br>💎 보이드 에센스 +${veRew}
          ${dropTxt?'<br>'+dropTxt:''}
@@ -13610,7 +13610,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
        </div>`:
       `<div style="font-size:48px;margin-bottom:10px">💥</div>
        <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">${I18N.t('ui.flagshipDown')}</div>
-       <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대</div>
+       <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">${I18N.t('ui.shipsKilledShort',{n:state.kills})}</div>
        <div style="color:#ffaa99;font-size:13px;line-height:1.9;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.3);border-radius:6px;padding:10px 16px">
          💸 크레딧 -₡${pen.toLocaleString()} (-3%)
        </div>`;
