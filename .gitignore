@@ -17,3 +17,6 @@ dist/
 out/
 # 임시 스크린샷 업로드
 git01.png
+# i18n 추출 산출물 (scripts/extract-i18n.js 의 출력 — 재생성 가능)
+scripts/i18n_extracted.json
+scripts/i18n_unique.json
