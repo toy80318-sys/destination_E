@@ -3415,8 +3415,9 @@ function doNextTurn(){
       return;
     }
   }
-  // ── 모든 행성 50% 확률 해적 조우 (직전 턴 쿨다운) ──────────
-  if(!pd?.hostile&&G.turn-(G.lastPirateTurn||-999)>1){
+  // ── 모든 행성 50% 확률 해적 조우 (직전 턴 쿨다운, P31 제외) ──────────
+  // P31(지구)는 해방된 안착지 — 체류 해적 조우 금지 (사용자 요청 2026-06-03)
+  if(!pd?.hostile&&G.currentPlanet!=='P31'&&G.turn-(G.lastPirateTurn||-999)>1){
     if(Math.random()<0.50){
       if(G.stayTurns>=3){
         setTimeout(()=>triggerPirateRaid(pd),600);
@@ -9134,18 +9135,17 @@ function generateQuests(pid){
       });
     }
   }
-  // 히든 보스 퀘스트: P30(제타 레티쿨리) 방문 시 — 지구 해방 이후에만 등장
-  // ※ 우르사 메이저 격파(엔딩) 전에는 히든 보스 미공개
-  // 지구 해방은 "우르사 메이저 격파(나포함 보유)" 로만 인정.
-  // ※ 버그픽스: 기존 'G.act>=4 자동 해방'은 턴 경과로 ACT4 도달 시 보스 격파 없이 지구가 해방돼
-  //    지구 접근 시 보스가 안 뜨고 해적만 나오던 문제를 유발 → act 조건 제거.
+  // 히든 보스 퀘스트: P30(제타 레티쿨리) 방문 시 — ACT 4 이후 + 보이드 행성 1개 이상 보유 시 등장
+  // ※ 사용자 요청(2026-06-03): 트리거 조건을 "지구 해방"에서 "ACT≥4 + 보이드 행성 보유"로 변경.
+  //   _earthLiberated 자동 승격 로직은 유지(다른 시스템 호환).
   if(!G._earthLiberated){
     const _hasUrsaCap=(G.fleet||[]).some(s=>s.id&&s.id.startsWith('BOSS_URSA'))
                     ||(G.reserveFleet||[]).some(s=>s.id&&s.id.startsWith('BOSS_URSA'));
     if(_hasUrsaCap){G._earthLiberated=true;}
   }
   // ※ 일반 퀘스트 생성보다 우선 처리 (early-return을 우회)
-  if(pid==='P30'&&G._earthLiberated&&!G.quests[pid].some(q=>q.id==='q_void_boss')&&!G._voidFalconDefeated){
+  const _ownsAnyVoid=(typeof PLANET_DEF!=='undefined')&&PLANET_DEF.filter(p=>p.void).some(p=>G.planets[p.id]?.owned);
+  if(pid==='P30'&&(G.act||0)>=4&&_ownsAnyVoid&&!G.quests[pid].some(q=>q.id==='q_void_boss')&&!G._voidFalconDefeated){
     G.quests[pid].unshift({
       id:'q_void_boss',type:'void_boss',ic:'🌑',npc:'???',npcIc:'🌑',
       nm:'[히든] 검은 함선의 경고 신호',
@@ -14650,11 +14650,11 @@ function onMapClick(e){
 
   // (이전 장식용 지구 클릭 핸들러는 제거 — P31이 PLANET_DEF의 일반 행성으로 처리됨)
   // P31 클릭 처리:
-  //   - 격파 전 + ACT<3:  진입 차단
-  //   - 격파 전 + ACT>=3: 첫 진입 → 우르사 메이저 보스전 강제 발동 (보이드 크리스탈 미요구)
-  //   - 격파 후:          일반 이동 (아래 PLANET_DEF.forEach에서 처리)
-  // ※ 게이트 조건 _isUrsaDefeated() — _earthLiberated만 켜져 있고 실제 격파 흔적 없으면 보스 재트리거 (B2 버그픽스)
-  if(G&&!_isUrsaDefeated()&&G.mapPositions&&G.mapPositions['P31']){
+  //   - ACT<3:               진입 무조건 차단 (Ursa 격파 상태와 무관 — defense-in-depth)
+  //   - 격파 전 + ACT>=3:    첫 진입 → 우르사 메이저 보스전 강제 발동
+  //   - 격파 후 + ACT>=3:    일반 이동 (아래 PLANET_DEF.forEach에서 처리)
+  // ※ ACT<3 무조건 차단 추가 — _isUrsaDefeated()가 손상 상태에서 true로 잘못 보고되어도 지구 접근 불가
+  if(G&&G.mapPositions&&G.mapPositions['P31']){
     const _p31w=G.mapPositions['P31'];
     const _p31_3d=rotate3D(_p31w.x,_p31w.y,0,map3dRotX,map3dRotY);
     const _p31p=project3D(_p31_3d.x,_p31_3d.y,_p31_3d.z);
@@ -14665,9 +14665,12 @@ function onMapClick(e){
         baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT '+(G.act||1)+')');
         return;
       }
-      baekgu('지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!');
-      tryBossEntry();
-      return;
+      if(!_isUrsaDefeated()){
+        baekgu('지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!');
+        tryBossEntry();
+        return;
+      }
+      // 격파 후 + ACT>=3 — PLANET_DEF.forEach에서 일반 행성처럼 처리되도록 통과
     }
   }
   // 3D hit-test: compare click to each planet's projected screen position
@@ -14787,17 +14790,20 @@ function refreshFloatBtn(){
 function travelTo(){
   const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
   // P31 (지구) 진입 게이트 — ACT/봉쇄 상태 검증
-  // ※ 게이트 조건 _isUrsaDefeated() — _earthLiberated만 켜져 있고 실제 격파 흔적 없으면 보스 재트리거 (B2 버그픽스)
-  if(pid==='P31'&&!_isUrsaDefeated()){
+  // ※ ACT<3 무조건 차단 (defense-in-depth) — _isUrsaDefeated()가 손상 상태에서 true 잘못 보고되어도 지구 차단
+  if(pid==='P31'){
     if((G.act||1)<3){
       notify('🌍 지구 진입은 ACT 3부터 가능합니다 (현재 ACT '+(G.act||1)+')','warn');
       baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!');
       return;
     }
-    // ACT3+ 첫 지구 도착 → 우르사 메이저 보스전 강제 진입
-    baekgu('지구다... 우르사 메이저가 기다린다. 모든 화력 준비!');
-    tryBossEntry();
-    return;
+    if(!_isUrsaDefeated()){
+      // ACT3+ 첫 지구 도착 → 우르사 메이저 보스전 강제 진입
+      baekgu('지구다... 우르사 메이저가 기다린다. 모든 화력 준비!');
+      tryBossEntry();
+      return;
+    }
+    // 격파 후 + ACT>=3 — 일반 이동 흐름으로 통과
   }
   const pd=PLANET_DEF.find(p=>p.id===pid),cost=travelCost(G.currentPlanet,pid);
   const blink=hasBlinkOnAll();
@@ -14846,8 +14852,9 @@ function travelTo(){
     }
   }catch(e){console.warn('asteroid trigger',e);}
   G._prevPlanet=pid;
-  // 랜덤 해적 조우 (턴 3 이후, 비적대 행성)
-  if(G.turn>2){
+  // 랜덤 해적 조우 (턴 3 이후, 비적대 행성, P31 제외)
+  // P31(지구)는 해방 후 안착지 — 해적 조우 금지 (사용자 요청 2026-06-03)
+  if(G.turn>2&&pid!=='P31'){
     // 허브 미해금 시 해적 조우 100% 보장 (해금 퀘스트 반드시 10회 진행)
     const _hubUnlocked=isPlanetHubUnlocked(pid);
     const chance=_hubUnlocked?calcTravelPirateChance(pd):100;
@@ -18608,7 +18615,9 @@ function forceUrsaBoss(){
 }
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
 function tryBossEntry(){
-  const _isFirst=!G._earthLiberated;  // 첫 도전 = ACT3+ 첫 지구 진입
+  // 첫 도전 판정 — 실제 격파 흔적(BOSS_URSA 나포함 OR 엔딩 시청)이 없으면 "첫 도전"으로 간주.
+  //   _earthLiberated 만 켜져 있고 격파 흔적이 없는 손상 상태(B2 후속)에서도 보스가 정상 트리거되도록 보장.
+  const _isFirst=!_isUrsaDefeated();
   // 첫 도전이 아니라면 (재도전) 보이드 크리스탈 필요
   if(!_isFirst&&(!G.voidCrystal||G.voidCrystal<=0)){
     notify('보이드 크리스탈이 없습니다 (재도전용)','err');return;
