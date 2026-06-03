@@ -5385,7 +5385,7 @@ function renderShipTab(body){
   }
   body.innerHTML=`<div class="hub-scroll">
     ${G._garageMode?hubBanner('garage','🔧','함선 정비소',pd?.f):hubBanner('ship','🛸','함선 거래소',pd?.f)}
-    <div class="hub-t">${G._garageMode?'🔧 함선 정비소':'🛸 함선 거래소'} — ${pd?.nm||''}</div>
+    <div class="hub-t">${G._garageMode?I18N.t('hub.shipGarageT'):I18N.t('hub.shipTradeT')} — ${pd?.nm||''}</div>
     ${subNav}
     ${mainHTML}
   </div>`;
@@ -5820,7 +5820,7 @@ function renderCargoOnlyTab(body){
   const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<80);
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧','함선 정비소',pd?.f)}
-    <div class="hub-t">🔧 함선 정비소 — ${pd?pd.nm:''}</div>
+    <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     <!-- 사용자 요청: 상단 단축 액션 3종 — 전체확장 | 창고구매(거래소 파츠탭) | 창고제작(제작소) -->
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:stretch">
@@ -5944,7 +5944,7 @@ function renderShipSkinTab(body){
   const removeBtn=(sel&&sel._skinCatId)?`<div style="margin-bottom:10px"><button class="btn btn-sm" style="border-color:var(--red);color:var(--red);font-size:12px;padding:5px 14px" onclick="removeShipSkin(${_selectedSkinShipIdx})">↩ 홀로그램 해제 (원본 외관)</button></div>`:'';
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧','함선 정비소',pd?.f)}
-    <div class="hub-t">✨ 함선 스킨 — ${pd?pd.nm:''}</div>
+    <div class="hub-t">${I18N.t('hub.shipSkinT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     <div style="background:rgba(204,102,255,.08);border:1px solid rgba(204,102,255,.35);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
       🐕 <b style="color:#cc88ff">백구</b>: "함선 외관 위에 <b>홀로그램 막</b>을 씌워서 외부에서 볼 때 디자인이 바뀌어 보이게 하는 거야. 실제 함체·능력치는 그대로! 비용은 해당 함선 정가의 <b>10%</b>야."
@@ -6121,7 +6121,7 @@ function renderShipEnhanceTab(body){
   }
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧','함선 정비소',pd?.f)}
-    <div class="hub-t">⚡ 함선 강화 — ${pd?pd.nm:''}</div>
+    <div class="hub-t">${I18N.t('hub.shipEnhanceT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
       🐕 <b style="color:#ffd700">백구</b>: "함선 능력치를 한 단계씩 강화. 매 강화 +5%, 최대 +10강(50%). 5강까지는 무조건 성공, 8강부터 실패하면 단계 후퇴! 비용은 1.2배씩 누적 상승."
@@ -6418,7 +6418,7 @@ function renderFleetFormationTab(body){
   </div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧','함선 정비소',pd?.f)}
-    <div class="hub-t">🔧 함선 정비소 — ${pd?pd.nm:''}</div>
+    <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     ${summary}
     ${hint}
@@ -8359,7 +8359,7 @@ function renderCrewTab(body){
         </div>
       </div>`;
     }).join('')}</div>`}
-    ${G.heroes.length>0?`<div class="hub-t" style="margin-top:16px">⚡ 영입된 전설 영웅</div><div class="crew-grid">${G.heroes.map(h=>{
+    ${G.heroes.length>0?`<div class="hub-t" style="margin-top:16px">${I18N.t('hub.recruitedHeroes')}</div><div class="crew-grid">${G.heroes.map(h=>{
   const hd=HEROES[h];
   const aboard=G.fleet.find(sh=>(sh.crewIds||[]).includes(h));
   const freeShips=G.fleet.filter(sh=>!(sh.crewIds||[]).includes(h)&&(sh.crewIds||[]).length<getMaxCrew(sh));
@@ -8802,7 +8802,7 @@ function renderPlanetsTab(body){
   const ownedList=PLANET_DEF.filter(p=>G.planets[p.id]?.owned);
   const totalTax=ownedList.reduce((s,p)=>s+calcTaxFor(p.id),0);
   const ownedCount=ownedList.length;
-  body.innerHTML=`<div class="hub-scroll">${hubBanner('route','🌌','은하계 경로')}<div class="hub-t">🌍 탐험한 행성</div>
+  body.innerHTML=`<div class="hub-scroll">${hubBanner('route','🌌','은하계 경로')}<div class="hub-t">${I18N.t('hub.exploredPlanets')}</div>
     <!-- 턴당 전체 세금 합산 요약 -->
     <div style="background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(212,175,55,.04));border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <span style="font-size:22px">💰</span>
@@ -10912,7 +10912,7 @@ function renderPlazaView(body){
   ];
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('plaza','🏪','행성 광장',pd?.f)}
-<div class="hub-t">🏪 행성 광장 — ${pd?pd.nm:''}</div>
+<div class="hub-t">${I18N.t('hub.planetPlazaT')} — ${pd?pd.nm:''}</div>
 <div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">방문 중인 행성의 시설을 이용하세요</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:520px;margin:0 auto">
 ${cards.map(c=>`<button onclick="hubTab('${c.tab}')" style="background:${c.bg};border:2px solid ${c.bdr};border-radius:14px;padding:22px 14px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
@@ -10932,7 +10932,7 @@ function renderFrontView(body){
   ];
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('front','🌍','행성 프론트',pd?.f)}
-<div class="hub-t">🌍 행성 프론트 — ${pd?pd.nm:''}</div>
+<div class="hub-t">${I18N.t('hub.planetFrontT')} — ${pd?pd.nm:''}</div>
 <div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">행성 점령 현황을 확인하고 경매에 참가하세요</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:0 auto">
 ${cards.map(c=>`<button onclick="hubTab('${c.tab}')" style="background:${c.bg};border:2px solid ${c.bdr};border-radius:14px;padding:20px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
@@ -11782,7 +11782,7 @@ function renderAuctionView(body){
   body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
     ${hubBanner('auction','🏛️','행성 경매',PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f)}
     <div style="padding:8px 14px 4px;flex-shrink:0">
-      <div class="hub-t" style="margin:0">🏛️ 행성 경매 <span style="font-size:12px;font-weight:normal;color:${bidsLeft>0?'var(--cyan)':'var(--red)'}">입찰 ${bidsLeft}/2회</span>&nbsp;&nbsp;<span style="font-size:12px;font-weight:normal;color:${_planetsAtLimit?'var(--red)':'var(--dim)'}">| 소유 ${_ownedCnt2}/${_maxPlanets2}개</span></div>
+      <div class="hub-t" style="margin:0">${I18N.t('hub.planetAuctionT')} <span style="font-size:12px;font-weight:normal;color:${bidsLeft>0?'var(--cyan)':'var(--red)'}">입찰 ${bidsLeft}/2회</span>&nbsp;&nbsp;<span style="font-size:12px;font-weight:normal;color:${_planetsAtLimit?'var(--red)':'var(--dim)'}">| 소유 ${_ownedCnt2}/${_maxPlanets2}개</span></div>
     </div>
     <!-- 좌우 분할 -->
     <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:8px 14px 14px;min-height:0;overflow:hidden">
@@ -12544,7 +12544,7 @@ function renderCodexTab(body){
 
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('codex','📖','탐색 도감')}
-    <div class="hub-t">📖 탐색 도감</div>
+    <div class="hub-t">${I18N.t('hub.exploreCodex')}</div>
     ${subNav}
     ${content}
   </div>`;
@@ -12556,7 +12556,7 @@ function renderCombatLog(body){
   const flagship=G.fleet&&G.fleet[0];
   const flagImgSrc=flagship?shipImgSrc(flagship):null;
   const flagTierIc={소형:'🛸',중형:'🚀',대형:'🌟',전설기함:'🏮'}[flagship?.tier]||'🛸';
-  body.innerHTML=`<div class="hub-scroll">${hubBanner('clog','📋','전투 기록')}<div class="hub-t">⚔️ 전투 기록</div>
+  body.innerHTML=`<div class="hub-scroll">${hubBanner('clog','📋','전투 기록')}<div class="hub-t">${I18N.t('hub.combatLog')}</div>
     ${logs.length===0?'<div style="color:var(--dim);font-size:14px">전투 기록 없음</div>':
     `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">`+logs.slice().reverse().map(l=>{
       const pd=PLANET_DEF.find(p=>p.id===(l.planetId||l.pid))||PLANET_DEF.find(p=>p.nm===l.planet);
