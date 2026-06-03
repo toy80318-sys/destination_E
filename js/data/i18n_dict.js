@@ -683,6 +683,26 @@ I18N.register({
   'ui.heroCodex':        { ko: '인물 도감',       en: 'Hero Codex' },
   'ui.planetCodex':      { ko: '행성 도감',       en: 'Planet Codex' },
 
+  // ── G20: 잔여 인라인 라벨 ────────────────────────────────────────────
+  'ui.civCodex':         { ko: '문명 도감',       en: 'Civilization Codex' },
+  'ui.commodityCodex':   { ko: '특산물 도감',     en: 'Specialty Codex' },
+  'ui.shipsCodex2':      { ko: '함선 도감',       en: 'Ship Codex' },
+  'ui.flagshipDown':     { ko: '기함 격침',       en: 'Flagship Down' },
+  'ui.earthFreedom':     { ko: '지구 해방',       en: 'Earth Liberated' },
+  'ui.shipsAlive':       { ko: '생존 함선',       en: 'Surviving Ships' },
+  'ui.recruitedHeroes2': { ko: '영입 영웅',       en: 'Recruited Heroes' },
+  'ui.finalBoss':        { ko: '최종 보스',       en: 'Final Boss' },
+  'ui.shipsDestroyed':   { ko: '격파 적함',       en: 'Enemy Ships Defeated' },
+  'ui.noCrewAboard':     { ko: '탑승 크루 없음',   en: 'No crew aboard' },
+  'ui.noPartsEquipped':  { ko: '장착 파츠 없음',   en: 'No parts equipped' },
+  'ui.noPartsStock':     { ko: '파츠 재고 없음',   en: 'No parts in stock' },
+  'ui.firstEngagement':  { ko: '가장 먼저 교전',   en: 'Engages first' },
+  'ui.noOwnedPlanets':   { ko: '보유 행성 없음',   en: 'No owned planets' },
+  'ui.noCombatRecords':  { ko: '전투 기록 없음',   en: 'No combat records' },
+  'ui.noAcquired':       { ko: '획득 항목 없음',   en: 'Nothing acquired' },
+  'ui.turnTaxIncome':    { ko: '턴당 전체 세금 수익', en: 'Total tax income / turn' },
+  'ui.visitPlanetFacility':{ ko: '방문 중인 행성의 시설을 이용하세요', en: 'Use facilities at the planet you are visiting' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
