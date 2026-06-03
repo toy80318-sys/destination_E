@@ -849,7 +849,7 @@ window.addEventListener('orientationchange',()=>setTimeout(fitGameStage,250));
 // ═══ HUD ════════════════════════════════════════════════════
 // 진행 중인 전투로 복귀
 function resumeCombat(){
-  if(!combatState||combatState.done){notify('진행 중인 전투가 없습니다','warn');_updateResumeBtn();return;}
+  if(!combatState||combatState.done){notify(I18N.t('notify.noActiveCombat'),'warn');_updateResumeBtn();return;}
   // hubTab('combat')에는 렌더 분기가 없으므로 직접 renderCombatView 호출
   G._currentHubTab='combat';
   const body=document.getElementById('hub-body');
@@ -2233,7 +2233,7 @@ function renderPrologue(){
   box.innerHTML=spHTML+`<div style="color:var(--yellow);font-size:17px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;padding:0 8px">${l.tx}</div>`;
   const btn=document.getElementById('pr-btn');
   btn.style.display='inline-block';
-  btn.textContent=pIdx<pl.length-1?'계속 ▶':'허브로 →';
+  btn.textContent=pIdx<pl.length-1?I18N.t('ui.continueArrow'):I18N.t('ui.toHub');
 }
 function nextPrologue(){const pl=getPrologues();if(pIdx<pl.length-1){pIdx++;renderPrologue();}else showHub();}
 
@@ -3559,8 +3559,8 @@ function triggerTravelPirate(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 약탈금 획득 | 도주 시 크레딧 -3%</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "항로에 적이다! 적 스펙 보고 결정해!"</div>`,
-    [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
+    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
+     {txt:I18N.t('ui.flee'),fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
   );
 }
 function escapeTravelPirate(){
@@ -3612,8 +3612,8 @@ function triggerEarlyPirate(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 크레딧 획득 | 패배 시 손실</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "${G.pirateAppearances>=5?'이제 최강 해적! 각오해!':G.pirateAppearances>=3?'점점 강해져! 조심해!':'해적이야! 스펙 확인해!'}"</div>`,
-    [{txt:'⚔️ 전투!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
+    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
+     {txt:I18N.t('ui.flee'),fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify('🚀 도주. ₡'+p.toLocaleString()+' 손실 / 명성 -2','err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
   );
   saveGame(true);
 }
@@ -3675,7 +3675,7 @@ function triggerChixFleet(pd){
       const raidDef={...pd,_enemies:enemies,_chixWave:wave};
       startChixFleetCombat(raidDef);
     },cls:'btn-red'},
-     {txt:'🚀 도주 (-3%)',fn:()=>{
+     {txt:I18N.t('ui.flee'),fn:()=>{
       closeModal();
       const loss=Math.floor(G.credits*0.03);
       G.credits=Math.max(100,G.credits-loss);
@@ -3734,7 +3734,7 @@ function triggerPirateRaid(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} 백구: "내가 경고했잖아. 싸워!"</div>`,
     [{txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
-     {txt:'🚀 도주 (-3%)',fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
+     {txt:I18N.t('ui.flee'),fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
   saveGame(true);
 }
@@ -4209,7 +4209,7 @@ function buyCargoItem(id){
     return s+sz*(iv.qty||1);
   },0);
   const invSlotMax=30;
-  if(invSlotUsed+ci.size>invSlotMax){notify('인벤토리 공간 부족','err');return;}
+  if(invSlotUsed+ci.size>invSlotMax){notify(I18N.t('notify.invSpaceLow'),'err');return;}
   G.credits-=ci.price;
   stock['cargo_'+id]--;
   const ex=G.inventory.find(function(i){return i.id===ci.id;});
@@ -4230,8 +4230,8 @@ function buyCommN(id){
     const stock=G.shopStock[G.currentPlanet];
     const comm=COMMODITIES.find(c=>c.id===id);
     if(!comm)break;
-    if(total>=getCargoMax()&&!comm.material){notify('화물창 만석','err');break;}
-    if(!stock?.[id]||stock[id]<=0){notify('재고 소진','err');break;}
+    if(total>=getCargoMax()&&!comm.material){notify(I18N.t('notify.cargoFull'),'err');break;}
+    if(!stock?.[id]||stock[id]<=0){notify(I18N.t('notify.outOfStockShort'),'err');break;}
     if(G.credits<comm.buy){notify(I18N.t('notify.notEnoughCredits'),'err');break;}
     buyComm(id,true);bought++;
   }
@@ -4287,12 +4287,12 @@ function buyAllComm(){
 function sellInventoryItem(id, qty){
   if(!G.inventory)G.inventory=[];
   const inv=G.inventory.find(i=>i.id===id);
-  if(!inv||inv.qty<=0){notify('보유 수량 없음','err');return;}
+  if(!inv||inv.qty<=0){notify(I18N.t('notify.noOwnedQty'),'err');return;}
   if(inv.qty<=1){notify(I18N.t('notify.keepLastMaterial'),'warn');return;}
   const sellable=Math.min(Math.max(1,qty|0),inv.qty-1);
-  if(sellable<=0){notify('판매 가능 수량 없음','warn');return;}
+  if(sellable<=0){notify(I18N.t('notify.noSellableQty'),'warn');return;}
   const comm=COMMODITIES.find(c=>c.id===id);
-  if(!comm){notify('알 수 없는 아이템','err');return;}
+  if(!comm){notify(I18N.t('notify.unknownItem'),'err');return;}
   // 가격: maxSell (영입 재료 가치 — 최대가) × 마르코폴로 보너스
   const marcoMult=(G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
   const unitPrice=Math.floor((comm.maxSell||comm.buy||0)*marcoMult);
@@ -6139,9 +6139,9 @@ function renderShipSkinTab(body){
 }
 function applyShipSkin(shipIdx, skinId){
   const s=G.fleet[shipIdx];
-  if(!s){notify('함선 없음','err');return;}
+  if(!s){notify(I18N.t('notify.shipNone'),'err');return;}
   const sk=(SHIP_CATALOG||[]).find(x=>x.id===skinId);
-  if(!sk){notify('스킨 없음','err');return;}
+  if(!sk){notify(I18N.t('notify.skinNone'),'err');return;}
   const price=Math.max(100,Math.floor((sk.price||0)*0.10));
   if(G.credits<price){notify(`크레딧 부족 — 필요 ₡${price.toLocaleString()}`,'err');return;}
   G.credits-=price;
@@ -6311,7 +6311,7 @@ function renderShipEnhanceTab(body){
   </div>`;
 }
 function doShipEnhance(shipIdx){
-  const s=G.fleet[shipIdx];if(!s){notify('함선 없음','err');return;}
+  const s=G.fleet[shipIdx];if(!s){notify(I18N.t('notify.shipNone'),'err');return;}
   const curLv=s._enhanceLv||0;
   if(curLv>=10){notify('이미 최대 +10 강화','warn');return;}
   const nextLv=curLv+1;
@@ -8018,7 +8018,7 @@ function pickCrewModal(shipIdx){
 // 모달 내 크루 해제
 function unassignCrewModal(shipIdx,crewSlotIdx){
   const s=G.fleet[shipIdx];if(!s||!s.crewIds)return;
-  if(crewSlotIdx<0||crewSlotIdx>=s.crewIds.length){notify('잘못된 크루 위치','err');return;}
+  if(crewSlotIdx<0||crewSlotIdx>=s.crewIds.length){notify(I18N.t('notify.invalidCrewSlot'),'err');return;}
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||(G.heroes||[]).map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
   notify(`${c?.nm||'크루'} 하선`,'ok');
@@ -8265,7 +8265,7 @@ function confirmRenameShip(idx){
   const inp=document.getElementById('rename-inp');
   if(!inp)return;
   const newName=inp.value.trim();
-  if(!newName){notify('이름을 입력하세요','warn');return;}
+  if(!newName){notify(I18N.t('notify.enterName'),'warn');return;}
   if(newName.length>20){notify('최대 20자까지 입력 가능','err');return;}
   const oldName=s.nm;
   s.nm=newName;
@@ -8275,7 +8275,7 @@ function confirmRenameShip(idx){
   rerenderShipOrGarage();saveGame(true);
 }
 function setFlagship(idx){
-  if(idx===0){notify('이미 기함입니다','err');return;}
+  if(idx===0){notify(I18N.t('notify.alreadyFlagship'),'err');return;}
   const tmp=G.fleet[0];G.fleet[0]=G.fleet[idx];G.fleet[idx]=tmp;
   const fnm=G.fleet[0]?.nm||'기함';notify('⭐ '+fnm+' 기함으로 설정!','gold');
   baekgu(fnm+' 기함 변경. 주의해서 타.');
@@ -8574,7 +8574,7 @@ function unassignCrewById(cid){
 // ── 크루 내보내기 확인 팝업 ──────────────────────────────────────
 function confirmDismissCrew(cid){
   const c=G.crew.find(x=>x.id===cid);
-  if(!c){notify('크루를 찾을 수 없습니다','err');return;}
+  if(!c){notify(I18N.t('notify.crewNotFound'),'err');return;}
   if(c.rarity==='L'||c.rarity==='H'){
     openModal(`${c.ic||'🧑'} ${c.nm} 내보내기`,
       `<div style="padding:12px;text-align:center">
@@ -8619,7 +8619,7 @@ function _doDismissCrew(cid){
 // 통합 되돌리기 — 단일/일괄 내보내기 모두 복원 (마지막 작업만)
 function undoDismissCrew(){
   if(!_lastDismissedCrew||!_lastDismissedCrew.crew||_lastDismissedCrew.crew.length===0){
-    notify('되돌릴 크루가 없습니다','err');return;
+    notify(I18N.t('notify.noUndoCrew'),'err');return;
   }
   let restored=0,reseated=0;
   _lastDismissedCrew.crew.forEach(entry=>{
@@ -8660,8 +8660,8 @@ function doGacha(n,useCr,crCost,minRarity){
   const _crCost=crCost||500;
   const cost_vc=useCr?0:n;
   const cost_cr=useCr?_crCost:0;
-  if(useCr&&G.credits<cost_cr){notify('크레딧이 부족합니다','err');return;}
-  if(!useCr&&G.voidCrystal<cost_vc){notify('보이드 크리스탈이 부족합니다','err');return;}
+  if(useCr&&G.credits<cost_cr){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}
+  if(!useCr&&G.voidCrystal<cost_vc){notify(I18N.t('notify.notEnoughVoidCrystal'),'err');return;}
   if(useCr)G.credits-=cost_cr;else G.voidCrystal-=cost_vc;
   try{AudioMgr.playSfx('gacha_pull');}catch(e){}
   // 넬슨 영웅 보유 시 전설 확률 +10%
@@ -9280,7 +9280,7 @@ function showVoidBossIntro(questRef){
       </style>`,
       [
         _idx<lines.length-1
-          ? {txt:'계속 ▶',fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
+          ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
           : {txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startVoidBossCombat(questRef);},cls:'btn-red'},
         {txt:'나중에',fn:()=>{closeModal();questRef.status='available';saveGame(true);if(typeof rerenderTab==='function'&&typeof renderQuestTab==='function')rerenderTab(renderQuestTab);},cls:'btn-sm'}
       ],
@@ -9332,7 +9332,7 @@ function showVoidBossOutro(){
       <style>@keyframes glitchShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,-1px)}}</style>`,
       [
         _idx<lines.length-1
-          ? {txt:'계속 ▶',fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
+          ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
           : {txt:'🎁 보상 수령 ▶',fn:()=>{closeModal();_grantVoidBossRewards();},cls:'btn-gold'}
       ]
     );
@@ -10085,7 +10085,7 @@ function doGatherSearch(){
       openModal('🛸 치크스 정찰대 발견!',
         `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">탐색 중 치크스 정찰대와 조우했습니다!</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>격퇴하면 퀘스트 완료 처리됩니다.</div>`,
-        [{txt:'⚔️ 전투!',fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
+        [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
          {txt:'🚀 도주',fn:()=>{closeModal();notify('치크스 정찰대 도주','warn');},cls:'btn-sm'}]);
     } else {
       notify('탐색 완료 — 정찰대 미발견. 다시 탐색하세요.','warn');
@@ -10126,7 +10126,7 @@ function doGatherSearch(){
     openModal('🏴‍☠️ 잔해 구역 해적 출현!',
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>격파하면 탐색이 계속됩니다.</div>`,
-      [{txt:'⚔️ 전투!',fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
+      [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
        {txt:'🚀 도주 (탐색 중단)',fn:()=>{closeModal();notify('탐색 중단','warn');},cls:'btn-sm'}]);
 
   } else if(roll<0.40){
@@ -18807,7 +18807,7 @@ function showUrsaMajorIntro(){
       </div>`,
       [
         _idx<lines.length-1
-          ? {txt:'계속 ▶',fn:()=>{_idx++;_renderLine();},cls:'btn-red'}
+          ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-red'}
           : {txt:'⚔️ 최종 전투 시작',fn:()=>{closeModal();startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});},cls:'btn-red'},
         {txt:'잠시 후',fn:()=>{closeModal();G.voidCrystal++;notify('💎 보이드 크리스탈 환불 (전투 취소)','warn');},cls:'btn-sm'}
       ],
@@ -18906,7 +18906,7 @@ function showBossVictoryEpilogue(onDone){
       [
         isFinal
           ? {txt:'🎊 보상 확인 ▶',fn:()=>{closeModal();if(typeof onDone==='function')onDone();},cls:'btn-gold'}
-          : {txt:'계속 ▶',fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
+          : {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
       ]
     );
   }

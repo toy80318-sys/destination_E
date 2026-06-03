@@ -1,6 +1,6 @@
 // DESTINATION EARTH — PWA Service Worker
 // 캐시 버전은 game.js의 _GAME_VER 가 바뀔 때마다 함께 올려야 새 빌드가 강제 갱신됨.
-const CACHE_VERSION = 'de-cache-v20260603-10';
+const CACHE_VERSION = 'de-cache-v20260603-11';
 const CORE_ASSETS = [
   './',
   './index.html',
