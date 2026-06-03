@@ -740,6 +740,14 @@ I18N.register({
   'ui.shipsKilled':     { ko: '격파 <b>{n}</b>대 · 잔여 HP {hp}/{max}', en: 'Defeated <b>{n}</b> · HP {hp}/{max}' },
   'ui.shipsKilledShort':{ ko: '격파 <b>{n}</b>대', en: 'Defeated <b>{n}</b>' },
 
+  // ── G24: 은하 지도 UI ─────────────────────────────────────────────
+  'map.title':          { ko: '🗺️ 은하 지도', en: '🗺️ Galaxy Map' },
+  'map.controlsHint':   { ko: '🖱️ 우클릭=회전 | 좌클릭=이동 | 휠=줌', en: '🖱️ Right=rotate | Left=move | Wheel=zoom' },
+  'map.resetView':      { ko: '시점 초기화', en: 'Reset View' },
+  'map.move':           { ko: '🚀 이동',     en: '🚀 Move' },
+  'map.planetInfo':     { ko: '📍 행성 정보', en: '📍 Planet Info' },
+  'map.selectForList':  { ko: '행성을 선택하면 판매 목록이 표시됩니다', en: 'Select a planet to view its goods' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

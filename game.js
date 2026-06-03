@@ -12663,29 +12663,29 @@ let mapCtx,mapCV,mapOffX=0,mapOffY=0;
 let map3dRotX=0.35,map3dRotY=0.0,mapDragMode='pan';
 function renderMapView(body){
   body.innerHTML=`<div style="height:48px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0">
-    <span style="color:var(--yellow);font-weight:bold;font-size:16px">🗺️ 은하 지도</span>
+    <span style="color:var(--yellow);font-weight:bold;font-size:16px">${I18N.t('map.title')}</span>
     <span style="color:var(--dim);font-size:12px;flex:1" id="map-cost"></span>
-    <span style="font-size:11px;color:var(--muted)">🖱️ 우클릭=회전 | 좌클릭=이동 | 휠=줌</span>
-    <button class="btn btn-sm" onclick="resetMapView()" style="color:var(--dim)" title="시점 초기화">⌂</button>
-    <button class="btn btn-sm btn-gold" id="map-go" onclick="travelTo()" disabled>🚀 이동</button>
+    <span style="font-size:11px;color:var(--muted)">${I18N.t('map.controlsHint')}</span>
+    <button class="btn btn-sm" onclick="resetMapView()" style="color:var(--dim)" title="${I18N.t('map.resetView')}">⌂</button>
+    <button class="btn btn-sm btn-gold" id="map-go" onclick="travelTo()" disabled>${I18N.t('map.move')}</button>
   </div>
   <div style="flex:1;position:relative;overflow:hidden;width:100%;min-height:0;height:0" id="map-wrap">
     <canvas id="map-cv" style="display:block;cursor:crosshair"></canvas>
     <!-- 우측 사이드 패널: 행성 정보 + 판매 특산물 + 판매 함선 (세로 스크롤) -->
     <div id="map-side" style="position:absolute;right:10px;top:10px;bottom:10px;width:230px;display:flex;flex-direction:column;gap:8px;pointer-events:auto;z-index:5">
       <div id="map-info" style="background:rgba(13,26,42,.95);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;font-size:13px;flex-shrink:0">
-        <div style="color:var(--cyan);margin-bottom:6px">📍 행성 정보</div>
+        <div style="color:var(--cyan);margin-bottom:6px">${I18N.t('map.planetInfo')}</div>
         <div style="color:var(--dim)">${I18N.t('ui.clickPlanet')}</div>
       </div>
       <div id="map-shop" style="flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;background:rgba(13,26,42,.92);border:1px solid var(--bdr);border-radius:8px;padding:8px;overflow:hidden">
-        <div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">행성을 선택하면 판매 목록이 표시됩니다</div>
+        <div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">${I18N.t('map.selectForList')}</div>
       </div>
     </div>
     <div id="map-float" style="display:none;position:absolute;pointer-events:auto;transform:translate(-50%,-100%);z-index:10">
       <div style="background:rgba(5,10,26,.97);border:1px solid var(--cyan);border-radius:8px;padding:8px 12px;text-align:center;white-space:nowrap;box-shadow:0 0 14px rgba(0,243,255,.3)">
         <div id="mf-nm" style="color:var(--yellow);font-size:14px;font-weight:bold;margin-bottom:4px"></div>
         <div id="mf-st" style="color:var(--dim);font-size:12px;margin-bottom:6px"></div>
-        <button id="mf-go" class="btn btn-sm btn-gold" onclick="travelTo()" style="width:100%">🚀 이동</button>
+        <button id="mf-go" class="btn btn-sm btn-gold" onclick="travelTo()" style="width:100%">${I18N.t('map.move')}</button>
       </div>
       <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid var(--cyan);margin:0 auto"></div>
     </div>
@@ -14520,7 +14520,7 @@ function onMapClick(e){
   if(!closest){
     G.mapSelected=null;
     const fl=document.getElementById('map-float');if(fl)fl.style.display='none';
-    const info=document.getElementById('map-info');if(info)info.innerHTML=`<div style="color:var(--cyan);margin-bottom:6px">📍 행성 정보</div><div style="color:var(--dim)">${I18N.t('ui.clickPlanet')}</div>`;
+    const info=document.getElementById('map-info');if(info)info.innerHTML=`<div style="color:var(--cyan);margin-bottom:6px">${I18N.t('map.planetInfo')}</div><div style="color:var(--dim)">${I18N.t('ui.clickPlanet')}</div>`;
     const shop=document.getElementById('map-shop');if(shop)shop.innerHTML='<div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">행성을 선택하세요</div>';
     renderMap();return;
   }
@@ -15158,7 +15158,7 @@ function initCombatCanvas(){
     btns.style.cssText='display:flex;gap:3px;align-items:center;flex-shrink:0';
     // 사용자 요청: 상단 -, + 줌 버튼 삭제. 시점 리셋(⌂) 만 유지. 줌은 휠·핀치로 계속 가능.
     btns.innerHTML=`<span style="font-size:10px;color:var(--muted);white-space:nowrap">🖱️드래그=이동|휠=줌</span>
-      <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:3px 11px;font-size:16px;min-height:34px" title="시점 초기화">⌂</button>
+      <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:3px 11px;font-size:16px;min-height:34px" title="${I18N.t('map.resetView')}">⌂</button>
       <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="크레딧 -3%, 명성 -2 페널티 부담"
         style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">🚀 도망가기</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
