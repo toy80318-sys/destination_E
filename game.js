@@ -3722,7 +3722,7 @@ function triggerPirateRaid(pd){
     }))
   };
   // 모달로 경고 먼저
-  openModal('💀 해적 기습!',
+  openModal(I18N.t('modal.pirateRaid'),
     `<div style="text-align:center;padding:6px 4px">
       <div style="font-size:42px;margin-bottom:6px">☠️</div>
       <div style="color:var(--red);font-size:17px;font-weight:bold;margin-bottom:6px">${pd?.nm||''} — 해적단 기습!</div>
@@ -5792,7 +5792,7 @@ function _promptSellLowestReserve(){
   const c=candidates[0];
   const price=getShipSellPrice(c.s).total;
   const fromLabel=c.from==='reserve'?'임시창':'선발';
-  openModal('📦 임시창 초과 — 최하위 함선 매각?',
+  openModal(I18N.t('modal.overflowSellLowest'),
     `<div style="text-align:center;padding:10px;font-size:13px;line-height:1.7">
       임시 보관함이 8척을 초과했습니다.<br>
       최하위 함선 <b style="color:var(--yellow)">${c.s.nm}</b> (${c.s.tier}, ${fromLabel})를<br>
@@ -8213,7 +8213,7 @@ function confirmSellShip(idx){
     </div>
     <div style="color:var(--red);font-size:13px;margin-top:10px">⚠️ 함선 데이터가 삭제됩니다</div>
   </div>`;
-  openModal('함선 판매 확인',msg,[
+  openModal(I18N.t('modal.confirmShipSale'),msg,[
     {txt:`₡${sp.total.toLocaleString()} 받고 판매`,fn:()=>{closeModal();sellShip(idx);},cls:'btn-red'},
     {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}
   ]);
@@ -8369,7 +8369,7 @@ function pickCargoExtForSlot(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const owned=(G.inventory||[]).filter(i=>i.qty>0&&SPECIAL_CARGO_PARTS.find(c=>c.id===i.id));
   if(owned.length===0){
-    openModal('📦 창고 확장 파츠 없음',`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">보유한 창고 확장 파츠가 없습니다.<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
+    openModal(I18N.t('modal.noHoldExpansion'),`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">보유한 창고 확장 파츠가 없습니다.<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
     return;
   }
   const cards=owned.map(iv=>{
@@ -9258,7 +9258,7 @@ function showVoidBossIntro(questRef){
     const textColor=isVoid?'#e0c0ff':'var(--yellow)';
     const textShadow=isVoid?'0 0 8px rgba(200,100,255,.55),0 0 16px rgba(140,60,200,.3)':'0 1px 2px rgba(0,0,0,.5)';
     const glitchAnim=l.fx==='static'||l.fx==='glitch'?'animation:glitchShake .35s infinite':'';
-    openModal('🌑 제타 레티쿨리 — 미지의 신호',
+    openModal(I18N.t('modal.zetaSignal'),
       `<div style="padding:14px;min-height:240px;background:${isVoid?'radial-gradient(circle at center,rgba(40,0,60,.4),rgba(0,0,0,.9))':'transparent'};border-radius:8px">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${glowColor};${glitchAnim}">
           ${portrait}
@@ -9318,7 +9318,7 @@ function showVoidBossOutro(){
         :'linear-gradient(135deg,rgba(255,215,0,.08),rgba(20,15,5,.7))';
     const borderColor=isVoid?'rgba(204,102,255,.6)':isBaekgu?'rgba(0,243,255,.45)':'rgba(255,215,0,.45)';
     const glitchAnim=l.fx==='static'?'animation:glitchShake .35s infinite':'';
-    openModal('🌑 검은 함선의 작별',
+    openModal(I18N.t('modal.blackshipFarewell'),
       `<div style="padding:14px;min-height:240px;background:${isVoid?'radial-gradient(circle at center,rgba(40,0,60,.4),rgba(0,0,0,.9))':'transparent'};border-radius:8px">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${borderColor};${glitchAnim}">
           ${portrait}
@@ -9771,7 +9771,7 @@ function completeQuest(pid,idx){
       AudioMgr.playSfx(isMythic?'gacha_pull':'notify',{vol:isMythic?1.0:0.85,cooldown:50});
       setTimeout(()=>{try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:200});}catch(e){}},250);
     }catch(e){}
-    openModal('🎁 퀘스트 보상',
+    openModal(I18N.t('modal.questReward'),
       `<div style="text-align:center;padding:8px">
         <div style="font-size:16px;color:var(--gold);margin-bottom:8px">${baseMsg}</div>
         ${bonusMsg}
@@ -10039,7 +10039,7 @@ function doGatherSearch(){
   // 한 전투당 최대 2회까지만 허용 — 전투가 너무 길어지지 않도록
   if(typeof combatState!=='undefined'&&combatState&&!combatState.done){
     if((combatState._debrisJoinCount||0)>=2){
-      notify('⚠️ 이 전투에는 이미 잔해 해적이 충분히 합류했습니다','warn');
+      notify(I18N.t('notify.debrisPiratesFull'),'warn');
       return;
     }
     spawnDebrisReinforcementToCombat();
@@ -10082,7 +10082,7 @@ function doGatherSearch(){
         {id:'CHIX_2',nm:'치크스 정찰기 B',tier:'소형',isEnemy:true,maxHP:Math.floor(eHP*.8),hp:Math.floor(eHP*.8),maxSH:Math.floor(eHP*0.3),sh:Math.floor(eHP*0.3),ATT:Math.floor(eATK*.9),INT:eINT,TEC:eTEC,HP:Math.floor(eHP*.8),LOY:0,parts:[],crewIds:[]}
       ];
       const raidDef={id:'CHIX_PATROL',nm:'치크스 정찰대',ring,f:'F05',hostile:true,tax:0,_enemies:chixFleet,_questPid:pid,_questId:combatQ.id};
-      openModal('🛸 치크스 정찰대 발견!',
+      openModal(I18N.t('modal.chixScoutFound'),
         `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">탐색 중 치크스 정찰대와 조우했습니다!</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>격퇴하면 퀘스트 완료 처리됩니다.</div>`,
         [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
@@ -10826,7 +10826,7 @@ function openCraftSlot(idx){
       </div>
     </div>`;
   }).join('');
-  openModal('📦 재료 선택',
+  openModal(I18N.t('modal.selectMaterial'),
     `<div style="max-height:400px;overflow-y:auto;padding-right:4px">${rowsHtml}</div>
      <div style="margin-top:8px;font-size:12px;color:var(--dim)">💡 재료는 행성 상점에서 구매 가능합니다</div>`,
     [{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
@@ -14610,7 +14610,7 @@ function onMapClick(e){
           notify('🌑 [잠김] 먼저 지구 해방(우르사 메이저 격파) 필요','err');
         } else {
           // 지구 해방됨 → 블랙홀에서 블랙팔콘(히든 보스) 직접 도전 (P30 퀘스트 놓쳐도 진행 가능)
-          openModal('🌑 보이드의 심연 — 미지의 신호',
+          openModal(I18N.t('modal.voidAbyssSignal'),
             `<div style="text-align:center;padding:16px">
               ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
               <div style="color:#cc44ff;font-size:17px;font-weight:bold;margin-bottom:8px">블랙홀 속에서 검은 함선이 다가온다</div>
@@ -15236,11 +15236,11 @@ function confirmFleeCombat(){
   if(!combatState||combatState.done)return;
   // 보스급 전투는 도망 불가 (스토리 진행상 후퇴 의미 없음)
   if(combatState.isBoss||combatState.isVoidBoss){
-    notify('⚠️ 최종 보스전에서는 도망갈 수 없습니다','err');
+    notify(I18N.t('notify.cannotFleeBoss'),'err');
     return;
   }
   const _pen=Math.floor(G.credits*0.03);
-  openModal('🚀 도망갈까?',
+  openModal(I18N.t('modal.flee'),
     `<div style="padding:6px 4px">
        <div style="color:var(--yellow);font-size:14px;line-height:1.7;margin-bottom:10px">전투에서 이탈하면 함대 손상 없이 빠져나갈 수 있지만, 페널티가 있어.</div>
        <div style="background:rgba(255,40,40,.08);border:1px solid rgba(255,80,80,.4);border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.9;color:#ff9999">
@@ -17721,7 +17721,7 @@ function _saveGameImmediate(silent,slotN){
         const snap2=JSON.parse(JSON.stringify(G));
         snap2._ver=2;snap2._saved=Date.now();snap2._slotN=n;
         localStorage.setItem(_slotKey(n),JSON.stringify(snap2));
-        if(!silent)notify('✅ 백업 정리 후 저장 성공','ok');
+        if(!silent)notify(I18N.t('notify.backupSaveOk'),'ok');
       }catch(e2){
         if(!silent)notify('❌ 저장 재시도 실패: '+e2.message,'err');
       }
@@ -18183,7 +18183,7 @@ function showHallOfFame(){
     </div>
     <div id="hof-body" style="max-height:60vh;overflow-y:auto"><div style="text-align:center;color:var(--dim);padding:24px">불러오는 중...</div></div>
   </div>`;
-  openModal('🏆 명예의 전당',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.hallOfFame'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
   // 모달 표시 후 글로벌 탭 자동 로드
   _hofTab='global';
   setTimeout(()=>_renderHofTab('global'),50);
@@ -18373,7 +18373,7 @@ function showSettingsModal(){
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">💾 지금 저장</button>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">🎓 튜토리얼 다시 보기</button>
       ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">📁 세이브 폴더 열기 (PC)</button>`:''}
-      <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm('모든 저장 데이터를 삭제합니다. 계속하시겠습니까?')){localStorage.removeItem('de_save');notify('저장 데이터 삭제 완료','ok');closeModal();}">🗑️ 저장 데이터 삭제</button>
+      <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm('모든 저장 데이터를 삭제합니다. 계속하시겠습니까?')){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">🗑️ 저장 데이터 삭제</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px">☁️ 클라우드 세이브</div>
@@ -18507,7 +18507,7 @@ function cheatMaxAll(){_cheatUnlock(_doMaxAll);}
 // 엔딩 크레딧 수동 재생 (브라우저 콘솔에서 replayEnding() 호출 가능)
 function replayEnding(){
   if(!G){notify(I18N.t('notify.startGameFirst'),'err');return;}
-  if(typeof showEndingCredits!=='function'){notify('❌ 엔딩 함수 누락','err');return;}
+  if(typeof showEndingCredits!=='function'){notify(I18N.t('notify.endingFnMissing'),'err');return;}
   G._endingShown=false;  // 한번 더 표시되도록 플래그 리셋
   G.currentPlanet='P31';
   if(!G.planets)G.planets={};
@@ -18597,7 +18597,7 @@ function exportAllSavesFile(){
     const raw=localStorage.getItem(i===0?'de_save':'de_save_s'+i);
     if(raw){try{bundle.slots['slot'+i]=JSON.parse(raw);count++;}catch(_){}}
   }
-  if(count===0){notify('❌ 저장된 슬롯이 없습니다','err');return;}
+  if(count===0){notify(I18N.t('notify.noSavedSlots'),'err');return;}
   try{
     const blob=new Blob([JSON.stringify(bundle,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
@@ -18643,7 +18643,7 @@ function importSaveFile(ev){
         notify(`✅ 슬롯 ${n} 복원 완료 — 5초 후 새로고침`,'gold');
         setTimeout(()=>location.reload(),5000);
       } else {
-        notify('❌ 잘못된 저장 파일 형식','err');
+        notify(I18N.t('notify.badSaveFormat'),'err');
       }
     }catch(e){notify('❌ 파일 읽기 실패: '+e.message,'err');}
   };
@@ -18654,14 +18654,14 @@ function copySaveToClipboard(slotN){
   slotN=slotN||1;
   saveGame(true,slotN);
   const raw=localStorage.getItem(slotN===0?'de_save':'de_save_s'+slotN);
-  if(!raw){notify('❌ 저장 데이터 없음','err');return;}
+  if(!raw){notify(I18N.t('notify.noSaveData'),'err');return;}
   try{
     navigator.clipboard.writeText(raw).then(()=>{
       notify(`📋 슬롯 ${slotN} 클립보드에 복사됨 (${Math.round(raw.length/1024)}KB) — 메모장에 붙여넣기 가능`,'gold');
     }).catch(e=>{
       // 폴백: 임시 textarea 사용
       const ta=document.createElement('textarea');ta.value=raw;document.body.appendChild(ta);ta.select();
-      try{document.execCommand('copy');notify('📋 클립보드 복사 완료 (폴백)','gold');}catch(_){notify('❌ 복사 실패','err');}
+      try{document.execCommand('copy');notify('📋 클립보드 복사 완료 (폴백)','gold');}catch(_){notify(I18N.t('notify.copyFail'),'err');}
       ta.remove();
     });
   }catch(e){notify('❌ 복사 실패: '+e.message,'err');}
@@ -18737,7 +18737,7 @@ async function cloudSignOut(){
 // 강제 보스 재도전 — 조건/크리스탈 무시하고 우르사 메이저 보스전 즉시 시작
 // (지구 접근 시 보스 미출현 버그 복구용 + 격파 후 재도전용)
 function forceUrsaBoss(){
-  openModal('☠️ 우르사 메이저 — 강제 보스전',
+  openModal(I18N.t('modal.ursaForcedFight'),
     `<div style="text-align:center;padding:14px">
       <div style="font-size:46px;margin-bottom:8px">☠️</div>
       <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">우르사 메이저 보스전을 강제로 시작합니다</div>
@@ -18758,7 +18758,7 @@ function tryBossEntry(){
   const _hint=_isFirst
     ?'<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">⚡ 첫 지구 진입 — 우르사 메이저가 봉쇄를 끝낼 마지막 저항</div><div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 미요구 (첫 보스전 무료 진입).<br>승리 시 지구 봉쇄 해제 + 시설 해금!</div>'
     :'<div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>승리 시 게임 클리어!</div><div style="font-size:13px;color:var(--yellow)">보유 크리스탈: '+(G.voidCrystal||0)+'개</div>';
-  openModal('☠️ 우르사 메이저 — 최종 보스전',
+  openModal(I18N.t('modal.ursaFinalFight'),
     `<div style="text-align:center;padding:12px">
       <div style="font-size:48px;margin-bottom:8px">🌀</div>
       <div style="color:var(--red);font-weight:bold;margin-bottom:8px">경고: 극도로 위험한 전투</div>
@@ -18793,7 +18793,7 @@ function showUrsaMajorIntro(){
     const portrait=charPortraitHTML(l.sp,spIc,192,spColor);
     // 마지막 대사에선 적 함대 스펙 브리핑 함께 표시
     const isFinal=_idx===lines.length-1;
-    openModal('☠️ 최종 결전 — 우르사 메이저',
+    openModal(I18N.t('modal.ursaFinalShowdown'),
       `<div style="padding:14px;min-height:220px">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:14px;background:linear-gradient(135deg,rgba(255,30,80,.08),rgba(20,5,5,.7));border:1px solid rgba(255,80,80,.45);border-radius:10px;box-shadow:0 0 18px rgba(255,40,40,.2)">
           ${portrait}
@@ -18822,7 +18822,7 @@ function showUrsaMajorIntro(){
 function _showUrsaPhase2Popup(onClose){
   const _line='인상적이다.. 하지만 아직 끝나진 않았다. 자.. 한번 막아보아라!';
   const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML('우르사 메이저','☠️',216,'#ff3366'):'';
-  openModal('☠️ 우르사 메이저 — 2페이즈',
+  openModal(I18N.t('modal.ursaPhase2'),
     `<div style="padding:14px;min-height:160px">
       <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(255,30,80,.1),rgba(20,5,5,.88));border:1.5px solid rgba(255,80,80,.6);border-radius:12px;box-shadow:0 0 26px rgba(255,40,40,.4)">
         ${portrait}
@@ -18841,7 +18841,7 @@ function _showUrsaPhase2Popup(onClose){
 function _showBlackfalconPhase2Popup(onClose){
   const _line='훌륭하다... 내 함대를 모두 꺾었군. 1000년 만에 처음이다. 그렇다면 — 이제 내가 직접 상대해주지.';
   const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML('블랙팔콘','🌑',216,'#cc66ff'):'';
-  openModal('🌑 블랙팔콘 — 본체 각성',
+  openModal(I18N.t('modal.blackfalconAwaken'),
     `<div style="padding:14px;min-height:160px">
       <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(120,0,180,.18),rgba(8,2,18,.92));border:1.5px solid rgba(204,102,255,.6);border-radius:12px;box-shadow:0 0 26px rgba(204,102,255,.4)">
         ${portrait}
@@ -18892,7 +18892,7 @@ function showBossVictoryEpilogue(onDone){
         ?'linear-gradient(135deg,rgba(255,215,0,.15),rgba(20,30,40,.85))'
         :'linear-gradient(135deg,rgba(40,80,140,.25),rgba(10,15,30,.9))';
     const borderColor=isUrsa?'rgba(255,80,80,.6)':isSys?'rgba(255,215,0,.55)':'rgba(120,180,255,.5)';
-    openModal('🏆 최종전 — 에필로그',
+    openModal(I18N.t('modal.finalEpilogue'),
       `<div style="padding:14px;min-height:240px">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${borderColor}">
           ${portrait}
@@ -18946,7 +18946,7 @@ function showBossCelebration(onDone){
     <style>
       @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
     </style>`;
-  openModal('🏆 인류 승리 — 지구 해방 선언',html,
+  openModal(I18N.t('modal.victoryDeclaration'),html,
     [{txt:'🎁 전투 보고서 확인 ▶',fn:()=>{closeModal();if(typeof onDone==='function')onDone();},cls:'btn-gold'}],
     {bossfight:true}
   );
@@ -19659,7 +19659,7 @@ function showDevMenu(){
     </div>
     <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px">개발/디버그 전용 메뉴</div>
   </div>`;
-  openModal('🛠️ 개발자 메뉴',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.devMenu'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 async function devShowFeedback(){
   if(!window.CloudSave){notify('CloudSave 미초기화','err');return;}
