@@ -11791,7 +11791,7 @@ function doBid(pid,amount,instant=false){
   if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}
   G.credits-=amount;G.planets[pid].owned=true;G.planets[pid].commerce=1;G.auctionBids++;
   if(pd.hostile){G.planets[pid].hostile_cleared=true;notify(I18N.t('notify.chixMerged',{nm:pd.nm}),'pur');baekgu(I18N.t('baekgu.chixMerged',{nm:pd.nm}));}
-  else{notify('🏛️ '+pd.nm+' 낙찰!','gold');baekgu(pd.nm+' 낙찰. 세금 ₡'+calcTaxFor(pid).toLocaleString()+' 들어온다.');}
+  else{notify(I18N.t('notify.auctionWon',{nm:pd.nm}),'gold');baekgu(I18N.t('baekgu.auctionTax',{nm:pd.nm,tax:calcTaxFor(pid).toLocaleString()}));}
   updateHUD();saveGame(true);
   // 낙찰 후 경매 화면 그대로 유지 — 페이지 이동 없이 현재 탭 새로고침
   if(typeof rerenderTab==='function'&&typeof renderAuctionView==='function'){
@@ -13064,7 +13064,7 @@ function _showAsteroidShipPicker(destPid, onPick){
     G.credits=Math.max(0,(G.credits||0)-_bypassCost);
     if(destPid){try{addHubProgress(destPid);}catch(e){}}
     try{saveGame(true);}catch(e){}
-    notify('💰 통행세 ₡'+_bypassCost.toLocaleString()+' 지불 — 소행성대 무사통과','gold');
+    notify(I18N.t('notify.tollPaidAsteroid',{cost:_bypassCost.toLocaleString()}),'gold');
     try{baekgu(I18N.t('baekgu.tollPaidSafe'));}catch(e){}
     picker.remove();
   };
@@ -14629,7 +14629,7 @@ function travelTo(){
   // ※ ACT<3 무조건 차단 (defense-in-depth) — _isUrsaDefeated()가 손상 상태에서 true 잘못 보고되어도 지구 차단
   if(pid==='P31'){
     if((G.act||1)<3){
-      notify('🌍 지구 진입은 ACT 3부터 가능합니다 (현재 ACT '+(G.act||1)+')','warn');
+      notify(I18N.t('notify.earthAct3Plus',{act:G.act||1}),'warn');
       baekgu(I18N.t('baekgu.earthBlockedShort'));
       return;
     }
@@ -14677,7 +14677,7 @@ function travelTo(){
   boostLoyalty('travel'); // ← 충성도 증가 (이동)
   randomBaekgu('travel');notify(`🚀 ${pd.nm} 도착`,'ok');
   if(pd.hostile&&!G.planets[pd.id]?.hostile_cleared){setTimeout(()=>showHostilePlanetBriefing(pd),800);return;}
-  if(pd.hostile&&G.planets[pd.id]?.hostile_cleared){notify('🏠 '+pd.nm+' — 합병된 영토 도착','ok');}
+  if(pd.hostile&&G.planets[pd.id]?.hostile_cleared){notify(I18N.t('notify.mergedArrived',{nm:pd.nm}),'ok');}
   // ─── 소행성대 미니게임 트리거 — P29 오리온 균열·P30 제타 레티쿨리 출입 시 ─
   // 도넛 소행성대를 통과해야 하는 항로 → 60% 확률로 미니게임 진입
   try{
@@ -17487,7 +17487,7 @@ function _saveGameImmediate(silent,slotN){
     localStorage.setItem(_slotKey(n),payload);
     // 5) 사이즈 경고 (4MB 초과 시)
     if(payload.length>4*1024*1024&&!silent){
-      notify('⚠️ 저장 크기 '+(payload.length/1024/1024).toFixed(1)+'MB — 일부 데이터 정리 권장','warn');
+      notify(I18N.t('notify.saveSizeWarn',{mb:(payload.length/1024/1024).toFixed(1)}),'warn');
     }
     // 6) 클라우드 업로드 (디바운스 1초)
     try{if(window.CloudSave)CloudSave.upload(n,snap);}catch(e){if(!silent)console.warn('cloud upload error',e);}
@@ -17505,11 +17505,11 @@ function _saveGameImmediate(silent,slotN){
         }).catch(()=>{});
       }
     }catch(e){if(!silent)console.warn('email upload error',e);}
-    if(!silent)notify('💾 슬롯 '+n+' 저장 완료 ('+Math.round(payload.length/1024)+'KB)','ok');
+    if(!silent)notify(I18N.t('notify.saveSlotDone',{n,kb:Math.round(payload.length/1024)}),'ok');
   }catch(e){
     // 저장 실패 — quota 초과 등. 백업에서 복구 시도
     console.error('[saveGame] failed',e);
-    if(!silent)notify('❌ 저장 실패: '+e.message+' — 자동 복구 시도','err');
+    if(!silent)notify(I18N.t('notify.saveFailRecover',{err:e.message}),'err');
     // QuotaExceededError 처리: 다른 슬롯의 불필요한 데이터 정리
     if(e.name==='QuotaExceededError'||(''+e.message).includes('quota')){
       try{
@@ -17589,7 +17589,7 @@ function loadGame(slotN){
     if(!snap&&n===1)snap=_getSlotInfo(0); // 레거시 호환
     // 없으면 백업 슬롯에서 자동 복구 시도
     if(!snap){
-      if(_tryRecoverSlot(n)){snap=_getSlotInfo(n);if(snap)notify('🔄 슬롯 '+n+' 백업에서 자동 복구됨','gold');}
+      if(_tryRecoverSlot(n)){snap=_getSlotInfo(n);if(snap)notify(I18N.t('notify.slotRecovered',{n}),'gold');}
       else if(n===1&&_tryRecoverSlot(0)){snap=_getSlotInfo(0);if(snap)notify('🔄 레거시 슬롯 백업 복구됨','gold');}
     }
     if(!snap){notify(I18N.t('notify.slotNoData',{n}),'err');return false;}
@@ -18255,7 +18255,7 @@ function _cheatUnlock(onOk){
 function _doGiveCredits(amt){
   if(!G||!G.profile){notify(I18N.t('notify.startGameFirstLong'),'err');return;}
   G.credits=(G.credits||0)+amt;updateHUD();saveGame(true);
-  notify('🎁 +₡'+amt.toLocaleString()+' 지급 (현재 ₡'+G.credits.toLocaleString()+')','gold');
+  notify(I18N.t('notify.cheatCredits',{amt:amt.toLocaleString(),total:G.credits.toLocaleString()}),'gold');
 }
 function cheatGiveCredits(amt){
   amt=Number(amt)||0;if(amt<=0)return;
@@ -18264,9 +18264,9 @@ function cheatGiveCredits(amt){
 }
 function _doGiveResource(type,amt){
   if(!G||!G.profile){notify(I18N.t('notify.startGameFirst'),'err');return;}
-  if(type==='rep'){G.reputation=(G.reputation||0)+amt;notify('⭐ 명성 +'+amt+' (현재 '+G.reputation+')','gold');}
-  else if(type==='vc'){G.voidCrystal=(G.voidCrystal||0)+amt;notify('💎 VC +'+amt+' (현재 '+G.voidCrystal+')','pur');}
-  else if(type==='ve'){G.voidEssence=(G.voidEssence||0)+amt;notify('⚛️ VE +'+amt+' (현재 '+G.voidEssence+')','gold');}
+  if(type==='rep'){G.reputation=(G.reputation||0)+amt;notify(I18N.t('notify.cheatRep',{amt,total:G.reputation}),'gold');}
+  else if(type==='vc'){G.voidCrystal=(G.voidCrystal||0)+amt;notify(I18N.t('notify.cheatVc',{amt,total:G.voidCrystal}),'pur');}
+  else if(type==='ve'){G.voidEssence=(G.voidEssence||0)+amt;notify(I18N.t('notify.cheatVe',{amt,total:G.voidEssence}),'gold');}
   updateHUD();saveGame(true);
 }
 function cheatGiveResource(type,amt){
