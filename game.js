@@ -16575,6 +16575,23 @@ function runCombatTurn(){
       addCombatLog(`⚠️ 적 선제공격! 적 함대 엔진 우위 (TEC ${_enTec} vs ${_plTec}) — 이번 턴 적 ATT ×1.2`,'err');
     }
   }
+  // ── 일점사(집중사격) 타겟 승계 — 이전 타겟 격침 시 다음 가장 앞쪽 적으로 자동 전환 ──
+  // 사용자 명세(2026-06-03): 일점사 발동 후 전 함선은 같은 적 1척에 집중사격, 격침되면 다음 앞열로 승계
+  if(combatState._focusTargetId){
+    const _cur=combatState.enemies.find(e=>e.id===combatState._focusTargetId);
+    if(!_cur||(_cur.hp||0)<=0){
+      // 다음 후보: 살아있고 무적/보스 제외, 가장 앞열
+      const _next=combatState.enemies.filter(e=>(e.hp||0)>0&&!e._invincible)
+        .sort((a,b)=>{
+          const ar=(typeof a._frontRank==='number')?a._frontRank:99;
+          const br=(typeof b._frontRank==='number')?b._frontRank:99;
+          return ar-br;
+        })[0];
+      combatState._focusTargetId=_next?_next.id:null;
+      if(_next)addCombatLog(`⚔️ 집중사격 타겟 승계 — ${_next.nm}`,'gold');
+    }
+  }
+
   // 플레이어 공격
   pl.forEach(p=>{
     let aliveEn=en.filter(e=>e.hp>0);
@@ -16587,6 +16604,11 @@ function runCombatTurn(){
     if(combatState.isBoss){
       const nonBoss=aliveEn.filter(e=>!(e._ursaBoss||e._invincible||e.id==='BOSS_MAIN'));
       if(nonBoss.length>0)aliveEn=nonBoss;
+    }
+    // ── 일점사 집중사격: focusTarget이 살아있고 후보군에 포함되면 그 1척만 타겟 ──
+    if(combatState._focusTargetId){
+      const _ft=aliveEn.find(e=>e.id===combatState._focusTargetId);
+      if(_ft)aliveEn=[_ft];
     }
     // ─── 보이드의 창 (MMV01) — 첫 발사 10초, 이후 30초 쿨다운 + 발사 직전 1초 파티클 충전 (사용자 명세) ───
     if(p.parts&&p.parts.includes('MMV01')){
@@ -17265,16 +17287,27 @@ function _finishCombat(){
 }
 
 // ── 이순신 일점사 전술 ──────────────────────────────────────────
-// 발동 효과: ① 적 1척 즉시 격침 (선두) ② 남은 전투 내내 아군 공격력 ×2
-// 일점사 후 30초 뒤 → 학익진 버튼 활성화 (아군 ATT ×3 추가 강화)
+// 발동 효과: ① 가장 앞쪽 적 1척을 집중사격 타겟으로 지정 — 아군 전 함선이 그 1척을 집중 공격
+//           ② 남은 전투 내내 아군 공격력 ×2
+//           ③ 집중 타겟이 격침되면 자동으로 다음 가장 앞쪽 적으로 타겟 승계
+// 일점사 후 5초 뒤 → 학익진 버튼 활성화 (아군 ATT ×3 추가 강화)
+// ※ 사용자 요청(2026-06-03): 즉시 격침 → 실제 집중사격 시도로 변경
 function activateSunsinFocus(){
   if(!combatState||combatState._sunsinUsed||combatState.done)return;
   // ★ 전술 화자 초상: 일점사 → 호레이쇼 넬슨 (H05)
   try{_showTacticPortrait('img/chars/hero05.png',12000);}catch(e){}
-  const target=combatState.enemies.filter(e=>e.hp>0)[0];
+  // 가장 앞쪽(낮은 _frontRank — 진형 앞열 우선) 적 1척을 집중 타겟으로 — 보스/무적은 제외
+  const _candidates=combatState.enemies.filter(e=>e.hp>0&&!e._invincible);
+  if(!_candidates.length)return;
+  const target=_candidates.slice().sort((a,b)=>{
+    const ar=(typeof a._frontRank==='number')?a._frontRank:99;
+    const br=(typeof b._frontRank==='number')?b._frontRank:99;
+    return ar-br;
+  })[0];
   if(!target)return;
   combatState._sunsinUsed=true;
   combatState._playerAttMult=2;  // 남은 전투 동안 아군 ATT ×2
+  combatState._focusTargetId=target.id;  // ★ 집중사격 타겟 — runCombatTurn에서 참조
   // 이미 활성화된 함선들의 ATT 즉시 갱신 (combatState.players의 캐시된 ATT를 2배로)
   if(combatState.players){
     combatState.players.forEach(p=>{
@@ -17282,10 +17315,9 @@ function activateSunsinFocus(){
       p.ATT=Math.round(p._origATT*2);
     });
   }
-  target.hp=0;target.sh=0;
-  addCombatLog(`⚔️ 넬슨 일점사! ${target.nm} 즉시 격침! 아군 함대 공격력 ×2 강화!`,'gold');
-  notify('⚔️ 넬슨 일점사! 아군 ATT ×2','gold');
-  baekgu('와! 넬슨의 일점사야! 적 선두 한 방에 보내버렸어. 함대 화력 두 배!');
+  addCombatLog(`⚔️ 넬슨 일점사 — ${target.nm} 집중사격 개시! 아군 함대 공격력 ×2`,'gold');
+  notify('⚔️ 넬슨 일점사! 전 함선 집중사격','gold');
+  baekgu(`넬슨의 일점사야! 전 함대, ${target.nm} 한 척에 화력 집중! ATT 두 배!`);
   const sbtn=document.getElementById('cb-sunsin-btn');
   if(sbtn)sbtn.disabled=true;
   drawCombatFrame();
