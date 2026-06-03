@@ -2024,16 +2024,16 @@ function showEmailLoadModal(){
 }
 try{if(typeof window!=='undefined')window.showEmailLoadModal=showEmailLoadModal;}catch(e){}
 function getPrologues(){
-  const nm=G.profile.name||'사령관';
-  const co=G.profile.company||'빅 픽처 스페이스';
-  const ship=G.profile.ship||'머스탱';
+  const nm=G.profile.name||I18N.t('hof.commander');
+  const co=G.profile.company||I18N.t('ui.companyName');
+  const ship=G.profile.ship||I18N.t('ftue.defaultShip');
   return [
-    {sp:'시스템',tx:'양자 전송 패킷 수신 완료... '+nm+' 사령관 정신 동기화 99.8%...'},
-    {sp:'백구',tx:'어라, 깨어났네? 100년을 기다렸는데 막상 깨어나니까 시시하다.'},
-    {sp:'백구',tx:'내가 누구냐고? 백구. AI 진돗개. 100년째 폐지 주으면서 위장 상단 세워놨다.'},
-    {sp:'백구',tx:co+' 총사령관 '+nm+'! 할 일은 하나야. 우주 무역·부동산·전투로 돈 벌고 지구 봉쇄한 우르사 메이저 박살내.'},
-    {sp:'백구',tx:'내가 폐지 주워서 이만큼 세워놨으니, '+nm+'! 함선 '+ship+'에 올라타서 전설 영웅들 징발해서 지구 구하러 가자고!'},
-    {sp:'시스템',tx:'P01 프록시마 b — '+nm+' 사령관 각성. '+co+' 허브 접속 중...'}
+    {sp:'시스템',tx:I18N.t('prologue.l1',{nm})},
+    {sp:'백구',tx:I18N.t('prologue.l2')},
+    {sp:'백구',tx:I18N.t('prologue.l3')},
+    {sp:'백구',tx:I18N.t('prologue.l4',{co,nm})},
+    {sp:'백구',tx:I18N.t('prologue.l5',{nm,ship})},
+    {sp:'시스템',tx:I18N.t('prologue.l6',{nm,co})}
   ];
 }
 let pIdx=0;
@@ -2052,9 +2052,9 @@ function renderPrologue(){
         <img src="img/chars/baekgu1.png" alt="백구"
           style="width:30px;height:30px;object-fit:contain;border-radius:50%;background:var(--panel);border:1px solid var(--cyan)"
           onerror="this.style.display='none'">
-        <span style="color:var(--cyan);font-size:13px;font-weight:bold">백구</span>
+        <span style="color:var(--cyan);font-size:13px;font-weight:bold">${I18N.t('speaker.baekgu')}</span>
       </div>`
-    :`<div style="color:var(--muted);font-size:12px;letter-spacing:2px;margin-bottom:6px">⚡ 시스템</div>`;
+    :`<div style="color:var(--muted);font-size:12px;letter-spacing:2px;margin-bottom:6px">${I18N.t('prologue.systemLabel')}</div>`;
   box.innerHTML=spHTML+`<div style="color:var(--yellow);font-size:17px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;padding:0 8px">${l.tx}</div>`;
   const btn=document.getElementById('pr-btn');
   btn.style.display='inline-block';
