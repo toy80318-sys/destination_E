@@ -7912,7 +7912,7 @@ function assignCrewById(shipIdx,cid){
   if(!s.crewIds)s.crewIds=[];
   if(s.crewIds.includes(cid)){notify(I18N.t('notify.alreadyAboard'),'warn');return;}
   const _maxC=getMaxCrew(s);
-  if(s.crewIds.length>=_maxC){notify(`만석 — 최대 ${_maxC}명 (현재 ${s.crewIds.length}명)`,'err');return;}
+  if(s.crewIds.length>=_maxC){notify(I18N.t('notify.shipFullShort',{max:_maxC,cur:s.crewIds.length}),'err');return;}
   // 다른 함선에서 자동 이전
   G.fleet.forEach(sh=>{if(sh!==s&&sh.crewIds){const i=sh.crewIds.indexOf(cid);if(i>=0){sh.crewIds.splice(i,1);}}});
   const _stBefACB=getShipStats(s);
@@ -8139,7 +8139,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
     document.body.appendChild(warnModal);
     return;
   }
-  if(cur+2>80){notify(`화물칸 최대 80칸 한도 — +${80-cur}칸만 추가 가능`,'err');return;}
+  if(cur+2>80){notify(I18N.t('notify.cargoMax80',{add:80-cur}),'err');return;}
   const cost=getCargoUpgradePrice(s);
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;s.cargoSlots=Math.min(80,cur+2);
@@ -8152,7 +8152,7 @@ function buyCargoExtPart(id){
   const ci=SPECIAL_CARGO_PARTS.find(c=>c.id===id);if(!ci)return;
   const stock=G.shopStock[G.currentPlanet];
   if(!stock||!stock['scargo_'+id]||stock['scargo_'+id]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
-  if(G.credits<ci.price){notify(`크레딧 부족 (필요: ₡${ci.price.toLocaleString()})`,'err');return;}
+  if(G.credits<ci.price){notify(I18N.t('notify.needCreditsCost',{cost:ci.price.toLocaleString()}),'err');return;}
   // 즉시 적용 → 인벤토리 적립으로 변경. 정비소 파츠창의 「창고 확장 전용 슬롯」에 함선별로 장착.
   G.credits-=ci.price;
   stock['scargo_'+id]--;
@@ -8171,7 +8171,7 @@ function equipCargoExt(shipIdx,partId){
   const inv=(G.inventory||[]).find(i=>i.id===partId&&i.qty>0);
   if(!inv){notify(I18N.t('notify.noHoldExpansion'),'err');return;}
   const ext=_shipCargoExt(s);
-  if(ext.length>=CARGO_EXT_MAX){notify(`창고 확장 슬롯 가득 (${CARGO_EXT_MAX}칸)`,'err');return;}
+  if(ext.length>=CARGO_EXT_MAX){notify(I18N.t('notify.holdExpFull',{max:CARGO_EXT_MAX}),'err');return;}
   inv.qty--;if(inv.qty<=0)G.inventory=G.inventory.filter(i=>i!==inv);
   ext.push(partId);
   s.cargoSlots=(s.cargoSlots||4)+sc.cargoBonus;
@@ -8224,7 +8224,7 @@ function buyShip(shipId){
   if(def.tier==='대형'&&_plv<400){notify('🔒 대형 함선은 전투력 400 이상 필요 (현재 '+_plv+')','err');return;}
   if((def.tier==='전설기함'||def.tier==='신화')&&_plv<600){notify('🔒 전설/신화 함선은 전투력 600 이상 필요 (현재 '+_plv+')','err');return;}
   const shipFinalPrice=G.heroes.includes('H01')?Math.floor(def.price*0.85):def.price;
-  if(G.credits<shipFinalPrice){notify(`크레딧 부족 (필요: ₡${shipFinalPrice.toLocaleString()})`,'err');return;}
+  if(G.credits<shipFinalPrice){notify(I18N.t('notify.needCreditsCost',{cost:shipFinalPrice.toLocaleString()}),'err');return;}
   G.credits-=shipFinalPrice;stock['ship_'+shipId]--;
   const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
   const _initCargo=(typeof def.cargoStart==='number')?def.cargoStart:(slotsByTier[def.tier]||5);
@@ -8585,11 +8585,11 @@ function doGacha(n,useCr,crCost,minRarity){
         if(!assignedIds.has(lowest.id)){
           results.push({...newCrew,_swapCandidate:true,_swapTarget:lowest});
         } else {
-          notify(`크루 명단이 가득 찼습니다 (최대 ${_maxCrew}명) — 신규 크루가 더 우수하지 않음`,'err');
+          notify(I18N.t('notify.crewListFullBetter',{max:_maxCrew}),'err');
           results.push({...newCrew,_rejected:true});
         }
       } else {
-        notify(`크루 명단이 가득 찼습니다 (최대 ${_maxCrew}명)`,'err');
+        notify(I18N.t('notify.crewListFullSimple',{max:_maxCrew}),'err');
         results.push({...newCrew,_rejected:true});
       }
       continue;
@@ -8849,7 +8849,7 @@ function investPlanet(pid){
   const lv=st.commerce||0;if(lv>=10){notify(I18N.t('notify.maxLevel'),'err');return;}
   // 화면에 표시된 비용과 정확히 동일한 공식 사용 (이전 버그: 2.15^lv*1.0 사용으로 큰 금액 차감됨)
   const cost=Math.floor(_planetBaseTax(pd)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
-  if(G.credits<cost){notify(`투자비용 ₡${cost.toLocaleString()} 부족`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.investCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;st.commerce=lv+1;
   updateHUD();notify(`📈 ${pd.nm} Lv${lv+1} 업그레이드! ₡${calcTaxFor(pid).toLocaleString()}/턴`,'gold');
   baekgu(`${pd.nm} 상업 레벨 ${lv+1}. 세금 ₡${calcTaxFor(pid).toLocaleString()} 들어온다.`);
@@ -10131,7 +10131,7 @@ function doCraft(recipeId){
     if((G.materials[m.id]||0)<needQty){
       const comm=COMMODITIES.find(c=>c.id===m.id);
       const _disc=_isTierDiscount?' (전설 등급 50% 할인 적용)':'';
-      notify(`재료 부족: ${comm?.nm||m.id} (${G.materials[m.id]||0}/${needQty})${_disc}`,'err');return;
+      notify(I18N.t('notify.needMaterialQty',{nm:comm?.nm||m.id,have:G.materials[m.id]||0,need:needQty,extra:_disc}),'err');return;
     }
   }
   if(rec.heroReq&&!(G.heroes||[]).includes(rec.heroReq)){
@@ -11157,9 +11157,9 @@ function openMysteryBox(tier){
   tier=tier||1;
   const cfg=MYSTERY_BOX_TIERS[tier];
   if(!cfg){notify(I18N.t('notify.invalidBoxTier'),'err');return;}
-  if(!G||(G.credits||0)<cfg.cr){notify(`크레딧 부족 (필요 ₡${cfg.cr.toLocaleString()})`,'err');return;}
-  if(cfg.vc>0&&(G.voidCrystal||0)<cfg.vc){notify(`보이드 크리스탈 부족 (필요 VC×${cfg.vc})`,'err');return;}
-  if(cfg.ve>0&&(G.voidEssence||0)<cfg.ve){notify(`보이드 에센스 부족 (필요 VE ${cfg.ve.toLocaleString()})`,'err');return;}
+  if(!G||(G.credits||0)<cfg.cr){notify(I18N.t('notify.needCreditsCost',{cost:cfg.cr.toLocaleString()}),'err');return;}
+  if(cfg.vc>0&&(G.voidCrystal||0)<cfg.vc){notify(I18N.t('notify.needVoidCrystal',{n:cfg.vc}),'err');return;}
+  if(cfg.ve>0&&(G.voidEssence||0)<cfg.ve){notify(I18N.t('notify.needVoidEssence',{n:cfg.ve.toLocaleString()}),'err');return;}
   const pid=G.currentPlanet;
   if(!_isBlackMarketZawaHere(pid)){notify(I18N.t('notify.noBlackmarketHere'),'err');return;}
   // ── 실제 소모 (크레딧/VC/VE) — 사용자 요청 반영 ─────────────────
@@ -11800,7 +11800,7 @@ function doBid(pid,amount,instant=false){
 }
 function customBid(pid,minBid){
   const v=parseInt(document.getElementById('bid-'+pid)?.value);
-  if(!v||v<minBid){notify(`최소 ₡${minBid.toLocaleString()}`,'err');return;}
+  if(!v||v<minBid){notify(I18N.t('notify.minBid',{cost:minBid.toLocaleString()}),'err');return;}
   if(G.credits<v){notify(I18N.t('notify.notEnoughCredits'),'err');return;}doBid(pid,v,false);
 }
 
@@ -14647,7 +14647,7 @@ function travelTo(){
   if(!blink){const _maxHops=hasLegendaryEngineOnAny()?2:1;if(!isWithinHops(G.currentPlanet,pid,_maxHops)){notify('항로 없음. 인접 행성만 이동 가능 (전설엔진=2칸, 블링크=전체)','err');return;}}
   // 탐험되지 않은 행성은 블링크로도 이동 불가
   if(G.planets[pid]?.fog==='L'&&!blink){notify('미탐험 행성 — 먼저 인접 행성부터 방문하세요','err');return;}
-  if(G.credits<cost){notify(`이동 비용 ₡${cost.toLocaleString()} 부족`,'err');return;}
+  if(G.credits<cost){notify(I18N.t('notify.travelCostShort',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;G.currentPlanet=pid;G.planets[pid].fog='A';G.stayTurns=0;if(G.planets[pid].hubProg===undefined)G.planets[pid].hubProg=0;
   // 행성 도착 시 잠금 상태 복원 + 광장(s1) 단계 자동 해금
   // 1) _hubProgMax(영구 최대값) 트래커로 잠금 회귀 방지 — 한 번 해금한 단계는 재방문 시에도 유지
