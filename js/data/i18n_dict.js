@@ -530,6 +530,27 @@ I18N.register({
   'hub.planetAuctionT':    { ko: '🏛️ 행성 경매',                  en: '🏛️ Planet Auction' },
   'hub.recruitedHeroes':   { ko: '⚡ 영입된 전설 영웅',           en: '⚡ Recruited Legendary Heroes' },
 
+  // ── G15: Save/Load 슬롯 라벨 ───────────────────────────────────────
+  'slot.overwrite':      { ko: '덮어쓰기',     en: 'Overwrite' },
+  'slot.save':           { ko: '💾 저장',      en: '💾 Save' },
+  'slot.load':           { ko: '📂 불러오기',  en: '📂 Load' },
+  'slot.empty':          { ko: '비어있음',     en: 'Empty' },
+  'slot.emptyDash':      { ko: '— 비어있음 —', en: '— Empty —' },
+  'slot.label':          { ko: '슬롯 {n}',     en: 'Slot {n}' },
+  'slot.shipDefault':    { ko: '함선',         en: 'Ship' },
+  'slot.shipNone':       { ko: '함선 없음',    en: 'No ship' },
+  'slot.shipsCount':     { ko: '함선 {n}척',   en: '{n} ships' },
+  'slot.heroesCount':    { ko: '영웅 {n}/8',   en: 'Heroes {n}/8' },
+  'slot.domainsCount':   { ko: '영지 {n}',     en: 'Domains {n}' },
+  'slot.act1':           { ko: 'ACT 1 · 시작', en: 'ACT 1 · Start' },
+  'slot.act2':           { ko: 'ACT 2 · 확장', en: 'ACT 2 · Expand' },
+  'slot.act3':           { ko: 'ACT 3 · 전쟁', en: 'ACT 3 · War' },
+  'slot.act4':           { ko: 'ACT 4 · 보이드', en: 'ACT 4 · Void' },
+  'slot.act5':           { ko: 'ACT 5 · 엔딩', en: 'ACT 5 · Ending' },
+  'slot.loadComplete':   { ko: '📂 슬롯 {n} 불러오기 완료', en: '📂 Slot {n} loaded' },
+  'slot.loadFail':       { ko: '❌ 불러오기 처리 오류',     en: '❌ Load processing error' },
+  'slot.hubFail':        { ko: '⚠️ 메인 화면 복귀 실패',    en: '⚠️ Failed to return to main' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
