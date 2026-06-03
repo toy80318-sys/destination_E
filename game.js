@@ -4509,7 +4509,7 @@ function renderShipTab(body){
         <div style="display:flex;flex-direction:column;gap:4px">
           ${_isGarage?`${G.fleet.length<16?`<button class="btn btn-sm" style="font-size:10px;padding:3px 8px;border-color:var(--green);color:var(--green);background:rgba(46,204,113,.12);font-weight:bold" onclick="promoteReserveShip(${ri})" title="선발 편대에 빈 자리 있음 → 즉시 승급">📈 선발로 올리기 (선발 ${G.fleet.length}/16)</button>`:'<span style="font-size:10px;color:var(--dim);text-align:center;padding:2px">선발 16척 가득</span>'}
           <select id="resvSwap_${ri}" style="background:rgba(0,0,0,.5);color:var(--txt);border:1px solid var(--bdr);border-radius:4px;padding:3px 6px;font-size:11px;font-family:inherit">
-            <option value="">교체할 함선 선택...</option>
+            <option value="">${I18N.t('ui.selectShipToSwap')}</option>
             ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${I18N.tier(af.tier)}] ${af.nm}</option>`).join('')}
           </select>
           <button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 8px" onclick="swapReserveShip(${ri})">🔄 선발과 교체</button>`:''}
@@ -8128,7 +8128,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
     warnModal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center';
     warnModal.innerHTML=`<div style="background:#0a1628;border:2px solid var(--red);border-radius:14px;padding:28px 32px;max-width:360px;text-align:center;box-shadow:0 0 40px rgba(255,60,60,.4)">
       <div style="font-size:44px;margin-bottom:10px">🚫</div>
-      <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:8px">화물칸 최대 한도 도달</div>
+      <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.cargoMaxReached')}</div>
       <div style="color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:18px">
         <b style="color:var(--cyan)">${s.nm}</b>의 화물칸이<br>
         최대 한도 <b style="color:var(--gold)">80칸</b>에 도달했습니다.<br>
@@ -8194,7 +8194,7 @@ function pickCargoExtForSlot(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const owned=(G.inventory||[]).filter(i=>i.qty>0&&SPECIAL_CARGO_PARTS.find(c=>c.id===i.id));
   if(owned.length===0){
-    openModal(I18N.t('modal.noHoldExpansion'),`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">보유한 창고 확장 파츠가 없습니다.<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
+    openModal(I18N.t('modal.noHoldExpansion'),`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">${I18N.t('ui.noHoldExpOwned')}<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
     return;
   }
   const cards=owned.map(iv=>{
@@ -8743,7 +8743,7 @@ function dismissLowestCrew(n){
       <div style="font-size:13px;color:var(--dim);margin-bottom:6px">${rarSummary} | ⚓ = 탑승 중</div>
       <div style="font-size:12px;color:rgba(255,200,100,.8);max-height:120px;overflow-y:auto;line-height:1.6">${names}</div>
       ${warningHtml}
-      <div style="font-size:11px;color:var(--cyan);margin-top:8px">💡 내보낸 후 <b>되돌리기</b> 버튼으로 복원 가능 (마지막 작업만)</div>
+      <div style="font-size:11px;color:var(--cyan);margin-top:8px">💡 내보낸 후 <b>${I18N.t('ui.undo')}</b> 버튼으로 복원 가능 (마지막 작업만)</div>
     </div>`,
     [{txt:`${targets.length}명 강제 내보내기`,fn:()=>{
       closeModal();
@@ -10210,7 +10210,7 @@ function doCraft(recipeId){
         <div style="font-size:16px;color:${q.col}">성능 ×${mult.toFixed(2)}</div>
         ${_addedToReserve?'<div style="font-size:13px;color:var(--cyan);margin-top:6px">📦 활성 편대 가득(16척) — 임시창에 보관 (정비소에서 교체 가능)</div>':''}
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
-        <div style="font-size:12px;color:var(--dim);margin-top:8px">편대에 함선이 추가됐습니다</div>`;
+        <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
       notify(`⚗️ ${newShip.nm} 건조! ${q.label}`,'gold');
       baekgu(mult>=1.1?`함선 완성! ${q.label}이야. 편대 확인해봐!`:`${def.nm} 완성. ${q.label}.`);
     }
@@ -10234,7 +10234,7 @@ function doCraft(recipeId){
         <div style="display:flex;justify-content:center;margin-bottom:12px">${_cImgHtml}</div>
         ${resultHtml}
         ${mult>=1.1?'<div style="margin-top:12px;padding:6px 12px;background:rgba(255,136,0,.1);border:1px solid #ff8800;border-radius:6px;font-size:13px;color:#ff8800">🎉 행운의 제작! 최상 품질입니다</div>':''}
-        ${mult<1.0?'<div style="margin-top:12px;font-size:12px;color:var(--dim)">재료를 모아 재도전하면 더 좋은 품질이 나올 수 있어요</div>':''}
+        ${mult<1.0?`<div style="margin-top:12px;font-size:12px;color:var(--dim)">${I18N.t('ui.retryForBetterQuality')}</div>`:''}
       </div>`,
       [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderCraftTab);},cls:'btn-gold'}]
     );
@@ -10417,7 +10417,7 @@ function renderCraftTab(body){
     <!-- ◀ 좌측: 설계도 목록 (240px 고정) -->
     <div data-scroll-id="craft-bpl" style="width:260px;flex-shrink:0;overflow-y:auto;border-right:1px solid rgba(0,243,255,.12);padding:10px 12px;display:flex;flex-direction:column;gap:0">
       <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px;letter-spacing:.5px">📜 설계도 목록</div>
-      <div style="font-size:10px;color:var(--dim);margin-bottom:8px;line-height:1.5">획득한 설계도만 밝게 표시됩니다.<br>${I18N.t('ui.hoverForMaterials')}</div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:8px;line-height:1.5">${I18N.t('ui.acquiredBpHighlighted')}<br>${I18N.t('ui.hoverForMaterials')}</div>
 
       <div style="font-size:10px;color:#d4af37;margin:2px 0 4px;font-weight:bold;letter-spacing:.5px">⚡ 전설 파츠</div>
       ${legendParts.map(bpCard).join('')}
@@ -11054,7 +11054,7 @@ function _maybeBlackMarketAmbush(result,tier){
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">💀</div>
           <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">매복 패배...</div>
-          <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>해적이 회수해 갔습니다.</div>
+          <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>${I18N.t('ui.piratesTookIt')}</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
         </div>`,
         [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-sm'}]);
@@ -11201,7 +11201,7 @@ function openMysteryBox(tier){
   let _title='🎁 '+cfg.label+(_isFanfare?' — ✦ 전설급 당첨!':'');
   let _bodyHtml='';
   if(!result){
-    _bodyHtml=`<div style="padding:18px;text-align:center;color:var(--dim);font-size:13px">상자가 비어 있었다... 다음을 기약하자</div>`;
+    _bodyHtml=`<div style="padding:18px;text-align:center;color:var(--dim);font-size:13px">${I18N.t('ui.boxWasEmpty')}</div>`;
   } else if(result.type==='bp'){
     const _col=result.rec.tier==='mythic'?'#cc66ff':result.rec.tier==='flagship'?'#ff8800':'#d4af37';
     // 설계도는 대상 아이템 이미지 (파츠/함선/창고) 활용
@@ -11515,7 +11515,7 @@ function renderGachaCards(results){
   const CREW_BONUS={Pilot:{att:8,int2:2,tec:4},Eng:{att:2,int2:5,tec:8},Merch:{att:3,int2:7,tec:4}};
   // 결과 없으면 빈 상태 복원 (가챠 안 했을 때)
   if(!results||results.length===0){
-    c.innerHTML=`<div class="gc-empty"><div style="font-size:30px;margin-bottom:4px">🎲</div><div>뽑기를 시작하세요</div></div>`;
+    c.innerHTML=`<div class="gc-empty"><div style="font-size:30px;margin-bottom:4px">🎲</div><div>${I18N.t('ui.startGacha')}</div></div>`;
     return;
   }
   // 컴팩트 카드 — 1행 8명, 왼쪽에서부터 영입 순서대로
@@ -11649,7 +11649,7 @@ function renderAuctionView(body){
           <div style="font-size:11px;color:#cc66ff;margin-top:2px">${I18N.t('ui.mergedSafeVisit')}</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-sm" style="border-color:#8b00ff;color:#cc66ff;background:rgba(139,0,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>즉시합병<br>₡${instBid.toLocaleString()}</button>
+          <button class="btn btn-sm" style="border-color:#8b00ff;color:#cc66ff;background:rgba(139,0,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.instantMerge')}<br>₡${instBid.toLocaleString()}</button>
           <button class="btn btn-sm" style="border-color:#8b00ff;color:#cc66ff;white-space:nowrap;font-size:11px;padding:4px 8px" onclick="customBid('${p.id}',${startBid})" ${G.credits>=startBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.directBidProb')}</button>
           <input class="inp" type="number" id="bid-${p.id}" placeholder="₡${startBid.toLocaleString()} 이상" min="${startBid}" style="width:80px;height:28px;font-size:11px">
         </div>
@@ -11730,7 +11730,7 @@ function renderAuctionView(body){
   // 우측: 입찰 중 행성 (기존 카드들)
   const biddingHtml=`<div style="display:flex;flex-direction:column;height:100%;min-height:0">
     <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--dim);margin-bottom:10px;line-height:1.6;flex-shrink:0">
-      💡 <b style="color:var(--gold)">${I18N.t('ui.instantWin')}</b> +30% 프리미엄 100% 확정 · <b style="color:var(--cyan)">직접입찰</b> 60~90% 확률<br>
+      💡 <b style="color:var(--gold)">${I18N.t('ui.instantWin')}</b> +30% 프리미엄 100% 확정 · <b style="color:var(--cyan)">${I18N.t('ui.directBidShort')}</b> 60~90% 확률<br>
       💡 난이도 ${{easy:'쉬움 +5%',normal:'보통 +15%',hard:'어려움 +22%',extreme:'극악 +30%'}[G.difficulty]||'보통 +15%'} · 턴당 2회 입찰
     </div>
     ${G.heroes.includes('H03')?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--gold);margin-bottom:8px;flex-shrink:0">👑 광개토대왕 효과: 경매가 30% 할인</div>`:''}
@@ -12480,7 +12480,7 @@ function renderCodexTab(body){
   else if(_codexTab==='sys'){
     // 은하계 시스템 생존 필수지식 — 12개 시스템 가이드
     if(typeof SYSTEM_GUIDE==='undefined'){
-      content='<div style="color:var(--dim);padding:24px;text-align:center">시스템 데이터 미로드</div>';
+      content=`<div style="color:var(--dim);padding:24px;text-align:center">${I18N.t('ui.systemDataNotLoaded')}</div>`;
     } else {
       const _sysCard=(s)=>`<div style="background:rgba(0,0,0,.3);border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,243,255,.08)">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(0,243,255,.2)">
@@ -12511,7 +12511,7 @@ function renderCodexTab(body){
       const cards=SYSTEM_GUIDE.map(_sysCard).join('');
       content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
         <div style="font-size:29px">📚</div>
-        <div><div style="font-size:14px;color:var(--txt);font-weight:bold">은하계 시스템 생존 필수지식</div>
+        <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.essentialSurvival')}</div>
         <div style="font-size:12px;color:var(--dim)">12개 시스템 — 위치·역할·해금·특징·주의·위트</div></div>
       </div>${cards}`;
     }
@@ -13038,7 +13038,7 @@ function _showAsteroidShipPicker(destPid, onPick){
     <div style="text-align:center;margin-bottom:10px">
       <div style="color:#cc66ff;font-size:11px;letter-spacing:4px">— 출격 함선 선택 —</div>
       <div style="color:#fff;font-size:16px;font-weight:bold;letter-spacing:2px;margin-top:3px">🚀 소행성대 돌파</div>
-      <div style="color:#aaa;font-size:10px;margin-top:3px">함선을 클릭해 출격하거나 통행세 지불</div>
+      <div style="color:#aaa;font-size:10px;margin-top:3px">${I18N.t('ui.clickShipToSortie')}</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(8,104px);gap:6px;justify-content:center;max-width:920px">${cardsHtml}</div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
@@ -14413,7 +14413,7 @@ function onMapClick(e){
           openModal(I18N.t('modal.voidAbyssSignal'),
             `<div style="text-align:center;padding:16px">
               ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
-              <div style="color:#cc44ff;font-size:17px;font-weight:bold;margin-bottom:8px">블랙홀 속에서 검은 함선이 다가온다</div>
+              <div style="color:#cc44ff;font-size:17px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.blackShipApproaching')}</div>
               <div style="color:#e0c0ff;font-size:13px;line-height:1.8">은하 중심의 시험 — 블랙팔콘과의 결투.<br>격파하면 「보이드의 심연」이 열린다.</div>
             </div>`,
             [{txt:'⚔️ 블랙팔콘에 도전',fn:()=>{closeModal();
@@ -14521,7 +14521,7 @@ function onMapClick(e){
     G.mapSelected=null;
     const fl=document.getElementById('map-float');if(fl)fl.style.display='none';
     const info=document.getElementById('map-info');if(info)info.innerHTML=`<div style="color:var(--cyan);margin-bottom:6px">${I18N.t('map.planetInfo')}</div><div style="color:var(--dim)">${I18N.t('ui.clickPlanet')}</div>`;
-    const shop=document.getElementById('map-shop');if(shop)shop.innerHTML='<div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">행성을 선택하세요</div>';
+    const shop=document.getElementById('map-shop');if(shop)shop.innerHTML=`<div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">${I18N.t('ui.selectPlanet')}</div>`;
     renderMap();return;
   }
   const st=G.planets[closest.id],fog=st?.fog||'L';
@@ -18539,8 +18539,8 @@ function forceUrsaBoss(){
   openModal(I18N.t('modal.ursaForcedFight'),
     `<div style="text-align:center;padding:14px">
       <div style="font-size:46px;margin-bottom:8px">☠️</div>
-      <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">우르사 메이저 보스전을 강제로 시작합니다</div>
-      <div style="color:var(--dim);font-size:13px;line-height:1.8">지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.<br>보이드 크리스탈을 소모하지 않습니다.</div>
+      <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">${I18N.t('ui.forcedUrsa')}</div>
+      <div style="color:var(--dim);font-size:13px;line-height:1.8">지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.<br>${I18N.t('ui.noVcConsumed')}</div>
     </div>`,
     [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify('보스전 시작 오류: '+e.message,'err');}},cls:'btn-red'},
      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
@@ -18555,7 +18555,7 @@ function tryBossEntry(){
     notify(I18N.t('notify.noVoidCrystal'),'err');return;
   }
   const _hint=_isFirst
-    ?'<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">⚡ 첫 지구 진입 — 우르사 메이저가 봉쇄를 끝낼 마지막 저항</div><div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 미요구 (첫 보스전 무료 진입).<br>승리 시 지구 봉쇄 해제 + 시설 해금!</div>'
+    ?`<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">⚡ 첫 지구 진입 — 우르사 메이저가 봉쇄를 끝낼 마지막 저항</div><div style="color:var(--dim);margin-bottom:12px">${I18N.t('ui.firstBossFree')}<br>승리 시 지구 봉쇄 해제 + 시설 해금!</div>`
     :'<div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>승리 시 게임 클리어!</div><div style="font-size:13px;color:var(--yellow)">보유 크리스탈: '+(G.voidCrystal||0)+'개</div>';
   openModal(I18N.t('modal.ursaFinalFight'),
     `<div style="text-align:center;padding:12px">
