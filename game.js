@@ -633,7 +633,7 @@ function showShipDetailModal(idx){
     <!-- 액션 패널: 3 그룹 (장비 / 함선 / 수리) -->
     <div style="display:flex;flex-direction:column;gap:8px">
       <div style="${groupStyle}">
-        <div style="${groupTitleStyle}"><span>⚙️</span><span>장비</span></div>
+        <div style="${groupTitleStyle}"><span>⚙️</span><span>${I18N.t('ui.equipment')}</span></div>
         <div style="${btnRowStyle}">
           <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold)" onclick="pickPartModal(${idx})">⚙️ 파츠 장착</button>
           <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan)" onclick="pickCrewModal(${idx})">${I18N.t('ui.crewAssign')}</button>
@@ -641,7 +641,7 @@ function showShipDetailModal(idx){
         </div>
       </div>
       <div style="${groupStyle}">
-        <div style="${groupTitleStyle}"><span>🚀</span><span>함선</span></div>
+        <div style="${groupTitleStyle}"><span>🚀</span><span>${I18N.t('ui.shipLabelShort')}</span></div>
         <div style="${btnRowStyle}">
           ${isFlagship
             ? `<span style="font-size:12px;color:var(--gold);padding:5px 9px;border:1px solid rgba(212,175,55,.4);border-radius:5px">⚑ 현재 기함</span>`
@@ -649,7 +649,7 @@ function showShipDetailModal(idx){
         </div>
       </div>
       <div style="${groupStyle}">
-        <div style="${groupTitleStyle}"><span>🔧</span><span>수리</span><span style="margin-left:auto;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:normal">보유 ₡${G.credits.toLocaleString()}</span></div>
+        <div style="${groupTitleStyle}"><span>🔧</span><span>${I18N.t('ui.repair')}</span><span style="margin-left:auto;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:normal">보유 ₡${G.credits.toLocaleString()}</span></div>
         <div style="${btnRowStyle}">
           ${rc>0
             ? `<button class="btn btn-sm btn-green" onclick="repairShipModal(${idx},'hp')" ${G.credits>=rc?'':'disabled'}>🔧 HP 수리 ₡${rc.toLocaleString()}</button>`
@@ -1880,7 +1880,7 @@ function _formatEnemyPreview(enemies,opts){
     </div>
     <table style="width:100%;border-collapse:collapse;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace">
       <thead><tr style="color:var(--dim);font-size:10px;text-align:left">
-        <th style="padding:2px 6px;font-weight:normal">함종</th>
+        <th style="padding:2px 6px;font-weight:normal">${I18N.t('ui.shipType')}</th>
         <th style="padding:2px 6px;font-weight:normal;text-align:right">HP/SH</th>
         <th style="padding:2px 6px;font-weight:normal;text-align:right">ATT</th>
         <th style="padding:2px 6px;font-weight:normal;text-align:right">INT</th>
@@ -2822,21 +2822,21 @@ function renderMain(body){
   const tax=calcTurnTax();const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet)||PLANET_DEF[0];const fac=pd?FACTION[pd.f]:null;
   try{body.innerHTML=`
     <div style="display:flex;gap:8px;padding:8px 14px;background:rgba(13,26,42,.98);border-bottom:1px solid var(--bdr);flex-wrap:nowrap;overflow-x:auto;flex-shrink:0;scrollbar-width:none">
-      <div class="ic"><span class="icl">위치</span><span class="icv" style="color:${fac?.col||'var(--cyan)'}">📍 ${pd?.nm||'?'}</span></div>
-      <div class="ic"><span class="icl">함선</span><span class="icv">🛸 ${G.fleet.length}척</span></div>
-      <div class="ic"><span class="icl">크루</span><span class="icv">👥 ${G.crew.length}명</span></div>
-      <div class="ic"><span class="icl">행성</span><span class="icv">🌍 ${owned}개</span></div>
-      <div class="ic"><span class="icl">영웅</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/8</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.locationShort')}</span><span class="icv" style="color:${fac?.col||'var(--cyan)'}">📍 ${pd?.nm||'?'}</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.shipLabelShort')}</span><span class="icv">🛸 ${G.fleet.length}척</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.crewShort')}</span><span class="icv">👥 ${G.crew.length}명</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.planetShort')}</span><span class="icv">🌍 ${owned}개</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.heroShort')}</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/8</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.turnTax')}</span><span class="icv" style="color:var(--green)">₡${tax.toLocaleString()}</span></div>
       <div class="ic"><span class="icl">ACT/TURN</span><span class="icv" style="color:var(--cyan)">${G.act}/${G.turn}</span></div>
-      ${(()=>{const lv=calcPlayerLevel(),rk=getLevelRank(lv);return`<div class="ic"><span class="icl">레벨</span><span class="icv" style="color:${rk.col};font-weight:bold">Lv.${lv} <span style="font-size:12px">${rk.lb}</span></span></div>`;})()}
-      ${(()=>{const rep=G.reputation||0,rr=getRepRank(rep);const next=rr.next;const pct=Math.min(100,next>0?Math.round(rep/next*100):100);return`<div class="ic" style="min-width:110px"><span class="icl">명성</span><span class="icv" style="color:${rr.col};font-weight:bold">${rr.ic} ${rr.lb}</span><div style="margin-top:2px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${rr.col};transition:width .4s"></div></div><div style="font-size:9px;color:var(--dim);text-align:right;margin-top:1px">${rep}${next<9999?' / '+next:''}</div></div>`;})()}
+      ${(()=>{const lv=calcPlayerLevel(),rk=getLevelRank(lv);return`<div class="ic"><span class="icl">${I18N.t('ui.levelShort')}</span><span class="icv" style="color:${rk.col};font-weight:bold">Lv.${lv} <span style="font-size:12px">${rk.lb}</span></span></div>`;})()}
+      ${(()=>{const rep=G.reputation||0,rr=getRepRank(rep);const next=rr.next;const pct=Math.min(100,next>0?Math.round(rep/next*100):100);return`<div class="ic" style="min-width:110px"><span class="icl">${I18N.t('ui.repShort')}</span><span class="icv" style="color:${rr.col};font-weight:bold">${rr.ic} ${rr.lb}</span><div style="margin-top:2px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${rr.col};transition:width .4s"></div></div><div style="font-size:9px;color:var(--dim);text-align:right;margin-top:1px">${rep}${next<9999?' / '+next:''}</div></div>`;})()}
       ${(G.stayTurns||0)>=2?`<div class="ic"><span class="icl">체류</span><span class="icv" style="color:var(--red);font-weight:bold">${G.stayTurns}/3턴 ⚠️</span></div>`:(G.stayTurns||0)>0?`<div class="ic"><span class="icl">체류</span><span class="icv" style="color:var(--dim)">${G.stayTurns}/3턴</span></div>`:''}
     </div>
     <div style="flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
       ${buildSceneHTML(pd,fac)}
       <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(13,26,42,.92);border:1px solid var(--cyan);border-radius:10px;padding:10px 18px;max-width:500px;text-align:center;pointer-events:none;z-index:20">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${imgOrEmoji('img/chars/baekgu1.png','🐕',28,28,'border-radius:50%;background:var(--panel)')}<span style="color:var(--cyan);font-size:12px">백구</span></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${imgOrEmoji('img/chars/baekgu1.png','🐕',28,28,'border-radius:50%;background:var(--panel)')}<span style="color:var(--cyan);font-size:12px">${I18N.t('speaker.baekgu')}</span></div>
         <div style="color:var(--yellow);font-size:14px;line-height:1.6">${getBaekguLine()}</div>
       </div>
     </div>
@@ -3888,7 +3888,7 @@ function renderTradeTab(body){
                       style="width:40px;padding:2px 3px;background:rgba(255,255,255,.08);border:1px solid rgba(0,243,255,.25);border-radius:4px;color:var(--txt);font-size:11px;text-align:center"
                       ${canBuy?'':'disabled'}>
                     <button class="btn btn-sm btn-green" onclick="buyCommN('${c.id}')" ${canBuy?'':'disabled'}
-                      style="flex:1;font-size:11px;padding:3px 6px">구매</button>
+                      style="flex:1;font-size:11px;padding:3px 6px">${I18N.t('ui.buy')}</button>
                   </div>
                   <button class="btn btn-sm btn-gold" onclick="buyCommMax('${c.id}')" ${canBuy?'':'disabled'}
                     style="font-size:11px;padding:3px 6px;width:100%" title="재고/크레딧/화물칸 한도까지 한번에 구매">🛒 전체</button>
@@ -3937,7 +3937,7 @@ function renderTradeTab(body){
                         style="width:40px;padding:2px 3px;background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.3);border-radius:4px;color:var(--txt);font-size:11px;text-align:center"
                         ${canBuyMat?'':'disabled'}>
                       <button class="btn btn-sm" onclick="buyCommN('${c.id}')" ${canBuyMat?'':'disabled'}
-                        style="flex:1;font-size:11px;padding:3px 6px;border-color:var(--gold);color:var(--gold)">구매</button>
+                        style="flex:1;font-size:11px;padding:3px 6px;border-color:var(--gold);color:var(--gold)">${I18N.t('ui.buy')}</button>
                     </div>
                     <button class="btn btn-sm" onclick="buyCommMax('${c.id}')" ${canBuyMat?'':'disabled'}
                       style="font-size:11px;padding:3px 6px;width:100%;border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)" title="재고/크레딧 한도까지 한번에 구매">🛒 전체</button>
@@ -5018,7 +5018,7 @@ function renderShipTab(body){
               '<div style="color:var(--dim);font-size:9px">매각가</div>'+
               '<div style="color:var(--gold);font-size:12px;font-weight:bold">₡'+sp.total.toLocaleString()+'</div>'+
             '</div>'+
-            '<button class="btn btn-sm btn-red" style="padding:3px 10px;font-size:11px;'+(canSell?'':'opacity:.4')+'" onclick="confirmSellShip('+i+')" '+(canSell?'':'disabled')+'>판매</button>'+
+            '<button class="btn btn-sm btn-red" style="padding:3px 10px;font-size:11px;'+(canSell?'':'opacity:.4')+'" onclick="confirmSellShip('+i+')" '+(canSell?'':'disabled')+'>'+I18N.t('ui.sell')+'</button>'+
           '</div>'+
         '</div>'+
         // ── 오른쪽: 이미지 ──
