@@ -1468,7 +1468,7 @@ function showExitModal(){
   openModal(I18N.t('modal.exitGame'),
     `<div style="text-align:center;padding:12px">
       <div style="margin-bottom:12px">${_baekguIcon(58)}</div>
-      <div style="color:var(--yellow);font-size:18px;font-weight:bold;margin-bottom:8px">정말 종료하시겠습니까?</div>
+      <div style="color:var(--yellow);font-size:18px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.confirmExit')}</div>
       <div style="color:var(--dim);font-size:14px;line-height:1.8">
         현재 진행 상황 TURN ${G.turn}<br>
         보유 크레딧 ₡${G.credits.toLocaleString()}<br>
@@ -4863,7 +4863,7 @@ function renderShipTab(body){
             : `<span style="font-size:10px;color:var(--cyan);padding:3px 6px;border:1px solid rgba(0,243,255,.3);border-radius:4px">✅ 함선실 최대</span>`;
           const _crewCol=`<div style="flex:1;min-width:0;padding:0 3px 0 6px;display:flex;flex-direction:column">
             <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-              <span>👥 <b style="color:var(--green)">함선실(크루)</b> ${(s.crewIds||[]).length}/${maxCrew}명${(+s.crewMaxExtra)?` <span style="color:var(--gold);font-size:9px">(+${(+s.crewMaxExtra)} 확장)</span>`:''}</span>
+              <span>👥 <b style="color:var(--green)">${I18N.t('ui.shipQuartersCrew')}</b> ${(s.crewIds||[]).length}/${maxCrew}명${(+s.crewMaxExtra)?` <span style="color:var(--gold);font-size:9px">(+${(+s.crewMaxExtra)} 확장)</span>`:''}</span>
               ${_crewBonusInfo}
               <span style="opacity:.45;font-size:9px">클릭=하선</span>
             </div>
@@ -4878,7 +4878,7 @@ function renderShipTab(body){
           // 화물칸: margin-left 제거 (overlap 방지), padding-left 최소화
           // 버튼은 우측 정렬로 함선실 버튼과 충돌 회피
           const _cargoCol=`<div style="flex:1;min-width:0;padding-left:8px;margin-left:-10%;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">📦 <b style="color:var(--cyan)">화물칸</b> ${s.cargoSlots||4}/80칸 <span style="opacity:.45;font-size:9px">빈칸=확장</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}/80칸 <span style="opacity:.45;font-size:9px">빈칸=확장</span></div>
             <div style="flex-shrink:0">${_cargoData.grid}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;justify-content:flex-end;align-self:flex-end">${_cargoData.btn}</div>
@@ -4932,7 +4932,7 @@ function renderShipTab(body){
           </div>
           <!-- Col 4: Cargo 그리드 -->
           <div style="flex:1;padding:8px 10px;min-width:196px;">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">📦 <b style="color:var(--cyan)">화물칸</b> ${s.cargoSlots||4}칸 / 최대80칸 <span style="opacity:.45;font-size:9px">빈칸=확장</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}칸 / 최대80칸 <span style="opacity:.45;font-size:9px">빈칸=확장</span></div>
             ${(()=>{const slots=Math.min(s.cargoSlots||4,80);let cargoOffset=0;for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}const cargoFlat=[];G.cargo.forEach(function(c){const imgSrcC='img/commodities/'+c.id+'.png';for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:c.nm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);let h='<div style="display:grid;grid-template-rows:repeat(5,42px);grid-auto-flow:column;grid-auto-columns:42px;gap:3px;">';for(let i=0;i<slots;i++){if(i<myCargo.length){const ci=myCargo[i];h+='<div style="width:42px;height:42px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n구매가: ₡'+ci.price.toLocaleString()+'"><img src="'+ci.img+'" style="width:38px;height:38px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:18px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}else{const isMax=(slots>=80);h+='<div '+''+' style="width:42px;height:42px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?'화물칸 최대 (80칸)':'빈 화물칸')+'"></div>';}}h+='</div>';return h;})()}
           </div>
         </div>`}
@@ -5015,7 +5015,7 @@ function renderShipTab(body){
           // 가격 + 버튼
           '<div style="margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;align-items:center;justify-content:space-between;gap:4px">'+
             '<div>'+
-              '<div style="color:var(--dim);font-size:9px">매각가</div>'+
+              `<div style="color:var(--dim);font-size:9px">${I18N.t('ui.sellPriceShort')}</div>`+
               '<div style="color:var(--gold);font-size:12px;font-weight:bold">₡'+sp.total.toLocaleString()+'</div>'+
             '</div>'+
             '<button class="btn btn-sm btn-red" style="padding:3px 10px;font-size:11px;'+(canSell?'':'opacity:.4')+'" onclick="confirmSellShip('+i+')" '+(canSell?'':'disabled')+'>'+I18N.t('ui.sell')+'</button>'+
@@ -5054,7 +5054,7 @@ function renderShipTab(body){
         <div style="color:var(--dim);font-size:13px;margin-top:6px">${I18N.t('ui.goToSafePlanet')}</div>
       </div>`;
     } else if(availShips.length===0){
-      content=`<div style="color:var(--dim);font-size:14px;text-align:center;padding:20px">현재 행성에 입고된 함선이 없습니다.</div>`;
+      content=`<div style="color:var(--dim);font-size:14px;text-align:center;padding:20px">${I18N.t('ui.noShipsAtPlanet')}</div>`;
     } else {
       // 사용자 요청: 정렬 토글 — 가격(기본) 또는 등급, 클릭 시 ASC↔DESC 방향 전환
       const _BUY_TIER_ORDER={'소형':0,'중형':1,'대형':2,'전설기함':3,'신화':4};
@@ -5078,7 +5078,7 @@ function renderShipTab(body){
         // 거래소 함선 (우측 컬럼용) — 2열 그리드
         var _curPlv2=calcPlayerLevel();
         var allSorted=sortedAvailShips;
-        if(!allSorted.length)return'<div style="color:var(--dim);font-size:14px;padding:20px;text-align:center">입고된 함선 없음</div>';
+        if(!allSorted.length)return`<div style="color:var(--dim);font-size:14px;padding:20px;text-align:center">${I18N.t('ui.noShipsInStock')}</div>`;
 
         var tierLabel={'소형':'소형','중형':'중형','대형':'대형','전설기함':'전설기함','신화':'신화'};
         var tierCol={'신화':'var(--purple)','전설기함':'#d4af37','대형':'var(--gold)','중형':'var(--blue)','소형':'var(--dim)'};
@@ -5829,7 +5829,7 @@ function renderCargoOnlyTab(body){
           <span style="font-size:13px;font-weight:bold;color:var(--green)">📦 전체 함대 창고 확장</span>
           <span style="font-size:11px;color:var(--dim);margin-left:auto">${_anyExpandable?'각 함선 +2칸 / 총 <b style="color:var(--gold)">₡'+_allUpgradeCost.toLocaleString()+'</b>':'<span style="color:var(--cyan)">✅ 모든 함선 최대(80칸)</span>'}</span>
         </div>
-        ${_anyExpandable?'<button class="btn btn-gold" style="font-size:12px;padding:5px 10px;width:100%" onclick="upgradeAllCargo()" '+(G.credits>=_allUpgradeCost?'':'disabled')+'>⚡ 전체 +2칸 일괄 확장 ₡'+_allUpgradeCost.toLocaleString()+'</button>':'<div style="font-size:11px;color:var(--cyan);text-align:center">확장 불필요</div>'}
+        ${_anyExpandable?'<button class="btn btn-gold" style="font-size:12px;padding:5px 10px;width:100%" onclick="upgradeAllCargo()" '+(G.credits>=_allUpgradeCost?'':'disabled')+'>⚡ 전체 +2칸 일괄 확장 ₡'+_allUpgradeCost.toLocaleString()+'</button>':`<div style="font-size:11px;color:var(--cyan);text-align:center">${I18N.t('ui.holdExpUnneeded')}</div>`}
       </div>
       <button class="btn btn-sm" style="flex:1;min-width:160px;font-size:12px;padding:10px 12px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08);display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.4" onclick="(function(){_shipTab='parts';try{rerenderTab(renderShipTab);}catch(e){}hubTab('ship');})()">
         🛒 창고 구매<br><span style="font-size:10px;color:var(--dim);font-weight:normal">함선 거래소 · 파츠탭으로 이동</span>
@@ -6097,7 +6097,7 @@ function renderShipEnhanceTab(body){
           <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px">
             <div style="font-size:11px;color:var(--dim);margin-bottom:3px">💰 강화 비용</div>
             <div style="font-size:14px;font-weight:bold;color:${creditsOk?'var(--gold)':'var(--red)'}">₡${cost.toLocaleString()}</div>
-            ${!creditsOk?'<div style="font-size:10px;color:var(--red);margin-top:3px">크레딧 부족</div>':''}
+            ${!creditsOk?`<div style="font-size:10px;color:var(--red);margin-top:3px">${I18N.t('ui.notEnoughCreditsShort')}</div>`:''}
           </div>
           <div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.3);border-radius:6px;padding:10px">
             <div style="font-size:11px;color:var(--dim);margin-bottom:3px">📊 성공 확률</div>
@@ -8330,7 +8330,7 @@ function renderCrewTab(body){
     <button onclick="dismissLowestCrew(10)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.7);background:rgba(255,40,40,.15);color:rgba(255,180,180,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="함선 탑승 중인 크루도 강제 하선 후 일괄 방출">🚪 최하위 10명</button>
     ${_lastDismissedCrew&&_lastDismissedCrew.crew&&_lastDismissedCrew.crew.length>0?`<button onclick="undoDismissCrew()" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(0,243,255,.6);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold;animation:pulse 1.5s infinite" title="${_lastDismissedCrew.crew.map(e=>e.data.nm).join(', ')}">↺ 되돌리기 (${_lastDismissedCrew.crew.length}명)</button>`:''}
   </div>
-    ${sorted.length===0?'<div style="color:var(--dim);font-size:14px">주점 가차로 크루를 영입하세요!</div>'
+    ${sorted.length===0?`<div style="color:var(--dim);font-size:14px">${I18N.t('ui.recruitAtTavern')}</div>`
     :`<div class="crew-grid">${sorted.map(c=>{
       const gen=(c.ic||'👩').includes('👩')||c.nm?.endsWith('a')?'f':'m';
       const assignedShip=G.fleet.find(sh=>(sh.crewIds||[]).includes(c.id));
@@ -8408,7 +8408,7 @@ function confirmDismissCrew(cid){
         <div style="color:${c.rarity==='L'?'var(--gold)':'var(--purple)'};font-size:14px;margin-bottom:12px">
           ⚠️ ${c.rarity==='L'?'전설':'영웅'}급 크루입니다! 내보내면 복구할 수 없습니다.
         </div>
-        <div style="font-size:13px;color:var(--dim)">정말 내보내시겠습니까?</div>
+        <div style="font-size:13px;color:var(--dim)">${I18N.t('ui.confirmDismiss')}</div>
       </div>`,
       [{txt:'내보내기',fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
        {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
@@ -10179,7 +10179,7 @@ function doCraft(recipeId){
       addToInventory(rec.id,1);
       resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${scDef.nm}</div>
         <div style="font-size:36px;font-weight:bold;color:#d4af37;margin:8px 0">📦</div>
-        <div style="font-size:18px;font-weight:bold;color:#d4af37">창고 확장 파츠 제작 완료!</div>
+        <div style="font-size:18px;font-weight:bold;color:#d4af37">${I18N.t('ui.holdExpCraftDone')}</div>
         <div style="font-size:13px;color:var(--dim);margin-top:6px">화물 +${scDef.cargoBonus}칸 · 인벤토리에 보관됨</div>
         <div style="font-size:12px;color:var(--cyan);margin-top:6px">정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하세요</div>`;
       notify(`📦 ${scDef.nm} 제작 완료! 인벤토리 보관 (정비소에서 장착)`,'gold');
@@ -10490,7 +10490,7 @@ function renderCraftTab(body){
         const _storyHtml=_lore?`<div style="margin-top:10px;border-top:1px solid ${_tierColor}33;padding-top:8px">
           <div style="font-size:11px;color:${_tierColor};font-weight:bold;margin-bottom:4px;letter-spacing:.5px">📖 스토리 · 설명</div>
           <div style="font-size:11px;color:var(--txt);line-height:1.7;white-space:pre-wrap;word-break:keep-all">${_lore}</div>
-        </div>`:'<div style="margin-top:10px;font-size:11px;color:var(--dim)">설명 정보가 없습니다.</div>';
+        </div>`:`<div style="margin-top:10px;font-size:11px;color:var(--dim)">${I18N.t('ui.noDescriptionInfo')}</div>`;
         return `
           <!-- 제작 버튼 (파츠/함선 이미지 위쪽) -->
           <div style="text-align:center;margin-bottom:10px">
@@ -11213,7 +11213,7 @@ function openMysteryBox(tier){
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_bpImgHtml}</div>
       <div style="font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:2px">📜 BLUEPRINT</div>
-      <div style="color:${_col};font-size:20px;font-weight:bold;margin-top:6px">설계도 획득!</div>
+      <div style="color:${_col};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.bpAcquired')}</div>
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.rec.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
@@ -11338,7 +11338,7 @@ function renderTavernView(body){
         "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
         보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
         <span style="color:var(--purple);font-weight:bold">${I18N.t('ui.oneBlackSmall')}</span>가 나타났대. 아무 식별코드도 없이.<br>
-        현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>이라고 불러.<br>
+        현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>${I18N.t('ui.callMeThat')}<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
         ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
       </div>
@@ -12371,7 +12371,7 @@ function renderCodexTab(body){
       +'<div style="font-size:29px">🪐</div>'
       +`<div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.planetCodex')}</div>`
       +'<div style="font-size:12px;color:var(--dim)">방문 <span style="color:var(--cyan)">'+totalVisited+'</span> / 전체 '+PLANET_DEF.length+'개 · 클릭하면 상세 정보</div></div>'
-      +'<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">탐험도</div>'
+      +`<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.explorationRate')}</div>`
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalVisited/PLANET_DEF.length*100)+'%</div></div></div>'
       +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">'+planetCards+'</div>';
   }
@@ -12394,7 +12394,7 @@ function renderCodexTab(body){
         return '<div style="background:var(--card);border:1px solid '+bdr+';border-radius:8px;padding:8px;text-align:center;min-height:148px'+(seen?'':';opacity:.55')+'">'
           +'<div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">'+imgHtml+'</div>'
           +'<div style="font-size:12px;font-weight:bold;color:'+nc+';line-height:1.2">'+(seen?c.nm:'???')+'</div>'
-          +(seen?'<div style="font-size:10px;color:var(--gold);margin-top:2px">₡'+c.buy.toLocaleString()+'</div>':'<div style="font-size:10px;color:var(--dim);margin-top:2px">미발견</div>')
+          +(seen?'<div style="font-size:10px;color:var(--gold);margin-top:2px">₡'+c.buy.toLocaleString()+'</div>':`<div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.t('ui.undiscoveredShort')}</div>`)
           +'<div style="font-size:10px;color:'+(seen?'var(--green)':'var(--dim)')+';margin-top:2px">'+(seen?'🔍 발견':'')+'</div>'
           +'</div>';
       }).join('');
@@ -12407,7 +12407,7 @@ function renderCodexTab(body){
       +'<div style="font-size:29px">💎</div>'
       +'<div><div style="font-size:14px;color:var(--txt);font-weight:bold">특산물·재료 도감</div>'
       +'<div style="font-size:12px;color:var(--dim)">'+I18N.t('ui.discoveredComm',{n:`<span style="color:var(--cyan)">${totalDisc}</span>`,total:COMMODITIES.length})+'</div></div>'
-      +'<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">수집률</div>'
+      +`<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.collectionRate')}</div>`
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalDisc/COMMODITIES.length*100)+'%</div></div></div>'
       +commSection('🌟 특산물',normalComms)
       +commSection('⚗️ 제작 재료',matComms);
@@ -12473,7 +12473,7 @@ function renderCodexTab(body){
       <div style="font-size:29px">🌌</div>
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.civCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.discoveredCiv',{n:`<span style="color:var(--cyan)">${_discCount}</span>`,total:F_ORDER.length})}</div></div>
-      <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">탐험도</div>
+      <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.explorationRate')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(_discCount/F_ORDER.length*100)}%</div></div>
     </div>${cards}`;
   }
@@ -13253,7 +13253,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     </div>
     <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none;max-width:96vw;max-height:84vh" tabindex="0"></canvas>
     <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#aaa;font-size:11px;letter-spacing:2px;line-height:1.7;pointer-events:none">
-      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">마우스 이동</b> · <b style="color:#ffcc66">RShift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일 · <b style="color:#ff44ff">LShift</b> 필살기(라이트닝, 10초)
+      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">${I18N.t('ui.mouseMovement')}</b> · <b style="color:#ffcc66">RShift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일 · <b style="color:#ff44ff">LShift</b> 필살기(라이트닝, 10초)
     </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
@@ -14431,7 +14431,7 @@ function onMapClick(e){
             <div style="color:#cc44ff;font-size:18px;font-weight:bold;margin-bottom:8px">보이드의 심연 — 시험 통과</div>
             <div style="color:#fff;font-size:15px;line-height:2;background:#000;padding:12px 16px;border-radius:8px;border:1px solid #cc44ff;margin-bottom:10px">
               그대는 이미 마지막 시험을 통과하였다.<br>
-              <span style="color:#cc44ff">검은 팔콘은 그대의 의지를 따른다.</span>
+              <span style="color:#cc44ff">${I18N.t('ui.blackFalconFollowsYourWill')}</span>
             </div>
             <div style="color:var(--dim);font-size:12px;line-height:1.7">아래 [다시 도전]으로 미러 함대전에 재도전 가능합니다.</div>
           </div>`,
@@ -17785,7 +17785,7 @@ function showCredits(){
 
       <!-- 그래픽 / 사운드 -->
       <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.graphics')}</div>
-      <div style="font-size:17px;line-height:2;margin-bottom:50px">이규빈<br>Toy Lee<br>Gemini · Claude<br>Midjourney · 나노바나나</div>
+      <div style="font-size:17px;line-height:2;margin-bottom:50px">${I18N.t('ui.leeGyubin')}<br>Toy Lee<br>Gemini · Claude<br>Midjourney · 나노바나나</div>
 
       <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.sound')}</div>
       <div style="font-size:17px;line-height:2;margin-bottom:60px">Toy Lee<br>Gemini · SUNO AI</div>
@@ -17996,7 +17996,7 @@ function showFeedback(){
   const html=`<div style="padding:6px 4px">
     <div style="text-align:center;margin-bottom:10px">
       <div style="font-size:30px;margin-bottom:6px">📬</div>
-      <div style="font-size:13px;color:var(--dim);line-height:1.6">게임 개선에 도움이 됩니다.<br>${I18N.t('ui.feedbackFree')}</div>
+      <div style="font-size:13px;color:var(--dim);line-height:1.6">${I18N.t('ui.feedbackHelpsImprove')}<br>${I18N.t('ui.feedbackFree')}</div>
     </div>
     <div style="margin-bottom:10px">
       <label style="display:block;font-size:12px;color:var(--cyan);font-weight:bold;margin-bottom:4px">📛 아이디 / 연락처 <span style="color:var(--dim);font-weight:normal">(선택 — 이메일·디스코드 등)</span></label>
@@ -18730,7 +18730,7 @@ function showBossCelebration(onDone){
         <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.turnsRequired')}</div><div style="font-size:22px;color:var(--gold);font-weight:bold">${turn}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.shipsAlive')}</div><div style="font-size:22px;color:#66ff99;font-weight:bold">${survivors}/${fleetCount}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.recruitedHeroes2')}</div><div style="font-size:22px;color:#ff99ff;font-weight:bold">${heroCount}</div></div>
-        <div><div style="font-size:11px;color:var(--dim)">획득 크레딧</div><div style="font-size:22px;color:var(--gold);font-weight:bold">₡${(G.credits||0).toLocaleString()}</div></div>
+        <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.gainedCredits')}</div><div style="font-size:22px;color:var(--gold);font-weight:bold">₡${(G.credits||0).toLocaleString()}</div></div>
       </div>
       <div style="font-size:15px;color:var(--yellow);line-height:1.8;margin:14px 0;padding:14px;background:rgba(255,255,255,.02);border-left:3px solid var(--gold);text-align:left">
         ${co} 총사령관 <b style="color:var(--gold)">${cmdName}</b>의 함대가<br>
@@ -19477,7 +19477,7 @@ async function devShowFeedback(){
       <div style="font-size:10px;color:var(--muted);margin-top:4px">v${escapeHtml(f.ver)} · TURN ${f.turn||0} · ${escapeHtml((f.ua||'').slice(0,50))}</div>
     </div>`).join('');
   const html=`<div style="max-height:60vh;overflow-y:auto;padding:4px">
-    ${items.length===0?'<div style="text-align:center;color:var(--dim);padding:30px">아직 등록된 피드백이 없습니다.</div>':rows}
+    ${items.length===0?`<div style="text-align:center;color:var(--dim);padding:30px">${I18N.t('ui.noFeedbacksYet')}</div>`:rows}
   </div>`;
   openModal('📬 피드백 ('+items.length+'건)',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
