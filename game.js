@@ -16655,7 +16655,7 @@ function runCombatTurn(){
       if(boss.hp>0&&(bossHpPct<=0.50||fleetHpPct<=0.50)){
         if(!combatState._voidSuperLaserAnnounced){
           combatState._voidSuperLaserAnnounced=true;
-          addCombatLog(`🌑 [블랙팔콘] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!`,'err');
+          addCombatLog(I18N.t('combat.dimRayCharging'),'err');
         }
         // 비기함(G.fleet[0] 이외) 중 살아있는 첫 함선을 소멸
         const flagshipId=(G.fleet[0]||{}).id;
@@ -16671,7 +16671,7 @@ function runCombatTurn(){
           v.hp=0;v.sh=0;
           const gs=G.fleet.find(s=>s.id===v.id);
           if(gs){gs.hp=0;gs.sh=0;}
-          addCombatLog(`🌑 차원 절단광선! ${v.nm} 함선이 보이드 균열에 흡수되었다...`,'err');
+          addCombatLog(I18N.t('combat.dimRayFired',{nm:v.nm}),'err');
         }
         _skipNormalEnemyAttack=true;  // 평시 ATT 공격 생략 (이 페이즈는 절단광선만)
       }
@@ -16834,10 +16834,10 @@ function _finishCombat(){
     const _joinBonus=(combatState._debrisJoinCount||0)>0?3:1;
     earned=Math.round((1000+G.turn*50)*getDiffMult()*_nelsonBonus*_timeBonus*_joinBonus);
     G.credits+=earned;
-    addCombatLog(`💰 보상 ₡${earned.toLocaleString()}${_joinBonus>1?` (잔해 합류 ×${_joinBonus})`:''}`,'gold');
+    addCombatLog(I18N.t('combat.rewardCr',{cr:earned.toLocaleString(),join:_joinBonus>1?I18N.t('combat.debrisBonus',{n:_joinBonus}):''}),'gold');
     if(_elapsedMin>=1){
       const _bonusPct=Math.round((_timeBonus-1)*100);
-      addCombatLog(`⏱️ 장기 전투 보너스 +${_bonusPct}% (${_elapsedMin}분 경과)`,'gold');
+      addCombatLog(I18N.t('combat.longBattleBonus',{pct:_bonusPct,min:_elapsedMin}),'gold');
     }
     // 모든 비-보스 전투 승리 시 허브 진행도 +1 (해적/치크스/적대행성/잔해해적 모두 카운트)
     let _kindLbl='⚔️ 적군';
@@ -16850,7 +16850,7 @@ function _finishCombat(){
       }
       addHubProgress(pid);
       _kindLbl=combatState._isChixFleet?'🛸 치크스':combatState.isPirate?'🏴‍☠️ 해적':'⚔️ 적군';
-      addCombatLog(`${_kindLbl} 격파! 허브 진행 ${getPlanetHubProgress(pid)}/${getPlanetHubThreshold(pid)}`,'gold');
+      addCombatLog(I18N.t('combat.hubProgress',{kind:_kindLbl,now:getPlanetHubProgress(pid),max:getPlanetHubThreshold(pid)}),'gold');
       // ── 전리품 특산물 드롭 (사용자 명세: 1~5종 × 5~100개, 레벨 비례) ──
       //   · 레벨 1   → 종 1~2 / 개 5~15
       //   · 레벨 500 → 종 3~5 / 개 40~100
@@ -16891,10 +16891,10 @@ function _finishCombat(){
             _gotten.push(`${c.ic||'📦'} ${c.nm}×${_giveQty}`);
           });
           if(_gotten.length>0){
-            addCombatLog(`📦 전리품: ${_gotten.join(' · ')}`,'gold');
+            addCombatLog(I18N.t('combat.loot',{items:_gotten.join(' · ')}),'gold');
             notify(`📦 전리품 ${_gotten.length}종 획득 (Lv${_plv})`,'ok');
           } else if(_picks.length>0){
-            addCombatLog(`📦 화물칸 만석 — 전리품 적재 실패`,'warn');
+            addCombatLog(I18N.t('combat.lootFullCargo'),'warn');
           }
         }
       }catch(e){console.warn('combat loot drop failed',e);}
@@ -16905,7 +16905,7 @@ function _finishCombat(){
       // ── 최종 보스 보상: 1천만 크레딧 + 우르사 메이저 함선 + 신화 파츠 4종 ──
       const _bossBonusCr=10000000;
       G.credits+=_bossBonusCr;
-      addCombatLog(`💰 보스 격파 보너스 +₡${_bossBonusCr.toLocaleString()}`,'gold');
+      addCombatLog(I18N.t('combat.bossBonus',{cr:_bossBonusCr.toLocaleString()}),'gold');
       // 우르사 메이저 함선 강제 획득
       if(!G.fleet)G.fleet=[];
       const _ursaShip={
@@ -16919,15 +16919,15 @@ function _finishCombat(){
       };
       // 활성 편대 한도 체크 (최대 16척) — 초과 시 임시창, 임시창 8척 초과 시 매각 프롬프트
       const _ursaAdd=addShipToFleet(_ursaShip);
-      if(_ursaAdd.added==='reserve')addCombatLog(`📦 우르사 메이저 함선 → 임시창 보관 (편대 가득)`,'gold');
-      else addCombatLog(`⚑ 우르사 메이저 함선 편대 합류!`,'gold');
+      if(_ursaAdd.added==='reserve')addCombatLog(I18N.t('combat.ursaToReserve'),'gold');
+      else addCombatLog(I18N.t('combat.ursaJoined'),'gold');
       // 신화 파츠 4종 모두 인벤토리에 추가
       if(!G.inventory)G.inventory=[];
       ['MW01','MS01','MA01','ME01'].forEach(pid=>{
         const inv=G.inventory.find(i=>i.id===pid);
         if(inv)inv.qty++;else G.inventory.push({id:pid,qty:1});
       });
-      addCombatLog(`✦ 신화 파츠 4종 획득: 허메틱 포·크로노스 방벽·아다만 선체·타키온 드라이브`,'gold');
+      addCombatLog(I18N.t('combat.mythicPartSet'),'gold');
       // 추가 신화 설계도 보너스: 영혼 흡수 매트릭스(RB10), 렐러티비티(LGD03)
       // 보스 격파 시 미보유 설계도를 자동 지급 (드롭률에 의존하지 않음)
       if(!G.blueprints)G.blueprints={};
@@ -16941,7 +16941,7 @@ function _finishCombat(){
           const r=(typeof CRAFT_RECIPES!=='undefined')&&CRAFT_RECIPES.find(x=>x.id===bp);
           return r?r.nm:bp;
         }).join('·');
-        addCombatLog(`📜 신화 설계도 ${_grantedBp.length}종 획득: ${_bpNames}`,'gold');
+        addCombatLog(I18N.t('combat.mythicBp',{n:_grantedBp.length,names:_bpNames}),'gold');
       }
     }
     else{notify('⚔️ 전투 승리!','ok');}
@@ -16985,12 +16985,12 @@ function _finishCombat(){
         }
       });
       if(_capturedShips.length>0){
-        addCombatLog(`🏴 적함 나포! ${_capturedShips.length}척 편대 합류 (LOY 35%)`,'gold');
+        addCombatLog(I18N.t('combat.shipsCaptured',{n:_capturedShips.length}),'gold');
         notify(`🏴 적함 ${_capturedShips.length}척 나포!`,'gold');
       }
       if(_autoSoldCount>0){
         G.credits=(G.credits||0)+_autoSoldRevenue;
-        addCombatLog(`🚫 나포 거절 — 나포함선 ${_autoSoldCount}척 즉시 매각: +₡${_autoSoldRevenue.toLocaleString()}`,'gold');
+        addCombatLog(I18N.t('combat.captureRejected',{n:_autoSoldCount,cr:_autoSoldRevenue.toLocaleString()}),'gold');
         notify(`💰 나포 거절 → 매각 ${_autoSoldCount}척 +₡${_autoSoldRevenue.toLocaleString()}`,'gold');
       }
     }
@@ -17086,7 +17086,7 @@ function _finishCombat(){
     const penalty=Math.floor(G.credits*0.1);
     G.credits=Math.max(100,G.credits-penalty);
     earned=-penalty;
-    addCombatLog(`💸 크레딧 패널티 -₡${penalty.toLocaleString()}`,'err');
+    addCombatLog(I18N.t('combat.creditsPenalty',{pen:penalty.toLocaleString()}),'err');
     notify('💀 전투 패배. 크레딧 -10%','err');
     // 보이드 보스(블랙팔콘) 패배 시: 퀘스트를 available 로 되돌려 재도전 허용
     //  · q.status='active' 인 채 멈춰 있으면 퀘스트 탭에서 '수락' 버튼이 사라져 재도전 불가
