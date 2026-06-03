@@ -14301,7 +14301,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   }
   setTimeout(()=>{cv.focus();tick();},500);
   notify('⚠️ 소행성대 진입 — 기함 출격!','warn');
-  try{baekgu('소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!');}catch(e){}
+  try{baekgu(I18N.t('baekgu.asteroidBelt'));}catch(e){}
 }
 try{if(typeof window!=='undefined')window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;}catch(e){}
 
@@ -14593,7 +14593,7 @@ function onMapClick(e){
         if(!nb)return false; const np=PLANET_DEF.find(p=>p.id===nb); return np&&np.hostile;
       });
       if(!_nearChix){
-        baekgu('블랙홀로 가는 진입로는 치크스(적대) 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.');
+        baekgu(I18N.t('baekgu.blackHoleEntry'));
         notify('🌑 보이드의 심연은 치크스 행성 근처에서만 접근 가능','err');
         return;
       }
@@ -14606,7 +14606,7 @@ function onMapClick(e){
       if(!G._falconDefeated){
         if(!G._earthLiberated){
           // 지구 해방 전 — 우르사 메이저 먼저
-          baekgu('저긴 은하 중심의 블랙홀... 먼저 지구를 해방(우르사 메이저 격파)해야 실마리가 잡힐 거야.');
+          baekgu(I18N.t('baekgu.blackHoleGateLocked'));
           notify('🌑 [잠김] 먼저 지구 해방(우르사 메이저 격파) 필요','err');
         } else {
           // 지구 해방됨 → 블랙홀에서 블랙팔콘(히든 보스) 직접 도전 (P30 퀘스트 놓쳐도 진행 가능)
@@ -14702,7 +14702,7 @@ function onMapClick(e){
         return;
       }
       if(!_isUrsaDefeated()){
-        baekgu('지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!');
+        baekgu(I18N.t('baekgu.earthApproachA'));
         tryBossEntry();
         return;
       }
@@ -14830,12 +14830,12 @@ function travelTo(){
   if(pid==='P31'){
     if((G.act||1)<3){
       notify('🌍 지구 진입은 ACT 3부터 가능합니다 (현재 ACT '+(G.act||1)+')','warn');
-      baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!');
+      baekgu(I18N.t('baekgu.earthBlockedShort'));
       return;
     }
     if(!_isUrsaDefeated()){
       // ACT3+ 첫 지구 도착 → 우르사 메이저 보스전 강제 진입
-      baekgu('지구다... 우르사 메이저가 기다린다. 모든 화력 준비!');
+      baekgu(I18N.t('baekgu.earthApproachB'));
       tryBossEntry();
       return;
     }
@@ -14929,8 +14929,8 @@ function travelTo(){
   // 지구 저항군 행성 도착 & 이순신 미영입 시 G18 힌트
   if(pd.f==='F06'&&!G.heroes.includes('H01')){
     const hasG18=(G.inventory||[]).find(i=>i.id==='G18'&&i.qty>0);
-    if(!hasG18)setTimeout(()=>baekgu('이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.'),1200);
-    else setTimeout(()=>baekgu('난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.'),1200);
+    if(!hasG18)setTimeout(()=>baekgu(I18N.t('baekgu.resistanceZoneHint')),1200);
+    else setTimeout(()=>baekgu(I18N.t('baekgu.nanjungHave')),1200);
   }
   // ── 보이드(F07) 행성 도착 — 지구 해방 후에만 미스터리한 신호 언급 ──
   // 우르사 메이저 격파 전엔 일반 균열 행성으로만 인식
@@ -15075,7 +15075,7 @@ function showHostilePlanetBriefing(planetDef){
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "스펙 확인했지? ${advisor.t.includes('유리')?'밀어붙여!':advisor.t.includes('대등')?'한 방 한 방 신중하게!':'더 강해진 다음에 와도 늦지 않아!'}"</div>`,
     [
       {txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
-      {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify('🚀 후퇴 — 다른 행성으로 이동해 주세요','warn');baekgu('한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.');},cls:'btn-sm'}
+      {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify('🚀 후퇴 — 다른 행성으로 이동해 주세요','warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
     ],{wide:true}
   );
 }
@@ -15119,7 +15119,7 @@ function _showShakedownPopup(planetDef,proceed){
       G.credits=Math.max(0,(G.credits||0)-demand);
       try{updateHUD();}catch(e){}
       notify(`💰 통행료 ₡${demand.toLocaleString()} 지불 — 전투를 회피했습니다`,'gold');
-      try{baekgu('통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.');}catch(e){}
+      try{baekgu(I18N.t('baekgu.tollPaidPrideHit'));}catch(e){}
       try{saveGame(true);}catch(e){}
     }});
   }
@@ -15273,7 +15273,7 @@ function fleeCombat(){
   const _tecNote=_penMul<0.95?` (엔진 우위 ${Math.round((1-_penMul)*100)}% 감면)`:'';
   addCombatLog(`🚀 전투 이탈! 크레딧 -₡${_pen.toLocaleString()} / 명성 -${_repLoss}${_tecNote}`,'err');
   notify(`🚀 도망 성공. ₡${_pen.toLocaleString()} 손실 / 명성 -${_repLoss}${_tecNote}`,'err');
-  try{baekgu('도망쳤어. 다음엔 더 강해진 다음에 부딪치자.');}catch(e){}
+  try{baekgu(I18N.t('baekgu.fledStronger'));}catch(e){}
   // 아군 함대 HP 동기화 (전투 중 데미지 보존)
   try{G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});}catch(e){}
   // 전투 기록 저장 (패배 처리)
@@ -17411,7 +17411,7 @@ function activateHaikjin(){
   }
   addCombatLog(`🦅 학익진 전개! 아군 함대 공격력 ×3 강화! 전 함대, 적을 양익으로 포위하라!`,'gold');
   notify('🦅 학익진! 아군 ATT ×3','gold');
-  baekgu('학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!');
+  baekgu(I18N.t('baekgu.haikjin'));
   const hbtn=document.getElementById('cb-haikjin-btn');
   if(hbtn)hbtn.disabled=true;
   drawCombatFrame();
@@ -17458,7 +17458,7 @@ function activateEinsteinTimeAttack(){
   }
   addCombatLog(`⏳ 아인슈타인 시간차공격! 상대성 이론에 따라 다중 시간축 동시 타격! 아군 공격력 ×4!`,'gold');
   notify('⏳ 시간차공격! 아군 ATT ×4','gold');
-  baekgu('아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.');
+  baekgu(I18N.t('baekgu.einsteinRelativity'));
   const ebtn=document.getElementById('cb-einstein-btn');
   if(ebtn)ebtn.disabled=true;
   drawCombatFrame();
@@ -17505,7 +17505,7 @@ function activateTeslaHyperspace(){
   }
   addCombatLog(`⚡ 테슬라 초공간 채널 개방! 전자기 도관을 통한 광속 너머 번개 충격파! 아군 공격력 ×5!`,'gold');
   notify('⚡ 테슬라 초공간! 아군 ATT ×5 + 번개 충격파','gold');
-  baekgu('테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!');
+  baekgu(I18N.t('baekgu.teslaHyperspace'));
   // 발동 순간 전기장 플래시 — 모든 아군 함선 위치에 번개 폭발
   if(combatState.players&&_unitPos){
     let _flashDelay=0;
@@ -17566,7 +17566,7 @@ function activateGenesisImpact(){
   }
   addCombatLog(`✦ 제네시스 임펙트! 창세의 일격이 적함을 시공간에서 분리한다! 아군 공격력 ×6!`,'gold');
   notify('✦ 제네시스 임펙트! 아군 ATT ×6','gold');
-  baekgu('제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.');
+  baekgu(I18N.t('baekgu.genesisImpact'));
   const gbtn=document.getElementById('cb-genesis-btn');
   if(gbtn)gbtn.disabled=true;
   drawCombatFrame();
@@ -17613,7 +17613,7 @@ function activateDestinationEarth(){
   }
   addCombatLog(`🌍 데스티네이션 어스! 100년 봉쇄를 깨뜨린 인류의 의지 — 아군 공격력 ×10! 모든 화력을 쏟아부어라!`,'gold');
   notify('🌍 데스티네이션 어스! 아군 ATT ×10','gold');
-  baekgu('데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!');
+  baekgu(I18N.t('baekgu.destinationEarth'));
   const dbtn=document.getElementById('cb-destination-btn');
   if(dbtn)dbtn.disabled=true;
   drawCombatFrame();
@@ -18539,7 +18539,7 @@ function _doUnlockVoid(){
   if((G.voidCrystal||0)<5)G.voidCrystal=5;
   updateHUD();saveGame(true);
   notify('🌑 보이드 페이즈 즉시 해금! P30 (제타 레티쿨리) 이동 가능','pur');
-  if(typeof baekgu==='function')baekgu('보이드 페이즈 강제 해금됨. 제타 레티쿨리(P30)로 이동해서 광장 → 제독 의뢰 확인해봐!');
+  if(typeof baekgu==='function')baekgu(I18N.t('baekgu.voidPhaseUnlocked'));
 }
 function cheatUnlockVoid(){_cheatUnlock(_doUnlockVoid);}
 // 치트: 신화 파츠 풀세트 지급 (보스 격파/검은 팔콘 보상과 동일)
@@ -19501,7 +19501,7 @@ function startBlackHoleFleetCombat(){
     if(!_hasSpear){
       G.inventory.push({id:'MMV01',qty:1});
       notify('🗡️ 보이드의 창 ✦ 자동 지급 — 정비소에서 함선에 장착하세요','gold');
-      try{baekgu('보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.');}catch(e){}
+      try{baekgu(I18N.t('baekgu.voidSpearGranted'));}catch(e){}
     }
   }catch(e){}
   const pd={id:'P-BLACKHOLE',nm:'은하 가운데 — 블랙홀의 심연',ring:7,void:true,f:'F07'};
@@ -19582,7 +19582,7 @@ function startBlackHoleFleetCombat(){
     if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
     addCombatLog('🌌 블랙홀 너머에서 16척의 전설적 함대가 나타난다 — 거북선 3·워덴클리프 3·렐러티비티 3·우르사 메이저 2·블랙팔콘 2·기타 전설 3.','err');
     addCombatLog('💡 적 함대 총 HP는 우리 함대의 2배. 전술 체인을 적극 활용해 돌파!','gold');
-    try{baekgu('보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!');}catch(e){}
+    try{baekgu(I18N.t('baekgu.mirrorFleetAwoken'));}catch(e){}
     setTimeout(runCombatTurn,800);
   });
 }
