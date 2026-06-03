@@ -512,7 +512,7 @@ function updateFleetBar(){
   // 헤더의 함대 수 카운트 (접힘 상태에서도 보임)
   const _cntEl=document.getElementById('bk-fleet-count');
   if(_cntEl)_cntEl.textContent=(G&&G.fleet&&G.fleet.length)?`(${G.fleet.length}척)`:'';
-  if(!G||!G.fleet||!G.fleet.length){el.innerHTML='<span style="color:var(--dim);font-size:12px">함선 없음</span>';return;}
+  if(!G||!G.fleet||!G.fleet.length){el.innerHTML=`<span style="color:var(--dim);font-size:12px">${I18N.t('ui.shipNoneSpan')}</span>`;return;}
   const cards=G.fleet.map((s,i)=>{
     const st=getShipStats(s);
     const hpPct=Math.max(0,Math.min(100,Math.round(s.hp/Math.max(1,st.HP)*100)));
@@ -2827,7 +2827,7 @@ function renderMain(body){
       <div class="ic"><span class="icl">크루</span><span class="icv">👥 ${G.crew.length}명</span></div>
       <div class="ic"><span class="icl">행성</span><span class="icv">🌍 ${owned}개</span></div>
       <div class="ic"><span class="icl">영웅</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/8</span></div>
-      <div class="ic"><span class="icl">턴세금</span><span class="icv" style="color:var(--green)">₡${tax.toLocaleString()}</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.turnTax')}</span><span class="icv" style="color:var(--green)">₡${tax.toLocaleString()}</span></div>
       <div class="ic"><span class="icl">ACT/TURN</span><span class="icv" style="color:var(--cyan)">${G.act}/${G.turn}</span></div>
       ${(()=>{const lv=calcPlayerLevel(),rk=getLevelRank(lv);return`<div class="ic"><span class="icl">레벨</span><span class="icv" style="color:${rk.col};font-weight:bold">Lv.${lv} <span style="font-size:12px">${rk.lb}</span></span></div>`;})()}
       ${(()=>{const rep=G.reputation||0,rr=getRepRank(rep);const next=rr.next;const pct=Math.min(100,next>0?Math.round(rep/next*100):100);return`<div class="ic" style="min-width:110px"><span class="icl">명성</span><span class="icv" style="color:${rr.col};font-weight:bold">${rr.ic} ${rr.lb}</span><div style="margin-top:2px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${rr.col};transition:width .4s"></div></div><div style="font-size:9px;color:var(--dim);text-align:right;margin-top:1px">${rep}${next<9999?' / '+next:''}</div></div>`;})()}
@@ -2927,7 +2927,7 @@ function buildSceneHTML(pd,fac){
     <!-- 행성 이름 + 배지 (우측 하단) -->
     <div style="position:absolute;bottom:18px;right:20px;text-align:right;z-index:20;pointer-events:none">
       <div style="color:${fc};font-size:15px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;letter-spacing:2px;text-shadow:0 0 12px ${fc};opacity:.9">◈ ${pnm} ◈</div>
-      ${isHostile?`<div style="color:#ff4444;font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;letter-spacing:1px">⚠️ 적대 구역</div>`:''}
+      ${isHostile?`<div style="color:#ff4444;font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;letter-spacing:1px">${I18N.t('ui.hostileZone')}</div>`:''}
       ${isVoid?`<div style="color:#bb88ff;font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;letter-spacing:1px">🟣 보이드 구역</div>`:''}
     </div>
   </div>`;
@@ -3871,7 +3871,7 @@ function renderTradeTab(body){
               <!-- 이미지 영역 (좌측) -->
               <div style="background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;position:relative;width:70px;flex-shrink:0;align-self:stretch">
                 ${imgOrEmoji('img/commodities/'+c.id+'.png',c.ic||'📦',52,52,'border-radius:6px;object-fit:cover','comm_'+c.id)}
-                ${isOrigin?'<span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:9px;padding:1px 0">원산지</span>':''}
+                ${isOrigin?`<span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:9px;padding:1px 0">${I18N.t('ui.origin')}</span>`:''}
               </div>
               <!-- 정보+버튼 영역 (우측) -->
               <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
@@ -4616,7 +4616,7 @@ function renderShipTab(body){
     <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
         <span style="font-size:14px;font-weight:bold;color:var(--cyan)">⚡ 자동 배치</span>
-        <span style="font-size:11px;color:var(--dim)">클릭 즉시 기존 배치 회수 후 재배치</span>
+        <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.clickToReplace')}</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
         <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoEquipPartsFlagship()">🔧 파츠<br>기함중심</button>
@@ -4722,7 +4722,7 @@ function renderShipTab(body){
         }else{
           return '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0">'
             +'<button onclick="pickCrewForSlot('+idx+')" title="크루 배치" style="background:rgba(0,243,255,.03);border:1px dashed rgba(0,243,255,.2);border-radius:6px;cursor:pointer;width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;display:flex;align-items:center;justify-content:center;color:rgba(0,243,255,.3);font-size:24px;line-height:1" onmouseover="this.style.background=\'rgba(0,243,255,.08)\'" onmouseout="this.style.background=\'rgba(0,243,255,.03)\'">+</button>'
-            +'<span style="font-size:8px;color:rgba(255,255,255,.18);text-align:center;max-width:51px;line-height:1">빈슬롯</span>'
+            +'<span style="font-size:8px;color:rgba(255,255,255,.18);text-align:center;max-width:51px;line-height:1">'+I18N.t('ui.emptySlot')+'</span>'
             +'</div>';
         }
       }).join('');
@@ -5835,7 +5835,7 @@ function renderCargoOnlyTab(body){
         🛒 창고 구매<br><span style="font-size:10px;color:var(--dim);font-weight:normal">함선 거래소 · 파츠탭으로 이동</span>
       </button>
       <button class="btn btn-sm" style="flex:1;min-width:160px;font-size:12px;padding:10px 12px;border-color:var(--purple);color:#cc88ff;background:rgba(139,0,255,.08);display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.4" onclick="hubTab('craft')">
-        🔨 창고 제작<br><span style="font-size:10px;color:var(--dim);font-weight:normal">함선 제작소로 이동</span>
+        🔨 창고 제작<br><span style="font-size:10px;color:var(--dim);font-weight:normal">${I18N.t('ui.goToShipWorkshop')}</span>
       </button>
     </div>
     <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap">
@@ -6102,7 +6102,7 @@ function renderShipEnhanceTab(body){
           <div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.3);border-radius:6px;padding:10px">
             <div style="font-size:11px;color:var(--dim);margin-bottom:3px">📊 성공 확률</div>
             <div style="font-size:14px;font-weight:bold;color:${succColor}">${(succ*100).toFixed(0)}%</div>
-            ${regress>0?`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠️ 실패 시 ${regress}단계 후퇴 → +${Math.max(0,curLv-regress)}</div>`:'<div style="font-size:10px;color:var(--green);margin-top:3px">실패 시 후퇴 없음</div>'}
+            ${regress>0?`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠️ 실패 시 ${regress}단계 후퇴 → +${Math.max(0,curLv-regress)}</div>`:`<div style="font-size:10px;color:var(--green);margin-top:3px">${I18N.t('ui.noRetreatOnFail')}</div>`}
           </div>
         </div>
         <div style="background:rgba(139,0,255,.05);border:1px solid rgba(139,0,255,.3);border-radius:6px;padding:10px;margin-bottom:14px">
@@ -6371,7 +6371,7 @@ function renderFleetFormationTab(body){
   }
   gridWithLabels+='</div>';
   // 적 측 표시 — 1열 바로 옆에 위치하여 "1열이 가장 먼저 적과 교전" 의미를 시각화
-  const enemySide=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,60,60,.06);border:1px dashed rgba(255,60,60,.3);border-radius:8px;padding:8px;min-width:90px"><div style="font-size:34px">☠️</div><div style="font-size:11px;color:var(--red);font-weight:bold;margin-top:4px">적 함대</div><div style="font-size:10px;color:var(--red);margin-top:4px;line-height:1.4">⬅ 1열이<br>가장 먼저 교전</div></div>`;
+  const enemySide=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,60,60,.06);border:1px dashed rgba(255,60,60,.3);border-radius:8px;padding:8px;min-width:90px"><div style="font-size:34px">☠️</div><div style="font-size:11px;color:var(--red);font-weight:bold;margin-top:4px">${I18N.t('ui.enemyFleet')}</div><div style="font-size:10px;color:var(--red);margin-top:4px;line-height:1.4">⬅ 1열이<br>가장 먼저 교전</div></div>`;
   // 함선 리스트 (편성 가능한 함선)
   const shipCards=G.fleet.map((s,i)=>{
     const slot=_getFormation()[s.id];
@@ -8036,7 +8036,7 @@ function confirmSellShip(idx){
       ${partsCount>0?`<div style="color:var(--cyan);margin-top:4px">📦 장착 파츠 ${partsCount}개 → 자동 인벤토리 반환</div>`:''}
       ${crewCount>0?`<div style="color:var(--yellow);margin-top:2px">👥 탑승 크루 ${crewCount}명 → 자동 하선</div>`:''}
     </div>
-    <div style="color:var(--red);font-size:13px;margin-top:10px">⚠️ 함선 데이터가 삭제됩니다</div>
+    <div style="color:var(--red);font-size:13px;margin-top:10px">${I18N.t('ui.shipDataDeleted')}</div>
   </div>`;
   openModal(I18N.t('modal.confirmShipSale'),msg,[
     {txt:`₡${sp.total.toLocaleString()} 받고 판매`,fn:()=>{closeModal();sellShip(idx);},cls:'btn-red'},
@@ -9545,7 +9545,7 @@ function completeQuest(pid,idx){
     bonusMsg+=`<div style="margin-top:12px;background:rgba(212,175,55,.08);border:1px solid ${_bpTierCol};border-radius:8px;padding:10px;text-align:center">
       <div style="font-size:26px">📜 설계도 획득!</div>
       <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${_bpRec?.nm||_bpId}</div>
-      <div style="font-size:12px;color:var(--dim);margin-top:3px">제작소에서 해당 아이템을 제작할 수 있습니다</div>
+      <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
     notify(`📜 설계도 획득: ${_bpRec?.nm||_bpId}`,'gold');
     baekgu(`설계도 드랍! ${_bpRec?.nm||_bpId} 설계도야. 재료 모아서 제작소에서 만들어봐!`);
@@ -9627,7 +9627,7 @@ function completeQuest(pid,idx){
                   <div style="text-align:center;padding:10px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;min-width:110px">
                     <img src="${_pendImg}" alt="${_pend.nm}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_pend.ic||'🧑'}'+'</div>'">
                     <div style="font-size:13px;font-weight:bold;margin-top:4px">${_pend.nm}</div>
-                    <div style="font-size:11px;color:var(--gold)">전설 등급</div>
+                    <div style="font-size:11px;color:var(--gold)">${I18N.t('ui.legendTier')}</div>
                   </div>
                 </div>
                 <div style="font-size:12px;color:var(--dim);text-align:center;margin-bottom:6px">${_pend.desc||''}</div>
@@ -10436,7 +10436,7 @@ function renderCraftTab(body){
   <!-- 재료 툴팁 팝업 -->
   <div id="bp-tip" style="position:fixed;z-index:999;background:rgba(5,12,26,.97);border:1px solid var(--cyan);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txt);pointer-events:none;display:none;max-width:220px;line-height:1.7;white-space:pre-wrap"></div>
   <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
-  <div style="padding:4px 10px;flex-shrink:0;background:rgba(0,243,255,.05);border-bottom:1px solid rgba(0,243,255,.15);display:flex;align-items:center;gap:8px"><span style="font-size:15px">⚗️</span><span style="color:var(--cyan);font-size:13px;font-weight:bold">함선 제작소</span>${pd?'<span style="font-size:11px;color:var(--dim)">— '+pd.nm+'</span>':''}</div>
+  <div style="padding:4px 10px;flex-shrink:0;background:rgba(0,243,255,.05);border-bottom:1px solid rgba(0,243,255,.15);display:flex;align-items:center;gap:8px"><span style="font-size:15px">⚗️</span><span style="color:var(--cyan);font-size:13px;font-weight:bold">${I18N.t('ui.shipWorkshop')}</span>${pd?'<span style="font-size:11px;color:var(--dim)">— '+pd.nm+'</span>':''}</div>
   <div style="display:flex;flex:1;overflow:hidden">
 
     <!-- ◀ 좌측: 설계도 목록 (240px 고정) -->
@@ -10737,7 +10737,7 @@ function _renderQuestCard(q,pid,qlist){
   let progHTML='';
   if(q.type==='gather'&&q.status==='active'){
     const pct=Math.round((q.progress/q.required)*100);
-    progHTML='<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:2px"><span>탐색 진행</span><span>'+q.progress+'/'+q.required+'</span></div><div style="height:4px;background:var(--panel);border-radius:3px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:var(--cyan);border-radius:3px;transition:width .3s"></div></div></div>';
+    progHTML=`<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:2px"><span>${I18N.t('ui.scanProgress')}</span><span>`+q.progress+'/'+q.required+'</span></div><div style="height:4px;background:var(--panel);border-radius:3px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:var(--cyan);border-radius:3px;transition:width .3s"></div></div></div>';
   }
   if(q.type==='delivery'&&q.status==='active'){
     const tnm=(PLANET_DEF.find(function(p){return p.id===q.targetId;})||{nm:'목적지'}).nm;
@@ -11240,7 +11240,7 @@ function openMysteryBox(tier){
       <div style="font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:2px">📜 BLUEPRINT</div>
       <div style="color:${_col};font-size:20px;font-weight:bold;margin-top:6px">설계도 획득!</div>
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.rec.nm}</div>
-      <div style="color:var(--dim);font-size:11px;margin-top:6px">제작소에서 해당 아이템을 제작할 수 있습니다</div>
+      <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
     notify(`📜 설계도 획득: ${result.rec.nm}`,'gold');
   } else if(result.type==='part'){
@@ -11350,7 +11350,7 @@ function renderTavernView(body){
       q.status==='available'?'<span style="color:var(--gold)">▶ 제독 의뢰 — 수락 가능 (광장 → 퀘스트 탭)</span>':
       q.status==='active'?'<span style="color:var(--cyan)">⏳ 진행 중 — 광장 → 퀘스트 탭에서 확인</span>':
       q.status==='done'?'<span style="color:var(--green)">✅ 보상 수령 가능 — 광장 → 퀘스트 탭</span>':
-      '<span style="color:var(--dim)">완료된 퀘스트</span>';
+      `<span style="color:var(--dim)">${I18N.t('ui.completedQuest')}</span>`;
     return `<div style="background:rgba(80,0,120,.13);border:1px solid rgba(180,0,255,.35);border-radius:8px;padding:10px 12px;margin-top:10px">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
         ${_baekguIcon(20)}
@@ -11362,7 +11362,7 @@ function renderTavernView(body){
       <div style="font-size:12px;color:rgba(220,180,255,.9);line-height:1.6">
         "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
         보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
-        <span style="color:var(--purple);font-weight:bold">검은 소형함 하나</span>가 나타났대. 아무 식별코드도 없이.<br>
+        <span style="color:var(--purple);font-weight:bold">${I18N.t('ui.oneBlackSmall')}</span>가 나타났대. 아무 식별코드도 없이.<br>
         현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>이라고 불러.<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
         ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
@@ -11469,7 +11469,7 @@ function renderTavernView(body){
         <!-- 하단 정보 바 -->
         <div style="padding:8px 12px;background:rgba(0,0,0,.35);border-top:1px solid rgba(212,175,55,.2);flex-shrink:0;font-size:10px;color:var(--dim);line-height:1.6">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <span>천장 카운터</span>
+            <span>${I18N.t('ui.ceilingCounter')}</span>
             <span style="color:${G.gachaPity>=60?'var(--gold)':'var(--muted)'};font-weight:bold">${G.gachaPity}/80</span>
           </div>
           <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden;margin-bottom:5px"><div style="height:100%;width:${Math.round(G.gachaPity/80*100)}%;background:${G.gachaPity>=60?'var(--gold)':'var(--cyan)'};border-radius:2px;transition:width .3s"></div></div>
@@ -11506,14 +11506,14 @@ function renderTavernView(body){
               </div>`
             : `<div style="background:rgba(20,20,30,.35);border:1px dashed rgba(255,255,255,.12);border-radius:10px;padding:14px;text-align:center">
                 <div style="font-size:30px;opacity:.4;margin-bottom:6px">🎁</div>
-                <div style="color:var(--dim);font-size:12px;line-height:1.6">블랙마켓 자와가 이 행성에는 없습니다<br><span style="font-size:11px;opacity:.7">매 턴 30% 행성에 랜덤 등장<br>다른 행성을 둘러보세요</span></div>
+                <div style="color:var(--dim);font-size:12px;line-height:1.6">블랙마켓 자와가 이 행성에는 없습니다<br><span style="font-size:11px;opacity:.7">매 턴 30% 행성에 랜덤 등장<br>${I18N.t('ui.exploreOtherPlanets')}</span></div>
               </div>`}
           <div style="flex:1;min-height:14px"></div>
         </div>
         <!-- 하단 정보 바 — 좌측과 동일 스타일 -->
         <div style="padding:8px 12px;background:rgba(0,0,0,.35);border-top:1px solid rgba(255,80,150,.3);flex-shrink:0;font-size:10px;color:var(--dim);line-height:1.6">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <span>박스 보상 통계</span>
+            <span>${I18N.t('ui.boxRewardStats')}</span>
             <span style="color:#ff66bb;font-weight:bold">${_bmHere?'자와 등장 중':'미등장'}</span>
           </div>
           <div style="font-size:10px;color:var(--muted);line-height:1.65">📦 보유 파츠 <span style="color:var(--cyan)">${_partInvCount}</span> · 창고 <span style="color:var(--green)">${_cargoInvCount}</span> · 설계도 <span style="color:#d4af37">${_bpCount}</span></div>
@@ -11671,7 +11671,7 @@ function renderAuctionView(body){
           <div style="font-size:12px;color:${f.col};margin-top:2px">${f.nm} | 링${p.ring} | 전투 승리 ✅</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 ₡${p.tax.toLocaleString()}/턴 | 회수 ${roi}턴</div>
           <div style="font-size:12px;margin-top:3px">시작가 <span style="color:#cc66ff">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
-          <div style="font-size:11px;color:#cc66ff;margin-top:2px">합병 후 전투 없이 방문 가능</div>
+          <div style="font-size:11px;color:#cc66ff;margin-top:2px">${I18N.t('ui.mergedSafeVisit')}</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-sm" style="border-color:#8b00ff;color:#cc66ff;background:rgba(139,0,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>즉시합병<br>₡${instBid.toLocaleString()}</button>
@@ -11723,7 +11723,7 @@ function renderAuctionView(body){
   // 좌측: 내 보유 행성 카드 리스트
   const ownedList=PLANET_DEF.filter(p=>G.planets[p.id]?.owned);
   const ownedCardHtml=ownedList.length===0
-    ? `<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim);font-size:13px">보유 행성 없음<br><span style="font-size:11px">우측에서 행성을 낙찰하세요</span></div>`
+    ? `<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim);font-size:13px">보유 행성 없음<br><span style="font-size:11px">${I18N.t('ui.bidFromRight')}</span></div>`
     : ownedList.map(p=>{
         const st=G.planets[p.id],f=FACTION[p.f],lv=st.commerce||0;
         const tax=calcTaxFor(p.id),investCost=Math.floor(_planetBaseTax(p)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
@@ -11759,7 +11759,7 @@ function renderAuctionView(body){
       💡 난이도 ${{easy:'쉬움 +5%',normal:'보통 +15%',hard:'어려움 +22%',extreme:'극악 +30%'}[G.difficulty]||'보통 +15%'} · 턴당 2회 입찰
     </div>
     ${G.heroes.includes('H03')?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--gold);margin-bottom:8px;flex-shrink:0">👑 광개토대왕 효과: 경매가 30% 할인</div>`:''}
-    ${bidsLeft<=0?`<div style="background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.3);border-radius:6px;padding:8px;text-align:center;color:var(--red);font-size:12px;margin-bottom:8px;flex-shrink:0">이번 턴 입찰 소진</div>`:''}
+    ${bidsLeft<=0?`<div style="background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.3);border-radius:6px;padding:8px;text-align:center;color:var(--red);font-size:12px;margin-bottom:8px;flex-shrink:0">${I18N.t('ui.bidsExhausted')}</div>`:''}
     ${_planetsAtLimit?`<div style="background:rgba(255,165,0,.07);border:1px solid rgba(255,165,0,.3);border-radius:6px;padding:8px;text-align:center;color:var(--yellow);font-size:12px;margin-bottom:8px;flex-shrink:0">🔒 행성 한도 도달 (${_ownedCnt2}/${_maxPlanets2})</div>`:''}
     <div data-scroll-id="auct-bid" style="flex:1;overflow-y:auto;min-height:0;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">
       ${noNormal&&noHostile?`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim)">경매 가능한 행성 없음<br><span style="font-size:13px">은하 지도에서 탐험하고 치크스 행성을 공략하세요</span></div>`:''}
@@ -11894,7 +11894,7 @@ function showCodexPlanetModal(pid){
         <div style="font-size:17px;font-weight:bold;color:${fc}">${p.nm}${isCurrent?' <span style="font-size:11px;color:var(--cyan)">(현재)</span>':''}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:2px">${fn} · 링 ${p.ring}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-          ${p.hostile?'<span style="font-size:11px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:1px 6px">⚠️ 적대</span>':''}
+          ${p.hostile?`<span style="font-size:11px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:1px 6px">${I18N.t('ui.hostile')}</span>`:''}
           ${p.void?'<span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">💀 보이드</span>':''}
           ${isOwned?`<span style="font-size:11px;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:1px 6px">🏛️ 소유 ₡${tax.toLocaleString()}/턴</span>`:''}
           ${p.hero?`<span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">⭐ 영웅</span>`:''}
@@ -12223,7 +12223,7 @@ function renderCodexTab(body){
     const totalOwned=ownedIds.size;const totalSeen=discoveredIds.size;const totalShips=SHIP_CATALOG.length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">🛸</div>
-      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">함선 도감</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.shipCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${totalSeen}</span> · 보유 <span style="color:var(--green)">${totalOwned}</span> / 전체 ${totalShips}종</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalSeen/totalShips*100)}%</div></div>
@@ -12484,7 +12484,7 @@ function renderCodexTab(body){
           <div style="color:${col};font-weight:bold;white-space:nowrap">🚩 시작</div><div>${l.start||'-'}</div>
           <div style="color:${col};font-weight:bold;white-space:nowrap">🌱 환경</div><div style="word-break:keep-all">${l.env||'-'}</div>
           <div style="color:${col};font-weight:bold;white-space:nowrap">🎭 특징</div><div style="word-break:keep-all">${l.traits||'-'}</div>
-          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">⚠️ 주의</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${l.warn||'-'}</div>
+          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">${I18N.t('ui.warning')}</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${l.warn||'-'}</div>
           <div style="color:${col};font-weight:bold;white-space:nowrap">👽 생김새</div><div style="word-break:keep-all">${l.look||'-'}</div>
         </div>
         <div style="margin-top:10px;padding:8px 12px;background:rgba(255,215,0,.06);border-left:3px solid var(--gold);border-radius:4px;font-size:12px;line-height:1.7;color:#ffe;font-style:italic;word-break:keep-all">
@@ -12527,7 +12527,7 @@ function renderCodexTab(body){
           <div style="color:var(--cyan);font-weight:bold;white-space:nowrap">👤 담당자</div><div style="word-break:keep-all">${s.operator||'-'}</div>
           <div style="color:var(--green);font-weight:bold;white-space:nowrap">🔓 해금</div><div style="color:rgba(180,255,200,.95);word-break:keep-all">${s.unlock||'-'}</div>
           <div style="color:var(--cyan);font-weight:bold;white-space:nowrap">✨ 특징</div><div style="word-break:keep-all">${s.features||'-'}</div>
-          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">⚠️ 주의</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${s.warn||'-'}</div>
+          <div style="color:#ffaa66;font-weight:bold;white-space:nowrap">${I18N.t('ui.warning')}</div><div style="color:rgba(255,200,160,.9);word-break:keep-all">${s.warn||'-'}</div>
         </div>
         <div style="margin-top:10px;padding:8px 12px;background:rgba(255,215,0,.06);border-left:3px solid var(--gold);border-radius:4px;font-size:12px;line-height:1.7;color:#ffe;font-style:italic;word-break:keep-all">
           💬 ${s.quip||'-'}
@@ -14562,7 +14562,7 @@ function updateMapInfo(p,fog){
   if(info){
     if(fog==='L'){info.innerHTML=`<div style="color:var(--dim);font-size:13px">🔒 미탐험<br>${I18N.t('ui.unlockAfterAdj')}</div>`;}
     else{info.innerHTML=`<div style="color:${fac.col};font-size:14px;font-weight:bold;margin-bottom:6px">${p.nm}</div>
-      <div style="font-size:12px;color:var(--dim);line-height:2"><span style="color:${fac.col}">${fac.nm}</span>${p.hostile?' <span style="color:var(--red)">⚠️적대</span>':''}${p.void?' <span style="color:var(--cyan)">🌀균열</span>':''}
+      <div style="font-size:12px;color:var(--dim);line-height:2"><span style="color:${fac.col}">${fac.nm}</span>${p.hostile?` <span style="color:var(--red)">${I18N.t('ui.hostileNoSpace')}</span>`:''}${p.void?' <span style="color:var(--cyan)">🌀균열</span>':''}
       <br>세율: <span style="color:var(--gold)">₡${p.tax.toLocaleString()}/턴</span>
       ${st?.owned?`<br>🏠 보유 Lv${st.commerce}`:''}
       ${p.hero&&!G.heroes.includes(p.hero)?`<br><span style="color:var(--purple)">✨ 영웅 영입 가능</span>`:''}
@@ -18753,7 +18753,7 @@ function showBossCelebration(onDone){
       <div style="font-size:30px;font-weight:bold;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:8px;margin-bottom:6px;background-size:200% 100%;animation:shimmer 3s linear infinite">지구 해방</div>
       <div style="font-size:13px;color:var(--cyan);letter-spacing:3px;margin-bottom:18px">EARTH LIBERATED · 100Y SIEGE ENDED</div>
       <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;margin:18px 0;padding:14px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:10px">
-        <div><div style="font-size:11px;color:var(--dim)">소요 턴</div><div style="font-size:22px;color:var(--gold);font-weight:bold">${turn}</div></div>
+        <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.turnsRequired')}</div><div style="font-size:22px;color:var(--gold);font-weight:bold">${turn}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">생존 함선</div><div style="font-size:22px;color:#66ff99;font-weight:bold">${survivors}/${fleetCount}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">영입 영웅</div><div style="font-size:22px;color:#ff99ff;font-weight:bold">${heroCount}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">획득 크레딧</div><div style="font-size:22px;color:var(--gold);font-weight:bold">₡${(G.credits||0).toLocaleString()}</div></div>
@@ -19468,7 +19468,7 @@ function showDevMenu(){
   const html=`<div style="padding:8px 4px">
     <div style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px;line-height:1.6">
       <div style="font-weight:bold;color:#ffa500;margin-bottom:4px">🔓 개발자 모드 활성화</div>
-      <div style="color:var(--dim)">현재 상태: ${isAdmin?'<span style="color:var(--green)">✅ 관리자 ('+u.email+')</span>':'<span style="color:var(--yellow)">⚠️ 관리자 로그인 필요</span>'}</div>
+      <div style="color:var(--dim)">현재 상태: ${isAdmin?'<span style="color:var(--green)">✅ 관리자 ('+u.email+')</span>':`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
     </div>
     ${!isAdmin?`
       <div style="font-size:13px;color:var(--txt);margin-bottom:8px">데이터 조회는 <span style="color:var(--cyan)">${ADMIN_EMAIL}</span> 으로 Google 로그인 후 가능합니다.</div>
