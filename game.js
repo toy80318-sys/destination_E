@@ -675,7 +675,7 @@ function setAsFlagship(idx){
   G.fleet.splice(idx,1);
   G.fleet.unshift(tmp);
   updateHUD();updateFleetBar();
-  notify(`⚑ ${tmp.nm} 이(가) 기함으로 설정되었습니다!`,'gold');
+  notify(I18N.t('notify.flagshipSetTmp',{nm:tmp.nm}),'gold');
   baekgu(`${tmp.nm} 기함 승격. 전투 시 중앙에 배치돼.`);
   saveGame(true);
   showShipDetailModal(0); // 기함 위치(0)로 팝업 갱신
@@ -1460,7 +1460,7 @@ function runLoading(){
   const fill=document.getElementById('ld-fill'),msg=document.getElementById('ld-msg');
   const msgs=[I18N.t('loading.msg1'),I18N.t('loading.msg2'),I18N.t('loading.msg3'),I18N.t('loading.msg4'),I18N.t('loading.msg5')];
   let i=0;const iv=setInterval(()=>{i++;fill.style.width=(i*20)+'%';msg.textContent=msgs[Math.min(i-1,msgs.length-1)];
-    if(i>=5){clearInterval(iv);setTimeout(()=>{showTitle();if(localStorage.getItem('de_save'))notify('💾 저장 데이터 있음. 이어하기 가능.','ok');},400);}},400);
+    if(i>=5){clearInterval(iv);setTimeout(()=>{showTitle();if(localStorage.getItem('de_save'))notify(I18N.t('notify.haveSaveData'),'ok');},400);}},400);
 }
 
 // ═══ TITLE / AGE / FTUE ═══════════════════════════════════════
@@ -2993,7 +2993,7 @@ function showActTransition(newAct){
   if(!s)return;
   let step=0;
   function showStep(){
-    if(step>=s.lines.length){closeModal();notify(`🌟 ACT ${newAct} 시작!`,'gold');return;}
+    if(step>=s.lines.length){closeModal();notify(I18N.t('notify.actStart',{act:newAct}),'gold');return;}
     const l=s.lines[step];
     const isLast=step===s.lines.length-1;
     openModal(s.title,
@@ -3113,7 +3113,7 @@ function tryNextTurn(){
     const remaining = Math.ceil((cdMs - elapsed) / 1000);
     const m = Math.floor(remaining / 60);
     const s = remaining % 60;
-    notify(`⏳ 턴 종료까지 ${m}분 ${s}초 남았습니다`, 'err');
+    notify(I18N.t('notify.turnEndCountdown',{m,s}),'err');
     return;
   }
   _lastTurnTime = now;
@@ -3190,14 +3190,14 @@ function tickAutoRepair(){
       }
     });
     if(_legionHealed>0){
-      notify(`🌟 레기온 ${_legionCount}척 편대 지원: 아군 HP +${_legionHealed.toLocaleString()} (+${(_legionRate*100).toFixed(1)}%)`,'ok');
+      notify(I18N.t('notify.legionSupport',{n:_legionCount,hp:_legionHealed.toLocaleString(),pct:(_legionRate*100).toFixed(1)}),'ok');
     }
   }
   if(_totalHpHealed>0||_totalShHealed>0){
     const parts=[];
     if(_totalHpHealed>0)parts.push(`HP +${_totalHpHealed.toLocaleString()}`);
     if(_totalShHealed>0)parts.push(`SH +${_totalShHealed.toLocaleString()}`);
-    notify(`🔧 자동 수리: ${parts.join(' · ')}`,'ok');
+    notify(I18N.t('notify.autoRepair',{parts:parts.join(' · ')}),'ok');
   }
 }
 
@@ -3233,10 +3233,10 @@ function doNextTurn(){
   // 보이드 균열 P29: 5턴마다 전설 파츠 분출
   if(G.turn%5===0&&G.planets['P29']?.fog!=='L'){
     const lParts=PARTS.filter(p=>p.tier>=12);
-    if(lParts.length){const p=lParts[Math.floor(Math.random()*lParts.length)];addToInventory(p.id,1);notify(`🌀 보이드 균열 P29에서 ${p.nm} 분출!`,'pur');}
+    if(lParts.length){const p=lParts[Math.floor(Math.random()*lParts.length)];addToInventory(p.id,1);notify(I18N.t('notify.voidRiftDrop',{nm:p.nm}),'pur');}
   }
   updateHUD();
-  if(tax>0)notify(`⏭️ TURN ${G.turn} | 세금 수입 ₡${tax.toLocaleString()}`,'gold');
+  if(tax>0)notify(I18N.t('notify.taxIncomeTurn',{turn:G.turn,tax:tax.toLocaleString()}),'gold');
   else notify(`⏭️ TURN ${G.turn}`);
   // ── 행성 Lv10 특산 아이템 보상 (10% 확률) ────────────────────
   const _lv10planets=PLANET_DEF.filter(pd2=>{const st2=G.planets[pd2.id];return st2&&st2.owned&&(st2.commerce||0)>=10;});
@@ -3254,7 +3254,7 @@ function doNextTurn(){
         if(!G.inventory)G.inventory=[];
         const _inv=G.inventory.find(i=>i.id===_pid);
         if(_inv)_inv.qty++;else G.inventory.push({id:_pid,nm:_p?_p.nm:_pid,qty:1});
-        notify(`🌟 ${pd2.nm} Lv10 보상: ${_p?_p.nm:_pid} 획득!`,'gold');
+        notify(I18N.t('notify.planetLv10Reward',{nm:pd2.nm,item:_p?_p.nm:_pid}),'gold');
         baekgu(`${pd2.nm} 최고 레벨 보상! ${_p?_p.nm:_pid} 들어왔어.`);
       }
     }

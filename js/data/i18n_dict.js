@@ -1150,6 +1150,25 @@ I18N.register({
   'notify.downloadDone':       { ko: '⬇️ {n} 슬롯 다운로드 완료',
                                  en: '⬇️ Downloaded {n} slots' },
 
+  // ── G45: 추가 notify 12키 ──────────────────────────────────────────
+  'notify.flagshipSetTmp':     { ko: '⚑ {nm} 이(가) 기함으로 설정되었습니다!',
+                                 en: '⚑ {nm} set as flagship!' },
+  'notify.haveSaveData':       { ko: '💾 저장 데이터 있음. 이어하기 가능.',
+                                 en: '💾 Save data exists. You can continue.' },
+  'notify.actStart':           { ko: '🌟 ACT {act} 시작!', en: '🌟 ACT {act} starts!' },
+  'notify.turnEndCountdown':   { ko: '⏳ 턴 종료까지 {m}분 {s}초 남았습니다',
+                                 en: '⏳ {m}m {s}s until end of turn' },
+  'notify.legionSupport':      { ko: '🌟 레기온 {n}척 편대 지원: 아군 HP +{hp} (+{pct}%)',
+                                 en: '🌟 Legion {n}-ship support: Ally HP +{hp} (+{pct}%)' },
+  'notify.autoRepair':         { ko: '🔧 자동 수리: {parts}',
+                                 en: '🔧 Auto-repair: {parts}' },
+  'notify.voidRiftDrop':       { ko: '🌀 보이드 균열 P29에서 {nm} 분출!',
+                                 en: '🌀 P29 Void rift erupted: {nm}!' },
+  'notify.taxIncomeTurn':      { ko: '⏭️ TURN {turn} | 세금 수입 ₡{tax}',
+                                 en: '⏭️ TURN {turn} | Tax ₡{tax}' },
+  'notify.planetLv10Reward':   { ko: '🌟 {nm} Lv10 보상: {item} 획득!',
+                                 en: '🌟 {nm} Lv10 reward: acquired {item}!' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
