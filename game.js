@@ -8102,7 +8102,7 @@ function confirmRenameShip(idx){
 function setFlagship(idx){
   if(idx===0){notify(I18N.t('notify.alreadyFlagship'),'err');return;}
   const tmp=G.fleet[0];G.fleet[0]=G.fleet[idx];G.fleet[idx]=tmp;
-  const fnm=G.fleet[0]?.nm||'기함';notify('⭐ '+fnm+' 기함으로 설정!','gold');
+  const fnm=G.fleet[0]?.nm||I18N.t('ui.flagship');notify(I18N.t('notify.flagshipSet',{nm:fnm}),'gold');
   baekgu(fnm+' 기함 변경. 주의해서 타.');
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8220,9 +8220,9 @@ function buyShip(shipId){
   if(!stock||!stock['ship_'+shipId]||stock['ship_'+shipId]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
   // 함선 등급별 전투력 구매 잠금
   const _plv=calcPlayerLevel();
-  if(def.tier==='중형'&&_plv<200){notify('🔒 중형 함선은 전투력 200 이상 필요 (현재 '+_plv+')','err');return;}
-  if(def.tier==='대형'&&_plv<400){notify('🔒 대형 함선은 전투력 400 이상 필요 (현재 '+_plv+')','err');return;}
-  if((def.tier==='전설기함'||def.tier==='신화')&&_plv<600){notify('🔒 전설/신화 함선은 전투력 600 이상 필요 (현재 '+_plv+')','err');return;}
+  if(def.tier==='중형'&&_plv<200){notify(I18N.t('notify.shipMediumLocked',{plv:_plv}),'err');return;}
+  if(def.tier==='대형'&&_plv<400){notify(I18N.t('notify.shipLargeLocked',{plv:_plv}),'err');return;}
+  if((def.tier==='전설기함'||def.tier==='신화')&&_plv<600){notify(I18N.t('notify.shipLegendLocked',{plv:_plv}),'err');return;}
   const shipFinalPrice=G.heroes.includes('H01')?Math.floor(def.price*0.85):def.price;
   if(G.credits<shipFinalPrice){notify(I18N.t('notify.needCreditsCost',{cost:shipFinalPrice.toLocaleString()}),'err');return;}
   G.credits-=shipFinalPrice;stock['ship_'+shipId]--;
@@ -9284,7 +9284,7 @@ function tickQuestSpawn(){
     var q=_generateSingleQuest(pid,startIdx+i);
     if(q){G.quests[pid].push(q);added++;}
   }
-  if(added>0)notify('📋 신규 의뢰 '+added+'건 게시 ('+available+added+'/'+QUEST_MAX_AVAILABLE+')','ok');
+  if(added>0)notify(I18N.t('notify.newQuestsPosted',{added,total:available+added,max:QUEST_MAX_AVAILABLE}),'ok');
 }
 function acceptQuest(pid,idx){
   generateQuests(pid);
@@ -9307,7 +9307,7 @@ function acceptQuest(pid,idx){
   if(q.type==='gather')notify(I18N.t('notify.questAcceptGather',{n:q.required}),'ok');
   else if(q.type==='explore')notify('🔭 탐색 임무 수락 — 탐색 버튼을 눌러 임무를 수행하세요','ok');
   else if(q.type==='delivery'){var tnm=(PLANET_DEF.find(function(p){return p.id===q.targetId;})||{nm:I18N.t('notify.adjacentPlanet')}).nm;notify(I18N.t('notify.questAcceptDelivery',{nm:tnm}),'ok');}
-  else if(q.type==='buy'){const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;notify('🛒 매수 의뢰 수락 — '+_cn+' '+q.required+'개 화물칸에 갖춘 뒤 [보고]','ok');}
+  else if(q.type==='buy'){const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;notify(I18N.t('notify.questAcceptBuy',{nm:_cn,n:q.required}),'ok');}
   else notify(I18N.t('notify.questAcceptCombat'),'ok');
   saveGame(true);
   if(_fromTavern)rerenderTab(renderTavernView);
@@ -9394,7 +9394,7 @@ function completeQuest(pid,idx){
   if(_vcPlanet&&_vcPlanet.void){
     if(Math.random()<0.48){
       G.voidCrystal=(G.voidCrystal||0)+1;
-      notify('💎 보이드 크리스탈 획득! +1 (보유 '+G.voidCrystal+')','pur');
+      notify(I18N.t('notify.gotVoidCrystal',{n:G.voidCrystal}),'pur');
       baekgu(I18N.t('baekgu.voidCrystalGet'));
     }
   }
@@ -10036,7 +10036,7 @@ function checkDeliveryQuests(arrivedPid){
   Object.keys(G.quests).forEach(function(pid){
     (G.quests[pid]||[]).forEach(function(q){
       if(q.type==='delivery'&&q.status==='active'&&q.targetId===arrivedPid){
-        q.status='done';notify('🚀 '+q.nm+' 배달 완료! 퀘스트 탭에서 보상을 수령하세요','ok');baekgu(I18N.t('baekgu.deliveryArrived'));
+        q.status='done';notify(I18N.t('notify.deliveryComplete',{nm:q.nm}),'ok');baekgu(I18N.t('baekgu.deliveryArrived'));
       }
     });
   });
@@ -11783,14 +11783,14 @@ function doBid(pid,amount,instant=false){
     if(Math.random()*100>chance){
       G.credits-=Math.floor(amount*0.1); // 수수료 10% 차감
       if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}G.auctionBids++;
-      notify('🏛️ '+pd.nm+' 입찰 실패 ('+chance+'% 확률) — 수수료 ₡'+Math.floor(amount*0.1).toLocaleString()+' 차감 | 남은 입찰 '+(Math.max(0,2-G.auctionBids))+'회','err');
+      notify(I18N.t('notify.auctionLost',{nm:pd.nm,pct:chance,fee:Math.floor(amount*0.1).toLocaleString(),remain:Math.max(0,2-G.auctionBids)}),'err');
       baekgu(I18N.t('baekgu.auctionLost'));
       updateHUD();rerenderTab(renderAuctionView);return;
     }
   }
   if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}
   G.credits-=amount;G.planets[pid].owned=true;G.planets[pid].commerce=1;G.auctionBids++;
-  if(pd.hostile){G.planets[pid].hostile_cleared=true;notify('💀➜🏠 '+pd.nm+' 전략 합병! 안전 방문 가능.','pur');baekgu('치크스 '+pd.nm+' 합병 완료. 이제 우리 땅이야.');}
+  if(pd.hostile){G.planets[pid].hostile_cleared=true;notify(I18N.t('notify.chixMerged',{nm:pd.nm}),'pur');baekgu(I18N.t('baekgu.chixMerged',{nm:pd.nm}));}
   else{notify('🏛️ '+pd.nm+' 낙찰!','gold');baekgu(pd.nm+' 낙찰. 세금 ₡'+calcTaxFor(pid).toLocaleString()+' 들어온다.');}
   updateHUD();saveGame(true);
   // 낙찰 후 경매 화면 그대로 유지 — 페이지 이동 없이 현재 탭 새로고침

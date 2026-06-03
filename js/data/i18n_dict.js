@@ -706,6 +706,7 @@ I18N.register({
   // ── G21: 그룹/HUD/도감 짧은 라벨 ──────────────────────────────────
   'ui.equipment':       { ko: '장비',    en: 'Equipment' },
   'ui.shipLabelShort':  { ko: '함선',    en: 'Ship' },
+  'ui.flagship':        { ko: '기함',    en: 'Flagship' },
   'ui.repair':          { ko: '수리',    en: 'Repair' },
   'ui.shipType':        { ko: '함종',    en: 'Type' },
   'ui.locationShort':   { ko: '위치',    en: 'Location' },
@@ -1086,6 +1087,29 @@ I18N.register({
   'notify.loginFailErr':         { ko: '로그인 실패: {err}',                 en: 'Login failed: {err}' },
   'notify.bossStartErr':         { ko: '보스전 시작 오류: {err}',             en: 'Boss start error: {err}' },
   'notify.queryFailErr':         { ko: '조회 실패: {err}',                   en: 'Query failed: {err}' },
+
+  // ── G42: notify 결합 패턴 ────────────────────────────────────────
+  'notify.flagshipSet':       { ko: '⭐ {nm} 기함으로 설정!', en: '⭐ {nm} set as flagship!' },
+  'notify.shipMediumLocked':  { ko: '🔒 중형 함선은 전투력 200 이상 필요 (현재 {plv})',
+                                en: '🔒 Medium ships need 200+ combat power (now {plv})' },
+  'notify.shipLargeLocked':   { ko: '🔒 대형 함선은 전투력 400 이상 필요 (현재 {plv})',
+                                en: '🔒 Large ships need 400+ combat power (now {plv})' },
+  'notify.shipLegendLocked':  { ko: '🔒 전설/신화 함선은 전투력 600 이상 필요 (현재 {plv})',
+                                en: '🔒 Legend/Mythic ships need 600+ combat power (now {plv})' },
+  'notify.newQuestsPosted':   { ko: '📋 신규 의뢰 {added}건 게시 ({total}/{max})',
+                                en: '📋 {added} new quests posted ({total}/{max})' },
+  'notify.questAcceptBuy':    { ko: '🛒 매수 의뢰 수락 — {nm} {n}개 화물칸에 갖춘 뒤 [보고]',
+                                en: '🛒 Buy quest accepted — gather {n} {nm} in cargo, then [Report]' },
+  'notify.gotVoidCrystal':    { ko: '💎 보이드 크리스탈 획득! +1 (보유 {n})',
+                                en: '💎 Void Crystal acquired! +1 (have {n})' },
+  'notify.deliveryComplete':  { ko: '🚀 {nm} 배달 완료! 퀘스트 탭에서 보상을 수령하세요',
+                                en: '🚀 {nm} delivered! Claim reward in the Quest tab' },
+  'notify.auctionLost':       { ko: '🏛️ {nm} 입찰 실패 ({pct}% 확률) — 수수료 ₡{fee} 차감 | 남은 입찰 {remain}회',
+                                en: '🏛️ Lost bid for {nm} ({pct}% chance) — fee ₡{fee} deducted | bids left: {remain}' },
+  'notify.chixMerged':        { ko: '💀➜🏠 {nm} 전략 합병! 안전 방문 가능.',
+                                en: '💀➜🏠 {nm} strategically merged! Safe to visit.' },
+  'baekgu.chixMerged':        { ko: '치크스 {nm} 합병 완료. 이제 우리 땅이야.',
+                                en: 'Chiks {nm} merger complete. Our territory now.' },
 
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
