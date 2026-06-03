@@ -3849,7 +3849,7 @@ function renderTradeTab(body){
         ${(()=>{const matAvail=availComm.filter(c=>c.material);if(!matAvail.length)return'';return`<span style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--gold)">⚗️ 제작 재료 포함</span>`;})()}
       </div>
       ${availComm.length===0
-        ?'<div style="color:var(--dim);font-size:14px;text-align:center;padding:30px 0">재고 소진. 다른 행성으로 이동하세요.</div>'
+        ?`<div style="color:var(--dim);font-size:14px;text-align:center;padding:30px 0">${I18N.t('ui.stockGoneMoveOn')}</div>`
         :(()=>{
           // ── 일반 특산물 그리드 ──
           const _commPlv=calcPlayerLevel(),_commRep=G.reputation||0;
@@ -8417,7 +8417,7 @@ function confirmDismissCrew(cid){
       `<div style="padding:12px;text-align:center">
         <div style="font-size:34px;margin-bottom:8px">${c.ic||'🧑'}</div>
         <div style="font-size:16px;font-weight:bold;margin-bottom:10px">${c.nm} 내보내기</div>
-        <div style="font-size:13px;color:var(--dim)">이 크루를 함대에서 내보내시겠습니까?</div>
+        <div style="font-size:13px;color:var(--dim)">${I18N.t('ui.confirmRecruitCrew')}</div>
       </div>`,
       [{txt:'내보내기',fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
        {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
@@ -9883,7 +9883,7 @@ function doGatherSearch(){
       ];
       const raidDef={id:'CHIX_PATROL',nm:'치크스 정찰대',ring,f:'F05',hostile:true,tax:0,_enemies:chixFleet,_questPid:pid,_questId:combatQ.id};
       openModal(I18N.t('modal.chixScoutFound'),
-        `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">탐색 중 치크스 정찰대와 조우했습니다!</div>
+        `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">${I18N.t('ui.encounterChixScan')}</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>${I18N.t('ui.repelCompletesQuest')}</div>`,
         [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
          {txt:'🚀 도주',fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
@@ -9924,7 +9924,7 @@ function doGatherSearch(){
     }));
     const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true};
     openModal(I18N.t('modal.debrisPiratesAppear'),
-      `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
+      `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">${I18N.t('ui.encounterPirateScan')}</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>${I18N.t('ui.scanContinues')}</div>`,
       [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
        {txt:'🚀 도주 (탐색 중단)',fn:()=>{closeModal();notify(I18N.t('notify.searchAborted'),'warn');},cls:'btn-sm'}]);
@@ -10793,7 +10793,7 @@ function renderQuestTab(body){
   var qlist=G.quests[pid]||[];
   var pd=PLANET_DEF.find(function(p){return p.id===pid;});
   var canLoan=(G.credits||0)<300,alreadyMax=(G.loan||0)>=20000;
-  var loanSection=canLoan?'<div style="background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="color:var(--red);font-size:14px;font-weight:bold;margin-bottom:4px">⚠️ 크레딧 부족 — 이동 불가</div><div style="color:var(--dim);font-size:12px;line-height:1.6;margin-bottom:6px">퀘스트 완료 또는 백구 긴급 대출 요청 (한도 20,000, 무이자) · 현재 대출: '+(G.loan||0).toLocaleString()+'</div>'+(alreadyMax?'<div style="color:var(--red);font-size:12px">대출 한도 초과. 퀘스트로 자금을 마련하세요.</div>':'<button class="btn btn-sm btn-red" onclick="takeLoan()">백구 긴급 대출 5,000 요청</button>')+'</div>':'';
+  var loanSection=canLoan?'<div style="background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="color:var(--red);font-size:14px;font-weight:bold;margin-bottom:4px">⚠️ 크레딧 부족 — 이동 불가</div><div style="color:var(--dim);font-size:12px;line-height:1.6;margin-bottom:6px">퀘스트 완료 또는 백구 긴급 대출 요청 (한도 20,000, 무이자) · 현재 대출: '+(G.loan||0).toLocaleString()+'</div>'+(alreadyMax?`<div style="color:var(--red);font-size:12px">${I18N.t('ui.loanLimitExceeded')}</div>`:'<button class="btn btn-sm btn-red" onclick="takeLoan()">백구 긴급 대출 5,000 요청</button>')+'</div>':'';
   function qCard(q){return _renderQuestCard(q,pid,qlist);}
   // 좌측: 내 퀘스트 (active/done/claimed) — 제독+브로커 모두
   // 우측: 행성 퀘스트 (available) — 제독+브로커 모두
@@ -11042,7 +11042,7 @@ function _maybeBlackMarketAmbush(result,tier){
       openModal(I18N.t('modal.pirateAmbushWin'),
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">⚔️</div>
-          <div style="color:var(--green);font-size:18px;font-weight:bold;margin-top:6px">매복 격퇴!</div>
+          <div style="color:var(--green);font-size:18px;font-weight:bold;margin-top:6px">${I18N.t('ui.ambushWin')}</div>
           <div style="color:var(--txt);font-size:13px;margin-top:4px">${I18N.t('ui.rewardSafe')}</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
         </div>`,
@@ -11053,7 +11053,7 @@ function _maybeBlackMarketAmbush(result,tier){
       openModal(I18N.t('modal.pirateAmbushLose'),
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">💀</div>
-          <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">매복 패배...</div>
+          <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">${I18N.t('ui.ambushLose')}</div>
           <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>${I18N.t('ui.piratesTookIt')}</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
         </div>`,
@@ -11226,7 +11226,7 @@ function openMysteryBox(tier){
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_pImgHtml}</div>
       <div style="font-size:11px;color:${_pcol};letter-spacing:3px;margin-bottom:2px">⚙️ PART</div>
-      <div style="color:${_pcol};font-size:20px;font-weight:bold;margin-top:6px">파츠 획득!</div>
+      <div style="color:${_pcol};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.partAcquired')}</div>
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.p.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">인벤토리에 추가됨 — 정비소에서 장착</div>
     </div>`;
@@ -11238,7 +11238,7 @@ function openMysteryBox(tier){
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_sImgHtml}</div>
       <div style="font-size:11px;color:${_scol};letter-spacing:3px;margin-bottom:2px">🚀 SHIP · ${result.s.tier}</div>
-      <div style="color:${_scol};font-size:20px;font-weight:bold;margin-top:6px">함선 획득!</div>
+      <div style="color:${_scol};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.shipAcquired')}</div>
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.s.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${result.toReserve?'임시창고에 보관됨 — 정비소에서 교체':'함대에 자동 합류'}</div>
     </div>`;
@@ -13049,7 +13049,7 @@ function _showAsteroidShipPicker(destPid, onPick){
         opacity:${_canBypass?'1':'.5'}">
         💰 통행세 -₡${_bypassCost.toLocaleString()} (자산 1%)
       </button>
-      <button id="_ab-pick-cancel" style="padding:7px 16px;background:rgba(255,80,80,.15);border:1px solid #ff6666;color:#fff;border-radius:5px;cursor:pointer;font-size:11px;letter-spacing:1px">취소 (회피)</button>
+      <button id="_ab-pick-cancel" style="padding:7px 16px;background:rgba(255,80,80,.15);border:1px solid #ff6666;color:#fff;border-radius:5px;cursor:pointer;font-size:11px;letter-spacing:1px">${I18N.t('ui.cancelEvade')}</button>
     </div>`;
   document.body.appendChild(picker);
   picker.querySelectorAll('.ab-ship-card').forEach(c=>{
@@ -18556,7 +18556,7 @@ function tryBossEntry(){
   }
   const _hint=_isFirst
     ?`<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">⚡ 첫 지구 진입 — 우르사 메이저가 봉쇄를 끝낼 마지막 저항</div><div style="color:var(--dim);margin-bottom:12px">${I18N.t('ui.firstBossFree')}<br>승리 시 지구 봉쇄 해제 + 시설 해금!</div>`
-    :'<div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>승리 시 게임 클리어!</div><div style="font-size:13px;color:var(--yellow)">보유 크리스탈: '+(G.voidCrystal||0)+'개</div>';
+    :`<div style="color:var(--dim);margin-bottom:12px">보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.<br>${I18N.t('ui.winClearsGame')}</div><div style="font-size:13px;color:var(--yellow)">보유 크리스탈: `+(G.voidCrystal||0)+'개</div>';
   openModal(I18N.t('modal.ursaFinalFight'),
     `<div style="text-align:center;padding:12px">
       <div style="font-size:48px;margin-bottom:8px">🌀</div>

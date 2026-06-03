@@ -1008,6 +1008,22 @@ I18N.register({
   'ui.leeGyubin':            { ko: '이규빈', en: 'Gyu-bin Lee' },
   'ui.chiks':                { ko: '치크스', en: 'Chiks' },
 
+  // ── G37: 잔여 라벨 + 결과/안내문 ──────────────────────────────────
+  'ui.loanLimitExceeded':    { ko: '대출 한도 초과. 퀘스트로 자금을 마련하세요.', en: 'Loan limit exceeded. Earn funds via quests.' },
+  'ui.ambushWin':            { ko: '매복 격퇴!', en: 'Ambush Repelled!' },
+  'ui.partAcquired':         { ko: '파츠 획득!', en: 'Part acquired!' },
+  'ui.shipAcquired':         { ko: '함선 획득!', en: 'Ship acquired!' },
+  'ui.stockGoneMoveOn':      { ko: '재고 소진. 다른 행성으로 이동하세요.', en: 'Stock depleted. Move to another planet.' },
+  'ui.ambushLose':           { ko: '매복 패배...', en: 'Ambush Lost...' },
+  'ui.encounterPirateScan':  { ko: '탐색 중 해적선과 조우했습니다!', en: 'Encountered a pirate during the scan!' },
+  'ui.encounterChixScan':    { ko: '탐색 중 치크스 정찰대와 조우했습니다!', en: 'Encountered Chiks scouts during the scan!' },
+  'ui.winClearsGame':        { ko: '승리 시 게임 클리어!', en: 'Victory clears the game!' },
+  'ui.cancelEvade':          { ko: '취소 (회피)', en: 'Cancel (evade)' },
+  'ui.confirmRecruitCrew':   { ko: '이 크루를 함대에서 내보내시겠습니까?', en: 'Dismiss this crew from the fleet?' },
+  'ui.ursaCollapseMidnight': { ko: '보스의 외피가 무너지던 그 자정에, 지구의 봉쇄선도 함께 풀렸다.',
+                               en: 'At the midnight the boss’s shell collapsed, Earth’s blockade also lifted.' },
+  'ui.appearedNoCode':       { ko: '가 나타났대. 아무 식별코드도 없이.', en: 'appeared. With no identification code.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
