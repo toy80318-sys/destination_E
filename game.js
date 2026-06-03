@@ -1005,6 +1005,19 @@ const CHAR_PORTRAITS={
   '마르코':'img/chars/hero08.png',
   '마르코 폴로':'img/chars/hero08.png'
 };
+// ── 영웅 ID(H01~H08) → 초상 경로 ────────────────────────────────────
+// CHAR_PORTRAITS는 한국어 이름 키 → EN 모드에선 h.nm가 영문이라 매칭 실패.
+// ID 기반 매핑을 우선 조회해 언어와 무관하게 영웅 초상이 표시되도록 한다.
+const HERO_PORTRAITS_BY_ID={
+  H01:'img/chars/hero01.png',
+  H02:'img/chars/hero02.png',
+  H03:'img/chars/hero03.png',
+  H04:'img/chars/hero04.png',
+  H05:'img/chars/hero05.png',
+  H06:'img/chars/hero06.png',
+  H07:'img/chars/hero07.png',
+  H08:'img/chars/hero08.png'
+};
 // ─── 백구 무드 → 이미지 매핑 (시리즈 2 다양한 표정 활용) ───
 // 파일명 기반 자동 배정:
 //   default     baekgu1.png              (소형 정면 — 평소)
@@ -1122,7 +1135,14 @@ function _heroPortrait(h, size, borderColor){
   size=size||72;
   borderColor=borderColor||'var(--gold)';
   const _ic=h&&h.ic||'⚑';
-  const src=h&&CHAR_PORTRAITS[h.nm];
+  // 1순위: ID 기반 매핑 — 언어 무관. h.id가 비어있으면 HEROES 사전에서 객체 동일성으로 ID 역추적
+  // (HEROES[hid]를 직접 받은 경우 id 필드가 없음 — 객체 참조 일치로 ID 복원)
+  let _hid=h&&h.id;
+  if(!_hid&&h&&typeof HEROES!=='undefined'){
+    try{for(const k in HEROES){if(HEROES[k]===h){_hid=k;break;}}}catch(e){}
+  }
+  // 2순위: 한국어 이름 기반 (CHAR_PORTRAITS). EN 모드에서는 매칭 실패할 수 있어 ID 우선.
+  const src=h&&((_hid&&HERO_PORTRAITS_BY_ID[_hid])||CHAR_PORTRAITS[h.nm]);
   const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66`;
   if(src){
     return `<img src="${src}" alt="${(h&&h.nm)||''}" style="${_frame};object-fit:cover" onerror="this.outerHTML='<div style=\\'${_frame};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px\\'>${_ic}</div>'">`;
@@ -1132,13 +1152,27 @@ function _heroPortrait(h, size, borderColor){
 function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   size=size||54;
   borderColor=borderColor||'var(--cyan)';
+  // HEROES 순회 — speaker가 영웅 이름(KO/EN 어느 쪽이든)과 매칭되면 ic + ID 캡처
+  let _matchedHeroId=null;
   if(!fallbackEmoji||fallbackEmoji==='⚑'){
     try{
       if(typeof HEROES!=='undefined'){
         for(const hid in HEROES){
           const h=HEROES[hid];
-          if(h&&(h.nm===speaker||speaker.includes(h.nm))){fallbackEmoji=h.ic||fallbackEmoji;break;}
+          if(h&&(h.nm===speaker||speaker.includes(h.nm))){
+            fallbackEmoji=h.ic||fallbackEmoji;
+            _matchedHeroId=hid;
+            break;
+          }
         }
+      }
+    }catch(e){}
+  } else if(typeof HEROES!=='undefined'){
+    // fallbackEmoji가 이미 있어도 매칭된 영웅 ID는 이미지 조회를 위해 캡처
+    try{
+      for(const hid in HEROES){
+        const h=HEROES[hid];
+        if(h&&(h.nm===speaker||speaker.includes(h.nm))){_matchedHeroId=hid;break;}
       }
     }catch(e){}
   }
@@ -1149,6 +1183,8 @@ function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   if(speaker===_cmdName||speaker==='사령관'||speaker==='주인공'||(speaker&&speaker.includes(_cmdName))){
     try{src=_commanderPortraitSrc();}catch(e){}
   }
+  // 1순위: 영웅 ID 기반 매핑 (언어 무관) → EN 모드에서도 영웅 초상 정상 표시
+  if(!src&&_matchedHeroId)src=HERO_PORTRAITS_BY_ID[_matchedHeroId];
   if(!src)src=CHAR_PORTRAITS[speaker];
   // 원형 폴백 프레임 — 이미지 로드 실패 시도 동일한 크기·테두리 유지해 레이아웃 흔들림 없음
   const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px`;
