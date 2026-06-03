@@ -1290,7 +1290,7 @@ function askBaekgu(){
   const inp=document.getElementById('bk-ask-input');
   if(!inp)return;
   const q=(inp.value||'').trim();
-  if(!q){baekgu('응? 뭔가 물어봐야 대답하지.');inp.focus();return;}
+  if(!q){baekgu(I18N.t('baekgu.askMore'));inp.focus();return;}
   // 유저 질문 표시
   const msgs=document.getElementById('bk-msgs');
   if(msgs){
@@ -3436,16 +3436,16 @@ function doNextTurn(){
   });
   if(G.credits<5000)randomBaekgu('low_credits');
   // ── 해적 세력 강화 알림 ────────────────────────────────────────
-  if(G.credits<3000)baekgu('크레딧 거의 없어. 무역이나 퀘스트로 충전해.');
-  if(G.turn===15) {notify('⚠️ 해적 세력 강화! 전투력 ×1.5','err');baekgu('해적들이 강해졌어. 조심해.');}
-  if(G.turn===30) {notify('⚠️ 해적 세력 2단계 강화! 전투력 ×2.25','err');baekgu('해적이 더 강해졌다. 파츠 업그레이드해.');}
-  if(G.turn===45) {notify('☠️ 해적 최강화! 전투력 ×3 (최대)','err');baekgu('해적 전투력 최대치. 최고 장비 갖춰.');}
+  if(G.credits<3000)baekgu(I18N.t('baekgu.lowCredits'));
+  if(G.turn===15) {notify('⚠️ 해적 세력 강화! 전투력 ×1.5','err');baekgu(I18N.t('baekgu.pirateStrengthened'));}
+  if(G.turn===30) {notify('⚠️ 해적 세력 2단계 강화! 전투력 ×2.25','err');baekgu(I18N.t('baekgu.pirateStronger'));}
+  if(G.turn===45) {notify('☠️ 해적 최강화! 전투력 ×3 (최대)','err');baekgu(I18N.t('baekgu.pirateMax'));}
   // ── 체류 이벤트 ─────────────────────────────────────────────
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   if(G.stayTurns===2&&!pd?.hostile){
     // 2턴째: 백구 경고
     setTimeout(()=>{
-      baekgu('같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.');
+      baekgu(I18N.t('baekgu.stayWarning'));
       notify('⚠️ 백구 경고: 3턴 체류시 해적 기습!','err');
     },400);
   }
@@ -3569,7 +3569,7 @@ function escapeTravelPirate(){
   changeReputation(-2);
   updateHUD();
   notify(`🚀 도주 성공! 크레딧 -₡${penalty.toLocaleString()} / 명성 -2`,'err');
-  baekgu('간신히 따돌렸어. 항로 주의해.');
+  baekgu(I18N.t('baekgu.barelyEscaped'));
   saveGame(true);
 }
 function triggerEarlyPirate(pd){
@@ -3681,7 +3681,7 @@ function triggerChixFleet(pd){
       G.credits=Math.max(100,G.credits-loss);
       G.stayTurns=0;changeReputation(-2);updateHUD();
       notify(`🚀 치크스 함대 도주! -₡${loss.toLocaleString()} / 명성 -2`,'err');
-      baekgu('겨우 빠져나왔어. 빨리 이 구역 떠나자.');
+      baekgu(I18N.t('baekgu.escapedJustNow'));
       saveGame(true);hubTab('main');
     },cls:'btn-sm'}]);
 }
@@ -3768,7 +3768,7 @@ function escapePirateRaid(){
   changeReputation(-2);
   updateHUD();
   notify(`🚀 도주 성공! 크레딧 -₡${penalty.toLocaleString()} / 명성 -2`,'err');
-  baekgu('도망쳤어. 다음엔 일찍 움직여.');
+  baekgu(I18N.t('baekgu.fled'));
   try{saveGame(true);}catch(e){}  // 페널티 상태 영속화 (이전 누락: 새로고침 시 차감 분실)
   hubTab('main');
 }
@@ -8435,7 +8435,7 @@ function attachPart(shipIdx,partId){
   const _isWarp=WARP_ENGINE_IDS.includes(partId);
   if(_isWarp&&hasBlinkOnAll()){
     notify('⚡ 전 함선 워프 엔진 장착 완료! 은하계 모든 행성으로 순간이동 가능!','gold');
-    baekgu('전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!');
+    baekgu(I18N.t('baekgu.warpAllInstalled'));
   } else if(_isWarp){
     const lacking=G.fleet.filter(sh=>!(sh.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid))).length;
     baekgu(`${p?.nm||'워프 엔진'} 장착! ${G.fleet.length-lacking}/${G.fleet.length}척 완료. 전 함선 장착하면 순간이동 가능해.`);
@@ -8846,7 +8846,7 @@ function doGacha(n,useCr,crCost,minRarity){
         closeModal();
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
         saveGame(true);
-        baekgu('영입 거절. 현재 크루 유지.');
+        baekgu(I18N.t('baekgu.crewRecruitDeclined'));
       },cls:'btn-sm'}],{wide:true});
   } else {
     renderGachaCards(results.filter(r=>!r._rejected&&!r._heroRoll));
@@ -9597,7 +9597,7 @@ function completeQuest(pid,idx){
     if(Math.random()<0.48){
       G.voidCrystal=(G.voidCrystal||0)+1;
       notify('💎 보이드 크리스탈 획득! +1 (보유 '+G.voidCrystal+')','pur');
-      baekgu('보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!');
+      baekgu(I18N.t('baekgu.voidCrystalGet'));
     }
   }
   // 행성 허브 진행도 추가
@@ -9823,7 +9823,7 @@ function completeQuest(pid,idx){
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
               },cls:'btn-gold'},{txt:'❌ 거절',fn:()=>{
                 closeModal();
-                baekgu('전설 동료 영입 거절. 현재 크루 유지.');
+                baekgu(I18N.t('baekgu.legendCompDeclined'));
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
               },cls:'btn-sm'}]);
           } else {
@@ -10026,7 +10026,7 @@ function spawnDebrisReinforcementToCombat(){
   // 로그 + 알림 + 사운드
   addCombatLog(`🏴‍☠️ 잔해 해적 ${joinCount}척이 전투에 합류! (탐색 신호를 듣고 몰려옴)`,'err');
   notify(`🏴‍☠️ 잔해 해적 ${joinCount}척 합류!`,'warn');
-  try{baekgu('잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.');}catch(e){}
+  try{baekgu(I18N.t('baekgu.debrisPirates'));}catch(e){}
   try{sfxAlert();}catch(e){}
   try{AudioMgr.playSfx('notify',{vol:0.7});}catch(e){}
   // 잔해 탐색 횟수 허브 진행도에도 카운트 (전투 외 행동과 동일)
@@ -10070,7 +10070,7 @@ function doGatherSearch(){
   const combatQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&q.type==='combat'&&q.nm.includes('치크스'));
 
   notify('🔭 탐색 중...','ok');
-  baekgu('탐색 시작. 잔해 구역 접근 중.');
+  baekgu(I18N.t('baekgu.searchStart'));
 
   // ── 1) 치크스 정찰대 탐색 (30% 조우) ─────────────────────
   if(combatQ){
@@ -10092,7 +10092,7 @@ function doGatherSearch(){
          {txt:'🚀 도주',fn:()=>{closeModal();notify('치크스 정찰대 도주','warn');},cls:'btn-sm'}]);
     } else {
       notify('탐색 완료 — 정찰대 미발견. 다시 탐색하세요.','warn');
-      baekgu('이번엔 없네. 다시 탐색해봐.');
+      baekgu(I18N.t('baekgu.searchNothing'));
     }
     return;
   }
@@ -10142,7 +10142,7 @@ function doGatherSearch(){
       _progressGatherQuest(gatherQ,pid);
     } else {
       notify('🔭 탐색했지만 특별한 발견이 없었습니다','ok');
-      baekgu('이번엔 별다른 게 없네. 다시 시도해봐.');
+      baekgu(I18N.t('baekgu.searchNothingAlt'));
     }
   }
 }
@@ -10154,11 +10154,11 @@ function _progressGatherQuest(q,pid){
   if(q.progress>=q.required){
     q.status='done';
     notify(`✅ ${q.nm} 완료! 퀘스트 탭에서 보상 수령`,'gold');
-    baekgu('잔해 탐색 완료. 퀘스트 보상 받아.');
+    baekgu(I18N.t('baekgu.searchCompleteQuest'));
     updateGatherBtn();
   } else {
     notify(`🔭 잔해 발견 (${q.progress}/${q.required}) — 계속 탐색하세요`,'ok');
-    baekgu('잔해 일부 발견. 계속 탐색해야 해.');
+    baekgu(I18N.t('baekgu.searchPartial'));
   }
   saveGame(true);
   // 퀘스트 완료 후 퀘스트 탭으로 이동 (보상 수령 유도)
@@ -10239,7 +10239,7 @@ function checkDeliveryQuests(arrivedPid){
   Object.keys(G.quests).forEach(function(pid){
     (G.quests[pid]||[]).forEach(function(q){
       if(q.type==='delivery'&&q.status==='active'&&q.targetId===arrivedPid){
-        q.status='done';notify('🚀 '+q.nm+' 배달 완료! 퀘스트 탭에서 보상을 수령하세요','ok');baekgu('목적지 도착. 퀘스트 탭에서 보상 받아.');
+        q.status='done';notify('🚀 '+q.nm+' 배달 완료! 퀘스트 탭에서 보상을 수령하세요','ok');baekgu(I18N.t('baekgu.deliveryArrived'));
       }
     });
   });
@@ -10248,7 +10248,7 @@ function takeLoan(){
   if((G.loan||0)>=20000){notify('대출 한도 초과. 퀘스트로 자금을 마련하세요.','err');return;}
   var amt=5000;G.loan=(G.loan||0)+amt;G.credits+=amt;
   updateHUD();notify('백구 긴급 대출 '+amt.toLocaleString()+' (누적 '+G.loan.toLocaleString()+')','ok');
-  baekgu('빌려줄게. 빨리 갚아.');
+  baekgu(I18N.t('baekgu.loanGranted'));
   saveGame(true);rerenderTab(renderQuestTab);
 }
 // ═══ 제작소 ═════════════════════════════════════════════════════════
@@ -10353,7 +10353,7 @@ function doCraft(recipeId){
 
   const grid=document.getElementById('craftMatGrid');
   if(grid){grid.style.animation='craftFlash 0.5s ease-in-out infinite';grid.style.pointerEvents='none';}
-  baekgu('제작 중이야... 잠깐만 기다려.');
+  baekgu(I18N.t('baekgu.craftingInProgress'));
   // 사용자 요청: 메인 화면 중앙에 3·2·1 카운트다운 (2초 동안 빠르게)
   _showCraftCountdown(2000);
 
@@ -10892,7 +10892,7 @@ function submitBuyQuest(pid,idx){
   q.status='done';q.progress=q.required;
   const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;
   notify(`📦 ${_cn} ${q.required}개 납품 — 보상 수령 가능`,'gold');
-  baekgu('매수 의뢰 보고 완료. 보상 받으러 가자.');
+  baekgu(I18N.t('baekgu.buyQuestComplete'));
   saveGame(true);
   rerenderTab(renderQuestTab);
 }
@@ -11989,7 +11989,7 @@ function doBid(pid,amount,instant=false){
       G.credits-=Math.floor(amount*0.1); // 수수료 10% 차감
       if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}G.auctionBids++;
       notify('🏛️ '+pd.nm+' 입찰 실패 ('+chance+'% 확률) — 수수료 ₡'+Math.floor(amount*0.1).toLocaleString()+' 차감 | 남은 입찰 '+(Math.max(0,2-G.auctionBids))+'회','err');
-      baekgu('입찰 경쟁에서 졌어. 더 높게 써야 했는데.');
+      baekgu(I18N.t('baekgu.auctionLost'));
       updateHUD();rerenderTab(renderAuctionView);return;
     }
   }
@@ -13270,7 +13270,7 @@ function _showAsteroidShipPicker(destPid, onPick){
     if(destPid){try{addHubProgress(destPid);}catch(e){}}
     try{saveGame(true);}catch(e){}
     notify('💰 통행세 ₡'+_bypassCost.toLocaleString()+' 지불 — 소행성대 무사통과','gold');
-    try{baekgu('통행세 내고 무사 통과! 안전이 최우선이지~');}catch(e){}
+    try{baekgu(I18N.t('baekgu.tollPaidSafe'));}catch(e){}
     picker.remove();
   };
 }
