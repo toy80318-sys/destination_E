@@ -703,6 +703,22 @@ I18N.register({
   'ui.turnTaxIncome':    { ko: '턴당 전체 세금 수익', en: 'Total tax income / turn' },
   'ui.visitPlanetFacility':{ ko: '방문 중인 행성의 시설을 이용하세요', en: 'Use facilities at the planet you are visiting' },
 
+  // ── G21: 그룹/HUD/도감 짧은 라벨 ──────────────────────────────────
+  'ui.equipment':       { ko: '장비',    en: 'Equipment' },
+  'ui.shipLabelShort':  { ko: '함선',    en: 'Ship' },
+  'ui.repair':          { ko: '수리',    en: 'Repair' },
+  'ui.shipType':        { ko: '함종',    en: 'Type' },
+  'ui.locationShort':   { ko: '위치',    en: 'Location' },
+  'ui.crewShort':       { ko: '크루',    en: 'Crew' },
+  'ui.planetShort':     { ko: '행성',    en: 'Planet' },
+  'ui.heroShort':       { ko: '영웅',    en: 'Heroes' },
+  'ui.levelShort':      { ko: '레벨',    en: 'Level' },
+  'ui.repShort':        { ko: '명성',    en: 'Reputation' },
+  'ui.sell':            { ko: '판매',    en: 'Sell' },
+  'ui.cargoBay':        { ko: '화물칸',  en: 'Cargo' },
+  'ui.discovered':      { ko: '발견',    en: 'Discovered' },
+  'ui.defeated':        { ko: '격파',    en: 'Defeated' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
