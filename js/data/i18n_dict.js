@@ -719,6 +719,16 @@ I18N.register({
   'ui.discovered':      { ko: '발견',    en: 'Discovered' },
   'ui.defeated':        { ko: '격파',    en: 'Defeated' },
 
+  // ── G22: HUD/거래/가챠 액션 라벨 ──────────────────────────────────
+  'ui.stayShort':       { ko: '체류',   en: 'Stay' },
+  'ui.stayProgress':    { ko: '{n}/3턴', en: '{n}/3 turns' },
+  'ui.stayProgressWarn':{ ko: '{n}/3턴 ⚠️', en: '{n}/3 turns ⚠️' },
+  'ui.commerceShort':   { ko: '상업',   en: 'Commerce' },
+  'ui.partSell':        { ko: '매각',   en: 'Sell' },
+  'ui.confirm':         { ko: '확인',   en: 'Confirm' },
+  'ui.openBox':         { ko: '개봉',   en: 'Open' },
+  'ui.recruit':         { ko: '영입',   en: 'Recruit' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

@@ -2831,7 +2831,7 @@ function renderMain(body){
       <div class="ic"><span class="icl">ACT/TURN</span><span class="icv" style="color:var(--cyan)">${G.act}/${G.turn}</span></div>
       ${(()=>{const lv=calcPlayerLevel(),rk=getLevelRank(lv);return`<div class="ic"><span class="icl">${I18N.t('ui.levelShort')}</span><span class="icv" style="color:${rk.col};font-weight:bold">Lv.${lv} <span style="font-size:12px">${rk.lb}</span></span></div>`;})()}
       ${(()=>{const rep=G.reputation||0,rr=getRepRank(rep);const next=rr.next;const pct=Math.min(100,next>0?Math.round(rep/next*100):100);return`<div class="ic" style="min-width:110px"><span class="icl">${I18N.t('ui.repShort')}</span><span class="icv" style="color:${rr.col};font-weight:bold">${rr.ic} ${rr.lb}</span><div style="margin-top:2px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${rr.col};transition:width .4s"></div></div><div style="font-size:9px;color:var(--dim);text-align:right;margin-top:1px">${rep}${next<9999?' / '+next:''}</div></div>`;})()}
-      ${(G.stayTurns||0)>=2?`<div class="ic"><span class="icl">체류</span><span class="icv" style="color:var(--red);font-weight:bold">${G.stayTurns}/3턴 ⚠️</span></div>`:(G.stayTurns||0)>0?`<div class="ic"><span class="icl">체류</span><span class="icv" style="color:var(--dim)">${G.stayTurns}/3턴</span></div>`:''}
+      ${(G.stayTurns||0)>=2?`<div class="ic"><span class="icl">${I18N.t('ui.stayShort')}</span><span class="icv" style="color:var(--red);font-weight:bold">${I18N.t('ui.stayProgressWarn',{n:G.stayTurns})}</span></div>`:(G.stayTurns||0)>0?`<div class="ic"><span class="icl">${I18N.t('ui.stayShort')}</span><span class="icv" style="color:var(--dim)">${I18N.t('ui.stayProgress',{n:G.stayTurns})}</span></div>`:''}
     </div>
     <div style="flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
       ${buildSceneHTML(pd,fac)}
@@ -5335,7 +5335,7 @@ function renderShipTab(body){
             <div style="font-size:10px;color:var(--dim);line-height:1.4;flex:1">${p2.desc.slice(0,60)}${p2.desc.length>60?'…':''}</div>
             <div style="padding-top:6px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
               <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${sv.toLocaleString()}</span>
-              <button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 10px;margin-left:auto" id="${btnId}" onclick="sellPartFromInventory('${i.id}')">매각</button>
+              <button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 10px;margin-left:auto" id="${btnId}" onclick="sellPartFromInventory('${i.id}')">${I18N.t('ui.partSell')}</button>
             </div>
           </div>
           <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
@@ -8134,7 +8134,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
         최대 한도 <b style="color:var(--gold)">80칸</b>에 도달했습니다.<br>
         더 이상 확장할 수 없습니다.
       </div>
-      <button class="btn btn-sm btn-red" style="padding:8px 28px;font-size:14px" onclick="this.closest('[style*=fixed]').remove()">확인</button>
+      <button class="btn btn-sm btn-red" style="padding:8px 28px;font-size:14px" onclick="this.closest('[style*=fixed]').remove()">${I18N.t('ui.confirm')}</button>
     </div>`;
     document.body.appendChild(warnModal);
     return;
@@ -8833,7 +8833,7 @@ function renderPlanetsTab(body){
           <div style="font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nm}</div>
           <div style="font-size:10px;color:${f.col};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.nm}${p.hostile?' ⚠️':''}${p.void?' 🌀':''} · 링${p.ring}</div>
           ${st.owned?`<div style="display:flex;flex-direction:column;gap:3px;margin-top:2px">
-            <div style="display:flex;justify-content:space-between;font-size:10px"><span style="color:var(--dim)">상업</span><span style="color:var(--gold)">Lv${lv}/10</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px"><span style="color:var(--dim)">${I18N.t('ui.commerceShort')}</span><span style="color:var(--gold)">Lv${lv}/10</span></div>
             <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden"><div style="width:${lv*10}%;height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:2px"></div></div>
             <div style="color:var(--green);font-size:11px;font-weight:bold">₡${tax.toLocaleString()}/턴</div>
             ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%;margin-top:2px" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>투자 Lv${lv+1} (₡${investCost.toLocaleString()})</button>`:'<div style="color:var(--gold);font-size:10px;text-align:center;margin-top:2px">⭐ 최대레벨</div>'}
@@ -11302,7 +11302,7 @@ function renderTavernView(body){
         ${cfg.vc>0?`<div style="color:${G.voidCrystal>=cfg.vc?'#cc88ff':'#ff8888'}">VC×${cfg.vc}</div>`:''}
         ${cfg.ve>0?`<div style="color:${G.voidEssence>=cfg.ve?'#88ddff':'#ff8888'}">VE ${cfg.ve.toLocaleString()}</div>`:''}
       </div>
-      <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 10px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0">개봉</button>
+      <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 10px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.openBox')}</button>
     </div>`;
   }
   // (구버전 blackMarketHtml 변수는 _bmBtn(3) 참조 오류로 제거 — 현재는 본문 innerHTML 에서 _bmBtn(0/1/2)을 인라인 호출)
@@ -11366,7 +11366,7 @@ function renderTavernView(body){
         ${opts.cost>0?`<div style="color:${cr>=opts.cost?opts.col:'#ff8888'};font-weight:bold">₡${opts.cost.toLocaleString()}</div>`:''}
         ${opts.vcCost>0?`<div style="color:${(G.voidCrystal||0)>=opts.vcCost?'#cc88ff':'#ff8888'};font-weight:bold">VC×${opts.vcCost}</div>`:''}
       </div>
-      <button class="btn" onclick="${opts.onClick}" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?opts.col:'var(--bdr)'};color:${aff?opts.col:'var(--dim)'};font-weight:bold;flex-shrink:0">영입</button>
+      <button class="btn" onclick="${opts.onClick}" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?opts.col:'var(--bdr)'};color:${aff?opts.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.recruit')}</button>
     </div>`;
   }
   // 미니 카드 — 5장 가로 행 (사용자 요청)
