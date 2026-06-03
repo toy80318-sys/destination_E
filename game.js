@@ -18198,7 +18198,7 @@ function showSettingsModal(){
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">${I18N.t('settings.replayTutorial')}</button>
       ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>`:''}
-      <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm('모든 저장 데이터를 삭제합니다. 계속하시겠습니까?')){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
+      <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm(I18N.t('confirm.deleteSave'))){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.cloudSave')}</div>
@@ -19479,7 +19479,7 @@ function showDevMenu(){
       <button class="btn btn-sm" ${!isAdmin?'disabled style="opacity:.4"':''} onclick="devShowSaveStats()">📊 세이브 통계</button>
       <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(10000000)">💰 +1천만</button>
       <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(100000000)">💰 +1억</button>
-      <button class="btn btn-sm btn-red" onclick="if(confirm('모든 로컬 저장 데이터 삭제?')){for(let i=0;i<=8;i++)localStorage.removeItem(i===0?'de_save':'de_save_s'+i);notify('🗑️ 로컬 세이브 전체 삭제','ok');}">🗑️ 로컬 전체 삭제</button>
+      <button class="btn btn-sm btn-red" onclick="if(confirm(I18N.t('confirm.deleteAllLocal'))){for(let i=0;i<=8;i++)localStorage.removeItem(i===0?'de_save':'de_save_s'+i);notify(I18N.t('notify.allLocalDeleted'),'ok');}">${I18N.t('settings.localDeleteAll')}</button>
       <button class="btn btn-sm" onclick="(function(){const log=JSON.parse(localStorage.getItem('de_feedback_log')||'[]');alert('로컬 피드백 로그:\\n'+JSON.stringify(log,null,2));})()">📜 로컬 로그</button>
     </div>
     <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px">개발/디버그 전용 메뉴</div>
