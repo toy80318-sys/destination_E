@@ -1048,6 +1048,33 @@ I18N.register({
   'notify.cancelSaleFail':    { ko: '매각 취소 실패: {err}',           en: 'Cancel sale failed: {err}' },
   'notify.shipFullCount':     { ko: '만석입니다 ({n}명)',              en: 'Full ({n})' },
 
+  // ── G40: 정적 한국어 notify 단문 ──────────────────────────────────
+  'notify.hubNotReady':       { ko: '허브 미초기화 — 잠시 후 다시 시도하세요', en: 'Hub not ready — please retry soon' },
+  'notify.noSellableParts':   { ko: '매각 가능한 일반/희귀/영웅 파츠가 없습니다', en: 'No Common/Rare/Hero parts to sell' },
+  'notify.activeFleetFull':   { ko: '선발 편대 가득 (16척). 교체 또는 판매 후 시도하세요',
+                                en: 'Active fleet full (16 ships). Swap or sell first' },
+  'notify.alreadyMaxEnhance': { ko: '이미 최대 +10 강화', en: 'Already at max +10' },
+  'notify.crewSelectNotShown':{ ko: '크루 선택 목록이 보이지 않습니다 — 탭을 새로고침하세요',
+                                en: 'Crew select list not shown — refresh the tab' },
+  'notify.selectCrewToBoard': { ko: '탑승시킬 크루/영웅을 선택하세요',     en: 'Select a crew/hero to board' },
+  'notify.onlyOneShipNoSell': { ko: '함선이 1척뿐입니다. 판매 불가',       en: 'Only 1 ship — cannot sell' },
+  'notify.onlyOneShip':       { ko: '함선이 1척뿐입니다',                 en: 'Only 1 ship' },
+  'notify.nameMax20':         { ko: '최대 20자까지 입력 가능',             en: 'Max 20 characters' },
+
+  'notify.questAcceptGather': { ko: '채취 의뢰 수락 — {n}턴 대기 후 완료',
+                                en: 'Gather quest accepted — completes after {n} turns' },
+  'notify.questAcceptDelivery':{ ko: '배달 의뢰 수락 — {nm}으로 이동하면 완료',
+                                 en: 'Delivery accepted — completes when arriving at {nm}' },
+  'notify.questAcceptCombat': { ko: '전투 의뢰 수락 — 전투 승리 후 보고하세요',
+                                en: 'Combat quest accepted — report after victory' },
+  'notify.adjacentPlanet':    { ko: '인접 행성', en: 'adjacent planet' },
+  'notify.scanNoScouts':      { ko: '탐색 완료 — 정찰대 미발견. 다시 탐색하세요.',
+                                en: 'Scan complete — no scouts found. Try again.' },
+  'notify.loanGranted':       { ko: '백구 긴급 대출 {amt} (누적 {total})',
+                                en: 'Baekgu emergency loan {amt} (total {total})' },
+  'notify.qtyShort':          { ko: '보유 수량 부족: {have}/{need}',
+                                en: 'Quantity short: {have}/{need}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

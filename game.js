@@ -853,7 +853,7 @@ function resumeCombat(){
   // hubTab('combat')에는 렌더 분기가 없으므로 직접 renderCombatView 호출
   G._currentHubTab='combat';
   const body=document.getElementById('hub-body');
-  if(!body){notify('허브 미초기화 — 잠시 후 다시 시도하세요','err');return;}
+  if(!body){notify(I18N.t('notify.hubNotReady'),'err');return;}
   try{
     // ⚠️ 이전 애니메이션 루프 강제 종료 — 2회차+ 복귀 시 _cbStartAnimLoop 가 early-return 되는 문제 픽스
     try{if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}}catch(e){}
@@ -5401,7 +5401,7 @@ function sellAllPartsBulk(){
     if(!p)return false;
     return !['legend','mythic','set','hero'].includes(p.rarity);
   });
-  if(sellable.length===0){notify('매각 가능한 일반/희귀/영웅 파츠가 없습니다','warn');return;}
+  if(sellable.length===0){notify(I18N.t('notify.noSellableParts'),'warn');return;}
   const totalQty=sellable.reduce((s,i)=>s+i.qty,0);
   const totalCr=sellable.reduce((s,i)=>{const p=PARTS.find(x=>x.id===i.id);return s+Math.floor((p.price||0)*0.5*_mul)*i.qty;},0);
   if(!confirm(`⚙️ 파츠 ${totalQty}개를 일괄 매각합니다.\n예상 수익: ₡${totalCr.toLocaleString()}${hasMarco?' (🧭 마르코+10%)':''}\n(전설/신화/세트 제외 · 장착 파츠 제외)\n진행할까요?`))return;
@@ -5650,7 +5650,7 @@ function toggleDeclineCapture(){
 // 후보 함선 → 선발 편대로 즉시 승급 (선발 < 16척일 때)
 function promoteReserveShip(reserveIdx){
   if(!G.reserveFleet||!G.reserveFleet[reserveIdx]){notify(I18N.t('notify.noTempShip'),'err');return;}
-  if(G.fleet.length>=16){notify('선발 편대 가득 (16척). 교체 또는 판매 후 시도하세요','err');return;}
+  if(G.fleet.length>=16){notify(I18N.t('notify.activeFleetFull'),'err');return;}
   const ship=G.reserveFleet.splice(reserveIdx,1)[0];
   G.fleet.push(ship);
   notify(`📈 ${ship.nm} → 선발 편대 합류 (선발 ${G.fleet.length}/16)`,'gold');
@@ -6138,7 +6138,7 @@ function renderShipEnhanceTab(body){
 function doShipEnhance(shipIdx){
   const s=G.fleet[shipIdx];if(!s){notify(I18N.t('notify.shipNone'),'err');return;}
   const curLv=s._enhanceLv||0;
-  if(curLv>=10){notify('이미 최대 +10 강화','warn');return;}
+  if(curLv>=10){notify(I18N.t('notify.alreadyMaxEnhance'),'warn');return;}
   const nextLv=curLv+1;
   const cost=_enhanceCost(curLv,s);
   if((G.credits||0)<cost){notify(I18N.t('notify.needCreditsAmt',{cost:cost.toLocaleString()}),'err');return;}
@@ -7887,8 +7887,8 @@ function assignCrew(shipIdx){
   if(!s){notify(I18N.t('notify.shipNotFound'),'err');return;}
   if(!s.crewIds)s.crewIds=[];
   const sel=document.getElementById('crew-sel-'+shipIdx);
-  if(!sel){notify('크루 선택 목록이 보이지 않습니다 — 탭을 새로고침하세요','err');return;}
-  if(!sel.value||sel.value===''){notify('탑승시킬 크루/영웅을 선택하세요','warn');return;}
+  if(!sel){notify(I18N.t('notify.crewSelectNotShown'),'err');return;}
+  if(!sel.value||sel.value===''){notify(I18N.t('notify.selectCrewToBoard'),'warn');return;}
   const cid=sel.value;
   // 이미 이 함선에 탑승 중
   if(s.crewIds.includes(cid)){notify(I18N.t('notify.alreadyAboard'),'warn');return;}
@@ -8022,7 +8022,7 @@ function getShipSellPrice(ship){
   return {total:baseTotal, base:Math.floor(basePrice*sellRatio*marcoMult*enhanceMult), cargoRefund, ratio:Math.round(sellRatio*100), marco:marcoMult>1, enhanceLv, enhanceMult};
 }
 function confirmSellShip(idx){
-  if(G.fleet.length<=1){notify('함선이 1척뿐입니다. 판매 불가','err');return;}
+  if(G.fleet.length<=1){notify(I18N.t('notify.onlyOneShipNoSell'),'err');return;}
   const s=G.fleet[idx];if(!s)return;
   const sp=getShipSellPrice(s);
   const partsCount=(s.parts||[]).length;
@@ -8044,7 +8044,7 @@ function confirmSellShip(idx){
   ]);
 }
 function sellShip(idx){
-  if(G.fleet.length<=1){notify('함선이 1척뿐입니다','err');return;}
+  if(G.fleet.length<=1){notify(I18N.t('notify.onlyOneShip'),'err');return;}
   const s=G.fleet[idx];if(!s)return;
   // 함선 매각 취소용 깊은 복사 (파츠 분리·크루 하선 직전 상태)
   const _undoShip=JSON.parse(JSON.stringify(s));
@@ -8091,7 +8091,7 @@ function confirmRenameShip(idx){
   if(!inp)return;
   const newName=inp.value.trim();
   if(!newName){notify(I18N.t('notify.enterName'),'warn');return;}
-  if(newName.length>20){notify('최대 20자까지 입력 가능','err');return;}
+  if(newName.length>20){notify(I18N.t('notify.nameMax20'),'err');return;}
   const oldName=s.nm;
   s.nm=newName;
   closeModal();
@@ -9304,11 +9304,11 @@ function acceptQuest(pid,idx){
     return;
   }
   q.status='active';
-  if(q.type==='gather')notify('채취 의뢰 수락 — '+q.required+'턴 대기 후 완료','ok');
+  if(q.type==='gather')notify(I18N.t('notify.questAcceptGather',{n:q.required}),'ok');
   else if(q.type==='explore')notify('🔭 탐색 임무 수락 — 탐색 버튼을 눌러 임무를 수행하세요','ok');
-  else if(q.type==='delivery'){var tnm=(PLANET_DEF.find(function(p){return p.id===q.targetId;})||{nm:'인접 행성'}).nm;notify('배달 의뢰 수락 — '+tnm+'으로 이동하면 완료','ok');}
+  else if(q.type==='delivery'){var tnm=(PLANET_DEF.find(function(p){return p.id===q.targetId;})||{nm:I18N.t('notify.adjacentPlanet')}).nm;notify(I18N.t('notify.questAcceptDelivery',{nm:tnm}),'ok');}
   else if(q.type==='buy'){const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;notify('🛒 매수 의뢰 수락 — '+_cn+' '+q.required+'개 화물칸에 갖춘 뒤 [보고]','ok');}
-  else notify('전투 의뢰 수락 — 전투 승리 후 보고하세요','ok');
+  else notify(I18N.t('notify.questAcceptCombat'),'ok');
   saveGame(true);
   if(_fromTavern)rerenderTab(renderTavernView);
   else rerenderTab(renderQuestTab);
@@ -9888,7 +9888,7 @@ function doGatherSearch(){
         [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
          {txt:'🚀 도주',fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
     } else {
-      notify('탐색 완료 — 정찰대 미발견. 다시 탐색하세요.','warn');
+      notify(I18N.t('notify.scanNoScouts'),'warn');
       baekgu(I18N.t('baekgu.searchNothing'));
     }
     return;
@@ -10044,7 +10044,7 @@ function checkDeliveryQuests(arrivedPid){
 function takeLoan(){
   if((G.loan||0)>=20000){notify(I18N.t('notify.loanLimitExceeded'),'err');return;}
   var amt=5000;G.loan=(G.loan||0)+amt;G.credits+=amt;
-  updateHUD();notify('백구 긴급 대출 '+amt.toLocaleString()+' (누적 '+G.loan.toLocaleString()+')','ok');
+  updateHUD();notify(I18N.t('notify.loanGranted',{amt:amt.toLocaleString(),total:G.loan.toLocaleString()}),'ok');
   baekgu(I18N.t('baekgu.loanGranted'));
   saveGame(true);rerenderTab(renderQuestTab);
 }
@@ -10676,7 +10676,7 @@ function submitBuyQuest(pid,idx){
   const q=G.quests[pid]&&G.quests[pid][idx];
   if(!q||q.status!=='active'||q.type!=='buy')return;
   const have=(G.cargo||[]).filter(c=>c.id===q.targetCommId).reduce((s,c)=>s+(c.qty||0),0);
-  if(have<q.required){notify('보유 수량 부족: '+have+'/'+q.required,'err');return;}
+  if(have<q.required){notify(I18N.t('notify.qtyShort',{have,need:q.required}),'err');return;}
   // 화물에서 N개 차감 (여러 슬롯 합산)
   let toRemove=q.required;
   for(let i=0;i<G.cargo.length&&toRemove>0;i++){
