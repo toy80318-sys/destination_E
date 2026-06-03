@@ -418,21 +418,59 @@
   }
   async function listHallOfFame(opts){
     opts=opts||{};
-    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
-    if(!_state.db)return{error:'Firebase 미초기화'};
-    if(!_state.user){
-      try{await _waitForAuth(10000);}catch(e){return{error:'auth_pending'};}
+    // 1) Firebase SDK + Firestore 핸들 보장 — init 미완료면 1회 트리거
+    if(!_state.db){
+      try{await init();}catch(e){}
+      // SDK 로드까지 추가 대기 (최대 3초, 100ms 폴링)
+      for(let i=0;i<30&&!_state.db;i++){await new Promise(r=>setTimeout(r,100));}
     }
-    try{
-      // 최근순 정렬, 상위 N (기본 100)
+    if(!_state.db)return{error:'Firebase SDK 로드 실패 — 네트워크 또는 firebase 차단 확인'};
+    // 2) 인증 대기 — _state.user 가 비어있으면 _waitForAuth (최대 15초)
+    //    이전엔 10초 타임아웃 → 모바일/저속 네트워크에서 종종 실패. 15초로 확장 + 명시적 익명 로그인 1회 강제.
+    if(!_state.user){
+      try{
+        if(_state.auth&&!_state.auth.currentUser){
+          try{await _state.auth.signInAnonymously();}catch(e){_log('signInAnonymously 실패',e.message);}
+        }
+        await _waitForAuth(15000);
+      }catch(e){return{error:'인증 대기 실패 — 네트워크/익명 로그인 확인 ('+e.message+')'};}
+    }
+    if(!_state.user)return{error:'인증 미완료 — 다시 시도해 주세요'};
+    // 3) 쿼리 실행 — orderBy 인덱스 누락 시 fallback (tsClient → playedAt → ts)
+    const _runQuery=async(orderField)=>{
       let q=_state.db.collection('hall_of_fame');
       if(opts.act){q=q.where('act','==',opts.act);}
-      q=q.orderBy('tsClient','desc').limit(opts.limit||100);
+      q=q.orderBy(orderField,'desc').limit(opts.limit||100);
       const snap=await q.get();
       const items=[];
       snap.forEach(d=>{const v=d.data();items.push({id:d.id,...v});});
+      return items;
+    };
+    try{
+      const items=await _runQuery('tsClient');
       return{items};
-    }catch(e){_log('HoF 조회 실패',e.message);return{error:e.message};}
+    }catch(e){
+      _log('HoF tsClient 조회 실패 — playedAt 폴백 시도',e.message);
+      // failed-precondition (인덱스 누락) 또는 invalid-argument 시 폴백 정렬 필드 시도
+      try{
+        const items=await _runQuery('playedAt');
+        return{items};
+      }catch(e2){
+        _log('HoF playedAt 폴백 실패 — 무정렬 조회 시도',e2.message);
+        // 최종 폴백: 정렬 없이 그냥 가져오기
+        try{
+          let q=_state.db.collection('hall_of_fame');
+          if(opts.act){q=q.where('act','==',opts.act);}
+          q=q.limit(opts.limit||100);
+          const snap=await q.get();
+          const items=[];
+          snap.forEach(d=>{const v=d.data();items.push({id:d.id,...v});});
+          // 클라이언트 측 정렬 (tsClient 또는 playedAt 사용)
+          items.sort((a,b)=>(b.tsClient||b.playedAt||0)-(a.tsClient||a.playedAt||0));
+          return{items};
+        }catch(e3){_log('HoF 무정렬 조회도 실패',e3.message);return{error:e3.message};}
+      }
+    }
   }
 
   // CloudSave 객체에 이메일 함수 노출

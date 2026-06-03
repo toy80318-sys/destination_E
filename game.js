@@ -964,7 +964,12 @@ function updateHUD(){updateGatherBtn();_updateResumeBtn();
 // ═══ NOTIFY ════════════════════════════════════════════════════
 function notify(msg,type='info'){
   const el=document.createElement('div');el.className=`ni${type==='ok'?' ok':type==='err'?' err':type==='gold'?' gold':type==='pur'?' pur':''}`;
-  el.textContent=msg;document.getElementById('notif').appendChild(el);
+  el.textContent=msg;
+  const container=document.getElementById('notif');
+  if(!container)return;
+  container.appendChild(el);
+  // DOM 캡 — 빠른 다발 알림으로 DOM 풍선 방지 (가장 오래된 것부터 제거)
+  while(container.children.length>10)container.removeChild(container.firstChild);
   setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),400);},2800);
 }
 // ─── 캐릭터 초상 매핑 (대사 인트로/팝업 공통) ──────────────────
@@ -16478,6 +16483,10 @@ function _txPos(pos){
 }
 function runCombatTurn(){
   if(!combatState||combatState.done){drawCombatFrame();return;}
+  // ── 재진입 가드 — 페이즈 팝업 콜백 + setTimeout 체인이 중첩되는 경우 차단 ──
+  // 동일 턴 중복 실행 시 적/아군 상태가 두 번 변동되어 시각 스터터·계산 오류 유발
+  if(combatState._turnInProgress)return;
+  combatState._turnInProgress=true;
   // 적 함대 ~50% 일반 함선 혼합 (보스/히든전 제외, 전투당 1회 — 첫 렌더 전에 처리)
   if(!combatState._mixed){
     combatState._mixed=true;
@@ -16492,7 +16501,7 @@ function runCombatTurn(){
   combatState.turn++;
   const pl=combatState.players.filter(u=>u.hp>0);
   const en=combatState.enemies.filter(u=>u.hp>0);
-  if(!pl.length||!en.length){_finishCombat();return;}
+  if(!pl.length||!en.length){combatState._turnInProgress=false;_finishCombat();return;}
 
   // ── 우르사 최종전: 호위(치크스·친위대) 전멸 → 2페이즈 전환 ──
   //   보스 무적 해제 + 대사 팝업 + 본체 공격력 ×3
@@ -16508,6 +16517,8 @@ function runCombatTurn(){
       addCombatLog('☠️ 우르사 메이저 — 호위 함대 전멸! 본체 각성 (2페이즈 · 공격력 ×3)','err');
       drawCombatFrame();
       if(typeof _showUrsaPhase2Popup==='function'){
+        // 팝업 콜백에서 runCombatTurn 재호출 — 현재 호출 종료로 가드 해제 필요
+        combatState._turnInProgress=false;
         _showUrsaPhase2Popup(()=>{try{runCombatTurn();}catch(e){}});
         return;  // 팝업 확인 후 전투 재개
       }
@@ -16527,6 +16538,7 @@ function runCombatTurn(){
       try{_cbStartAnimLoop&&_cbStartAnimLoop();}catch(e){}
       drawCombatFrame();
       if(typeof _showBlackfalconPhase2Popup==='function'){
+        combatState._turnInProgress=false;
         _showBlackfalconPhase2Popup(()=>{try{runCombatTurn();}catch(e){}});
         return;
       }
@@ -16953,6 +16965,8 @@ function runCombatTurn(){
       setTimeout(runCombatTurn,turnMs);
     }
   }
+  // 턴 마무리 — 재진입 가드 해제 (다음 turn 진행 허용)
+  if(combatState)combatState._turnInProgress=false;
 }
 
 function _finishCombat(){
@@ -17654,7 +17668,12 @@ function _getSlotInfo(n){
   });
 })();
 
-function saveGame(silent,slotN){
+// ── 저장 디바운스 — silent 호출이 짧은 시간에 다발될 때 누적 블로킹 방지 ──
+// 사용자 트리거(silent=false)는 즉시 실행. 자동 저장(silent=true)은 800ms 디바운스.
+// 큰 G의 JSON.stringify는 100~500ms 동기 블로킹이라 매 액션마다 호출 시 멈춤 원인.
+let _saveDebounceTimer=null;
+let _saveDebouncePendingSlot=null;
+function _saveGameImmediate(silent,slotN){
   const n=(slotN!=null)?slotN:1;
   try{
     // 1) 사이즈 폭증 방지: 전투 기록 마지막 100건만 유지 (이전: 무제한)
@@ -17715,6 +17734,41 @@ function saveGame(silent,slotN){
     }
   }
 }
+// 공개 진입점 — silent 호출은 800ms 디바운스, 사용자 트리거는 즉시 실행
+function saveGame(silent,slotN){
+  if(!silent){
+    // 사용자 트리거: 대기 중인 디바운스 취소 + 즉시 실행 (피드백 보장)
+    if(_saveDebounceTimer){clearTimeout(_saveDebounceTimer);_saveDebounceTimer=null;_saveDebouncePendingSlot=null;}
+    _saveGameImmediate(false,slotN);
+    return;
+  }
+  // 자동 저장: 디바운스 — 짧은 시간 다발 호출이 끝나면 1번만 실행
+  _saveDebouncePendingSlot=slotN;
+  if(_saveDebounceTimer)clearTimeout(_saveDebounceTimer);
+  _saveDebounceTimer=setTimeout(()=>{
+    const _sl=_saveDebouncePendingSlot;
+    _saveDebounceTimer=null;_saveDebouncePendingSlot=null;
+    try{_saveGameImmediate(true,_sl);}catch(e){console.warn('[saveGame debounced]',e);}
+  },800);
+}
+// 페이지 언로드/탭 전환 시 대기 중인 자동저장 플러시 — 데이터 손실 방지
+try{
+  if(typeof window!=='undefined'){
+    window.addEventListener('beforeunload',()=>{
+      if(_saveDebounceTimer){clearTimeout(_saveDebounceTimer);_saveDebounceTimer=null;
+        try{_saveGameImmediate(true,_saveDebouncePendingSlot);}catch(e){}
+        _saveDebouncePendingSlot=null;
+      }
+    });
+    window.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState==='hidden'&&_saveDebounceTimer){
+        clearTimeout(_saveDebounceTimer);_saveDebounceTimer=null;
+        try{_saveGameImmediate(true,_saveDebouncePendingSlot);}catch(e){}
+        _saveDebouncePendingSlot=null;
+      }
+    });
+  }
+}catch(e){}
 
 // 자동 복구: 현재 슬롯이 손상되었거나 비었다면 백업에서 복원
 function _tryRecoverSlot(n){
@@ -18085,17 +18139,34 @@ function _renderHofTab(tab){
     body.innerHTML=_hofRowsHtml(sorted,diffLabel);
     return;
   }
-  // global — 비동기 로드
-  body.innerHTML='<div style="text-align:center;color:var(--dim);padding:24px">🌐 글로벌 명예의 전당 불러오는 중...</div>';
+  // global — 비동기 로드 (재시도 가능)
+  body.innerHTML='<div style="text-align:center;color:var(--dim);padding:24px">🌐 글로벌 명예의 전당 불러오는 중... (최대 15초)</div>';
   if(!window.CloudSave||!CloudSave.listHallOfFame){
-    body.innerHTML='<div style="color:var(--red);text-align:center;padding:24px">CloudSave 미초기화</div>';
+    body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
+      ☁️ CloudSave 모듈이 로드되지 않았습니다<br>
+      <div style="color:var(--dim);font-size:12px;margin-top:8px">Firebase SDK 차단·네트워크 문제일 수 있습니다</div>
+      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+    </div>`;
     return;
   }
   CloudSave.listHallOfFame({limit:100}).then(r=>{
-    if(r.error){body.innerHTML='<div style="color:var(--red);text-align:center;padding:24px">조회 실패: '+r.error+'</div>';return;}
+    if(r.error){
+      body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
+        ⚠️ 조회 실패: ${r.error}
+        <div style="color:var(--dim);font-size:11px;margin-top:8px">네트워크 또는 인증 상태를 확인해 주세요</div>
+        <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+      </div>`;
+      return;
+    }
     body.innerHTML=_hofRowsHtml(r.items||[],diffLabel);
-  }).catch(e=>{body.innerHTML='<div style="color:var(--red);text-align:center;padding:24px">조회 실패: '+e.message+'</div>';});
+  }).catch(e=>{
+    body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
+      ⚠️ 조회 실패: ${e.message}
+      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+    </div>`;
+  });
 }
+try{if(typeof window!=='undefined')window._renderHofTab=_renderHofTab;}catch(e){}
 function switchHofTab(t){
   _hofTab=t;
   // 탭 버튼 활성 상태 갱신
