@@ -10204,7 +10204,7 @@ function startDebrisPirateCombat(raidDef){
   requestAnimationFrame(()=>{
     initCombatCanvas();
     const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 잔해 해적 전투!';
-    setTimeout(()=>{addCombatLog('🏴‍☠️ 잔해 구역 해적 출현!','');runCombatTurn();},400);
+    setTimeout(()=>{addCombatLog(I18N.t('combat.debrisPiratesAppear'),'');runCombatTurn();},400);
   });
 }
 
@@ -10218,7 +10218,7 @@ function startChixPatrolCombat(raidDef){
   requestAnimationFrame(()=>{
     initCombatCanvas();
     const t=document.getElementById('cb-title');if(t)t.textContent='⚔️ 치크스 정찰대 격퇴!';
-    setTimeout(()=>{addCombatLog('🛸 치크스 정찰대 출현!','');runCombatTurn();},400);
+    setTimeout(()=>{addCombatLog(I18N.t('combat.chixScoutsAppear'),'');runCombatTurn();},400);
   });
 }
 
@@ -16508,7 +16508,7 @@ function runCombatTurn(){
       _boss.phase=Math.max(2,_boss.phase||1);
       if(_boss._origATT_p1==null)_boss._origATT_p1=_boss.ATT;
       _boss.ATT=Math.round((_boss.ATT||1)*3);   // 2페이즈 공격력 ×3
-      addCombatLog('☠️ 우르사 메이저 — 호위 함대 전멸! 본체 각성 (2페이즈 · 공격력 ×3)','err');
+      addCombatLog(I18N.t('combat.ursaPhase2'),'err');
       drawCombatFrame();
       if(typeof _showUrsaPhase2Popup==='function'){
         // 팝업 콜백에서 runCombatTurn 재호출 — 현재 호출 종료로 가드 해제 필요
@@ -16526,7 +16526,7 @@ function runCombatTurn(){
     if(_vb&&(_vb.hp||0)>0&&!_escAlive){
       combatState._voidPhase2=true;
       _vb._invincible=false;
-      addCombatLog('🌑 블랙팔콘 — 호위 함대 전멸! 본체에서 거대한 파장이 퍼진다...','err');
+      addCombatLog(I18N.t('combat.blackfalconPhase2'),'err');
       // 파장(shockwave) 이펙트 — 본체 위치에서 다중 충격파
       try{const bp=_unitPos[_vb.id];if(bp&&typeof _txPos==='function'){const t=_txPos(bp);for(let k=0;k<4;k++)_cbEffects.push({type:'shockwave',x:t.x,y:t.y,col:'#cc66ff',r:180+k*90,life:70,maxLife:70,delay:k*7});}}catch(e){}
       try{_cbStartAnimLoop&&_cbStartAnimLoop();}catch(e){}
@@ -16952,7 +16952,7 @@ function runCombatTurn(){
   } else {
     // 최대 50턴 제한 (무한 루프 방지)
     if(combatState.turn>=50){
-      addCombatLog('⏱️ 50턴 초과 — 강제 종료 (승리 처리)','gold');
+      addCombatLog(I18N.t('combat.over50TurnsForced'),'gold');
       combatState.enemies.forEach(e=>{e.hp=0;});
       setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},900);
     } else {
@@ -16982,7 +16982,7 @@ function _finishCombat(){
       combatState._voidRetreated=true;
       G._voidFalconDefeated=true;
       G._falconDefeated=true;
-      addCombatLog('💬 [블랙팔콘] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...','gold');
+      addCombatLog(I18N.t('combat.blackfalconRetreat'),'gold');
       G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});
       try{AudioMgr.playBgm(_planetBgmName(G.currentPlanet));}catch(e){}
       saveGame(true);
@@ -16997,12 +16997,12 @@ function _finishCombat(){
     // 방어 코드: 0턴 자동 승리(적이 등장도 못함) 차단 — 최소 1턴 진행해야 보상 인정
     if((combatState.turn||0)<1){
       console.warn('[BlackHole] auto-win on turn 0 detected — ignoring (likely a regen/state bug). enemies count:',combatState.enemies?.length);
-      addCombatLog('⚠️ 적 함대가 등장하지 않아 전투 무효 처리. 다시 도전해 주세요.','warn');
+      addCombatLog(I18N.t('combat.noEnemyFleetInvalid'),'warn');
       notify('⚠️ 블랙홀 전투 무효 — 재진입 필요','err');
       try{setTimeout(()=>{combatState=null;hubTab('map');},800);}catch(e){}
       return;
     }
-    addCombatLog('🌌 블랙홀의 사자 격파! 보이드의 최종 시험을 통과했다.','gold');
+    addCombatLog(I18N.t('combat.blackHoleLionDefeat'),'gold');
     notify('🌌 블랙홀 함대 격파 — 최종 시험 통과!','gold');
     G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});
     try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
@@ -17022,7 +17022,7 @@ function _finishCombat(){
   }
   let earned=0;
   if(win){
-    addCombatLog('🎉 전투 승리!','ok');
+    addCombatLog(I18N.t('combat.victory'),'ok');
     if(pd.hostile&&!combatState.isBoss){G.planets[pid]=G.planets[pid]||{};G.planets[pid].hostile_cleared=true;}
     // 호레이쇼 넬슨(H05) 보유 시 전투 보상 +20%
     const _nelsonBonus=(G.heroes||[]).includes('H05')?1.2:1.0;
@@ -17100,7 +17100,7 @@ function _finishCombat(){
       }catch(e){console.warn('combat loot drop failed',e);}
     }
     if(combatState.isBoss){
-      addCombatLog('🏆 우르사 메이저 제압! 게임 클리어!','gold');
+      addCombatLog(I18N.t('combat.ursaDefeatedClear'),'gold');
       notify('🏆 최종 보스 격파! 게임 클리어!','gold');
       // ── 최종 보스 보상: 1천만 크레딧 + 우르사 메이저 함선 + 신화 파츠 4종 ──
       const _bossBonusCr=10000000;
@@ -17282,7 +17282,7 @@ function _finishCombat(){
     }
     checkQuestCombatDone();
   } else {
-    addCombatLog('💀 전투 패배...','err');
+    addCombatLog(I18N.t('combat.defeat'),'err');
     const penalty=Math.floor(G.credits*0.1);
     G.credits=Math.max(100,G.credits-penalty);
     earned=-penalty;
@@ -17292,7 +17292,7 @@ function _finishCombat(){
     //  · q.status='active' 인 채 멈춰 있으면 퀘스트 탭에서 '수락' 버튼이 사라져 재도전 불가
     if(combatState&&combatState.isVoidBoss&&combatState._questRef){
       combatState._questRef.status='available';
-      addCombatLog('🔄 블랙팔콘 의뢰가 다시 수주 가능 상태로 전환됨 — 함대 재정비 후 도전하세요','warn');
+      addCombatLog(I18N.t('combat.blackfalconQuestReset'),'warn');
       notify('🔄 블랙팔콘 재도전 가능 — 의뢰 수락 버튼 활성화','warn');
     }
   }
@@ -19580,8 +19580,8 @@ function startBlackHoleFleetCombat(){
     initCombatCanvas();
     const t=document.getElementById('cb-title');
     if(t)t.textContent='🌌 블랙홀의 심연 — 최종 결전';
-    addCombatLog('🌌 블랙홀 너머에서 16척의 전설적 함대가 나타난다 — 거북선 3·워덴클리프 3·렐러티비티 3·우르사 메이저 2·블랙팔콘 2·기타 전설 3.','err');
-    addCombatLog('💡 적 함대 총 HP는 우리 함대의 2배. 전술 체인을 적극 활용해 돌파!','gold');
+    addCombatLog(I18N.t('combat.legendFleetAppears'),'err');
+    addCombatLog(I18N.t('combat.legendFleetHpHint'),'gold');
     try{baekgu(I18N.t('baekgu.mirrorFleetAwoken'));}catch(e){}
     setTimeout(runCombatTurn,800);
   });
