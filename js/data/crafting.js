@@ -33,13 +33,13 @@ const CRAFT_RECIPES=[
    desc:I18N.t('craft.MMB01.desc'),
    mats:[{id:'R06',qty:30},{id:'R04',qty:20},{id:'R08',qty:15},{id:'R02',qty:10}]},
   // ─ 전설 함선 ─
-  {id:'H10',type:'ship',tier:'legend',nm:I18N.t('craft.H10.nm'),cat:'대형',
+  {id:'H10',type:'ship',tier:'legend',nm:I18N.t('craft.H10.nm'),cat:'large',
    desc:I18N.t('craft.H10.desc'),
    mats:[{id:'R04',qty:25},{id:'R05',qty:20},{id:'R02',qty:15}]},
-  {id:'H11',type:'ship',tier:'legend',nm:I18N.t('craft.H11.nm'),cat:'대형',
+  {id:'H11',type:'ship',tier:'legend',nm:I18N.t('craft.H11.nm'),cat:'large',
    desc:I18N.t('craft.H11.desc'),
    mats:[{id:'R03',qty:25},{id:'R06',qty:20},{id:'R07',qty:15}]},
-  {id:'H12',type:'ship',tier:'legend',nm:I18N.t('craft.H12.nm'),cat:'대형',
+  {id:'H12',type:'ship',tier:'legend',nm:I18N.t('craft.H12.nm'),cat:'large',
    desc:I18N.t('craft.H12.desc'),
    mats:[{id:'R01',qty:30},{id:'R08',qty:20},{id:'R02',qty:15}]},
   // ─ 전설 창고 확장 파츠 (제작소 제작 가능) ─
@@ -47,13 +47,13 @@ const CRAFT_RECIPES=[
    desc:I18N.t('craft.SC04.desc'),
    mats:[{id:'R07',qty:20},{id:'R05',qty:15},{id:'R03',qty:10}]},
   // ─ 신화 함선 (최고등급, 제한 없음) ─
-  {id:'LGD01',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD01.nm'),cat:'대형',
+  {id:'LGD01',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD01.nm'),cat:'large',
    desc:I18N.t('craft.LGD01.desc'),
    mats:[{id:'R06',qty:25},{id:'R08',qty:15},{id:'R07',qty:10},{id:'R04',qty:8}]},
-  {id:'LGD02',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD02.nm'),cat:'대형',
+  {id:'LGD02',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD02.nm'),cat:'large',
    desc:I18N.t('craft.LGD02.desc'),
    mats:[{id:'R05',qty:25},{id:'R08',qty:15},{id:'R03',qty:10},{id:'R07',qty:8}]},
-  {id:'LGD03',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD03.nm'),cat:'대형',
+  {id:'LGD03',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD03.nm'),cat:'large',
    desc:I18N.t('craft.LGD03.desc'),
    mats:[{id:'R07',qty:25},{id:'R08',qty:15},{id:'R01',qty:10},{id:'R06',qty:8}]},
   // ─ 흡혈 자동 수리 로봇 (전설/신화) — 기존 전설/신화 파츠 재료의 절반 ─
