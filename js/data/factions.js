@@ -1,10 +1,11 @@
 // ═══ FACTION DATA ═════════════════════════════════════════════════
 // 게임 내 7개 팩션(문명) 정의. ring은 갤럭시 내 거리(0=중심, 6=외곽).
+// nm/로어 텍스트는 i18n_dict.js의 'faction.<id>.*' / 'special.<id>.*' 키로 다국어화.
 const FACTION={
-  F01:{nm:'수퍼비아',col:'#4a90d9',ring:2},F02:{nm:'아우레우스',col:'#d4af37',ring:3},
-  F03:{nm:'메카니카',col:'#7ecbce',ring:4},F04:{nm:'크리그',col:'#c0392b',ring:5},
-  F05:{nm:'치크스',col:'#8b00ff',ring:1,hostile:true},F06:{nm:'지구저항군',col:'#2ecc71',ring:6},
-  F07:{nm:'보이드',col:'#00f3ff',ring:0,void:true}
+  F01:{nm:I18N.t('faction.F01.nm'),col:'#4a90d9',ring:2},F02:{nm:I18N.t('faction.F02.nm'),col:'#d4af37',ring:3},
+  F03:{nm:I18N.t('faction.F03.nm'),col:'#7ecbce',ring:4},F04:{nm:I18N.t('faction.F04.nm'),col:'#c0392b',ring:5},
+  F05:{nm:I18N.t('faction.F05.nm'),col:'#8b00ff',ring:1,hostile:true},F06:{nm:I18N.t('faction.F06.nm'),col:'#2ecc71',ring:6},
+  F07:{nm:I18N.t('faction.F07.nm'),col:'#00f3ff',ring:0,void:true}
 };
 
 // 팩션별 특산 재료 (행성 상점 보장 판매)
@@ -14,37 +15,37 @@ const FACTION_MATS={F01:'R07',F02:'R03',F03:'R05',F04:'R04',F05:'R02',F06:'R06',
 // 인물 도감(영웅 탭)에 영웅 8인과 함께 표시. 영웅과 동일한 형식 — 이름·발견·능력·장단점·성격·위트
 const SPECIAL_CHARS=[
   {
-    id:'NPC_BAEKGU', nm:'백구', ic:'🐕', img:'img/chars/baekgu1.png',
-    role:'AI 진돗개 · 전속 전산보좌관',
-    found:'P01 프록시마 b 격납고. 100년 전 사령관이 동면에 들어간 직후부터 형광등 3번 갈며 폐지 줍던 그 자리.',
-    stats:'분석력 무한대 / 잔소리 +100 / 충성도 99.7% (동기화율과 같은 수치)',
-    pros:'은하 항법·무역·전투 모든 데이터 즉시 분석. 위협 자동 경고. 19가지 표정으로 감정 표현.',
-    cons:'가끔 농담이 평행우주 수준의 비약. 형광등 깜빡이면 외로워한다.',
-    personality:'친근·과보호·다정한 잔소리꾼. 100년의 고독을 농담으로 풀어낸다. 사령관을 "주인"이라 부르지 않고 이름으로 부른다.',
-    creator:'이휘소 박사 — 입자물리 방정식이 유출돼 만들어진 자가 학습 AI. 본인은 알고 있었을지도, 아닐지도.',
-    quip:'백구가 없으면 우주는 너무 조용하다. 백구가 있으면 우주가 조금 시끄럽다. 후자가 낫다.'
+    id:'NPC_BAEKGU', nm:I18N.t('special.baekgu.nm'), ic:'🐕', img:'img/chars/baekgu1.png',
+    role:I18N.t('special.baekgu.role'),
+    found:I18N.t('special.baekgu.found'),
+    stats:I18N.t('special.baekgu.stats'),
+    pros:I18N.t('special.baekgu.pros'),
+    cons:I18N.t('special.baekgu.cons'),
+    personality:I18N.t('special.baekgu.personality'),
+    creator:I18N.t('special.baekgu.creator'),
+    quip:I18N.t('special.baekgu.quip')
   },
   {
-    id:'NPC_URSA', nm:'우르사 메이저', ic:'💀', img:'img/chars/ursa.png',
-    role:'치크스 친위대 기함 · 최종 보스 (ACT 4)',
-    found:'지구(P31) 상공 — 100년간 인류를 봉쇄해온 거대 기함. 치크스 행성 5개 격파 후 도전 가능.',
-    stats:'HP 10,000,000 / ATT 6,000 / 실드 300,000 / 신화 파츠 4종 풀세트 장착',
-    pros:'압도적 화력·내구도. 격파 후 나포하면 아군 신화 함선. 친위대 5척(알파·베타·감마·델타·엡실론) 호위.',
-    cons:'덩치 큰 만큼 빠른 함대의 협공에 약하다. 100년 봉쇄에 자만한 점이 약점.',
-    personality:'고대 함선 의식이 깃든 존재. 무겁고 짧게 말한다. 마지막 대사로 "나보다 더 큰 위협이 있다"를 남기고 침묵.',
-    creator:'치크스 군체가 1세대 모선을 합쳐 만든 의식체. 본인은 자신이 함선이라 생각 안 한다.',
-    quip:'100년 동안 인류를 봉쇄한 함선이 정작 지구가 어떤지는 한 번도 못 봤다. 그게 가장 무섭다.'
+    id:'NPC_URSA', nm:I18N.t('special.ursa.nm'), ic:'💀', img:'img/chars/ursa.png',
+    role:I18N.t('special.ursa.role'),
+    found:I18N.t('special.ursa.found'),
+    stats:I18N.t('special.ursa.stats'),
+    pros:I18N.t('special.ursa.pros'),
+    cons:I18N.t('special.ursa.cons'),
+    personality:I18N.t('special.ursa.personality'),
+    creator:I18N.t('special.ursa.creator'),
+    quip:I18N.t('special.ursa.quip')
   },
   {
-    id:'NPC_BLACKFALCON', nm:'블랙팔콘', ic:'🌑', img:'img/chars/void_hiden.png',
-    role:'보이드의 사자(使者) · 히든 보스 (ACT 5)',
-    found:'균열지대 P30 제타 레티쿨리. 모든 보이드 행성 100% 투자 시 블랙홀 너머에서 모습을 드러낸다.',
-    stats:'HP 9,700,000 / ATT 32,000 / 실드 300,000 / 능력치 우르사 메이저의 2배 — 신화 최고 등급',
-    pros:'빛조차 흡수하는 검은 외피. 차원 절단광선으로 비기함 1척씩 즉시 소멸. 격파 후 나포하면 검은 팔콘 — 신화 정찰함.',
-    cons:'1000년의 침묵 때문에 인간 함대의 변칙 전술에 익숙하지 않다.',
-    personality:'1000년 단위로 사고. 짧은 메시지("재미있군"·"네가 원하는걸 해라")로 의사 표현. 감정이 없는 듯, 모든 감정이 있는 듯.',
-    creator:'보이드 차원의 자가증식 결정체가 1000년에 걸쳐 함체로 응결. 만든 자가 없을지도 모른다.',
-    quip:'그가 "재미있다"고 한 마디 하면, 그 한 마디로 100년이 끝난다. 우리는 그 한 마디를 들으려고 100년을 산다.'
+    id:'NPC_BLACKFALCON', nm:I18N.t('special.blackfalcon.nm'), ic:'🌑', img:'img/chars/void_hiden.png',
+    role:I18N.t('special.blackfalcon.role'),
+    found:I18N.t('special.blackfalcon.found'),
+    stats:I18N.t('special.blackfalcon.stats'),
+    pros:I18N.t('special.blackfalcon.pros'),
+    cons:I18N.t('special.blackfalcon.cons'),
+    personality:I18N.t('special.blackfalcon.personality'),
+    creator:I18N.t('special.blackfalcon.creator'),
+    quip:I18N.t('special.blackfalcon.quip')
   }
 ];
 
@@ -176,74 +177,11 @@ const SYSTEM_GUIDE=[
 // ═══ FACTION LORE — 문명 도감 ════════════════════════════════════════
 // 각 팩션의 대표 행성, 시작 행성, 환경, 특징, 주의사항, 외계인 생김새, 위트 의견
 const FACTION_LORE={
-  F01:{
-    icon:'👑',
-    rep:'P01',                 // 대표 행성
-    start:'P01 프록시마 b',
-    env:'온화한 대기와 풍부한 광물이 공존하는 안정 궤도. 지구와 가장 닮은 환경이라 100만 년 전 인류와 유사한 형태로 분화한 영장류 후손이 정착했다. 풍요로움이 위계 사회를 빨리 만들었다.',
-    traits:'세금·격식·혈통을 중시한다. 가문별 색상의 깃발이 곳곳에 걸려 있고, 무역도 의례의 일부로 본다. 와인 잔을 든 채 협상한다.',
-    warn:'무례한 말투·낮은 명성은 즉시 세금 폭탄. 흙 묻은 선체로 착륙하면 입항료가 두 배. 인사 한 마디 잘못하면 외곽 격납고로 안내된다.',
-    look:'키 큰 인간형. 길고 매끈한 얼굴, 창백한 푸른 피부, 은백색 모발. 옷자락이 길고 장신구가 많아 항상 살짝 흔들린다.',
-    quip:'와인을 들고 협상하면 가격이 떨어진다. 와인이 없으면 가격이 올라간다. 결론 — 와인을 늘 들고 다닌다.'
-  },
-  F02:{
-    icon:'💰',
-    rep:'P06',
-    start:'P06 넥서스 프라임',
-    env:'쌍성계 사이 안정된 라그랑주 점. 빛이 강해 태양광 발전 효율 극상이라 일찍부터 에너지 잉여 → 잉여가 거래로, 거래가 통화로, 통화가 문명으로. 24시간 거래소가 돌아간다.',
-    traits:'크레딧이 곧 권력. 모든 관계가 계약서로 기록된다. 친구 사이에도 신용 점수가 있다. 장영실 같은 천재 발명가도 여기서 발견됐다.',
-    warn:'사기·투기·고리대가 합법. 낯선 투자 권유 99%는 함정. 신원 미상 상대와의 거래는 영혼 단위로 계약서 작성된다.',
-    look:'중간 키의 인간형. 황금색 홍채, 옅은 갈색 피부, 정장 같은 외피. 손가락이 길고 가늘어 숫자 계산이 빠르다.',
-    quip:'길에서 인사를 하면 명함을 받는다. 명함을 두 번 받으면 동업 제안이 들어온다. 세 번 받으면 도망쳐야 한다.'
-  },
-  F03:{
-    icon:'⚙️',
-    rep:'P09',
-    start:'P09 TRAPPIST-1e',
-    env:'7개의 행성이 일렬로 도는 항성계. 강한 전자기장과 풍부한 금속 자원이 결합돼, 생명체가 진화하기 전에 자가복제 기계가 먼저 자리를 잡았다. 로봇이 시민권을 보유한다.',
-    traits:'AI와 자동화가 사회 근간. 모든 일이 24시간 돌아간다. 인간형·기계형·하이브리드형 시민이 동등한 권리. 효율성을 종교처럼 숭배.',
-    warn:'전기 과부하 구역에서 실드 없이 걸으면 전자 장비 즉시 먹통. 로봇에게 농담을 거는 건 자유지만 응답은 64페이지 분석 보고서로 돌아온다.',
-    look:'유기체 65% + 기계 35% 하이브리드. 한쪽 눈이 카메라 렌즈, 한쪽 손이 다관절 그리퍼. 머리에서 LED가 깜빡인다.',
-    quip:'그들에게 "느긋하게 쉬세요"라고 했더니 "느긋함의 정의는 무엇입니까?"라는 답이 돌아왔다. 그 행성에서 휴가를 보내는 건 추천하지 않는다.'
-  },
-  F04:{
-    icon:'⚔️',
-    rep:'P13',
-    start:'P13 케플러-22b',
-    env:'활화산 4개와 거대 운석대가 끊임없이 충돌하는 격동 행성. 약한 자가 살아남을 수 없는 환경이라 모든 생명이 갑각·근육·반사신경을 극단적으로 발달시켰다. 전투력이 곧 지위.',
-    traits:'결투로 직위가 결정된다. 도전을 거절하면 명성이 떨어진다. 군사 시설이 곳곳에 있고 어린이도 일찍부터 검술을 배운다. 호레이쇼 넬슨도 이곳에 정착했다.',
-    warn:'악수를 청하면 팔씨름으로 이어진다. "약해 보이는" 외관은 세금 ×2. "강해 보이는" 외관은 결투 도전 ×3. 어느 쪽이든 피곤하다.',
-    look:'단단한 외골격을 가진 인간형. 키 2미터, 어깨가 넓고 손에 짧은 가시. 붉은 피부와 황갈색 눈. 평상복도 갑옷 같다.',
-    quip:'그들에게 "어떻게 지내?"라고 묻는 건 "한 판 붙자"는 뜻이다. 그래서 나는 그냥 손을 주머니에 넣고 다닌다.'
-  },
-  F05:{
-    icon:'💀',
-    rep:'P17',
-    start:'P17 시리우스 베타 (TOI-700)',
-    env:'붕괴된 거대 가스 행성의 잔해에서 진화한 군체형 유기체. 행성 표면 전체가 살아있는 생체 조직으로 덮였고, 개체와 군체의 경계가 사라졌다. "행성이 곧 종족"이라는 말이 가장 잘 어울린다.',
-    traits:'적대적. 변이를 통해 진화한다. 친위대 기함 우르사 메이저가 100년간 지구를 봉쇄했다. 의사 결정은 군체 공명으로 이루어진다.',
-    warn:'⚠️ 모든 행성이 적대. 착륙 시 즉시 전투. 변이 포자가 선체에 달라붙어 시간차 침투 — 도주 후에도 검역 필수.',
-    look:'곤충형. 보라색 갑각, 6개의 다관절 다리, 머리에서 더듬이 4개. 단일 개체는 키 1.5미터지만 거대 군체는 산만큼 자란다. 인간 언어로 번역되지 않는다.',
-    quip:'그들과 협상은 불가능하다. 협상 자리에 갔더니 나를 먹으려고 했다. 빠르게 떠났다.'
-  },
-  F06:{
-    icon:'🌍',
-    rep:'P22',
-    start:'P22 지구 (태양계, 봉쇄됨)',
-    env:'우르사 메이저 함대에 100년간 봉쇄당한 인류의 마지막 거점. 표면은 황무지가 됐지만 지하 벙커 도시에서 저항이 계속된다. 지하의 어둠이 결의를 단단하게 만들었다.',
-    traits:'인류 저항군. 게릴라전·정보전·잠입 작전이 특기. 이순신이 지하 벙커에서 해도(海圖)를 그리며 우주 전술을 연구한다. 자원은 부족하지만 의지는 무한.',
-    warn:'위치 극비. 입장 코드 없이 접근하면 즉시 적으로 분류. 통신 도중 단어 한 마디만 틀려도 회선이 끊긴다. 친구라고 우기지 말 것.',
-    look:'우리(인류)다. 100년의 지하 생활로 안색이 창백하지만 눈빛은 살아있다. 군복 차림, 헬멧 옆에 가족 사진을 끼우고 다닌다.',
-    quip:'지하 벙커에 들어가면 환영주는 따뜻한 차 한 잔. 잔을 비우기 전에 내가 어느 편인지를 세 번쯤 묻는다. 답하기 전에 차가 식는다.'
-  },
-  F07:{
-    icon:'🌀',
-    rep:'P30',
-    start:'P30 제타 레티쿨리 (균열 최심부)',
-    env:'은하 균열의 깊은 곳, 시공간이 일정하지 않은 영역. 과거와 미래가 같은 방에 있는 듯한 곳에서 진화한 존재들이라 시간 감각이 우리와 다르다. 아인슈타인이 시간 역행을 연구한 행성.',
-    traits:'1000년 단위로 사고한다. 보이드 크리스탈을 화폐 대신 의식 단위로 거래. 블랙팔콘이 이들의 사자(使者). "재미있다"는 한마디로 100년을 평가한다.',
-    warn:'⚠️ 세율 ₡50,000/턴. 시공간이 불안정해 같은 행성에 두 번 착륙하면 다른 위치일 수 있다. 시간 역행으로 판단력이 흐려진다.',
-    look:'반투명 액체 같은 형상. 빛이 통과하면 무지개로 굴절. 형태가 일정하지 않아 매번 다른 모습으로 보인다. 눈에 해당하는 부분이 별처럼 깜빡인다.',
-    quip:'그들과 대화하면 어제 한 말의 답을 내일 듣게 된다. 가끔 답이 먼저 온다. 그래도 답이 오긴 한다. 그게 어딘가.'
-  }
+  F01:{icon:'👑',rep:'P01',start:I18N.t('faction.F01.start'),env:I18N.t('faction.F01.env'),traits:I18N.t('faction.F01.traits'),warn:I18N.t('faction.F01.warn'),look:I18N.t('faction.F01.look'),quip:I18N.t('faction.F01.quip')},
+  F02:{icon:'💰',rep:'P06',start:I18N.t('faction.F02.start'),env:I18N.t('faction.F02.env'),traits:I18N.t('faction.F02.traits'),warn:I18N.t('faction.F02.warn'),look:I18N.t('faction.F02.look'),quip:I18N.t('faction.F02.quip')},
+  F03:{icon:'⚙️',rep:'P09',start:I18N.t('faction.F03.start'),env:I18N.t('faction.F03.env'),traits:I18N.t('faction.F03.traits'),warn:I18N.t('faction.F03.warn'),look:I18N.t('faction.F03.look'),quip:I18N.t('faction.F03.quip')},
+  F04:{icon:'⚔️',rep:'P13',start:I18N.t('faction.F04.start'),env:I18N.t('faction.F04.env'),traits:I18N.t('faction.F04.traits'),warn:I18N.t('faction.F04.warn'),look:I18N.t('faction.F04.look'),quip:I18N.t('faction.F04.quip')},
+  F05:{icon:'💀',rep:'P17',start:I18N.t('faction.F05.start'),env:I18N.t('faction.F05.env'),traits:I18N.t('faction.F05.traits'),warn:I18N.t('faction.F05.warn'),look:I18N.t('faction.F05.look'),quip:I18N.t('faction.F05.quip')},
+  F06:{icon:'🌍',rep:'P22',start:I18N.t('faction.F06.start'),env:I18N.t('faction.F06.env'),traits:I18N.t('faction.F06.traits'),warn:I18N.t('faction.F06.warn'),look:I18N.t('faction.F06.look'),quip:I18N.t('faction.F06.quip')},
+  F07:{icon:'🌀',rep:'P30',start:I18N.t('faction.F07.start'),env:I18N.t('faction.F07.env'),traits:I18N.t('faction.F07.traits'),warn:I18N.t('faction.F07.warn'),look:I18N.t('faction.F07.look'),quip:I18N.t('faction.F07.quip')}
 };
