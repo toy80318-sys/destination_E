@@ -95,6 +95,14 @@ I18N.register({
   'boot.preparing': { ko: '우주를 준비하는 중...', en: 'Preparing the universe...' },
   'boot.restored':  { ko: '세이브 복원 완료 ({count}개)', en: 'Restored {count} save(s)' },
 
+  // 함선 등급 enum 표시 (데이터 비교는 한국어 enum 유지, 표시는 I18N.tier()로 변환)
+  'tier.small':       { ko: '소형', en: 'Small' },
+  'tier.medium':      { ko: '중형', en: 'Medium' },
+  'tier.large':       { ko: '대형', en: 'Large' },
+  'tier.mythic':      { ko: '신화', en: 'Mythic' },
+  'tier.classSuffix': { ko: '급',   en: '-class' },
+  'ship.capturedLabel': { ko: '{tier}급 나포함선', en: '{tier}-class Captured Ship' },
+
   // 퀘스트 보상 — 전설급 동료 (quests.js: QUEST_LEGEND_CREW)
   'quest.crew.QL01.nm':   { ko: '가브리엘 드 클리포드',           en: 'Gabriel de Clifford' },
   'quest.crew.QL01.desc': { ko: '우주 마법사. 실드 재생 +30%.',    en: 'Space mage. Shield regen +30%.' },

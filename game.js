@@ -528,7 +528,7 @@ function updateFleetBar(){
         ${imgOrEmoji(shipImgSrc(s),tierIc,44,44,'border-radius:5px;background:rgba(0,0,0,.5);flex-shrink:0',shipLoreKey(s))}
         <div style="min-width:0;flex:1;overflow:hidden">
           <div style="color:${fc};font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlagship?'⚑ ':''}${s.nm||'함선'}</div>
-          <div style="color:var(--muted);font-size:10px">${s.tier}</div>
+          <div style="color:var(--muted);font-size:10px">${I18N.tier(s.tier)}</div>
           <div style="display:flex;gap:5px">
             <span style="font-size:9px;color:var(--red)">ATT ${_att}</span>
             <span style="font-size:9px;color:var(--cyan)">ENG ${_tec}</span>
@@ -595,7 +595,7 @@ function showShipDetailModal(idx){
       ${imgOrEmoji(shipImgSrc(s),tierIc,144,144,'border-radius:10px;background:rgba(0,0,0,.6);flex-shrink:0;border:1px solid '+fc+'66',shipLoreKey(s))}
       <div style="flex:1;min-width:0">
         <div style="font-size:19px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?'⚑ 기함 ':''}${s.nm}</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">${s.tier}</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">${I18N.tier(s.tier)}</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:10px">
           <span style="color:var(--red)">⚔️ ATT ${ATT}</span>
           <span style="color:var(--blue)">🔮 INT ${INT2}</span>
@@ -1997,7 +1997,7 @@ function _formatEnemyPreview(enemies,opts){
     const hpCol=hpRatio>=1.2?'var(--red)':hpRatio>=0.85?'var(--yellow)':'var(--green)';
     const atkCol=atkRatio>=1.2?'var(--red)':atkRatio>=0.85?'var(--yellow)':'var(--green)';
     return`<tr style="border-top:1px solid rgba(255,255,255,.05)">
-      <td style="padding:4px 6px;color:var(--txt);font-size:12px">${lbl}<div style="font-size:10px;color:var(--dim)">${g.tier}</div></td>
+      <td style="padding:4px 6px;color:var(--txt);font-size:12px">${lbl}<div style="font-size:10px;color:var(--dim)">${I18N.tier(g.tier)}</div></td>
       <td style="padding:4px 6px;font-size:12px;color:${hpCol};text-align:right">${g.hp.toLocaleString()}<span style="color:var(--dim)">/${g.sh.toLocaleString()}</span></td>
       <td style="padding:4px 6px;font-size:12px;color:${atkCol};text-align:right">${g.atk}</td>
       <td style="padding:4px 6px;font-size:12px;color:var(--purple);text-align:right">${g.intl}</td>
@@ -4636,7 +4636,7 @@ function renderShipTab(body){
       return `<div style="background:var(--card);border:1px dashed ${fc};border-radius:8px;padding:10px;display:flex;gap:12px;align-items:center;margin-bottom:8px">
         <div style="width:80px;height:80px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${imgOrEmoji(imgS,tierIc,76,76,'border-radius:5px;object-fit:contain',shipLoreKey(rs))}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:bold;color:${fc}">${tierIc} ${rs.nm} <span style="font-size:11px;color:var(--dim);font-weight:normal">[${rs.tier}]</span></div>
+          <div style="font-size:14px;font-weight:bold;color:${fc}">${tierIc} ${rs.nm} <span style="font-size:11px;color:var(--dim);font-weight:normal">[${I18N.tier(rs.tier)}]</span></div>
           <div style="font-size:11px;color:var(--dim);margin-top:2px">HP ${(rs.maxHP||0).toLocaleString()} · SH ${(rs.maxSH||0).toLocaleString()} · ATT ${rs.ATT||rs.atk||0}</div>
           ${rs.qualityLabel?`<div style="font-size:11px;color:${fc};margin-top:2px">${rs.qualityLabel} (×${(rs.quality||1).toFixed(2)})</div>`:''}
         </div>
@@ -4644,7 +4644,7 @@ function renderShipTab(body){
           ${_isGarage?`${G.fleet.length<16?`<button class="btn btn-sm" style="font-size:10px;padding:3px 8px;border-color:var(--green);color:var(--green);background:rgba(46,204,113,.12);font-weight:bold" onclick="promoteReserveShip(${ri})" title="선발 편대에 빈 자리 있음 → 즉시 승급">📈 선발로 올리기 (선발 ${G.fleet.length}/16)</button>`:'<span style="font-size:10px;color:var(--dim);text-align:center;padding:2px">선발 16척 가득</span>'}
           <select id="resvSwap_${ri}" style="background:rgba(0,0,0,.5);color:var(--txt);border:1px solid var(--bdr);border-radius:4px;padding:3px 6px;font-size:11px;font-family:inherit">
             <option value="">교체할 함선 선택...</option>
-            ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${af.tier}] ${af.nm}</option>`).join('')}
+            ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${I18N.tier(af.tier)}] ${af.nm}</option>`).join('')}
           </select>
           <button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 8px" onclick="swapReserveShip(${ri})">🔄 선발과 교체</button>`:''}
           <button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 8px" onclick="discardReserveShip(${ri})" title="후보 함선 매각 — 정가 80% 환급 + 파츠/크루 회수">💰 매각</button>
@@ -4896,7 +4896,7 @@ function renderShipTab(body){
           <div style="display:flex;align-items:center;gap:8px">
             <span style="font-size:17px;font-weight:bold;color:${isFlagship?'var(--cyan)':'#ccd6f6'}">${s.nm}</span>
             ${isFlagship?'<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 5px">⭐기함</span>':''}
-            <span style="font-size:11px;color:${tierCol};border:1px solid ${tierCol};border-radius:3px;padding:1px 5px">${s.tier}</span>
+            <span style="font-size:11px;color:${tierCol};border:1px solid ${tierCol};border-radius:3px;padding:1px 5px">${I18N.tier(s.tier)}</span>
           </div>
           <span style="font-size:13px;font-weight:bold;color:${hpC}">HP ${hpP}%${shP>0?' | 실드 '+shP+'%':''}</span>
         </div>
@@ -5022,7 +5022,7 @@ function renderShipTab(body){
           return `<div style="display:flex;gap:0;min-height:160px">
             <div style="width:160px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px">
               <div style="width:130px;height:110px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,108,108,'border-radius:6px;object-fit:contain',shipLoreKey(s))}</div>
-              <span style="font-size:10px;color:${tierCol};font-weight:bold">${s.tier}급 LOY:${s.LOY||80}</span>
+              <span style="font-size:10px;color:${tierCol};font-weight:bold">${I18N.tier(s.tier)}${I18N.t('tier.classSuffix')}LOY:${s.LOY||80}</span>
               <div style="width:100%;padding:0 2px">
                 <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px"><span style="font-size:9px;color:var(--dim);width:14px">HP</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${hpP}%;background:${hpC};height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${hpP}%</span></div>
                 ${s.maxSH>0?`<div style="display:flex;align-items:center;gap:4px"><span style="font-size:9px;color:var(--dim);width:14px">SH</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${shP}%;background:var(--blue);height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${shP}%</span></div>`:''}
@@ -5040,7 +5040,7 @@ function renderShipTab(body){
           <!-- Col 1: 함선 이미지 + 정보 -->
           <div style="width:165px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px" title="${(s.desc||'').replace(/"/g,'&quot;')}&#10;HP:${s.maxHP} SH:${s.maxSH}&#10;ATT:${s.ATT} SHD:${s.INT} ENG:${s.TEC}">
             <div style="width:140px;height:120px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,120,120,'border-radius:8px;object-fit:contain',shipLoreKey(s))}</div>
-            <span style="font-size:10px;color:${tierCol};font-weight:bold">${s.tier}급 ${(s.LOY||80)<=10?'⚠️':(s.LOY||80)>=100?'✨':''}LOY:${s.LOY||80}</span>
+            <span style="font-size:10px;color:${tierCol};font-weight:bold">${I18N.tier(s.tier)}${I18N.t('tier.classSuffix')}${(s.LOY||80)<=10?'⚠️':(s.LOY||80)>=100?'✨':''}LOY:${s.LOY||80}</span>
             <div style="width:100%;padding:0 2px">
               <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px"><span style="font-size:9px;color:var(--dim);width:14px">HP</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${hpP}%;background:${hpC};height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${hpP}%</span></div>
               ${s.maxSH>0?`<div style="display:flex;align-items:center;gap:4px"><span style="font-size:9px;color:var(--dim);width:14px">SH</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${shP}%;background:var(--blue);height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${shP}%</span></div>`:''}
@@ -5132,7 +5132,7 @@ function renderShipTab(body){
           // 이름 + 티어 배지
           '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">'+
             '<span style="font-size:12px;font-weight:bold;color:'+(isFlagship?'var(--cyan)':tc)+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+s.nm+'">'+(isFlagship?'⭐ ':'')+shipDisplayName(s)+'</span>'+
-            '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+s.tier+'</span>'+
+            '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+I18N.tier(s.tier)+'</span>'+
           '</div>'+
           // 상태
           '<div style="font-size:10px;color:var(--green)">HP '+hpP+'%'+(shP>0?' · 실드 '+shP+'%':'')+'</div>'+
@@ -5238,7 +5238,7 @@ function renderShipTab(body){
                 // 이름 + 티어 배지
                 '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">'+
                   '<span style="font-size:12px;font-weight:bold;color:'+tc+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+s.nm+'">'+s.nm+'</span>'+
-                  '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+s.tier+'</span>'+
+                  '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+I18N.tier(s.tier)+'</span>'+
                 '</div>'+
                 // 재고 상태
                 (lvLock
@@ -5937,7 +5937,7 @@ function renderCargoOnlyTab(body){
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
       <div style="width:64px;flex-shrink:0;text-align:center">
         ${imgOrEmoji(shipImgSrc(s),tierIc,60,60,'border-radius:6px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:cover',shipLoreKey(s))}
-        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:3px">${s.tier}</div>
+        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:3px">${I18N.tier(s.tier)}</div>
       </div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
@@ -6044,7 +6044,7 @@ function renderShipSkinTab(body){
       <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',48,48,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
-        <div style="font-size:10px;color:var(--dim)">${s.tier}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
+        <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
       </div>
     </div>`;
   }).join('');
@@ -6187,7 +6187,7 @@ function renderShipEnhanceTab(body){
       <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',48,48,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
-        <div style="font-size:10px;color:var(--dim)">${s.tier}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
+        <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
       </div>
     </div>`;
   }).join('');
@@ -6523,7 +6523,7 @@ function renderFleetFormationTab(body){
           const dHp=st.HP-(s.maxHP||0),dDef=st.DEF-(s.DEF||0);
           const hpDelta=dHp>0?`<span style="color:var(--green)">+${dHp}</span>`:'';
           const defDelta=dDef>0?`<span style="color:var(--green)">+${dDef}</span>`:'';
-          return `<div style="font-size:10px;color:var(--dim)">${s.tier} · HP <span style="color:var(--txt);font-weight:bold">${st.HP}</span>${hpDelta} · DEF <span style="color:var(--txt);font-weight:bold">${st.DEF}</span>${defDelta}</div>`;
+          return `<div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)} · HP <span style="color:var(--txt);font-weight:bold">${st.HP}</span>${hpDelta} · DEF <span style="color:var(--txt);font-weight:bold">${st.DEF}</span>${defDelta}</div>`;
         })()}
         <div style="font-size:10px;color:${typeof slot==='number'?'var(--cyan)':'var(--dim)'};margin-top:2px">📍 ${slotLbl}</div>
       </div>
@@ -12273,7 +12273,7 @@ function showCodexShipModal(shipId){
       </div>
       <div>
         <div style="font-size:18px;font-weight:bold;color:${fc}">${tierIc} ${s.nm}</div>
-        <div style="font-size:12px;color:var(--dim);margin-top:2px">${s.tier} · ₡${(s.price||0).toLocaleString()}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:2px">${I18N.tier(s.tier)} · ₡${(s.price||0).toLocaleString()}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;font-size:11px">
           <span style="color:var(--red)">⚔️ ATT:${s.ATT}</span>
           <span style="color:var(--blue)">🛡 SHD:${s.INT}</span>
@@ -12354,7 +12354,7 @@ function renderCodexTab(body){
         ${capturedShips.map(s=>`<div style="background:var(--card);border:1px solid rgba(255,136,68,.4);border-radius:8px;padding:8px;text-align:center;min-height:148px">
           <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">${imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',78,78,'')}</div>
           <div style="font-size:12px;font-weight:bold;color:var(--txt);line-height:1.2">${s.nm}</div>
-          <div style="font-size:10px;color:var(--dim);margin-top:2px">${s.tier}</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.tier(s.tier)}</div>
           <div style="font-size:10px;margin-top:2px;color:#ff8844">🏴 나포</div>
         </div>`).join('')}
       </div>
@@ -13177,7 +13177,8 @@ function _showAsteroidShipPicker(destPid, onPick){
   let cardsHtml='';
   (G.fleet||[]).forEach((s,idx)=>{
     const t=s.tier||'소형';
-    const tierBadge=t==='소형'?'<span style="color:#66ddff">소형</span>':t==='중형'?'<span style="color:#ffcc66">중형</span>':'<span style="color:#ff88cc">대형</span>';
+    const _tcol=t==='소형'?'#66ddff':t==='중형'?'#ffcc66':'#ff88cc';
+    const tierBadge='<span style="color:'+_tcol+'">'+I18N.tier(t)+'</span>';
     const _hp=s.maxHP||s.HP||1000;
     const _sh=s.maxSH||300;
     const _att=s.ATT||30;
@@ -17134,7 +17135,7 @@ function _finishCombat(){
       const enemyCount=_enemyCountSnap;
       items.push({ic:'☠️',nm:'격파 적함',type:_kindLbl,color:'var(--red)',stats:`${enemyCount}척 전멸`,desc:'적 함대 전원 격파 완료'});
       _capturedShips.forEach(s=>{
-        items.push({ic:'🏴',nm:s.nm,type:s.tier+'급 나포함선',color:'#ff8844',stats:`ATT+${s.ATT} HP+${s.maxHP} (충성도 35%)`,desc:'전투 중 무력화 후 편대 합류 — 정비소에서 크루 배치 및 충성도 관리 필요'});
+        items.push({ic:'🏴',nm:s.nm,type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:`ATT+${s.ATT} HP+${s.maxHP} (충성도 35%)`,desc:'전투 중 무력화 후 편대 합류 — 정비소에서 크루 배치 및 충성도 관리 필요'});
       });
       if(_autoSoldCount>0){
         items.push({ic:'💰',nm:`나포 거절 — 자동 매각 ${_autoSoldCount}척`,type:'즉시 환금',color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:'편대편성 「나포 거절」 ON 상태 → 나포 함선을 받지 않고 즉시 매각하여 크레딧으로 환산.'});

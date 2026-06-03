@@ -60,6 +60,15 @@ window.I18N = (function () {
   function getLang() { return _lang; }
   function has(key) { return !!_dict[key]; }
 
+  // 한국어 tier enum('소형'/'중형'/'대형'/'신화') → 번역. 데이터 비교(예: s.tier==='소형')는 한국어 enum 유지.
+  // 사용: I18N.tier(ship.tier) — UI 표시 사이트에서만 호출
+  const _TIER_KEY = { '소형': 'tier.small', '중형': 'tier.medium', '대형': 'tier.large', '신화': 'tier.mythic' };
+  function tier(value) {
+    if (!value) return value;
+    const k = _TIER_KEY[value];
+    return k ? t(k) : value;
+  }
+
   function register(dict) {
     if (!dict || typeof dict !== 'object') return;
     for (const k in dict) {
@@ -69,5 +78,5 @@ window.I18N = (function () {
     }
   }
 
-  return { t, setLang, getLang, register, has, SUPPORTED, DEFAULT_LANG };
+  return { t, setLang, getLang, register, has, tier, SUPPORTED, DEFAULT_LANG };
 })();
