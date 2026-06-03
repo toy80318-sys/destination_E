@@ -83,6 +83,26 @@ I18N.register({
   'notify.allLocalDeleted':  { ko: '🗑️ 로컬 세이브 전체 삭제',    en: '🗑️ All local saves deleted' },
   'notify.langChanged':      { ko: '🌐 언어가 변경되었습니다',     en: '🌐 Language changed' },
 
+  // ── 게임 내 빈출 notify 메시지 (G2 1차) ────────────────────────────
+  'notify.noShip':              { ko: '함선이 없습니다',                  en: 'No ships' },
+  'notify.startGameFirst':      { ko: '❌ 게임 먼저 시작하세요',           en: '❌ Start a game first' },
+  'notify.alreadyAboard':       { ko: '이미 이 함선에 탑승 중입니다',      en: 'Already aboard this ship' },
+  'notify.outOfStock':          { ko: '재고 없음',                        en: 'Out of stock' },
+  'notify.cloudModuleNotLoaded':{ ko: '클라우드 세이브 모듈 미로드',       en: 'Cloud save module not loaded' },
+  'notify.keepLastMaterial':    { ko: '📜 영입 재료 보존을 위해 1개는 남겨둡니다', en: '📜 One is kept aside to preserve recruitment material' },
+  'notify.wrongPassword':       { ko: '❌ 비밀번호가 올바르지 않습니다',    en: '❌ Incorrect password' },
+  'notify.noOwnedParts':        { ko: '보유 파츠 없음',                   en: 'No owned parts' },
+  'notify.copyFailed':          { ko: '자동 복사 실패 — 텍스트박스에서 직접 복사해주세요', en: 'Auto-copy failed — copy manually from the text box' },
+  'notify.alreadyFullyRepaired':{ ko: '이미 완전 수리 상태입니다',         en: 'Already fully repaired' },
+  'notify.alreadyMaxed':        { ko: '이미 최대 상태입니다',             en: 'Already at maximum' },
+  'notify.noCrew':              { ko: '보유 크루가 없습니다 — 가챠로 영입하세요', en: 'No crew available — recruit via gacha' },
+  'notify.notEnoughCredits':    { ko: '크레딧 부족',                       en: 'Not enough credits' },
+  'notify.shipNotFound':        { ko: '함선을 찾을 수 없습니다',           en: 'Ship not found' },
+  'notify.noEquippedParts':     { ko: '장착된 파츠 없음',                 en: 'No equipped parts' },
+  'notify.enterContent':        { ko: '내용을 입력해주세요',               en: 'Please enter content' },
+  'notify.noTempShip':          { ko: '임시함선 없음',                    en: 'No temporary ship' },
+  'notify.noEquippableParts':   { ko: '인벤토리에 장착 가능한 파츠가 없습니다', en: 'No equippable parts in inventory' },
+
   // 확인 다이얼로그
   'confirm.deleteSave':     { ko: '모든 저장 데이터를 삭제합니다. 계속하시겠습니까?', en: 'This will delete all save data. Continue?' },
   'confirm.deleteAllLocal': { ko: '모든 로컬 저장 데이터 삭제?', en: 'Delete all local save data?' },
