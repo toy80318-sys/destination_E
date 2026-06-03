@@ -93,5 +93,17 @@ I18N.register({
 
   // 부팅 화면
   'boot.preparing': { ko: '우주를 준비하는 중...', en: 'Preparing the universe...' },
-  'boot.restored':  { ko: '세이브 복원 완료 ({count}개)', en: 'Restored {count} save(s)' }
+  'boot.restored':  { ko: '세이브 복원 완료 ({count}개)', en: 'Restored {count} save(s)' },
+
+  // 퀘스트 보상 — 전설급 동료 (quests.js: QUEST_LEGEND_CREW)
+  'quest.crew.QL01.nm':   { ko: '가브리엘 드 클리포드',           en: 'Gabriel de Clifford' },
+  'quest.crew.QL01.desc': { ko: '우주 마법사. 실드 재생 +30%.',    en: 'Space mage. Shield regen +30%.' },
+  'quest.crew.QL02.nm':   { ko: '오세아누스 카터',                 en: 'Oceanus Carter' },
+  'quest.crew.QL02.desc': { ko: '전설의 우주 파일럿. 회피율+25%.', en: 'Legendary space pilot. Evasion +25%.' },
+  'quest.crew.QL03.nm':   { ko: '세이라 아크',                     en: 'Seira Ark' },
+  'quest.crew.QL03.desc': { ko: '은하 저격수. 선제 공격 확률+40%.', en: 'Galactic sniper. First-strike chance +40%.' },
+  'quest.crew.QL04.nm':   { ko: '카이사르 볼테',                   en: 'Caesar Volte' },
+  'quest.crew.QL04.desc': { ko: '전설 엔지니어. 수리비 -40%.',     en: 'Legendary engineer. Repair cost -40%.' },
+  'quest.crew.QL05.nm':   { ko: '오로라 셴',                       en: 'Aurora Shen' },
+  'quest.crew.QL05.desc': { ko: '전설 지휘관. 크루 전원 능력치+15%.', en: 'Legendary commander. All crew stats +15%.' }
 });
