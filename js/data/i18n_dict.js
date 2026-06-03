@@ -1075,6 +1075,18 @@ I18N.register({
   'notify.qtyShort':          { ko: '보유 수량 부족: {have}/{need}',
                                 en: 'Quantity short: {have}/{need}' },
 
+  // ── G41: 추가 notify 라벨 ─────────────────────────────────────────
+  'notify.shipFullDisembarkFirst':{ ko: '만석입니다 — 먼저 하선시키세요', en: 'Full — disembark someone first' },
+  'notify.noRouteHopHint':       { ko: '항로 없음. 인접 행성만 이동 가능 (전설엔진=2칸, 블링크=전체)',
+                                   en: 'No route. Only adjacent planets (Legend engine=2 hops, Blink=any)' },
+  'notify.unexploredVisitAdjFirst':{ ko: '미탐험 행성 — 먼저 인접 행성부터 방문하세요',
+                                     en: 'Unexplored planet — visit an adjacent planet first' },
+  'notify.slotNoData':           { ko: '슬롯 {n} 에 저장 데이터가 없습니다', en: 'No save data in slot {n}' },
+  'notify.loadFailErr':          { ko: '불러오기 실패: {err}',               en: 'Load failed: {err}' },
+  'notify.loginFailErr':         { ko: '로그인 실패: {err}',                 en: 'Login failed: {err}' },
+  'notify.bossStartErr':         { ko: '보스전 시작 오류: {err}',             en: 'Boss start error: {err}' },
+  'notify.queryFailErr':         { ko: '조회 실패: {err}',                   en: 'Query failed: {err}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

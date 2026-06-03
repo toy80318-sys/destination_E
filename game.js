@@ -12619,7 +12619,7 @@ function boardHeroToShip(hid){
   const s=G.fleet[shipIdx];if(!s)return;
   // 이미 다른 함선 탑승 중이면 자동 이전 (먼저 빼고 체크)
   G.fleet.forEach(sh=>{if(sh!==s&&sh.crewIds){const i=sh.crewIds.indexOf(hid);if(i>=0)sh.crewIds.splice(i,1);}});
-  if((s.crewIds||[]).length>=getMaxCrew(s)){notify('만석입니다 — 먼저 하선시키세요','err');return;}
+  if((s.crewIds||[]).length>=getMaxCrew(s)){notify(I18N.t('notify.shipFullDisembarkFirst'),'err');return;}
   if(!s.crewIds)s.crewIds=[];
   const _stBefH=getShipStats(s);
   s.crewIds.push(hid);
@@ -14644,9 +14644,9 @@ function travelTo(){
   const pd=PLANET_DEF.find(p=>p.id===pid),cost=travelCost(G.currentPlanet,pid);
   const blink=hasBlinkOnAll();
   // 블링크 엔진 없을 때 연결 항로 체크
-  if(!blink){const _maxHops=hasLegendaryEngineOnAny()?2:1;if(!isWithinHops(G.currentPlanet,pid,_maxHops)){notify('항로 없음. 인접 행성만 이동 가능 (전설엔진=2칸, 블링크=전체)','err');return;}}
+  if(!blink){const _maxHops=hasLegendaryEngineOnAny()?2:1;if(!isWithinHops(G.currentPlanet,pid,_maxHops)){notify(I18N.t('notify.noRouteHopHint'),'err');return;}}
   // 탐험되지 않은 행성은 블링크로도 이동 불가
-  if(G.planets[pid]?.fog==='L'&&!blink){notify('미탐험 행성 — 먼저 인접 행성부터 방문하세요','err');return;}
+  if(G.planets[pid]?.fog==='L'&&!blink){notify(I18N.t('notify.unexploredVisitAdjFirst'),'err');return;}
   if(G.credits<cost){notify(I18N.t('notify.travelCostShort',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;G.currentPlanet=pid;G.planets[pid].fog='A';G.stayTurns=0;if(G.planets[pid].hubProg===undefined)G.planets[pid].hubProg=0;
   // 행성 도착 시 잠금 상태 복원 + 광장(s1) 단계 자동 해금
@@ -17592,7 +17592,7 @@ function loadGame(slotN){
       if(_tryRecoverSlot(n)){snap=_getSlotInfo(n);if(snap)notify('🔄 슬롯 '+n+' 백업에서 자동 복구됨','gold');}
       else if(n===1&&_tryRecoverSlot(0)){snap=_getSlotInfo(0);if(snap)notify('🔄 레거시 슬롯 백업 복구됨','gold');}
     }
-    if(!snap){notify('슬롯 '+n+' 에 저장 데이터가 없습니다','err');return false;}
+    if(!snap){notify(I18N.t('notify.slotNoData',{n}),'err');return false;}
     Object.assign(G,snap);
     // 필수 필드 보완
     if(!G.mapPositions||!Object.keys(G.mapPositions).length){G.mapPositions=generateGalaxy(1000);G.mapConns=buildConnections(G.mapPositions);}
@@ -17625,7 +17625,7 @@ function loadGame(slotN){
       });
     }
     return true;
-  }catch(e){notify('불러오기 실패: '+e.message,'err');return false;}
+  }catch(e){notify(I18N.t('notify.loadFailErr',{err:e.message}),'err');return false;}
 }
 
 // 슬롯 카드 HTML 생성 (저장/불러오기 공용)
@@ -18499,7 +18499,7 @@ async function cloudGoogleSignIn(){
   if(!window.CloudSave){notify(I18N.t('notify.cloudModuleNotLoaded'),'err');return;}
   notify('Google 로그인 창을 엽니다...','ok');
   const r=await CloudSave.signInGoogle();
-  if(r.error)notify('로그인 실패: '+r.error,'err');
+  if(r.error)notify(I18N.t('notify.loginFailErr',{err:r.error}),'err');
   else{notify('✅ Google 연결 완료','gold');showSettingsModal();}
 }
 async function cloudPushAll(){
@@ -18542,7 +18542,7 @@ function forceUrsaBoss(){
       <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">${I18N.t('ui.forcedUrsa')}</div>
       <div style="color:var(--dim);font-size:13px;line-height:1.8">지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.<br>${I18N.t('ui.noVcConsumed')}</div>
     </div>`,
-    [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify('보스전 시작 오류: '+e.message,'err');}},cls:'btn-red'},
+    [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify(I18N.t('notify.bossStartErr',{err:e.message}),'err');}},cls:'btn-red'},
      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
@@ -19464,7 +19464,7 @@ async function devShowFeedback(){
   if(!window.CloudSave){notify('CloudSave 미초기화','err');return;}
   notify('📥 피드백 조회 중...','ok');
   const r=await CloudSave.listFeedback(200);
-  if(r.error){notify('조회 실패: '+r.error,'err');return;}
+  if(r.error){notify(I18N.t('notify.queryFailErr',{err:r.error}),'err');return;}
   const items=r.items||[];
   const escapeHtml=s=>String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
   const rows=items.map(f=>`
