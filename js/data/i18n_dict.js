@@ -210,5 +210,62 @@ I18N.register({
                       en: 'Legendary vampiric core. Restores 12% maxHP per turn + on laser fire: drains 15% HP / 12% shield.' },
   'craft.RB10.nm':   { ko: '영혼 흡수 매트릭스 ✦신화', en: 'Soul Absorption Matrix ✦Mythic' },
   'craft.RB10.desc': { ko: '신화 흡수 매트릭스. 매 턴 maxHP 18% 회복 + 레이저 발사 시 HP 20%/실드 18% 흡수 + 격침 시 부활.',
-                      en: 'Mythic absorption matrix. Restores 18% maxHP per turn + on laser fire: drains 20% HP / 18% shield + revives on destruction.' }
+                      en: 'Mythic absorption matrix. Restores 18% maxHP per turn + on laser fire: drains 20% HP / 18% shield + revives on destruction.' },
+
+  // ── 상품 (commodities.js: COMMODITIES) ────────────────────────────
+  // 일반 상품 G01~G30 — 거래용 (nm만 / desc 없음)
+  // F01 수퍼비아
+  'commodity.G01.nm': { ko: '고철 프레임',          en: 'Scrap Frame' },
+  'commodity.G02.nm': { ko: '에너지 코어',          en: 'Energy Core' },
+  'commodity.G03.nm': { ko: '오리온 위스키',        en: 'Orion Whisky' },
+  'commodity.G05.nm': { ko: '수퍼비아 중력수정',    en: 'Superbia Gravity Crystal' },
+  'commodity.G22.nm': { ko: '수퍼비아 귀족 향수',   en: 'Superbia Noble Perfume' },
+  // F02 아우레우스
+  'commodity.G04.nm': { ko: '아우레우스 금괴',      en: 'Aureus Gold Ingot' },
+  'commodity.G06.nm': { ko: 'LHS 크리스탈',         en: 'LHS Crystal' },
+  'commodity.G23.nm': { ko: '아우레우스 태양 화폐', en: 'Aureus Solar Coin' },
+  'commodity.G24.nm': { ko: '아우레우스 정보 칩',   en: 'Aureus Information Chip' },
+  // F03 메카니카
+  'commodity.G07.nm': { ko: '분열 배터리',          en: 'Fission Battery' },
+  'commodity.G09.nm': { ko: '중수소 배터리',        en: 'Deuterium Battery' },
+  'commodity.G08.nm': { ko: '메카니카 광학 렌즈',   en: 'Mechanica Optical Lens' },
+  'commodity.G25.nm': { ko: '메카니카 자동화 부품', en: 'Mechanica Automation Part' },
+  // F04 크리그
+  'commodity.G10.nm': { ko: '크리그 무기 원석',     en: 'Krieg Weapon Ore' },
+  'commodity.G12.nm': { ko: '강습 스파이크',        en: 'Assault Spike' },
+  'commodity.G11.nm': { ko: '크리그 혈철석',        en: 'Krieg Bloodstone' },
+  'commodity.G26.nm': { ko: '크리그 전투 자극제',   en: 'Krieg Combat Stimulant' },
+  // F05 치크스
+  'commodity.G16.nm': { ko: '치크스 변이 포자',     en: 'Chiks Mutation Spore' },
+  'commodity.G17.nm': { ko: '치크스 결정 파편',     en: 'Chiks Crystal Shard' },
+  'commodity.G27.nm': { ko: '치크스 뇌수액',        en: 'Chiks Brain Fluid' },
+  // F06 지구 저항군
+  'commodity.G13.nm': { ko: '저항군 군수품',        en: 'Resistance Military Supplies' },
+  'commodity.G14.nm': { ko: '전통 발효주',          en: 'Traditional Fermented Liquor' },
+  'commodity.G15.nm': { ko: '지구 철광석',          en: 'Earth Iron Ore' },
+  'commodity.G18.nm': { ko: '난중일기 영인본',      en: '"Nanjung Ilgi" Facsimile' },
+  'commodity.G28.nm': { ko: '지구 빈티지 씨앗',     en: 'Earth Vintage Seeds' },
+  // F07 보이드
+  'commodity.G19.nm': { ko: '보이드 에센스',        en: 'Void Essence' },
+  'commodity.G21.nm': { ko: '별빛 나침반',          en: 'Starlight Compass' },
+  'commodity.G20.nm': { ko: '보이드 시간 파편',     en: 'Void Time Shard' },
+  'commodity.G29.nm': { ko: '보이드 공간 수정',     en: 'Void Space Crystal' },
+  'commodity.G30.nm': { ko: '균열 지도 원석',       en: 'Rift Map Ore' },
+  // 희귀 제작 재료 R01~R08 (nm + desc)
+  'commodity.R01.nm':   { ko: '보이드 에너지 파편', en: 'Void Energy Shard' },
+  'commodity.R01.desc': { ko: '보이드 균열 행성 특산. 제작 재료.', en: 'Void rift planet specialty. Crafting material.' },
+  'commodity.R02.nm':   { ko: '치크스 결정석',      en: 'Chiks Crystalstone' },
+  'commodity.R02.desc': { ko: '치크스 전쟁 행성 특산. 제작 재료.', en: 'Chiks war planet specialty. Crafting material.' },
+  'commodity.R03.nm':   { ko: '아우레우스 태양핵',  en: 'Aureus Solar Core' },
+  'commodity.R03.desc': { ko: '아우레우스 금융 행성 특산. 제작 재료.', en: 'Aureus finance planet specialty. Crafting material.' },
+  'commodity.R04.nm':   { ko: '크리그 마그마 코어', en: 'Krieg Magma Core' },
+  'commodity.R04.desc': { ko: '크리그 행성 화산 지각 추출. 제작 재료.', en: 'Extracted from Krieg planet volcanic crust. Crafting material.' },
+  'commodity.R05.nm':   { ko: '메카니카 양자칩',    en: 'Mechanica Quantum Chip' },
+  'commodity.R05.desc': { ko: '메카니카 초정밀 나노칩. 제작 재료.', en: 'Mechanica ultra-precision nanochip. Crafting material.' },
+  'commodity.R06.nm':   { ko: '저항군 반물질',      en: 'Resistance Antimatter' },
+  'commodity.R06.desc': { ko: '지구 저항군 비밀 연구소 생산. 제작 재료.', en: 'Produced at Earth Resistance secret lab. Crafting material.' },
+  'commodity.R07.nm':   { ko: '수퍼비아 중력자',    en: 'Superbia Graviton' },
+  'commodity.R07.desc': { ko: '수퍼비아 중력 이상 지대 채취. 제작 재료.', en: 'Harvested from Superbia gravity anomaly zones. Crafting material.' },
+  'commodity.R08.nm':   { ko: '은하 혼돈 결정',     en: 'Galactic Chaos Crystal' },
+  'commodity.R08.desc': { ko: '은하 균열 최심부 희귀 결정체. 제작 재료.', en: 'Rare crystal from the deepest galactic rift. Crafting material.' }
 });
