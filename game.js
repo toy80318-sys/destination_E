@@ -568,7 +568,7 @@ function showShipDetailModal(idx){
       <span style="font-size:16px;flex-shrink:0">${c.ic||'🧑'}</span>
       <div style="min-width:0"><div style="font-size:11px;color:${RC2[c.rarity]||'#888'};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div><div style="font-size:9px;color:var(--dim)">${c.cl}</div></div>
     </div>`;
-  }).join(''):'<div style="color:var(--dim);font-size:12px;grid-column:span 2">탑승 크루 없음</div>';
+  }).join(''):`<div style="color:var(--dim);font-size:12px;grid-column:span 2">${I18N.t('ui.noCrewAboard')}</div>`;
   // 파츠
   const parts=s.parts||[];
   const catIcMap={weapon:'⚔️',missile:'🚀',shield:'🛡️',armor:'🛡',engine:'⚡'};
@@ -580,7 +580,7 @@ function showShipDetailModal(idx){
       <span style="font-size:14px;flex-shrink:0">${ci}</span>
       <div style="font-size:11px;color:${cc};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p2.nm}</div>
     </div>`;
-  }).join(''):'<div style="color:var(--dim);font-size:12px;grid-column:span 2">장착 파츠 없음</div>';
+  }).join(''):`<div style="color:var(--dim);font-size:12px;grid-column:span 2">${I18N.t('ui.noPartsEquipped')}</div>`;
   const ATT=(s.ATT||0)+(bonus.att||0)+(crewBonus.att||0);
   const INT2=(s.INT||0)+(bonus.int2||0)+(crewBonus.int2||0);
   const TEC=(s.TEC||0)+(bonus.tec||0)+(crewBonus.tec||0);
@@ -4348,7 +4348,7 @@ let _partSort='tier'; // tier | priceAsc | priceDesc | nm — 파츠 구매 정�
 let _invPartSort='tier'; // tier | priceAsc | priceDesc | nm — 보유 파츠(매각) 정렬
 function buildCrewManifest(s,idx){
   const ids=s.crewIds||[];
-  if(ids.length===0)return'<div style="font-size:11px;color:var(--dim)">탑승 크루 없음</div>';
+  if(ids.length===0)return`<div style="font-size:11px;color:var(--dim)">${I18N.t('ui.noCrewAboard')}</div>`;
   const RC={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
   const rows=ids.map((cid,ci)=>{
     const c=G.crew.find(x=>x.id===cid)||G.heroes.map(h=>({...HEROES[h],id:h,isHero:true,rarity:'S'})).find(x=>x.id===cid);
@@ -5158,7 +5158,7 @@ function renderShipTab(body){
     if(isHostile){
       content=`<div style="background:var(--card);border:1px dashed var(--red);border-radius:8px;padding:20px;text-align:center"><div style="color:var(--red)">적대구역 — 구매 불가</div></div>`;
     } else if(availParts.length===0){
-      content=`<div style="color:var(--dim);font-size:14px;text-align:center;padding:20px">파츠 재고 없음</div>`;
+      content=`<div style="color:var(--dim);font-size:14px;text-align:center;padding:20px">${I18N.t('ui.noPartsStock')}</div>`;
     } else {
       // 정렬 함수 (티어/가격 오름/내림/이름)
       const _applyPartSort=(arr)=>{
@@ -6371,7 +6371,7 @@ function renderFleetFormationTab(body){
   }
   gridWithLabels+='</div>';
   // 적 측 표시 — 1열 바로 옆에 위치하여 "1열이 가장 먼저 적과 교전" 의미를 시각화
-  const enemySide=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,60,60,.06);border:1px dashed rgba(255,60,60,.3);border-radius:8px;padding:8px;min-width:90px"><div style="font-size:34px">☠️</div><div style="font-size:11px;color:var(--red);font-weight:bold;margin-top:4px">${I18N.t('ui.enemyFleet')}</div><div style="font-size:10px;color:var(--red);margin-top:4px;line-height:1.4">⬅ 1열이<br>가장 먼저 교전</div></div>`;
+  const enemySide=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,60,60,.06);border:1px dashed rgba(255,60,60,.3);border-radius:8px;padding:8px;min-width:90px"><div style="font-size:34px">☠️</div><div style="font-size:11px;color:var(--red);font-weight:bold;margin-top:4px">${I18N.t('ui.enemyFleet')}</div><div style="font-size:10px;color:var(--red);margin-top:4px;line-height:1.4">⬅ 1열이<br>${I18N.t('ui.firstEngagement')}</div></div>`;
   // 함선 리스트 (편성 가능한 함선)
   const shipCards=G.fleet.map((s,i)=>{
     const slot=_getFormation()[s.id];
@@ -8807,7 +8807,7 @@ function renderPlanetsTab(body){
     <div style="background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(212,175,55,.04));border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <span style="font-size:22px">💰</span>
       <div style="flex:1;min-width:140px">
-        <div style="color:var(--gold);font-size:13px;font-weight:bold">턴당 전체 세금 수익</div>
+        <div style="color:var(--gold);font-size:13px;font-weight:bold">${I18N.t('ui.turnTaxIncome')}</div>
         <div style="color:var(--dim);font-size:11px;margin-top:2px">보유 행성 ${ownedCount}개 합산</div>
       </div>
       <div style="text-align:right">
@@ -10888,7 +10888,7 @@ function renderPlazaView(body){
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('plaza','🏪','행성 광장',pd?.f)}
 <div class="hub-t">${I18N.t('hub.planetPlazaT')} — ${pd?pd.nm:''}</div>
-<div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">방문 중인 행성의 시설을 이용하세요</div>
+<div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">${I18N.t('ui.visitPlanetFacility')}</div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:520px;margin:0 auto">
 ${cards.map(c=>`<button onclick="hubTab('${c.tab}')" style="background:${c.bg};border:2px solid ${c.bdr};border-radius:14px;padding:22px 14px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
 <div style="font-size:46px">${c.ic}</div>
@@ -11698,7 +11698,7 @@ function renderAuctionView(body){
   // 좌측: 내 보유 행성 카드 리스트
   const ownedList=PLANET_DEF.filter(p=>G.planets[p.id]?.owned);
   const ownedCardHtml=ownedList.length===0
-    ? `<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim);font-size:13px">보유 행성 없음<br><span style="font-size:11px">${I18N.t('ui.bidFromRight')}</span></div>`
+    ? `<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:24px;text-align:center;color:var(--dim);font-size:13px">${I18N.t('ui.noOwnedPlanets')}<br><span style="font-size:11px">${I18N.t('ui.bidFromRight')}</span></div>`
     : ownedList.map(p=>{
         const st=G.planets[p.id],f=FACTION[p.f],lv=st.commerce||0;
         const tax=calcTaxFor(p.id),investCost=Math.floor(_planetBaseTax(p)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
@@ -12471,7 +12471,7 @@ function renderCodexTab(body){
     const _discCount=F_ORDER.filter(_facDiscovered).length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">🌌</div>
-      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">문명 도감</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.civCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">발견 <span style="color:var(--cyan)">${_discCount}</span> / 전체 ${F_ORDER.length}개 문명 — 해당 문명권 행성 방문 시 해금</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">탐험도</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(_discCount/F_ORDER.length*100)}%</div></div>
@@ -12532,7 +12532,7 @@ function renderCombatLog(body){
   const flagImgSrc=flagship?shipImgSrc(flagship):null;
   const flagTierIc={소형:'🛸',중형:'🚀',대형:'🌟',전설기함:'🏮'}[flagship?.tier]||'🛸';
   body.innerHTML=`<div class="hub-scroll">${hubBanner('clog','📋','전투 기록')}<div class="hub-t">${I18N.t('hub.combatLog')}</div>
-    ${logs.length===0?'<div style="color:var(--dim);font-size:14px">전투 기록 없음</div>':
+    ${logs.length===0?`<div style="color:var(--dim);font-size:14px">${I18N.t('ui.noCombatRecords')}</div>`:
     `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">`+logs.slice().reverse().map(l=>{
       const pd=PLANET_DEF.find(p=>p.id===(l.planetId||l.pid))||PLANET_DEF.find(p=>p.nm===l.planet);
       const planetImgSrc=pd?`img/planets/${pd.id}.png`:'img/planets/P01.png';
@@ -13609,7 +13609,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
          <br><span style="color:#66ddff;font-size:11px">🏗️ 도착 행성 해금 진행도 +1 (퀘스트 1회 효과)</span>
        </div>`:
       `<div style="font-size:48px;margin-bottom:10px">💥</div>
-       <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">기함 격침</div>
+       <div style="color:#ff6666;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">${I18N.t('ui.flagshipDown')}</div>
        <div style="color:#aaa;font-size:13px;line-height:1.9;margin-bottom:10px">격파 <b>${state.kills}</b>대</div>
        <div style="color:#ffaa99;font-size:13px;line-height:1.9;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.3);border-radius:6px;padding:10px 16px">
          💸 크레딧 -₡${pen.toLocaleString()} (-3%)
@@ -15788,7 +15788,7 @@ function showAcquisitionReport(opts){
   const html=`<div style="padding:2px 2px">
     ${congratsHtml}
     ${subtitleHtml}
-    ${itemRows?`<div style="${_gridStyle}">${itemRows}</div>`:'<div style="text-align:center;color:var(--dim);padding:18px">획득 항목 없음</div>'}
+    ${itemRows?`<div style="${_gridStyle}">${itemRows}</div>`:`<div style="text-align:center;color:var(--dim);padding:18px">${I18N.t('ui.noAcquired')}</div>`}
   </div>`;
   const _onClose=opts.onClose;
   // 보스 승리 보고서 등 폭 1.1× 옵션 (opts.bossfight 전파)
@@ -18724,12 +18724,12 @@ function showBossCelebration(onDone){
   const html=`
     <div style="padding:22px 18px;text-align:center;background:radial-gradient(ellipse at center,rgba(20,20,60,.6),rgba(0,0,0,.95));border-radius:8px">
       <div style="font-size:64px;margin-bottom:8px;animation:pulse 1.4s infinite;text-shadow:0 0 30px gold,0 0 60px gold">🌍</div>
-      <div style="font-size:30px;font-weight:bold;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:8px;margin-bottom:6px;background-size:200% 100%;animation:shimmer 3s linear infinite">지구 해방</div>
+      <div style="font-size:30px;font-weight:bold;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:8px;margin-bottom:6px;background-size:200% 100%;animation:shimmer 3s linear infinite">${I18N.t('ui.earthFreedom')}</div>
       <div style="font-size:13px;color:var(--cyan);letter-spacing:3px;margin-bottom:18px">EARTH LIBERATED · 100Y SIEGE ENDED</div>
       <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;margin:18px 0;padding:14px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:10px">
         <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.turnsRequired')}</div><div style="font-size:22px;color:var(--gold);font-weight:bold">${turn}</div></div>
-        <div><div style="font-size:11px;color:var(--dim)">생존 함선</div><div style="font-size:22px;color:#66ff99;font-weight:bold">${survivors}/${fleetCount}</div></div>
-        <div><div style="font-size:11px;color:var(--dim)">영입 영웅</div><div style="font-size:22px;color:#ff99ff;font-weight:bold">${heroCount}</div></div>
+        <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.shipsAlive')}</div><div style="font-size:22px;color:#66ff99;font-weight:bold">${survivors}/${fleetCount}</div></div>
+        <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.recruitedHeroes2')}</div><div style="font-size:22px;color:#ff99ff;font-weight:bold">${heroCount}</div></div>
         <div><div style="font-size:11px;color:var(--dim)">획득 크레딧</div><div style="font-size:22px;color:var(--gold);font-weight:bold">₡${(G.credits||0).toLocaleString()}</div></div>
       </div>
       <div style="font-size:15px;color:var(--yellow);line-height:1.8;margin:14px 0;padding:14px;background:rgba(255,255,255,.02);border-left:3px solid var(--gold);text-align:left">
@@ -18815,7 +18815,7 @@ function showFinalEndingCredits(){
         </div>
       `:''}
 
-      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">최종 보스</div>
+      <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.finalBoss')}</div>
       <div style="font-size:17px;line-height:1.9;margin-bottom:40px">
         💀 ${I18N.t('speaker.ursaMajor')} — ${I18N.t('credits.ursaDesc')}<br>
         🌑 ${I18N.t('speaker.blackfalcon')} — ${I18N.t('credits.blackfalconDesc')}
@@ -19122,7 +19122,7 @@ function showEndingCredits(onDone){
           난이도: <b style="color:#fff">${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')}</b>
         </div>
 
-        <div style="color:#aaa;font-size:14px;letter-spacing:6px;margin-bottom:6px">격파 적함</div>
+        <div style="color:#aaa;font-size:14px;letter-spacing:6px;margin-bottom:6px">${I18N.t('ui.shipsDestroyed')}</div>
         <div style="font-size:16px;margin-bottom:40px">💀 우르사 메이저 (최종 보스) · 블랙홀 보이드 함대</div>
 
         <!-- ─── 그동안의 이야기 (ACT 1~5 서사 회고) ─────────────────── -->
