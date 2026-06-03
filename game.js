@@ -18280,7 +18280,7 @@ function _doMega(){
   G.voidCrystal=(G.voidCrystal||0)+50;
   G.voidEssence=(G.voidEssence||0)+1000;
   updateHUD();saveGame(true);
-  notify('🌟 메가 충전! ₡1억 · 명성+200 · VC+50 · VE+1000','gold');
+  notify(I18N.t('notify.megaCharge'),'gold');
   if(typeof baekgu==='function')baekgu(`${G.profile?.name||'사령관'}, 메가 충전 완료! 다시 빠르게 진행해 봐.`);
 }
 function cheatGiveAllMega(){_cheatUnlock(_doMega);}
@@ -18361,7 +18361,7 @@ function _doGrantMythicSet(){
   if(!G.blueprints.LGD03){G.blueprints.LGD03=true;bpAdded.push('LGD03 렐러티비티');}
   if(!G.blueprints.RB10){G.blueprints.RB10=true;bpAdded.push('RB10 영혼 흡수 매트릭스');}
   updateHUD();saveGame(true);
-  notify('✦ 신화 풀세트 지급 — '+grantedNames.length+'종 +설계도 '+bpAdded.length+'종','pur');
+  notify(I18N.t('notify.mythicFullSetGrant',{n:grantedNames.length,bp:bpAdded.length}),'pur');
   if(typeof baekgu==='function')baekgu(I18N.t('baekgu.mythicSetGranted',{names:grantedNames.join(', ')})+(bpAdded.length?I18N.t('baekgu.bpAdded',{names:bpAdded.join(', ')}):''));
 }
 function cheatGrantMythicSet(){_cheatUnlock(_doGrantMythicSet);}
@@ -18377,7 +18377,7 @@ function exportSaveFile(slotN){
   // 최신 상태 강제 저장 후 파일로 추출
   saveGame(true,slotN);
   const raw=localStorage.getItem(slotN===0?'de_save':'de_save_s'+slotN);
-  if(!raw){notify('❌ 슬롯 '+slotN+'에 저장 데이터가 없습니다','err');return;}
+  if(!raw){notify(I18N.t('notify.slotEmpty',{n:slotN}),'err');return;}
   try{
     const blob=new Blob([raw],{type:'application/json'});
     const url=URL.createObjectURL(blob);
@@ -18517,13 +18517,13 @@ async function cloudPushAll(){
   }
   const r=await CloudSave.pushAll();
   if(r.error)notify('❌ 업로드 실패: '+r.error,'err');
-  else notify('⬆️ '+r.pushed+' 슬롯 업로드 완료 (UID '+u.uid.slice(0,8)+')','gold');
+  else notify(I18N.t('notify.uploadDone',{n:r.pushed,uid:u.uid.slice(0,8)}),'gold');
   setTimeout(()=>showSettingsModal(),500);  // 상태 갱신
 }
 async function cloudPullAll(){
   if(!window.CloudSave){notify(I18N.t('notify.cloudModuleNotLoaded'),'err');return;}
   const r=await CloudSave.pullAll();
-  notify('⬇️ '+(r.pulled||0)+' 슬롯 다운로드 완료','ok');
+  notify(I18N.t('notify.downloadDone',{n:r.pulled||0}),'ok');
 }
 async function cloudSignOut(){
   if(!window.CloudSave)return;

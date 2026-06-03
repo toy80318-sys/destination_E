@@ -1138,6 +1138,18 @@ I18N.register({
   'notify.cheatVe':           { ko: '⚛️ VE +{amt} (현재 {total})',
                                 en: '⚛️ VE +{amt} (now {total})' },
 
+  // ── G44: 치트/세이브 notify 추가 5키 ──────────────────────────────
+  'notify.megaCharge':         { ko: '🌟 메가 충전! ₡1억 · 명성+200 · VC+50 · VE+1000',
+                                 en: '🌟 Mega Charge! ₡100M · Rep+200 · VC+50 · VE+1000' },
+  'notify.mythicFullSetGrant': { ko: '✦ 신화 풀세트 지급 — {n}종 +설계도 {bp}종',
+                                 en: '✦ Mythic full set granted — {n} parts +{bp} blueprints' },
+  'notify.slotEmpty':          { ko: '❌ 슬롯 {n}에 저장 데이터가 없습니다',
+                                 en: '❌ No save data in slot {n}' },
+  'notify.uploadDone':         { ko: '⬆️ {n} 슬롯 업로드 완료 (UID {uid})',
+                                 en: '⬆️ Uploaded {n} slots (UID {uid})' },
+  'notify.downloadDone':       { ko: '⬇️ {n} 슬롯 다운로드 완료',
+                                 en: '⬇️ Downloaded {n} slots' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
