@@ -665,7 +665,7 @@ function showShipDetailModal(idx){
       </div>
     </div>
   </div>`;
-  openModal(`${isFlagship?'⚑ ':tierIc+' '}${s.nm}`,modalContent,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}]);
+  openModal(`${isFlagship?'⚑ ':tierIc+' '}${s.nm}`,modalContent,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
 
 // ─── 기함 설정 ────────────────────────────────────────────────
@@ -1437,7 +1437,7 @@ function showExitModal(){
     [
       {txt:'💾 저장 후 종료',fn:()=>{saveGame(false);setTimeout(()=>{try{window.close();}catch(e){}showTitle();closeModal();},400);},cls:'btn-gold'},
       {txt:'🚪 저장 없이 종료',fn:()=>{try{window.close();}catch(e){}showTitle();closeModal();},cls:'btn-red'},
-      {txt:'취소',fn:closeModal,cls:'btn-sm'}
+      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}
     ]
   );
 }
@@ -5671,7 +5671,7 @@ function sellPartFromInventory(partId){
       try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:p.nm});}catch(e){}
       updateHUD();notify(`⚙️ ${p.nm} 매각 +₡${sellVal.toLocaleString()}`,'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
-    },cls:'btn-gold'},{txt:'취소',fn:closeModal,cls:'btn-sm'}]
+    },cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
 }
 function switchShipTab(tab){_shipTab=tab;rerenderTab(renderShipTab);}
@@ -5887,7 +5887,7 @@ function discardReserveShip(reserveIdx){
         updateHUD();saveGame(true);
         rerenderShipOrGarage();
       },cls:'btn-gold'},
-      {txt:'취소',fn:closeModal,cls:'btn-sm'}
+      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}
     ]
   );
 }
@@ -8174,7 +8174,7 @@ function confirmSellShip(idx){
   </div>`;
   openModal('함선 판매 확인',msg,[
     {txt:`₡${sp.total.toLocaleString()} 받고 판매`,fn:()=>{closeModal();sellShip(idx);},cls:'btn-red'},
-    {txt:'취소',fn:closeModal,cls:'btn-sm'}
+    {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}
   ]);
 }
 function sellShip(idx){
@@ -8215,7 +8215,7 @@ function renameShip(idx){
         onkeydown="if(event.key==='Enter')confirmRenameShip(${idx})">
       <div style="color:var(--muted);font-size:12px;margin-top:6px">영문·한글·숫자·기호 최대 20자</div>
     </div>`,
-    [{txt:'✅ 변경',fn:()=>confirmRenameShip(idx),cls:'btn-gold'},{txt:'취소',fn:closeModal,cls:'btn-sm'}]
+    [{txt:'✅ 변경',fn:()=>confirmRenameShip(idx),cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
   setTimeout(()=>{const el=document.getElementById('rename-inp');if(el){el.focus();el.select();}},100);
 }
@@ -8328,7 +8328,7 @@ function pickCargoExtForSlot(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const owned=(G.inventory||[]).filter(i=>i.qty>0&&SPECIAL_CARGO_PARTS.find(c=>c.id===i.id));
   if(owned.length===0){
-    openModal('📦 창고 확장 파츠 없음',`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">보유한 창고 확장 파츠가 없습니다.<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}]);
+    openModal('📦 창고 확장 파츠 없음',`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">보유한 창고 확장 파츠가 없습니다.<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
     return;
   }
   const cards=owned.map(iv=>{
@@ -8346,7 +8346,7 @@ function pickCargoExtForSlot(shipIdx){
   const ext=_shipCargoExt(s);
   openModal(`📦 ${s.nm} — 창고 확장 슬롯 (${ext.length}/${CARGO_EXT_MAX})`,
     `<div style="padding:6px 4px;display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto">${cards}</div>`,
-    [{txt:'닫기',fn:closeModal,cls:'btn-sm'}]);
+    [{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
 function buyShip(shipId){
   const def=SHIP_CATALOG.find(s=>s.id===shipId);if(!def)return;
@@ -8545,7 +8545,7 @@ function confirmDismissCrew(cid){
         <div style="font-size:13px;color:var(--dim)">정말 내보내시겠습니까?</div>
       </div>`,
       [{txt:'내보내기',fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
-       {txt:'취소',fn:closeModal,cls:'btn-sm'}]);
+       {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
   } else {
     openModal(`크루 내보내기`,
       `<div style="padding:12px;text-align:center">
@@ -8554,7 +8554,7 @@ function confirmDismissCrew(cid){
         <div style="font-size:13px;color:var(--dim)">이 크루를 함대에서 내보내시겠습니까?</div>
       </div>`,
       [{txt:'내보내기',fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
-       {txt:'취소',fn:closeModal,cls:'btn-sm'}]);
+       {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
   }
 }
 function _doDismissCrew(cid){
@@ -8898,7 +8898,7 @@ function dismissLowestCrew(n){
       });
       notify(`🚪 크루 ${targets.length}명 강제 내보냄 — 되돌리기 가능`,'ok');
       rerenderTab(renderCrewTab);saveGame(true);
-    },cls:'btn-red'},{txt:'취소',fn:closeModal,cls:'btn-sm'}]);
+    },cls:'btn-red'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
 function assignCrewFromCrewTab(cid){
   const sel=document.getElementById('cs_'+cid);
@@ -9737,7 +9737,7 @@ function completeQuest(pid,idx){
         <div style="font-size:16px;color:var(--gold);margin-bottom:8px">${baseMsg}</div>
         ${bonusMsg}
       </div>`,
-      [{txt:'확인',fn:()=>{
+      [{txt:I18N.t('btn.confirm'),fn:()=>{
         closeModal();
         const _pend=G._pendingQuestCrew;
         delete G._pendingQuestCrew;
@@ -10398,7 +10398,7 @@ function doCraft(recipeId){
         ${mult>=1.1?'<div style="margin-top:12px;padding:6px 12px;background:rgba(255,136,0,.1);border:1px solid #ff8800;border-radius:6px;font-size:13px;color:#ff8800">🎉 행운의 제작! 최상 품질입니다</div>':''}
         ${mult<1.0?'<div style="margin-top:12px;font-size:12px;color:var(--dim)">재료를 모아 재도전하면 더 좋은 품질이 나올 수 있어요</div>':''}
       </div>`,
-      [{txt:'확인',fn:()=>{closeModal();saveGame(true);rerenderTab(renderCraftTab);},cls:'btn-gold'}]
+      [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderCraftTab);},cls:'btn-gold'}]
     );
   },2000);
 }
@@ -10791,7 +10791,7 @@ function openCraftSlot(idx){
   openModal('📦 재료 선택',
     `<div style="max-height:400px;overflow-y:auto;padding-right:4px">${rowsHtml}</div>
      <div style="margin-top:8px;font-size:12px;color:var(--dim)">💡 재료는 행성 상점에서 구매 가능합니다</div>`,
-    [{txt:'취소',fn:closeModal,cls:'btn-sm'}]
+    [{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
 }
 function setCraftSlot(idx,matId){
@@ -11208,7 +11208,7 @@ function _maybeBlackMarketAmbush(result,tier){
           <div style="color:var(--txt);font-size:13px;margin-top:4px">해적단을 물리쳐 보상은 안전합니다.</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
         </div>`,
-        [{txt:'확인',fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-gold'}]);
+        [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-gold'}]);
     } else {
       _revokeMysteryBoxReward(result);
       notify('💀 해적에게 보상을 빼앗겼다!','err');
@@ -11219,7 +11219,7 @@ function _maybeBlackMarketAmbush(result,tier){
           <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>해적이 회수해 갔습니다.</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
         </div>`,
-        [{txt:'확인',fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-sm'}]);
+        [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-sm'}]);
     }
   },500);
 }
@@ -11422,7 +11422,7 @@ function openMysteryBox(tier){
       G._lastTavernBoxRewardList=[_rwInfo,..._prev].slice(0,5);
     }
   }
-  openModal(_title,_bodyHtml,[{txt:'닫기',fn:()=>{
+  openModal(_title,_bodyHtml,[{txt:I18N.t('btn.close'),fn:()=>{
     closeModal();
     // 5% 확률 해적 매복 — 패배 시 보상 회수
     _maybeBlackMarketAmbush(result,tier);
@@ -12047,7 +12047,7 @@ function showCodexPlanetModal(pid){
     ${row('💰','혜택',`<span style="color:var(--gold)">${l.benefit||'정보 없음'}</span>`)}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
-  openModal('🪐 '+p.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('🪐 '+p.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 function showCodexHeroModal(hid){
   const h=HEROES[hid];if(!h)return;
@@ -12084,7 +12084,7 @@ function showCodexHeroModal(hid){
     ${row('🎭','장단점 · 성격',l.char||'정보 없음')}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
-  openModal('⭐ '+h.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('⭐ '+h.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 // 도감 — 특수 인물(백구·우르사·블랙팔콘) 상세 모달
 function showCodexSpecialCharModal(cid){
@@ -12109,7 +12109,7 @@ function showCodexSpecialCharModal(cid){
     ${c.creator?row('🛠️','창조자/배경',c.creator):''}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${c.quip||'...'}</span>`)}
   </div>`;
-  openModal(c.ic+' '+c.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(c.ic+' '+c.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 try{if(typeof window!=='undefined')window.showCodexSpecialCharModal=showCodexSpecialCharModal;}catch(e){}
 
@@ -12174,7 +12174,7 @@ function showCodexCommanderModal(){
     ${row('💰','크레딧',`₡${_credits.toLocaleString()}`)}
     ${row('⏭️','다음 단계 조건',`<span style="color:#ffcc66">${_nextHint}</span>`)}
   </div>`;
-  openModal('🎖️ '+_nm+' — 사령관 프로필',html,[{txt:'닫기',fn:closeModal,cls:'btn-gold'}],{wide:true});
+  openModal('🎖️ '+_nm+' — 사령관 프로필',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-gold'}],{wide:true});
 }
 try{if(typeof window!=='undefined')window.showCodexCommanderModal=showCodexCommanderModal;}catch(e){}
 
@@ -12249,7 +12249,7 @@ function showCodexPartModal(partId){
     ${row('⚔️','전투 성능',power)}
     ${row('💬','한마디',op)}
   </div>`;
-  openModal('⚙️ '+p.nm,html,[{txt:'확인',fn:closeModal,cls:'btn-gold'}],{wide:true});
+  openModal('⚙️ '+p.nm,html,[{txt:I18N.t('btn.confirm'),fn:closeModal,cls:'btn-gold'}],{wide:true});
 }
 function showCodexShipModal(shipId){
   const s=SHIP_CATALOG.find(x=>x.id===shipId);if(!s)return;
@@ -12304,7 +12304,7 @@ function showCodexShipModal(shipId){
     ${row('⚔️','강점·약점',power)}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${op}</span>`)}
   </div>`;
-  openModal('🛸 '+s.nm,html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('🛸 '+s.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 function switchCodexTab(t){_codexTab=t;rerenderTab(renderCodexTab);}
 function renderCodexTab(body){
@@ -15949,7 +15949,7 @@ function showAcquisitionReport(opts){
   </div>`;
   const _onClose=opts.onClose;
   // 보스 승리 보고서 등 폭 1.1× 옵션 (opts.bossfight 전파)
-  openModal(title,html,[{txt:'확인',fn:()=>{closeModal();if(typeof _onClose==='function')_onClose();},cls:'btn-gold'}],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight});
+  openModal(title,html,[{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();if(typeof _onClose==='function')_onClose();},cls:'btn-gold'}],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight});
 }
 // 퀘스트 보상 수령
 function sfxCoin(){AudioMgr.playSfx('coin');}
@@ -17790,7 +17790,7 @@ function showSaveSlots(){
   let cards='';
   for(let i=1;i<=SAVE_SLOTS;i++)cards+=_renderSlotCard(i,'save');
   const html=`<div style="padding:4px 0">${cards}</div>`;
-  openModal('💾 게임 저장',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('💾 게임 저장',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // 불러오기 슬롯 모달
@@ -17798,7 +17798,7 @@ function showLoadSlots(){
   let cards='';
   for(let i=1;i<=SAVE_SLOTS;i++)cards+=_renderSlotCard(i,'load');
   const html=`<div style="padding:4px 0">${cards}</div>`;
-  openModal('📂 게임 불러오기',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('📂 게임 불러오기',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // 레거시 호환용 (타이틀 이어하기 버튼)
@@ -18042,7 +18042,7 @@ function showHallOfFame(){
     </div>
     <div id="hof-body" style="max-height:60vh;overflow-y:auto"><div style="text-align:center;color:var(--dim);padding:24px">불러오는 중...</div></div>
   </div>`;
-  openModal('🏆 명예의 전당',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('🏆 명예의 전당',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
   // 모달 표시 후 글로벌 탭 자동 로드
   _hofTab='global';
   setTimeout(()=>_renderHofTab('global'),50);
@@ -18082,7 +18082,7 @@ function showFeedback(){
   openModal('📬 피드백',html,[
     {txt:'📋 복사하기',fn:_copyFeedback,cls:'btn-sm'},
     {txt:'📧 메일 보내기',fn:_sendFeedback,cls:'btn-gold'},
-    {txt:'닫기',fn:closeModal,cls:'btn-sm'}
+    {txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}
   ],{wide:true});
 }
 function _gatherFeedback(){
@@ -18275,7 +18275,7 @@ function showSettingsModal(){
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">테스트/디버그 용도 — 도전적 플레이를 원하면 사용 자제</div>
     </div>`:''}
   </div>`;
-  openModal('⚙️ 설정',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('⚙️ 설정',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // ── 치트: 크레딧 즉시 지급 (비밀번호 보호) ────────────────────────
@@ -18307,7 +18307,7 @@ function _cheatUnlock(onOk){
           notify('❌ 비밀번호가 올바르지 않습니다','err');
         }
       },cls:'btn-gold'},
-      {txt:'취소',fn:closeModal,cls:'btn-sm'}
+      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}
     ]
   );
   return false;  // 즉시는 false, onOk 콜백으로 처리
@@ -18603,7 +18603,7 @@ function forceUrsaBoss(){
       <div style="color:var(--dim);font-size:13px;line-height:1.8">지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.<br>보이드 크리스탈을 소모하지 않습니다.</div>
     </div>`,
     [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify('보스전 시작 오류: '+e.message,'err');}},cls:'btn-red'},
-     {txt:'취소',fn:closeModal,cls:'btn-sm'}]);
+     {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
 function tryBossEntry(){
@@ -18622,7 +18622,7 @@ function tryBossEntry(){
       ${_hint}
     </div>`,
     [{txt:'⚔️ 전투 돌입!',fn:()=>{if(!_isFirst)G.voidCrystal--;closeModal();showUrsaMajorIntro();},cls:'btn-red'},
-     {txt:'취소',fn:closeModal,cls:'btn-sm'}]);
+     {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
 // 우르사 메이저 보스 대사 인트로 (8단계) → 전투 진입
 function showUrsaMajorIntro(){
@@ -19516,7 +19516,7 @@ function showDevMenu(){
     </div>
     <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px">개발/디버그 전용 메뉴</div>
   </div>`;
-  openModal('🛠️ 개발자 메뉴',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('🛠️ 개발자 메뉴',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 async function devShowFeedback(){
   if(!window.CloudSave){notify('CloudSave 미초기화','err');return;}
@@ -19537,7 +19537,7 @@ async function devShowFeedback(){
   const html=`<div style="max-height:60vh;overflow-y:auto;padding:4px">
     ${items.length===0?'<div style="text-align:center;color:var(--dim);padding:30px">아직 등록된 피드백이 없습니다.</div>':rows}
   </div>`;
-  openModal('📬 피드백 ('+items.length+'건)',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('📬 피드백 ('+items.length+'건)',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 function devShowSaveStats(){
   let localCount=0,localBytes=0;
@@ -19552,7 +19552,7 @@ function devShowSaveStats(){
     <div><b>UID:</b> ${u?u.uid:'(미로그인)'}</div>
     <div><b>이메일:</b> ${u?(u.email||'(익명)'):'-'}</div>
   </div>`;
-  openModal('📊 세이브 통계',html,[{txt:'닫기',fn:closeModal,cls:'btn-sm'}]);
+  openModal('📊 세이브 통계',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
 
 // 개발자 메뉴 진입: 키보드 단축키
