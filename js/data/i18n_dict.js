@@ -155,5 +155,60 @@ I18N.register({
                       en: '[Legend] Continuously-folded hyperspace cargo matrix. Equipped ship: +32 cargo slots. Craftable at workshop.' },
   'cargo.SC05.nm':   { ko: '[신화] 시공간 압축 무한 창고 ✦', en: '[Mythic] Spacetime-Compression Infinite Hold ✦' },
   'cargo.SC05.desc': { ko: '[신화] 시공간 왜곡 기반 사실상 무한 적재 창고. 장착 함선 화물 +48칸.',
-                      en: '[Mythic] Spacetime-distortion-based virtually infinite hold. Equipped ship: +48 cargo slots.' }
+                      en: '[Mythic] Spacetime-distortion-based virtually infinite hold. Equipped ship: +48 cargo slots.' },
+
+  // ── 제작 레시피 (crafting.js: CRAFT_RECIPES) ──────────────────────
+  // 동일 ID라도 cargo/parts/ships의 키와 텍스트가 다르므로 별도 키(craft.<id>.*) 사용.
+  // 전설 파츠
+  'craft.W15.nm':   { ko: '신의 철퇴 ⚡전설',        en: 'God\'s Mace ⚡Legend' },
+  'craft.W15.desc': { ko: '전설 무기. ATT +250. 트루딜.', en: 'Legendary weapon. ATT +250. True damage.' },
+  'craft.S15.nm':   { ko: '신의 방패 ⚡전설',        en: 'God\'s Shield ⚡Legend' },
+  'craft.S15.desc': { ko: '전설 실드. INT +220. SH +5000.', en: 'Legendary shield. INT +220. SH +5000.' },
+  'craft.A15.nm':   { ko: '절대 방벽 ⚡전설',        en: 'Absolute Barrier ⚡Legend' },
+  'craft.A15.desc': { ko: '전설 장갑. HP +3000.',    en: 'Legendary armor. HP +3000.' },
+  'craft.E15.nm':   { ko: '블링크 엔진 ⚡전설',      en: 'Blink Engine ⚡Legend' },
+  'craft.E15.desc': { ko: '전설 엔진. TEC +200. 순간이동.', en: 'Legendary engine. TEC +200. Teleport.' },
+  // 신화 파츠
+  'craft.MW01.nm':   { ko: '허메틱 포 ✦신화',       en: 'Hermetic Cannon ✦Mythic' },
+  'craft.MW01.desc': { ko: '신화 무기. ATT +320. 연속 공격+40%.', en: 'Mythic weapon. ATT +320. Multi-attack +40%.' },
+  'craft.MS01.nm':   { ko: '크로노스 방벽 ✦신화',   en: 'Chronos Barrier ✦Mythic' },
+  'craft.MS01.desc': { ko: '신화 실드. INT +280. SH +8000. 피격 반사 20%.', en: 'Mythic shield. INT +280. SH +8000. Damage reflect 20%.' },
+  'craft.MA01.nm':   { ko: '아다만 선체 ✦신화',     en: 'Adamant Hull ✦Mythic' },
+  'craft.MA01.desc': { ko: '신화 장갑. HP +12000. 치명타 피해 50% 감소.', en: 'Mythic armor. HP +12000. Crit damage -50%.' },
+  'craft.ME01.nm':   { ko: '타키온 드라이브 ✦신화', en: 'Tachyon Drive ✦Mythic' },
+  'craft.ME01.desc': { ko: '신화 엔진. TEC +320. 이동 후 ATT+50(1턴).', en: 'Mythic engine. TEC +320. After move: ATT +50 (1 turn).' },
+  'craft.MMB01.nm':   { ko: '이휘소 방정식 미사일 ❖신화', en: 'Lee Hwi-soh Equation Missile ❖Mythic' },
+  'craft.MMB01.desc': { ko: '신화 미사일. ATT +380. DEF/SHD 관통 + 크리티컬 +30%. 다각도 다중 충격파.',
+                       en: 'Mythic missile. ATT +380. Pierces DEF/SHD + Critical +30%. Multi-angle multi-shockwaves.' },
+  // 전설 함선 (대형)
+  'craft.H10.nm':   { ko: '레비아탄 🌟',           en: 'Leviathan 🌟' },
+  'craft.H10.desc': { ko: '전설 대형 전투함. HP 45,000 / SH 18,000. 화력 최강.',
+                     en: 'Legendary large battleship. HP 45,000 / SH 18,000. Top firepower.' },
+  'craft.H11.nm':   { ko: '아르마다 🌟',           en: 'Armada 🌟' },
+  'craft.H11.desc': { ko: '방어·지원 특화. HP 38,000 / SH 22,000. 함대 전체 실드+20%.',
+                     en: 'Defense/support specialist. HP 38,000 / SH 22,000. Fleet-wide shield +20%.' },
+  'craft.H12.nm':   { ko: '우르사 파쇄기 🌟',      en: 'Ursa Crusher 🌟' },
+  'craft.H12.desc': { ko: '보이드 전용 함선. HP 75,000. 보스전 실드 관통 특화.',
+                     en: 'Void-specialized ship. HP 75,000. Boss-fight shield-piercing.' },
+  // 전설 창고 (제작소 버전 — cargo.SC04와 cargoBonus 수치가 다름; 원본 충실 번역)
+  'craft.SC04.nm':   { ko: '[전설] 초공간 화물 매트릭스 ⚡', en: '[Legend] Hyperspace Cargo Matrix ⚡' },
+  'craft.SC04.desc': { ko: '전설급 초공간 연속 접힘 화물 매트릭스. 장착 함선 화물 +16칸.',
+                      en: 'Legendary continuously-folded hyperspace cargo matrix. Equipped ship: +16 cargo slots.' },
+  // 신화 함선 (대형)
+  'craft.LGD01.nm':   { ko: '거북선 ✦신화',         en: 'Geobukseon ✦Mythic' },
+  'craft.LGD01.desc': { ko: '신화급 전투함. HP 200,000 / SH 65,000. 호위함 능력치+30%.',
+                       en: 'Mythic battleship. HP 200,000 / SH 65,000. Escort stats +30%.' },
+  'craft.LGD02.nm':   { ko: '워덴클리프 ✦신화',     en: 'Wardenclyffe ✦Mythic' },
+  'craft.LGD02.desc': { ko: '신화급 전투함. HP 175,000 / SH 80,000. 매 턴 적 모듈 비활성화.',
+                       en: 'Mythic battleship. HP 175,000 / SH 80,000. Disables one enemy module per turn.' },
+  'craft.LGD03.nm':   { ko: '렐러티비티 ✦신화',     en: 'Relativity ✦Mythic' },
+  'craft.LGD03.desc': { ko: '신화급 전투함. HP 245,000 / SH 90,000. 최우선 턴 오더.',
+                       en: 'Mythic battleship. HP 245,000 / SH 90,000. Highest turn-order priority.' },
+  // 흡혈 로봇 파츠
+  'craft.RB09.nm':   { ko: '흡혈 폭격 코어 ⚡전설',  en: 'Vampiric Strike Core ⚡Legend' },
+  'craft.RB09.desc': { ko: '전설 흡혈 코어. 매 턴 maxHP 12% 회복 + 레이저 발사 시 HP 15%/실드 12% 흡수.',
+                      en: 'Legendary vampiric core. Restores 12% maxHP per turn + on laser fire: drains 15% HP / 12% shield.' },
+  'craft.RB10.nm':   { ko: '영혼 흡수 매트릭스 ✦신화', en: 'Soul Absorption Matrix ✦Mythic' },
+  'craft.RB10.desc': { ko: '신화 흡수 매트릭스. 매 턴 maxHP 18% 회복 + 레이저 발사 시 HP 20%/실드 18% 흡수 + 격침 시 부활.',
+                      en: 'Mythic absorption matrix. Restores 18% maxHP per turn + on laser fire: drains 20% HP / 18% shield + revives on destruction.' }
 });
