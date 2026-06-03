@@ -1978,8 +1978,8 @@ function showEmailLoadModal(){
     <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--card);border:1px solid #66ddff;border-radius:10px;margin-bottom:14px">
       <img src="img/chars/baekgu1.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
-        <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">백구</div>
-        예전에 등록한 이메일 적으면<br>옛 사령관 진행 상황 다 불러올게.<br>새 이메일이면 빈 상태로 시작이야.
+        <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">${I18N.t('speaker.baekgu')}</div>
+        ${I18N.t('emailLoad.baekguHint')}
       </div>
     </div>
     <div style="margin-bottom:10px">

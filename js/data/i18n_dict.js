@@ -769,6 +769,10 @@ I18N.register({
   'combat.btnAlreadyOnScreen':{ ko: '이미 전투 화면입니다',     en: 'Already on combat screen' },
   'combat.btnNoneInProgress':{ ko: '진행 중인 전투가 없습니다', en: 'No combat in progress' },
 
+  // ── G26: 이메일 로드 화면 ────────────────────────────────────────────
+  'emailLoad.baekguHint':{ ko: '예전에 등록한 이메일 적으면<br>옛 사령관 진행 상황 다 불러올게.<br>새 이메일이면 빈 상태로 시작이야.',
+                           en: 'Enter a previously registered email<br>and I’ll restore the old Commander’s progress.<br>A new email starts blank.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
