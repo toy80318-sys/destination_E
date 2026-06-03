@@ -1890,6 +1890,16 @@ function _isEarthFree(){
   if(_has(G.fleet)||_has(G.reserveFleet))return true;
   return false;
 }
+// 보스 트리거 게이트 전용 — _isEarthFree보다 엄격. _earthLiberated만 true이고 실제 격파 증거가 없으면
+// (구버전 세이브 손상·치트 흔적 등) 보스를 다시 트리거하여 "지구 입장했는데 보스가 안 뜨는" 버그 차단.
+// 인정 증거: BOSS_URSA 나포함 보유 OR 엔딩 시청 이력(_endingShown).
+function _isUrsaDefeated(){
+  if(!G)return false;
+  const _has=(arr)=>(arr||[]).some(s=>s&&s.id&&s.id.startsWith('BOSS_URSA'));
+  if(_has(G.fleet)||_has(G.reserveFleet))return true;
+  if(G._endingShown)return true;
+  return false;
+}
 function planetBgSrc(pid){
   const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
   // 게임 시작 첫 화면: P01 오프닝 배경(P00.jpg) — 첫 턴 진행 전까지만. 이후 본래 배경(P01.jpg).
@@ -2746,6 +2756,9 @@ function addHubProgress(pid){
   if(!G.planets[pid])G.planets[pid]={};
   const prev=G.planets[pid].hubProg||0;
   G.planets[pid].hubProg=prev+1;
+  // 영구 최대값 트래커 — 재방문 시 잠금 회귀 방지 (어떤 경로로도 hubProg가 줄어도 복원 기준)
+  const _curMax=G.planets[pid]._hubProgMax||0;
+  if(G.planets[pid].hubProg>_curMax)G.planets[pid]._hubProgMax=G.planets[pid].hubProg;
   const cur=G.planets[pid].hubProg;
   const pd=PLANET_DEF.find(p=>p.id===pid);
   const nm=pd?.nm||pid;
@@ -14639,7 +14652,8 @@ function onMapClick(e){
   //   - 격파 전 + ACT<3:  진입 차단
   //   - 격파 전 + ACT>=3: 첫 진입 → 우르사 메이저 보스전 강제 발동 (보이드 크리스탈 미요구)
   //   - 격파 후:          일반 이동 (아래 PLANET_DEF.forEach에서 처리)
-  if(G&&!G._earthLiberated&&G.mapPositions&&G.mapPositions['P31']){
+  // ※ 게이트 조건 _isUrsaDefeated() — _earthLiberated만 켜져 있고 실제 격파 흔적 없으면 보스 재트리거 (B2 버그픽스)
+  if(G&&!_isUrsaDefeated()&&G.mapPositions&&G.mapPositions['P31']){
     const _p31w=G.mapPositions['P31'];
     const _p31_3d=rotate3D(_p31w.x,_p31w.y,0,map3dRotX,map3dRotY);
     const _p31p=project3D(_p31_3d.x,_p31_3d.y,_p31_3d.z);
@@ -14772,7 +14786,8 @@ function refreshFloatBtn(){
 function travelTo(){
   const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
   // P31 (지구) 진입 게이트 — ACT/봉쇄 상태 검증
-  if(pid==='P31'&&!G._earthLiberated){
+  // ※ 게이트 조건 _isUrsaDefeated() — _earthLiberated만 켜져 있고 실제 격파 흔적 없으면 보스 재트리거 (B2 버그픽스)
+  if(pid==='P31'&&!_isUrsaDefeated()){
     if((G.act||1)<3){
       notify('🌍 지구 진입은 ACT 3부터 가능합니다 (현재 ACT '+(G.act||1)+')','warn');
       baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!');
@@ -14791,11 +14806,15 @@ function travelTo(){
   if(G.planets[pid]?.fog==='L'&&!blink){notify('미탐험 행성 — 먼저 인접 행성부터 방문하세요','err');return;}
   if(G.credits<cost){notify(`이동 비용 ₡${cost.toLocaleString()} 부족`,'err');return;}
   G.credits-=cost;G.currentPlanet=pid;G.planets[pid].fog='A';G.stayTurns=0;if(G.planets[pid].hubProg===undefined)G.planets[pid].hubProg=0;
-  // 행성 도착 시 광장(s1) 단계 자동 해금 — 사용자 보고: "행성 도착 시 다시 잠금되어 있는 현상" 해소
-  //   기존 hubProg가 s1 이상이면 그대로 유지 (감소 없음), 미만이면 s1까지 자동 상향
+  // 행성 도착 시 잠금 상태 복원 + 광장(s1) 단계 자동 해금
+  // 1) _hubProgMax(영구 최대값) 트래커로 잠금 회귀 방지 — 한 번 해금한 단계는 재방문 시에도 유지
+  // 2) 첫 도착이라 hubProg이 s1 미만이면 s1까지 자동 상향 (광장 즉시 해금)
   try{
     const _thrArr=_getHubThr(pid);
+    const _prevMax=G.planets[pid]._hubProgMax||0;
+    if(_prevMax>(G.planets[pid].hubProg||0))G.planets[pid].hubProg=_prevMax;
     if((G.planets[pid].hubProg||0)<_thrArr.s1)G.planets[pid].hubProg=_thrArr.s1;
+    G.planets[pid]._hubProgMax=Math.max(_prevMax, G.planets[pid].hubProg||0);
   }catch(e){}
   try{AudioMgr.playBgm(_planetBgmName(pid));}catch(e){}
   // 행성 이동 시 치크스 출몰 카운터 유지 (같은 치크스 구역 침투 지속 반영)
