@@ -1465,7 +1465,7 @@ function runLoading(){
 
 // ═══ TITLE / AGE / FTUE ═══════════════════════════════════════
 function showExitModal(){
-  openModal('🚪 게임 종료',
+  openModal(I18N.t('modal.exitGame'),
     `<div style="text-align:center;padding:12px">
       <div style="margin-bottom:12px">${_baekguIcon(58)}</div>
       <div style="color:var(--yellow);font-size:18px;font-weight:bold;margin-bottom:8px">정말 종료하시겠습니까?</div>
@@ -2168,7 +2168,7 @@ function showEmailLoadModal(){
       ⚠️ 보안: 이메일만 알면 누구나 접근 가능 (간편 모드)
     </div>
   </div>`;
-  openModal('📧 이메일로 게임 불러오기',html,[
+  openModal(I18N.t('modal.loadByEmail'),html,[
     {txt:'🔍 불러오기',cls:'btn-cyan',fn:async()=>{
       const inp=document.getElementById('email-load-input');
       const err=document.getElementById('email-load-err');
@@ -3547,7 +3547,7 @@ function triggerTravelPirate(pd){
     }))
   };
   const chance=calcTravelPirateChance(pd);
-  openModal('🏴‍☠️ 항로 해적 조우!',
+  openModal(I18N.t('modal.routePirate'),
     `<div style="text-align:center;padding:10px 6px 6px">
       <div style="font-size:48px;margin-bottom:4px">☠️</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${pd?.nm||''} 항로 — 해적단 조우!</div>
@@ -3599,7 +3599,7 @@ function triggerEarlyPirate(pd){
       ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]
     }))
   };
-  openModal('🏴‍☠️ 해적 출몰!',
+  openModal(I18N.t('modal.pirateAppear'),
     `<div style="text-align:center;padding:10px 6px 6px">
       <div style="font-size:48px;margin-bottom:4px">☠️</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${pd?.nm||''} — 해적 출몰!</div>
@@ -5699,7 +5699,7 @@ function sellPartFromInventory(partId){
   const baseVal=Math.floor(p.price*0.5);
   const sellVal=Math.floor(baseVal*marcoMult);
   const marcoNote=marcoMult>1?' (🧭+10%)':'';
-  openModal('⚙️ 파츠 매각',
+  openModal(I18N.t('modal.partsSale'),
     `<div style="text-align:center;padding:10px">
       <div style="font-size:34px;margin-bottom:6px">${{weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡'}[p.cat]||'⚙️'}</div>
       <div style="font-size:18px;font-weight:bold;margin-bottom:8px">${p.nm}</div>
@@ -5902,7 +5902,7 @@ function discardReserveShip(reserveIdx){
   // 중앙 정렬 확인 모달 (브라우저 confirm 대신)
   const qLabel=qualityMul!==1?` × 품질 ×${qualityMul.toFixed(2)}`:'';
   const enhLabel=_enhLv>0?` × 강화 +${_enhLv} (×${_enhMul.toFixed(1)})`:'';
-  openModal('💰 후보 함선 매각',
+  openModal(I18N.t('modal.candidateShipSale'),
     `<div style="padding:14px;text-align:center">
       <div style="font-size:38px;margin-bottom:8px">💰</div>
       <div style="font-size:15px;color:var(--yellow);margin-bottom:8px"><b>${ship.nm}</b></div>
@@ -8248,7 +8248,7 @@ function sellShip(idx){
 }
 function renameShip(idx){
   const s=G.fleet[idx];if(!s)return;
-  openModal('✏️ 함선 이름 변경',
+  openModal(I18N.t('modal.renameShip'),
     `<div style="padding:8px">
       <div style="color:var(--dim);font-size:14px;margin-bottom:12px">현재 이름: <span style="color:var(--cyan)">${s.nm}</span></div>
       <input class="inp" id="rename-inp" maxlength="20" placeholder="새 함선명 입력 (최대 20자)" value="${s.nm}"
@@ -8588,7 +8588,7 @@ function confirmDismissCrew(cid){
       [{txt:'내보내기',fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
        {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
   } else {
-    openModal(`크루 내보내기`,
+    openModal(I18N.t('modal.dismissCrew'),
       `<div style="padding:12px;text-align:center">
         <div style="font-size:34px;margin-bottom:8px">${c.ic||'🧑'}</div>
         <div style="font-size:16px;font-weight:bold;margin-bottom:10px">${c.nm} 내보내기</div>
@@ -8814,7 +8814,7 @@ function doGacha(n,useCr,crCost,minRarity){
         ${c.desc?`<div style="font-size:11px;color:var(--dim);line-height:1.4">${c.desc}</div>`:''}
       </div>`;
     }
-    openModal('🔄 고등급 크루 영입 제안',
+    openModal(I18N.t('modal.promoteCrewOffer'),
       `<div style="padding:10px 4px">
         <div style="font-size:14px;font-weight:bold;margin-bottom:10px;color:var(--cyan);text-align:center">크루 명단이 꽉 찼습니다 — 교체 여부를 선택하세요</div>
         <div style="display:flex;gap:12px;align-items:stretch;margin-bottom:10px">
@@ -8912,7 +8912,7 @@ function dismissLowestCrew(n){
   const warningHtml=assignedCount>0
     ? `<div style="font-size:12px;color:var(--red);margin-top:6px;background:rgba(255,40,40,.08);border-left:3px solid var(--red);padding:6px 10px">⚠️ 함선 탑승 중 <b>${assignedCount}명 포함</b> — 강제 하선 후 방출됩니다</div>`
     : '';
-  openModal('🚪 크루 강제 내보내기',
+  openModal(I18N.t('modal.forceDismissCrew'),
     `<div style="padding:12px">
       <div style="font-size:16px;font-weight:bold;margin-bottom:8px">최하위 ${targets.length}명을 내보냅니까?</div>
       <div style="font-size:13px;color:var(--dim);margin-bottom:6px">${rarSummary} | ⚓ = 탑승 중</div>
@@ -9789,7 +9789,7 @@ function completeQuest(pid,idx){
           if(_lowest){
             const _lowImg=(typeof crewImgSrc==='function')?crewImgSrc(_lowest):'';
             const _pendImg=(typeof crewImgSrc==='function')?crewImgSrc(_pend):'';
-            openModal('🔄 전설 동료 영입 제안',
+            openModal(I18N.t('modal.legendCompanionOffer'),
               `<div style="padding:12px">
                 <div style="font-size:15px;font-weight:bold;margin-bottom:10px;color:var(--gold)">⭐ 전설급 동료 영입 기회!</div>
                 <div style="display:flex;gap:16px;align-items:center;justify-content:center;margin-bottom:12px">
@@ -10123,7 +10123,7 @@ function doGatherSearch(){
       TEC:eTEC,HP:_dbrpHP(i),LOY:0,parts:[],crewIds:[]
     }));
     const raidDef={id:'DEBRIS_PIRATE',nm:'잔해 구역 해적',ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true};
-    openModal('🏴‍☠️ 잔해 구역 해적 출현!',
+    openModal(I18N.t('modal.debrisPiratesAppear'),
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">탐색 중 해적선과 조우했습니다!</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>격파하면 탐색이 계속됩니다.</div>`,
       [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
@@ -10429,7 +10429,7 @@ function doCraft(recipeId){
     const _cImgHtml=_cImg
       ? imgOrEmoji(_cImg,_cFb,128,128,'border-radius:12px;background:rgba(0,0,0,.45);border:1px solid '+(q.col||'#ffd700')+'66;object-fit:contain',rec.type==='ship'?'ship_'+rec.id:'part_'+rec.id)
       : '<div style="font-size:60px">'+_cFb+'</div>';
-    openModal('⚗️ 제작 완료!',
+    openModal(I18N.t('modal.craftComplete'),
       `<div style="text-align:center;padding:16px">
         <div style="display:flex;justify-content:center;margin-bottom:12px">${_cImgHtml}</div>
         ${resultHtml}
@@ -11239,7 +11239,7 @@ function _maybeBlackMarketAmbush(result,tier){
   setTimeout(()=>{
     if(_won){
       notify('⚔️ 해적 매복 격퇴 — 보상 안전','gold');
-      openModal('🏴‍☠️ 해적 매복 — 승리!',
+      openModal(I18N.t('modal.pirateAmbushWin'),
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">⚔️</div>
           <div style="color:var(--green);font-size:18px;font-weight:bold;margin-top:6px">매복 격퇴!</div>
@@ -11250,7 +11250,7 @@ function _maybeBlackMarketAmbush(result,tier){
     } else {
       _revokeMysteryBoxReward(result);
       notify('💀 해적에게 보상을 빼앗겼다!','err');
-      openModal('🏴‍☠️ 해적 매복 — 패배',
+      openModal(I18N.t('modal.pirateAmbushLose'),
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">💀</div>
           <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">매복 패배...</div>
@@ -14491,7 +14491,7 @@ function renderMap(){
     }
     ctx.fillStyle=_revealed?'#ffdd44':'rgba(200,140,0,0.8)';
     ctx.font=`bold ${_bhFontSz}px Courier New`;ctx.textAlign='center';
-    ctx.fillText(_revealed?'◈ 보이드의 심연':'◈ ???',bp.sx,bp.sy+br+18);
+    ctx.fillText(_revealed?I18N.t('modal.voidAbyss'):'◈ ???',bp.sx,bp.sy+br+18);
     if(!_revealed){
       ctx.fillStyle='rgba(220,160,0,0.5)';ctx.font=`${Math.max(7,8*G.mapZoom)}px Courier New`;
       ctx.fillText('[잠김]',bp.sx,bp.sy+br+30);
@@ -14625,7 +14625,7 @@ function onMapClick(e){
             },cls:'btn-red'},{txt:'아직 준비가 안 됐다',fn:closeModal,cls:'btn-sm'}]);
         }
       } else if(G._finalTestComplete){
-        openModal('◈ 보이드의 심연',
+        openModal(I18N.t('modal.voidAbyss'),
           `<div style="text-align:center;padding:16px">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',100,100,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 16px rgba(204,68,255,.6);margin:0 auto 10px')}
             <div style="color:#cc44ff;font-size:18px;font-weight:bold;margin-bottom:8px">보이드의 심연 — 시험 통과</div>
@@ -14645,7 +14645,7 @@ function onMapClick(e){
            {txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
       } else if(!G._voidSpearObtained){
         // 1차 보상: 보이드의 창 (기존 흐름)
-        openModal('◈ 보이드의 심연',
+        openModal(I18N.t('modal.voidAbyss'),
           `<div style="text-align:center;padding:20px;background:linear-gradient(180deg,#0a0015,#1a0030);border-radius:10px;border:1px solid rgba(180,0,255,.4)">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
             <div style="color:#dd66ff;font-size:19px;font-weight:bold;margin-bottom:10px;text-shadow:0 0 12px rgba(200,100,255,.6)">◈ 보이드의 심연</div>
@@ -14661,7 +14661,7 @@ function onMapClick(e){
           [{txt:'🔱 창을 가져가다',fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
       } else if(!_allVoid100){
         // 2차 조건: 보이드 100% 투자 아직 미달
-        openModal('◈ 보이드의 심연 — 마지막 시험',
+        openModal(I18N.t('modal.voidAbyssFinalTest'),
           `<div style="text-align:center;padding:20px;background:linear-gradient(180deg,#0a0015,#1a0030);border-radius:10px;border:1px solid rgba(180,0,255,.4)">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
             <div style="color:#dd66ff;font-size:18px;font-weight:bold;margin-bottom:10px">은하 가운데로 가는 문이 닫혀 있다</div>
@@ -17914,7 +17914,7 @@ function showSaveSlots(){
   let cards='';
   for(let i=1;i<=SAVE_SLOTS;i++)cards+=_renderSlotCard(i,'save');
   const html=`<div style="padding:4px 0">${cards}</div>`;
-  openModal('💾 게임 저장',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.saveGame'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // 불러오기 슬롯 모달
@@ -17922,7 +17922,7 @@ function showLoadSlots(){
   let cards='';
   for(let i=1;i<=SAVE_SLOTS;i++)cards+=_renderSlotCard(i,'load');
   const html=`<div style="padding:4px 0">${cards}</div>`;
-  openModal('📂 게임 불러오기',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.loadGame'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // 레거시 호환용 (타이틀 이어하기 버튼)
@@ -18220,7 +18220,7 @@ function showFeedback(){
       💡 "메일 보내기" 버튼은 기본 메일 앱을 열어 작성한 내용을 미리 채워줍니다. 메일 앱이 없으면 "복사하기"로 클립보드에 복사한 뒤 <span style="color:var(--cyan);font-family:monospace">toy80318@gmail.com</span> 으로 보내주세요.
     </div>
   </div>`;
-  openModal('📬 피드백',html,[
+  openModal(I18N.t('modal.feedback'),html,[
     {txt:'📋 복사하기',fn:_copyFeedback,cls:'btn-sm'},
     {txt:'📧 메일 보내기',fn:_sendFeedback,cls:'btn-gold'},
     {txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}
@@ -18416,7 +18416,7 @@ function showSettingsModal(){
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">테스트/디버그 용도 — 도전적 플레이를 원하면 사용 자제</div>
     </div>`:''}
   </div>`;
-  openModal('⚙️ 설정',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.settings'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 
 // ── 치트: 크레딧 즉시 지급 (비밀번호 보호) ────────────────────────
@@ -18427,7 +18427,7 @@ function _cheatUnlock(onOk){
     if(typeof onOk==='function')onOk();
     return true;
   }
-  openModal('🔐 치트 모드 잠금',
+  openModal(I18N.t('modal.cheatLock'),
     `<div style="padding:14px;text-align:center">
       <div style="font-size:40px;margin-bottom:8px">🔐</div>
       <div style="font-size:14px;color:var(--yellow);margin-bottom:10px">치트 모드 비밀번호를 입력하세요</div>
