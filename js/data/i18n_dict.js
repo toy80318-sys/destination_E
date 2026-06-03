@@ -595,6 +595,81 @@ I18N.register({
                      en: 'P01 Proxima b — Commander {nm} awakening. Connecting to {co} hub...' },
   'prologue.systemLabel': { ko: '⚡ 시스템',         en: '⚡ System' },
 
+  // ── G18: QUEST_TEMPLATES 5 카테고리 × 4 변형 ──────────────────────
+  // NPC 라벨
+  'quest.npc.admiral': { ko: '제독',     en: 'Admiral' },
+  'quest.npc.broker':  { ko: '브로커',   en: 'Broker' },
+
+  // combat
+  'quest.combat.title1': { ko: '해적 함대 소탕',     en: 'Sweep the Pirate Fleet' },
+  'quest.combat.title2': { ko: '치크스 정찰대 격퇴', en: 'Repel the Chiks Scouts' },
+  'quest.combat.title3': { ko: '밀수선 차단',         en: 'Intercept the Smuggler' },
+  'quest.combat.title4': { ko: '항로 순찰 지원',     en: 'Support Lane Patrol' },
+  'quest.combat.desc1':  { ko: '제독 로한: 이 항로에 해적단이 자리 잡았어. 우리 상선이 매일 털리고 있다네. 자네 함대로 쓸어버려 주게. 사례는 두둑이 챙겨두겠네.',
+                           en: 'Admiral Rohan: A pirate gang has nested in this lane. Our merchants are robbed daily. Use your fleet to sweep them. The reward will be generous.' },
+  'quest.combat.desc2':  { ko: '제독 로한: 치크스 정찰대 몇 척이 우리 영공에 들어왔다. 격퇴하고 잔해 보고만 해주면 보상은 약속하지. 무리하지 말게.',
+                           en: 'Admiral Rohan: A few Chiks scouts crossed into our airspace. Drive them off and report the wreckage — reward is guaranteed. Don’t overextend.' },
+  'quest.combat.desc3':  { ko: '제독 로한: 비밀 정보야. 밀수선 한 척이 곧 이 항로를 지난다. 차단해서 화물을 압수해주면 분담금을 후하게 쳐주지.',
+                           en: 'Admiral Rohan: Classified intel. A smuggler will pass this lane soon. Intercept and seize the cargo — your share will be generous.' },
+  'quest.combat.desc4':  { ko: '제독 로한: 우리 순찰대가 손이 모자라네. 자네가 같이 한 바퀴 돌아주면 정식 보수는 챙겨주마. 어렵지 않은 일이야.',
+                           en: 'Admiral Rohan: Our patrol is shorthanded. Run a lap with us and standard pay is yours. Easy work.' },
+
+  // delivery
+  'quest.delivery.title1': { ko: '긴급 화물 배달',     en: 'Urgent Cargo Delivery' },
+  'quest.delivery.title2': { ko: '기밀 문서 전달',     en: 'Classified Document Drop' },
+  'quest.delivery.title3': { ko: '의약품 이송',         en: 'Medicine Transport' },
+  'quest.delivery.title4': { ko: '부품 조달',           en: 'Parts Procurement' },
+  'quest.delivery.desc1':  { ko: '운송업자 마키: 시간이 없어요. 이 화물을 인접 행성에 그대로 갖다 주시면 됩니다. 운임은 두둑이 드릴 테니 빨리 부탁드려요.',
+                             en: 'Carrier Maki: No time to lose. Just take this cargo to the adjacent planet — generous freight pay if it’s fast.' },
+  'quest.delivery.desc2':  { ko: '브로커 클라우드: 외교 채널이 막혔어. 자네라면 들키지 않게 문서를 전달할 수 있겠지. 누구한테도 말하지 말고, 그쪽 담당자에게 직접 건네주게.',
+                             en: 'Broker Cloud: Diplomatic channels are sealed. You can move the document unseen. Tell no one — hand it to the contact in person.' },
+  'quest.delivery.desc3':  { ko: '상인 케인: 내 의약품을 인접 행성으로 배달해줄 수 있겠나? 사례는 하겠네. 가는 동안 해적을 조심하게.',
+                             en: 'Merchant Kane: Can you deliver my medicine to the next planet? Reward guaranteed. Watch for pirates on the way.' },
+  'quest.delivery.desc4':  { ko: '공장장 마티아스: 생산 라인이 멈췄소. 부품 좀 인접 행성에서 가져다 주시면 그 자리에서 현금 박치기 하리다.',
+                             en: 'Foreman Matthias: My line is down. Fetch the parts from the next planet and I’ll pay cash on the spot.' },
+
+  // gather
+  'quest.gather.title1': { ko: '희귀 광물 채취',       en: 'Mine Rare Minerals' },
+  'quest.gather.title2': { ko: '방사선 데이터 수집',   en: 'Collect Radiation Data' },
+  'quest.gather.title3': { ko: '잔해 탐색',             en: 'Wreckage Search' },
+  'quest.gather.title4': { ko: '물자 회수',             en: 'Recover Supplies' },
+  'quest.gather.desc1':  { ko: '광물상 라파엘: 인근 소행성대에 희귀 광물이 떴다는 정보야. 2턴 정도 캐오면 시세대로 사겠네. 욕심 부리지 말고 안전하게.',
+                           en: 'Trader Rafael: Word is rare minerals appeared in the nearby belt. Mine for ~2 turns and I’ll pay market rate. Don’t get greedy.' },
+  'quest.gather.desc2':  { ko: '연구원 헬렌: 항성풍 방사선 데이터가 필요해요. 2턴 정도 측정 장비 돌려주시면 자료비 깔끔하게 드릴게요. 측정 중에 해적 만나면 즉시 후퇴하세요.',
+                           en: 'Researcher Helen: I need stellar-wind radiation data. Run the sensors for ~2 turns and I’ll pay cleanly. Retreat at once if pirates show up.' },
+  'quest.gather.desc3':  { ko: '고철상 로건: 전투 잔해 구역에 갈 사람을 찾고 있소. 2턴 탐색에 챙겨오는 만큼 나누지. 살아서만 돌아오게.',
+                           en: 'Scrapper Logan: Looking for someone to hit the battle wreckage zone. Split whatever you bring back in ~2 turns. Just come back alive.' },
+  'quest.gather.desc4':  { ko: '민병대장 호크: 치크스 잔해에 우리 물자가 남아 있소. 회수해 오면 사례하지. 2턴 정도 걸릴 거요 — 정찰대 마주칠 수도 있으니 조심하시오.',
+                           en: 'Militia Captain Hawk: Our supplies remain in the Chiks wreckage. Recover them and you get a reward. About 2 turns — watch for scouts.' },
+
+  // explore
+  'quest.explore.title1': { ko: '항로 탐색 임무',     en: 'Lane Survey Mission' },
+  'quest.explore.title2': { ko: '성계 측량 지원',     en: 'Stellar Survey Support' },
+  'quest.explore.title3': { ko: '미지 구역 탐사',     en: 'Unknown Sector Probe' },
+  'quest.explore.title4': { ko: '위성 궤도 조사',     en: 'Satellite Orbit Survey' },
+  'quest.explore.desc1':  { ko: '제독 로한: 신항로 후보를 자네가 직접 둘러봐 주게. 좌측 [잔해 탐색] 버튼을 누르면 자네 함대가 출동하지. 발견하는 만큼 보고해 주게.',
+                            en: 'Admiral Rohan: Scout the new lane candidates yourself. Hit the left [Wreckage Scan] button to deploy your fleet. Report what you find.' },
+  'quest.explore.desc2':  { ko: '항법사 클레어: 이 성계의 좌표 보정이 안 돼 있어요. [잔해 탐색] 버튼 두어 번이면 끝나니까 도와주세요. 보너스로 항법 데이터 사본 드릴게요.',
+                            en: 'Navigator Claire: This system’s coordinates are uncalibrated. A couple of [Wreckage Scan] runs will do it. Bonus: a copy of the nav data.' },
+  'quest.explore.desc3':  { ko: '제독 로한: 기록이 비어 있는 구역이 있다. 자네가 가서 데이터를 채워 와. 위험하면 후퇴해도 좋다 — 자네 생환이 우선이야.',
+                            en: 'Admiral Rohan: A sector has empty records. Go and fill the data. Pull back if it gets risky — your safe return comes first.' },
+  'quest.explore.desc4':  { ko: '관제관 시오: 위성 궤도 일부가 흔들린다고 보고가 들어왔어요. 한 바퀴 돌면서 어디가 문제인지 확인해 주실래요? 정밀 조사료 따로 챙겨드립니다.',
+                            en: 'Controller Sio: Reports say some satellite orbits are wobbling. Run a lap and find the issue. Detailed survey fee is extra.' },
+
+  // buy
+  'quest.buy.title1': { ko: '특산물 매수 의뢰',     en: 'Specialty Buy Order' },
+  'quest.buy.title2': { ko: '진귀품 수집',           en: 'Rarity Collection' },
+  'quest.buy.title3': { ko: '대량 발주',             en: 'Bulk Order' },
+  'quest.buy.title4': { ko: '거래 보조',             en: 'Trade Support' },
+  'quest.buy.desc1':  { ko: '거상 이장: 특산물 N개 구해 오시면 시세의 2배로 사들이겠소. 어디서 구해오든 상관없소.',
+                        en: 'Magnate Lee: Bring N specialty units and I’ll buy them at 2× market. Doesn’t matter where you source them.' },
+  'quest.buy.desc2':  { ko: '수집가 야마다: 진귀한 특산물 N개를 모아 주시오. 거래 기록 남기지 않고 2배 가격에 매입하겠소.',
+                        en: 'Collector Yamada: Gather N rare specialties. I’ll pay 2× and leave no transaction record.' },
+  'quest.buy.desc3':  { ko: '도매상 에르마: 우리 거래소에 N개 납품해주시면 시세 2배로 결제합니다. 빠르게 부탁해요.',
+                        en: 'Wholesaler Erma: Deliver N units to our exchange and we’ll pay 2× market. Please be quick.' },
+  'quest.buy.desc4':  { ko: '브로커 클라우드: 의뢰자가 급해. 특산물 N개를 즉시 회수해서 가져와. 보상은 시세의 2배.',
+                        en: 'Broker Cloud: The client is in a hurry. Grab N specialty units now — reward is 2× market.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
