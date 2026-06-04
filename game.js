@@ -1327,7 +1327,7 @@ function askBaekgu(){
     // 보이드
     {k:['보이드','void','에센스','균열','7링'],r:()=>I18N.t('ui.voidEssenceTip')},
     // 치크스/전투
-    {k:['치크스','chix','적','전투','combat','싸움'],r:()=>`치크스(보라색 적대 행성) 격파 시 크레딧+명성 획득. 나포 확률 있어 — 적 HP 50% 이하에서 23% 이하 확률. 함선 파츠·크루 충분히 갖춰야 이겨.`},
+    {k:['치크스','chix','적','전투','combat','싸움'],r:()=>I18N.t('ui.cheeksRuleTip')},
     // 보스/최종전
     {k:['보스','boss','우르사','최종','지구','해방'],r:()=>{const hc=(G.heroes||[]).length,fc=G.fleet.length,cr=G.credits;return`최종전 조건: 치크스 행성 5개 격파 + 영웅 6명(현재 ${hc}) + 함선 6척(현재 ${fc}) + ₡50만(현재 ₡${cr.toLocaleString()}). 조건 맞으면 은하 지도에서 🌍 지구 클릭!`;}},
     // 경매/행성 구매
@@ -1335,13 +1335,13 @@ function askBaekgu(){
     // 저장/불러오기
     {k:['저장','세이브','save','불러오기','load','슬롯'],r:()=>`상단 메뉴 또는 설정에서 슬롯 1~3 저장/불러오기. 자동저장은 주요 이벤트마다 실행돼.`},
     // 블링크 엔진
-    {k:['블링크','blink','순간이동','워프'],r:()=>`블링크 엔진(E15)을 전체 함선에 장착하면 은하 어디든 순간이동 가능. 도크 → 정비소 → 파츠 → 엔진 탭에서 구매.`},
+    {k:['블링크','blink','순간이동','워프'],r:()=>I18N.t('ui.blinkEngineTip')},
     // 명성/평판
     {k:['명성','평판','reputation','랭크','레벨'],r:()=>{const lv=calcPlayerLevel(),rep=G.reputation||0;return`현재 레벨 ${lv}, 명성 ${rep} (상단 HUD ⭐ 표시). 퀘스트·해적 퇴치 시 +1, 전투 패배 시 -2. 명성 높을수록 가챠 확률·퀘스트 보상 배율 상승.`;}},
     // 해적
     {k:['해적','pirate','약탈','항로','조우'],r:()=>`모든 행성 이동 시 50% 확률로 해적 조우! 해적 퇴치하면 크레딧+명성+1. 퇴치 누적으로 행성 허브도 개방돼. 전투력 충분히 키우고 이동해.`},
     // 나포
-    {k:['나포','포획','capture','적 함선'],r:()=>`적 HP 50% 이하에서 나포 가능 — 기본 확률 최대 23%. 나포 성공 시 적 함선 획득. 크리그(F04) 행성에서 +3% 보너스.`},
+    {k:['나포','포획','capture','적 함선'],r:()=>I18N.t('ui.captureRuleTip')},
     // 힌트/도움
     {k:['힌트','help','도움','뭐','어떻게','모르겠','어디'],r:()=>getBaekguStoryHint()},
   ];
@@ -4804,7 +4804,7 @@ function renderShipTab(body){
           const _atMax=_curExtra>=_maxExtraRows;
           const _upgPrice=_atMax?0:getPartsUpgradePrice(s);
           const _upgBtn=_atMax
-            ? `<span style="font-size:11px;color:var(--cyan)">✅ 최대 (${_maxTotalRows}행)</span>`
+            ? `<span style="font-size:11px;color:var(--cyan)">${I18N.t('ui.maxRowsCount',{n:_maxTotalRows})}</span>`
             : `<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 8px" onclick="upgradePartsRow(${idx})" ${G.credits>=_upgPrice?'':'disabled'}>🔧 행+1 ₡${_upgPrice.toLocaleString()} (${PART_ROWS}/${_maxTotalRows})</button>`;
           // 컬럼 공통: flex 세로 배치 + spacer 로 액션 버튼을 하단에 고정 → 3컬럼 액션 버튼 높이 정렬
           // 파츠↔함선실 간격 20% 축소 (10→6, 양쪽 합산 20→12)
@@ -4864,7 +4864,7 @@ function renderShipTab(body){
             : `<span style="font-size:10px;color:var(--cyan);padding:3px 6px;border:1px solid rgba(0,243,255,.3);border-radius:4px">${I18N.t('hud.shipBayMax')}</span>`;
           const _crewCol=`<div style="flex:1;min-width:0;padding:0 3px 0 6px;display:flex;flex-direction:column">
             <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-              <span>👥 <b style="color:var(--green)">${I18N.t('ui.shipQuartersCrew')}</b> ${(s.crewIds||[]).length}/${maxCrew}명${(+s.crewMaxExtra)?` <span style="color:var(--gold);font-size:9px">(+${(+s.crewMaxExtra)} 확장)</span>`:''}</span>
+              <span>👥 <b style="color:var(--green)">${I18N.t('ui.shipQuartersCrew')}</b> ${(s.crewIds||[]).length}/${maxCrew}명${(+s.crewMaxExtra)?` <span style="color:var(--gold);font-size:9px">${I18N.t('ui.crewExtSuffix',{n:+s.crewMaxExtra})}</span>`:''}</span>
               ${_crewBonusInfo}
               <span style="opacity:.45;font-size:9px">클릭=하선</span>
             </div>
@@ -5937,7 +5937,7 @@ function renderShipSkinTab(body){
       <div style="font-size:11px;font-weight:bold;color:${tc};text-align:center;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${sk.nm}</div>
       <div style="font-size:10px;color:var(--dim)">[${sk.tier}]</div>
       ${isCur
-        ? `<div style="font-size:11px;color:var(--cyan);font-weight:bold;margin-top:auto">✅ 현재 외관</div>`
+        ? `<div style="font-size:11px;color:var(--cyan);font-weight:bold;margin-top:auto">${I18N.t('ui.currentAppearance')}</div>`
         : `<button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 8px;margin-top:auto;width:100%" onclick="applyShipSkin(${_selectedSkinShipIdx},'${sk.id}')" ${canBuy?'':'disabled'}>✨ 적용 ₡${skinPrice.toLocaleString()}</button>`}
     </div>`;
   }).join(''):`<div style="grid-column:1/-1;color:var(--dim);text-align:center;padding:30px">${I18N.t('ui.selectShipLeft')}</div>`;
@@ -6946,7 +6946,7 @@ function autoEquipPartsFlagship(){
     extra:r1.extra+r2.extra,
     missile:r1.missile+r2.missile
   };
-  const _uniq=(r9.removed||r9.redistributed)?` · 중복정리 ${r9.removed}→재배분 ${r9.redistributed}`:'';
+  const _uniq=(r9.removed||r9.redistributed)?I18N.t('ui.dedupResult',{removed:r9.removed,redistributed:r9.redistributed}):'';
   const _cargo=r12>0?` · 창고 ${r12}`:'';
   notify(I18N.t('notify.autoFlagshipFocus',{core4:total.core4,small:total.small,extra:total.extra,missile:total.missile,uniq:_uniq,cargo:_cargo}),'gold');
   rerenderShipOrGarage();saveGame(true);
@@ -7029,7 +7029,7 @@ function autoEquipPartsEven(){
   const r12=_distributeCargoExtParts();
   // STEP 13: 최종 강제 — 인벤토리 잔여 partId 1개씩, 남으면 1번 더 (캡 무시, 사용자 요청)
   const r13=_forcePushRemainingParts();
-  const _uniq=(r9.removed||r9.redistributed)?` · 중복정리 ${r9.removed}→재배분 ${r9.redistributed}`:'';
+  const _uniq=(r9.removed||r9.redistributed)?I18N.t('ui.dedupResult',{removed:r9.removed,redistributed:r9.redistributed}):'';
   const _top=r10>0?` · 추가보충 ${r10}`:'';
   const _big=r11>0?` · 2×2보충 ${r11}`:'';
   const _cargo=r12>0?` · 창고 ${r12}`:'';
@@ -8371,7 +8371,7 @@ function renderCrewTab(body){
     <div class="cr-L">전설 ×1.2</div>
     <div style="margin-top:4px;font-size:11px;color:${_hrr.col};border:1px solid ${_hrr.col};border-radius:8px;padding:1px 6px;display:inline-block">${_hrr.ic} 명성: ${_hrr.lb}</div>
     <div style="margin-top:4px">
-      ${aboard?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">🛸 ${aboard.nm} 탑승 중</div>`:''}
+      ${aboard?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">${I18N.t('ui.aboardShip',{nm:aboard.nm})}</div>`:''}
       <select id="hero-ship-${h}" style="background:var(--panel);border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:2px;font-size:11px;width:100%">
         <option value="">-- 탑승 함선 --</option>
         ${G.fleet.map((sh,si)=>`<option value="${si}" ${aboard===sh?'selected':''}>[${sh.tier}] ${sh.nm} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
@@ -10390,7 +10390,7 @@ function renderCraftTab(body){
           if(hasMP){
             plHtml=expPl.length>0
               ?`<div style="font-size:9px;color:#7df;margin-top:1px">🧭 ${expPl.slice(0,3).join(', ')}${expPl.length>3?'…':''}</div>`
-              :`<div style="font-size:9px;color:var(--dim);margin-top:1px">🧭 발견된 행성 없음</div>`;
+              :`<div style="font-size:9px;color:var(--dim);margin-top:1px">${I18N.t('ui.noPlanetsDiscovered')}</div>`;
           } else if(allPn.length>0){
             plHtml=`<div style="font-size:9px;color:var(--dim);margin-top:1px">📍 ${allPn.slice(0,2).join(', ')}${allPn.length>2?'…':''}</div>`;
           }
@@ -10484,7 +10484,7 @@ function renderCraftTab(body){
           const sd=(typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[]).find(x=>x.id===selRec.id);
           if(sd)_statHtml=_rowsHtml([['🚀 등급',sd.tier],['❤️ HP',(sd.maxHP||0).toLocaleString()],['🛡 SH',(sd.maxSH||0).toLocaleString()],['⚔️ ATT',String(sd.ATT||0)],['🧠 INT',String(sd.INT||0)],['⚡ TEC',String(sd.TEC||0)]]);
         }
-        const _heroReqHtml=selRec.heroReq?`<div style="font-size:11px;color:var(--purple);margin-top:6px">⭐ 영웅 ${HEROES[selRec.heroReq]?.nm||selRec.heroReq} 영입 필요</div>`:'';
+        const _heroReqHtml=selRec.heroReq?`<div style="font-size:11px;color:var(--purple);margin-top:6px">${I18N.t('ui.heroRecruitNeeded',{nm:HEROES[selRec.heroReq]?.nm||selRec.heroReq})}</div>`:'';
         // 스토리/설명 — 스탯 아래에 노출 (사용자 요청)
         const _lore=(_loreKey&&typeof LORE_TEXT!=='undefined'&&LORE_TEXT[_loreKey])||'';
         const _storyHtml=_lore?`<div style="margin-top:10px;border-top:1px solid ${_tierColor}33;padding-top:8px">
@@ -10617,7 +10617,7 @@ function openCraftSlot(idx){
     " onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='${isRec?'rgba(212,175,55,.35)':'var(--bdr)'}'">
       ${imgOrEmoji('img/commodities/'+m.id+'.png',m.ic||'💎',40,40,'border-radius:6px;background:rgba(0,0,0,.3);flex-shrink:0')}
       <div style="flex:1">
-        <div style="font-size:14px;color:var(--txt)">${m.nm}${isRec?` <span style="font-size:11px;color:#d4af37">● 필요재료</span>`:''}</div>
+        <div style="font-size:14px;color:var(--txt)">${m.nm}${isRec?` <span style="font-size:11px;color:#d4af37">${I18N.t('ui.matsRequired')}</span>`:''}</div>
         <div style="font-size:12px;color:var(--dim)">${m.desc||''}</div>
       </div>
       <div style="text-align:right">
@@ -12047,13 +12047,13 @@ function showCodexPartModal(partId){
   if(p.cat==='shield'){
     if(p.INT)_effItems.push(`🛡 실드 강도 (INT) +${p.INT}`);
     if(p.maxSH)_effItems.push(`🛡️ 최대 실드 +${p.maxSH.toLocaleString()}`);
-    if(p.shieldRegen)_effItems.push(`♻️ 매 턴 maxSH ${(p.shieldRegen*100).toFixed(0)}% 자가 충전`);
+    if(p.shieldRegen)_effItems.push(I18N.t('ui.shieldRegenTurn',{pct:(p.shieldRegen*100).toFixed(0)}));
     if(p.reflect)_effItems.push(`↩️ 피격 반사 ${(p.reflect*100).toFixed(0)}%`);
   }
   if(p.cat==='armor'){
-    if(p.HP)_effItems.push(`❤️ 최대 HP +${p.HP.toLocaleString()}`);
+    if(p.HP)_effItems.push(I18N.t('ui.maxHPPlus',{hp:p.HP.toLocaleString()}));
     if(p.DEF)_effItems.push(`🛡 방어력(DEF) +${p.DEF}`);
-    if(p.repairRate)_effItems.push(`🔧 매 턴 maxHP ${(p.repairRate*100).toFixed(0)}% 자동 수리`);
+    if(p.repairRate)_effItems.push(I18N.t('ui.hpRepairTurn',{pct:(p.repairRate*100).toFixed(0)}));
     if(p.laserHealHP)_effItems.push(`🩸 레이저 발사 시 입힌 피해의 ${(p.laserHealHP*100).toFixed(0)}% 만큼 HP 흡수`);
     if(p.laserHealSH)_effItems.push(`🩸 레이저 발사 시 입힌 피해의 ${(p.laserHealSH*100).toFixed(0)}% 만큼 실드 흡수`);
     if(p.revive)_effItems.push(`✨ 격침 시 1회 부활 (HP ${(p.revive*100).toFixed(0)}%)`);
@@ -12246,7 +12246,7 @@ function renderCodexTab(body){
               ? imgOrEmoji(partImgSrc(p.id),sec.key==='laser'?'⚔️':sec.key==='missile'?'🚀':cat==='shield'?'🛡️':cat==='armor'?'🛡':'⚡',78,78,'','part_'+p.id)
               : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--dim);background:rgba(0,0,0,.4)">❔</div>';
             const _clickAttr=have?'cursor:pointer':'';
-            const _onclick=have?`onclick="showCodexPartModal('${p.id}')" title="클릭=상세 정보"`:'';
+            const _onclick=have?`onclick="showCodexPartModal('${p.id}')" title="${I18N.t('ui.codexClickDetail')}"`:'';
             return`<div style="background:var(--card);border:1px solid ${have?rarBdr(p):'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.55};position:relative;min-height:148px">
               <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px;${_clickAttr}" ${_onclick}>${_imgHtml}</div>
               <div style="font-size:12px;font-weight:bold;color:${have?rarCol(p):'var(--dim)'};line-height:1.2;word-break:keep-all">${have?p.nm:'???'}</div>
@@ -12547,7 +12547,7 @@ function renderCombatLog(body){
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
             <span class="badge ${l.win?'bd-gn':'bd-rd'}" style="font-size:12px">${l.win?'승':'패'}</span>
             <span style="font-size:14px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_planetNm}</span>
-            ${pFaction?`<span style="font-size:11px;color:${pFaction.col}">${pFaction.nm}${pd?.ring?' · 링'+pd.ring:''}</span>`:''}
+            ${pFaction?`<span style="font-size:11px;color:${pFaction.col}">${pFaction.nm}${pd?.ring?I18N.t('ui.factionRingSuffix',{ring:pd.ring}):''}</span>`:''}
           </div>
           <div style="font-size:15px;font-weight:bold;color:${l.win?'var(--green)':'var(--red)'}">${l.win?'🎉 승리':'💀 패배'}</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -17020,7 +17020,7 @@ function _finishCombat(){
       // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선 (이미지 추가 — 보상 시각화)
       if(_isBossWin){
         items.push({ic:'💰',nm:'보스 격파 보너스',type:'크레딧',color:'var(--gold)',stats:`+₡10,000,000`,desc:'지구 해방의 대가. 100년 봉쇄의 청산금.'});
-        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:`HP 10,000,000 · ATT 6,000 · 신화 파츠 4종 풀세트`,desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
+        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:I18N.t('ui.ursaSpec'),desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
         items.push({ic:'⚔️',img:'img/parts/MW01.png',nm:'허메틱 포 ✦신화',type:'무기',color:'#ff66cc',stats:'ATT +320',desc:'우르사 메이저 주포 노획. 연속 공격 확률 +40%.',rarity:'mythic'});
         items.push({ic:'🛡️',img:'img/parts/MS01.png',nm:'크로노스 방벽 ✦신화',type:'실드',color:'#ff66cc',stats:'INT +280 · 실드 +8000',desc:'피격 반사 20% + 매 턴 maxSH 15% 자가 복구.',rarity:'mythic'});
         items.push({ic:'🪖',img:'img/parts/MA01.png',nm:'아다만 선체 ✦신화',type:'장갑',color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:'치명타 피해 50% 감소.',rarity:'mythic'});
@@ -18487,7 +18487,7 @@ function _cloudStatusText(){
     let diagLine='';
     if(d){
       const upMs=d.lastUploadAt?(Math.round((Date.now()-d.lastUploadAt)/1000)+'초 전'):'없음';
-      diagLine+=`<div style="font-size:11px;color:var(--muted);margin-top:4px">📡 업로드 ${d.uploadCount||0}회 · 마지막: ${upMs}`;
+      diagLine+=`<div style="font-size:11px;color:var(--muted);margin-top:4px">${I18N.t('ui.uploadStats',{n:d.uploadCount||0,ts:upMs})}`;
       if(d.queueSize>0)diagLine+=` · 큐 ${d.queueSize}건 대기`;
       if(d.lastUploadError)diagLine+=`<br><span style="color:var(--red)">❌ 마지막 오류: ${d.lastUploadError.slice(0,80)}</span>`;
       diagLine+='</div>';
@@ -19019,7 +19019,7 @@ function showEndingCredits(onDone){
     // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨)
     ...heroBlocks,
     // 치크스 진실 회상
-    Object.assign({tx:`치크스의 진실. 우리가 만든 것이 우리를 가뒀다.\n그날 밤 ${cmdName}은(는) 조타를 놓았다. 나는 옆에 있었다.`},BG),
+    Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
     // 기함 출항 전야
     Object.assign({tx:`${flagshipName} 출항 전야. 영웅 8명, 동기화율 99.7%.\n100년 전 ${cmdName}을(를) 깨우던 그 숫자.`},BG),
     // 6단 체인 회상
