@@ -5366,7 +5366,7 @@ function renderShipTab(body){
         <div style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;align-content:start;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">${rows}</div>
       </div>`;
     } else {
-      invPartsSection=`<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:10px 12px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--dim);font-size:12px">⚙️ 보유 파츠가 없습니다</div>`;
+      invPartsSection=`<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:10px 12px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--dim);font-size:12px">${I18N.t('ui.noPartsOwned')}</div>`;
     }
   }
 
@@ -5374,7 +5374,7 @@ function renderShipTab(body){
   let mainHTML;
   if(_shipTab==='parts'&&!G._garageMode){
     mainHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
-      <div>${invPartsSection||'<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:14px;color:var(--dim);font-size:12px;text-align:center">⚙️ 보유 파츠가 없습니다</div>'}</div>
+      <div>${invPartsSection||`<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:14px;color:var(--dim);font-size:12px;text-align:center">${I18N.t('ui.noPartsOwned')}</div>`}</div>
       <div>
         <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:8px">🛒 거래소 파츠</div>
         ${content}
@@ -10813,11 +10813,11 @@ function renderQuestTab(body){
     return`<div style="background:${bg};border:1px solid ${bdr};border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:22px">${icon}</span><div><div style="color:${color};font-size:14px;font-weight:bold">${title}</div><div style="color:var(--dim);font-size:11px">${list.length}건</div></div></div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">${list.map(qCard).join('')}</div></div>`;
   }
   const leftHTML=
-    _section('🎖️ 제독 의뢰 (진행 중/완료)','🎖️','var(--gold)','rgba(212,175,55,.05)','rgba(212,175,55,.25)',myAdmiralQ,'진행 중인 제독 의뢰가 없습니다.')+
-    _section('🕴️ 브로커 의뢰 (진행 중/완료)','🕴️','var(--cyan)','rgba(0,243,255,.04)','rgba(0,243,255,.2)',myBrokerQ,'진행 중인 브로커 의뢰가 없습니다.');
+    _section(I18N.t('ui.adminQuests'),'🎖️','var(--gold)','rgba(212,175,55,.05)','rgba(212,175,55,.25)',myAdmiralQ,I18N.t('ui.noOngoingAdmin'))+
+    _section(I18N.t('ui.brokerQuests'),'🕴️','var(--cyan)','rgba(0,243,255,.04)','rgba(0,243,255,.2)',myBrokerQ,I18N.t('ui.noOngoingBroker'));
   const rightHTML=
-    _section('🎖️ 함대 제독 — 수락 가능','🎖️','var(--gold)','rgba(212,175,55,.05)','rgba(212,175,55,.25)',availAdmiralQ,'현재 수락 가능한 제독 의뢰가 없습니다.')+
-    _section('🕴️ 브로커 — 수락 가능','🕴️','var(--cyan)','rgba(0,243,255,.04)','rgba(0,243,255,.2)',availBrokerQ,'현재 수락 가능한 브로커 의뢰가 없습니다.');
+    _section(I18N.t('ui.adminAvailable'),'🎖️','var(--gold)','rgba(212,175,55,.05)','rgba(212,175,55,.25)',availAdmiralQ,I18N.t('ui.noAvailableAdmin'))+
+    _section(I18N.t('ui.brokerAvailable'),'🕴️','var(--cyan)','rgba(0,243,255,.04)','rgba(0,243,255,.2)',availBrokerQ,I18N.t('ui.noAvailableBroker'));
   body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
     <!-- 헤더 -->
     <div style="padding:10px 14px 6px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0">

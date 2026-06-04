@@ -1817,6 +1817,26 @@ I18N.register({
   'ui.forceUrsaBossHelp':      { ko: '지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.',
                                  en: 'Use when the boss doesn\'t appear on Earth entry, or you want to retry after defeating it.' },
 
+  // ── G70: 잔여 인라인 + 영웅 엔딩 라인 8키 ────────────────────────
+  'ui.noPartsOwned':           { ko: '⚙️ 보유 파츠가 없습니다',
+                                 en: '⚙️ No parts owned' },
+  'ui.adminQuests':            { ko: '🎖️ 제독 의뢰 (진행 중/완료)',
+                                 en: '🎖️ Admiral Quests (In Progress / Done)' },
+  'ui.brokerQuests':           { ko: '🕴️ 브로커 의뢰 (진행 중/완료)',
+                                 en: '🕴️ Broker Quests (In Progress / Done)' },
+  'ui.adminAvailable':         { ko: '🎖️ 함대 제독 — 수락 가능',
+                                 en: '🎖️ Admiral — Available' },
+  'ui.brokerAvailable':        { ko: '🕴️ 브로커 — 수락 가능',
+                                 en: '🕴️ Broker — Available' },
+  'ui.noOngoingAdmin':         { ko: '진행 중인 제독 의뢰가 없습니다.',
+                                 en: 'No ongoing Admiral quests.' },
+  'ui.noOngoingBroker':        { ko: '진행 중인 브로커 의뢰가 없습니다.',
+                                 en: 'No ongoing Broker quests.' },
+  'ui.noAvailableAdmin':       { ko: '현재 수락 가능한 제독 의뢰가 없습니다.',
+                                 en: 'No available Admiral quests right now.' },
+  'ui.noAvailableBroker':      { ko: '현재 수락 가능한 브로커 의뢰가 없습니다.',
+                                 en: 'No available Broker quests right now.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
