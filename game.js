@@ -10135,7 +10135,7 @@ function doCraft(recipeId){
     }
   }
   if(rec.heroReq&&!(G.heroes||[]).includes(rec.heroReq)){
-    notify(`${HEROES[rec.heroReq]?.nm||rec.heroReq} 영웅 필요`,'err');return;
+    notify(I18N.t('notify.heroNeeded',{nm:HEROES[rec.heroReq]?.nm||rec.heroReq}),'err');return;
   }
 
   const btn=document.getElementById('craftBtn');
@@ -10170,7 +10170,7 @@ function doCraft(recipeId){
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
         <div style="font-size:16px;color:${q.col}">능력치 ×${mult.toFixed(2)}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.equipFromInventory')}</div>`;
-      notify(`⚗️ ${rec.nm} ${q.label} 완성!`,'gold');
+      notify(I18N.t('notify.craftComplete',{nm:rec.nm,label:q.label}),'gold');
       baekgu(mult>=1.1?`대박! ${q.label}이야. 능력치 +${Math.round((mult-1)*100)}% 상승!`:mult<1.0?`아쉽지만 ${q.label}이 나왔어. 다시 도전해봐.`:`${rec.nm} 완성! ${q.label}.`);
     } else if(rec.type==='cargo'){
       const scDef=SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id);
@@ -10182,7 +10182,7 @@ function doCraft(recipeId){
         <div style="font-size:18px;font-weight:bold;color:#d4af37">${I18N.t('ui.holdExpCraftDone')}</div>
         <div style="font-size:13px;color:var(--dim);margin-top:6px">화물 +${scDef.cargoBonus}칸 · 인벤토리에 보관됨</div>
         <div style="font-size:12px;color:var(--cyan);margin-top:6px">정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하세요</div>`;
-      notify(`📦 ${scDef.nm} 제작 완료! 인벤토리 보관 (정비소에서 장착)`,'gold');
+      notify(I18N.t('notify.holdPartCrafted',{nm:scDef.nm}),'gold');
       baekgu(`${scDef.nm} 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +${scDef.cargoBonus} 늘어나.`);
     } else {
       const def=SHIP_CATALOG.find(s=>s.id===rec.id);
@@ -10211,7 +10211,7 @@ function doCraft(recipeId){
         ${_addedToReserve?'<div style="font-size:13px;color:var(--cyan);margin-top:6px">📦 활성 편대 가득(16척) — 임시창에 보관 (정비소에서 교체 가능)</div>':''}
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
-      notify(`⚗️ ${newShip.nm} 건조! ${q.label}`,'gold');
+      notify(I18N.t('notify.shipBuilt',{nm:newShip.nm,label:q.label}),'gold');
       baekgu(mult>=1.1?`함선 완성! ${q.label}이야. 편대 확인해봐!`:`${def.nm} 완성. ${q.label}.`);
     }
 
@@ -10688,7 +10688,7 @@ function submitBuyQuest(pid,idx){
   G.cargo=G.cargo.filter(s=>s.qty>0);
   q.status='done';q.progress=q.required;
   const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;
-  notify(`📦 ${_cn} ${q.required}개 납품 — 보상 수령 가능`,'gold');
+  notify(I18N.t('notify.deliveryQty',{nm:_cn,n:q.required}),'gold');
   baekgu(I18N.t('baekgu.buyQuestComplete'));
   saveGame(true);
   rerenderTab(renderQuestTab);
@@ -11038,7 +11038,7 @@ function _maybeBlackMarketAmbush(result,tier){
   const _won=Math.random()<_winChance;
   setTimeout(()=>{
     if(_won){
-      notify('⚔️ 해적 매복 격퇴 — 보상 안전','gold');
+      notify(I18N.t('notify.ambushRepelled'),'gold');
       openModal(I18N.t('modal.pirateAmbushWin'),
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">⚔️</div>
@@ -11217,7 +11217,7 @@ function openMysteryBox(tier){
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.rec.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
-    notify(`📜 설계도 획득: ${result.rec.nm}`,'gold');
+    notify(I18N.t('notify.bpAcquiredFromBox',{nm:result.rec.nm}),'gold');
   } else if(result.type==='part'){
     const _rc=result.p.rarity;
     const _pcol=_rc==='mythic'?'#cc66ff':_rc==='set'?'#33ddff':_rc==='legend'||_rc==='L'?'#d4af37':'var(--cyan)';
@@ -11230,7 +11230,7 @@ function openMysteryBox(tier){
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.p.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">인벤토리에 추가됨 — 정비소에서 장착</div>
     </div>`;
-    notify(`⚙️ 파츠 획득: ${result.p.nm}`,'gold');
+    notify(I18N.t('notify.partAcquiredFromBox',{nm:result.p.nm}),'gold');
   } else if(result.type==='ship'){
     const _scol=result.s.tier==='신화'?'#cc66ff':result.s.tier==='전설기함'?'#ff8800':'var(--green)';
     const _sImgSrc=(typeof shipImgSrc==='function')?shipImgSrc({id:result.s.id,catalogId:result.s.id,tier:result.s.tier}):'img/ships/'+result.s.id+'.png';
@@ -11242,7 +11242,7 @@ function openMysteryBox(tier){
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.s.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${result.toReserve?'임시창고에 보관됨 — 정비소에서 교체':'함대에 자동 합류'}</div>
     </div>`;
-    notify(`🚀 함선 획득: ${result.s.nm}`,'gold');
+    notify(I18N.t('notify.shipAcquiredFromBox',{nm:result.s.nm}),'gold');
   }
   // 최근 박스 보상 저장 — 우측 상단 카드용 (단일 + 최근 5장 목록)
   if(result){
@@ -11771,7 +11771,7 @@ function doBid(pid,amount,instant=false){
   if(G.credits<amount){notify(I18N.t('notify.notEnoughCredits'),'err');return;}
   const _ownedCnt=Object.values(G.planets).filter(p=>p.owned).length;
   const _maxPlanets=_maxOwnedPlanets();
-  if(_ownedCnt>=_maxPlanets){notify(`🔒 행성 보유 한도 초과 — 현재 ${_ownedCnt}/${_maxPlanets}개 (명성 ${(_maxPlanets)*20} 달성 시 +1 슬롯)`,'err');return;}
+  if(_ownedCnt>=_maxPlanets){notify(I18N.t('notify.planetLimitOver',{now:_ownedCnt,max:_maxPlanets,rep:_maxPlanets*20}),'err');return;}
   if(!instant){
     // 직접입찰: 낙찰 확률 60~90% (입찰금액 / 즉시낙찰가 비율로 계산)
     const _auctDiff={easy:1.05,normal:1.15,hard:1.22,extreme:1.30}[G.difficulty]||1.15;
@@ -12624,7 +12624,7 @@ function boardHeroToShip(hid){
   const _stBefH=getShipStats(s);
   s.crewIds.push(hid);
   _syncShipCapacity(s,_stBefH);
-  notify(`⭐ ${HEROES[hid]?.nm} → ${s.nm} 탑승! 전 스탯 ×1.2`,'gold');
+  notify(I18N.t('notify.heroBoarded',{nm:HEROES[hid]?.nm,ship:s.nm}),'gold');
   baekgu(`${HEROES[hid]?.nm} 탑승. 이제 그 함선 1.2배 강해졌어.`);
   rerenderShipOrGarage();saveGame(true);
 }
@@ -12632,7 +12632,7 @@ function unassignHero(hid){
   G.fleet.forEach(sh=>{
     if(!sh.crewIds)return;
     const idx=sh.crewIds.indexOf(hid);
-    if(idx>=0){sh.crewIds.splice(idx,1);notify(`⭐ ${HEROES[hid]?.nm} 하선`,'ok');}
+    if(idx>=0){sh.crewIds.splice(idx,1);notify(I18N.t('notify.heroDisembark',{nm:HEROES[hid]?.nm}),'ok');}
   });
   rerenderShipOrGarage();saveGame(true);
 }
@@ -12641,14 +12641,14 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
   if(heroId==='H01'){
     const has=G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0);
     if(!has){
-      notify('⚔️ 이순신 영입에는 난중일기 영인본(G18)이 필요합니다! 지구 저항군 행성에서 구입하세요.','err');
+      notify(I18N.t('notify.needNanjungIlgi'),'err');
       closeModal();return;
     }
     // 소모
     const inv=G.inventory.find(i=>i.id==='G18');inv.qty--;
-    notify('📜 난중일기 영인본 제출 완료.','ok');
+    notify(I18N.t('notify.nanjungSubmitted'),'ok');
   }
-  G.heroes.push(heroId);closeModal();notify(`${HEROES[heroId]?.ic} ${HEROES[heroId]?.nm} 영입!`,'pur');baekgu(`${HEROES[heroId]?.nm} 합류. 잘 써.`);
+  G.heroes.push(heroId);closeModal();notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[heroId]?.ic,nm:HEROES[heroId]?.nm}),'pur');baekgu(I18N.t('baekgu.heroJoined',{nm:HEROES[heroId]?.nm}));
   // 장영실: 모든 행성 안개 제거
   if(heroId==='H02'){applyJangYeongsilEffect();notify('⚙️ 장영실 효과: 은하계 전 행성 탐색 완료!','gold');}
   saveGame(true);
