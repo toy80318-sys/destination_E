@@ -17412,7 +17412,7 @@ function activateDestinationEarth(){
     });
   }
   addCombatLog(I18N.t('combat.destinationActivate'),'gold');
-  notify('🌍 데스티네이션 어스! 아군 ATT ×10','gold');
+  notify(I18N.t('notify.destinationActivateShort'),'gold');
   baekgu(I18N.t('baekgu.destinationEarth'));
   const dbtn=document.getElementById('cb-destination-btn');
   if(dbtn)dbtn.disabled=true;
@@ -17523,7 +17523,7 @@ function _saveGameImmediate(silent,slotN){
         localStorage.setItem(_slotKey(n),JSON.stringify(snap2));
         if(!silent)notify(I18N.t('notify.backupSaveOk'),'ok');
       }catch(e2){
-        if(!silent)notify('❌ 저장 재시도 실패: '+e2.message,'err');
+        if(!silent)notify(I18N.t('notify.saveRetryFail',{err:e2.message}),'err');
       }
     }
   }
@@ -17590,7 +17590,7 @@ function loadGame(slotN){
     // 없으면 백업 슬롯에서 자동 복구 시도
     if(!snap){
       if(_tryRecoverSlot(n)){snap=_getSlotInfo(n);if(snap)notify(I18N.t('notify.slotRecovered',{n}),'gold');}
-      else if(n===1&&_tryRecoverSlot(0)){snap=_getSlotInfo(0);if(snap)notify('🔄 레거시 슬롯 백업 복구됨','gold');}
+      else if(n===1&&_tryRecoverSlot(0)){snap=_getSlotInfo(0);if(snap)notify(I18N.t('notify.legacySlotRecovered'),'gold');}
     }
     if(!snap){notify(I18N.t('notify.slotNoData',{n}),'err');return false;}
     Object.assign(G,snap);
@@ -18044,7 +18044,7 @@ async function _sendFeedback(){
   const{id,msg}=_gatherFeedback();
   if(!msg){notify(I18N.t('notify.enterContent'),'err');return;}
   _saveFeedbackLocal(id,msg);
-  notify('📡 피드백 전송 중...','ok');
+  notify(I18N.t('notify.feedbackSending'),'ok');
   let sent=false;
   // 1차: Firestore 전송 (실제 개발자에게 전달)
   if(window.CloudSave){
@@ -18059,7 +18059,7 @@ async function _sendFeedback(){
     const body=`아이디: ${id||'(미입력)'}\n버전: ${window._GAME_VER||'1.1'}\nTURN: ${G?.turn||0}\n\n${msg}`;
     const url='mailto:toy80318@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
     try{window.location.href=url;}catch(e){}
-    notify('📧 메일 앱으로 전송합니다 (클라우드 전송 실패 폴백)','warn');
+    notify(I18N.t('notify.feedbackMailFallback'),'warn');
   }
   closeModal();
 }
@@ -18070,7 +18070,7 @@ function _copyFeedback(){
   const text=`[데스티네이션 어스 피드백]\n아이디: ${id||'(미입력)'}\n버전: ${window._GAME_VER||'1.1'}\nTURN: ${G?.turn||0}\n\n${msg}\n\n→ toy80318@gmail.com 으로 보내주세요`;
   try{
     navigator.clipboard.writeText(text).then(()=>{
-      notify('📋 클립보드에 복사 완료! toy80318@gmail.com 으로 붙여넣어 보내주세요','ok');
+      notify(I18N.t('notify.clipboardCopiedToEmail'),'ok');
     }).catch(()=>{
       // 폴백: 수동 복사 안내
       notify(I18N.t('notify.copyFailed'),'warn');
@@ -18241,7 +18241,7 @@ function _cheatUnlock(onOk){
         if(v.trim()===CHEAT_PASSWORD){
           sessionStorage.setItem('de_cheat_unlocked','1');
           closeModal();
-          notify('🔓 치트 모드 잠금 해제!','gold');
+          notify(I18N.t('notify.cheatUnlocked'),'gold');
           if(typeof onOk==='function')setTimeout(onOk,200);
         } else {
           notify(I18N.t('notify.wrongPassword'),'err');
@@ -18299,7 +18299,7 @@ function _doMaxAll(){
   // 모든 행성 탐험됨으로
   (PLANET_DEF||[]).forEach(p=>{if(!G.planets[p.id])G.planets[p.id]={fog:'A',owned:false,commerce:0};else G.planets[p.id].fog='A';});
   updateHUD();saveGame(true);
-  notify('🌟 맥스 충전! ₡10억 · 명성 999 · VC 99 · VE 99999 · 영웅 8명 · 보이드 해금','gold');
+  notify(I18N.t('notify.megaChargeFull'),'gold');
   if(typeof baekgu==='function')baekgu(`${G.profile?.name||'사령관'}, 맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!`);
 }
 function cheatMaxAll(){_cheatUnlock(_doMaxAll);}
@@ -18313,7 +18313,7 @@ function replayEnding(){
   if(!G.planets['P31'])G.planets['P31']={fog:'A',owned:false,commerce:0};
   else G.planets['P31'].fog='A';
   try{AudioMgr.playBgm('P31');}catch(e){}
-  showEndingCredits(()=>{notify('🎬 엔딩 시청 완료','gold');});
+  showEndingCredits(()=>{notify(I18N.t('notify.endingWatched'),'gold');});
 }
 try{if(typeof window!=='undefined')window.replayEnding=replayEnding;}catch(e){}
 // 보이드 퀘스트 즉시 해금 — 우르사 격파 처리 + 보이드 행성 모두 탐험됨으로 표시
@@ -18337,7 +18337,7 @@ function _doUnlockVoid(){
   // 보이드 크리스탈 보장
   if((G.voidCrystal||0)<5)G.voidCrystal=5;
   updateHUD();saveGame(true);
-  notify('🌑 보이드 페이즈 즉시 해금! P30 (제타 레티쿨리) 이동 가능','pur');
+  notify(I18N.t('notify.voidPhaseUnlockedShort'),'pur');
   if(typeof baekgu==='function')baekgu(I18N.t('baekgu.voidPhaseUnlocked'));
 }
 function cheatUnlockVoid(){_cheatUnlock(_doUnlockVoid);}
@@ -18385,8 +18385,8 @@ function exportSaveFile(slotN){
     a.href=url;a.download=_saveFilename(slotN);
     document.body.appendChild(a);a.click();
     setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},100);
-    notify(`💾 슬롯 ${slotN} 파일 다운로드 완료 (${Math.round(raw.length/1024)}KB)`,'gold');
-  }catch(e){notify('❌ 다운로드 실패: '+e.message,'err');}
+    notify(I18N.t('notify.slotFileDownloaded',{n:slotN,kb:Math.round(raw.length/1024)}),'gold');
+  }catch(e){notify(I18N.t('notify.downloadFailed',{err:e.message}),'err');}
 }
 function exportAllSavesFile(){
   // 모든 슬롯을 하나의 번들 파일로
@@ -18406,8 +18406,8 @@ function exportAllSavesFile(){
     a.href=url;a.download=`DestinationEarth_all_${cmd}_${ts}.json`;
     document.body.appendChild(a);a.click();
     setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},100);
-    notify(`💾 전체 ${count}개 슬롯 번들 다운로드 완료`,'gold');
-  }catch(e){notify('❌ 다운로드 실패: '+e.message,'err');}
+    notify(I18N.t('notify.allSlotsBundle',{n:count}),'gold');
+  }catch(e){notify(I18N.t('notify.downloadFailed',{err:e.message}),'err');}
 }
 function importSaveFile(ev){
   const file=ev.target.files&&ev.target.files[0];
@@ -18429,7 +18429,7 @@ function importSaveFile(ev){
           const sk=n===0?'de_save':'de_save_s'+n;
           try{localStorage.setItem(sk,JSON.stringify(obj.slots[k]));ok++;}catch(_){}
         });
-        notify(`✅ ${ok}개 슬롯 복원 완료 — 5초 후 새로고침`,'gold');
+        notify(I18N.t('notify.slotsRestoredRefresh',{n:ok}),'gold');
         setTimeout(()=>location.reload(),5000);
       } else if(obj.turn!==undefined||obj.fleet){
         // 단일 슬롯 — 슬롯 번호 입력
