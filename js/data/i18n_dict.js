@@ -1909,6 +1909,22 @@ I18N.register({
   'ui.partCatArmor':           { ko: '🛡 장갑', en: '🛡 Armor' },
   'ui.partCatEngine':          { ko: '⚡ 엔진', en: '⚡ Engine' },
 
+  // ── G74: hub 라벨/계급/필드명/상태 ───────────────────────────────
+  'ui.planetAuction':          { ko: '행성 경매', en: 'Planet Auction' },
+  'ui.planetAuctionDesc':      { ko: '부동산 입찰 · 행성 점령', en: 'Bid on planets · Annex' },
+  'ui.statAbil':               { ko: '능력치', en: 'Stats' },
+  'ui.fieldCredits':           { ko: '크레딧', en: 'Credits' },
+  'ui.statusUndiscovered':     { ko: '미발견', en: 'Undiscovered' },
+  'ui.rankCivilian':           { ko: '일반인', en: 'Civilian' },
+  'ui.rankCaptain':            { ko: '함장', en: 'Captain' },
+  'ui.rankAdmiral':            { ko: '제독', en: 'Admiral' },
+  'ui.rankGrandAdmiral':       { ko: '대제독 ★', en: 'Grand Admiral ★' },
+  'ui.rankCivilianFull':       { ko: '일반인 (Civilian)', en: 'Civilian' },
+  'ui.rankCaptainFull':        { ko: '함장 (Captain)', en: 'Captain' },
+  'ui.rankAdmiralFull':        { ko: '제독 (Admiral)', en: 'Admiral' },
+  'ui.rankGrandFull':          { ko: '대제독 ★ (Grand Admiral)', en: 'Grand Admiral ★' },
+  'ui.fallbackReward':         { ko: '보상', en: 'Reward' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

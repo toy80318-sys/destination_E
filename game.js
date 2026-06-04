@@ -10903,7 +10903,7 @@ function renderFrontView(body){
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   const cards=[
     {tab:'planets',ic:'🌍',nm:'행성 현황',desc:'점령 행성 · 세금 현황',color:'var(--green)',bg:'rgba(0,255,140,.07)',bdr:'rgba(0,255,140,.25)'},
-    {tab:'auction',ic:'🏛️',nm:'행성 경매',desc:'부동산 입찰 · 행성 점령',color:'var(--gold)',bg:'rgba(212,175,55,.07)',bdr:'rgba(212,175,55,.2)'},
+    {tab:'auction',ic:'🏛️',nm:I18N.t('ui.planetAuction'),desc:I18N.t('ui.planetAuctionDesc'),color:'var(--gold)',bg:'rgba(212,175,55,.07)',bdr:'rgba(212,175,55,.2)'},
   ];
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('front','🌍','행성 프론트',pd?.f)}
@@ -11005,11 +11005,11 @@ function _showFireworks(){
 
 // 보상명 표시 (해적 매복 결과창용)
 function _mysteryRewardName(result){
-  if(!result)return '보상';
+  if(!result)return I18N.t('ui.fallbackReward');
   if(result.type==='bp')return '설계도 ['+(result.rec?.nm||'')+']';
   if(result.type==='part')return '파츠 ['+(result.p?.nm||'')+']';
   if(result.type==='ship')return '함선 ['+(result.s?.nm||'')+']';
-  return '보상';
+  return I18N.t('ui.fallbackReward');
 }
 // 해적 매복 시 방금 받은 보상 회수
 function _revokeMysteryBoxReward(result){
@@ -11755,7 +11755,7 @@ function renderAuctionView(body){
     </div>
   </div>`;
   body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
-    ${hubBanner('auction','🏛️','행성 경매',PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f)}
+    ${hubBanner('auction','🏛️',I18N.t('ui.planetAuction'),PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f)}
     <div style="padding:8px 14px 4px;flex-shrink:0">
       <div class="hub-t" style="margin:0">${I18N.t('hub.planetAuctionT')} <span style="font-size:12px;font-weight:normal;color:${bidsLeft>0?'var(--cyan)':'var(--red)'}">${I18N.t('ui.bidsAndOwn',{bids:bidsLeft})}</span>&nbsp;&nbsp;<span style="font-size:12px;font-weight:normal;color:${_planetsAtLimit?'var(--red)':'var(--dim)'}">${I18N.t('ui.planetCount',{now:_ownedCnt2,max:_maxPlanets2})}</span></div>
     </div>
@@ -11916,7 +11916,7 @@ function showCodexHeroModal(hid){
     </div>
     ${row('📜',I18N.t('ui.nameOrigin'),l.origin||I18N.t('ui.noInfo'))}
     ${row('📍','발견 행성',`${l.found||foundPlanetNm}`)}
-    ${row('⚔️','능력치',l.stats||`ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}`)}
+    ${row('⚔️',I18N.t('ui.statAbil'),l.stats||`ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}`)}
     ${row('🎭','장단점 · 성격',l.char||I18N.t('ui.noInfo'))}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
@@ -11938,7 +11938,7 @@ function showCodexSpecialCharModal(cid){
       </div>
     </div>
     ${row('📍','발견 행성',c.found||'-')}
-    ${row('⚔️','능력치',c.stats||'-')}
+    ${row('⚔️',I18N.t('ui.statAbil'),c.stats||'-')}
     ${row('✨','장점',`<span style="color:rgba(180,255,200,.95)">${c.pros||'-'}</span>`)}
     ${row('⚠️','단점',`<span style="color:rgba(255,200,160,.95)">${c.cons||'-'}</span>`)}
     ${row('🎭','성격',c.personality||'-')}
@@ -11952,7 +11952,7 @@ try{if(typeof window!=='undefined')window.showCodexSpecialCharModal=showCodexSpe
 // 사령관(주인공) 상세 모달 — 단계별 이미지 + 명성·전투력·진행 통계
 function showCodexCommanderModal(){
   const _stage=(typeof _commanderStage==='function')?_commanderStage():0;
-  const _stageLb=['일반인 (Civilian)','함장 (Captain)','제독 (Admiral)','대제독 ★ (Grand Admiral)'][_stage]||'일반인';
+  const _stageLb=[I18N.t('ui.rankCivilianFull'),I18N.t('ui.rankCaptainFull'),I18N.t('ui.rankAdmiralFull'),I18N.t('ui.rankGrandFull')][_stage]||I18N.t('ui.rankCivilian');
   const _stageCol=['#9ee7ff','#66ddff','#ffcc00','#ff66ff'][_stage]||'#9ee7ff';
   const _img=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():'img/chars/commander_m0.png';
   const _nm=G.profile?.name||I18N.t('ui.commander');
@@ -12007,7 +12007,7 @@ function showCodexCommanderModal(){
     ${row('⚔','전설 영웅',`${_heroes}/8 명 영입`)}
     ${row('🛸','함대',`${_fleet}척 · 기함: ${_ship}`)}
     ${row('🪐','보유 행성',`${_ownedPl}개`)}
-    ${row('💰','크레딧',`₡${_credits.toLocaleString()}`)}
+    ${row('💰',I18N.t('ui.fieldCredits'),`₡${_credits.toLocaleString()}`)}
     ${row('⏭️','다음 단계 조건',`<span style="color:#ffcc66">${_nextHint}</span>`)}
   </div>`;
   openModal(I18N.t('modal.commanderProfile',{nm:_nm}),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-gold'}],{wide:true});
@@ -12250,7 +12250,7 @@ function renderCodexTab(body){
             return`<div style="background:var(--card);border:1px solid ${have?rarBdr(p):'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.55};position:relative;min-height:148px">
               <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px;${_clickAttr}" ${_onclick}>${_imgHtml}</div>
               <div style="font-size:12px;font-weight:bold;color:${have?rarCol(p):'var(--dim)'};line-height:1.2;word-break:keep-all">${have?p.nm:'???'}</div>
-              <div style="font-size:10px;color:var(--dim);margin-top:2px">${have?('T'+p.tier+' · '+statTxt(p)):'미발견'}</div>
+              <div style="font-size:10px;color:var(--dim);margin-top:2px">${have?('T'+p.tier+' · '+statTxt(p)):I18N.t('ui.statusUndiscovered')}</div>
               ${rarityBadge}
               <div style="font-size:10px;margin-top:2px">${have?`<span style="color:var(--green)">✅ ×${qty}</span>`:`<span style="color:var(--dim)">❔ 미보유</span>`}</div>
             </div>`;
@@ -12276,12 +12276,12 @@ function renderCodexTab(body){
       return `<div ${oc} ${hover} style="background:var(--card);border:1px solid ${unlocked?col:'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${unlocked?1:.4};min-height:148px;${unlocked?'cursor:pointer':''}">
         <div style="margin:0 auto 6px;display:flex;justify-content:center">${imgHtml}</div>
         <div style="font-size:12px;font-weight:bold;color:${unlocked?col:'var(--dim)'};line-height:1.2">${unlocked?c.nm:'???'}</div>
-        <div style="font-size:10px;color:${col};margin-top:2px;opacity:.8">${unlocked?c.role.split('·')[0].trim():'미발견'}</div>
+        <div style="font-size:10px;color:${col};margin-top:2px;opacity:.8">${unlocked?c.role.split('·')[0].trim():I18N.t('ui.statusUndiscovered')}</div>
       </div>`;
     };
     // 사령관(주인공) 카드 — 항상 1로 포함, 단계별 이미지 노출
     const _cmdStage=(typeof _commanderStage==='function')?_commanderStage():0;
-    const _cmdStageLb=['일반인','함장','제독','대제독 ★'][_cmdStage]||'일반인';
+    const _cmdStageLb=[I18N.t('ui.rankCivilian'),I18N.t('ui.rankCaptain'),I18N.t('ui.rankAdmiral'),I18N.t('ui.rankGrandAdmiral')][_cmdStage]||I18N.t('ui.rankCivilian');
     const _cmdStageCol=['#9ee7ff','#66ddff','#ffcc00','#ff66ff'][_cmdStage]||'#9ee7ff';
     const _cmdImg=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():'img/chars/commander_m0.png';
     const _cmdName=G.profile?.name||I18N.t('ui.commander');
