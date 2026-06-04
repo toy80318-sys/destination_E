@@ -1740,6 +1740,21 @@ I18N.register({
   'ui.blackfalconNickname':    { ko: '현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>{call}',
                                  en: 'Locals call them <span style="color:#ff66ff;font-weight:bold">Blackfalcon</span>{call}' },
 
+  // ── G64: title 툴팁 + 짧은 인라인 11키 ────────────────────────────
+  'tip.restoreLastWork':       { ko: '버튼으로 복원 가능 (마지막 작업만)', en: 'Restorable via button (last action only)' },
+  'tip.heldInMaterialPanel':   { ko: '(재료창 보관)',                en: '(in material panel)' },
+  'tip.outOfStockNoRestock':   { ko: '(재고 소진 후 미보충)',       en: '(out of stock, not restocked)' },
+  'tip.current':               { ko: '(현재)',                      en: '(current)' },
+  'title.unequipAllToInv':     { ko: '장착된 모든 파츠를 인벤토리로 회수', en: 'Recover all equipped parts to inventory' },
+  'title.replayUrsaEnding':    { ko: '우르사 격파 엔딩 영상을 다시 시청', en: 'Replay Ursa defeat ending video' },
+  'title.notEnoughCredits':    { ko: '크레딧 부족',                   en: 'Not enough credits' },
+  'title.forceAllCrewDismiss': { ko: '함선 탑승 중인 크루도 강제 하선 후 일괄 방출',
+                                 en: 'Force-disembark all crew (including aboard) and bulk dismiss' },
+  'title.forceCrewDismiss':    { ko: '함선 탑승 중인 크루도 강제 하선 후 방출',
+                                 en: 'Force-disembark aboard crew and dismiss' },
+  'title.holdExpEquip':        { ko: '창고 확장 파츠 장착',          en: 'Equip hold expansion part' },
+  'title.partEquip':           { ko: '파츠 장착',                    en: 'Equip part' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
