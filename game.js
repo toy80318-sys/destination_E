@@ -7901,7 +7901,7 @@ function assignCrew(shipIdx){
   _syncShipCapacity(s,_stBefAC);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(`${c?.ic||'🧑'} ${c?.nm||'크루'} → ${s.nm} 탑승 완료!`,'ok');
+  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
   baekgu(`${c?.nm||'크루'} ${s.nm}에 탑승. 함선 성능 올라갔어.`);
   rerenderShipOrGarage();saveGame(true);
 }
@@ -7920,7 +7920,7 @@ function assignCrewById(shipIdx,cid){
   _syncShipCapacity(s,_stBefACB);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(`${c?.ic||'🧑'} ${c?.nm||'크루'} → ${s.nm} 탑승!`,'ok');
+  notify(I18N.t('notify.crewBoard',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 function unassignCrew(shipIdx,crewSlotIdx){
@@ -8067,7 +8067,7 @@ function sellShip(idx){
   try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate(sellShip) failed',e);}
   try{_recordSell({type:'ship',ship:_undoShip,credits:sp.total,label:s.nm});}catch(e){}
   updateHUD();
-  notify(`🪙 ${s.nm} 판매 완료 +₡${sp.total.toLocaleString()}${_cargoBack>0?` (창고 ${_cargoBack}개 회수)`:''}`,'gold');
+  notify(I18N.t('notify.shipSoldFull',{nm:s.nm,cr:sp.total.toLocaleString(),cargo:_cargoBack>0?I18N.t('notify.cargoRecoveredN',{n:_cargoBack}):''}),'gold');
   baekgu(`${s.nm} 팔았어. ₡${sp.total.toLocaleString()} 들어왔다. 잘 썼네.`);
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8143,7 +8143,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
   const cost=getCargoUpgradePrice(s);
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;s.cargoSlots=Math.min(80,cur+2);
-  updateHUD();notify(`📦 ${s.nm} 창고 확장! (${s.cargoSlots}칸) -₡${cost.toLocaleString()}`,'ok');
+  updateHUD();notify(I18N.t('notify.holdExpanded',{nm:s.nm,n:s.cargoSlots,cr:cost.toLocaleString()}),'ok');
   baekgu(`${s.nm} 창고 ${s.cargoSlots}칸으로 확장. ${s.cargoSlots>=80?'이제 최대야!':'다음 확장은 더 비싸질 거야.'}`);
   if(fromModal){showShipDetailModal(shipIdx);}else{rerenderShipOrGarage();}
   saveGame(true);
@@ -8158,7 +8158,7 @@ function buyCargoExtPart(id){
   stock['scargo_'+id]--;
   addToInventory(id,1);
   updateHUD();
-  notify(`📦 ${ci.nm} 구매 → 인벤토리 보관 (정비소 파츠창의 창고 확장 슬롯에 장착)`,'gold');
+  notify(I18N.t('notify.holdPartBought',{nm:ci.nm}),'gold');
   baekgu(`${ci.nm} 샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +${ci.cargoBonus} 늘어나.`);
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8176,7 +8176,7 @@ function equipCargoExt(shipIdx,partId){
   ext.push(partId);
   s.cargoSlots=(s.cargoSlots||4)+sc.cargoBonus;
   closeModal();
-  notify(`📦 ${s.nm} — ${sc.nm} 장착! 화물 +${sc.cargoBonus}칸 (창고 ${s.cargoSlots}칸)`,'gold');
+  notify(I18N.t('notify.holdPartEquipped',{nm:s.nm,part:sc.nm,bonus:sc.cargoBonus,n:s.cargoSlots}),'gold');
   updateHUD();rerenderShipOrGarage();saveGame(true);
 }
 function unequipCargoExt(shipIdx,slotIdx){
@@ -8187,7 +8187,7 @@ function unequipCargoExt(shipIdx,slotIdx){
   ext.splice(slotIdx,1);
   if(sc)s.cargoSlots=Math.max((({소형:5,중형:10,대형:20,전설기함:30,신화:40})[s.tier]||4),(s.cargoSlots||4)-sc.cargoBonus);
   addToInventory(partId,1);
-  notify(`📦 ${sc?sc.nm:'창고 확장'} 해제 → 인벤토리 회수`,'ok');
+  notify(I18N.t('notify.holdPartUnequip',{nm:sc?sc.nm:I18N.t('ui.cargoExp')}),'ok');
   updateHUD();rerenderShipOrGarage();saveGame(true);
 }
 function pickCargoExtForSlot(shipIdx){
@@ -8229,7 +8229,7 @@ function buyShip(shipId){
   const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
   const _initCargo=(typeof def.cargoStart==='number')?def.cargoStart:(slotsByTier[def.tier]||5);
   addShipToFleet({id:def.id+'_'+Date.now(),catalogId:def.catalogId||def.id,nm:def.nm,tier:def.tier,maxHP:def.maxHP,hp:def.maxHP,maxSH:def.maxSH,sh:def.maxSH,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:80,parts:[],crewIds:[],cargoSlots:_initCargo});
-  updateHUD();baekgu(`${def.nm} 구매 완료.`);notify(`🛸 ${def.nm} 구매!`,'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();baekgu(I18N.t('baekgu.shipBought',{nm:def.nm}));notify(I18N.t('notify.shipBought',{nm:def.nm}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function buyPart(partId){
   const p=PARTS.find(x=>x.id===partId);if(!p)return;
@@ -8238,7 +8238,7 @@ function buyPart(partId){
   const partFinalPr=G.heroes.includes('H01')?Math.floor(p.price*0.85):p.price;
   if(G.credits<partFinalPr){notify(I18N.t('notify.notEnoughCredits'),'err');return;}
   G.credits-=partFinalPr;stock['part_'+partId]--;addToInventory(partId);
-  updateHUD();notify(`⚙️ ${p.nm} 구매!`,'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.partBought',{nm:p.nm}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function attachPart(shipIdx,partId){
   const s=G.fleet[shipIdx];if(!s)return;
@@ -8254,7 +8254,7 @@ function attachPart(shipIdx,partId){
   inv.qty--;if(inv.qty===0)G.inventory.splice(G.inventory.indexOf(inv),1);
   _syncShipCapacity(s,_stBef);
   const p=PARTS.find(x=>x.id===partId);
-  notify(`${p?.nm||'파츠'} 장착 완료`,'ok');
+  notify(I18N.t('notify.partEquipped',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');
   // 워프 엔진(블링크/타키온/테슬라) 전 함선 장착 완료 알림
   const _isWarp=WARP_ENGINE_IDS.includes(partId);
   if(_isWarp&&hasBlinkOnAll()){
@@ -8270,7 +8270,7 @@ function detachPart(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s.parts||s.parts.length===0){notify(I18N.t('notify.noEquippedParts'),'err');return;}
   const pid=s.parts.pop();const p=partById(pid);
   {const _stA=getShipStats(s);s.hp=Math.min(s.hp||0,_stA.HP);s.sh=Math.min(s.sh||0,_stA.maxSH);}
-  addToInventory(pid);notify(`${p?.nm||'파츠'} 탈착 → 인벤토리로`,'ok');rerenderShipOrGarage();saveGame(true);
+  addToInventory(pid);notify(I18N.t('notify.partUnequipToInv',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');rerenderShipOrGarage();saveGame(true);
 }
 // 특정 인덱스의 파츠 탈착 (파츠 버튼 클릭 시 호출)
 function detachPartAt(shipIdx,partIdx){
@@ -8289,7 +8289,7 @@ function detachPartAt(shipIdx,partIdx){
   } else {
     addToInventory(pid);
   }
-  notify(`${p?.nm||'파츠'} 탈착 완료 — 인벤토리로 이동`,'ok');
+  notify(I18N.t('notify.partUnequipDone',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 
@@ -8391,7 +8391,7 @@ function unassignCrewById(cid){
     if(i>=0){
       sh.crewIds.splice(i,1);
       const c=G.crew.find(x=>x.id===cid);
-      notify(`${c?.ic||'🧑'} ${c?.nm||'크루'} 하선`,'ok');
+      notify(I18N.t('notify.crewDisembarkIc',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
     }
   });
   rerenderShipOrGarage();saveGame(true);
@@ -8437,7 +8437,7 @@ function _doDismissCrew(cid){
     // 되돌리기 저장 (통합 배열 포맷: crew: [{data, shipIdx, insertIdx}])
     _lastDismissedCrew={crew:[{data:JSON.parse(JSON.stringify(c)),shipIdx:savedShipIdx,insertIdx:idx}]};
     G.crew.splice(idx,1);
-    notify(`${c.ic||'🧑'} ${c.nm} 내보냄 — 상단 되돌리기 버튼으로 복원 가능`,'ok');
+    notify(I18N.t('notify.crewDismissedUndo',{ic:c.ic||'🧑',nm:c.nm}),'ok');
   }
   rerenderTab(renderCrewTab);saveGame(true);
 }
@@ -8466,7 +8466,7 @@ function undoDismissCrew(){
       }
     }
   });
-  notify(`↺ 크루 ${restored}명 복원${reseated>0?` (${reseated}명 자동 탑승)`:''}`,'ok');
+  notify(I18N.t('notify.crewRestored',{n:restored,reseat:reseated>0?I18N.t('notify.crewAutoSeated',{n:reseated}):''}),'ok');
   _lastDismissedCrew=null;
   rerenderTab(renderCrewTab);saveGame(true);
 }
@@ -8791,7 +8791,7 @@ function assignCrewFromCrewTab(cid){
   _syncShipCapacity(s,_stBefACT);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(`${c?.ic||'🧑'} ${c?.nm||'크루'} → ${s.nm} 탑승 완료!`,'ok');
+  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
   baekgu(`${c?.nm||'크루'} ${s.nm}에 탑승. 함선 성능 올라갔어.`);
   rerenderTab(renderCrewTab);saveGame(true);
 }
