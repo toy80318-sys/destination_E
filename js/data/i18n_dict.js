@@ -1754,6 +1754,9 @@ I18N.register({
                                  en: 'Force-disembark aboard crew and dismiss' },
   'title.holdExpEquip':        { ko: '창고 확장 파츠 장착',          en: 'Equip hold expansion part' },
   'title.partEquip':           { ko: '파츠 장착',                    en: 'Equip part' },
+  'title.closeNotification':   { ko: '알림 닫기',                    en: 'Close notification' },
+  'alt.baekgu':                { ko: '백구',                         en: 'Baekgu' },
+  'placeholder.password':      { ko: '비밀번호',                     en: 'Password' },
 
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },

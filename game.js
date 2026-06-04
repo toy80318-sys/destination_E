@@ -1131,7 +1131,7 @@ function _detectBaekguMood(text){
 function _baekguIcon(size,mood){
   size=size||20;
   const src=_baekguSrcByMood(mood);
-  return `<img src="${src}" alt="백구" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
+  return `<img src="${src}" alt="${I18N.t('alt.baekgu')}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
 }
 // 화자용 초상 HTML 반환 (이미지가 매핑되어 있으면 <img>, 아니면 폴백 이모지)
 // 영웅용 원형 초상화 (도감/축하 모달 등) — CHAR_PORTRAITS에 매핑된 이미지 우선,
@@ -1976,7 +1976,7 @@ function showEmailLoadModal(){
   const savedEmail=(window.CloudSave&&CloudSave.getEmail)?CloudSave.getEmail():'';
   const html=`<div style="padding:8px 4px">
     <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--card);border:1px solid #66ddff;border-radius:10px;margin-bottom:14px">
-      <img src="img/chars/baekgu1.png" alt="백구" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
+      <img src="img/chars/baekgu1.png" alt="${I18N.t('alt.baekgu')}" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
         <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">${I18N.t('speaker.baekgu')}</div>
         ${I18N.t('emailLoad.baekguHint')}
@@ -2049,7 +2049,7 @@ function renderPrologue(){
   // 화자 레이블: 백구는 이미지 + 이름, 시스템은 아이콘
   const spHTML=isBaekgu
     ?`<div style="display:inline-flex;align-items:center;gap:7px;margin-bottom:6px">
-        <img src="img/chars/baekgu1.png" alt="백구"
+        <img src="img/chars/baekgu1.png" alt="${I18N.t('alt.baekgu')}"
           style="width:30px;height:30px;object-fit:contain;border-radius:50%;background:var(--panel);border:1px solid var(--cyan)"
           onerror="this.style.display='none'">
         <span style="color:var(--cyan);font-size:13px;font-weight:bold">${I18N.t('speaker.baekgu')}</span>
@@ -5455,7 +5455,7 @@ function _renderUndoSellToast(){
   const _refund=_isBuy?'환불':'반환';
   el.innerHTML=`<span>↶ 방금 ${_verb}: <b style="color:#fff">${ls.label||''}</b></span>
     <button onclick="undoLastSell()" style="padding:5px 12px;border:1.5px solid var(--gold);background:rgba(255,215,0,.18);color:var(--gold);border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;letter-spacing:1px">${_verb} 취소 (₡${ls.credits.toLocaleString()} ${_refund})</button>
-    <button onclick="window._lastSell=null;_renderUndoSellToast()" style="padding:3px 7px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--dim);border-radius:4px;cursor:pointer;font-size:11px" title="알림 닫기">✕</button>`;
+    <button onclick="window._lastSell=null;_renderUndoSellToast()" style="padding:3px 7px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--dim);border-radius:4px;cursor:pointer;font-size:11px" title="${I18N.t('title.closeNotification')}">✕</button>`;
 }
 function undoLastSell(){
   const ls=window._lastSell;
@@ -18229,7 +18229,7 @@ function _cheatUnlock(onOk){
     `<div style="padding:14px;text-align:center">
       <div style="font-size:40px;margin-bottom:8px">🔐</div>
       <div style="font-size:14px;color:var(--yellow);margin-bottom:10px">${I18N.t('ui.enterCheatPassword')}</div>
-      <input type="password" id="_cheat-pw" placeholder="비밀번호" autofocus
+      <input type="password" id="_cheat-pw" placeholder="${I18N.t('placeholder.password')}" autofocus
         style="width:80%;padding:10px;font-size:16px;background:rgba(0,0,0,.5);border:1px solid var(--cyan);color:#fff;border-radius:6px;text-align:center;font-family:inherit"
         onkeydown="if(event.key==='Enter')document.getElementById('_cheat-ok').click()">
       <div style="font-size:11px;color:var(--muted);margin-top:8px">힌트: 게임 약자 2글자 (소문자)</div>
