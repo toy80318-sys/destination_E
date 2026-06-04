@@ -652,8 +652,8 @@ function showShipDetailModal(idx){
         <div style="${groupTitleStyle}"><span>🔧</span><span>${I18N.t('ui.repair')}</span><span style="margin-left:auto;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:normal">보유 ₡${G.credits.toLocaleString()}</span></div>
         <div style="${btnRowStyle}">
           ${rc>0
-            ? `<button class="btn btn-sm btn-green" onclick="repairShipModal(${idx},'hp')" ${G.credits>=rc?'':'disabled'}>🔧 HP 수리 ₡${rc.toLocaleString()}</button>`
-            : `<span style="font-size:12px;color:var(--green);padding:5px 9px;border:1px solid rgba(46,204,113,.3);border-radius:5px">✅ HP 최대</span>`}
+            ? `<button class="btn btn-sm btn-green" onclick="repairShipModal(${idx},'hp')" ${G.credits>=rc?'':'disabled'}>${I18N.t('ui.hpRepair',{cost:rc.toLocaleString()})}</button>`
+            : `<span style="font-size:12px;color:var(--green);padding:5px 9px;border:1px solid rgba(46,204,113,.3);border-radius:5px">${I18N.t('ui.hpMaxBadge')}</span>`}
           ${shMax>0&&(s.sh||0)<shMax&&sc>0
             ? `<button class="btn btn-sm" style="border-color:var(--blue);color:var(--blue)" onclick="repairShipModal(${idx},'sh')" ${G.credits>=sc?'':'disabled'}>🛡️ 실드 수리 ₡${sc.toLocaleString()}</button>`
             : (shMax>0?`<span style="font-size:12px;color:var(--cyan);padding:5px 9px;border:1px solid rgba(0,243,255,.3);border-radius:5px">✅ 실드 최대</span>`:'')}
@@ -4898,7 +4898,7 @@ function renderShipTab(body){
                 <span style="font-size:10px;color:var(--red);white-space:nowrap">⚔ ${totalATT}</span>
                 <span style="font-size:10px;color:var(--blue);white-space:nowrap">🛡 ${totalINT}</span>
                 <span style="font-size:10px;color:var(--cyan);white-space:nowrap">⚙ ${totalTEC}</span>
-                <span style="font-size:10px;color:var(--dim);white-space:nowrap">📦 ${s.cargoSlots||4}칸</span>
+                <span style="font-size:10px;color:var(--dim);white-space:nowrap">${I18N.t('ui.cargoSlots',{n:s.cargoSlots||4})}</span>
               </div>
             </div>
             <div style="flex:1;padding:10px 12px;overflow:visible">${_subRight}</div>
@@ -4918,7 +4918,7 @@ function renderShipTab(body){
               <span style="font-size:10px;color:var(--cyan);white-space:nowrap">⚙ ENG ${totalTEC}</span>
               <span style="font-size:10px;color:var(--gold);white-space:nowrap">🔰 DEF ${getShipStats(s).DEF||0}</span>
               <span style="font-size:10px;color:#f88;white-space:nowrap">❤ HP ${(s.maxHP+bonus.hp).toLocaleString()}</span>
-              <span style="font-size:10px;color:var(--dim);white-space:nowrap">📦 ${s.cargoSlots||4}칸</span>
+              <span style="font-size:10px;color:var(--dim);white-space:nowrap">${I18N.t('ui.cargoSlots',{n:s.cargoSlots||4})}</span>
             </div>
           </div>
           <!-- Col 2: Parts 그리드 -->
@@ -4944,7 +4944,7 @@ function renderShipTab(body){
           <!-- 수리 버튼 -->
           <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
             <span style="font-size:11px;color:var(--dim);min-width:32px">수리:</span>
-            ${rc>0?`<button class="btn btn-sm btn-green" style="font-size:11px;padding:3px 8px" onclick="repairShip(${idx},'hp')" ${G.credits>=rc?'':`disabled title="${I18N.t('title.notEnoughCredits')}"`}>🔧 HP ₡${rc.toLocaleString()}</button>`:'<span style="font-size:11px;color:var(--green)">✅HP최대</span>'}
+            ${rc>0?`<button class="btn btn-sm btn-green" style="font-size:11px;padding:3px 8px" onclick="repairShip(${idx},'hp')" ${G.credits>=rc?'':`disabled title="${I18N.t('title.notEnoughCredits')}"`}>🔧 HP ₡${rc.toLocaleString()}</button>`:`<span style="font-size:11px;color:var(--green)">${I18N.t('ui.hpMaxBadge')}</span>`}
             ${sc>0?`<button class="btn btn-sm" style="border-color:var(--blue);color:var(--blue);font-size:11px;padding:3px 8px" onclick="repairShip(${idx},'sh')" ${G.credits>=sc?'':`disabled title="${I18N.t('title.notEnoughCredits')}"`}>🛡️실드 ₡${sc.toLocaleString()}</button>`:''}
             ${(rc+sc)>0?`<button class="btn btn-sm btn-gold" style="font-size:11px;padding:3px 8px" onclick="repairShipFull(${idx})" ${G.credits>=(rc+sc)?'':`disabled title="${I18N.t('title.notEnoughCredits')}"`}>⚡완전수리 ₡${(rc+sc).toLocaleString()}</button>`:''}
           </div>
@@ -5194,7 +5194,7 @@ function renderShipTab(body){
                 <div style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all">${p.nm}</div>
                 <div style="display:flex;gap:4px">
                   <span style="font-size:10px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:0 4px">T${p.tier}</span>
-                  <span style="color:var(--dim);font-size:10px">재고:${qty}</span>
+                  <span style="color:var(--dim);font-size:10px">${I18N.t('ui.stockPrefix')}${qty}</span>
                 </div>
                 <div style="font-size:11px;color:var(--red);font-weight:bold">🚀 ATT +${p.ATT}</div>
                 <div style="font-size:10px;color:var(--dim);flex:1">${p.desc.slice(0,55)}${p.desc.length>55?'…':''}</div>
@@ -5233,7 +5233,7 @@ function renderShipTab(body){
                 </div>
                 <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
                   <span style="font-size:10px;color:${catCol};border:1px solid ${catCol};border-radius:3px;padding:0 4px">T${p.tier}</span>
-                  <span style="color:var(--dim);font-size:10px">재고:${qty}</span>
+                  <span style="color:var(--dim);font-size:10px">${I18N.t('ui.stockPrefix')}${qty}</span>
                 </div>
                 <div style="font-size:11px;color:${catCol};font-weight:bold">${statLine}</div>
                 <div style="font-size:10px;color:var(--dim);line-height:1.4;flex:1">${p.desc.slice(0,60)}${p.desc.length>60?'…':''}</div>
@@ -5270,7 +5270,7 @@ function renderShipTab(body){
             <div style="display:flex;gap:4px">
               <span style="font-size:10px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:0 4px">T${p.tier}</span>
               <span style="font-size:10px;color:var(--green);font-weight:bold">📦 +${p.cargoBonus}칸</span>
-              <span style="color:var(--dim);font-size:10px">재고:${qty}</span>
+              <span style="color:var(--dim);font-size:10px">${I18N.t('ui.stockPrefix')}${qty}</span>
             </div>
             <div style="font-size:10px;color:var(--dim)">${p.desc}</div>
             <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;display:flex;align-items:center">
@@ -5809,7 +5809,7 @@ function renderCargoOnlyTab(body){
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
           <span style="font-size:14px;font-weight:bold;color:var(--txt)">${idx===0?'⭐ ':''}${shipDisplayName(s)}</span>
-          <span style="font-size:11px;color:var(--cyan)">📦 ${s.cargoSlots||4} / 80칸</span>
+          <span style="font-size:11px;color:var(--cyan)">📦 ${s.cargoSlots||4} / 80${I18N.t('unit.slot')}</span>
           ${btn}
         </div>
         ${grid}
@@ -8815,7 +8815,7 @@ function renderPlanetsTab(body){
         <div style="color:var(--dim);font-size:11px">/턴</div>
       </div>
     </div>
-    <div style="color:var(--dim);font-size:13px;margin-bottom:12px">💡 보유 행성에 투자 → 상업 레벨↑ → 턴당 세금 증가 (최대 Lv10)</div>
+    <div style="color:var(--dim);font-size:13px;margin-bottom:12px">${I18N.t('ui.investTip')}</div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${list.map(p=>{
       const st=G.planets[p.id],f=FACTION[p.f],lv=st.commerce||0;
       const tax=calcTaxFor(p.id),investCost=Math.floor(_planetBaseTax(p)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
@@ -8836,7 +8836,7 @@ function renderPlanetsTab(body){
             <div style="display:flex;justify-content:space-between;font-size:10px"><span style="color:var(--dim)">${I18N.t('ui.commerceShort')}</span><span style="color:var(--gold)">Lv${lv}/10</span></div>
             <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden"><div style="width:${lv*10}%;height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:2px"></div></div>
             <div style="color:var(--green);font-size:11px;font-weight:bold">₡${tax.toLocaleString()}/턴</div>
-            ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%;margin-top:2px" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>투자 Lv${lv+1} (₡${investCost.toLocaleString()})</button>`:'<div style="color:var(--gold);font-size:10px;text-align:center;margin-top:2px">⭐ 최대레벨</div>'}
+            ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%;margin-top:2px" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>${I18N.t('ui.investSimple',{lv:lv+1,cost:investCost.toLocaleString()})}</button>`:`<div style="color:var(--gold);font-size:10px;text-align:center;margin-top:2px">${I18N.t('ui.maxLevel')}</div>`}
           </div>`:
           `<div style="font-size:10px;color:var(--dim);margin-top:2px">기본 세율: ₡${p.tax.toLocaleString()}/턴</div>`}
         </div>
@@ -11616,8 +11616,8 @@ function renderAuctionView(body){
         <div>
           <div style="font-size:16px;font-weight:bold">${p.nm}</div>
           <div style="font-size:12px;color:${f.col};margin-top:2px">${f.nm} | 링${p.ring}</div>
-          <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 ₡${p.tax.toLocaleString()}/턴 | 회수 ${roi}턴</div>
-          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxRoi',{tax:p.tax.toLocaleString(),roi})}</div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> ${I18N.t('ui.instantPrefix')}<span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-sm btn-gold" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'} title="100% 낙찰 확정" style="white-space:nowrap;font-size:11px;padding:4px 8px">${I18N.t('ui.instantWin')}<br>₡${instBid.toLocaleString()}</button>
@@ -11644,8 +11644,8 @@ function renderAuctionView(body){
         <div>
           <div style="font-size:16px;font-weight:bold;color:#cc66ff">${p.nm} <span style="font-size:11px;background:#8b00ff33;border:1px solid #8b00ff66;padding:1px 5px;border-radius:6px">⚔️ 합병</span></div>
           <div style="font-size:12px;color:${f.col};margin-top:2px">${f.nm} | 링${p.ring} | 전투 승리 ✅</div>
-          <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 ₡${p.tax.toLocaleString()}/턴 | 회수 ${roi}턴</div>
-          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:#cc66ff">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxRoi',{tax:p.tax.toLocaleString(),roi})}</div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:#cc66ff">₡${startBid.toLocaleString()}</span> ${I18N.t('ui.instantPrefix')}<span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:#cc66ff;margin-top:2px">${I18N.t('ui.mergedSafeVisit')}</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
@@ -11673,7 +11673,7 @@ function renderAuctionView(body){
           <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${p.nm} <span style="font-size:11px;background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.4);padding:1px 5px;border-radius:6px">🌌 균열지대</span></div>
           <div style="font-size:12px;color:var(--cyan);margin-top:2px">보이드 | 링${p.ring} | 균열 지대</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxAndROI',{tax:p.tax.toLocaleString(),roi})}</div>
-          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
+          <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> ${I18N.t('ui.instantPrefix')}<span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">✦신화 파츠 4종 + 신화/전설기함 함선 보유 조건 충족</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
@@ -11715,7 +11715,7 @@ function renderAuctionView(body){
             <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--dim)">${I18N.t('ui.commerceLv')}</span><span style="color:var(--gold);font-weight:bold">${lv}/10</span></div>
             <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden"><div style="width:${lv*10}%;height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00)"></div></div>
             <div style="font-size:11px;color:var(--green);font-weight:bold;margin-top:auto">💰 ₡${tax.toLocaleString()}/턴</div>
-            ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>📈 투자 Lv${lv+1} (₡${investCost.toLocaleString()})</button>`:'<span style="font-size:10px;color:var(--gold);text-align:center;padding:3px">⭐ 최대레벨</span>'}
+            ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>${I18N.t('ui.invest',{lv:lv+1,cost:investCost.toLocaleString()})}</button>`:`<span style="font-size:10px;color:var(--gold);text-align:center;padding:3px">${I18N.t('ui.maxLevel')}</span>`}
           </div>
         </div>`;
       }).join('');
@@ -12176,7 +12176,7 @@ function renderCodexTab(body){
           +badge
           +'</div>';
       }).join('');
-      const gridBody=discovered>0?cards:'<div style="grid-column:1/-1;font-size:12px;color:var(--dim);padding:10px 4px">🔒 아직 발견한 '+tier+' 함선이 없습니다 — 행성을 더 탐험해 보세요.</div>';
+      const gridBody=discovered>0?cards:`<div style="grid-column:1/-1;font-size:12px;color:var(--dim);padding:10px 4px">${I18N.t('ui.noShipsFoundTier',{tier})}</div>`;
       return`<div style="margin-bottom:16px">
         <div style="font-size:13px;color:${tierCol[tier]||'var(--dim)'};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${tier} <span style="color:var(--dim);font-size:11px">${I18N.t('ui.tierDiscoverOwn',{disc:discovered,total:ships.length,own:owned})}</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
@@ -14456,7 +14456,7 @@ function onMapClick(e){
             <div style="color:var(--gold);font-size:14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:8px 14px;margin-bottom:8px">
               🔱 <b>${I18N.t('ui.voidSpearTitle')}</b> 획득 — 신화급 무기 1점
             </div>
-            <div style="color:var(--cyan);font-size:11px;margin-top:8px">※ 모든 보이드 행성 Lv10 투자 시 — 마지막 시험 개방</div>
+            <div style="color:var(--cyan);font-size:11px;margin-top:8px">${I18N.t('ui.voidLv10Tip')}</div>
           </div>`,
           [{txt:'🔱 창을 가져가다',fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
       } else if(!_allVoid100){
@@ -14541,7 +14541,7 @@ function updateMapInfo(p,fog){
       <br>세율: <span style="color:var(--gold)">₡${p.tax.toLocaleString()}/턴</span>
       ${st?.owned?`<br>🏠 보유 Lv${st.commerce}`:''}
       ${p.hero&&!G.heroes.includes(p.hero)?`<br><span style="color:var(--purple)">✨ 영웅 영입 가능</span>`:''}
-      <br>${blink?`<span style="color:var(--cyan)">⚡ 블링크 순간이동 ₡${cost.toLocaleString()}</span>`:conn?`<span style="color:var(--green)">✅ 이동 ₡${cost.toLocaleString()}</span>`:isCur?`<span style="color:var(--yellow)">📍 현재 위치</span>`:`<span style="color:var(--red)">❌ 항로 없음</span>`}</div>`;}
+      <br>${blink?`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`:conn?`<span style="color:var(--green)">✅ 이동 ₡${cost.toLocaleString()}</span>`:isCur?`<span style="color:var(--yellow)">📍 현재 위치</span>`:`<span style="color:var(--red)">❌ 항로 없음</span>`}</div>`;}
   }
   if(goBtn){goBtn.disabled=isCur||!conn||fog==='L';}
   if(costEl)costEl.textContent=conn&&!isCur?`이동 비용 ₡${cost.toLocaleString()}${blink?' ⚡':''}`:isCur?'현재 위치':'';
@@ -14609,7 +14609,7 @@ function updateFloatBtn(p,fog,conn,isCur,cost){
   const st2=document.getElementById('mf-st');
   const _blink=hasBlinkOnAll();
   if(st2){
-    if(_blink)st2.innerHTML=`<span style="color:var(--cyan)">⚡ 블링크 순간이동 ₡${cost.toLocaleString()}</span>`;
+    if(_blink)st2.innerHTML=`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`;
     else if(conn)st2.innerHTML=`<span style="color:var(--green)">₡${cost.toLocaleString()} | 이동 가능</span>`;
     else st2.innerHTML=`<span style="color:var(--red)">항로 없음 — 블링크 엔진 장착 필요</span>`;
   }
@@ -18210,8 +18210,8 @@ function showSettingsModal(){
       </div>
       <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#ff66cc;color:#ff66cc;font-weight:bold" onclick="cheatGiveAllMega()">🌟 전체 메가 충전 (₡1억 + 명성 200 + VC 50 + VE 1000)</button>
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border:2px solid #ffd700;color:#ffd700;font-weight:bold;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(255,102,204,.12),rgba(102,255,255,.12))" onclick="cheatMaxAll()">⚡ 맥스 치트 (₡10억 + 명성 999 + VC 99 + VE 9.9만 + 영웅 8명 + 보이드 해금)</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">🌑 보이드 페이즈 즉시 해금 (지구해방 처리 + P30 퀘스트)</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">✦ 신화 풀세트 지급 (MW01·MS01·MA01·ME01·RB10 + LGD03/RB10 설계도)</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">테스트/디버그 용도 — 도전적 플레이를 원하면 사용 자제</div>
     </div>`:''}
   </div>`;
@@ -19441,7 +19441,7 @@ function showDevMenu(){
   const html=`<div style="padding:8px 4px">
     <div style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px;line-height:1.6">
       <div style="font-weight:bold;color:#ffa500;margin-bottom:4px">🔓 개발자 모드 활성화</div>
-      <div style="color:var(--dim)">현재 상태: ${isAdmin?'<span style="color:var(--green)">✅ 관리자 ('+u.email+')</span>':`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
+      <div style="color:var(--dim)">현재 상태: ${isAdmin?`<span style="color:var(--green)">${I18N.t('ui.adminBadge')} (${u.email})</span>`:`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
     </div>
     ${!isAdmin?`
       <div style="font-size:13px;color:var(--txt);margin-bottom:8px">${I18N.t('ui.dataLookupVia',{email:ADMIN_EMAIL})}</div>

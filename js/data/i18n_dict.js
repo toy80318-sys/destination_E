@@ -2013,6 +2013,8 @@ I18N.register({
   'ui.zetaPlaza':               { ko: '제타 레티쿨리(P30) 광장', en: 'Zeta Reticuli (P30) Plaza' },
   'ui.mythicFullsetGrant':      { ko: '✦ 신화 풀세트 지급 (MW01·MS01·MA01·ME01·RB10 + LGD03/RB10 설계도)', en: '✦ Grant full Mythic set (MW01·MS01·MA01·ME01·RB10 + LGD03/RB10 blueprints)' },
   'ui.toyLee':                  { ko: '이완구 (TOY LEE)', en: 'Wan-gu Lee (TOY LEE)' },
+  'ui.adminBadge':              { ko: '✅ 관리자', en: '✅ Admin' },
+  'unit.slot':                  { ko: '칸', en: ' slots' },
 
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
