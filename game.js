@@ -8096,14 +8096,14 @@ function confirmRenameShip(idx){
   s.nm=newName;
   closeModal();
   notify(`✏️ ${oldName} → ${newName}`,'ok');
-  baekgu(`${newName}으로 이름 바꿨어. 새 출발이네.`);
+  baekgu(I18N.t('baekgu.shipRenamed',{nm:newName}));
   rerenderShipOrGarage();saveGame(true);
 }
 function setFlagship(idx){
   if(idx===0){notify(I18N.t('notify.alreadyFlagship'),'err');return;}
   const tmp=G.fleet[0];G.fleet[0]=G.fleet[idx];G.fleet[idx]=tmp;
   const fnm=G.fleet[0]?.nm||I18N.t('ui.flagship');notify(I18N.t('notify.flagshipSet',{nm:fnm}),'gold');
-  baekgu(fnm+' 기함 변경. 주의해서 타.');
+  baekgu(I18N.t('baekgu.flagshipChanged',{nm:fnm}));
   rerenderShipOrGarage();saveGame(true);
 }
 function getCargoUpgradePrice(ship){
@@ -8144,7 +8144,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;s.cargoSlots=Math.min(80,cur+2);
   updateHUD();notify(I18N.t('notify.holdExpanded',{nm:s.nm,n:s.cargoSlots,cr:cost.toLocaleString()}),'ok');
-  baekgu(`${s.nm} 창고 ${s.cargoSlots}칸으로 확장. ${s.cargoSlots>=80?'이제 최대야!':'다음 확장은 더 비싸질 거야.'}`);
+  baekgu(I18N.t('baekgu.holdExpanded',{nm:s.nm,n:s.cargoSlots,note:s.cargoSlots>=80?I18N.t('baekgu.holdMaxReached'):I18N.t('baekgu.holdNextExpensive')}));
   if(fromModal){showShipDetailModal(shipIdx);}else{rerenderShipOrGarage();}
   saveGame(true);
 }
@@ -8159,7 +8159,7 @@ function buyCargoExtPart(id){
   addToInventory(id,1);
   updateHUD();
   notify(I18N.t('notify.holdPartBought',{nm:ci.nm}),'gold');
-  baekgu(`${ci.nm} 샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +${ci.cargoBonus} 늘어나.`);
+  baekgu(I18N.t('baekgu.holdPartBought',{nm:ci.nm,bonus:ci.cargoBonus}));
   rerenderShipOrGarage();saveGame(true);
 }
 // ── 창고 확장 전용 슬롯 (함선당 최대 8칸) — 장착/해제/선택 ─────────────────
@@ -8262,7 +8262,7 @@ function attachPart(shipIdx,partId){
     baekgu(I18N.t('baekgu.warpAllInstalled'));
   } else if(_isWarp){
     const lacking=G.fleet.filter(sh=>!(sh.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid))).length;
-    baekgu(`${p?.nm||'워프 엔진'} 장착! ${G.fleet.length-lacking}/${G.fleet.length}척 완료. 전 함선 장착하면 순간이동 가능해.`);
+    baekgu(I18N.t('baekgu.warpEquipProgress',{nm:p?.nm||'Warp Engine',done:G.fleet.length-lacking,total:G.fleet.length}));
   }
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8664,7 +8664,7 @@ function doGacha(n,useCr,crCost,minRarity){
         notify(I18N.t('notify.crewSwapRecruit',{old:tgt.nm,new:sc.nm}),'gold');
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
         saveGame(true);
-        baekgu(`${sc.nm} 합류! ${tgt.nm}은 하선했어.`);
+        baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:sc.nm,old:tgt.nm}));
       },cls:'btn-gold'},{txt:'❌ 거절',fn:()=>{
         closeModal();
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
@@ -8674,7 +8674,7 @@ function doGacha(n,useCr,crCost,minRarity){
   } else {
     renderGachaCards(results.filter(r=>!r._rejected&&!r._heroRoll));
     saveGame(true);
-    baekgu(results.some(r=>r._heroRoll)?'전설 영웅 등장! 대박이야!':results.some(r=>r.rarity==='L')?'전설급이야! 대박!':results.some(r=>r.rarity==='H')?'영웅급 크루 영입!':'크루 영입 완료. 함선에 탑승시켜봐.');
+    baekgu(results.some(r=>r._heroRoll)?I18N.t('baekgu.gachaLegendHero'):results.some(r=>r.rarity==='L')?I18N.t('baekgu.gachaLegend'):results.some(r=>r.rarity==='H')?I18N.t('baekgu.gachaHero'):I18N.t('baekgu.gachaNormal'));
   }
   // 🎉 8인의 전설 영웅 등장 시 — 가챠 결과 카드 표시 후 영입 모달 순차 호출
   const _heroRolls=results.filter(r=>r._heroRoll).map(r=>r._heroRoll);
@@ -8852,7 +8852,7 @@ function investPlanet(pid){
   if(G.credits<cost){notify(I18N.t('notify.investCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;st.commerce=lv+1;
   updateHUD();notify(I18N.t('notify.planetUpgrade',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}),'gold');
-  baekgu(`${pd.nm} 상업 레벨 ${lv+1}. 세금 ₡${calcTaxFor(pid).toLocaleString()} 들어온다.`);
+  baekgu(I18N.t('baekgu.commerceLevel',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}));
   saveGame(true);
   // 현재 활성 탭에 맞춰 재렌더 (탭 강제 전환 방지)
   const _curTab=G._currentHubTab;
@@ -9440,7 +9440,7 @@ function completeQuest(pid,idx){
           <div style="font-size:12px;color:var(--red);font-weight:bold;margin-top:6px">⚠️ 크루 명단이 가득 찼습니다 — 확인 후 최하위 크루와 교체 여부를 선택하세요</div>
         </div>`;
         notify(I18N.t('notify.legendCompGotNeedSwap',{nm:lucky.nm}),'gold');
-        baekgu(`${lucky.nm}가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.`);
+        baekgu(I18N.t('baekgu.legendCompChooseSwap',{nm:lucky.nm}));
       } else {
         G.crew.push(newCrew);
         bonusMsg=`<div style="margin-top:12px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
@@ -9451,7 +9451,7 @@ function completeQuest(pid,idx){
           <div style="font-size:12px;color:var(--yellow);margin-top:3px">${I18N.t('ui.boardCrewFromList')}</div>
         </div>`;
         notify(I18N.t('notify.legendCompJoined',{nm:lucky.nm}),'gold');
-        baekgu(`${lucky.nm}가 합류했어! 전설급이야. 함선에 태워봐.`);
+        baekgu(I18N.t('baekgu.legendCompJoinedBoard',{nm:lucky.nm}));
       }
     }
   } else if(roll<legendRate+mythicRate){
@@ -9492,7 +9492,7 @@ function completeQuest(pid,idx){
       ${setComplete?'<div style="font-size:12px;color:var(--gold);margin-top:3px">🎉 세트 완성! 보너스 효과 활성화</div>':''}
     </div>`;
     notify(I18N.t('notify.partAcquiredTier',{ic:_icon,kind:isSet?I18N.t('ui.setShort'):I18N.t('ui.legendShort'),nm:p?.nm||partId}),'gold');
-    baekgu(isSet?`세트 아이템이야! ${p?.nm}. 세트 완성하면 추가 보너스가 붙어.`:`전설 파츠야! ${p?.nm}. 상점에서는 못 사는 거야.`);
+    baekgu(isSet?I18N.t('baekgu.setItem',{nm:p?.nm}):I18N.t('baekgu.legendPart',{nm:p?.nm}));
   }
 
   // ── 설계도 드롭 (5%, 미보유 시에만, 특별 보상과 독립) ──────────────────
@@ -9562,7 +9562,7 @@ function completeQuest(pid,idx){
   const _repMultLbl=_repMult>1?` ⭐명성×${_repMult}`:'';
   const baseMsg='퀘스트 완료! +₡'+_actualCr.toLocaleString()+(_rm>1.05?' (×'+_rm.toFixed(1)+'배)':'')+_repMultLbl+(_actualVe>0?' +VE'+_actualVe:'')+' ⭐ 명성 '+(G.reputation)+'(+1)';
   notify(baseMsg,'gold');
-  if(!bonusMsg)baekgu('퀘스트 보상 지급. '+_actualCr.toLocaleString()+' 크레딧'+(_rm>1.05?'. 레벨 보너스 ×'+_rm.toFixed(1)+'배!':'')+'.');
+  if(!bonusMsg)baekgu(I18N.t('baekgu.questReward',{cr:_actualCr.toLocaleString(),bonus:_rm>1.05?I18N.t('baekgu.levelBonusX',{mult:_rm.toFixed(1)}):''}));
 
   if(bonusMsg){
     // 🎉 희귀 보상(설계도/전설/신화) 획득 시 효과음 + 강조
@@ -9615,7 +9615,7 @@ function completeQuest(pid,idx){
                 G.crew.push(_pend);
                 closeModal();
                 notify(I18N.t('notify.legendSwapRecruit',{old:_lowest.nm,new:_pend.nm}),'gold');
-                baekgu(`${_pend.nm} 합류! ${_lowest.nm}은 하선했어.`);
+                baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:_pend.nm,old:_lowest.nm}));
                 saveGame(true);
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
               },cls:'btn-gold'},{txt:'❌ 거절',fn:()=>{
@@ -9974,7 +9974,7 @@ function _grantDebrisReward(ring,q,pid){
     addToInventory(p.id,1);
     const isLegend=p.tier>=12;
     notify(I18N.t('notify.partFoundTier',{kind:isLegend?I18N.t('ui.legendStar'):I18N.t('ui.legendSparkle'),nm:p.nm,tier:p.tier}),isLegend?'pur':'gold');
-    baekgu(`${p.nm} 발견! ${isLegend?'전설급이네. 대박이다.':'꽤 좋은 파츠야.'}`);
+    baekgu(I18N.t('baekgu.partFound',{nm:p.nm,quality:isLegend?I18N.t('baekgu.partQualityLegend'):I18N.t('baekgu.partQualityGood')}));
   } else {
     // 함선: ring 3+에서 중형, ring 5+에서 대형 가능
     const tierPool=ring>=5?['소형','소형','중형','중형','대형']:ring>=3?['소형','소형','중형']:['소형'];
