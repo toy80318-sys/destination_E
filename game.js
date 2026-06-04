@@ -3262,16 +3262,16 @@ function doNextTurn(){
   if(G.credits<5000)randomBaekgu('low_credits');
   // ── 해적 세력 강화 알림 ────────────────────────────────────────
   if(G.credits<3000)baekgu(I18N.t('baekgu.lowCredits'));
-  if(G.turn===15) {notify('⚠️ 해적 세력 강화! 전투력 ×1.5','err');baekgu(I18N.t('baekgu.pirateStrengthened'));}
-  if(G.turn===30) {notify('⚠️ 해적 세력 2단계 강화! 전투력 ×2.25','err');baekgu(I18N.t('baekgu.pirateStronger'));}
-  if(G.turn===45) {notify('☠️ 해적 최강화! 전투력 ×3 (최대)','err');baekgu(I18N.t('baekgu.pirateMax'));}
+  if(G.turn===15) {notify(I18N.t('notify.pirateLv1'),'err');baekgu(I18N.t('baekgu.pirateStrengthened'));}
+  if(G.turn===30) {notify(I18N.t('notify.pirateLv2'),'err');baekgu(I18N.t('baekgu.pirateStronger'));}
+  if(G.turn===45) {notify(I18N.t('notify.pirateLv3'),'err');baekgu(I18N.t('baekgu.pirateMax'));}
   // ── 체류 이벤트 ─────────────────────────────────────────────
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   if(G.stayTurns===2&&!pd?.hostile){
     // 2턴째: 백구 경고
     setTimeout(()=>{
       baekgu(I18N.t('baekgu.stayWarning'));
-      notify('⚠️ 백구 경고: 3턴 체류시 해적 기습!','err');
+      notify(I18N.t('notify.pirateStayWarn'),'err');
     },400);
   }
   // ── 적 행성 2턴 체류: 치크스 함대 50% 출몰 ───────────────
@@ -3393,7 +3393,7 @@ function escapeTravelPirate(){
   G.credits=Math.max(100,G.credits-penalty);
   changeReputation(-2);
   updateHUD();
-  notify(`🚀 도주 성공! 크레딧 -₡${penalty.toLocaleString()} / 명성 -2`,'err');
+  notify(I18N.t('notify.fleeSuccess',{cr:penalty.toLocaleString()}),'err');
   baekgu(I18N.t('baekgu.barelyEscaped'));
   saveGame(true);
 }
@@ -3505,7 +3505,7 @@ function triggerChixFleet(pd){
       const loss=Math.floor(G.credits*0.03);
       G.credits=Math.max(100,G.credits-loss);
       G.stayTurns=0;changeReputation(-2);updateHUD();
-      notify(`🚀 치크스 함대 도주! -₡${loss.toLocaleString()} / 명성 -2`,'err');
+      notify(I18N.t('notify.chixFleetFlee',{cr:loss.toLocaleString()}),'err');
       baekgu(I18N.t('baekgu.escapedJustNow'));
       saveGame(true);hubTab('main');
     },cls:'btn-sm'}]);
@@ -3592,7 +3592,7 @@ function escapePirateRaid(){
   G.stayTurns=0;
   changeReputation(-2);
   updateHUD();
-  notify(`🚀 도주 성공! 크레딧 -₡${penalty.toLocaleString()} / 명성 -2`,'err');
+  notify(I18N.t('notify.fleeSuccess',{cr:penalty.toLocaleString()}),'err');
   baekgu(I18N.t('baekgu.fled'));
   try{saveGame(true);}catch(e){}  // 페널티 상태 영속화 (이전 누락: 새로고침 시 차감 분실)
   hubTab('main');
@@ -3962,9 +3962,9 @@ function buyComm(id,_silent=false){
   // 전투력/명성 기반 고가 특산물 구매 제한
   const _bplv=calcPlayerLevel(),_brep=G.reputation||0;
   // 제작 재료는 전투력 100·명성 100 이상 필요
-  if(comm.material&&(_bplv<100||_brep<100)){notify(`🔒 제작 재료는 전투력 100·명성 100 이상 필요 (현재 전투력 ${_bplv} / 명성 ${_brep})`,'err');return;}
-  if(comm.buy>=10000&&(_bplv<60||_brep<100)){notify(`🔒 ₡10,000+ 특산물은 전투력 60·명성 100 이상 필요 (현재 전투력 ${_bplv} / 명성 ${_brep})`,'err');return;}
-  if(comm.buy>=5000&&(_bplv<30||_brep<50)){notify(`🔒 ₡5,000+ 특산물은 전투력 30·명성 50 이상 필요 (현재 전투력 ${_bplv} / 명성 ${_brep})`,'err');return;}
+  if(comm.material&&(_bplv<100||_brep<100)){notify(I18N.t('notify.materialLockedPlrep',{plv:_bplv,rep:_brep}),'err');return;}
+  if(comm.buy>=10000&&(_bplv<60||_brep<100)){notify(I18N.t('notify.commodity10kLocked',{plv:_bplv,rep:_brep}),'err');return;}
+  if(comm.buy>=5000&&(_bplv<30||_brep<50)){notify(I18N.t('notify.commodity5kLocked',{plv:_bplv,rep:_brep}),'err');return;}
   const stock=G.shopStock[G.currentPlanet];if(!stock||!stock[id]||stock[id]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
   if(G.credits<comm.buy){notify(I18N.t('notify.notEnoughCredits'),'err');return;}
   // special 아이템: material=재료창, 나머지=인벤토리 (화물창 미사용)
@@ -3984,12 +3984,12 @@ function buyComm(id,_silent=false){
           _mEx.qty++;
         } else G.cargo.push({id,nm:comm.nm,qty:1,buyPrice:comm.buy,buyPlanetId:G.currentPlanet,buyFaction:PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f,material:true});
       }
-      updateHUD();if(!_silent){notify(`${comm.ic||'💎'} ${comm.nm} 획득! (제작 재료 ${G.materials[id]}개 — 화물칸 선적)`,'gold');rerenderTab(renderTradeTab);}
+      updateHUD();if(!_silent){notify(I18N.t('notify.gotMaterial',{ic:comm.ic||'💎',nm:comm.nm,qty:G.materials[id]}),'gold');rerenderTab(renderTradeTab);}
     } else {
       if(!G.inventory)G.inventory=[];
       const inv=G.inventory.find(i=>i.id===id);
       if(inv)inv.qty++;else G.inventory.push({id,nm:comm.nm,qty:1});
-      updateHUD();if(!_silent){notify(`📜 ${comm.nm} 획득! (영웅 영입 재료)`,'gold');rerenderTab(renderTradeTab);}
+      updateHUD();if(!_silent){notify(I18N.t('notify.gotHeroMaterial',{nm:comm.nm}),'gold');rerenderTab(renderTradeTab);}
     }
     saveGame(true);return;
   }
@@ -4017,7 +4017,7 @@ function buyComm(id,_silent=false){
   }
   if(!_silent)saveGame(true);
   if(_undoSnap)try{_recordSell(_undoSnap);}catch(e){}
-  updateHUD();if(!_silent){notify(`📦 ${comm.nm} 구매 (${totalQty+1}/${cargoMax})`,'ok');rerenderTab(renderTradeTab);}
+  updateHUD();if(!_silent){notify(I18N.t('notify.commBuyProgress',{nm:comm.nm,n:totalQty+1,max:cargoMax}),'ok');rerenderTab(renderTradeTab);}
 }
 function buyCargoItem(id){
   const ci=CARGO_ITEMS.find(function(c){return c.id===id;});
@@ -4041,11 +4041,11 @@ function buyCargoItem(id){
   if(ex)ex.qty++;
   else G.inventory.push({id:ci.id,qty:1});
   updateHUD();
-  notify(`${ci.ic} ${ci.nm} 구매 (+${ci.slots}칸)`, 'ok');
+  notify(I18N.t('notify.partsBuy',{ic:ci.ic,nm:ci.nm,slots:ci.slots}),'ok');
   if(G._currentHubTab==='ship'||G._currentHubTab==='garage')rerenderShipOrGarage();
   saveGame(true);
 }
-function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=G.cargo.reduce((s,c)=>s+c.qty,0);if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(`📦 ${comm?.nm||id} ${bought}개 구매`,'ok');rerenderTab(renderTradeTab);saveGame(true);}}
+function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=G.cargo.reduce((s,c)=>s+c.qty,0);if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:comm?.nm||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}}
 function buyCommN(id){
   const inp=document.getElementById('qty_'+id);
   const n=Math.max(1,parseInt(inp?.value)||1);
@@ -4060,7 +4060,7 @@ function buyCommN(id){
     if(G.credits<comm.buy){notify(I18N.t('notify.notEnoughCredits'),'err');break;}
     buyComm(id,true);bought++;
   }
-  if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(`📦 ${comm?.nm||id} ${bought}개 구매`,'ok');rerenderTab(renderTradeTab);saveGame(true);}
+  if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:comm?.nm||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}
 }
 // 단일 특산물 전체구매 — 해당 행성의 재고/크레딧/화물칸 한도까지 한 번에 구매
 function buyCommMax(id){
