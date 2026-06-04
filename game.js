@@ -18439,12 +18439,12 @@ function importSaveFile(ev){
         const sk='de_save_s'+n;
         if(localStorage.getItem(sk)&&!confirm(`슬롯 ${n}에 이미 저장된 데이터가 있습니다. 덮어쓸까요?`))return;
         localStorage.setItem(sk,JSON.stringify(obj));
-        notify(`✅ 슬롯 ${n} 복원 완료 — 5초 후 새로고침`,'gold');
+        notify(I18N.t('notify.slotRestoredRefresh',{n}),'gold');
         setTimeout(()=>location.reload(),5000);
       } else {
         notify(I18N.t('notify.badSaveFormat'),'err');
       }
-    }catch(e){notify('❌ 파일 읽기 실패: '+e.message,'err');}
+    }catch(e){notify(I18N.t('notify.fileReadFail',{err:e.message}),'err');}
   };
   reader.readAsText(file);
   ev.target.value='';  // 입력 리셋
@@ -18456,14 +18456,14 @@ function copySaveToClipboard(slotN){
   if(!raw){notify(I18N.t('notify.noSaveData'),'err');return;}
   try{
     navigator.clipboard.writeText(raw).then(()=>{
-      notify(`📋 슬롯 ${slotN} 클립보드에 복사됨 (${Math.round(raw.length/1024)}KB) — 메모장에 붙여넣기 가능`,'gold');
+      notify(I18N.t('notify.slotCopiedToClipboard',{n:slotN,kb:Math.round(raw.length/1024)}),'gold');
     }).catch(e=>{
       // 폴백: 임시 textarea 사용
       const ta=document.createElement('textarea');ta.value=raw;document.body.appendChild(ta);ta.select();
-      try{document.execCommand('copy');notify('📋 클립보드 복사 완료 (폴백)','gold');}catch(_){notify(I18N.t('notify.copyFail'),'err');}
+      try{document.execCommand('copy');notify(I18N.t('notify.clipboardFallback'),'gold');}catch(_){notify(I18N.t('notify.copyFail'),'err');}
       ta.remove();
     });
-  }catch(e){notify('❌ 복사 실패: '+e.message,'err');}
+  }catch(e){notify(I18N.t('notify.copyFailMsg',{err:e.message}),'err');}
 }
 
 // ── 클라우드 세이브 UI 핸들러 ──────────────────────────────────────
@@ -18497,26 +18497,26 @@ function _cloudStatusText(){
 }
 async function cloudGoogleSignIn(){
   if(!window.CloudSave){notify(I18N.t('notify.cloudModuleNotLoaded'),'err');return;}
-  notify('Google 로그인 창을 엽니다...','ok');
+  notify(I18N.t('notify.googleLoginOpen'),'ok');
   const r=await CloudSave.signInGoogle();
   if(r.error)notify(I18N.t('notify.loginFailErr',{err:r.error}),'err');
-  else{notify('✅ Google 연결 완료','gold');showSettingsModal();}
+  else{notify(I18N.t('notify.googleConnectOk'),'gold');showSettingsModal();}
 }
 async function cloudPushAll(){
   if(!window.CloudSave){notify(I18N.t('notify.cloudModuleNotLoaded'),'err');return;}
   // 모듈 초기화 안 됐으면 강제 재시도
   const d=CloudSave.diag&&CloudSave.diag();
   if(!d||!d.user){
-    notify('🔄 클라우드 초기화 시도 중...','warn');
+    notify(I18N.t('notify.cloudInitTrying'),'warn');
     try{await CloudSave.init();await new Promise(r=>setTimeout(r,1500));}catch(e){}
   }
   const u=CloudSave.getUser&&CloudSave.getUser();
   if(!u){
-    notify('❌ 클라우드 로그인 실패 — Google 연결 필요 또는 Firebase 차단됨','err');
+    notify(I18N.t('notify.cloudLoginFail'),'err');
     return;
   }
   const r=await CloudSave.pushAll();
-  if(r.error)notify('❌ 업로드 실패: '+r.error,'err');
+  if(r.error)notify(I18N.t('notify.uploadFail',{err:r.error}),'err');
   else notify(I18N.t('notify.uploadDone',{n:r.pushed,uid:u.uid.slice(0,8)}),'gold');
   setTimeout(()=>showSettingsModal(),500);  // 상태 갱신
 }
@@ -18528,7 +18528,7 @@ async function cloudPullAll(){
 async function cloudSignOut(){
   if(!window.CloudSave)return;
   await CloudSave.signOut();
-  notify('🚪 로그아웃 (익명 로그인으로 전환)','ok');
+  notify(I18N.t('notify.logoutAnon'),'ok');
   showSettingsModal();
 }
 
@@ -19206,12 +19206,12 @@ function _grantVoidSpear(){
       // 인벤토리에서 1개 차감 (장착했으므로)
       const _idx=G.inventory.findIndex(i=>i.id==='MMV01'&&i.qty>0);
       if(_idx>=0){G.inventory[_idx].qty--;if(G.inventory[_idx].qty<=0)G.inventory.splice(_idx,1);}
-      notify('🔱 보이드의 창 ✦ 기함에 자동 장착!','gold');
+      notify(I18N.t('notify.voidSpearAutoEquip'),'gold');
     }else{
-      notify('🔱 보이드의 창 ✦ 인벤토리 지급 — 기함 슬롯 가득 참, 정비소에서 교체 장착','gold');
+      notify(I18N.t('notify.voidSpearInvFlagshipFull'),'gold');
     }
   }else if(!_equipped){
-    notify('🔱 보이드의 창 ✦ 인벤토리 지급 — 정비소에서 함선에 장착','gold');
+    notify(I18N.t('notify.voidSpearInv'),'gold');
   }
   G._voidSpearObtained=true;
   try{saveGame(true);}catch(e){}
@@ -19299,7 +19299,7 @@ function startBlackHoleFleetCombat(){
                   ||(G.fleet||[]).some(s=>(s.parts||[]).includes('MMV01'));
     if(!_hasSpear){
       G.inventory.push({id:'MMV01',qty:1});
-      notify('🗡️ 보이드의 창 ✦ 자동 지급 — 정비소에서 함선에 장착하세요','gold');
+      notify(I18N.t('notify.voidSpearAutoInv'),'gold');
       try{baekgu(I18N.t('baekgu.voidSpearGranted'));}catch(e){}
     }
   }catch(e){}
