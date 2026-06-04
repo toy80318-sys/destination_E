@@ -16892,7 +16892,7 @@ function _finishCombat(){
           });
           if(_gotten.length>0){
             addCombatLog(I18N.t('combat.loot',{items:_gotten.join(' · ')}),'gold');
-            notify(`📦 전리품 ${_gotten.length}종 획득 (Lv${_plv})`,'ok');
+            notify(I18N.t('notify.lootCount',{n:_gotten.length,lv:_plv}),'ok');
           } else if(_picks.length>0){
             addCombatLog(I18N.t('combat.lootFullCargo'),'warn');
           }
@@ -16944,7 +16944,7 @@ function _finishCombat(){
         addCombatLog(I18N.t('combat.mythicBp',{n:_grantedBp.length,names:_bpNames}),'gold');
       }
     }
-    else{notify('⚔️ 전투 승리!','ok');}
+    else{notify(I18N.t('notify.battleWin'),'ok');}
     // ── 🏴 적함 나포 처리 (보스 제외) ──────────────────────────────
     // 기본 28% (= 기존 23% + 5% 사용자 요청 보너스) + 크리그 행성 보너스
     // 편대편성 "나포 거절" 토글이 켜져 있으면 나포 대신 즉시 매각하여 크레딧 획득
@@ -16986,12 +16986,12 @@ function _finishCombat(){
       });
       if(_capturedShips.length>0){
         addCombatLog(I18N.t('combat.shipsCaptured',{n:_capturedShips.length}),'gold');
-        notify(`🏴 적함 ${_capturedShips.length}척 나포!`,'gold');
+        notify(I18N.t('notify.shipsCapturedShort',{n:_capturedShips.length}),'gold');
       }
       if(_autoSoldCount>0){
         G.credits=(G.credits||0)+_autoSoldRevenue;
         addCombatLog(I18N.t('combat.captureRejected',{n:_autoSoldCount,cr:_autoSoldRevenue.toLocaleString()}),'gold');
-        notify(`💰 나포 거절 → 매각 ${_autoSoldCount}척 +₡${_autoSoldRevenue.toLocaleString()}`,'gold');
+        notify(I18N.t('notify.captureRefusedSold',{n:_autoSoldCount,cr:_autoSoldRevenue.toLocaleString()}),'gold');
       }
     }
     // 🎉 승리 효과음 + 획득 보고 팝업
@@ -17087,13 +17087,13 @@ function _finishCombat(){
     G.credits=Math.max(100,G.credits-penalty);
     earned=-penalty;
     addCombatLog(I18N.t('combat.creditsPenalty',{pen:penalty.toLocaleString()}),'err');
-    notify('💀 전투 패배. 크레딧 -10%','err');
+    notify(I18N.t('notify.battleLoseCr'),'err');
     // 보이드 보스(블랙팔콘) 패배 시: 퀘스트를 available 로 되돌려 재도전 허용
     //  · q.status='active' 인 채 멈춰 있으면 퀘스트 탭에서 '수락' 버튼이 사라져 재도전 불가
     if(combatState&&combatState.isVoidBoss&&combatState._questRef){
       combatState._questRef.status='available';
       addCombatLog(I18N.t('combat.blackfalconQuestReset'),'warn');
-      notify('🔄 블랙팔콘 재도전 가능 — 의뢰 수락 버튼 활성화','warn');
+      notify(I18N.t('notify.blackfalconRetryQuest'),'warn');
     }
   }
   // 전투 기록 저장 (렌더링이 참조하는 필드 모두 포함)
@@ -17160,7 +17160,7 @@ function activateSunsinFocus(){
     });
   }
   addCombatLog(I18N.t('combat.focusFireLog',{nm:target.nm}),'gold');
-  notify('⚔️ 넬슨 일점사! 전 함선 집중사격','gold');
+  notify(I18N.t('notify.focusFireShort'),'gold');
   baekgu(I18N.t('baekgu.focusFireOn',{nm:target.nm}));
   const sbtn=document.getElementById('cb-sunsin-btn');
   if(sbtn)sbtn.disabled=true;
@@ -17175,7 +17175,7 @@ function activateSunsinFocus(){
     if(!combatState||combatState.done||!combatState._haikjinPending||combatState._haikjinUsed)return;
     _showHaikjinButton();
     addCombatLog(I18N.t('combat.haikjinReady'),'gold');
-    notify('🦅 학익진 진형 준비 완료!','gold');
+    notify(I18N.t('notify.haikjinReadyShort'),'gold');
   },5000);
 }
 
@@ -17210,7 +17210,7 @@ function activateHaikjin(){
     });
   }
   addCombatLog(I18N.t('combat.haikjinActivate'),'gold');
-  notify('🦅 학익진! 아군 ATT ×3','gold');
+  notify(I18N.t('notify.haikjinActivateShort'),'gold');
   baekgu(I18N.t('baekgu.haikjin'));
   const hbtn=document.getElementById('cb-haikjin-btn');
   if(hbtn)hbtn.disabled=true;
@@ -17223,7 +17223,7 @@ function activateHaikjin(){
     if(!combatState||combatState.done||!combatState._einsteinPending||combatState._einsteinUsed)return;
     _showEinsteinButton();
     addCombatLog(I18N.t('combat.einsteinReady'),'gold');
-    notify('⏳ 아인슈타인 시간차공격 준비!','gold');
+    notify(I18N.t('notify.einsteinReadyShort'),'gold');
   },5000);
 }
 
@@ -17257,7 +17257,7 @@ function activateEinsteinTimeAttack(){
     });
   }
   addCombatLog(I18N.t('combat.einsteinActivate'),'gold');
-  notify('⏳ 시간차공격! 아군 ATT ×4','gold');
+  notify(I18N.t('notify.einsteinActivateShort'),'gold');
   baekgu(I18N.t('baekgu.einsteinRelativity'));
   const ebtn=document.getElementById('cb-einstein-btn');
   if(ebtn)ebtn.disabled=true;
@@ -17304,7 +17304,7 @@ function activateTeslaHyperspace(){
     });
   }
   addCombatLog(I18N.t('combat.teslaActivate'),'gold');
-  notify('⚡ 테슬라 초공간! 아군 ATT ×5 + 번개 충격파','gold');
+  notify(I18N.t('notify.teslaActivateShort'),'gold');
   baekgu(I18N.t('baekgu.teslaHyperspace'));
   // 발동 순간 전기장 플래시 — 모든 아군 함선 위치에 번개 폭발
   if(combatState.players&&_unitPos){
@@ -17331,7 +17331,7 @@ function activateTeslaHyperspace(){
     if(!combatState||combatState.done||!combatState._genesisPending||combatState._genesisUsed)return;
     _showGenesisButton();
     addCombatLog(I18N.t('combat.genesisReady',{n:G.heroes.length}),'gold');
-    notify('✦ 제네시스 임펙트 준비!','gold');
+    notify(I18N.t('notify.genesisReadyShort'),'gold');
   },5000);
 }
 
@@ -17365,7 +17365,7 @@ function activateGenesisImpact(){
     });
   }
   addCombatLog(I18N.t('combat.genesisActivate'),'gold');
-  notify('✦ 제네시스 임펙트! 아군 ATT ×6','gold');
+  notify(I18N.t('notify.genesisActivateShort'),'gold');
   baekgu(I18N.t('baekgu.genesisImpact'));
   const gbtn=document.getElementById('cb-genesis-btn');
   if(gbtn)gbtn.disabled=true;
@@ -17378,7 +17378,7 @@ function activateGenesisImpact(){
     if(!combatState||combatState.done||!combatState._destinationPending||combatState._destinationUsed)return;
     _showDestinationButton();
     addCombatLog(I18N.t('combat.destinationReady'),'gold');
-    notify('🌍 데스티네이션 어스 준비!','gold');
+    notify(I18N.t('notify.destinationReadyShort'),'gold');
   },5000);
 }
 
