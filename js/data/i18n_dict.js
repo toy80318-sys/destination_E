@@ -1859,6 +1859,24 @@ I18N.register({
   'ui.sortByPriceEmoji':       { ko: '💰 금액', en: '💰 Price' },
   'ui.sortByTierBadge':        { ko: '🏷️ 등급', en: '🏷️ Tier' },
 
+  // ── G72: 잔여 라벨 ────────────────────────────────────────────────
+  'ui.buy':                    { ko: '구매', en: 'Buy' },
+  'ui.sell':                   { ko: '매각', en: 'Sell' },
+  'ui.noStock':                { ko: '재고없음', en: 'No stock' },
+  'ui.noCredits':              { ko: '자금부족', en: 'Low funds' },
+  'ui.noCreditsShort':         { ko: '₡부족', en: '₡ Low' },
+  'ui.outOfStock':             { ko: '없음', en: 'None' },
+  'ui.goBack':                 { ko: '돌아가기', en: 'Go Back' },
+  'ui.unknownPlanet':          { ko: '알 수 없음', en: 'Unknown' },
+  'ui.nameOrigin':             { ko: '이름의 유래', en: 'Name Origin' },
+  'ui.allyShort':              { ko: '아군', en: 'Ally' },
+  'ui.enemyShort':             { ko: '적', en: 'Enemy' },
+  'ui.combatBuyPrice':         { ko: '구매가', en: 'Buy price' },
+  'combat.voidSpearLaunch':    { ko: '보이드의 창 발사!', en: 'Void Spear launched!' },
+  'combat.instantKill':        { ko: '즉시 파괴', en: 'instantly destroyed' },
+  'combat.dodged':             { ko: '회피!', en: 'evaded!' },
+  'combat.attackVoid':         { ko: '공격 무효', en: 'attack nullified' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

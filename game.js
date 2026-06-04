@@ -3081,7 +3081,7 @@ function checkLoyaltyCapture(){
         // 전투 기록에 나포 사건 남기기
         if(!G.combatHistory)G.combatHistory=[];
         const pd2=PLANET_DEF.find(function(p){return p.id===G.currentPlanet;});
-        G.combatHistory.push({win:false,planet:pd2?pd2.nm:'알 수 없음',planetId:G.currentPlanet,turn:0,earned:0,gameTurn:G.turn,loyCapture:true,shipNm:s.nm});
+        G.combatHistory.push({win:false,planet:pd2?pd2.nm:I18N.t('ui.unknownPlanet'),planetId:G.currentPlanet,turn:0,earned:0,gameTurn:G.turn,loyCapture:true,shipNm:s.nm});
       }
     }
   });
@@ -5132,7 +5132,7 @@ function renderShipTab(body){
                   '</div>'+
                   (lvLock
                     ?'<span style="font-size:10px;color:var(--purple)">🔒</span>'
-                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?'없음':G.credits<actualPrice?'₡부족':'구매')+'</button>')+
+                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?I18N.t('ui.outOfStock'):G.credits<actualPrice?I18N.t('ui.noCreditsShort'):I18N.t('ui.buy'))+'</button>')+
                 '</div>'+
               '</div>'+
               // ── 오른쪽: 이미지 ──
@@ -5201,7 +5201,7 @@ function renderShipTab(body){
                 <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;display:flex;align-items:center">
                   ${iSunsin?`<span style="color:var(--dim);font-size:10px;text-decoration:line-through">₡${p.price.toLocaleString()}</span>`:''}
                   <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${fp.toLocaleString()}</span>
-                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?'재고없음':G.credits<fp?'자금부족':'구매'}</button>
+                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
                 </div>
               </div>
               <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
@@ -5240,7 +5240,7 @@ function renderShipTab(body){
                 <div style="padding-top:6px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
                   ${iSunsin?`<span style="color:var(--dim);font-size:10px;text-decoration:line-through">₡${p.price.toLocaleString()}</span>`:''}
                   <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${partFinalPrice.toLocaleString()}</span>
-                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?'재고없음':G.credits<partFinalPrice?'자금부족':'구매'}</button>
+                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<partFinalPrice?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
                 </div>
               </div>
               <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
@@ -5275,7 +5275,7 @@ function renderShipTab(body){
             <div style="font-size:10px;color:var(--dim)">${p.desc}</div>
             <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;display:flex;align-items:center">
               <span style="color:var(--gold);font-size:13px;font-weight:bold">₡${fp.toLocaleString()}</span>
-              <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyCargoExtPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?'재고없음':G.credits<fp?'자금부족':'구매'}</button>
+              <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyCargoExtPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
             </div>
           </div>`;
         }).join('');
@@ -5452,7 +5452,7 @@ function _renderUndoSellToast(){
     document.body.appendChild(el);
   }
   const _isBuy=ls.type==='buyCargoSnap';
-  const _verb=_isBuy?'구매':'매각';
+  const _verb=_isBuy?I18N.t('ui.buy'):I18N.t('ui.sell');
   const _refund=_isBuy?'환불':'반환';
   el.innerHTML=`<span>↶ 방금 ${_verb}: <b style="color:#fff">${ls.label||''}</b></span>
     <button onclick="undoLastSell()" style="padding:5px 12px;border:1.5px solid var(--gold);background:rgba(255,215,0,.18);color:var(--gold);border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;letter-spacing:1px">${_verb} 취소 (₡${ls.credits.toLocaleString()} ${_refund})</button>
@@ -11914,7 +11914,7 @@ function showCodexHeroModal(hid){
         </div>
       </div>
     </div>
-    ${row('📜','이름의 유래',l.origin||I18N.t('ui.noInfo'))}
+    ${row('📜',I18N.t('ui.nameOrigin'),l.origin||I18N.t('ui.noInfo'))}
     ${row('📍','발견 행성',`${l.found||foundPlanetNm}`)}
     ${row('⚔️','능력치',l.stats||`ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}`)}
     ${row('🎭','장단점 · 성격',l.char||I18N.t('ui.noInfo'))}
@@ -12081,7 +12081,7 @@ function showCodexPartModal(partId){
     ${row('⚡','파츠 효과',effectsHtml)}
     ${row('📖','설명',p.desc||'-')}
     ${row('🔨','제작 일화',maker)}
-    ${row('📜','이름의 유래',origin)}
+    ${row('📜',I18N.t('ui.nameOrigin'),origin)}
     ${row('⚔️','전투 성능',power)}
     ${row('💬','한마디',op)}
   </div>`;
@@ -12136,7 +12136,7 @@ function showCodexShipModal(shipId){
       return row('✨','함선 효과',efHtml);
     })()}
     ${row('🔨','제작 일화',maker)}
-    ${row('📜','이름의 유래',origin)}
+    ${row('📜',I18N.t('ui.nameOrigin'),origin)}
     ${row('⚔️','강점·약점',power)}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${op}</span>`)}
   </div>`;
@@ -12537,7 +12537,7 @@ function renderCombatLog(body){
       const pd=PLANET_DEF.find(p=>p.id===(l.planetId||l.pid))||PLANET_DEF.find(p=>p.nm===l.planet);
       const planetImgSrc=pd?`img/planets/${pd.id}.png`:'img/planets/P01.png';
       const pFaction=pd?FACTION[pd.f]:null;
-      const _planetNm=l.planet||pd?.nm||'알 수 없음';
+      const _planetNm=l.planet||pd?.nm||I18N.t('ui.unknownPlanet');
       const _earned=typeof l.earned==='number'?l.earned:0;
       const _gameTurn=l.gameTurn!=null?l.gameTurn:'?';
       const _turn=l.turn!=null?l.turn:0;
@@ -14442,7 +14442,7 @@ function onMapClick(e){
             try{saveGame(true);}catch(e){}
             _enterBlackHoleFinalTest();
           },cls:'btn-gold'},
-           {txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
+           {txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
       } else if(!G._voidSpearObtained){
         // 1차 보상: 보이드의 창 (기존 흐름)
         openModal(I18N.t('modal.voidAbyss'),
@@ -14458,7 +14458,7 @@ function onMapClick(e){
             </div>
             <div style="color:var(--cyan);font-size:11px;margin-top:8px">※ 모든 보이드 행성 Lv10 투자 시 — 마지막 시험 개방</div>
           </div>`,
-          [{txt:'🔱 창을 가져가다',fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
+          [{txt:'🔱 창을 가져가다',fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
       } else if(!_allVoid100){
         // 2차 조건: 보이드 100% 투자 아직 미달
         openModal(I18N.t('modal.voidAbyssFinalTest'),
@@ -14474,7 +14474,7 @@ function onMapClick(e){
               <span style="color:var(--cyan);font-weight:bold">현재 진행: ${_voidProgress} / ${_voidPlanets.length}</span>
             </div>
           </div>`,
-          [{txt:'돌아가기',fn:closeModal,cls:'btn-sm'}]);
+          [{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
       } else {
         // 3차: 마지막 시험 통과 — 흰 화면 → 메시지 → 보상
         closeModal();
@@ -15082,7 +15082,7 @@ function fleeCombat(){
   G.combatHistory.push({
     win:false,fled:true,
     pid:G.currentPlanet,planetId:G.currentPlanet,
-    planet:_pdef.nm||'알 수 없음',
+    planet:_pdef.nm||I18N.t('ui.unknownPlanet'),
     turn:combatState.turn,
     earned:-_pen,
     gameTurn:G.turn
@@ -16498,7 +16498,7 @@ function runCombatTurn(){
           // 데미지: 무조건 즉사 (DEF·SHD 완전 관통)
           tgt.sh=0; tgt.hp=0;
           const gs=G.fleet.find(s=>s.id===p.id);  // (참조용 — 데미지는 enemy 상태에만)
-          log.push(`💥 ${p.nm||'아군'} ▶ 보이드의 창 발사! ${tgt.nm||'적'} 즉시 파괴 ✦`);
+          log.push(`💥 ${p.nm||I18N.t('ui.allyShort')} ▶ ${I18N.t('combat.voidSpearLaunch')} ${tgt.nm||I18N.t('ui.enemyShort')} ${I18N.t('combat.instantKill')} ✦`);
           addCombatLog(I18N.t('combat.voidSpearFired',{nm:p.nm||I18N.t('combat.allyLabel'),tgt:tgt.nm||I18N.t('combat.enemyLabel')}),'gold');
           if(ap&&ep){
             const a1=_txPos(ap), a2=_txPos(ep);
@@ -16588,7 +16588,7 @@ function runCombatTurn(){
       }
     }
     const _healLog=(_healHP>0||_healSH>0)?` 🩸+HP${_healHP}${_healSH>0?'/SH'+_healSH:''}`:'';
-    log.push(`${usesMissile?'🚀':'⚡'} ${p.nm||'아군'} → ${target.nm||'적'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격침!':'')+_healLog);
+    log.push(`${usesMissile?'🚀':'⚡'} ${p.nm||I18N.t('ui.allyShort')} → ${target.nm||I18N.t('ui.enemyShort')}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격침!':'')+_healLog);
     const ap=_unitPos[p.id||('P'+0)], ep=_unitPos[target.id];
     if(ap&&ep){
       const a1=_txPos(ap), a2=_txPos(ep);
@@ -16691,7 +16691,7 @@ function runCombatTurn(){
     let _evChance=Math.min(0.40, _tTEC/2500);
     if(_eTEC>0)_evChance*=Math.max(0.30, 1 - Math.min(0.70, _eTEC/(_tTEC+1)*0.4));
     if(_evChance>0 && Math.random()<_evChance){
-      log.push(`🌀 ${target.nm||'아군'} 회피! (${e.nm||'적'} 공격 무효 · TEC ${_tTEC})`);
+      log.push(`🌀 ${target.nm||I18N.t('ui.allyShort')} ${I18N.t('combat.dodged')} (${e.nm||I18N.t('ui.enemyShort')} ${I18N.t('combat.attackVoid')} · TEC ${_tTEC})`);
       const _ep=_unitPos[target.id];
       if(_ep){const a=_txPos(_ep);_cbEffects.push({type:'exp',x:a.x,y:a.y,col:'#66ddff',r:18,life:14,maxLife:14,delay:_fireDelay});try{_cbStartAnimLoop();}catch(_e){}}
       _fireDelay+=8;
@@ -16715,7 +16715,7 @@ function runCombatTurn(){
       _atkKind=r<0.45?'lightning':r<0.90?'missile':'beam';
     }
     const _iconMap={beam:'💥',lightning:'⚡',missile:'🚀'};
-    log.push(`${_iconMap[_atkKind]} ${e.nm||'적'} → ${target.nm||'아군'}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
+    log.push(`${_iconMap[_atkKind]} ${e.nm||I18N.t('ui.enemyShort')} → ${target.nm||I18N.t('ui.allyShort')}: 실드${shDmg} HP${hpDmg}`+(isDead?' 격파!':''));
     const ap=_unitPos[e.id], ep=_unitPos[target.id];
     if(ap&&ep){
       const a1=_txPos(ap),a2=_txPos(ep);
@@ -17101,7 +17101,7 @@ function _finishCombat(){
   const _pdef=pd&&pd.nm?pd:(PLANET_DEF.find(p=>p.id===pid)||{});
   G.combatHistory.push({
     win,pid,planetId:pid,
-    planet:_pdef.nm||'알 수 없음',
+    planet:_pdef.nm||I18N.t('ui.unknownPlanet'),
     turn:combatState.turn,
     earned,
     gameTurn:G.turn
