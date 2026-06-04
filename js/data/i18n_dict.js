@@ -2090,6 +2090,27 @@ I18N.register({
   'ui.partVariantClean':               { ko: ' ✦신화', en: ' ✦Mythic' },
   'ui.dedupResult':                    { ko: ' · 중복정리 {removed}→재배분 {redistributed}', en: ' · Dedup {removed}→Redistribute {redistributed}' },
 
+  // ── G82: 파츠 효과/모달 라벨 ──────────────────────────────────────
+  'ui.shdShield':                       { ko: 'SHD+{int} 실드+{maxSH}', en: 'SHD+{int} Shield+{maxSH}' },
+  'ui.shieldIntPlus':                   { ko: '🛡 실드 강도 (INT) +{n}', en: '🛡 Shield Strength (INT) +{n}' },
+  'ui.heldInInv':                       { ko: '✅ 보유 {qty}개 (인벤 {inv} + 장착 {eq})', en: '✅ Owned {qty} (Inv {inv} + Equipped {eq})' },
+  'ui.cheeksThreatLine':                { ko: '🛸 치크스 {threat} | 출몰 {waves}/5회 | 체류 {stay}턴', en: '🛸 Cheeks {threat} | Spawn {waves}/5 | Stay {stay} turn(s)' },
+  'ui.removeSkinBtn':                   { ko: '↩ 홀로그램 해제 (원본 외관)', en: '↩ Remove Skin (Original)' },
+  'ui.regionGeneral':                   { ko: '🌐 일반 행성', en: '🌐 General Planets' },
+  'ui.regionVoidRift':                  { ko: '🌌 보이드 균열지대', en: '🌌 Void Rift Zone' },
+  'ui.regionCheeksMerger':              { ko: '💀 치크스 전략 합병', en: '💀 Cheeks Strategic Merger' },
+  'ui.cargoBonus':                      { ko: '📦 장착 함선 화물칸 +{n}칸 (최대 80)', en: '📦 Equipped ship cargo +{n} slots (max 80)' },
+  'ui.cargoBonusHint':                  { ko: '정비소 → 파츠창 우측 창고 슬롯에 장착해 사용', en: 'Equip in Garage → Parts → right-side cargo slot' },
+  'ui.crewAboardWarn':                  { ko: '⚠️ 함선 탑승 중 {n}명 포함 — 강제 하선 후 방출됩니다', en: '⚠️ {n} aboard ship — forced disembark then released' },
+  'ui.crewAutoDisem':                   { ko: '👥 탑승 크루 {n}명 → 자동 하선', en: '👥 {n} aboard crew → auto disembark' },
+  'ui.notAboard':                       { ko: '미탑승', en: 'Not aboard' },
+  'ui.shipAboardLabel':                 { ko: '🛸 {nm}', en: '🛸 {nm}' },
+  'ui.missilesSection':                 { ko: '🚀 미사일 ({n}종)', en: '🚀 Missiles ({n})' },
+  'ui.craftMatsHeading':                { ko: '⚗️ 제작 재료', en: '⚗️ Crafting Materials' },
+  'ui.finalBossIntro':                  { ko: '보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.', en: 'Consume 1 Void Crystal to fight the final boss.' },
+  'ui.crystalsOwned':                   { ko: '보유 크리스탈: ', en: 'Crystals owned: ' },
+  'ui.maxSellRaw':                      { ko: '최대₡{p}', en: 'Max ₡{p}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
