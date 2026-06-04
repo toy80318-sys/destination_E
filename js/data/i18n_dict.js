@@ -1758,6 +1758,19 @@ I18N.register({
   'alt.baekgu':                { ko: '백구',                         en: 'Baekgu' },
   'placeholder.password':      { ko: '비밀번호',                     en: 'Password' },
 
+  // ── G66: 잔여 인라인 7키 ──────────────────────────────────────────
+  'ui.stockQty':               { ko: '재고 {n}',                     en: 'Stock {n}' },
+  'ui.ambushStats':            { ko: '사령관 전투력 {plv} vs 해적 {ambush}<br>승률 {pct}%',
+                                 en: 'Commander Power {plv} vs Pirate {ambush}<br>Win {pct}%' },
+  'ui.recruitedHeroesN':       { ko: '영입 영웅 ({n}/8명)',          en: 'Recruited Heroes ({n}/8)' },
+  'ui.recruitedHeroesNoCap':   { ko: '영입 영웅 ({n}명)',             en: 'Recruited Heroes ({n})' },
+  'ui.skinExplain':            { ko: '"함선 외관 위에 <b>{shield}</b>을 씌워서 외부에서 볼 때 디자인이 바뀌어 보이게 하는 거야. 실제 함체·능력치는 그대로! 비용은 해당 함선 정가의 <b>10%</b>야."',
+                                 en: '"It overlays the ship\'s appearance with <b>{shield}</b> so it looks different from outside. The actual hull and stats stay the same! Cost is <b>10%</b> of the ship\'s base price."' },
+  'ui.enhanceExplain':         { ko: '"함선 능력치를 한 단계씩 강화. 매 강화 +5%, 최대 +10강(50%). 5강까지는 무조건 성공, 8강부터 실패하면 단계 후퇴! 비용은 1.2배씩 누적 상승."',
+                                 en: '"Enhance ship stats one tier at a time. +5% per enhance, max +10 (50%). Guaranteed success up to +5, regress on fail from +8. Cost rises ×1.2 cumulatively."' },
+  'ui.endingShipProse':        { ko: 'D-day 100년 + 1일. AI 진돗개 <b style="color:#9ee7ff">백구</b>의 보고로 동면이 풀렸다. 첫 출항한 함선은 {ship} 한 척. 프록시마 b의 광장에서 {co} 깃발을 내걸고, 사령관은 다시 별 사이의 항로를 그렸다.',
+                                 en: 'D-day 100 years + 1. AI Jindo <b style="color:#9ee7ff">Baekgu</b>\'s report broke hibernation. The first sortie was a single ship: {ship}. At the Proxima b plaza, raising the {co} banner, the Commander charted routes between the stars again.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

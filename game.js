@@ -3880,7 +3880,7 @@ function renderTradeTab(body){
                   <div style="font-size:13px;font-weight:bold;color:var(--gold)">₡${c.buy.toLocaleString()}</div>
                   ${_lockBadge}
                   ${marcoBadge}
-                  <div style="font-size:10px;color:var(--dim)">재고 ${qty}</div>
+                  <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.stockQty',{n:qty})}</div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">
                   <div style="display:flex;gap:3px;align-items:center">
@@ -3929,7 +3929,7 @@ function renderTradeTab(body){
                     <div style="font-size:13px;font-weight:bold;color:var(--gold)">₡${c.buy.toLocaleString()}</div>
                     ${_matLockBadge}
                     <div style="font-size:10px;color:var(--dim);margin-top:2px">보유 <span style="color:var(--cyan);font-weight:bold">${have}개</span></div>
-                    <div style="font-size:10px;color:var(--dim)">재고 ${qty}</div>
+                    <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.stockQty',{n:qty})}</div>
                   </div>
                   <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">
                     <div style="display:flex;gap:3px;align-items:center">
@@ -5947,7 +5947,7 @@ function renderShipSkinTab(body){
     <div class="hub-t">${I18N.t('hub.shipSkinT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     <div style="background:rgba(204,102,255,.08);border:1px solid rgba(204,102,255,.35);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
-      🐕 <b style="color:#cc88ff">백구</b>: "함선 외관 위에 <b>${I18N.t('ui.hologramShield')}</b>을 씌워서 외부에서 볼 때 디자인이 바뀌어 보이게 하는 거야. 실제 함체·능력치는 그대로! 비용은 해당 함선 정가의 <b>10%</b>야."
+      🐕 <b style="color:#cc88ff">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.skinExplain',{shield:I18N.t('ui.hologramShield')})}
     </div>
     ${removeBtn}
     <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
@@ -6124,7 +6124,7 @@ function renderShipEnhanceTab(body){
     <div class="hub-t">${I18N.t('hub.shipEnhanceT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
-      🐕 <b style="color:#ffd700">백구</b>: "함선 능력치를 한 단계씩 강화. 매 강화 +5%, 최대 +10강(50%). 5강까지는 무조건 성공, 8강부터 실패하면 단계 후퇴! 비용은 1.2배씩 누적 상승."
+      🐕 <b style="color:#ffd700">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.enhanceExplain')}
     </div>
     <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="enh-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
@@ -11043,7 +11043,7 @@ function _maybeBlackMarketAmbush(result,tier){
           <div style="font-size:46px">⚔️</div>
           <div style="color:var(--green);font-size:18px;font-weight:bold;margin-top:6px">${I18N.t('ui.ambushWin')}</div>
           <div style="color:var(--txt);font-size:13px;margin-top:4px">${I18N.t('ui.rewardSafe')}</div>
-          <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
+          <div style="color:var(--dim);font-size:11px;margin-top:8px">${I18N.t('ui.ambushStats',{plv:_plv,ambush:_ambushPower,pct:Math.round(_winChance*100)})}</div>
         </div>`,
         [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-gold'}]);
     } else {
@@ -11054,7 +11054,7 @@ function _maybeBlackMarketAmbush(result,tier){
           <div style="font-size:46px">💀</div>
           <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">${I18N.t('ui.ambushLose')}</div>
           <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>${I18N.t('ui.piratesTookIt')}</div>
-          <div style="color:var(--dim);font-size:11px;margin-top:8px">사령관 전투력 ${_plv} vs 해적 ${_ambushPower}<br>승률 ${Math.round(_winChance*100)}%</div>
+          <div style="color:var(--dim);font-size:11px;margin-top:8px">${I18N.t('ui.ambushStats',{plv:_plv,ambush:_ambushPower,pct:Math.round(_winChance*100)})}</div>
         </div>`,
         [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-sm'}]);
     }
@@ -18807,7 +18807,7 @@ function showFinalEndingCredits(){
       <div style="font-size:20px;margin-bottom:40px">🐕 백구 — AI 진돗개</div>
 
       ${heroList.length>0?`
-        <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">영입 영웅 (${heroList.length}/8명)</div>
+        <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.recruitedHeroesN',{n:heroList.length})}</div>
         <div style="font-size:17px;line-height:2;margin-bottom:40px">
           ${heroList.map(n=>`<div>⭐ ${n}</div>`).join('')}
         </div>
@@ -19100,7 +19100,7 @@ function showEndingCredits(onDone){
         <div style="font-size:20px;margin-bottom:40px">🐕 백구 — AI 진돗개</div>
 
         ${heroEndings.length>0?`
-          <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">영입 영웅 (${heroEndings.length}명)</div>
+          <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">${I18N.t('ui.recruitedHeroesNoCap',{n:heroEndings.length})}</div>
           ${heroEndings.map(h=>{
             const _hImg=(typeof CHAR_PORTRAITS!=='undefined'&&CHAR_PORTRAITS[h.nm])||'';
             return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px">
@@ -19131,7 +19131,7 @@ function showEndingCredits(onDone){
           <p style="margin:0 0 22px">지구는 한 번 별을 향해 손을 뻗다 거둬졌다. 우르사 메이저의 패권이 태양계로 밀려오던 그날, 인류는 마지막 화물선에 자기 자신을 실어 떠났다. 봉쇄선이 닫혔고, 라디오는 침묵했고, ${cmdName}은(는) 프록시마 b의 동면실에서 눈을 감았다. — 100년이 흘렀다.</p>
 
           <div style="text-align:center;color:#ffd87a;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제1막 · 각성 —</div>
-          <p style="margin:0 0 22px">D-day 100년 + 1일. AI 진돗개 <b style="color:#9ee7ff">백구</b>의 보고로 동면이 풀렸다. 첫 출항한 함선은 ${shipName} 한 척. 프록시마 b의 광장에서 ${co} 깃발을 내걸고, 사령관은 다시 별 사이의 항로를 그렸다.</p>
+          <p style="margin:0 0 22px">${I18N.t('ui.endingShipProse',{ship:shipName,co})}</p>
 
           <div style="text-align:center;color:#66ddff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제2막 · 변경의 불길 —</div>
           <p style="margin:0 0 22px">${I18N.t('ui.chixShadowProse')}</p>
