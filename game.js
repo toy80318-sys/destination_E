@@ -2725,7 +2725,7 @@ function hubTab(tab){
           <div style="font-size:17px;font-weight:bold;color:var(--red)">🔒 ${stageName} 잠금</div>
           <div style="color:var(--dim);font-size:14px;line-height:1.9">
             퀘스트·잔해탐색·해적격파·턴종료 <b style="color:var(--gold)">${nextGoal}회</b> 누적 시 개방
-            &nbsp;·&nbsp; <span style="color:var(--cyan)">현재 ${prog} / ${nextGoal}</span>
+            &nbsp;·&nbsp; <span style="color:var(--cyan)">${I18N.t('ui.currentN',{now:prog,goal:nextGoal})}</span>
           </div>
           <div style="background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.4);border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.9;text-align:left">
             <div style="color:var(--yellow);font-weight:bold;margin-bottom:4px">📋 해금 단계</div>
@@ -3752,7 +3752,7 @@ function renderTradeTab(body){
           <span style="font-size:20px">${c.ic||'📜'}</span>
           <div style="flex:1;min-width:0">
             <div style="font-size:12px;color:var(--yellow);font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div>
-            <div style="font-size:10px;color:var(--dim)">보유 ${i.qty}개 · 판매가 <b style="color:var(--gold)">₡${unit.toLocaleString()}/개</b></div>
+            <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.ownedQtyPrice',{qty:i.qty,price:unit.toLocaleString()})}</div>
           </div>
         </div>
         <div style="display:flex;gap:4px">
@@ -4560,7 +4560,7 @@ function renderShipTab(body){
     const sortBar=garageSubNav+`<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
       <span style="font-size:12px;color:var(--dim)">정렬:</span>
       ${fleetSortBtn('tier','🛕 등급')}${fleetSortBtn('att','⚔️ 공격력')}${fleetSortBtn('hp','❤️ 내구도')}${fleetSortBtn('name','🔤 이름')}
-      <span style="font-size:12px;color:var(--dim);margin-left:auto">편대 ${G.fleet.length}척</span>
+      <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.fleetN',{n:G.fleet.length})}</span>
     </div>
     <!-- 사용자 요청: 좌(📊 종합 능력치) · 중(🔧 전체 수리) · 우(나포허용/매각) 3열 -->
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:stretch">
@@ -4579,7 +4579,7 @@ function renderShipTab(body){
       return `<div style="flex:2.4;min-width:360px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:10px 12px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
           <span style="font-size:14px;font-weight:bold;color:var(--gold)">📊 함대 종합 능력치</span>
-          <span style="font-size:11px;color:var(--cyan);margin-left:auto">함대 ${G.fleet.length}척</span>
+          <span style="font-size:11px;color:var(--cyan);margin-left:auto">${I18N.t('ui.fleetCountAlt',{n:G.fleet.length})}</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;align-items:stretch">
           ${cell('❤️ HP',`${tot.hp.toLocaleString()}/${tot.maxHp.toLocaleString()}`,hpPct>60?'var(--green)':hpPct>30?'#f39c12':'var(--red)')}
@@ -6411,7 +6411,7 @@ function renderFleetFormationTab(body){
   const summary=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:10px">
     <span style="font-size:14px;font-weight:bold;color:var(--cyan)">⚓ 편대 편성</span>
     <span style="font-size:12px;color:var(--dim)">4열×4행 = 16슬롯. 앞열(1열)이 전투 시 우선 공격받습니다.</span>
-    <span style="font-size:12px;color:var(--dim);margin-left:auto">수동 배치 ${assignedShipIds.size}/${G.fleet.length}척</span>
+    <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.manualPlace',{n:assignedShipIds.size,total:G.fleet.length})}</span>
     <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:11px;padding:4px 10px;${_declineCap?'border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.12)':'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.10)'}" title="ON(나포매각): 나포 대상 함선을 즉시 매각하여 크레딧 획득 · OFF(나포허용): 정상 나포 시도">${_declineCap?'💰 나포매각':'🏴 나포허용'}</button>
     <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:4px 10px" onclick="autoArrangeFormation()" title="HP·DEF·SHD 높은 함선부터 1열(앞)에 배치">🛡️ 자동 배치 (방어순)</button>
     <button class="btn btn-sm btn-red" style="font-size:11px;padding:4px 10px" onclick="clearAllFormation()">↻ 초기화</button>
@@ -8738,7 +8738,7 @@ function dismissLowestCrew(n){
     : '';
   openModal(I18N.t('modal.forceDismissCrew'),
     `<div style="padding:12px">
-      <div style="font-size:16px;font-weight:bold;margin-bottom:8px">최하위 ${targets.length}명을 내보냅니까?</div>
+      <div style="font-size:16px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.lowestDismissConfirm',{n:targets.length})}</div>
       <div style="font-size:13px;color:var(--dim);margin-bottom:6px">${rarSummary} | ⚓ = 탑승 중</div>
       <div style="font-size:12px;color:rgba(255,200,100,.8);max-height:120px;overflow-y:auto;line-height:1.6">${names}</div>
       ${warningHtml}
@@ -8807,7 +8807,7 @@ function renderPlanetsTab(body){
       <span style="font-size:22px">💰</span>
       <div style="flex:1;min-width:140px">
         <div style="color:var(--gold);font-size:13px;font-weight:bold">${I18N.t('ui.turnTaxIncome')}</div>
-        <div style="color:var(--dim);font-size:11px;margin-top:2px">보유 행성 ${ownedCount}개 합산</div>
+        <div style="color:var(--dim);font-size:11px;margin-top:2px">${I18N.t('ui.ownedPlanetsSum',{n:ownedCount})}</div>
       </div>
       <div style="text-align:right">
         <div style="color:var(--gold);font-size:20px;font-weight:bold">₡${totalTax.toLocaleString()}</div>
@@ -10621,7 +10621,7 @@ function openCraftSlot(idx){
       </div>
       <div style="text-align:right">
         <div style="font-size:14px;font-weight:bold;color:${have>0?'var(--cyan)':'var(--dim)'}">${have}개 보유</div>
-        ${needed>0?`<div style="font-size:11px;color:${have>=needed?'var(--green)':'var(--red)'}">필요 ${needed}개</div>`:''}
+        ${needed>0?`<div style="font-size:11px;color:${have>=needed?'var(--green)':'var(--red)'}">${I18N.t('ui.neededN',{n:needed})}</div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -11294,7 +11294,7 @@ function renderTavernView(body){
       ${_npcImg(_bmNpcType,cfg.col)}
       <div style="flex:1;min-width:0">
         <div style="color:${cfg.col};font-size:12px;font-weight:bold">${_ic} ${cfg.label}</div>
-        <div style="color:var(--dim);font-size:9px;line-height:1.3">설계도 ${Math.round(loot.cat.bp*100)}% · 파츠 ${Math.round(loot.cat.part*100)}% · 함선 ${Math.round(loot.cat.ship*100)}% · 전설+ ${_legendPct}%</div>
+        <div style="color:var(--dim);font-size:9px;line-height:1.3">${I18N.t('ui.lootCategoryPct',{bp:Math.round(loot.cat.bp*100),part:Math.round(loot.cat.part*100),ship:Math.round(loot.cat.ship*100),legend:_legendPct})}</div>
       </div>
       <div style="text-align:right;flex-shrink:0;font-size:10px">
         <div style="color:${cr>=cfg.cr?cfg.col:'#ff8888'};font-weight:bold">₡${cfg.cr.toLocaleString()}</div>
@@ -11756,7 +11756,7 @@ function renderAuctionView(body){
   body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
     ${hubBanner('auction','🏛️','행성 경매',PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f)}
     <div style="padding:8px 14px 4px;flex-shrink:0">
-      <div class="hub-t" style="margin:0">${I18N.t('hub.planetAuctionT')} <span style="font-size:12px;font-weight:normal;color:${bidsLeft>0?'var(--cyan)':'var(--red)'}">입찰 ${bidsLeft}/2회</span>&nbsp;&nbsp;<span style="font-size:12px;font-weight:normal;color:${_planetsAtLimit?'var(--red)':'var(--dim)'}">| 소유 ${_ownedCnt2}/${_maxPlanets2}개</span></div>
+      <div class="hub-t" style="margin:0">${I18N.t('hub.planetAuctionT')} <span style="font-size:12px;font-weight:normal;color:${bidsLeft>0?'var(--cyan)':'var(--red)'}">${I18N.t('ui.bidsAndOwn',{bids:bidsLeft})}</span>&nbsp;&nbsp;<span style="font-size:12px;font-weight:normal;color:${_planetsAtLimit?'var(--red)':'var(--dim)'}">${I18N.t('ui.planetCount',{now:_ownedCnt2,max:_maxPlanets2})}</span></div>
     </div>
     <!-- 좌우 분할 -->
     <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:8px 14px 14px;min-height:0;overflow:hidden">
@@ -12177,7 +12177,7 @@ function renderCodexTab(body){
       }).join('');
       const gridBody=discovered>0?cards:'<div style="grid-column:1/-1;font-size:12px;color:var(--dim);padding:10px 4px">🔒 아직 발견한 '+tier+' 함선이 없습니다 — 행성을 더 탐험해 보세요.</div>';
       return`<div style="margin-bottom:16px">
-        <div style="font-size:13px;color:${tierCol[tier]||'var(--dim)'};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${tier} <span style="color:var(--dim);font-size:11px">발견 ${discovered}/${ships.length} · 보유 ${owned}</span></div>
+        <div style="font-size:13px;color:${tierCol[tier]||'var(--dim)'};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${tier} <span style="color:var(--dim);font-size:11px">${I18N.t('ui.tierDiscoverOwn',{disc:discovered,total:ships.length,own:owned})}</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
           ${gridBody}
         </div>

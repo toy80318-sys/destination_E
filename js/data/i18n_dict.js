@@ -1779,6 +1779,26 @@ I18N.register({
   'ui.piratesTookAfter':       { ko: '방금 획득한 {nm}을(를)<br>{lost}',
                                  en: 'The {nm} you just acquired<br>{lost}' },
 
+  // ── G68: 인라인 변수 라벨 11키 ────────────────────────────────────
+  'ui.currentN':               { ko: '현재 {now} / {goal}', en: 'Now {now} / {goal}' },
+  'ui.ownedQtyPrice':          { ko: '보유 {qty}개 · 판매가 <b style="color:var(--gold)">₡{price}/개</b>',
+                                 en: 'Owned {qty} · Price <b style="color:var(--gold)">₡{price}/ea</b>' },
+  'ui.fleetN':                 { ko: '편대 {n}척',          en: 'Fleet {n}' },
+  'ui.fleetCountAlt':          { ko: '함대 {n}척',          en: 'Fleet {n}' },
+  'ui.manualPlace':            { ko: '수동 배치 {n}/{total}척',
+                                 en: 'Manual placement {n}/{total}' },
+  'ui.lowestDismissConfirm':   { ko: '최하위 {n}명을 내보냅니까?',
+                                 en: 'Dismiss the lowest {n}?' },
+  'ui.ownedPlanetsSum':        { ko: '보유 행성 {n}개 합산',
+                                 en: 'Sum of {n} owned planets' },
+  'ui.neededN':                { ko: '필요 {n}개',          en: 'Need {n}' },
+  'ui.lootCategoryPct':        { ko: '설계도 {bp}% · 파츠 {part}% · 함선 {ship}% · 전설+ {legend}%',
+                                 en: 'Blueprint {bp}% · Part {part}% · Ship {ship}% · Legend+ {legend}%' },
+  'ui.bidsAndOwn':             { ko: '입찰 {bids}/2회',     en: 'Bids {bids}/2' },
+  'ui.planetCount':            { ko: '| 소유 {now}/{max}개', en: '| Owned {now}/{max}' },
+  'ui.tierDiscoverOwn':        { ko: '발견 {disc}/{total} · 보유 {own}',
+                                 en: 'Discovered {disc}/{total} · Owned {own}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
