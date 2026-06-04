@@ -9491,7 +9491,7 @@ function completeQuest(pid,idx){
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${p?.desc||''}</div>
       ${setComplete?'<div style="font-size:12px;color:var(--gold);margin-top:3px">🎉 세트 완성! 보너스 효과 활성화</div>':''}
     </div>`;
-    notify(`${_icon} ${isSet?'세트':'전설'} 파츠 ${p?.nm||partId} 획득!`,'gold');
+    notify(I18N.t('notify.partAcquiredTier',{ic:_icon,kind:isSet?I18N.t('ui.setShort'):I18N.t('ui.legendShort'),nm:p?.nm||partId}),'gold');
     baekgu(isSet?`세트 아이템이야! ${p?.nm}. 세트 완성하면 추가 보너스가 붙어.`:`전설 파츠야! ${p?.nm}. 상점에서는 못 사는 거야.`);
   }
 
@@ -9522,7 +9522,7 @@ function completeQuest(pid,idx){
       <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${_bpRec?.nm||_bpId}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
-    notify(`📜 설계도 획득: ${_bpRec?.nm||_bpId}`,'gold');
+    notify(I18N.t('notify.bpAcquired',{nm:_bpRec?.nm||_bpId}),'gold');
     baekgu(I18N.t('baekgu.blueprintDrop',{nm:_bpRec?.nm||_bpId}));
   }
   // ── 전설 창고 확장 설계도 드롭 (링4+ 행성에서 3% 확률, 명성 100+) ──
@@ -9539,7 +9539,7 @@ function completeQuest(pid,idx){
           <div style="font-size:17px;font-weight:bold;color:#d4af37;margin-top:4px">${_cbRec?.nm||_cb.id}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftLegendaryHold')}</div>
         </div>`;
-        notify(`📦 창고 설계도: ${_cbRec?.nm||_cb.id}`,'gold');
+        notify(I18N.t('notify.cargoBpAcquired',{nm:_cbRec?.nm||_cb.id}),'gold');
         break;
       }
     }
@@ -9614,7 +9614,7 @@ function completeQuest(pid,idx){
                 if(_ti>=0)G.crew.splice(_ti,1);
                 G.crew.push(_pend);
                 closeModal();
-                notify(`🔄 ${_lowest.nm} → ${_pend.nm} 전설 동료 영입!`,'gold');
+                notify(I18N.t('notify.legendSwapRecruit',{old:_lowest.nm,new:_pend.nm}),'gold');
                 baekgu(`${_pend.nm} 합류! ${_lowest.nm}은 하선했어.`);
                 saveGame(true);
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
@@ -9687,7 +9687,7 @@ function checkQuestCombatDone(){
   });
   if(completed>0){
     setTimeout(()=>{
-      notify('🎖️ 전투 의뢰 완료! 제독 탭에서 보상을 수령하세요','gold');
+      notify(I18N.t('notify.combatQuestDone'),'gold');
       saveGame(true);
     },1200);
   }
@@ -9822,7 +9822,7 @@ function spawnDebrisReinforcementToCombat(){
   combatState.enemies.push(...newEnemies);
   // 로그 + 알림 + 사운드
   addCombatLog(I18N.t('combat.debrisPiratesJoin',{n:joinCount}),'err');
-  notify(`🏴‍☠️ 잔해 해적 ${joinCount}척 합류!`,'warn');
+  notify(I18N.t('notify.debrisPiratesJoinShort',{n:joinCount}),'warn');
   try{baekgu(I18N.t('baekgu.debrisPirates'));}catch(e){}
   try{sfxAlert();}catch(e){}
   try{AudioMgr.playSfx('notify',{vol:0.7});}catch(e){}
@@ -9848,7 +9848,7 @@ function doGatherSearch(){
   // 쿨다운 체크 (전투 외)
   const _cdLeft=_gatherCooldownLeft();
   if(_cdLeft>0){
-    notify(`⏳ 잔해 탐색 쿨다운 ${Math.ceil(_cdLeft/1000)}초 남음`,'warn');
+    notify(I18N.t('notify.scanCooldown',{n:Math.ceil(_cdLeft/1000)}),'warn');
     return;
   }
   window._lastGatherTime=Date.now();
@@ -9866,7 +9866,7 @@ function doGatherSearch(){
   const gatherQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&(q.type==='gather'||q.type==='explore'));
   const combatQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&q.type==='combat'&&q.nm.includes('치크스'));
 
-  notify('🔭 탐색 중...','ok');
+  notify(I18N.t('notify.scanning'),'ok');
   baekgu(I18N.t('baekgu.searchStart'));
 
   // ── 1) 치크스 정찰대 탐색 (30% 조우) ─────────────────────
@@ -9938,7 +9938,7 @@ function doGatherSearch(){
     if(gatherQ){
       _progressGatherQuest(gatherQ,pid);
     } else {
-      notify('🔭 탐색했지만 특별한 발견이 없었습니다','ok');
+      notify(I18N.t('notify.scanNothing'),'ok');
       baekgu(I18N.t('baekgu.searchNothingAlt'));
     }
   }
@@ -9950,11 +9950,11 @@ function _progressGatherQuest(q,pid){
   q.progress=Math.min(q.required,(q.progress||0)+1);
   if(q.progress>=q.required){
     q.status='done';
-    notify(`✅ ${q.nm} 완료! 퀘스트 탭에서 보상 수령`,'gold');
+    notify(I18N.t('notify.questDoneClaim',{nm:q.nm}),'gold');
     baekgu(I18N.t('baekgu.searchCompleteQuest'));
     updateGatherBtn();
   } else {
-    notify(`🔭 잔해 발견 (${q.progress}/${q.required}) — 계속 탐색하세요`,'ok');
+    notify(I18N.t('notify.debrisProgress',{n:q.progress,max:q.required}),'ok');
     baekgu(I18N.t('baekgu.searchPartial'));
   }
   saveGame(true);
@@ -9973,7 +9973,7 @@ function _grantDebrisReward(ring,q,pid){
     const p=pool[Math.floor(Math.random()*pool.length)];
     addToInventory(p.id,1);
     const isLegend=p.tier>=12;
-    notify(`${isLegend?'🌟 전설':'✨'} 파츠 발견! ${p.nm} (Tier${p.tier}) 획득!`,isLegend?'pur':'gold');
+    notify(I18N.t('notify.partFoundTier',{kind:isLegend?I18N.t('ui.legendStar'):I18N.t('ui.legendSparkle'),nm:p.nm,tier:p.tier}),isLegend?'pur':'gold');
     baekgu(`${p.nm} 발견! ${isLegend?'전설급이네. 대박이다.':'꽤 좋은 파츠야.'}`);
   } else {
     // 함선: ring 3+에서 중형, ring 5+에서 대형 가능
@@ -9985,7 +9985,7 @@ function _grantDebrisReward(ring,q,pid){
     {
       const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
       addShipToFleet({id:'DBR_'+Date.now(),catId:def.catalogId||def.catId||def.id,nm:'회수 '+def.nm,tier:def.tier,maxHP:Math.floor(def.maxHP*.7),hp:Math.floor(def.maxHP*.5),maxSH:Math.floor(def.maxSH*.7),sh:0,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:55,parts:[],crewIds:[],cargoSlots:slotsByTier[def.tier]||5});
-      notify(`🛸 잔해에서 ${def.tier} 함선 회수! ${def.nm}`, 'gold');
+      notify(I18N.t('notify.shipSalvaged',{tier:def.tier,nm:def.nm}),'gold');
       baekgu(`${def.nm} 회수 완료. 함대에 추가됐어.`);
     }
   }
@@ -10027,7 +10027,7 @@ function tickGatherQuests(){
     (G.quests[pid]||[]).forEach(function(q){
       if(q.type==='gather'&&q.status==='active'&&q.planetId===G.currentPlanet){
         q.progress=Math.min(q.required,(q.progress||0)+1);
-        if(q.progress>=q.required){q.status='done';notify(q.nm+' 채취 완료! 퀘스트 탭에서 보상을 수령하세요','ok');}
+        if(q.progress>=q.required){q.status='done';notify(I18N.t('notify.gatherQuestDone',{nm:q.nm}),'ok');}
       }
     });
   });
@@ -10124,7 +10124,7 @@ function doCraft(recipeId){
   if(!G.materials)G.materials={};
   if(!G.blueprints)G.blueprints={};
 
-  if(!G.blueprints[rec.id]){notify('📜 설계도 없음 — 퀘스트 완료 시 5% 드롭','err');return;}
+  if(!G.blueprints[rec.id]){notify(I18N.t('notify.noBlueprint'),'err');return;}
   const _isTierDiscount=['legend','mythic','flagship'].includes(rec.tier);
   for(const m of rec.mats){
     const needQty=_isTierDiscount?Math.max(1,Math.floor(m.qty/2)):m.qty;
