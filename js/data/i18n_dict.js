@@ -1799,6 +1799,24 @@ I18N.register({
   'ui.tierDiscoverOwn':        { ko: '발견 {disc}/{total} · 보유 {own}',
                                  en: 'Discovered {disc}/{total} · Owned {own}' },
 
+  // ── G69: 잔여 인라인 8키 ──────────────────────────────────────────
+  'ui.ownedQty':               { ko: '보유 <span style="color:var(--cyan);font-weight:bold">{qty}개</span>',
+                                 en: 'Owned <span style="color:var(--cyan);font-weight:bold">{qty}</span>' },
+  'ui.taxAndROI':              { ko: '세율 <b style="color:var(--cyan)">₡{tax}/턴</b> — 치크스 2배 💰 | 회수 {roi}턴',
+                                 en: 'Tax <b style="color:var(--cyan)">₡{tax}/turn</b> — Chiks ×2 💰 | ROI {roi}t' },
+  'ui.ownedParts':             { ko: '보유 <span style="color:var(--cyan)">{have}</span> / 전체 {total}종',
+                                 en: 'Owned <span style="color:var(--cyan)">{have}</span> / {total} total' },
+  'ui.visitedPlanets':         { ko: '방문 <span style="color:var(--cyan)">{visited}</span> / 전체 {total}개 · 클릭하면 상세 정보',
+                                 en: 'Visited <span style="color:var(--cyan)">{visited}</span> / {total} total · click for details' },
+  'ui.retryMirrorBattle':      { ko: '아래 [다시 도전]으로 미러 함대전에 재도전 가능합니다.',
+                                 en: 'Use [Retry] below to face the mirror fleet again.' },
+  'ui.allyFleetLine':          { ko: '⚓ <b>아군</b> {alive}/{total}척 · ⚔ <b style="color:#ffb84d">ATT {att}</b> · ❤ <b style="color:#51cf66">{hp}/{maxhp}</b> · 🛡 <b style="color:#66ddff">{sh}/{maxsh}</b> · DEF {def}',
+                                 en: '⚓ <b>Allies</b> {alive}/{total} · ⚔ <b style="color:#ffb84d">ATT {att}</b> · ❤ <b style="color:#51cf66">{hp}/{maxhp}</b> · 🛡 <b style="color:#66ddff">{sh}/{maxsh}</b> · DEF {def}' },
+  'ui.enemyFleetLine':         { ko: '☠️ <b>적군</b> {alive}/{total}척 · ⚔ <b style="color:#ff8866">ATT {att}</b> · ❤ <b style="color:#ff7d7d">{hp}/{maxhp}</b> · 🛡 <b style="color:#aaccff">{sh}/{maxsh}</b> · DEF {def}',
+                                 en: '☠️ <b>Enemies</b> {alive}/{total} · ⚔ <b style="color:#ff8866">ATT {att}</b> · ❤ <b style="color:#ff7d7d">{hp}/{maxhp}</b> · 🛡 <b style="color:#aaccff">{sh}/{maxsh}</b> · DEF {def}' },
+  'ui.forceUrsaBossHelp':      { ko: '지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.',
+                                 en: 'Use when the boss doesn\'t appear on Earth entry, or you want to retry after defeating it.' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

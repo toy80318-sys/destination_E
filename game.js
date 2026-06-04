@@ -3928,7 +3928,7 @@ function renderTradeTab(body){
                     <div style="font-size:13px;font-weight:bold;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div>
                     <div style="font-size:13px;font-weight:bold;color:var(--gold)">₡${c.buy.toLocaleString()}</div>
                     ${_matLockBadge}
-                    <div style="font-size:10px;color:var(--dim);margin-top:2px">보유 <span style="color:var(--cyan);font-weight:bold">${have}개</span></div>
+                    <div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.t('ui.ownedQty',{qty:have})}</div>
                     <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.stockQty',{n:qty})}</div>
                   </div>
                   <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">
@@ -11671,7 +11671,7 @@ function renderAuctionView(body){
         <div>
           <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${p.nm} <span style="font-size:11px;background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.4);padding:1px 5px;border-radius:6px">🌌 균열지대</span></div>
           <div style="font-size:12px;color:var(--cyan);margin-top:2px">보이드 | 링${p.ring} | 균열 지대</div>
-          <div style="font-size:12px;color:var(--dim);margin-top:3px">세율 <b style="color:var(--cyan)">₡${p.tax.toLocaleString()}/턴</b> — 치크스 2배 💰 | 회수 ${roi}턴</div>
+          <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxAndROI',{tax:p.tax.toLocaleString(),roi})}</div>
           <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> | 즉시 <span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">✦신화 파츠 4종 + 신화/전설기함 함선 보유 조건 충족</div>
         </div>
@@ -12224,7 +12224,7 @@ function renderCodexTab(body){
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <div style="font-size:29px">⚙️</div>
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.partsCodex')}</div>
-      <div style="font-size:12px;color:var(--dim)">보유 <span style="color:var(--cyan)">${totalHave}</span> / 전체 ${PARTS.length}종</div></div>
+      <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.ownedParts',{have:totalHave,total:PARTS.length})}</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
       <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalHave/PARTS.length*100)}%</div></div>
     </div>
@@ -12369,7 +12369,7 @@ function renderCodexTab(body){
     content='<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">'
       +'<div style="font-size:29px">🪐</div>'
       +`<div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.planetCodex')}</div>`
-      +'<div style="font-size:12px;color:var(--dim)">방문 <span style="color:var(--cyan)">'+totalVisited+'</span> / 전체 '+PLANET_DEF.length+'개 · 클릭하면 상세 정보</div></div>'
+      +`<div style="font-size:12px;color:var(--dim)">${I18N.t('ui.visitedPlanets',{visited:totalVisited,total:PLANET_DEF.length})}</div></div>`
       +`<div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.explorationRate')}</div>`
       +'<div style="font-size:17px;color:var(--gold);font-weight:bold">'+Math.round(totalVisited/PLANET_DEF.length*100)+'%</div></div></div>'
       +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">'+planetCards+'</div>';
@@ -14432,7 +14432,7 @@ function onMapClick(e){
               그대는 이미 마지막 시험을 통과하였다.<br>
               <span style="color:#cc44ff">${I18N.t('ui.blackFalconFollowsYourWill')}</span>
             </div>
-            <div style="color:var(--dim);font-size:12px;line-height:1.7">아래 [다시 도전]으로 미러 함대전에 재도전 가능합니다.</div>
+            <div style="color:var(--dim);font-size:12px;line-height:1.7">${I18N.t('ui.retryMirrorBattle')}</div>
           </div>`,
           [{txt:'⚔️ 다시 도전',fn:()=>{
             closeModal();
@@ -16265,8 +16265,8 @@ function _updateCombatFleetStats(){
   const ea=agg(combatState.enemies||[]);
   const plEl=document.getElementById('cb-fleet-pl');
   const enEl=document.getElementById('cb-fleet-en');
-  if(plEl)plEl.innerHTML=`⚓ <b>아군</b> ${pa.alive}/${pa.total}척 · ⚔ <b style="color:#ffb84d">ATT ${fmt(pa.att)}</b> · ❤ <b style="color:#51cf66">${fmt(pa.hp)}/${fmt(pa.maxHp)}</b> · 🛡 <b style="color:#66ddff">${fmt(pa.sh)}/${fmt(pa.maxSh)}</b> · DEF ${fmt(pa.def)}`;
-  if(enEl)enEl.innerHTML=`☠️ <b>적군</b> ${ea.alive}/${ea.total}척 · ⚔ <b style="color:#ff8866">ATT ${fmt(ea.att)}</b> · ❤ <b style="color:#ff7d7d">${fmt(ea.hp)}/${fmt(ea.maxHp)}</b> · 🛡 <b style="color:#aaccff">${fmt(ea.sh)}/${fmt(ea.maxSh)}</b> · DEF ${fmt(ea.def)}`;
+  if(plEl)plEl.innerHTML=I18N.t('ui.allyFleetLine',{alive:pa.alive,total:pa.total,att:fmt(pa.att),hp:fmt(pa.hp),maxhp:fmt(pa.maxHp),sh:fmt(pa.sh),maxsh:fmt(pa.maxSh),def:fmt(pa.def)});
+  if(enEl)enEl.innerHTML=I18N.t('ui.enemyFleetLine',{alive:ea.alive,total:ea.total,att:fmt(ea.att),hp:fmt(ea.hp),maxhp:fmt(ea.maxHp),sh:fmt(ea.sh),maxsh:fmt(ea.maxSh),def:fmt(ea.def)});
 }
 
 // ── 전투 1턴 처리 ─────────────────────────────────────────────────
@@ -18539,7 +18539,7 @@ function forceUrsaBoss(){
     `<div style="text-align:center;padding:14px">
       <div style="font-size:46px;margin-bottom:8px">☠️</div>
       <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">${I18N.t('ui.forcedUrsa')}</div>
-      <div style="color:var(--dim);font-size:13px;line-height:1.8">지구 접근 시 보스가 나타나지 않거나, 격파 후 다시 도전하고 싶을 때 사용합니다.<br>${I18N.t('ui.noVcConsumed')}</div>
+      <div style="color:var(--dim);font-size:13px;line-height:1.8">${I18N.t('ui.forceUrsaBossHelp')}<br>${I18N.t('ui.noVcConsumed')}</div>
     </div>`,
     [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify(I18N.t('notify.bossStartErr',{err:e.message}),'err');}},cls:'btn-red'},
      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
