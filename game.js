@@ -676,7 +676,7 @@ function setAsFlagship(idx){
   G.fleet.unshift(tmp);
   updateHUD();updateFleetBar();
   notify(I18N.t('notify.flagshipSetTmp',{nm:tmp.nm}),'gold');
-  baekgu(`${tmp.nm} 기함 승격. 전투 시 중앙에 배치돼.`);
+  baekgu(I18N.t('baekgu.flagshipPromoted',{nm:tmp.nm}));
   saveGame(true);
   showShipDetailModal(0); // 기함 위치(0)로 팝업 갱신
 }
@@ -3030,7 +3030,7 @@ function tickLoyalty(){
       s.LOY=Math.max(1,prevLoy-3);
       if(s.LOY<=10&&s.LOY!==prevLoy){
         notify(I18N.t('notify.loyaltyAtRisk',{nm:s.nm,loy:s.LOY}),'err');
-        baekgu(s.nm+' 충성도 '+s.LOY+'야. 곧 이탈할 수도 있어. 빨리 크루 태워.');
+        baekgu(I18N.t('baekgu.loyaltyWarn',{nm:s.nm,loy:s.LOY}));
       }
     }
   });
@@ -3058,7 +3058,7 @@ function boostLoyalty(reason){
         s.hp=Math.min(s.hp||s.maxHP,s.maxHP);
         s._loyBonusApplied=true;
         notify(I18N.t('notify.loyaltyMax',{nm:s.nm}),'gold');
-        baekgu(s.nm+' 충성도 만렙이야. 이제 한층 더 강해졌어!');
+        baekgu(I18N.t('baekgu.loyaltyMaxStrong',{nm:s.nm}));
       }
     }
   });
@@ -3076,7 +3076,7 @@ function checkLoyaltyCapture(){
       if(Math.random()<0.15){
         toRemove.push(idx);
         notify(I18N.t('notify.loyaltyCollapse',{nm:s.nm,loy,hp:Math.round(hpRatio*100)}),'err');
-        baekgu(s.nm+' 충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.');
+        baekgu(I18N.t('baekgu.loyaltyDefected',{nm:s.nm}));
         // 전투 기록에 나포 사건 남기기
         if(!G.combatHistory)G.combatHistory=[];
         const pd2=PLANET_DEF.find(function(p){return p.id===G.currentPlanet;});
@@ -3255,7 +3255,7 @@ function doNextTurn(){
         const _inv=G.inventory.find(i=>i.id===_pid);
         if(_inv)_inv.qty++;else G.inventory.push({id:_pid,nm:_p?_p.nm:_pid,qty:1});
         notify(I18N.t('notify.planetLv10Reward',{nm:pd2.nm,item:_p?_p.nm:_pid}),'gold');
-        baekgu(`${pd2.nm} 최고 레벨 보상! ${_p?_p.nm:_pid} 들어왔어.`);
+        baekgu(I18N.t('baekgu.planetMaxReward',{nm:pd2.nm,item:_p?_p.nm:_pid}));
       }
     }
   });
@@ -4434,7 +4434,7 @@ function upgradePartsRow(shipIdx,fromModal){
   const cols=getShipPartsGridCols(s.tier);
   updateHUD();
   notify(I18N.t('notify.partsSlotExpand',{nm:s.nm,rows:newRows,cols,total:newRows*cols,cost:cost.toLocaleString()}),'gold');
-  baekgu(`${s.nm} 파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.`);
+  baekgu(I18N.t('baekgu.partSlotsAdded',{nm:s.nm}));
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
   else rerenderShipOrGarage();
@@ -5654,7 +5654,7 @@ function promoteReserveShip(reserveIdx){
   const ship=G.reserveFleet.splice(reserveIdx,1)[0];
   G.fleet.push(ship);
   notify(I18N.t('notify.shipJoinActive',{nm:ship.nm,now:G.fleet.length}),'gold');
-  baekgu(`${ship.nm} 출격 준비 완료. 즉시 전열에 투입.`);
+  baekgu(I18N.t('baekgu.shipReadyForBattle',{nm:ship.nm}));
   saveGame(true);rerenderShipOrGarage();
 }
 
@@ -5694,7 +5694,7 @@ function swapReserveShip(reserveIdx){
   try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate failed',e);}
   const _msg=`🔄 ${activeShip.nm} → 임시창 (파츠 ${_partsReturned}개·크루 ${_crewReturned}명${_cargoReturned>0?'·창고 '+_cargoReturned+'개':''} 자동 해제) · ${reserveShip.nm} → 선발`;
   notify(_msg,'gold');
-  baekgu(`${reserveShip.nm} 출격! ${activeShip.nm} 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.`);
+  baekgu(I18N.t('baekgu.reserveSwapSortie',{rs:reserveShip.nm,ac:activeShip.nm}));
   saveGame(true);
   rerenderShipOrGarage();
 }
@@ -5749,7 +5749,7 @@ function discardReserveShip(reserveIdx){
         G.reserveFleet.splice(reserveIdx,1);
         try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:ship.nm+' (후보)'});}catch(e){}
         notify(I18N.t('notify.shipSoldRecovered',{nm:ship.nm,cr:sellPrice.toLocaleString(),parts:returnedParts,crew:returnedCrew,cargo:returnedCargo>0?I18N.t('notify.fleetCargoRecovered',{n:returnedCargo}):''}),'gold');
-        baekgu(`${ship.nm} 정비소에 ₡${sellPrice.toLocaleString()}에 매각했어. 파츠랑 크루는 잘 챙겨놨고.`);
+        baekgu(I18N.t('baekgu.shipSoldAtGarage',{nm:ship.nm,cr:sellPrice.toLocaleString()}));
         updateHUD();saveGame(true);
         rerenderShipOrGarage();
       },cls:'btn-gold'},
@@ -5973,14 +5973,14 @@ function applyShipSkin(shipIdx, skinId){
   // catalogId 가 있으면 그것을, 없으면 id 를 사용 (URSA, CHIX_S 등의 별칭 처리)
   s._skinCatId=sk.catalogId||skinId;
   notify(I18N.t('notify.skinApplied',{nm:s.nm,skin:sk.nm,cr:price.toLocaleString()}),'gold');
-  try{baekgu(`${s.nm} 의 홀로그램 외피를 ${sk.nm} 형태로 재구성했어. 능력치는 그대로니까 안심해.`);}catch(e){}
+  try{baekgu(I18N.t('baekgu.skinApplied',{nm:s.nm,skin:sk.nm}));}catch(e){}
   updateHUD();saveGame(true);rerenderTab(renderGarageTab);
 }
 function removeShipSkin(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s._skinCatId)return;
   delete s._skinCatId;
   notify(I18N.t('notify.skinRemoved',{nm:s.nm}),'ok');
-  try{baekgu(`${s.nm} 의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.`);}catch(e){}
+  try{baekgu(I18N.t('baekgu.skinRemoved',{nm:s.nm}));}catch(e){}
   saveGame(true);rerenderTab(renderGarageTab);
 }
 try{if(typeof window!=='undefined'){window.applyShipSkin=applyShipSkin;window.removeShipSkin=removeShipSkin;}}catch(e){}
@@ -6159,7 +6159,7 @@ function doShipEnhance(shipIdx){
   if(success){
     s._enhanceLv=nextLv;
     notify(I18N.t('notify.enhanceSuccess',{nm:s.nm,lv:nextLv,pct:nextLv*5}),'gold');
-    try{baekgu(`🎉 축하해! ${s.nm} 이(가) +${nextLv} 강화에 성공했어. 능력치가 ${nextLv*5}% 상승!`);}catch(e){}
+    try{baekgu(I18N.t('baekgu.enhanceCongrats',{nm:s.nm,lv:nextLv,pct:nextLv*5}));}catch(e){}
     // 사용자 요청: 강화 성공 시 항상 폭죽 + 축하 효과음
     try{_fireFireworks();}catch(e){}
     try{AudioMgr.playSfx('coin',{vol:0.9,cooldown:0});}catch(e){}
@@ -7902,7 +7902,7 @@ function assignCrew(shipIdx){
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
   notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
-  baekgu(`${c?.nm||'크루'} ${s.nm}에 탑승. 함선 성능 올라갔어.`);
+  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}));
   rerenderShipOrGarage();saveGame(true);
 }
 // 이미지 카드 클릭으로 직접 크루 탑승 (ID 기반)
@@ -8068,7 +8068,7 @@ function sellShip(idx){
   try{_recordSell({type:'ship',ship:_undoShip,credits:sp.total,label:s.nm});}catch(e){}
   updateHUD();
   notify(I18N.t('notify.shipSoldFull',{nm:s.nm,cr:sp.total.toLocaleString(),cargo:_cargoBack>0?I18N.t('notify.cargoRecoveredN',{n:_cargoBack}):''}),'gold');
-  baekgu(`${s.nm} 팔았어. ₡${sp.total.toLocaleString()} 들어왔다. 잘 썼네.`);
+  baekgu(I18N.t('baekgu.shipSoldCash',{nm:s.nm,cr:sp.total.toLocaleString()}));
   rerenderShipOrGarage();saveGame(true);
 }
 function renameShip(idx){
@@ -8792,7 +8792,7 @@ function assignCrewFromCrewTab(cid){
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
   notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
-  baekgu(`${c?.nm||'크루'} ${s.nm}에 탑승. 함선 성능 올라갔어.`);
+  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}));
   rerenderTab(renderCrewTab);saveGame(true);
 }
 function renderPlanetsTab(body){
@@ -19461,8 +19461,8 @@ function showDevMenu(){
   openModal(I18N.t('modal.devMenu'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 async function devShowFeedback(){
-  if(!window.CloudSave){notify('CloudSave 미초기화','err');return;}
-  notify('📥 피드백 조회 중...','ok');
+  if(!window.CloudSave){notify(I18N.t('notify.cloudSaveNotInit'),'err');return;}
+  notify(I18N.t('notify.feedbackQuerying'),'ok');
   const r=await CloudSave.listFeedback(200);
   if(r.error){notify(I18N.t('notify.queryFailErr',{err:r.error}),'err');return;}
   const items=r.items||[];
