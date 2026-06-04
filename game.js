@@ -3484,7 +3484,7 @@ function triggerChixFleet(pd){
   const waveLbl=['1차','2차','3차','4차','5차 최종'][wave];
   const waveCol=wave>=4?'var(--red)':wave>=2?'var(--purple)':'#cc88ff';
 
-  openModal(`🛸 치크스 ${waveLbl} 함대 출몰!`,
+  openModal(I18N.t('modal.chixFleetWave',{wave:waveLbl}),
     `<div style="background:rgba(139,0,255,.08);border:1px solid #8b00ff66;border-radius:10px;padding:10px 12px;margin-bottom:10px">
       <div style="color:${waveCol};font-size:15px;font-weight:bold;margin-bottom:5px">
         ${wave>=4?'☠️':'⚠️'} ${waveLbl} 출몰 — 전투력 ×${Math.pow(1.20,wave).toFixed(2)} · 출몰 ${G.chixWaves}/5
@@ -3580,7 +3580,7 @@ function startPirateRaid(raidDef){
     const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.pirateRaid');
     setTimeout(function(){
       if(combatState&&!combatState.done){
-        addCombatLog('🏴‍☠️ 해적 기습! 사령관 Lv.'+_plv+' | 적 강화 ×'+_plm.toFixed(2),'');
+        addCombatLog(I18N.t('combat.pirateRaidStat',{plv:_plv,mult:_plm.toFixed(2)}),'');
         runCombatTurn();
       }
     },800);
@@ -7806,7 +7806,7 @@ function pickPartModal(shipIdx){
       +`<span style="font-size:12px;color:var(--green);flex-shrink:0">×${i.qty}</span>`
       +'</button>';
   });
-  openModal(`⚙️ 파츠 장착 — ${s.nm}`,`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:'◀ 돌아가기',fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
+  openModal(I18N.t('modal.partsMount',{nm:s.nm}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.backArrow'),fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
 }
 // 모달 내 크루 배치 — 배치 후 상세 팝업 재오픈
 function pickCrewModal(shipIdx){
@@ -7836,7 +7836,7 @@ function pickCrewModal(shipIdx){
       +'</div>'
       +'</button>';
   });
-  openModal(`👥 크루 배치 — ${s.nm} (${(s.crewIds||[]).length}/${maxC}명)`,
+  openModal(I18N.t('modal.crewAssignTitle',{nm:s.nm,now:(s.crewIds||[]).length,max:maxC}),
     `<div style="max-height:380px;overflow-y:auto"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${html3}</div></div>`,
     [{txt:'◀ 돌아가기',fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
 }
@@ -7953,7 +7953,7 @@ function pickPartForSlot(shipIdx){
       +`<span style="font-size:12px;color:var(--green);flex-shrink:0">×${i.qty}</span>`
       +'</button>';
   });
-  openModal(`⚙️ 파츠 장착 — ${s.nm}`,`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:'✕ 나가기',fn:closeModal,cls:'btn-sm'}]);
+  openModal(I18N.t('modal.partsMount',{nm:s.nm}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.exitX'),fn:closeModal,cls:'btn-sm'}]);
 }
 let _crewPickSort='rarity'; // rarity | cl | name
 function pickCrewForSlot(shipIdx){
@@ -7997,7 +7997,7 @@ function pickCrewForSlot(shipIdx){
       +'</div>'
       +'</button>';
   });
-  openModal(`👥 크루 배치 — ${s.nm} (${(s.crewIds||[]).length}/${maxC}명)`,
+  openModal(I18N.t('modal.crewAssignTitle',{nm:s.nm,now:(s.crewIds||[]).length,max:maxC}),
     `<div>${sortBar3}<div style="max-height:380px;overflow-y:auto"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${html3}</div></div></div>`,
     [{txt:'✕ 나가기',fn:closeModal,cls:'btn-sm'}]);
 }
@@ -8194,7 +8194,7 @@ function pickCargoExtForSlot(shipIdx){
   const s=G.fleet[shipIdx];if(!s)return;
   const owned=(G.inventory||[]).filter(i=>i.qty>0&&SPECIAL_CARGO_PARTS.find(c=>c.id===i.id));
   if(owned.length===0){
-    openModal(I18N.t('modal.noHoldExpansion'),`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">${I18N.t('ui.noHoldExpOwned')}<br>함선 거래소 → ⚙️ 파츠 구매 → 「특수 창고 확장」에서 구매하거나, 제작소에서 제작하세요.</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
+    openModal(I18N.t('modal.noHoldExpansion'),`<div style="padding:12px;font-size:13px;color:var(--dim);line-height:1.8">${I18N.t('ui.noHoldExpOwned')}<br>${I18N.t('ui.noHoldExpHelp')}</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
     return;
   }
   const cards=owned.map(iv=>{
@@ -8210,7 +8210,7 @@ function pickCargoExtForSlot(shipIdx){
     </div>`;
   }).join('');
   const ext=_shipCargoExt(s);
-  openModal(`📦 ${s.nm} — 창고 확장 슬롯 (${ext.length}/${CARGO_EXT_MAX})`,
+  openModal(I18N.t('modal.holdExpSlot',{nm:s.nm,now:ext.length,max:CARGO_EXT_MAX}),
     `<div style="padding:6px 4px;display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto">${cards}</div>`,
     [{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
@@ -8401,7 +8401,7 @@ function confirmDismissCrew(cid){
   const c=G.crew.find(x=>x.id===cid);
   if(!c){notify(I18N.t('notify.crewNotFound'),'err');return;}
   if(c.rarity==='L'||c.rarity==='H'){
-    openModal(`${c.ic||'🧑'} ${c.nm} 내보내기`,
+    openModal(I18N.t('modal.crewDismissTitle',{ic:c.ic||'🧑',nm:c.nm}),
       `<div style="padding:12px;text-align:center">
         <div style="font-size:34px;margin-bottom:8px">${c.ic||'🧑'}</div>
         <div style="font-size:17px;font-weight:bold;margin-bottom:6px">${c.nm}</div>
@@ -12010,7 +12010,7 @@ function showCodexCommanderModal(){
     ${row('💰','크레딧',`₡${_credits.toLocaleString()}`)}
     ${row('⏭️','다음 단계 조건',`<span style="color:#ffcc66">${_nextHint}</span>`)}
   </div>`;
-  openModal('🎖️ '+_nm+' — 사령관 프로필',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-gold'}],{wide:true});
+  openModal(I18N.t('modal.commanderProfile',{nm:_nm}),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-gold'}],{wide:true});
 }
 try{if(typeof window!=='undefined')window.showCodexCommanderModal=showCodexCommanderModal;}catch(e){}
 
@@ -12598,7 +12598,7 @@ function showHeroRecruit(heroId){
   const _greet=HERO_GREETING[heroId]||'';
   // 2) 축하 모달 — 닫기 버튼 1개만, 영입 결과에 영향 없음
   //    인물 이미지 3배 확대(96→288) + 첫 만남 멘트 (사용자 요청)
-  openModal(`${h.ic} 전설 영웅 합류!`,
+  openModal(I18N.t('modal.legendHeroJoined',{ic:h.ic}),
     `<div style="text-align:center;padding:8px">
       <div style="display:flex;justify-content:center;margin-bottom:10px;filter:drop-shadow(0 0 28px gold)">${_heroPortrait(h,288,'var(--gold)')}</div>
       <div style="color:var(--gold);font-size:24px;font-weight:bold;margin-bottom:4px">${h.nm}</div>
@@ -14861,7 +14861,7 @@ function showHostilePlanetBriefing(planetDef){
   const advisor=totFleetAtk>=totEnemyAtk*1.2?{c:'var(--green)',t:'유리 — 전력 우세'}
                 :totFleetAtk>=totEnemyAtk*0.8?{c:'var(--yellow)',t:'대등 — 신중한 전투 필요'}
                 :{c:'var(--red)',t:'불리 — 영웅·파츠 보강 권장'};
-  openModal(`☠️ 적대 행성 진입 — ${planetDef.nm}`,
+  openModal(I18N.t('modal.hostilePlanetEntry',{nm:planetDef.nm}),
     `<div style="text-align:center;padding:10px 6px 6px">
       <div style="font-size:42px;margin-bottom:4px">⚠️</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${planetDef.nm} — 적군 함대 포착</div>
@@ -19479,7 +19479,7 @@ async function devShowFeedback(){
   const html=`<div style="max-height:60vh;overflow-y:auto;padding:4px">
     ${items.length===0?`<div style="text-align:center;color:var(--dim);padding:30px">${I18N.t('ui.noFeedbacksYet')}</div>`:rows}
   </div>`;
-  openModal('📬 피드백 ('+items.length+'건)',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal(I18N.t('modal.feedbackCount',{n:items.length}),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 function devShowSaveStats(){
   let localCount=0,localBytes=0;
@@ -19494,7 +19494,7 @@ function devShowSaveStats(){
     <div><b>UID:</b> ${u?u.uid:'(미로그인)'}</div>
     <div><b>이메일:</b> ${u?(u.email||'(익명)'):'-'}</div>
   </div>`;
-  openModal('📊 세이브 통계',html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
+  openModal(I18N.t('modal.saveStats'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
 
 // 개발자 메뉴 진입: 키보드 단축키
