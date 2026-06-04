@@ -6254,7 +6254,7 @@ function autoArrangeFormation(){
   });
   _formationSelectedSlot=null;_formationSelectedShip=null;
   saveGame(true);
-  notify(`🛡️ 자동 배치 완료 — 방어력 높은 ${Math.min(sorted.length,FLEET_FORMATION_SLOTS)}척이 1열부터 배치됨`,'ok');
+  notify(I18N.t('notify.autoFormation',{n:Math.min(sorted.length,FLEET_FORMATION_SLOTS)}),'ok');
   rerenderTab(renderGarageTab);
 }
 function onFormationSlotClick(slot){
@@ -6285,11 +6285,11 @@ function onFormationSlotClick(slot){
         // 두 슬롯 모두 점유 → 스왑
         f[srcShip.id]=slot;
         f[dstShip.id]=_formationSelectedSlot;
-        notify(`🔄 ${srcShip.nm} ↔ ${dstShip.nm} 위치 교환`,'ok');
+        notify(I18N.t('notify.shipSwap',{a:srcShip.nm,b:dstShip.nm}),'ok');
       } else {
         // 이동
         f[srcShip.id]=slot;
-        notify(`📍 ${srcShip.nm} 이동 (${Math.floor(slot/4)+1}열-${slot%4+1}행)`,'ok');
+        notify(I18N.t('notify.shipMoved',{nm:srcShip.nm,col:Math.floor(slot/4)+1,row:slot%4+1}),'ok');
       }
       saveGame(true);
       _formationSelectedSlot=null;
@@ -6449,7 +6449,7 @@ function repairAllShips(){
     const b=getPartBonus(s);const eH=s.maxHP+(b.hp||0),eS=s.maxSH+(b.sh||0);
     if(s.hp<eH||s.sh<eS){s.hp=eH;s.sh=eS;repaired++;}
   });
-  updateHUD();notify(`⚡ 함대 전체 수리 완료 — ${repaired}척 수리 (-₡${totalCost.toLocaleString()})`,'gold');
+  updateHUD();notify(I18N.t('notify.fleetRepaired',{n:repaired,cr:totalCost.toLocaleString()}),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 function repairShip(idx,type){
@@ -6461,7 +6461,7 @@ function repairShip(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(`🔧 ${s.nm} 수리 완료 (-₡${cost.toLocaleString()})`,'ok');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:s.nm,cr:cost.toLocaleString()}),'ok');rerenderShipOrGarage();saveGame(true);
 }
 // 모달 내 수리 — 수리 후 상세 팝업 재오픈
 function repairShipModal(idx,type){
@@ -6473,7 +6473,7 @@ function repairShipModal(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(`🔧 ${s.nm} 수리 완료 (-₡${cost.toLocaleString()})`,'ok');
+  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:s.nm,cr:cost.toLocaleString()}),'ok');
   saveGame(true);showShipDetailModal(idx);
 }
 function repairShipFullModal(idx){
@@ -6484,7 +6484,7 @@ function repairShipFullModal(idx){
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');showShipDetailModal(idx);return;}
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(`⚡ ${s.nm} 완전수리 (-₡${cost.toLocaleString()})`,'gold');
+  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:s.nm,cr:cost.toLocaleString()}),'gold');
   saveGame(true);showShipDetailModal(idx);
 }
 // ── 자동 배치 (파츠/크루 × 기함중심/평균배분) ───────────────────────
@@ -6947,7 +6947,7 @@ function autoEquipPartsFlagship(){
   };
   const _uniq=(r9.removed||r9.redistributed)?` · 중복정리 ${r9.removed}→재배분 ${r9.redistributed}`:'';
   const _cargo=r12>0?` · 창고 ${r12}`:'';
-  notify(`🔧 자동 배치 (기함 중심) — 기함완성+잔여균등 · 핵심4 ${total.core4} · 워프/드론 ${total.small} · 추가 ${total.extra} · 미사일 ${total.missile}${_uniq}${_cargo}`,'gold');
+  notify(I18N.t('notify.autoFlagshipFocus',{core4:total.core4,small:total.small,extra:total.extra,missile:total.missile,uniq:_uniq,cargo:_cargo}),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 // ─── STEP 11: 2×2 파츠 균등 분배 (cap=2 허용) ─────────────────────────
@@ -7033,7 +7033,7 @@ function autoEquipPartsEven(){
   const _big=r11>0?` · 2×2보충 ${r11}`:'';
   const _cargo=r12>0?` · 창고 ${r12}`:'';
   const _force=r13>0?` · 강제투입 ${r13}`:'';
-  notify(`🔧 균등 분배 — 워프 ${r.warp} · 핵심3 ${r.core3} · 세트 ${r.setBundle} · 라운드 ${r.round} · 수리 ${r.repair} · 작은 ${r.small}${_uniq}${_top}${_big}${_cargo}${_force}`,'gold');
+  notify(I18N.t('notify.autoEvenly',{warp:r.warp,core3:r.core3,setBundle:r.setBundle,round:r.round,repair:r.repair,small:r.small,uniq:_uniq,top:_top,big:_big,cargo:_cargo,force:_force}),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 // ─── 평균 배분 V3 — 사용자 명세 ────────────────────────────────────────
@@ -7753,7 +7753,7 @@ function autoAssignCrewFlagship(){
       s.crewIds.push(crew[ci].id);ci++;
     }
   }
-  notify('👥 크루 자동 배치 (기함 중심) 완료','gold');
+  notify(I18N.t('notify.crewAutoFlagship'),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 function autoAssignCrewEven(){
@@ -7771,7 +7771,7 @@ function autoAssignCrewEven(){
     }
     if(!placed)break;
   }
-  notify('👥 크루 자동 배치 (균등 분배) 완료','gold');
+  notify(I18N.t('notify.crewAutoEvenly'),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 // attachPart의 silent 버전 (개별 notify/저장 안 함)
@@ -7846,7 +7846,7 @@ function unassignCrewModal(shipIdx,crewSlotIdx){
   if(crewSlotIdx<0||crewSlotIdx>=s.crewIds.length){notify(I18N.t('notify.invalidCrewSlot'),'err');return;}
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||(G.heroes||[]).map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
-  notify(`${c?.nm||'크루'} 하선`,'ok');
+  notify(I18N.t('notify.crewDisembark',{nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
   saveGame(true);showShipDetailModal(shipIdx);
 }
 // 함선의 모든 크루 일괄 하선
@@ -7854,7 +7854,7 @@ function unassignAllCrew(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s.crewIds||s.crewIds.length===0)return;
   const n=s.crewIds.length;
   s.crewIds=[];
-  notify(`${n}명 전원 하선 완료`,'ok');
+  notify(I18N.t('notify.allCrewDisembark',{n}),'ok');
   saveGame(true);rerenderShipOrGarage();
 }
 // 함선의 모든 파츠 일괄 해제 → 인벤토리로 회수
@@ -7868,7 +7868,7 @@ function unassignAllParts(shipIdx){
   const _stAft=getShipStats(s);
   s.hp=Math.min(s.hp||0,_stAft.HP);
   s.sh=Math.min(s.sh||0,_stAft.maxSH);
-  notify(`⚙️ ${s.nm} — 파츠 ${n}개 전체 해제 → 인벤토리 회수`,'ok');
+  notify(I18N.t('notify.partsAllUnequip',{nm:s.nm,n}),'ok');
   saveGame(true);rerenderShipOrGarage();
 }
 function repairShipFull(idx){
@@ -7880,7 +7880,7 @@ function repairShipFull(idx){
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);
   if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(`⚡ ${s.nm} 완전수리 (-₡${cost.toLocaleString()})`,'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:s.nm,cr:cost.toLocaleString()}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function assignCrew(shipIdx){
   const s=G.fleet[shipIdx];
@@ -7927,7 +7927,7 @@ function unassignCrew(shipIdx,crewSlotIdx){
   const s=G.fleet[shipIdx];if(!s||!s.crewIds)return;
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
-  notify(`${c?.nm||'크루'} 하선`,'ok');
+  notify(I18N.t('notify.crewDisembark',{nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 function pickPartForSlot(shipIdx){
