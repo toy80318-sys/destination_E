@@ -4078,7 +4078,7 @@ function buyCommMax(id){
   }
   if(bought>0){
     const totalCost=bought*comm.buy;
-    notify(`🛒 ${comm.nm} ${bought}개 전체구매 완료 (-₡${totalCost.toLocaleString()})${blockedReason?' · '+blockedReason:''}`,'ok');
+    notify(I18N.t('notify.commBulkBuy',{nm:comm.nm,n:bought,cost:totalCost.toLocaleString(),reason:blockedReason?' · '+blockedReason:''}),'ok');
     rerenderTab(renderTradeTab);saveGame(true);
   } else {
     notify(I18N.t('notify.buyBlocked',{reason:blockedReason}),'err');
@@ -4105,7 +4105,7 @@ function buyAllComm(){
     }
     total+=bought;
   });
-  if(total>0){notify(`🛒 총 ${total}개 일괄 구매 완료`,'ok');rerenderTab(renderTradeTab);saveGame(true);}
+  if(total>0){notify(I18N.t('notify.commBulkTotal',{n:total}),'ok');rerenderTab(renderTradeTab);saveGame(true);}
   else notify(I18N.t('notify.noCommToBuy'),'err');
 }
 // 인벤토리 특수 아이템(난중일기 영인본 등) 판매 — 영입 보존용 1개는 항상 잔존 (사용자 명세)
@@ -4124,7 +4124,7 @@ function sellInventoryItem(id, qty){
   const total=unitPrice*sellable;
   inv.qty-=sellable;
   G.credits=(G.credits||0)+total;
-  notify(`📜 ${comm.nm} ${sellable}개 판매 (+₡${total.toLocaleString()}) · ${inv.qty}개 보존`,'gold');
+  notify(I18N.t('notify.commSellWithReserve',{nm:comm.nm,n:sellable,cr:total.toLocaleString(),keep:inv.qty}),'gold');
   try{updateHUD();saveGame(true);rerenderTab(renderTradeTab);}catch(e){}
 }
 try{if(typeof window!=='undefined')window.sellInventoryItem=sellInventoryItem;}catch(e){}
@@ -4146,12 +4146,12 @@ function sellComm(idx,qty){
         sellPriceRaw=Math.floor((commDef.buy||0)*3.0);
         _label='타 행성 프리미엄 (구매가 ×3.0)';
       }
-      if(!sellPriceRaw){notify('⚗️ 판매 불가 재료','err');return;}
+      if(!sellPriceRaw){notify(I18N.t('notify.materialCantSell'),'err');return;}
       const sellQty=qty||1;
       if(G.materials&&G.materials[slot.id]){G.materials[slot.id]=Math.max(0,(G.materials[slot.id]||0)-sellQty);}
       slot.qty-=sellQty;if(slot.qty<=0)G.cargo.splice(idx,1);
       G.credits+=sellPriceRaw*sellQty;
-      updateHUD();notify(`⚗️ ${commDef.nm} ${sellQty}개 판매 +₡${(sellPriceRaw*sellQty).toLocaleString()} (${_label})`,'gold');
+      updateHUD();notify(I18N.t('notify.materialSold',{nm:commDef.nm,n:sellQty,cr:(sellPriceRaw*sellQty).toLocaleString(),label:_label}),'gold');
       rerenderTab(renderTradeTab);saveGame(true);return;
     }
     // 사용자 요청: 영입 재료(난중일기 영인본 G18 등 special, !material) — 1개 보존 후 판매 허용
@@ -4162,13 +4162,13 @@ function sellComm(idx,qty){
     const _total=_invQty+_cargoQty;
     if(_total<=1){notify(I18N.t('notify.keepLastMaterial'),'warn');return;}
     const _sellable=Math.min(qty||1,_total-1,slot.qty);
-    if(_sellable<=0){notify('📜 판매 가능 수량 없음 (1개 보존)','warn');return;}
+    if(_sellable<=0){notify(I18N.t('notify.noSellableQtyKeep'),'warn');return;}
     const _marcoMult=(G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
     const _unit=Math.floor((commDef.maxSell||commDef.buy||0)*_marcoMult);
     const _gain=_unit*_sellable;
     slot.qty-=_sellable;if(slot.qty<=0)G.cargo.splice(idx,1);
     G.credits=(G.credits||0)+_gain;
-    notify(`📜 ${commDef.nm} ${_sellable}개 판매 (+₡${_gain.toLocaleString()}) · 잔여 ${_total-_sellable}개`,'gold');
+    notify(I18N.t('notify.sellPartial',{nm:commDef.nm,n:_sellable,cr:_gain.toLocaleString(),rem:_total-_sellable}),'gold');
     updateHUD();rerenderTab(renderTradeTab);saveGame(true);return;
   }
   const sp=calcSellPrice(slot,G.currentPlanet),profit=(sp-slot.buyPrice)*qty;
@@ -4183,7 +4183,7 @@ function sellComm(idx,qty){
     changeReputation(1);
     _repBonusMsg=' ⭐ 명성+1 (대량 거래)';
   }
-  updateHUD();notify(profit>0?`💰 판매 ₡${(sp*qty).toLocaleString()} (+₡${profit.toLocaleString()})${_repBonusMsg}`:` 판매 ₡${(sp*qty).toLocaleString()}`,'gold');
+  updateHUD();notify(profit>0?I18N.t('notify.sellWithProfit',{total:(sp*qty).toLocaleString(),profit:profit.toLocaleString(),bonus:_repBonusMsg}):I18N.t('notify.sellNoProfit',{total:(sp*qty).toLocaleString()}),'gold');
   rerenderTab(renderTradeTab);saveGame(true);
 }
 
@@ -4303,7 +4303,7 @@ function upgradeCrewMax(shipIdx,fromModal){
   const s=G.fleet[shipIdx];if(!s)return;
   const cnt=Math.floor(((+s.crewMaxExtra)||0)/CREW_EXT_PER);
   if(cnt>=CREW_EXT_MAX_BUYS){
-    notify(`👥 ${s.nm} 함선실 최대치(+${CREW_EXT_MAX_BUYS*CREW_EXT_PER}칸) 도달`,'warn');
+    notify(I18N.t('notify.crewQuartersMax',{nm:s.nm,max:CREW_EXT_MAX_BUYS*CREW_EXT_PER}),'warn');
     return;
   }
   const cost=getCrewMaxUpgradePrice(s);
@@ -4311,7 +4311,7 @@ function upgradeCrewMax(shipIdx,fromModal){
   G.credits-=cost;
   s.crewMaxExtra=((+s.crewMaxExtra)||0)+CREW_EXT_PER;
   updateHUD();
-  notify(`👥 ${s.nm} 함선실 +${CREW_EXT_PER}칸 확장 — 최대 ${getMaxCrew(s)}명 (-₡${cost.toLocaleString()})`,'gold');
+  notify(I18N.t('notify.crewQuartersExpand',{nm:s.nm,add:CREW_EXT_PER,max:getMaxCrew(s),cost:cost.toLocaleString()}),'gold');
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
   else rerenderShipOrGarage();
@@ -4423,7 +4423,7 @@ function upgradePartsRow(shipIdx,fromModal){
   if(cur>=maxExtra){
     // 실제 기본 행 수(카탈로그 override 포함) 계산
     const _baseRowsActual=getShipPartsGridRows(s)-cur;
-    notify(`🔧 ${s.nm} 파츠 장비창 최대치(${_baseRowsActual+maxExtra}행) 도달`,'warn');
+    notify(I18N.t('notify.partsSlotMax',{nm:s.nm,rows:_baseRowsActual+maxExtra}),'warn');
     return;
   }
   const cost=getPartsUpgradePrice(s);
@@ -4433,7 +4433,7 @@ function upgradePartsRow(shipIdx,fromModal){
   const newRows=getShipPartsGridRows(s);
   const cols=getShipPartsGridCols(s.tier);
   updateHUD();
-  notify(`🔧 ${s.nm} 파츠 장비창 확장 — ${newRows}행 × ${cols}열 = ${newRows*cols}슬롯 (-₡${cost.toLocaleString()})`,'gold');
+  notify(I18N.t('notify.partsSlotExpand',{nm:s.nm,rows:newRows,cols,total:newRows*cols,cost:cost.toLocaleString()}),'gold');
   baekgu(`${s.nm} 파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.`);
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
@@ -5421,7 +5421,7 @@ function sellAllPartsBulk(){
   });
   try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:`파츠 ${totalQty}개 일괄`});}catch(e){}
   updateHUD();
-  notify(`🛒 파츠 ${totalQty}개 일괄 매각 +₡${totalCr.toLocaleString()}`,'gold');
+  notify(I18N.t('notify.partsBulkSell',{n:totalQty,cr:totalCr.toLocaleString()}),'gold');
   baekgu(I18N.t('baekgu.scrapSold',{cr:totalCr.toLocaleString()}));
   saveGame(true);
   rerenderShipOrGarage();
@@ -5469,11 +5469,11 @@ function undoLastSell(){
     if(ls.type==='part'){
       addToInventory(ls.partId);
       G.credits-=ls.credits;
-      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+      notify(I18N.t('notify.cancelSale',{label:ls.label,cr:ls.credits.toLocaleString()}),'ok');
     } else if(ls.type==='bulkPart'){
       (ls.parts||[]).forEach(p=>{for(let i=0;i<p.qty;i++)addToInventory(p.id);});
       G.credits-=ls.credits;
-      notify(`↶ 파츠 일괄 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+      notify(I18N.t('notify.cancelBulkPartsSale',{cr:ls.credits.toLocaleString()}),'ok');
     } else if(ls.type==='ship'){
       // 함선 복원: G.fleet에 다시 push (16척 한도 시 reserve로 자동)
       const _r=addShipToFleet(ls.ship);
@@ -5484,7 +5484,7 @@ function undoLastSell(){
       // 화물 스냅샷 복원 (G.cargo 전체 깊은 복사 복원)
       G.cargo=JSON.parse(JSON.stringify(ls.cargoSnap));
       G.credits-=ls.credits;
-      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감`,'ok');
+      notify(I18N.t('notify.cancelSale',{label:ls.label,cr:ls.credits.toLocaleString()}),'ok');
     } else if(ls.type==='buyCargoSnap'){
       // 구매 취소: cargo·stock 원복 + 차감된 크레딧 환불
       G.cargo=JSON.parse(JSON.stringify(ls.cargoSnap));
