@@ -1331,7 +1331,7 @@ function askBaekgu(){
     // 보스/최종전
     {k:['보스','boss','우르사','최종','지구','해방'],r:()=>{const hc=(G.heroes||[]).length,fc=G.fleet.length,cr=G.credits;returnI18N.t('chatbot.finalCondition',{hc,fc,cr:cr.toLocaleString()});}},
     // 경매/행성 구매
-    {k:['경매','행성 구매','부동산','auction','소유','세금'],r:()=>{const rep=G.reputation||0,max=1+Math.floor(rep/10);return`행성 프론트 → 경매에서 행성 구매 가능. 소유하면 매 턴 세금 수입. 최대 소유 ${max}개 (명성 ${rep}). 명성 10당 +1개 추가.`;}},
+    {k:['경매','행성 구매','부동산','auction','소유','세금'],r:()=>{const rep=G.reputation||0,max=1+Math.floor(rep/10);returnI18N.t('chatbot.planetAuctionTip',{max,rep});}},
     // 저장/불러오기
     {k:['저장','세이브','save','불러오기','load','슬롯'],r:()=>I18N.t('chatbot.saveTip')},
     // 블링크 엔진
@@ -2969,7 +2969,7 @@ function showActTransition(newAct){
       icon:'🌌',
       lines:[
         {sp:'시스템',tx:'ACT 2 개시. 치크스 제국의 봉쇄선이 은하계 전역으로 확장되고 있습니다.'},
-        {sp:'백구',tx:`${NM}, 이제 1링 적대 행성들(보라색)이 열렸어. TOI-700d, 케플러-452b, 우르사-알파 — 거기서 싸워야 해.`},
+        {sp:'백구',tx:I18N.t('story.ring1Open',{nm:NM})},
         {sp:NM,tx:'영웅을 더 모으고 함선을 강화해야 해. 목표: 영웅 6명, 치크스 핵심 행성 5개 격파.'},
         {sp:'백구',tx:'보이드 에센스도 모아둬. 우르사 메이저 실드 깨려면 필요할 수도 있어. 가자!'},
       ]
@@ -2979,7 +2979,7 @@ function showActTransition(newAct){
       icon:'💀',
       lines:[
         {sp:'시스템',tx:'ACT 3 개시. 우르사 메이저 코어로의 접근 경로가 확인됐습니다. 최종 결전이 임박했습니다.'},
-        {sp:'백구',tx:`${NM}, 드디어 이 순간이 왔어. 지구 봉쇄를 푸는 마지막 단계야.`},
+        {sp:'백구',tx:I18N.t('story.finalStep',{nm:NM})},
         {sp:NM,tx:'우르사 메이저. 5페이즈 보스. 쉽지 않을 거야 — 하지만 우리한테는 영웅들이 있어.'},
         {sp:'백구',tx:'준비 완료되면 은하계 지도에서 🌍 지구를 클릭해. 치크스 5개·영웅 6명·함대 6척·₡50만 갖추면 최종전 진입 가능!'},
       ]
@@ -2989,7 +2989,7 @@ function showActTransition(newAct){
       icon:'🌍',
       lines:[
         {sp:'시스템',tx:'ACT 4 개시. 지구 봉쇄 해제 후 100년이 지났습니다. 새로운 시대가 시작됩니다.'},
-        {sp:'백구',tx:`${NM}, 우르사 메이저는 무너졌지만 우주는 여전히 위험해. 치크스 잔당과 보이드 균열도 정리해야 해.`},
+        {sp:'백구',tx:I18N.t('story.postUrsa',{nm:NM})},
         {sp:NM,tx:'영웅 8인 컴플릿, 신화 함선 컴플릿, 모든 행성 정복 — 진정한 은하 통일을 향해.'},
         {sp:'백구',tx:'엔드게임 컨텐츠: 행성 30개 모두 보유, 만렙 투자, 보이드 7링 완전 정복. 자유롭게 우주를 누벼!'},
       ]
@@ -3147,7 +3147,7 @@ function _startTurnCooldownUI(){
     }
     const m = Math.floor(remaining / 60);
     const s = remaining % 60;
-    if(lbl) lbl.textContent = `턴 종료 (${m}:${s < 10 ? '0'+s : s})`;
+    if(lbl) lbl.textContent = I18N.t('ui.turnEndTimer',{m,s:s<10?'0'+s:s});
   }, 1000);
 }
 
@@ -6175,7 +6175,7 @@ function doShipEnhance(shipIdx){
       const host=document.getElementById('game-stage')||document.body;
       const banner=document.createElement('div');
       banner.style.cssText='position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.6);opacity:0;background:linear-gradient(135deg,rgba(255,215,0,.95),rgba(255,100,200,.92));color:#1a0c00;font-size:34px;font-weight:bold;letter-spacing:4px;padding:18px 36px;border-radius:14px;border:3px solid #fff;box-shadow:0 8px 40px rgba(255,215,0,.7),0 0 80px rgba(255,200,255,.5);z-index:99970;pointer-events:none;text-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;text-align:center;font-family:Malgun Gothic,sans-serif;white-space:nowrap';
-      banner.innerHTML=`🎉 +${nextLv} 강화 성공!<div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${s.nm} · 능력치 +${nextLv*5}%</div>`;
+      banner.innerHTML=I18N.t('ui.enhanceSuccess',{lv:nextLv})+`<div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${I18N.t('ui.enhanceSubline',{nm:s.nm,pct:nextLv*5})}</div>`;
       host.appendChild(banner);
       requestAnimationFrame(()=>{banner.style.opacity='1';banner.style.transform='translate(-50%,-50%) scale(1)';});
       setTimeout(()=>{banner.style.opacity='0';banner.style.transform='translate(-50%,-50%) scale(1.2)';setTimeout(()=>{try{banner.remove();}catch(_e){}},400);},2400);
@@ -6381,7 +6381,7 @@ function renderFleetFormationTab(body){
   // 함선 리스트 (편성 가능한 함선)
   const shipCards=G.fleet.map((s,i)=>{
     const slot=_getFormation()[s.id];
-    const slotLbl=typeof slot==='number'?`${Math.floor(slot/4)+1}열-${slot%4+1}행`:'자동';
+    const slotLbl=typeof slot==='number'?I18N.t('ui.gridSlot',{col:Math.floor(slot/4)+1,row:slot%4+1}):'자동';
     const sel=_formationSelectedShip===s.id;
     const isFlagship=i===0;
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
@@ -6404,7 +6404,7 @@ function renderFleetFormationTab(body){
   const hint=_formationSelectedSlot!==null
     ? (()=>{
         const _selOcc=getFormationShipForSlot(_formationSelectedSlot);
-        const _selLbl=`${Math.floor(_formationSelectedSlot/4)+1}열-${_formationSelectedSlot%4+1}행`;
+        const _selLbl=I18N.t('ui.gridSlot',{col:Math.floor(_formationSelectedSlot/4)+1,row:_formationSelectedSlot%4+1});
         const _info=_selOcc
           ? I18N.t('ui.slotSelectedHint',{nm:`<b>${_selOcc.nm}</b>`,lbl:_selLbl})
           : I18N.t('ui.emptySlotSelected',{lbl:_selLbl});
@@ -9756,7 +9756,7 @@ function updateGatherBtn(){
   }
   const span=btn.querySelector('span:last-child');
   if(span){
-    if(onCooldown)span.textContent=`잔해 탐색 ⏳${Math.ceil(left/1000)}s`;
+    if(onCooldown)span.textContent=I18N.t('ui.wreckExploreCountdown',{s:Math.ceil(left/1000)});
     else span.textContent=isCombatQ?'정찰대 탐색':'잔해 탐색';
   }
   // 쿨다운 중이면 1초마다 갱신 예약
@@ -10873,7 +10873,7 @@ function _getLockedNpcDialog(tab,pid,pd){
   };
   const facLine=flavors[pd?.f]||npc.base;
   // 행성 이름으로 한 줄 더 위트 추가
-  const planetWit=pd?.nm?`이곳 ${pd.nm}에서는 더더욱.`:'';
+  const planetWit=pd?.nm?I18N.t('ui.hereEspecially',{nm:pd.nm}):'';
   return {
     ic: npc.ic,
     title: '— '+(pd?.nm||pid)+' '+npc.title,
@@ -11984,7 +11984,7 @@ function showCodexCommanderModal(){
   const _nextHint=_nextHints[_stage]||_nextHints[_stage-1];
   // ── 인물 소개 · 배경 스토리 (대제독 주인공) ──
   const _intro=`지구가 치크스 봉쇄 함대에 갇힌 시대, 변방 정거장에서 맨몸으로 시작해 함대를 일군 인물. 무역과 전투, 행성 경영을 넘나들며 인류의 마지막 반격을 준비하는 ${_co}의 총사령관이다.`;
-  const _story=`${_nm}은(는) 우르사 메이저가 이끄는 치크스 봉쇄 함대에 지구가 갇히던 날, 낡은 머스탱 한 척으로 첫 항해에 나섰다. ${_co}의 깃발 아래 항로를 개척해 자금을 모으고, 잔해를 뒤져 부품을 건지고, 적을 격파하며 한 척 한 척 함대를 키웠다. 곁에는 언제나 AI 동료 백구가 있었다. 가슴에 새긴 목표는 단 하나 — 인류를 옥죄는 봉쇄를 부수고, 푸른 지구를 되찾는 것.`;
+  const _story=I18N.t('story.intro',{nm:_nm,co:_co});
   const _rankStory=[
     '아직은 이름 없는 떠돌이 상인. 그러나 그 눈빛만큼은 이미 사령관의 것이다.',
     '첫 전공으로 함장의 자리에 올랐다. 부하들이 비로소 그의 판단을 믿기 시작했다.',
@@ -12045,22 +12045,22 @@ function showCodexPartModal(partId){
   // 효과 리스트 — 능력치 + 모든 패시브를 줄 단위로 정리
   const _effItems=[];
   if(p.cat==='weapon'){
-    _effItems.push(`⚔️ 공격력 +${p.ATT||0}`);
+    _effItems.push(I18N.t('ui.atkPlus',{n:p.ATT||0}));
     if(p.wtype==='missile')_effItems.push('🚀 미사일 (장갑 관통 ↑, 실드 흡수 ↓)');
     else if(p.wtype==='laser'||!p.wtype)_effItems.push('🔫 레이저 (실드 우선 피해)');
   }
   if(p.cat==='shield'){
     if(p.INT)_effItems.push(I18N.t('ui.shieldIntPlus',{n:p.INT}));
-    if(p.maxSH)_effItems.push(`🛡️ 최대 실드 +${p.maxSH.toLocaleString()}`);
+    if(p.maxSH)_effItems.push(I18N.t('ui.maxShield',{n:p.maxSH.toLocaleString()}));
     if(p.shieldRegen)_effItems.push(I18N.t('ui.shieldRegenTurn',{pct:(p.shieldRegen*100).toFixed(0)}));
-    if(p.reflect)_effItems.push(`↩️ 피격 반사 ${(p.reflect*100).toFixed(0)}%`);
+    if(p.reflect)_effItems.push(I18N.t('ui.reflectDmg',{pct:(p.reflect*100).toFixed(0)}));
   }
   if(p.cat==='armor'){
     if(p.HP)_effItems.push(I18N.t('ui.maxHPPlus',{hp:p.HP.toLocaleString()}));
     if(p.DEF)_effItems.push(I18N.t('ui.defPlus',{n:p.DEF}));
     if(p.repairRate)_effItems.push(I18N.t('ui.hpRepairTurn',{pct:(p.repairRate*100).toFixed(0)}));
-    if(p.laserHealHP)_effItems.push(`🩸 레이저 발사 시 입힌 피해의 ${(p.laserHealHP*100).toFixed(0)}% 만큼 HP 흡수`);
-    if(p.laserHealSH)_effItems.push(`🩸 레이저 발사 시 입힌 피해의 ${(p.laserHealSH*100).toFixed(0)}% 만큼 실드 흡수`);
+    if(p.laserHealHP)_effItems.push(I18N.t('ui.laserLifeHP',{pct:(p.laserHealHP*100).toFixed(0)}));
+    if(p.laserHealSH)_effItems.push(I18N.t('ui.laserLifeSH',{pct:(p.laserHealSH*100).toFixed(0)}));
     if(p.revive)_effItems.push(I18N.t('ui.reviveOnce',{pct:(p.revive*100).toFixed(0)}));
   }
   if(p.cat==='engine'){
@@ -15075,7 +15075,7 @@ function fleeCombat(){
   const _repLoss=Math.max(1, Math.round(2*_penMul));
   G.credits=Math.max(100,G.credits-_pen);
   try{changeReputation(-_repLoss);}catch(e){}
-  const _tecNote=_penMul<0.95?` (엔진 우위 ${Math.round((1-_penMul)*100)}% 감면)`:'';
+  const _tecNote=_penMul<0.95?I18N.t('ui.engineAdvDiscount',{pct:Math.round((1-_penMul)*100)}):'';
   addCombatLog(I18N.t('combat.fleeWithPenalty',{pen:_pen.toLocaleString(),rep:_repLoss,tec:_tecNote}),'err');
   notify(I18N.t('notify.fleeAlt',{cr:_pen.toLocaleString(),rep:_repLoss,tec:_tecNote}),'err');
   try{baekgu(I18N.t('baekgu.fledStronger'));}catch(e){}
@@ -17082,7 +17082,7 @@ function _finishCombat(){
       }),600);
     } else {
       setTimeout(()=>{
-        showAcquisitionReport({title:'🏆 전투 승리 보고',subtitle:`${pd.nm||'알 수 없는 구역'} — TURN ${G.turn}`,items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'});
+        showAcquisitionReport({title:'🏆 전투 승리 보고',subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'});
       },900);
     }
     checkQuestCombatDone();
@@ -18442,7 +18442,7 @@ function importSaveFile(ev){
         if(slotStr===null)return;
         const n=Math.max(1,Math.min(8,parseInt(slotStr)||1));
         const sk='de_save_s'+n;
-        if(localStorage.getItem(sk)&&!confirm(`슬롯 ${n}에 이미 저장된 데이터가 있습니다. 덮어쓸까요?`))return;
+        if(localStorage.getItem(sk)&&!confirm(I18N.t('ui.slotHasDataOverwrite',{n})))return;
         localStorage.setItem(sk,JSON.stringify(obj));
         notify(I18N.t('notify.slotRestoredRefresh',{n}),'gold');
         setTimeout(()=>location.reload(),5000);
