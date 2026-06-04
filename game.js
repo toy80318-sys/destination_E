@@ -511,7 +511,7 @@ function updateFleetBar(){
   const el=document.getElementById('bk-fleet');if(!el)return;
   // 헤더의 함대 수 카운트 (접힘 상태에서도 보임)
   const _cntEl=document.getElementById('bk-fleet-count');
-  if(_cntEl)_cntEl.textContent=(G&&G.fleet&&G.fleet.length)?`(${G.fleet.length}척)`:'';
+  if(_cntEl)_cntEl.textContent=(G&&G.fleet&&G.fleet.length)?I18N.t('ui.fleetCount',{n:G.fleet.length}):'';
   if(!G||!G.fleet||!G.fleet.length){el.innerHTML=`<span style="color:var(--dim);font-size:12px">${I18N.t('ui.shipNoneSpan')}</span>`;return;}
   const cards=G.fleet.map((s,i)=>{
     const st=getShipStats(s);
@@ -1315,7 +1315,7 @@ function askBaekgu(){
     // 크루/동료
     {k:['크루','동료','영입','가챠','뽑기','crew'],r:()=>I18N.t('chatbot.crewTip',{n:getMaxCrewCount()})},
     // 영웅
-    {k:['영웅','hero','특수','스킬','능력'],r:()=>{const hc=(G.heroes||[]).length;return`영웅 ${hc}/8명 보유. 퀘스트 완료 시 10% 확률로 이순신·장영실·광개토·가가린·넬슨·아인슈타인·테슬라·마르코 중 미보유 영웅 영입 이벤트 발생. 영웅마다 고유 스킬 있어.`;}},
+    {k:['영웅','hero','특수','스킬','능력'],r:()=>{const hc=(G.heroes||[]).length;returnI18N.t('chatbot.heroTip',{hc});}},
     // 행성 허브 잠금
     {k:['잠금','허브','개방','시설','unlock'],r:()=>{const pid=G.currentPlanet,prog=getPlanetHubProgress(pid),thr=getPlanetHubThreshold(pid);const unlocked=isPlanetHubUnlocked(pid);const pd=PLANET_DEF.find(p=>p.id===pid);const isSup=pd?.f==='F01';returnI18N.t('chatbot.hubProgress',{prog,thr,done:unlocked?I18N.t('chatbot.hubDone'):'',scale:isSup?I18N.t('chatbot.hubScaleSup'):I18N.t('chatbot.hubScaleStd')});}},
     // 행성/탐험
@@ -1337,7 +1337,7 @@ function askBaekgu(){
     // 블링크 엔진
     {k:['블링크','blink','순간이동','워프'],r:()=>I18N.t('ui.blinkEngineTip')},
     // 명성/평판
-    {k:['명성','평판','reputation','랭크','레벨'],r:()=>{const lv=calcPlayerLevel(),rep=G.reputation||0;return`현재 레벨 ${lv}, 명성 ${rep} (상단 HUD ⭐ 표시). 퀘스트·해적 퇴치 시 +1, 전투 패배 시 -2. 명성 높을수록 가챠 확률·퀘스트 보상 배율 상승.`;}},
+    {k:['명성','평판','reputation','랭크','레벨'],r:()=>{const lv=calcPlayerLevel(),rep=G.reputation||0;returnI18N.t('chatbot.repTip',{lv,rep});}},
     // 해적
     {k:['해적','pirate','약탈','항로','조우'],r:()=>I18N.t('chatbot.pirateTip')},
     // 나포
@@ -2851,8 +2851,8 @@ function renderMain(body){
         <span style="color:var(--dim);font-size:12px">📋</span>
         <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
-        ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">🎬 엔딩 다시 보기</button>`:''}
-        ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="우르사 메이저 보스전을 강제로 시작/재도전 (지구 접근 시 보스 미출현 복구용)">☠️ 우르사 재도전</button>`:''}
+        ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
+        ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('ui.ursaRetryTitle')}">${I18N.t('ui.ursaRetryBtn')}</button>`:''}
         ${(()=>{
           if(!pd?.hostile)return'';
           const waves=G.chixWaves||0;const stay=G.stayTurns||0;
@@ -2866,9 +2866,9 @@ function renderMain(body){
   }catch(e_rm){console.error('[renderMain error]',e_rm);body.innerHTML='<div style="padding:20px;color:#f88">렌더링 오류: '+e_rm.message+'</div>';}
 }
 function getBaekguLine(){
-  const lines=[`${G.profile.name||I18N.t('ui.commander')}, 왼쪽 메뉴에서 원하는 거 골라.`,
+  const lines=[I18N.t('ui.tutorialIntro',{nm:G.profile.name||I18N.t('ui.commander')}),
     I18N.t('chatbot.creditsLow',{c:G.credits.toLocaleString(),tail:G.credits<10000?I18N.t('chatbot.creditsLowTail'):I18N.t('chatbot.creditsOkTail')}),
-    `${G.heroes.length>0?`영웅 ${G.heroes.map(h=>HEROES[h]?.nm||'').join(', ')} 합류 중.`:'영웅 아직 없어. 행성 탐험해서 찾아.'}`,
+    `${G.heroes.length>0?I18N.t('ui.heroesJoining',{nms:G.heroes.map(h=>HEROES[h]?.nm||'').join(', ')}):'영웅 아직 없어. 행성 탐험해서 찾아.'}`,
     `크루 ${G.crew.length}명 보유. ${G.crew.length<5?'더 뽑아야 해.':'이 정도면 됐어.'}`,
     '함선 파츠 장착하면 전투력 올라. 상점에서 구매해.'];
   return lines[G.turn%lines.length];
@@ -3372,7 +3372,7 @@ function triggerTravelPirate(pd){
   const raidDef={
     id:'TRAVEL_PIRATE',nm:'항로 해적단',ring:ring,f:'PIRATE',hostile:true,tax:0,
     _enemies:Array.from({length:eCount},(_,i)=>({
-      id:`TP${i}`,nm:`항로 해적 ${['강습정','요격기','약탈선','포함'][i%4]}`,tier:i%4===3?'중형':'소형',isEnemy:true,
+      id:`TP${i}`,nm:`항로 해적 ${I18N.t('ui.routePirateNames').split('|')[i%4]}`,tier:i%4===3?'중형':'소형',isEnemy:true,
       hp:eHP,maxHP:eHP,sh:Math.floor(eHP*.25),maxSH:Math.floor(eHP*.25),
       ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]
     }))
@@ -3547,7 +3547,7 @@ function triggerPirateRaid(pd){
   const raidDef={
     id:'PIRATE_RAID',nm:'해적단 기습',ring:ring,f:'PIRATE',hostile:true,tax:0,
     _enemies:Array.from({length:eCount},(_,i)=>({
-      id:`P${i}`,nm:`해적 ${['약탈선','전투함','강습정','모선','지뢰선'][i%5]}`,tier:_enemyTierBoost(['소형','중형','소형','대형','소형'][i%5]),isEnemy:true,
+      id:`P${i}`,nm:`해적 ${I18N.t('ui.pirateShipNames').split('|')[i%5]}`,tier:_enemyTierBoost(['소형','중형','소형','대형','소형'][i%5]),isEnemy:true,
       hp:eHP,maxHP:eHP,sh:Math.floor(eHP*.2),maxSH:Math.floor(eHP*.2),
       ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]
     }))
@@ -4513,7 +4513,7 @@ function renderShipTab(body){
           ${rs.qualityLabel?`<div style="font-size:11px;color:${fc};margin-top:2px">${rs.qualityLabel} (×${(rs.quality||1).toFixed(2)})</div>`:''}
         </div>
         <div style="display:flex;flex-direction:column;gap:4px">
-          ${_isGarage?`${G.fleet.length<16?`<button class="btn btn-sm" style="font-size:10px;padding:3px 8px;border-color:var(--green);color:var(--green);background:rgba(46,204,113,.12);font-weight:bold" onclick="promoteReserveShip(${ri})" title="선발 편대에 빈 자리 있음 → 즉시 승급">📈 선발로 올리기 (선발 ${G.fleet.length}/16)</button>`:'<span style="font-size:10px;color:var(--dim);text-align:center;padding:2px">선발 16척 가득</span>'}
+          ${_isGarage?`${G.fleet.length<16?`<button class="btn btn-sm" style="font-size:10px;padding:3px 8px;border-color:var(--green);color:var(--green);background:rgba(46,204,113,.12);font-weight:bold" onclick="promoteReserveShip(${ri})" title="${I18N.t('ui.promoteTitle')}">${I18N.t('ui.promoteToActive',{n:G.fleet.length})}</button>`:'<span style="font-size:10px;color:var(--dim);text-align:center;padding:2px">선발 16척 가득</span>'}
           <select id="resvSwap_${ri}" style="background:rgba(0,0,0,.5);color:var(--txt);border:1px solid var(--bdr);border-radius:4px;padding:3px 6px;font-size:11px;font-family:inherit">
             <option value="">${I18N.t('ui.selectShipToSwap')}</option>
             ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${I18N.tier(af.tier)}] ${af.nm}</option>`).join('')}
@@ -4810,7 +4810,7 @@ function renderShipTab(body){
           const _upgPrice=_atMax?0:getPartsUpgradePrice(s);
           const _upgBtn=_atMax
             ? `<span style="font-size:11px;color:var(--cyan)">${I18N.t('ui.maxRowsCount',{n:_maxTotalRows})}</span>`
-            : `<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 8px" onclick="upgradePartsRow(${idx})" ${G.credits>=_upgPrice?'':'disabled'}>🔧 행+1 ₡${_upgPrice.toLocaleString()} (${PART_ROWS}/${_maxTotalRows})</button>`;
+            : `<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 8px" onclick="upgradePartsRow(${idx})" ${G.credits>=_upgPrice?'':'disabled'}>${I18N.t('ui.rowPlus1',{cost:_upgPrice.toLocaleString(),n:PART_ROWS,max:_maxTotalRows})}</button>`;
           // 컬럼 공통: flex 세로 배치 + spacer 로 액션 버튼을 하단에 고정 → 3컬럼 액션 버튼 높이 정렬
           // 파츠↔함선실 간격 20% 축소 (10→6, 양쪽 합산 20→12)
           // 파츠 그리드 실제 너비 계산 (CELL_SZ=51 + gap=3) → 신화(8열)/대형(6열) 함선이 함선실과 겹치지 않게 min-width 보장
@@ -9734,7 +9734,7 @@ function updateGatherBtn(){
       btn.style.opacity='1';btn.style.cursor='pointer';btn.style.animation='pulse 1.8s infinite';
     }
     const span2=btn.querySelector('span:last-child');
-    if(span2)span2.textContent=_exhausted?'잔해 합류 한도(2/2)':`🏴‍☠️ 잔해 합류 (${_joinUsed}/${_joinMax})`;
+    if(span2)span2.textContent=_exhausted?'잔해 합류 한도(2/2)':I18N.t('ui.wreckJoinCount',{used:_joinUsed,max:_joinMax});
     return;
   }
   const left=_gatherCooldownLeft();
@@ -10367,7 +10367,7 @@ function renderCraftTab(body){
     const matOk=selRec.mats.every(m=>(G.materials[m.id]||0)>=(_recTierDisc?Math.max(1,Math.floor(m.qty/2)):m.qty));
     const heroOk=!selRec.heroReq||(G.heroes&&G.heroes.includes(selRec.heroReq));
     if(!hasBp){craftBtnTxt='🔒 설계도 없음';}
-    else if(!heroOk){craftBtnTxt=`❌ 영웅 필요: ${HEROES[selRec.heroReq]?.nm||selRec.heroReq}`;}
+    else if(!heroOk){craftBtnTxt=I18N.t('ui.heroRequired',{nm:HEROES[selRec.heroReq]?.nm||selRec.heroReq});}
     else if(!matOk){craftBtnTxt='🔒 재료 부족';}
     else{canCraft=true;craftBtnTxt=`⚗️ ${selRec.nm} 제작`;craftBtnDis=false;}
   }
@@ -10567,7 +10567,7 @@ function showMatSlotTip(el,ev){
       lines.push('💡 모든 영웅 영입 시\n   행성 위치 정보 공개');
     }
   }
-  lines.push(`보유: ${G.materials[matId]||0}개`);
+  lines.push(I18N.t('ui.materialOwned',{n:G.materials[matId]||0}));
   if(c.buy>0) lines.push(`구매가: ${c.buy.toLocaleString()} CR`);
   tip.textContent=lines.join('\n');
   tip.style.display='block';
@@ -14846,7 +14846,7 @@ function _buildHostilePlanetEnemies(planetDef){
   const eHP=_clamped.eHP,eATK=_clamped.eATK,eINT=_clamped.eINT,eTEC=_clamped.eTEC;
   const tierFn=(i)=>_enemyTierBoost(i===0&&plv>=60?'대형':i<2&&plv>=30?'중형':'소형');
   return Array.from({length:eCount},(_,i)=>({
-    id:`E${i}`,nm:`치크스 ${['전투선','순양함','구축함','포함','강습함','모선'][i%6]}`,
+    id:`E${i}`,nm:`치크스 ${I18N.t('ui.cheeksShipNames').split('|')[i%6]}`,
     tier:tierFn(i),isEnemy:true,
     hp:Math.round(eHP*(i===0?1.3:1.0)),maxHP:Math.round(eHP*(i===0?1.3:1.0)),
     sh:Math.floor(eHP*(i===0?0.5:0.35)),maxSH:Math.floor(eHP*(i===0?0.5:0.35)),
@@ -17008,7 +17008,7 @@ function _finishCombat(){
     // 보고 팝업 구성 (보스/일반 공통)
     const _buildReport=()=>{
       const items=[];
-      items.push({ic:'💰',nm:'전투 보상 크레딧',type:'크레딧',color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:`전투 후 약탈 자금 (보상 배율 ×${getDiffMult().toFixed(2)})`});
+      items.push({ic:'💰',nm:'전투 보상 크레딧',type:'크레딧',color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
       if(_repGained>0)items.push({ic:'⭐',nm:'명성',type:'평판',color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:'해적/치크스 격파로 사령관 평판 상승'});
       const enemyCount=_enemyCountSnap;
       items.push({ic:'☠️',nm:'격파 적함',type:_kindLbl,color:'var(--red)',stats:`${enemyCount}척 전멸`,desc:'적 함대 전원 격파 완료'});
@@ -18060,8 +18060,8 @@ async function _sendFeedback(){
   }
   // 2차 폴백: mailto (Firestore 실패시)
   if(!sent){
-    const subject=`[데스티네이션 어스] 피드백${id?' from '+id:''}`;
-    const body=`아이디: ${id||'(미입력)'}\n버전: ${window._GAME_VER||'1.1'}\nTURN: ${G?.turn||0}\n\n${msg}`;
+    const subject=I18N.t('ui.feedbackSubject',{from:id?I18N.t('ui.feedbackSubjFromId',{id}):''});
+    const body=I18N.t('ui.feedbackBody',{id:id||I18N.t('ui.notEntered'),ver:window._GAME_VER||'1.1',turn:G?.turn||0,msg});
     const url='mailto:toy80318@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
     try{window.location.href=url;}catch(e){}
     notify(I18N.t('notify.feedbackMailFallback'),'warn');
@@ -18426,7 +18426,7 @@ function importSaveFile(ev){
       if(obj.slots&&typeof obj.slots==='object'){
         // 번들
         const keys=Object.keys(obj.slots);
-        if(!confirm(`📦 번들 파일 감지: ${keys.length}개 슬롯\n\n현재 로컬 저장을 모두 덮어씁니다. 진행하시겠습니까?`))return;
+        if(!confirm(I18N.t('ui.bundleDetected',{n:keys.length})))return;
         let ok=0;
         keys.forEach(k=>{
           const m=k.match(/^slot(\d+)$/);if(!m)return;
