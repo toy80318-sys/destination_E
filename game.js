@@ -3892,7 +3892,7 @@ function renderTradeTab(body){
                       style="flex:1;font-size:11px;padding:3px 6px">${I18N.t('ui.buy')}</button>
                   </div>
                   <button class="btn btn-sm btn-gold" onclick="buyCommMax('${c.id}')" ${canBuy?'':'disabled'}
-                    style="font-size:11px;padding:3px 6px;width:100%" title="재고/크레딧/화물칸 한도까지 한번에 구매">🛒 전체</button>
+                    style="font-size:11px;padding:3px 6px;width:100%" title="재고/크레딧/화물칸 한도까지 한번에 구매">${I18N.t('ui.allBuy')}</button>
                 </div>
               </div>
             </div>`;
@@ -3941,7 +3941,7 @@ function renderTradeTab(body){
                         style="flex:1;font-size:11px;padding:3px 6px;border-color:var(--gold);color:var(--gold)">${I18N.t('ui.buy')}</button>
                     </div>
                     <button class="btn btn-sm" onclick="buyCommMax('${c.id}')" ${canBuyMat?'':'disabled'}
-                      style="font-size:11px;padding:3px 6px;width:100%;border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)" title="재고/크레딧 한도까지 한번에 구매">🛒 전체</button>
+                      style="font-size:11px;padding:3px 6px;width:100%;border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)" title="재고/크레딧 한도까지 한번에 구매">${I18N.t('ui.allBuy')}</button>
                   </div>
                 </div>
               </div>`;
@@ -4559,7 +4559,7 @@ function renderShipTab(body){
       ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
     </div>`:'';
     const sortBar=garageSubNav+`<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-      <span style="font-size:12px;color:var(--dim)">정렬:</span>
+      <span style="font-size:12px;color:var(--dim)">${I18N.t('ui.sortPrefix')}</span>
       ${fleetSortBtn('tier',I18N.t('ui.sortByTierEmoji'))}${fleetSortBtn('att',I18N.t('ui.sortByAtt'))}${fleetSortBtn('hp',I18N.t('ui.sortByHP'))}${fleetSortBtn('name',I18N.t('ui.sortByName'))}
       <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.fleetN',{n:G.fleet.length})}</span>
     </div>
@@ -5034,7 +5034,7 @@ function renderShipTab(body){
         <div style="font-size:11px;color:var(--dim)">매각 = 즉시 판매</div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-shrink:0">
-        <span style="font-size:11px;color:var(--dim)">정렬:</span>
+        <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.sortPrefix')}</span>
         <button onclick="_setMyShipSort('price')" title="${_myShipSort==='price'?I18N.t('ui.clickToReverse'):I18N.t('ui.sortByPrice')}" style="padding:4px 12px;border:1px solid ${_myShipSort==='price'?'var(--cyan)':'var(--bdr)'};background:${_myShipSort==='price'?'rgba(0,243,255,.12)':'transparent'};color:${_myShipSort==='price'?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">💰 금액${_myShipSort==='price'?(_myShipSortDir==='asc'?' ↑':' ↓'):''}</button>
         <button onclick="_setMyShipSort('tier')" title="${_myShipSort==='tier'?I18N.t('ui.clickToReverse'):I18N.t('ui.sortByTier')}" style="padding:4px 12px;border:1px solid ${_myShipSort==='tier'?'var(--cyan)':'var(--bdr)'};background:${_myShipSort==='tier'?'rgba(0,243,255,.12)':'transparent'};color:${_myShipSort==='tier'?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">🏷️ 등급${_myShipSort==='tier'?(_myShipSortDir==='asc'?' ↑':' ↓'):''}</button>
         <span style="font-size:10px;color:var(--muted);margin-left:auto">기함 고정 ⭐</span>
@@ -5069,7 +5069,7 @@ function renderShipTab(body){
       // 정렬 토글 버튼 바 (활성 키 옆에 ↑↓ 방향 표시)
       const _arrow=_shopShipSortDir==='asc'?'↑':'↓';
       const _shopSortBar=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
-        <span style="font-size:11px;color:var(--dim)">정렬:</span>
+        <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.sortPrefix')}</span>
         <button onclick="_setShopShipSort('price')" title="${_shopShipSort==='price'?I18N.t('ui.clickToReverse'):I18N.t('ui.sortByPrice')}" style="padding:4px 12px;border:1px solid ${_shopShipSort==='price'?'var(--cyan)':'var(--bdr)'};background:${_shopShipSort==='price'?'rgba(0,243,255,.12)':'transparent'};color:${_shopShipSort==='price'?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">💰 금액${_shopShipSort==='price'?' '+_arrow:''}</button>
         <button onclick="_setShopShipSort('tier')" title="${_shopShipSort==='tier'?I18N.t('ui.clickToReverse'):I18N.t('ui.sortByTier')}" style="padding:4px 12px;border:1px solid ${_shopShipSort==='tier'?'var(--cyan)':'var(--bdr)'};background:${_shopShipSort==='tier'?'rgba(0,243,255,.12)':'transparent'};color:${_shopShipSort==='tier'?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">🏷️ 등급${_shopShipSort==='tier'?' '+_arrow:''}</button>
         <span style="font-size:10px;color:var(--muted);margin-left:auto">${sortedAvailShips.length}척 입고</span>
@@ -5224,7 +5224,7 @@ function renderShipTab(body){
             const canBuy=G.credits>=partFinalPrice&&qty>0;
             const nmCol=p.rarity==='mythic'?'#ff88ff':p.rarity==='set'?'#c080ff':p.tier>=15?'var(--gold)':p.tier>=11?'#ffa040':p.tier>=6?'var(--cyan)':'var(--txt)';
             const bdrCol=p.rarity==='mythic'?'rgba(255,136,255,.5)':p.rarity==='set'?'rgba(192,128,255,.5)':'var(--bdr)';
-            const rarBadge=p.rarity==='mythic'?'<span style="font-size:10px;color:#ff88ff;border:1px solid #ff88ff;border-radius:3px;padding:0 4px">✦신화</span>':p.rarity==='set'?'<span style="font-size:10px;color:#c080ff;border:1px solid #c080ff;border-radius:3px;padding:0 4px">◈세트</span>':'';
+            const rarBadge=p.rarity==='mythic'?`<span style="font-size:10px;color:#ff88ff;border:1px solid #ff88ff;border-radius:3px;padding:0 4px">${I18N.t('ui.mythicBadge')}</span>`:p.rarity==='set'?`<span style="font-size:10px;color:#c080ff;border:1px solid #c080ff;border-radius:3px;padding:0 4px">${I18N.t('ui.setBadge')}</span>`:'';
             const statLine=cat==='weapon'?`⚔ ATT +${p.ATT}${p.wtype?' ['+p.wtype+']':''}`:cat==='shield'?`🛡 SHD +${p.INT} SH+${p.maxSH}`:cat==='armor'?`❤ HP +${p.HP}${p.DEF?' DEF+'+p.DEF:''}`:cat==='engine'?`⚙ ENG +${p.TEC}`:'';
             return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
               <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
@@ -5320,7 +5320,7 @@ function renderShipTab(body){
         const catCol={weapon:'var(--red)',shield:'var(--blue)',armor:'var(--gold)',engine:'var(--cyan)'}[p2.cat]||'var(--dim)';
         const nmCol=p2.rarity==='mythic'?'#ff88ff':p2.rarity==='set'?'#c080ff':p2.tier>=15?'var(--gold)':p2.tier>=11?'#ffa040':p2.tier>=6?'var(--cyan)':'var(--txt)';
         const bdrCol=p2.rarity==='mythic'?'rgba(255,136,255,.5)':p2.rarity==='set'?'rgba(192,128,255,.5)':'var(--bdr)';
-        const rarBadge=p2.rarity==='mythic'?'<span style="font-size:10px;color:#ff88ff;border:1px solid #ff88ff;border-radius:3px;padding:0 4px">✦신화</span>':p2.rarity==='set'?'<span style="font-size:10px;color:#c080ff;border:1px solid #c080ff;border-radius:3px;padding:0 4px">◈세트</span>':'';
+        const rarBadge=p2.rarity==='mythic'?`<span style="font-size:10px;color:#ff88ff;border:1px solid #ff88ff;border-radius:3px;padding:0 4px">${I18N.t('ui.mythicBadge')}</span>`:p2.rarity==='set'?`<span style="font-size:10px;color:#c080ff;border:1px solid #c080ff;border-radius:3px;padding:0 4px">${I18N.t('ui.setBadge')}</span>`:'';
         const statLine=p2.cat==='weapon'?`⚔ ATT +${p2.ATT}${p2.wtype?' ['+p2.wtype+']':''}`:p2.cat==='shield'?`🛡 SHD +${p2.INT} SH+${p2.maxSH}`:p2.cat==='armor'?`❤ HP +${p2.HP}${p2.DEF?' DEF+'+p2.DEF:''}`:p2.cat==='engine'?`⚙ ENG +${p2.TEC}`:'';
         const btnId='sell-inv-'+i.id;
         return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
@@ -5953,7 +5953,7 @@ function renderShipSkinTab(body){
     ${removeBtn}
     <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="skin-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
-        <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">🛸 내 함선 (${G.fleet.length})</div>
+        <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
       </div>
       <div data-scroll-id="skin-gallery" style="background:rgba(5,10,26,.4);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
@@ -6129,7 +6129,7 @@ function renderShipEnhanceTab(body){
     </div>
     <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="enh-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
-        <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">🛸 내 함선 (${G.fleet.length})</div>
+        <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
       </div>
       <div data-scroll-id="enh-panel">${rightPanel}</div>
@@ -7976,7 +7976,7 @@ function pickCrewForSlot(shipIdx){
     return `<button onclick="_crewPickSort='${key}';pickCrewForSlot(${shipIdx})" style="padding:3px 10px;border:1px solid ${act?'var(--cyan)':'rgba(255,255,255,.2)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'rgba(255,255,255,.5)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace">${label}</button>`;
   }
   const sortBar3=`<div style="display:flex;gap:5px;margin-bottom:10px;align-items:center">
-    <span style="font-size:11px;color:var(--dim)">정렬:</span>
+    <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.sortPrefix')}</span>
     ${_sortBtn3('rarity',I18N.t('ui.sortByRarity'))}${_sortBtn3('cl',I18N.t('ui.sortByClass'))}${_sortBtn3('name',I18N.t('ui.sortByName'))}
   </div>`;
 
@@ -8323,7 +8323,7 @@ function renderCrewTab(body){
   }
 
   body.innerHTML=`<div class="hub-scroll">${hubBanner('crew','👥','크루')}<div class="hub-t">👥 크루 (${G.crew.length}/${getMaxCrewCount()}명)
-    <span style="font-size:12px;font-weight:normal;color:var(--dim);margin-left:8px">정렬:</span>
+    <span style="font-size:12px;font-weight:normal;color:var(--dim);margin-left:8px">${I18N.t('ui.sortPrefix')}</span>
     ${sortBtn('rarity',I18N.t('ui.sortByRarity'))}${sortBtn('cl',I18N.t('ui.sortByClass'))}${sortBtn('name',I18N.t('ui.sortByName'))}
     <button onclick="dismissLowestCrew(1)" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(255,80,80,.6);background:rgba(255,40,40,.12);color:rgba(255,150,150,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceCrewDismiss')}">🚪 최하위 1명</button>
     <button onclick="dismissLowestCrew(5)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.6);background:rgba(255,40,40,.12);color:rgba(255,150,150,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceCrewDismiss')}">🚪 최하위 5명</button>
@@ -9434,7 +9434,7 @@ function completeQuest(pid,idx){
         G._pendingQuestCrew=newCrew;
         bonusMsg=`<div style="margin-top:12px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
           ${_imgHtml}
-          <div style="font-size:22px">⭐ 전설급 동료 획득!</div>
+          <div style="font-size:22px">${I18N.t('ui.legendCrewAcquired')}</div>
           <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${lucky.nm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--red);font-weight:bold;margin-top:6px">⚠️ 크루 명단이 가득 찼습니다 — 확인 후 최하위 크루와 교체 여부를 선택하세요</div>
@@ -9445,7 +9445,7 @@ function completeQuest(pid,idx){
         G.crew.push(newCrew);
         bonusMsg=`<div style="margin-top:12px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
           ${_imgHtml}
-          <div style="font-size:22px">⭐ 전설급 동료 획득!</div>
+          <div style="font-size:22px">${I18N.t('ui.legendCrewAcquired')}</div>
           <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${lucky.nm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--yellow);margin-top:3px">${I18N.t('ui.boardCrewFromList')}</div>
@@ -12075,7 +12075,7 @@ function showCodexPartModal(partId){
         <div style="font-size:18px;font-weight:bold;color:${rarCol}">${rarIc} ${p.nm}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:2px">T${p.tier} ${p.cat==='weapon'?'무기':p.cat==='shield'?'실드':p.cat==='armor'?(typeof p.repairRate==='number'&&p.repairRate>0?'수리 드론':'장갑'):p.cat==='engine'?'엔진':''} · ${p.price?'₡'+p.price.toLocaleString():'상점 미판매'}</div>
         <div style="font-size:12px;color:${rarCol};margin-top:4px;font-weight:bold">${statText}</div>
-        ${qty>0?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">✅ 보유 ${qty}개 (인벤 ${inv?.qty||0} + 장착 ${eqQty})</span>`:'<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--dim);border:1px solid var(--dim);border-radius:3px;padding:1px 6px">❔ 미보유</span>'}
+        ${qty>0?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">✅ 보유 ${qty}개 (인벤 ${inv?.qty||0} + 장착 ${eqQty})</span>`:`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--dim);border:1px solid var(--dim);border-radius:3px;padding:1px 6px">${I18N.t('ui.notOwned')}</span>`}
       </div>
     </div>
     ${row('⚡','파츠 효과',effectsHtml)}
@@ -12117,7 +12117,7 @@ function showCodexShipModal(shipId){
           <span style="color:#f88">❤️ HP:${(s.maxHP||0).toLocaleString()}</span>
           <span style="color:#66ddff">🛡 SH:${(s.maxSH||0).toLocaleString()}</span>
         </div>
-        ${owned?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">✅ 보유중</span>`:''}
+        ${owned?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">${I18N.t('ui.ownedBadge')}</span>`:''}
       </div>
     </div>
     ${(()=>{
@@ -12167,7 +12167,7 @@ function renderCodexTab(body){
       const seenShips=ships.filter(s=>discoveredIds.has(s.id));
       const discovered=seenShips.length;
       const cards=seenShips.map(s=>{const have=ownedIds.has(s.id);
-        const badge=have?'<div style="font-size:10px;color:var(--green);margin-top:2px">✅ 보유중</div>':'<div style="font-size:10px;color:var(--cyan);margin-top:2px">🔍 발견</div>';
+        const badge=have?`<div style="font-size:10px;color:var(--green);margin-top:2px">${I18N.t('ui.ownedBadge')}</div>`:`<div style="font-size:10px;color:var(--cyan);margin-top:2px">${I18N.t('ui.discoveredBadge')}</div>`;
         const _bdr=have?(tierCol[tier]||'var(--bdr)'):'rgba(0,243,255,.3)';
         return'<div onclick="showCodexShipModal(\''+s.id+'\')" style="cursor:pointer;background:var(--card);border:1px solid '+_bdr+';border-radius:8px;padding:8px;text-align:center;min-height:148px">'
           +'<div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">'+imgOrEmoji(shipImgSrc(s),s.ic||'🛸',78,78,'','ship_'+s.id)+'</div>'
@@ -17938,7 +17938,7 @@ function _renderHofTab(tab){
     body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
       ☁️ CloudSave 모듈이 로드되지 않았습니다<br>
       <div style="color:var(--dim);font-size:12px;margin-top:8px">Firebase SDK 차단·네트워크 문제일 수 있습니다</div>
-      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">${I18N.t('ui.tryAgain')}</button>
     </div>`;
     return;
   }
@@ -17947,7 +17947,7 @@ function _renderHofTab(tab){
       body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
         ⚠️ 조회 실패: ${r.error}
         <div style="color:var(--dim);font-size:11px;margin-top:8px">${I18N.t('ui.checkAuthOrNetwork')}</div>
-        <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+        <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">${I18N.t('ui.tryAgain')}</button>
       </div>`;
       return;
     }
@@ -17955,7 +17955,7 @@ function _renderHofTab(tab){
   }).catch(e=>{
     body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
       ⚠️ 조회 실패: ${e.message}
-      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">🔄 다시 시도</button>
+      <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">${I18N.t('ui.tryAgain')}</button>
     </div>`;
   });
 }
