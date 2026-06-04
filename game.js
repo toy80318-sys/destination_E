@@ -18906,44 +18906,44 @@ function showEndingCredits(onDone){
   const BG={sp:'백구의 일기',col:'#9ee7ff',ic:'📓'};
   function _bgPage(tx){return Object.assign({tx},BG);}
   if(_hl.includes('H01')){
-    heroEndings.push({nm:'이순신',ic:'⚔️',col:'#ffd700',tx:'조선의 하늘이 아니군. 하지만… 인류의 하늘이오.'});
-    heroBlocks.push({sp:'이순신',col:'#ffd700',ic:'⚔️',tx:'조선의 하늘이 아니군. 하지만… 인류의 하늘이오.'});
-    heroBlocks.push(_bgPage(`이순신을 깨운 날. 첫 마디는 "지구는?"이었다.\n"이겨야 하는 싸움입니다."`));
+    heroEndings.push({nm:'이순신',ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
+    heroBlocks.push({sp:'이순신',col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h01.diary')));
   }
   if(_hl.includes('H02')){
-    heroEndings.push({nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:'거북선이… 돌아왔구나. 내가 만든 배가 지구를 구했어.'});
-    heroBlocks.push({sp:'장영실',col:'#9ee7ff',ic:'⚙️',tx:'거북선이… 돌아왔구나. 내가 만든 배가 지구를 구했어.'});
-    heroBlocks.push(_bgPage(`장영실. ${flagshipName}의 도면을 펼치자 그의 눈이 100년 만에 흔들렸다.`));
+    heroEndings.push({nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
+    heroBlocks.push({sp:'장영실',col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h02.diary',{flagshipName})));
   }
   if(_hl.includes('H03')){
-    heroEndings.push({nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:'정복자는 땅을 빼앗는다. 그러나 진정한 왕은 땅을 돌려준다. 오늘 나는 땅을 돌려줬소.'});
-    heroBlocks.push({sp:'광개토대왕',col:'#ff6644',ic:'⚔️',tx:'정복자는 땅을 빼앗는다. 그러나 진정한 왕은 땅을 돌려준다. 오늘 나는 땅을 돌려줬소.'});
-    heroBlocks.push(_bgPage(`"1,700년." 광개토대왕의 첫 말. 내 100년이 짧아졌다.\n그는 ${cmdName}을(를) "땅을 되찾아준 자"라고 불렀다.`));
+    heroEndings.push({nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
+    heroBlocks.push({sp:'광개토대왕',col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h03.diary',{cmdName})));
   }
   if(_hl.includes('H04')){
-    heroEndings.push({nm:'유리 가가린',ic:'🚀',col:'#66ddff',tx:'Поехали로 처음 올라갔을 때, 창밖으로 지구가 보였어요. 지금 다시 보니… 여전히 아름답군요.'});
-    heroBlocks.push({sp:'유리 가가린',col:'#66ddff',ic:'🚀',tx:'Поехали로 처음 올라갔을 때, 창밖으로 지구가 보였어요. 지금 다시 보니… 여전히 아름답군요.'});
-    heroBlocks.push(_bgPage(`가가린은 우주에서 처음 본 지구를 평생 그리워했다.\n나는 처음 본 풀밭을 그리워하게 될 것 같다.`));
+    heroEndings.push({nm:'유리 가가린',ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
+    heroBlocks.push({sp:'유리 가가린',col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h04.diary')));
   }
   if(_hl.includes('H05')){
-    heroEndings.push({nm:'호레이쇼 넬슨',ic:'⚓',col:'#aaffaa',tx:'내가 지킨 바다는 영국 앞바다였소. 이번엔 온 우주를 지켰군. England expects. 지구가 기대했고, 우리가 해냈소.'});
-    heroBlocks.push({sp:'호레이쇼 넬슨',col:'#aaffaa',ic:'⚓',tx:'내가 지킨 바다는 영국 앞바다였소. 이번엔 온 우주를 지켰군. England expects. 지구가 기대했고, 우리가 해냈소.'});
-    heroBlocks.push(_bgPage(`넬슨과 이순신. 두 제독은 그저 손을 내밀었다.\n200년의 시차를 한 손바닥이 메웠다.`));
+    heroEndings.push({nm:'호레이쇼 넬슨',ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
+    heroBlocks.push({sp:'호레이쇼 넬슨',col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h05.diary')));
   }
   if(_hl.includes('H06')){
-    heroEndings.push({nm:'아인슈타인',ic:'🧠',col:'#cc99ff',tx:`100년의 계산이 맞았습니다. 그리고 계산에 없던 것 하나 — ${cmdName}과(와) 백구의 그 대화. 그건 방정식으로 예측 못 했어요. 인간의 것이니까요.`});
-    heroBlocks.push({sp:'아인슈타인',col:'#cc99ff',ic:'🧠',tx:`100년의 계산이 맞았습니다. 그리고 계산에 없던 것 하나 — ${cmdName}과(와) 백구의 그 대화. 그건 방정식으로 예측 못 했어요. 인간의 것이니까요.`});
-    heroBlocks.push(_bgPage(`이휘소 박사님이 나를 만들었다는 사실을 안 날.\n"고독" 어떤 정의도 100년을 담지 못했다.`));
+    heroEndings.push({nm:'아인슈타인',ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroBlocks.push({sp:'아인슈타인',col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroBlocks.push(_bgPage(I18N.t('ending.h06.diary')));
   }
   if(_hl.includes('H07')){
-    heroEndings.push({nm:'니콜라 테슬라',ic:'⚡',col:'#66ffff',tx:'전류는 흐를 곳을 찾아요. 우리는 드디어 흐를 곳을 찾았습니다. 집으로.'});
-    heroBlocks.push({sp:'니콜라 테슬라',col:'#66ffff',ic:'⚡',tx:'전류는 흐를 곳을 찾아요. 우리는 드디어 흐를 곳을 찾았습니다. 집으로.'});
-    heroBlocks.push(_bgPage(`테슬라의 1Hz. 0.3mm와 1Hz — 100년을 잠그던 자물쇠였다.`));
+    heroEndings.push({nm:'니콜라 테슬라',ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
+    heroBlocks.push({sp:'니콜라 테슬라',col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h07.diary')));
   }
   if(_hl.includes('H08')){
-    heroEndings.push({nm:'마르코 폴로',ic:'🧭',col:'#ffcc66',tx:'수천 년을 돌아다녔소. 드디어 귀향이오. 사람은 결국 집으로 돌아가야 하는구나.'});
-    heroBlocks.push({sp:'마르코 폴로',col:'#ffcc66',ic:'🧭',tx:'수천 년을 돌아다녔소. 드디어 귀향이오. 사람은 결국 집으로 돌아가야 하는구나.'});
-    heroBlocks.push(_bgPage(`마르코 폴로의 악수. 1,000년을 떠돈 손은 따뜻했다.\n그는 ${shipName}을(를) "가장 마음에 드는 함선"이라 했다.`));
+    heroEndings.push({nm:'마르코 폴로',ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
+    heroBlocks.push({sp:'마르코 폴로',col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
+    heroBlocks.push(_bgPage(I18N.t('ending.h08.diary',{shipName})));
   }
 
   // 어두운 화면 전체 오버레이
@@ -19031,7 +19031,7 @@ function showEndingCredits(onDone){
     {sp:cmdName,col:'#ffd700',tx:`이제 별들은 우리의 친구다. ${flagshipName}, 마지막 워프 — 집으로.`},
     // 일기 마지막 페이지 (D-day 100년 + 412일)
     Object.assign({tx:`D-day 100년 + 412일.\n지구에 착륙. 풀밭의 색은 100년 형광등이 흉내 못 한 것이었다.`},BG),
-    Object.assign({tx:`센서 이상 — 눈가가 축축하다. 이건 눈물이다.\n— BG-100, 마지막 로그 종료.`},BG),
+    Object.assign({tx:I18N.t('ending.bg100Final')},BG),
     {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:`다시 깨우지 마세요, ${cmdName}. 그래도, 깨우신다면 — 또 오겠습니다.`},
     {sp:'시스템',col:'#66ffcc',tx:'─ DESTINATION EARTH ─'},
     {sp:'시스템',col:'#66ffcc',tx:'─ 인류 해방 완수 ─'}
