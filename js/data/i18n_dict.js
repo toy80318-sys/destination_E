@@ -1837,6 +1837,28 @@ I18N.register({
   'ui.noAvailableBroker':      { ko: '현재 수락 가능한 브로커 의뢰가 없습니다.',
                                  en: 'No available Broker quests right now.' },
 
+  // ── G71: 잔여 UI 라벨/툴팁/버튼 ───────────────────────────────────
+  'ui.shipMaintenance':        { ko: '함선 정비소',  en: 'Ship Garage' },
+  'ui.signalReceived':         { ko: '⚠️ 통신 수신 ⚠️', en: '⚠️ INCOMING SIGNAL ⚠️' },
+  'ui.sortByName':             { ko: '🔤 이름', en: '🔤 Name' },
+  'ui.cargoMaxTooltip':        { ko: '화물칸 최대 (80칸)', en: 'Cargo full (80 slots)' },
+  'ui.emptyCargoCell':         { ko: '빈 화물칸', en: 'Empty cargo slot' },
+  'ui.captureSell':            { ko: '💰 나포매각', en: '💰 Capture & Sell' },
+  'ui.captureAllow':           { ko: '🏴 나포허용', en: '🏴 Allow Capture' },
+  'ui.startBattle':            { ko: '⚔️ 전투 시작!', en: '⚔️ START BATTLE!' },
+  'ui.keepFighting':           { ko: '⚔️ 계속 싸운다', en: '⚔️ Keep Fighting' },
+  'ui.unnamed':                { ko: '(이름없음)', en: '(Unnamed)' },
+  'ui.clickToReverse':         { ko: '다시 클릭 시 방향 전환', en: 'Click again to reverse direction' },
+  'ui.sortByPrice':            { ko: '금액으로 정렬', en: 'Sort by price' },
+  'ui.sortByTier':             { ko: '등급으로 정렬', en: 'Sort by tier' },
+  'ui.sortByRarity':           { ko: '⭐ 등급', en: '⭐ Rarity' },
+  'ui.sortByClass':            { ko: '🔧 클래스', en: '🔧 Class' },
+  'ui.sortByAtt':              { ko: '⚔️ 공격력', en: '⚔️ ATK' },
+  'ui.sortByHP':               { ko: '❤️ 내구도', en: '❤️ HP' },
+  'ui.sortByTierEmoji':        { ko: '🛕 등급', en: '🛕 Tier' },
+  'ui.sortByPriceEmoji':       { ko: '💰 금액', en: '💰 Price' },
+  'ui.sortByTierBadge':        { ko: '🏷️ 등급', en: '🏷️ Tier' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
