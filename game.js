@@ -5122,7 +5122,7 @@ function renderShipTab(body){
                     '<span style="color:#8ff">⚙ '+s.TEC+'</span>'+
                     '<span style="color:var(--dim)">📦 '+cargoCnt+'칸</span>'+
                   '</div>'+
-                  '<div style="font-size:10px;color:var(--dim)">크루 최대 <b style="color:var(--green)">'+maxCrew+'</b>명</div>')+
+                  '<div style="font-size:10px;color:var(--dim)">'+I18N.t('ui.crewMaxN',{n:maxCrew})+'</div>')+
                 // 가격 + 버튼
                 '<div style="margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;align-items:center;justify-content:space-between;gap:4px">'+
                   '<div>'+
@@ -6406,7 +6406,7 @@ function renderFleetFormationTab(body){
       })()
     : _formationSelectedShip
     ? `<div style="background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:6px;padding:8px;text-align:center;color:var(--gold);font-size:12px">🛸 함선 선택됨 — 그리드에서 배치할 슬롯을 클릭하세요.</div>`
-    : `<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:6px;padding:8px;text-align:center;color:var(--dim);font-size:12px">💡 슬롯을 클릭하면 함선을 다른 슬롯으로 <b>이동/교환</b> 할 수 있습니다. 함선 카드를 먼저 골라도 됩니다.</div>`;
+    : `<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:6px;padding:8px;text-align:center;color:var(--dim);font-size:12px">${I18N.t('ui.slotSwapHint')}</div>`;
   const _declineCap=!!G.declineCapture;
   const summary=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:10px">
     <span style="font-size:14px;font-weight:bold;color:var(--cyan)">⚓ 편대 편성</span>
@@ -8130,8 +8130,7 @@ function upgradeCargoSlot(shipIdx, fromModal){
       <div style="font-size:44px;margin-bottom:10px">🚫</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.cargoMaxReached')}</div>
       <div style="color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:18px">
-        <b style="color:var(--cyan)">${s.nm}</b>의 화물칸이<br>
-        최대 한도 <b style="color:var(--gold)">80칸</b>에 도달했습니다.<br>
+        ${I18N.t('ui.cargoBayReachedMax',{nm:s.nm})}<br>
         더 이상 확장할 수 없습니다.
       </div>
       <button class="btn btn-sm btn-red" style="padding:8px 28px;font-size:14px" onclick="this.closest('[style*=fixed]').remove()">${I18N.t('ui.confirm')}</button>
@@ -8648,7 +8647,7 @@ function doGacha(n,useCr,crCost,minRarity){
           ${_crewCard(sc,'var(--cyan)','rgba(0,243,255,.08)','✨ 영입 후보')}
         </div>
         <div style="font-size:12px;color:var(--dim);text-align:center;line-height:1.6">
-          <b style="color:var(--red)">${tgt.nm}</b> 을 내보내고 <b style="color:var(--cyan)">${sc.nm}</b> 을 영입합니다.<br>
+          ${I18N.t('ui.swapRecruitConfirm',{old:tgt.nm,new:sc.nm})}<br>
           📊 함선 보너스(클래스 × 등급)·기본 스탯·충성도를 비교해서 결정하세요.
         </div>
       </div>`,
@@ -9606,7 +9605,7 @@ function completeQuest(pid,idx){
                   </div>
                 </div>
                 <div style="font-size:12px;color:var(--dim);text-align:center;margin-bottom:6px">${_pend.desc||''}</div>
-                <div style="font-size:13px;color:var(--dim);text-align:center"><b style="color:var(--red)">${_lowest.nm}</b>을 내보내고<br><b style="color:var(--gold)">${_pend.nm}</b>을 영입하시겠습니까?</div>
+                <div style="font-size:13px;color:var(--dim);text-align:center">${I18N.t('ui.swapLegendConfirm',{old:_lowest.nm,new:_pend.nm})}</div>
               </div>`,
               [{txt:'✅ 교체 영입',fn:()=>{
                 G.fleet.forEach(s=>{if(s.crewIds){const _i=s.crewIds.indexOf(_lowest.id);if(_i>=0)s.crewIds.splice(_i,1);}});
@@ -10507,7 +10506,7 @@ function renderCraftTab(body){
           </div>
           <div style="background:rgba(0,0,0,.25);border:1px solid ${_tierColor}44;border-radius:8px;padding:8px 12px">
             <div style="font-size:11px;color:${_tierColor};font-weight:bold;margin-bottom:4px;letter-spacing:.5px">⚙️ 스탯</div>
-            ${_statHtml||'<div style="font-size:12px;color:var(--dim)">정보 없음</div>'}
+            ${_statHtml||I18N.t('ui.noStatInfo')}
             ${_heroReqHtml}
           </div>
           ${_storyHtml}
@@ -11337,7 +11336,7 @@ function renderTavernView(body){
       <div style="font-size:12px;color:rgba(220,180,255,.9);line-height:1.6">
         "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
         보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
-        <span style="color:var(--purple);font-weight:bold">${I18N.t('ui.oneBlackSmall')}</span>가 나타났대. 아무 식별코드도 없이.<br>
+        ${I18N.t('ui.unknownAppearedCode',{thing:I18N.t('ui.oneBlackSmall')})}<br>
         현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>${I18N.t('ui.callMeThat')}<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
         ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
@@ -12431,7 +12430,7 @@ function renderCodexTab(body){
             <div style="flex:1;min-width:0">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
                 <span style="font-size:22px;color:var(--dim)">❔</span>
-                <span style="font-size:18px;font-weight:bold;color:var(--dim);letter-spacing:1px">??? 문명</span>
+                <span style="font-size:18px;font-weight:bold;color:var(--dim);letter-spacing:1px">${I18N.t('ui.civUnknown')}</span>
               </div>
               <div style="font-size:11px;color:var(--dim)">대표 행성 · 미발견</div>
             </div>
@@ -13253,7 +13252,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     </div>
     <canvas id="ab-cv" width="${W}" height="${H}" style="background:#000;border:2px solid #6633aa;border-radius:8px;box-shadow:0 0 36px rgba(180,80,255,.5);cursor:none;touch-action:none;outline:none;max-width:96vw;max-height:84vh" tabindex="0"></canvas>
     <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#aaa;font-size:11px;letter-spacing:2px;line-height:1.7;pointer-events:none">
-      <b style="color:#66ddff">방향키/WASD</b> 또는 <b style="color:#66ddff">${I18N.t('ui.mouseMovement')}</b> · <b style="color:#ffcc66">RShift/마우스 클릭</b> 레이저 · <b style="color:#ff99cc">Ctrl/Enter</b> 미사일 · <b style="color:#ff44ff">LShift</b> 필살기(라이트닝, 10초)
+      ${I18N.t('ui.miniGameControls',{mouse:I18N.t('ui.mouseMovement')})}
     </div>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
@@ -14451,7 +14450,7 @@ function onMapClick(e){
             <div style="color:#dd66ff;font-size:19px;font-weight:bold;margin-bottom:10px;text-shadow:0 0 12px rgba(200,100,255,.6)">◈ 보이드의 심연</div>
             <div style="color:#e0d0ff;font-size:15px;line-height:2;background:rgba(0,0,0,.6);padding:14px 18px;border-radius:8px;border:1px solid rgba(180,0,255,.3);margin-bottom:12px">
               살아서 이곳을 나간 자는 아직 없다.<br>
-              <span style="color:#cc44ff">... 그러나 당신은 달랐다.</span>
+              <span style="color:#cc44ff">${I18N.t('ui.youWereDifferent')}</span>
             </div>
             <div style="color:var(--gold);font-size:14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:8px 14px;margin-bottom:8px">
               🔱 <b>${I18N.t('ui.voidSpearTitle')}</b> 획득 — 신화급 무기 1점
@@ -18733,8 +18732,7 @@ function showBossCelebration(onDone){
         <div><div style="font-size:11px;color:var(--dim)">${I18N.t('ui.gainedCredits')}</div><div style="font-size:22px;color:var(--gold);font-weight:bold">₡${(G.credits||0).toLocaleString()}</div></div>
       </div>
       <div style="font-size:15px;color:var(--yellow);line-height:1.8;margin:14px 0;padding:14px;background:rgba(255,255,255,.02);border-left:3px solid var(--gold);text-align:left">
-        ${co} 총사령관 <b style="color:var(--gold)">${cmdName}</b>의 함대가<br>
-        은하의 봉쇄자 <b style="color:#ff3366">우르사 메이저</b>를 격파하였습니다.<br><br>
+        ${I18N.t('ui.endingFleetText',{co,nm:cmdName})}<br><br>
         100년 동안 침묵했던 지구가 마침내 다시 별을 향해 손을 뻗습니다.<br>
         인류는 자유를 되찾았고, 우주는 다시 인류의 무대가 되었습니다.<br><br>
         <span style="color:#ffd700;font-weight:bold">— 인류의 운명을 지킨 그대, 사령관 ${cmdName}에게 영광을 —</span>
@@ -19136,7 +19134,7 @@ function showEndingCredits(onDone){
           <p style="margin:0 0 22px">D-day 100년 + 1일. AI 진돗개 <b style="color:#9ee7ff">백구</b>의 보고로 동면이 풀렸다. 첫 출항한 함선은 ${shipName} 한 척. 프록시마 b의 광장에서 ${co} 깃발을 내걸고, 사령관은 다시 별 사이의 항로를 그렸다.</p>
 
           <div style="text-align:center;color:#66ddff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제2막 · 변경의 불길 —</div>
-          <p style="margin:0 0 22px">변경 행성에 보라색 그림자가 어른거렸다. <b style="color:#cc66ff">치크스</b> 정찰대. 처음엔 그들을 단순한 침략자라 여겼고, 우리는 한 척씩, 한 명씩, 함대를 늘렸다. 무역상이 합류했고, 정비공이 모였고, 사령관의 손은 더이상 떨리지 않았다.</p>
+          <p style="margin:0 0 22px">${I18N.t('ui.chixShadowProse')}</p>
 
           <div style="text-align:center;color:#ff99ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제3막 · 잠든 영웅들 —</div>
           <p style="margin:0 0 22px">은하의 끝자락에서 100년·1,000년·1,700년을 잠들어 있던 자들이 깨어났다. ${heroEndings.length>0?heroEndings.map(h=>h.nm).slice(0,8).join(' · '):'이순신·장영실·광개토대왕·가가린·넬슨·아인슈타인·테슬라·마르코 폴로'}. 인류 역사상 가장 비현실적인 함대 회의가 ${cmdName}의 함교에서 매일 열렸다.</p>
