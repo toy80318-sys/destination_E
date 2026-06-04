@@ -5479,7 +5479,7 @@ function undoLastSell(){
       const _r=addShipToFleet(ls.ship);
       G.credits-=ls.credits;
       const _where=_r&&_r.added==='reserve'?' (임시창)':'';
-      notify(`↶ ${ls.label} 매각 취소 — ₡${ls.credits.toLocaleString()} 차감${_where}`,'ok');
+      notify(I18N.t('notify.cancelSaleWhere',{label:ls.label,cr:ls.credits.toLocaleString(),where:_where}),'ok');
     } else if(ls.type==='cargoSnap'){
       // 화물 스냅샷 복원 (G.cargo 전체 깊은 복사 복원)
       G.cargo=JSON.parse(JSON.stringify(ls.cargoSnap));
@@ -5492,7 +5492,7 @@ function undoLastSell(){
       if(ls.planetId&&ls.stockKey&&G.shopStock[ls.planetId]){
         G.shopStock[ls.planetId][ls.stockKey]=(G.shopStock[ls.planetId][ls.stockKey]||0)+1;
       }
-      notify(`↶ ${ls.label} 구매 취소 — ₡${ls.credits.toLocaleString()} 환불`,'ok');
+      notify(I18N.t('notify.cancelBuyRefund',{label:ls.label,cr:ls.credits.toLocaleString()}),'ok');
     } else {
       notify(I18N.t('notify.unknownSellKind'),'warn');return;
     }
@@ -5535,7 +5535,7 @@ function sellPartFromInventory(partId){
       inv.qty--;if(inv.qty<=0)G.inventory.splice(G.inventory.indexOf(inv),1);
       G.credits+=sellVal;
       try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:p.nm});}catch(e){}
-      updateHUD();notify(`⚙️ ${p.nm} 매각 +₡${sellVal.toLocaleString()}`,'gold');
+      updateHUD();notify(I18N.t('notify.partSold',{nm:p.nm,cr:sellVal.toLocaleString()}),'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
     },cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
@@ -5570,7 +5570,7 @@ function _promoteReserveIfRoom(){
     promoted++;
   }
   if(promoted>0){
-    notify(`📈 임시창 → 선발 자동 승급 ${promoted}척 (선발 ${G.fleet.length}/${CAP})`,'ok');
+    notify(I18N.t('notify.reservePromoted',{n:promoted,now:G.fleet.length,max:CAP}),'ok');
   }
   return promoted;
 }
@@ -5589,7 +5589,7 @@ function addShipToFleet(ship){
     G.fleet.push(ship);added='fleet';
   } else {
     G.reserveFleet.push(ship);added='reserve';
-    notify(`📦 선발 ${FLEET_CAP}척 가득 → ${ship.nm} 임시창 보관 (${G.reserveFleet.length}/${RESERVE_CAP})`,'warn');
+    notify(I18N.t('notify.shipToReserve',{max:FLEET_CAP,nm:ship.nm,now:G.reserveFleet.length,cap:RESERVE_CAP}),'warn');
   }
   // 임시창 초과 시 최하위 함선 매각 프롬프트
   if(G.reserveFleet.length>RESERVE_CAP){
@@ -5629,7 +5629,7 @@ function _promptSellLowestReserve(){
         if(c.from==='reserve'){G.reserveFleet.splice(c.i,1);}
         else{G.fleet.splice(c.i,1);_promoteReserveIfRoom();}
         G.credits=(G.credits||0)+price;
-        notify(`💰 ${c.s.nm} 매각 ₡${price.toLocaleString()}`,'gold');
+        notify(I18N.t('notify.shipSoldSimple',{nm:c.s.nm,cr:price.toLocaleString()}),'gold');
         closeModal();saveGame(true);
         if(typeof rerenderShipOrGarage==='function')rerenderShipOrGarage();
       }},
@@ -5641,7 +5641,7 @@ function _promptSellLowestReserve(){
 // 거절 ON: 나포 대상 함선을 즉시 매각하여 크레딧 획득
 function toggleDeclineCapture(){
   G.declineCapture=!G.declineCapture;
-  notify(G.declineCapture?'🚫 나포 거절 ON — 나포 함선 즉시 매각하여 크레딧 획득':'🏴 나포 허용 — 정상 나포 시도','ok');
+  notify(G.declineCapture?I18N.t('notify.captureToggleOn'):I18N.t('notify.captureToggleOff'),'ok');
   saveGame(true);
   rerenderTab(renderGarageTab);
 }
@@ -5653,7 +5653,7 @@ function promoteReserveShip(reserveIdx){
   if(G.fleet.length>=16){notify(I18N.t('notify.activeFleetFull'),'err');return;}
   const ship=G.reserveFleet.splice(reserveIdx,1)[0];
   G.fleet.push(ship);
-  notify(`📈 ${ship.nm} → 선발 편대 합류 (선발 ${G.fleet.length}/16)`,'gold');
+  notify(I18N.t('notify.shipJoinActive',{nm:ship.nm,now:G.fleet.length}),'gold');
   baekgu(`${ship.nm} 출격 준비 완료. 즉시 전열에 투입.`);
   saveGame(true);rerenderShipOrGarage();
 }
@@ -5748,7 +5748,7 @@ function discardReserveShip(reserveIdx){
         G.credits+=sellPrice;
         G.reserveFleet.splice(reserveIdx,1);
         try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:ship.nm+' (후보)'});}catch(e){}
-        notify(`💰 ${ship.nm} 매각 +₡${sellPrice.toLocaleString()} (파츠 ${returnedParts} · 크루 ${returnedCrew}${returnedCargo>0?' · 창고 '+returnedCargo:''} 회수)`,'gold');
+        notify(I18N.t('notify.shipSoldRecovered',{nm:ship.nm,cr:sellPrice.toLocaleString(),parts:returnedParts,crew:returnedCrew,cargo:returnedCargo>0?I18N.t('notify.fleetCargoRecovered',{n:returnedCargo}):''}),'gold');
         baekgu(`${ship.nm} 정비소에 ₡${sellPrice.toLocaleString()}에 매각했어. 파츠랑 크루는 잘 챙겨놨고.`);
         updateHUD();saveGame(true);
         rerenderShipOrGarage();
@@ -5856,7 +5856,7 @@ function upgradeAllCargo(){
   if((G.credits||0)<total){notify(I18N.t('notify.needCreditsTotal',{cost:total.toLocaleString()}),'err');return;}
   G.credits-=total;
   targets.forEach(x=>{x.s.cargoSlots=Math.min(80,(x.s.cargoSlots||4)+2);});
-  notify(`📦 ${targets.length}척 +2칸 확장 (-₡${total.toLocaleString()})`,'gold');
+  notify(I18N.t('notify.holdExpandedN',{n:targets.length,cr:total.toLocaleString()}),'gold');
   updateHUD();saveGame(true);
   try{rerenderTab(renderGarageTab);}catch(e){}
 }
@@ -5972,14 +5972,14 @@ function applyShipSkin(shipIdx, skinId){
   G.credits-=price;
   // catalogId 가 있으면 그것을, 없으면 id 를 사용 (URSA, CHIX_S 등의 별칭 처리)
   s._skinCatId=sk.catalogId||skinId;
-  notify(`✨ ${s.nm} → ${sk.nm} 홀로그램 스킨 적용 (-₡${price.toLocaleString()})`,'gold');
+  notify(I18N.t('notify.skinApplied',{nm:s.nm,skin:sk.nm,cr:price.toLocaleString()}),'gold');
   try{baekgu(`${s.nm} 의 홀로그램 외피를 ${sk.nm} 형태로 재구성했어. 능력치는 그대로니까 안심해.`);}catch(e){}
   updateHUD();saveGame(true);rerenderTab(renderGarageTab);
 }
 function removeShipSkin(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s._skinCatId)return;
   delete s._skinCatId;
-  notify(`↩ ${s.nm} 홀로그램 해제 — 원본 외관 복원`,'ok');
+  notify(I18N.t('notify.skinRemoved',{nm:s.nm}),'ok');
   try{baekgu(`${s.nm} 의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.`);}catch(e){}
   saveGame(true);rerenderTab(renderGarageTab);
 }
@@ -6158,7 +6158,7 @@ function doShipEnhance(shipIdx){
   const success=Math.random()<succRate;
   if(success){
     s._enhanceLv=nextLv;
-    notify(`✨ ${s.nm} +${nextLv} 강화 성공! 능력치 +${nextLv*5}%`,'gold');
+    notify(I18N.t('notify.enhanceSuccess',{nm:s.nm,lv:nextLv,pct:nextLv*5}),'gold');
     try{baekgu(`🎉 축하해! ${s.nm} 이(가) +${nextLv} 강화에 성공했어. 능력치가 ${nextLv*5}% 상승!`);}catch(e){}
     // 사용자 요청: 강화 성공 시 항상 폭죽 + 축하 효과음
     try{_fireFireworks();}catch(e){}
@@ -6179,10 +6179,10 @@ function doShipEnhance(shipIdx){
     const newLv=Math.max(0,curLv-regress);
     s._enhanceLv=newLv;
     if(regress>0){
-      notify(`💔 ${s.nm} +${nextLv} 강화 실패! ${regress}단계 후퇴 → +${newLv}`,'err');
+      notify(I18N.t('notify.enhanceFailRegress',{nm:s.nm,lv:nextLv,regress,newLv}),'err');
       try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:s.nm,regress,newLv}));}catch(e){}
     } else {
-      notify(`💔 ${s.nm} +${nextLv} 강화 실패 (후퇴 없음)`,'err');
+      notify(I18N.t('notify.enhanceFailNoRegress',{nm:s.nm,lv:nextLv}),'err');
       try{baekgu(I18N.t('baekgu.enhanceFailSimple'));}catch(e){}
     }
   }
