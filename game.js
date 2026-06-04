@@ -9986,7 +9986,7 @@ function _grantDebrisReward(ring,q,pid){
       const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
       addShipToFleet({id:'DBR_'+Date.now(),catId:def.catalogId||def.catId||def.id,nm:'회수 '+def.nm,tier:def.tier,maxHP:Math.floor(def.maxHP*.7),hp:Math.floor(def.maxHP*.5),maxSH:Math.floor(def.maxSH*.7),sh:0,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:55,parts:[],crewIds:[],cargoSlots:slotsByTier[def.tier]||5});
       notify(I18N.t('notify.shipSalvaged',{tier:def.tier,nm:def.nm}),'gold');
-      baekgu(`${def.nm} 회수 완료. 함대에 추가됐어.`);
+      baekgu(I18N.t('baekgu.shipSalvaged',{nm:def.nm}));
     }
   }
   // 퀘스트도 진행
@@ -10171,7 +10171,7 @@ function doCraft(recipeId){
         <div style="font-size:16px;color:${q.col}">능력치 ×${mult.toFixed(2)}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.equipFromInventory')}</div>`;
       notify(I18N.t('notify.craftComplete',{nm:rec.nm,label:q.label}),'gold');
-      baekgu(mult>=1.1?`대박! ${q.label}이야. 능력치 +${Math.round((mult-1)*100)}% 상승!`:mult<1.0?`아쉽지만 ${q.label}이 나왔어. 다시 도전해봐.`:`${rec.nm} 완성! ${q.label}.`);
+      baekgu(mult>=1.1?I18N.t('baekgu.craftJackpot',{label:q.label,pct:Math.round((mult-1)*100)}):mult<1.0?I18N.t('baekgu.craftPoor',{label:q.label}):I18N.t('baekgu.craftDone',{nm:rec.nm,label:q.label}));
     } else if(rec.type==='cargo'){
       const scDef=SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id);
       if(!scDef){notify(I18N.t('notify.holdDefMissing'),'err');return;}
@@ -10183,7 +10183,7 @@ function doCraft(recipeId){
         <div style="font-size:13px;color:var(--dim);margin-top:6px">화물 +${scDef.cargoBonus}칸 · 인벤토리에 보관됨</div>
         <div style="font-size:12px;color:var(--cyan);margin-top:6px">정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하세요</div>`;
       notify(I18N.t('notify.holdPartCrafted',{nm:scDef.nm}),'gold');
-      baekgu(`${scDef.nm} 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +${scDef.cargoBonus} 늘어나.`);
+      baekgu(I18N.t('baekgu.holdPartCrafted',{nm:scDef.nm,bonus:scDef.cargoBonus}));
     } else {
       const def=SHIP_CATALOG.find(s=>s.id===rec.id);
       if(!def){notify(I18N.t('notify.shipDataError'),'err');return;}
@@ -10212,7 +10212,7 @@ function doCraft(recipeId){
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
       notify(I18N.t('notify.shipBuilt',{nm:newShip.nm,label:q.label}),'gold');
-      baekgu(mult>=1.1?`함선 완성! ${q.label}이야. 편대 확인해봐!`:`${def.nm} 완성. ${q.label}.`);
+      baekgu(mult>=1.1?I18N.t('baekgu.shipCraftJackpot',{label:q.label}):I18N.t('baekgu.shipCraftDone',{nm:def.nm,label:q.label}));
     }
 
     // 제작 완료 팝업 — 해당 파츠/함선 이미지 표시 (사용자 요청)
@@ -12625,7 +12625,7 @@ function boardHeroToShip(hid){
   s.crewIds.push(hid);
   _syncShipCapacity(s,_stBefH);
   notify(I18N.t('notify.heroBoarded',{nm:HEROES[hid]?.nm,ship:s.nm}),'gold');
-  baekgu(`${HEROES[hid]?.nm} 탑승. 이제 그 함선 1.2배 강해졌어.`);
+  baekgu(I18N.t('baekgu.heroBoarded',{nm:HEROES[hid]?.nm}));
   rerenderShipOrGarage();saveGame(true);
 }
 function unassignHero(hid){
@@ -14498,7 +14498,7 @@ function onMapClick(e){
     if(Math.hypot(_p31p.sx-mx,_p31p.sy-my)<_p31r*2.5){
       if((G.act||1)<3){
         notify(I18N.t('notify.earthAct3PlusShort'),'warn');
-        baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT '+(G.act||1)+')');
+        baekgu(I18N.t('baekgu.earthBlockedAct',{act:G.act||1}));
         return;
       }
       if(!_isUrsaDefeated()){
@@ -14695,7 +14695,7 @@ function travelTo(){
     const _hubUnlocked=isPlanetHubUnlocked(pid);
     const chance=_hubUnlocked?calcTravelPirateChance(pd):100;
     if(Math.random()*100<chance){
-      baekgu(_hubUnlocked?'항로에서 뭔가 잡혔어. 조심해.':'⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!');
+      baekgu(_hubUnlocked?I18N.t('baekgu.routeSomething'):I18N.t('baekgu.planetNotUnlocked'));
       setTimeout(()=>triggerTravelPirate(pd),900);
       return;
     }
@@ -14712,17 +14712,17 @@ function travelTo(){
     const _hasBp=_bpId&&G.blueprints[_bpId];
     if(!G.planets[pid]._craftHinted&&_bpRec&&!_hasBp){
       // 첫 방문: 설계도 드롭 힌트
-      setTimeout(()=>baekgu(`${pd.nm}에서 퀘스트 클리어하면 ${_bpRec.nm} 설계도가 5% 확률로 드랍돼. 도전해봐!`),1500);
+      setTimeout(()=>baekgu(I18N.t('baekgu.bpDropHint',{nm:pd.nm,bp:_bpRec.nm})),1500);
       G.planets[pid]._craftHinted=true;
     } else if(_hasBp&&_fMat){
       // 설계도 보유 시 재료 힌트
       const have=G.materials[_fMatId]||0;
       const needed=(_bpRec?.mats||[]).find(m=>m.id===_fMatId)?.qty||0;
       if(needed>0&&have<needed){
-        setTimeout(()=>baekgu(`${_fMat.nm} ${have}/${needed}개. 이 행성 상점에서 살 수 있어. ${_bpRec.nm} 제작에 필요해.`),1500);
+        setTimeout(()=>baekgu(I18N.t('baekgu.materialAtShop',{mat:_fMat.nm,have,need:needed,bp:_bpRec.nm})),1500);
       }
     } else if(_fMat&&(G.materials[_fMatId]||0)<5){
-      setTimeout(()=>baekgu(`${pd.nm}은 ${_fMat.nm} 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.`),1500);
+      setTimeout(()=>baekgu(I18N.t('baekgu.materialOriginPlanet',{nm:pd.nm,mat:_fMat.nm})),1500);
     }
   }
 
@@ -17069,7 +17069,7 @@ function _finishCombat(){
                 G._earthLiberated=true;
                 saveGame(true);
                 // 엔딩 크레딧 후 — 보이드 페이즈로 자연스럽게 전환
-                baekgu(`${G.profile?.name||'사령관'}, 지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.`);
+                baekgu(I18N.t('baekgu.earthFreeNewEra',{nm:G.profile?.name||I18N.t('hof.commander')}));
               });
             }
           });
@@ -18281,7 +18281,7 @@ function _doMega(){
   G.voidEssence=(G.voidEssence||0)+1000;
   updateHUD();saveGame(true);
   notify(I18N.t('notify.megaCharge'),'gold');
-  if(typeof baekgu==='function')baekgu(`${G.profile?.name||'사령관'}, 메가 충전 완료! 다시 빠르게 진행해 봐.`);
+  if(typeof baekgu==='function')baekgu(I18N.t('baekgu.megaChargeDone',{nm:G.profile?.name||I18N.t('hof.commander')}));
 }
 function cheatGiveAllMega(){_cheatUnlock(_doMega);}
 function _doMaxAll(){
@@ -18300,7 +18300,7 @@ function _doMaxAll(){
   (PLANET_DEF||[]).forEach(p=>{if(!G.planets[p.id])G.planets[p.id]={fog:'A',owned:false,commerce:0};else G.planets[p.id].fog='A';});
   updateHUD();saveGame(true);
   notify(I18N.t('notify.megaChargeFull'),'gold');
-  if(typeof baekgu==='function')baekgu(`${G.profile?.name||'사령관'}, 맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!`);
+  if(typeof baekgu==='function')baekgu(I18N.t('baekgu.maxCheatApplied',{nm:G.profile?.name||I18N.t('hof.commander')}));
 }
 function cheatMaxAll(){_cheatUnlock(_doMaxAll);}
 // 엔딩 크레딧 수동 재생 (브라우저 콘솔에서 replayEnding() 호출 가능)
