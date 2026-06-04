@@ -1307,7 +1307,7 @@ function askBaekgu(){
     // 크레딧/돈
     {k:['크레딧','돈','자금','수입','벌','earn'],r:()=>I18N.t('chatbot.creditsTip')},
     // 무역
-    {k:['무역','특산물','상품','거래','trade'],r:()=>`행성마다 팩션 특산물이 달라. 전투력·명성 조건 충족해야 고급 특산물 구매 가능해. 싸게 사서 다른 행성에서 팔면 돼. 화물칸 늘리면 한번에 더 많이 실어.`},
+    {k:['무역','특산물','상품','거래','trade'],r:()=>I18N.t('chatbot.tradeTip')},
     // 함선
     {k:['함선','배','ship','거래소','중형','대형','전설기함'],r:()=>I18N.t('chatbot.shipShopTip')},
     // 파츠/장착
@@ -1364,7 +1364,7 @@ function askBaekgu(){
     const fallbacks=[
       I18N.t('chatbot.unknownAsk',{q}),
       I18N.t('chatbot.fallbackVague',{q}),
-      `좋은 질문인데 나도 애매해. '제작', '크루', '함선', '영웅' 같은 단어로 다시 물어봐.`
+      I18N.t('chatbot.unclearAsk')
     ];
     setTimeout(()=>baekgu(fallbacks[Math.floor(Math.random()*fallbacks.length)]),300);
   }
@@ -2868,8 +2868,8 @@ function renderMain(body){
 function getBaekguLine(){
   const lines=[I18N.t('ui.tutorialIntro',{nm:G.profile.name||I18N.t('ui.commander')}),
     I18N.t('chatbot.creditsLow',{c:G.credits.toLocaleString(),tail:G.credits<10000?I18N.t('chatbot.creditsLowTail'):I18N.t('chatbot.creditsOkTail')}),
-    `${G.heroes.length>0?I18N.t('ui.heroesJoining',{nms:G.heroes.map(h=>HEROES[h]?.nm||'').join(', ')}):'영웅 아직 없어. 행성 탐험해서 찾아.'}`,
-    `크루 ${G.crew.length}명 보유. ${G.crew.length<5?'더 뽑아야 해.':'이 정도면 됐어.'}`,
+    `${G.heroes.length>0?I18N.t('ui.heroesJoining',{nms:G.heroes.map(h=>HEROES[h]?.nm||'').join(', ')}):I18N.t('ui.noHeroesYet')}`,
+    I18N.t('chatbot.crewCount',{n:G.crew.length,tail:G.crew.length<5?I18N.t('chatbot.crewMore'):I18N.t('chatbot.crewEnough')}),
     '함선 파츠 장착하면 전투력 올라. 상점에서 구매해.'];
   return lines[G.turn%lines.length];
 }
@@ -3372,7 +3372,7 @@ function triggerTravelPirate(pd){
   const raidDef={
     id:'TRAVEL_PIRATE',nm:'항로 해적단',ring:ring,f:'PIRATE',hostile:true,tax:0,
     _enemies:Array.from({length:eCount},(_,i)=>({
-      id:`TP${i}`,nm:`항로 해적 ${I18N.t('ui.routePirateNames').split('|')[i%4]}`,tier:i%4===3?'중형':'소형',isEnemy:true,
+      id:`TP${i}`,nm:I18N.t('ui.routePiratePrefix',{nm:I18N.t('ui.routePirateNames').split('|')[i%4]}),tier:i%4===3?'중형':'소형',isEnemy:true,
       hp:eHP,maxHP:eHP,sh:Math.floor(eHP*.25),maxSH:Math.floor(eHP*.25),
       ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]
     }))
@@ -3547,7 +3547,7 @@ function triggerPirateRaid(pd){
   const raidDef={
     id:'PIRATE_RAID',nm:'해적단 기습',ring:ring,f:'PIRATE',hostile:true,tax:0,
     _enemies:Array.from({length:eCount},(_,i)=>({
-      id:`P${i}`,nm:`해적 ${I18N.t('ui.pirateShipNames').split('|')[i%5]}`,tier:_enemyTierBoost(['소형','중형','소형','대형','소형'][i%5]),isEnemy:true,
+      id:`P${i}`,nm:I18N.t('ui.piratePrefix',{nm:I18N.t('ui.pirateShipNames').split('|')[i%5]}),tier:_enemyTierBoost(['소형','중형','소형','대형','소형'][i%5]),isEnemy:true,
       hp:eHP,maxHP:eHP,sh:Math.floor(eHP*.2),maxSH:Math.floor(eHP*.2),
       ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]
     }))
@@ -5698,7 +5698,7 @@ function swapReserveShip(reserveIdx){
   // 위치 기반으로 재배치돼 뒤엉켜 보일 수 있음. 데이터 자체는 G.cargo에 그대로 있으나
   // 0-qty 잔존·동일 id 슬롯·material 카운터 불일치를 한 번 정리.
   try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate failed',e);}
-  const _msg=`🔄 ${activeShip.nm} → 임시창 (파츠 ${_partsReturned}개·크루 ${_crewReturned}명${_cargoReturned>0?'·창고 '+_cargoReturned+'개':''} 자동 해제) · ${reserveShip.nm} → 선발`;
+  const _msg=I18N.t('ui.swapToReserve',{active:activeShip.nm,p:_partsReturned,c:_crewReturned,cargo:_cargoReturned>0?I18N.t('ui.cargoReturned',{n:_cargoReturned}):'',reserve:reserveShip.nm});
   notify(_msg,'gold');
   baekgu(I18N.t('baekgu.reserveSwapSortie',{rs:reserveShip.nm,ac:activeShip.nm}));
   saveGame(true);
@@ -5732,7 +5732,7 @@ function discardReserveShip(reserveIdx){
   const returnedCrew=(ship.crewIds||[]).length;
   // 중앙 정렬 확인 모달 (브라우저 confirm 대신)
   const qLabel=qualityMul!==1?I18N.t('ui.qualityMult',{mul:qualityMul.toFixed(2)}):'';
-  const enhLabel=_enhLv>0?` × 강화 +${_enhLv} (×${_enhMul.toFixed(1)})`:'';
+  const enhLabel=_enhLv>0?I18N.t('ui.enhanceMul',{lv:_enhLv,mul:_enhMul.toFixed(1)}):'';
   openModal(I18N.t('modal.candidateShipSale'),
     `<div style="padding:14px;text-align:center">
       <div style="font-size:38px;margin-bottom:8px">💰</div>
@@ -9024,14 +9024,14 @@ function showVoidBossIntro(questRef){
 
   const lines=[
     // 1) 백구의 다급한 외침
-    {sp:'백구',tx:`${cmdName}! 하늘 봐!! 검은색... 검은색 함선이야! 본 적도 없는 형태인데... 저게 도대체 뭐야?!`,fx:'baekgu'},
+    {sp:'백구',tx:I18N.t('ui.blackShipApprox',{nm:cmdName}),fx:'baekgu'},
     // 2~5) 호러풍 글리치 통신
     {sp:I18N.t('ui.signalReceived'),tx:'지지직...... 치직.. 츠츠츠..... 지직...',fx:'static'},
     {sp:'???',tx:'...... 들리는가? .... 들리는...가....',fx:'glitch'},
     {sp:'???',tx:'지직— 보이드 행성의 총독권을 가져간 존재들이....... 그러한 가치가... 있는지...',fx:'glitch'},
     {sp:'???',tx:'츠츠즉— ...... 시험해 보겠다.',fx:'glitch'},
     // 6) 백구의 놀란 반응
-    {sp:'백구',tx:`헐... 헐!! 보이드 총독권을 우리가 가져간 걸 알고 있어?! 무슨... 무슨 존재야 도대체!!`,fx:'baekgu'},
+    {sp:'백구',tx:I18N.t('ui.voidGovernorReact'),fx:'baekgu'},
     // 7~N) 영웅들의 반응 (영입한 영웅들만)
     ...heroLines,
     // 마지막 위트 있는 마무리들
@@ -9105,7 +9105,7 @@ function showVoidBossOutro(){
     {sp:'블랙팔콘',tx:'그대들의 목표를 지켜보겠다. 하지만 보이드 문명에 선을 넘지는 말길 바란다..'},
     {sp:'블랙팔콘',tx:'선물 하나를 하지.. 은하계 가운데로 가볼 수 있다면 내 마지막 시험을 통과할 것이다.'},
     {sp:I18N.t('ui.signalReceived'),tx:'..... 메시지 전송 끝 .....',fx:'static'},
-    {sp:'백구',tx:`${cmdName}, 검은 함선이 사라졌어! 그리고... 어? 우리 격침된 함선들이 다시 살아났어!`},
+    {sp:'백구',tx:I18N.t('ui.victoryLine3',{nm:cmdName})},
     {sp:cmdName,tx:'은하계 가운데... 블랙홀 말이로군. "마지막 시험"이라... 보이드의 모든 별이 우리 손에 들어와야 한다는 뜻일지도.'}
   ];
   let _idx=0;
@@ -9264,7 +9264,7 @@ function _grantVoidBossRewards(){
     }
     showAcquisitionReport({
       title:'🌑 히든 보스 격파 — 보이드의 선물',
-      subtitle:`팔콘 ${_capCount}척 나포${_lucky?' (행운!)':''} · 신화 설계도 ${bpGranted.length}장 · 신화 파츠 5종 · VC ${_vcGrant}`,
+      subtitle:I18N.t('ui.falconCaptureSummary',{cap:_capCount,luck:_lucky?I18N.t('ui.luckySuffix'):'',bp:bpGranted.length,vc:_vcGrant}),
       items,color:'#cc66ff',sfx:null,
       congrats:'🌑 보이드의 인정! 1000년 만의 강자! 🌑'
     });
@@ -10568,7 +10568,7 @@ function showMatSlotTip(el,ev){
     }
   }
   lines.push(I18N.t('ui.materialOwned',{n:G.materials[matId]||0}));
-  if(c.buy>0) lines.push(`구매가: ${c.buy.toLocaleString()} CR`);
+  if(c.buy>0) lines.push(I18N.t('ui.buyPriceCR',{p:c.buy.toLocaleString()}));
   tip.textContent=lines.join('\n');
   tip.style.display='block';
   // 스테이지 transform:scale 보정
@@ -11559,7 +11559,7 @@ function renderGachaCards(results){
   } catch(e){}
   // 헤더 크레딧 업데이트
   const hdr=c.closest('.gc-result')?.querySelector('.gc-result-hdr div:last-child');
-  if(hdr)hdr.textContent=`현재 크루 ${G.crew.length}명 | VC ${G.voidCrystal} | ₡${G.credits.toLocaleString()}`;
+  if(hdr)hdr.textContent=I18N.t('chatbot.crewStatus',{n:G.crew.length,vc:G.voidCrystal,cr:G.credits.toLocaleString()});
   // 주점 패널이 활성 상태라면 상단 결과 카드 갱신을 위해 재렌더 (지연: 가챠 애니메이션 후)
   try{
     if(G._currentHubTab==='tavern'&&typeof rerenderTab==='function'&&typeof renderTavernView==='function'){
@@ -11983,7 +11983,7 @@ function showCodexCommanderModal(){
   ];
   const _nextHint=_nextHints[_stage]||_nextHints[_stage-1];
   // ── 인물 소개 · 배경 스토리 (대제독 주인공) ──
-  const _intro=`지구가 치크스 봉쇄 함대에 갇힌 시대, 변방 정거장에서 맨몸으로 시작해 함대를 일군 인물. 무역과 전투, 행성 경영을 넘나들며 인류의 마지막 반격을 준비하는 ${_co}의 총사령관이다.`;
+  const _intro=I18N.t('ui.commanderBio',{co:_co});
   const _story=I18N.t('story.intro',{nm:_nm,co:_co});
   const _rankStory=[
     '아직은 이름 없는 떠돌이 상인. 그러나 그 눈빛만큼은 이미 사령관의 것이다.',
@@ -12010,7 +12010,7 @@ function showCodexCommanderModal(){
     ${row('⚔️','전투력',`${_plv}`)}
     ${row('🌌','ACT 진행',I18N.t('ui.actLabel',{act:_act})+' '+(G._earthLiberated?I18N.t('ui.earthLib'):'')+(G._falconDefeated?I18N.t('ui.falconDefeat'):''))}
     ${row('⚔','전설 영웅',`${_heroes}/8 명 영입`)}
-    ${row('🛸','함대',`${_fleet}척 · 기함: ${_ship}`)}
+    ${row('🛸','함대',I18N.t('chatbot.fleetShip',{n:_fleet,ship:_ship}))}
     ${row('🪐','보유 행성',`${_ownedPl}개`)}
     ${row('💰',I18N.t('ui.fieldCredits'),`₡${_credits.toLocaleString()}`)}
     ${row('⏭️','다음 단계 조건',`<span style="color:#ffcc66">${_nextHint}</span>`)}
@@ -14846,7 +14846,7 @@ function _buildHostilePlanetEnemies(planetDef){
   const eHP=_clamped.eHP,eATK=_clamped.eATK,eINT=_clamped.eINT,eTEC=_clamped.eTEC;
   const tierFn=(i)=>_enemyTierBoost(i===0&&plv>=60?'대형':i<2&&plv>=30?'중형':'소형');
   return Array.from({length:eCount},(_,i)=>({
-    id:`E${i}`,nm:`치크스 ${I18N.t('ui.cheeksShipNames').split('|')[i%6]}`,
+    id:`E${i}`,nm:I18N.t('ui.cheeksShipFmt',{nm:I18N.t('ui.cheeksShipNames').split('|')[i%6]}),
     tier:tierFn(i),isEnemy:true,
     hp:Math.round(eHP*(i===0?1.3:1.0)),maxHP:Math.round(eHP*(i===0?1.3:1.0)),
     sh:Math.floor(eHP*(i===0?0.5:0.35)),maxSH:Math.floor(eHP*(i===0?0.5:0.35)),
@@ -17016,7 +17016,7 @@ function _finishCombat(){
         items.push({ic:'🏴',nm:s.nm,type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:'전투 중 무력화 후 편대 합류 — 정비소에서 크루 배치 및 충성도 관리 필요'});
       });
       if(_autoSoldCount>0){
-        items.push({ic:'💰',nm:`나포 거절 — 자동 매각 ${_autoSoldCount}척`,type:'즉시 환금',color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:'편대편성 「나포 거절」 ON 상태 → 나포 함선을 받지 않고 즉시 매각하여 크레딧으로 환산.'});
+        items.push({ic:'💰',nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:'즉시 환금',color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:'편대편성 「나포 거절」 ON 상태 → 나포 함선을 받지 않고 즉시 매각하여 크레딧으로 환산.'});
       }
       if(!_isBossWin){
         const hp=getPlanetHubProgress(pid),thr=_getHubThr(pid);
@@ -18493,7 +18493,7 @@ function _cloudStatusText(){
     if(d){
       const upMs=d.lastUploadAt?(Math.round((Date.now()-d.lastUploadAt)/1000)+'초 전'):'없음';
       diagLine+=`<div style="font-size:11px;color:var(--muted);margin-top:4px">${I18N.t('ui.uploadStats',{n:d.uploadCount||0,ts:upMs})}`;
-      if(d.queueSize>0)diagLine+=` · 큐 ${d.queueSize}건 대기`;
+      if(d.queueSize>0)diagLine+=I18N.t('ui.queueWaiting',{n:d.queueSize});
       if(d.lastUploadError)diagLine+=`<br><span style="color:var(--red)">${I18N.t('ui.lastUploadError',{msg:d.lastUploadError.slice(0,80)})}</span>`;
       diagLine+='</div>';
     }
@@ -18670,12 +18670,12 @@ function showBossVictoryEpilogue(onDone){
     {sp:'우르사 메이저',tx:'...크윽... 인정하지... 너희에게는 — 우리가 갖지 못한 그 무엇이 있었다...'},
     {sp:'우르사 메이저',tx:'고향으로... 돌아가야 할 이유. 인류의... 그 강한 의지... 그것이 우리를... 무너뜨렸다...'},
     {sp:'시스템',tx:'💥 적 기함 우르사 메이저 — 코어 붕괴 확인. 친위대 전멸. 워프 신호 소실.'},
-    {sp:'백구',tx:`${cmdName}!! 해냈어! 진짜로 해냈어!! 100년이야, 100년!! 폐지 줍던 내가 이 순간을 보다니!!`},
+    {sp:'백구',tx:I18N.t('ui.victoryLine1',{nm:cmdName})},
     {sp:'백구',tx:'지구 봉쇄가 풀린다! 통신 신호가 들어와! 가족들이... 사람들이... 다시 별을 본대!'},
     {sp:'시스템',tx:'📡 지구 통신망 복구. 전 인류로부터의 환호가 은하 전체로 송신되고 있습니다.'},
     {sp:cmdName,tx:'...드디어 끝났다. 100년의 침묵, 100년의 굴종 — 오늘 우리 손으로 청산했다.'},
     {sp:cmdName,tx:'고생했다, 전 함대. 영웅들, 크루들 — 너희 모두의 이름은 인류 역사에 영원히 새겨질 것이다.'},
-    {sp:'백구',tx:`${cmdName}! 우리 진짜 영웅이야! 100년 만에 자유로워진 지구가 우리 사령관을 부르고 있어!`},
+    {sp:'백구',tx:I18N.t('ui.victoryLine2',{nm:cmdName})},
     {sp:cmdName,tx:'우리는 인류의 길을 열었다. 이제부터 별들은 우리의 친구다 — 그리고 지구는, 영원히 자유다.'},
     {sp:'시스템',tx:'🌍 지구 봉쇄 완전 해제. 인류 해방 선언. — DESTINATION EARTH 완수.'}
   ];
@@ -19026,18 +19026,18 @@ function showEndingCredits(onDone){
     // 치크스 진실 회상
     Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
     // 기함 출항 전야
-    Object.assign({tx:`${flagshipName} 출항 전야. 영웅 8명, 동기화율 99.7%.\n100년 전 ${cmdName}을(를) 깨우던 그 숫자.`},BG),
+    Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName})},BG),
     // 6단 체인 회상
     Object.assign({tx:I18N.t('ui.diary6Chain')},BG),
     // 우르사 메이저 마지막 말
     Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
     // 사령관 짧은 호흡
     {sp:cmdName,col:'#ffd700',tx:'우리는 함께 어둠을 뚫었다.'},
-    {sp:cmdName,col:'#ffd700',tx:`이제 별들은 우리의 친구다. ${flagshipName}, 마지막 워프 — 집으로.`},
+    {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName})},
     // 일기 마지막 페이지 (D-day 100년 + 412일)
     Object.assign({tx:I18N.t('ui.diaryLand412')},BG),
     Object.assign({tx:I18N.t('ending.bg100Final')},BG),
-    {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:`다시 깨우지 마세요, ${cmdName}. 그래도, 깨우신다면 — 또 오겠습니다.`},
+    {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName})},
     {sp:'시스템',col:'#66ffcc',tx:'─ DESTINATION EARTH ─'},
     {sp:'시스템',col:'#66ffcc',tx:'─ 인류 해방 완수 ─'}
   ];
