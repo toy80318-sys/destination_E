@@ -8661,7 +8661,7 @@ function doGacha(n,useCr,crCost,minRarity){
         // 신규 크루 추가
         delete sc._swapCandidate;delete sc._swapTarget;
         G.crew.push(sc);
-        notify(`🔄 ${tgt.nm} → ${sc.nm} 교체 영입!`,'gold');
+        notify(I18N.t('notify.crewSwapRecruit',{old:tgt.nm,new:sc.nm}),'gold');
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
         saveGame(true);
         baekgu(`${sc.nm} 합류! ${tgt.nm}은 하선했어.`);
@@ -8684,7 +8684,7 @@ function doGacha(n,useCr,crCost,minRarity){
     _heroRolls.forEach((hid,i)=>{
       setTimeout(()=>{try{showHeroRecruit(hid);}catch(e){console.error(e);}},900+i*500);
     });
-    notify(`⭐ 전설 영웅 ${_heroRolls.length}명 등장!`,'gold');
+    notify(I18N.t('notify.legendHeroAppear',{n:_heroRolls.length}),'gold');
   }
   // 🎉 영웅/전설 크루 등장 처리 (사용자 요청)
   //  · 영웅(H): 팝업 없이 알림(토스트)만 — 연속 구매가 끊기지 않도록
@@ -8693,7 +8693,7 @@ function doGacha(n,useCr,crCost,minRarity){
   const legendResults=results.filter(r=>!r._rejected&&!r._heroRoll&&(r.rarity==='L'||r.rarity==='S'));
   if(heroResults.length>0){
     try{AudioMgr.playSfx('notify',{vol:0.85,cooldown:50});}catch(e){}
-    notify(`⭐ 영웅급 크루 ${heroResults.length}명 영입! (${heroResults.map(c=>c.nm).join(', ')})`,'gold');
+    notify(I18N.t('notify.heroRecruitedN',{n:heroResults.length,names:heroResults.map(c=>c.nm).join(', ')}),'gold');
   }
   if(legendResults.length>0){
     try{_fireFireworks();}catch(e){}  // 전설 등장 — 폭죽 + 효과음
@@ -8761,7 +8761,7 @@ function dismissLowestCrew(n){
         const idx=G.crew.findIndex(x=>x.id===c.id);
         if(idx>=0)G.crew.splice(idx,1);
       });
-      notify(`🚪 크루 ${targets.length}명 강제 내보냄 — 되돌리기 가능`,'ok');
+      notify(I18N.t('notify.crewForceDismissed',{n:targets.length}),'ok');
       rerenderTab(renderCrewTab);saveGame(true);
     },cls:'btn-red'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
@@ -8783,7 +8783,7 @@ function assignCrewFromCrewTab(cid){
   const _newC=_allP.find(x=>x.id===cid);
   const _newCost=getCrewSlotCost(_newC);
   const _usedSlots=getTotalSlotUsed(s);
-  if(_usedSlots+_newCost>_maxSlots){notify(`${s.nm} 슬롯 부족 (${_usedSlots}+${_newCost}칸 > 최대 ${_maxSlots}칸)`,'err');return;}
+  if(_usedSlots+_newCost>_maxSlots){notify(I18N.t('notify.slotShort',{nm:s.nm,used:_usedSlots,need:_newCost,max:_maxSlots}),'err');return;}
   // 다른 함선에서 자동 이전
   G.fleet.forEach(sh=>{if(sh.crewIds){const i=sh.crewIds.indexOf(cid);if(i>=0)sh.crewIds.splice(i,1);}});
   const _stBefACT=getShipStats(s);
@@ -8851,7 +8851,7 @@ function investPlanet(pid){
   const cost=Math.floor(_planetBaseTax(pd)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
   if(G.credits<cost){notify(I18N.t('notify.investCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;st.commerce=lv+1;
-  updateHUD();notify(`📈 ${pd.nm} Lv${lv+1} 업그레이드! ₡${calcTaxFor(pid).toLocaleString()}/턴`,'gold');
+  updateHUD();notify(I18N.t('notify.planetUpgrade',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}),'gold');
   baekgu(`${pd.nm} 상업 레벨 ${lv+1}. 세금 ₡${calcTaxFor(pid).toLocaleString()} 들어온다.`);
   saveGame(true);
   // 현재 활성 탭에 맞춰 재렌더 (탭 강제 전환 방지)
@@ -9163,7 +9163,7 @@ function _grantVoidBossRewards(){
     _questGrantedCr=Math.round((_qRef.rewardCr||0)*_mult);
     G.credits+=_questGrantedCr;
     _qRef.status='claimed';
-    notify(`💰 [히든] ₡${_questGrantedCr.toLocaleString()} 크레딧 수령! (×${_mult} 명성 배율)`,'gold');
+    notify(I18N.t('notify.hiddenCreditsGot',{cr:_questGrantedCr.toLocaleString(),mult:_mult}),'gold');
   }
   // ─── 보상 1: 팔콘 스카우트 강제 나포 (운 좋으면 2척) ───
   //    · 나포 거절 설정과 무관하게 무조건 편대에 추가 (히든 보상)
@@ -9224,8 +9224,8 @@ function _grantVoidBossRewards(){
   G.voidEssence=(G.voidEssence||0)+_veGrant;
   // ─── 알림 + 백구 대사 ───
   const _luckMsg=_lucky?' (🍀 행운! 2척)':'';
-  notify(`🏴 블랙팔콘 ${_capCount}척 강제 나포!${_luckMsg}`,'pur');
-  if(bpGranted.length>0)notify(`📜 신화 설계도 ${bpGranted.length}개 + 신화 파츠 ${mythicParts.length}종 획득!`,'gold');
+  notify(I18N.t('notify.blackfalconCaptured',{n:_capCount,luck:_luckMsg}),'pur');
+  if(bpGranted.length>0)notify(I18N.t('notify.mythicBpAndParts',{bp:bpGranted.length,parts:mythicParts.length}),'gold');
   notify(`💎 VC +${_vcGrant} · ⚛️ VE +${_veGrant.toLocaleString()}`,'pur');
   baekgu(I18N.t('baekgu.voidGifts',{cap:_capCount,luck:_lucky?I18N.t('baekgu.luckyTwo'):'',bp:bpGranted.length,vc:_vcGrant,ve:_veGrant.toLocaleString()}));
   // ─── 획득 보고서 모달 ───
@@ -9292,8 +9292,8 @@ function acceptQuest(pid,idx){
   // 명성 기반 고VE 퀘스트 수락 제한 (히든 퀘스트는 제외 — 보상 VE가 매우 크지만 의도된 콘텐츠)
   const _qrep=G.reputation||0;
   if(q.type!=='void_boss'){
-    if(q.rewardVe>=40&&_qrep<200){notify(`🔒 VE ${q.rewardVe} 퀘스트는 명성 200 이상 필요 (현재 명성 ${_qrep})`,'err');return;}
-    if(q.rewardVe>=30&&_qrep<100){notify(`🔒 VE ${q.rewardVe} 퀘스트는 명성 100 이상 필요 (현재 명성 ${_qrep})`,'err');return;}
+    if(q.rewardVe>=40&&_qrep<200){notify(I18N.t('notify.veQuestNeedRep200',{ve:q.rewardVe,rep:_qrep}),'err');return;}
+    if(q.rewardVe>=30&&_qrep<100){notify(I18N.t('notify.veQuestNeedRep100',{ve:q.rewardVe,rep:_qrep}),'err');return;}
   }
   const _fromTavern=G._currentHubTab==='tavern';
   // 히든 보스: 대사 팝업 → 전투 진입
@@ -9305,7 +9305,7 @@ function acceptQuest(pid,idx){
   }
   q.status='active';
   if(q.type==='gather')notify(I18N.t('notify.questAcceptGather',{n:q.required}),'ok');
-  else if(q.type==='explore')notify('🔭 탐색 임무 수락 — 탐색 버튼을 눌러 임무를 수행하세요','ok');
+  else if(q.type==='explore')notify(I18N.t('notify.exploreAccept'),'ok');
   else if(q.type==='delivery'){var tnm=(PLANET_DEF.find(function(p){return p.id===q.targetId;})||{nm:I18N.t('notify.adjacentPlanet')}).nm;notify(I18N.t('notify.questAcceptDelivery',{nm:tnm}),'ok');}
   else if(q.type==='buy'){const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;notify(I18N.t('notify.questAcceptBuy',{nm:_cn,n:q.required}),'ok');}
   else notify(I18N.t('notify.questAcceptCombat'),'ok');
@@ -9439,7 +9439,7 @@ function completeQuest(pid,idx){
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--red);font-weight:bold;margin-top:6px">⚠️ 크루 명단이 가득 찼습니다 — 확인 후 최하위 크루와 교체 여부를 선택하세요</div>
         </div>`;
-        notify(`⭐ 전설 동료 ${lucky.nm} 획득! 크루 교체 필요`,'gold');
+        notify(I18N.t('notify.legendCompGotNeedSwap',{nm:lucky.nm}),'gold');
         baekgu(`${lucky.nm}가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.`);
       } else {
         G.crew.push(newCrew);
@@ -9450,7 +9450,7 @@ function completeQuest(pid,idx){
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--yellow);margin-top:3px">${I18N.t('ui.boardCrewFromList')}</div>
         </div>`;
-        notify(`⭐ 전설 동료 ${lucky.nm} 합류!`,'gold');
+        notify(I18N.t('notify.legendCompJoined',{nm:lucky.nm}),'gold');
         baekgu(`${lucky.nm}가 합류했어! 전설급이야. 함선에 태워봐.`);
       }
     }
@@ -9468,7 +9468,7 @@ function completeQuest(pid,idx){
         <div style="font-size:12px;color:var(--dim);margin-top:3px">${p.desc||''}</div>
         <div style="font-size:12px;color:#ff88ff;margin-top:3px">함선 거래소 → 파츠 탭에서 장착하세요</div>
       </div>`;
-      notify(`✦ 신화 파츠 ${p.nm||partId} 획득!`,'pur');
+      notify(I18N.t('notify.mythicPartAcquired',{nm:p.nm||partId}),'pur');
       baekgu(I18N.t('baekgu.mythicPart',{nm:p.nm||partId}));
     }
   } else if(roll<legendRate+mythicRate+setRate){
