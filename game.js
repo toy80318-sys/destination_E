@@ -12650,7 +12650,7 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
   }
   G.heroes.push(heroId);closeModal();notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[heroId]?.ic,nm:HEROES[heroId]?.nm}),'pur');baekgu(I18N.t('baekgu.heroJoined',{nm:HEROES[heroId]?.nm}));
   // 장영실: 모든 행성 안개 제거
-  if(heroId==='H02'){applyJangYeongsilEffect();notify('⚙️ 장영실 효과: 은하계 전 행성 탐색 완료!','gold');}
+  if(heroId==='H02'){applyJangYeongsilEffect();notify(I18N.t('notify.jangYeongsilEffect'),'gold');}
   saveGame(true);
 }
 function applyJangYeongsilEffect(){
@@ -13569,7 +13569,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
         G.blueprints[_bpId]=true;
         const _rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===_bpId):null;
         dropTxt='📜 설계도 <b style="color:#cc66ff">'+(_rec?.nm||_bpId)+'</b>';
-        notify('📜 설계도 획득: '+(_rec?.nm||_bpId),'gold');
+        notify(I18N.t('notify.bpAcquiredFrom',{nm:_rec?.nm||_bpId}),'gold');
       } else if(_rMy<(0.30+_dropBonus)&&typeof QUEST_MYTHIC_PARTS!=='undefined'&&QUEST_MYTHIC_PARTS.length>0){
         // MMB01(이휘소 방정식 미사일) +5%p 가중치 (사용자 요청)
         const partId=_pickQuestMythicPart();
@@ -13579,7 +13579,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
           const inv=G.inventory.find(i=>i.id===partId);
           if(inv)inv.qty++;else G.inventory.push({id:partId,nm:p.nm,qty:1});
           dropTxt='✦ 신화 파츠 <b style="color:#ff88ff">'+(p.nm||partId)+'</b>';
-          notify('✦ 신화 파츠: '+(p.nm||partId),'gold');
+          notify(I18N.t('notify.mythicPartLabel',{nm:p.nm||partId}),'gold');
         }
       } else if(_rLg<(0.50+_dropBonus)&&typeof QUEST_SET_PARTS!=='undefined'&&QUEST_SET_PARTS.length>0){
         const partId=QUEST_SET_PARTS[Math.floor(Math.random()*QUEST_SET_PARTS.length)];
@@ -13588,7 +13588,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
         if(inv)inv.qty++;else G.inventory.push({id:partId,qty:1});
         const p=PARTS.find(x=>x.id===partId);
         dropTxt=(p?.rarity==='set'?'◈ 세트':'⭐ 전설')+' 파츠 <b style="color:var(--gold)">'+(p?.nm||partId)+'</b>';
-        notify((p?.rarity==='set'?'◈ 세트':'⭐ 전설')+' 파츠: '+(p?.nm||partId),'gold');
+        notify(I18N.t('notify.partWithRarity',{kind:p?.rarity==='set'?I18N.t('ui.setRare'):I18N.t('ui.legendRare'),nm:p?.nm||partId}),'gold');
       }
     }
     if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}
@@ -13683,7 +13683,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
       if(_isRush&&!state._rushAnnounced){
         state._rushAnnounced=true;
         _baekguSay('anger2','마지막 20초! 적 함대 증원이야!',2800,true);
-        try{notify('⚠️ 마지막 20초 — 적 증원 2배!','warn');}catch(e){}
+        try{notify(I18N.t('notify.last20Seconds'),'warn');}catch(e){}
       }
     }
 
@@ -13991,7 +13991,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
             if(!G.inventory)G.inventory=[];
             const inv=G.inventory.find(i=>i.id===lt.id);
             if(inv)inv.qty++;else G.inventory.push({id:lt.id,nm:lt.nm,qty:1});
-            notify(`📦 파츠 획득: ${lt.nm}`,'gold');
+            notify(I18N.t('notify.partGotMinigame',{nm:lt.nm}),'gold');
             try{AudioMgr.playSfx('gacha_pull',{vol:0.5});}catch(e){}
             try{_baekguSay('happy','파츠 줍었어! 정비소에서 장착!',2000,false);}catch(e){}
           }catch(e){}
@@ -14100,7 +14100,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
     requestAnimationFrame(tick);
   }
   setTimeout(()=>{cv.focus();tick();},500);
-  notify('⚠️ 소행성대 진입 — 기함 출격!','warn');
+  notify(I18N.t('notify.asteroidEntry'),'warn');
   try{baekgu(I18N.t('baekgu.asteroidBelt'));}catch(e){}
 }
 try{if(typeof window!=='undefined')window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;}catch(e){}
@@ -14407,7 +14407,7 @@ function onMapClick(e){
         if(!G._earthLiberated){
           // 지구 해방 전 — 우르사 메이저 먼저
           baekgu(I18N.t('baekgu.blackHoleGateLocked'));
-          notify('🌑 [잠김] 먼저 지구 해방(우르사 메이저 격파) 필요','err');
+          notify(I18N.t('notify.locked'),'err');
         } else {
           // 지구 해방됨 → 블랙홀에서 블랙팔콘(히든 보스) 직접 도전 (P30 퀘스트 놓쳐도 진행 가능)
           openModal(I18N.t('modal.voidAbyssSignal'),
@@ -14497,7 +14497,7 @@ function onMapClick(e){
     const _p31r=Math.max(8,12*G.mapZoom);
     if(Math.hypot(_p31p.sx-mx,_p31p.sy-my)<_p31r*2.5){
       if((G.act||1)<3){
-        notify('🌍 지구 진입은 ACT 3부터 가능합니다','warn');
+        notify(I18N.t('notify.earthAct3PlusShort'),'warn');
         baekgu('지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT '+(G.act||1)+')');
         return;
       }
@@ -14675,7 +14675,7 @@ function travelTo(){
   const goBtn=document.getElementById('map-go');if(goBtn)goBtn.disabled=true;
   const fl=document.getElementById('map-float');if(fl)fl.style.display='none';
   boostLoyalty('travel'); // ← 충성도 증가 (이동)
-  randomBaekgu('travel');notify(`🚀 ${pd.nm} 도착`,'ok');
+  randomBaekgu('travel');notify(I18N.t('notify.arrived',{nm:pd.nm}),'ok');
   if(pd.hostile&&!G.planets[pd.id]?.hostile_cleared){setTimeout(()=>showHostilePlanetBriefing(pd),800);return;}
   if(pd.hostile&&G.planets[pd.id]?.hostile_cleared){notify(I18N.t('notify.mergedArrived',{nm:pd.nm}),'ok');}
   // ─── 소행성대 미니게임 트리거 — P29 오리온 균열·P30 제타 레티쿨리 출입 시 ─
@@ -14875,7 +14875,7 @@ function showHostilePlanetBriefing(planetDef){
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} 백구: "스펙 확인했지? ${advisor.t.includes('유리')?'밀어붙여!':advisor.t.includes('대등')?'한 방 한 방 신중하게!':'더 강해진 다음에 와도 늦지 않아!'}"</div>`,
     [
       {txt:'⚔️ 전투 시작!',fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
-      {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify('🚀 후퇴 — 다른 행성으로 이동해 주세요','warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
+      {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify(I18N.t('notify.retreatOther'),'warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
     ],{wide:true}
   );
 }
@@ -14918,7 +14918,7 @@ function _showShakedownPopup(planetDef,proceed){
       closeModal();
       G.credits=Math.max(0,(G.credits||0)-demand);
       try{updateHUD();}catch(e){}
-      notify(`💰 통행료 ₡${demand.toLocaleString()} 지불 — 전투를 회피했습니다`,'gold');
+      notify(I18N.t('notify.tollPaidAvoid',{cost:demand.toLocaleString()}),'gold');
       try{baekgu(I18N.t('baekgu.tollPaidPrideHit'));}catch(e){}
       try{saveGame(true);}catch(e){}
     }});
@@ -15072,7 +15072,7 @@ function fleeCombat(){
   try{changeReputation(-_repLoss);}catch(e){}
   const _tecNote=_penMul<0.95?` (엔진 우위 ${Math.round((1-_penMul)*100)}% 감면)`:'';
   addCombatLog(I18N.t('combat.fleeWithPenalty',{pen:_pen.toLocaleString(),rep:_repLoss,tec:_tecNote}),'err');
-  notify(`🚀 도망 성공. ₡${_pen.toLocaleString()} 손실 / 명성 -${_repLoss}${_tecNote}`,'err');
+  notify(I18N.t('notify.fleeAlt',{cr:_pen.toLocaleString(),rep:_repLoss,tec:_tecNote}),'err');
   try{baekgu(I18N.t('baekgu.fledStronger'));}catch(e){}
   // 아군 함대 HP 동기화 (전투 중 데미지 보존)
   try{G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});}catch(e){}
@@ -16798,12 +16798,12 @@ function _finishCombat(){
     if((combatState.turn||0)<1){
       console.warn('[BlackHole] auto-win on turn 0 detected — ignoring (likely a regen/state bug). enemies count:',combatState.enemies?.length);
       addCombatLog(I18N.t('combat.noEnemyFleetInvalid'),'warn');
-      notify('⚠️ 블랙홀 전투 무효 — 재진입 필요','err');
+      notify(I18N.t('notify.blackHoleInvalid'),'err');
       try{setTimeout(()=>{combatState=null;hubTab('map');},800);}catch(e){}
       return;
     }
     addCombatLog(I18N.t('combat.blackHoleLionDefeat'),'gold');
-    notify('🌌 블랙홀 함대 격파 — 최종 시험 통과!','gold');
+    notify(I18N.t('notify.blackHoleClear'),'gold');
     G.fleet.forEach(s=>{const cs=combatState.players.find(p=>p.id===s.id);if(cs){s.hp=Math.max(1,cs.hp);if(cs.sh!=null)s.sh=cs.sh;}});
     try{_grantBlackHoleRewardsSilent();}catch(e){console.warn(e);}
     G._act5Complete=true;
