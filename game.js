@@ -1794,9 +1794,14 @@ function crewImgSrc(c){
   if(!c)return`img/quests/explore_F01.png`;
   // 전설 영웅(8인)은 전용 초상(hero01~08) 사용 — 크루 배치 목록 등에서 캐릭터 이미지 정상 표시
   const _isHero=c.isHero||(c.id&&typeof HEROES!=='undefined'&&HEROES[c.id]);
-  if(_isHero&&c.nm&&typeof CHAR_PORTRAITS!=='undefined'&&CHAR_PORTRAITS[c.nm]){
-    const _h=CHAR_PORTRAITS[c.nm];
-    return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_h):_h;
+  if(_isHero){
+    // 1순위: 영웅 ID 기반 매핑 — 언어 무관 (EN/KO 모두 동일하게 hero01~08.png)
+    //   c.id 또는 c._heroRoll(가챠 결과) 어느 쪽이든 매칭
+    const _hid=c.id||c._heroRoll;
+    let _h=(_hid&&typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[_hid])||null;
+    // 2순위: 한국어 이름 기반 (KO 모드 호환). EN 모드에선 c.nm가 영문이라 매칭 실패해도 위에서 처리됨.
+    if(!_h&&c.nm&&typeof CHAR_PORTRAITS!=='undefined')_h=CHAR_PORTRAITS[c.nm]||null;
+    if(_h)return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_h):_h;
   }
   // 일반 크루 초상: 퀘스트 의뢰 이미지 임시 매핑(_crewQuestImg)으로 통일 — 명단·가챠 영입·함선 배치 모두 동일
   const _src=(typeof _crewQuestImg==='function')?_crewQuestImg(c):`img/crew/${c.cl||'Merch'}_m.png`;
@@ -8532,7 +8537,7 @@ function doGacha(n,useCr,crCost,minRarity){
         const _hid=_unrecruitedHeroes[Math.floor(Math.random()*_unrecruitedHeroes.length)];
         G.planetHeroCount[_curPid]=_phCountG+1;
         // 영웅은 G.heroes에 추가하므로 특수 플래그로 표시 (이후 모달 트리거)
-        results.push({_heroRoll:_hid,nm:HEROES[_hid].nm,ic:HEROES[_hid].ic,rarity:'S',cl:HEROES[_hid].cl||'Pilot',isHero:true});
+        results.push({_heroRoll:_hid,id:_hid,nm:HEROES[_hid].nm,ic:HEROES[_hid].ic,rarity:'S',cl:HEROES[_hid].cl||'Pilot',isHero:true});
         continue;  // 일반 크루 처리 건너뜀
       }
       // 전설은 QUEST_LEGEND_CREW 풀에서
@@ -18906,43 +18911,43 @@ function showEndingCredits(onDone){
   const BG={sp:'백구의 일기',col:'#9ee7ff',ic:'📓'};
   function _bgPage(tx){return Object.assign({tx},BG);}
   if(_hl.includes('H01')){
-    heroEndings.push({nm:'이순신',ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
-    heroBlocks.push({sp:'이순신',col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
+    heroEndings.push({id:'H01',nm:'이순신',ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H01?.nm)||'이순신',col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h01.diary')));
   }
   if(_hl.includes('H02')){
-    heroEndings.push({nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
-    heroBlocks.push({sp:'장영실',col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
+    heroEndings.push({id:'H02',nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H02?.nm)||'장영실',col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h02.diary',{flagshipName})));
   }
   if(_hl.includes('H03')){
-    heroEndings.push({nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
-    heroBlocks.push({sp:'광개토대왕',col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
+    heroEndings.push({id:'H03',nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H03?.nm)||'광개토대왕',col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h03.diary',{cmdName})));
   }
   if(_hl.includes('H04')){
-    heroEndings.push({nm:'유리 가가린',ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
-    heroBlocks.push({sp:'유리 가가린',col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
+    heroEndings.push({id:'H04',nm:'유리 가가린',ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H04?.nm)||'유리 가가린',col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h04.diary')));
   }
   if(_hl.includes('H05')){
-    heroEndings.push({nm:'호레이쇼 넬슨',ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
-    heroBlocks.push({sp:'호레이쇼 넬슨',col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
+    heroEndings.push({id:'H05',nm:'호레이쇼 넬슨',ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H05?.nm)||'호레이쇼 넬슨',col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h05.diary')));
   }
   if(_hl.includes('H06')){
-    heroEndings.push({nm:'아인슈타인',ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
-    heroBlocks.push({sp:'아인슈타인',col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroEndings.push({id:'H06',nm:'아인슈타인',ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H06?.nm)||'아인슈타인',col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
     heroBlocks.push(_bgPage(I18N.t('ending.h06.diary')));
   }
   if(_hl.includes('H07')){
-    heroEndings.push({nm:'니콜라 테슬라',ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
-    heroBlocks.push({sp:'니콜라 테슬라',col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
+    heroEndings.push({id:'H07',nm:'니콜라 테슬라',ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H07?.nm)||'니콜라 테슬라',col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h07.diary')));
   }
   if(_hl.includes('H08')){
-    heroEndings.push({nm:'마르코 폴로',ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
-    heroBlocks.push({sp:'마르코 폴로',col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
+    heroEndings.push({id:'H08',nm:'마르코 폴로',ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
+    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H08?.nm)||'마르코 폴로',col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h08.diary',{shipName})));
   }
 
@@ -19103,10 +19108,14 @@ function showEndingCredits(onDone){
         ${heroEndings.length>0?`
           <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">${I18N.t('ui.recruitedHeroesNoCap',{n:heroEndings.length})}</div>
           ${heroEndings.map(h=>{
-            const _hImg=(typeof CHAR_PORTRAITS!=='undefined'&&CHAR_PORTRAITS[h.nm])||'';
+            // 1순위: 영웅 ID 기반 매핑 — 언어 무관 (EN/KO 동일하게 hero01~08.png)
+            const _hImg=(h.id&&typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[h.id])
+                       ||(typeof CHAR_PORTRAITS!=='undefined'&&CHAR_PORTRAITS[h.nm])||'';
+            // 표시 이름은 현재 언어의 HEROES[id].nm 우선 (EN 모드에서 영문명 노출)
+            const _dispNm=(h.id&&typeof HEROES!=='undefined'&&HEROES[h.id]&&HEROES[h.id].nm)||h.nm;
             return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px">
-              ${_hImg?`<img src="${_hImg}" alt="${h.nm}" style="width:56px;height:56px;border-radius:50%;border:2px solid ${h.col};object-fit:cover;background:rgba(0,0,0,.4);box-shadow:0 0 14px ${h.col}66" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>${h.ic}</span>'">`:`<span style="font-size:30px">${h.ic}</span>`}
-              <div style="font-size:19px;color:${h.col};font-weight:bold;letter-spacing:1px">${h.ic} ${h.nm}</div>
+              ${_hImg?`<img src="${_hImg}" alt="${_dispNm}" style="width:56px;height:56px;border-radius:50%;border:2px solid ${h.col};object-fit:cover;background:rgba(0,0,0,.4);box-shadow:0 0 14px ${h.col}66" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>${h.ic}</span>'">`:`<span style="font-size:30px">${h.ic}</span>`}
+              <div style="font-size:19px;color:${h.col};font-weight:bold;letter-spacing:1px">${h.ic} ${_dispNm}</div>
             </div>`;
           }).join('')}
           <div style="height:40px"></div>
