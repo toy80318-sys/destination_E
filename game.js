@@ -1890,7 +1890,7 @@ function _formatEnemyPreview(enemies,opts){
       <tbody>${rows}</tbody>
     </table>
     <div style="margin-top:6px;padding-top:5px;border-top:1px dashed rgba(255,255,255,.08);display:flex;justify-content:space-between;font-size:11px;color:var(--dim)">
-      <span>총 HP: <span style="color:var(--yellow)">${totHP.toLocaleString()}</span></span>
+      <span>${I18N.t('ui.totalHP')}<span style="color:var(--yellow)">${totHP.toLocaleString()}</span></span>
       <span>총 ATT: <span style="color:var(--red)">${totATK.toLocaleString()}</span></span>
       <span>아군 평균: <span style="color:var(--cyan)">HP ${fp.hp} / ATT ${fp.atk}</span></span>
     </div>
@@ -4620,10 +4620,10 @@ function renderShipTab(body){
         <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.clickToReplace')}</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoEquipPartsFlagship()">🔧 파츠<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoEquipPartsEven()">🔧 파츠<br>${I18N.t('ui.evenDistribution')}</button>
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoAssignCrewFlagship()">👥 크루<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoAssignCrewEven()">👥 크루<br>${I18N.t('ui.evenDistribution')}</button>
+        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
+        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
       </div>
     </div>`;
 
@@ -11340,7 +11340,7 @@ function renderTavernView(body){
         ${I18N.t('ui.unknownAppearedCode',{thing:I18N.t('ui.oneBlackSmall')})}<br>
         ${I18N.t('ui.blackfalconNickname',{call:I18N.t('ui.callMeThat')})}<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
-        ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
+        ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">${I18N.t('ui.zetaPlaza')}</span>에서만 접수 가능."
       </div>
       <div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.08);font-size:12px">${_statusLbl}</div>
     </div>`;
@@ -11712,7 +11712,7 @@ function renderAuctionView(body){
               <span style="font-size:13px;font-weight:bold;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nm}</span>
               <span style="font-size:9px;color:${f.col};border:1px solid ${f.col};border-radius:3px;padding:0 4px">${f.nm}</span>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--dim)">상업 Lv</span><span style="color:var(--gold);font-weight:bold">${lv}/10</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--dim)">${I18N.t('ui.commerceLv')}</span><span style="color:var(--gold);font-weight:bold">${lv}/10</span></div>
             <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden"><div style="width:${lv*10}%;height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00)"></div></div>
             <div style="font-size:11px;color:var(--green);font-weight:bold;margin-top:auto">💰 ₡${tax.toLocaleString()}/턴</div>
             ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>📈 투자 Lv${lv+1} (₡${investCost.toLocaleString()})</button>`:'<span style="font-size:10px;color:var(--gold);text-align:center;padding:3px">⭐ 최대레벨</span>'}
@@ -17778,7 +17778,7 @@ function showCredits(){
 
       <!-- 기획 / 개발 -->
       <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.plan')}</div>
-      <div style="font-size:20px;color:#fff;margin-bottom:50px">이완구 (TOY LEE)</div>
+      <div style="font-size:20px;color:#fff;margin-bottom:50px">${I18N.t('ui.toyLee')}</div>
 
       <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.dev')}</div>
       <div style="font-size:17px;line-height:2;margin-bottom:50px">Toy Lee<br>Claude (Anthropic)</div>
@@ -17937,7 +17937,7 @@ function _renderHofTab(tab){
   if(!window.CloudSave||!CloudSave.listHallOfFame){
     body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
       ☁️ CloudSave 모듈이 로드되지 않았습니다<br>
-      <div style="color:var(--dim);font-size:12px;margin-top:8px">Firebase SDK 차단·네트워크 문제일 수 있습니다</div>
+      <div style="color:var(--dim);font-size:12px;margin-top:8px">${I18N.t('ui.firebaseBlockedMsg')}</div>
       <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">${I18N.t('ui.tryAgain')}</button>
     </div>`;
     return;
@@ -18804,8 +18804,8 @@ function showFinalEndingCredits(){
       <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.commanderTitle')}</div>
       <div style="font-size:24px;margin-bottom:40px;color:#fff">${cmdName} <span style="color:#aaa;font-size:14px;margin-left:6px">— ${co}</span></div>
 
-      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:10px">전속 AI</div>
-      <div style="font-size:20px;margin-bottom:40px">🐕 백구 — AI 진돗개</div>
+      <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.exclusiveAI')}</div>
+      <div style="font-size:20px;margin-bottom:40px">${I18N.t('ui.baekguAI')}</div>
 
       ${heroList.length>0?`
         <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.recruitedHeroesN',{n:heroList.length})}</div>
@@ -18853,7 +18853,7 @@ function showFinalEndingCredits(){
         ${I18N.t('credits.testerThanks')}
       </div>
 
-      <div style="font-size:14px;color:#666;margin-bottom:8px">— 그리고 모든 인류에게 —</div>
+      <div style="font-size:14px;color:#666;margin-bottom:8px">${I18N.t('ui.toAllHumanity')}</div>
       <div style="font-size:24px;color:#fff;letter-spacing:8px;margin-bottom:80px">${I18N.t('ui.thankYou')}</div>
 
       <div style="font-size:13px;color:#444;letter-spacing:4px">— THE END —</div>
@@ -18861,9 +18861,9 @@ function showFinalEndingCredits(){
       <div style="height:30vh"></div>
     </div>
     <!-- 건너뛰기 (우측 하단, 항상 노출) -->
-    <button id="_final-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">건너뛰기 →</button>
+    <button id="_final-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">${I18N.t('ui.skipArrow')}</button>
     <!-- 크레딧 종료 후 표시될 메인 복귀 버튼 (중앙) -->
-    <button id="_final-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22));border:2px solid #ffd700;color:#ffd700;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(255,215,0,.45),inset 0 0 20px rgba(255,215,0,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,215,0,.32),rgba(255,150,80,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22))';this.style.transform='translateX(-50%)'">🌍 게임으로 돌아가기</button>`;
+    <button id="_final-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22));border:2px solid #ffd700;color:#ffd700;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(255,215,0,.45),inset 0 0 20px rgba(255,215,0,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,215,0,.32),rgba(255,150,80,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,150,80,.22))';this.style.transform='translateX(-50%)'">${I18N.t('ui.backToGame')}</button>`;
   document.body.appendChild(overlay);
   requestAnimationFrame(()=>{overlay.style.opacity='1';});
   const _close=()=>{
@@ -18969,9 +18969,9 @@ function showEndingCredits(onDone){
     <!-- 크레딧 (롤링) -->
     <div id="_end-credits" style="position:absolute;left:0;right:0;bottom:-100%;width:100%;text-align:center;color:#fff;font-size:18px;line-height:2.2;z-index:2;opacity:0;transition:opacity 1s"></div>
     <!-- 건너뛰기 버튼 (우측 하단) -->
-    <button id="_end-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">건너뛰기 →</button>
+    <button id="_end-skip" style="position:absolute;right:24px;bottom:24px;padding:10px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px;z-index:10">${I18N.t('ui.skipArrow')}</button>
     <!-- 크레딧 종료 후 표시될 메인 복귀 버튼 (중앙) -->
-    <button id="_end-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22));border:2px solid #66ddff;color:#66ddff;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(102,221,255,.45),inset 0 0 20px rgba(102,221,255,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(102,221,255,.32),rgba(102,255,180,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22))';this.style.transform='translateX(-50%)'">🌍 게임으로 돌아가기</button>
+    <button id="_end-return" style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);padding:18px 52px;background:linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22));border:2px solid #66ddff;color:#66ddff;border-radius:10px;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;z-index:11;box-shadow:0 0 40px rgba(102,221,255,.45),inset 0 0 20px rgba(102,221,255,.1);display:none;opacity:0;transition:opacity 1.5s ease-in" onmouseover="this.style.background='linear-gradient(135deg,rgba(102,221,255,.32),rgba(102,255,180,.34))';this.style.transform='translateX(-50%) translateY(-2px)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(102,221,255,.18),rgba(102,255,180,.22))';this.style.transform='translateX(-50%)'">${I18N.t('ui.backToGame')}</button>
     <style>
       @keyframes _endStars{from{background-position:0 0}to{background-position:-2000px 0}}
       @keyframes _endRoll{from{transform:translateY(0)}to{transform:translateY(-200%)}}
@@ -19097,8 +19097,8 @@ function showEndingCredits(onDone){
         <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:6px">${I18N.t('ui.commanderTitle')}</div>
         <div style="font-size:24px;margin-bottom:40px;color:#fff">${cmdName} <span style="color:#aaa;font-size:14px;margin-left:6px">— ${co}</span></div>
 
-        <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:6px">전속 AI</div>
-        <div style="font-size:20px;margin-bottom:40px">🐕 백구 — AI 진돗개</div>
+        <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:6px">${I18N.t('ui.exclusiveAI')}</div>
+        <div style="font-size:20px;margin-bottom:40px">${I18N.t('ui.baekguAI')}</div>
 
         ${heroEndings.length>0?`
           <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">${I18N.t('ui.recruitedHeroesNoCap',{n:heroEndings.length})}</div>
@@ -19160,7 +19160,7 @@ function showEndingCredits(onDone){
           AI 협업 · Claude (Anthropic)
         </div>
 
-        <div style="font-size:14px;color:#666;margin-bottom:8px">— 그리고 모든 인류에게 —</div>
+        <div style="font-size:14px;color:#666;margin-bottom:8px">${I18N.t('ui.toAllHumanity')}</div>
         <div style="font-size:22px;color:#fff;letter-spacing:8px;margin-bottom:80px">${I18N.t('ui.thankYou')}</div>
 
         <div style="font-size:13px;color:#444;letter-spacing:4px">— THE END —</div>
