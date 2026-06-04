@@ -2039,6 +2039,26 @@ I18N.register({
   'ui.voidEssenceTip':              { ko: '보이드 에센스(VE)는 7링 균열지대(P27~P30) 탐험 보상. VE 1000마다 경매 추가 낙찰 1개. 보이드 허브는 활동 8회(F01:3회) 달성 시 해금 — 퀘스트·잔해탐색·해적격파·턴종료가 모두 카운트. 전설기함도 판매해.',
                                      en: 'Void Essence (VE) is a 7-ring rift (P27~P30) exploration reward. Every 1000 VE grants 1 extra auction win. Void Hub unlocks after 8 activities (F01: 3) — quests, wreck searches, pirate defeats, turn ends all count. Sells Legend Flagships too.' },
 
+  // ── G80: 잔여 HUD/모달 라벨 ────────────────────────────────────────
+  'ui.curShield':                  { ko: 'SHD+{int} 실드+{maxSH}', en: 'SHD+{int} Shield+{maxSH}' },
+  'ui.dedupRedistrib':              { ko: ' · 중복정리 {removed}→재배분 {redistributed}', en: ' · Dedup {removed}→Redistribute {redistributed}' },
+  'ui.storageReturned':              { ko: ' · 창고 {n}', en: ' · Storage {n}' },
+  'ui.currentLocText':              { ko: '📍 현재 위치', en: '📍 Current Location' },
+  'ui.noRouteText':                 { ko: '❌ 항로 없음', en: '❌ No Route' },
+  'ui.canMoveCost':                  { ko: '₡{cost} | 이동 가능', en: '₡{cost} | Movable' },
+  'ui.moveOK':                       { ko: '✅ 이동 ₡{cost}', en: '✅ Move ₡{cost}' },
+  'ui.craftMatsIncluded':            { ko: '⚗️ 제작 재료 포함', en: '⚗️ Crafting mats included' },
+  'ui.shipPickerPlaceholder':        { ko: '-- 함선 선택 --', en: '-- Select Ship --' },
+  'ui.stageProgress':                { ko: '(단계 {stage}/3) — 이름·명성·전투력·ACT 진행도에 따라 자동 승급', en: '(Stage {stage}/3) — Auto-promotes by name · fame · power · ACT progress' },
+  'ui.feedbackTemplate':              { ko: '[데스티네이션 어스 피드백]\n아이디: {id}\n버전: {ver}\nTURN: {turn}\n\n{msg}\n\n→ toy80318@gmail.com 으로 보내주세요',
+                                       en: '[Destination Earth Feedback]\nID: {id}\nVersion: {ver}\nTURN: {turn}\n\n{msg}\n\n→ Please send to toy80318@gmail.com' },
+  'ui.availableTargetsTitle':        { ko: '🧭 구매 가능 행성:', en: '🧭 Buyable planets:' },
+  'ui.ursaPostLine':                 { ko: '우르사 메이저: "나보다 더 큰 위협이 있다."\n{cmdName}의 알겠다는, 100년 무게였다.',
+                                       en: 'Ursa Major: "There is a greater threat than I."\n{cmdName}\'s "Understood" carried the weight of 100 years.' },
+  'ui.allFleetWaiting':              { ko: '알았어 알았어. 자, 진지 모드 ON. 전 함대 — {cmdName} 사령관의 지시를 기다린다!',
+                                       en: 'Alright, alright. Serious mode ON. Whole fleet — awaiting Commander {cmdName}\'s orders!' },
+  'ui.partVariantStripped':          { ko: '■{name}', en: '■{name}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },

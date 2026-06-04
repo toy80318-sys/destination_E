@@ -2844,7 +2844,7 @@ function renderMain(body){
     <div style="background:rgba(13,26,42,.97);border-top:1px solid var(--bdr);flex-shrink:0">
       <div style="display:flex;align-items:center;gap:14px;padding:4px 16px;overflow-x:auto;height:36px;border-bottom:1px solid rgba(0,243,255,.1)">
         <span style="color:var(--dim);font-size:12px">📋</span>
-        <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':`TURN ${G.turn} | ${pd?.nm||''} 정박 중`}</span>
+        <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">🎬 엔딩 다시 보기</button>`:''}
         ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="우르사 메이저 보스전을 강제로 시작/재도전 (지구 접근 시 보스 미출현 복구용)">☠️ 우르사 재도전</button>`:''}
@@ -3847,7 +3847,7 @@ function renderTradeTab(body){
     <div data-scroll-id="trade-buy" style="flex:1;overflow-y:auto;min-height:0;padding:10px 14px 16px 10px;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div style="color:var(--cyan);font-size:13px;font-weight:bold">🛒 구매 가능 특산물 <span style="color:var(--dim);font-weight:normal;font-size:12px">${I18N.t('tip.outOfStockNoRestock')}</span></div>
-        ${(()=>{const matAvail=availComm.filter(c=>c.material);if(!matAvail.length)return'';return`<span style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--gold)">⚗️ 제작 재료 포함</span>`;})()}
+        ${(()=>{const matAvail=availComm.filter(c=>c.material);if(!matAvail.length)return'';return`<span style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--gold)">${I18N.t('ui.craftMatsIncluded')}</span>`;})()}
       </div>
       ${availComm.length===0
         ?`<div style="color:var(--dim);font-size:14px;text-align:center;padding:30px 0">${I18N.t('ui.stockGoneMoveOn')}</div>`
@@ -7828,7 +7828,7 @@ function pickCrewModal(shipIdx){
     const cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
     const m2=RARITY_MULT[c.rarity]||1;
     const bn=[cb2.att?'ATT+'+Math.round(cb2.att*m2):'',cb2.int2?'SHD+'+Math.round(cb2.int2*m2):'',cb2.tec?'ENG+'+Math.round(cb2.tec*m2):''].filter(Boolean).join(' ');
-    const lbl=onThis?'✅ 탑승 중':curShip?`📍 현재: ${curShip.nm}`:'';
+    const lbl=onThis?'✅ 탑승 중':curShip?I18N.t('hud.currentShip',{nm:curShip.nm}):'';
     html3+=`<button ${onThis?'disabled':''} onclick="${onThis?'':(`assignCrewById(${shipIdx},'${c.id}');showShipDetailModal(${shipIdx})`)}" style="display:flex;align-items:center;gap:7px;width:100%;background:rgba(0,0,0,.4);border:1px solid ${onThis?'rgba(255,255,255,.15)':col};border-radius:8px;padding:7px 8px;cursor:${onThis?'default':'pointer'};text-align:left;opacity:${onThis?.5:1}" ${onThis?'':`onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'"`}>`
       +imgOrEmoji(imgSrc3,c.ic||'🧑',36,36,`border-radius:50%;flex-shrink:0;border:1px solid ${col}`)
       +`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${c.nm}</div>`
@@ -7989,7 +7989,7 @@ function pickCrewForSlot(shipIdx){
     const cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
     const m2=RARITY_MULT[c.rarity]||1;
     const bn=[cb2.att?'ATT+'+Math.round(cb2.att*m2):'',cb2.int2?'SHD+'+Math.round(cb2.int2*m2):'',cb2.tec?'ENG+'+Math.round(cb2.tec*m2):''].filter(Boolean).join(' ');
-    const lbl=onThis?'✅ 이미 탑승 중':curShip?`📍 현재: ${curShip.nm}`:'';
+    const lbl=onThis?'✅ 이미 탑승 중':curShip?I18N.t('hud.currentShip',{nm:curShip.nm}):'';
     html3+=`<button ${onThis?'disabled':''} onclick="${onThis?'':(`assignCrewById(${shipIdx},'${c.id}');closeModal()`)}" style="display:flex;align-items:center;gap:7px;width:100%;min-width:0;background:rgba(0,0,0,.4);border:1px solid ${onThis?'rgba(255,255,255,.15)':col};border-radius:8px;padding:7px 8px;cursor:${onThis?'default':'pointer'};text-align:left;opacity:${onThis?.5:1}" ${onThis?'':`onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'"`}>`
       +imgOrEmoji(imgSrc3,c.ic||'🧑',36,36,`border-radius:50%;flex-shrink:0;border:1px solid ${col}`)
       +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${c.nm}</div>`
@@ -8348,7 +8348,7 @@ function renderCrewTab(body){
         <div style="margin-top:4px">
           ${assignedShip?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">🛸 ${assignedShip.nm}</div>`:''}
           <select id="cs_${c.id}" style="font-size:10px;background:var(--panel);border:1px solid ${assignedShip?'var(--cyan)':'var(--bdr)'};color:white;border-radius:3px;padding:1px;width:100%">
-            ${G.fleet.length===1?'':`<option value="">-- 함선 선택 --</option>`}
+            ${G.fleet.length===1?'':`<option value="">${I18N.t('ui.shipPickerPlaceholder')}</option>`}
             ${G.fleet.map((sh,si)=>`<option value="${si}" ${assignedShip===sh||(G.fleet.length===1&&si===0)?'selected':''}>[${sh.tier}] ${sh.nm} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
           </select>
           <div style="display:flex;gap:4px;margin-top:4px">
@@ -9033,7 +9033,7 @@ function showVoidBossIntro(questRef){
     {sp:cmdName,tx:'좋다. 보이드든 뭐든 — 시험에 응하지. 우리는 100년 봉쇄를 깬 함대다.'},
     {sp:'백구',tx:'근데 솔직히 말해서, 저 통신 음성... 어디서 많이 들어본 것 같아. 호러 영화에서.'},
     {sp:cmdName,tx:'백구야, 분위기 좀 깨지 말아줘. 가뜩이나 무서운데.'},
-    {sp:'백구',tx:`알았어 알았어. 자, 진지 모드 ON. 전 함대 — ${cmdName} 사령관의 지시를 기다린다!`}
+    {sp:'백구',tx:I18N.t('ui.allFleetWaiting',{cmdName})}
   ];
   let _idx=0;
   function _renderLine(){
@@ -10555,7 +10555,7 @@ function showMatSlotTip(el,ev){
     const _hasAllHeroes=_allHeroIds.every(h=>(G.heroes||[]).includes(h));
     const explored=allPl.filter(p=>G.planets[p.id]?.fog==='A');
     if(_hasAllHeroes){
-      lines.push(explored.length>0?`🧭 구매 가능 행성:\n  ${explored.map(p=>p.nm).join('\n  ')}`:'🧭 발견된 행성 없음');
+      lines.push(explored.length>0?I18N.t('ui.availableTargetsTitle')+'\n  '+explored.map(p=>p.nm).join('\n  '):'🧭 발견된 행성 없음');
     } else {
       lines.push(`📍 팩션: ${fac}계열 행성`);
       if(allPl.length>0) lines.push(`  (${allPl.slice(0,3).map(p=>p.nm).join(', ')}${allPl.length>3?'…':''})`);
@@ -12000,7 +12000,7 @@ function showCodexCommanderModal(){
     ${row('🪪','인물 소개',_intro)}
     ${row('📖','배경 스토리',`<span style="line-height:1.7">${_story}</span>`)}
     ${_rankStory?row('🎖️','현재 위상',`<span style="color:${_stageCol};font-style:italic">${_rankStory}</span>`):''}
-    ${row('🎯','진행 단계',`<span style="color:${_stageCol};font-weight:bold">${_stageLb}</span> (단계 ${_stage}/3) — 이름·명성·전투력·ACT 진행도에 따라 자동 승급`)}
+    ${row('🎯','진행 단계',`<span style="color:${_stageCol};font-weight:bold">${_stageLb}</span> ${I18N.t('ui.stageProgress',{stage:_stage}).split(') ')[1]}`)}
     ${row('⭐','명성',`${_rep.toLocaleString()}`)}
     ${row('⚔️','전투력',`${_plv}`)}
     ${row('🌌','ACT 진행',`ACT ${_act} ${G._earthLiberated?'· 🌍 지구 해방':''}${G._falconDefeated?' · 🌑 블랙팔콘 격파':''}`)}
@@ -14541,7 +14541,7 @@ function updateMapInfo(p,fog){
       <br>세율: <span style="color:var(--gold)">₡${p.tax.toLocaleString()}/턴</span>
       ${st?.owned?`<br>🏠 보유 Lv${st.commerce}`:''}
       ${p.hero&&!G.heroes.includes(p.hero)?`<br><span style="color:var(--purple)">✨ 영웅 영입 가능</span>`:''}
-      <br>${blink?`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`:conn?`<span style="color:var(--green)">✅ 이동 ₡${cost.toLocaleString()}</span>`:isCur?`<span style="color:var(--yellow)">📍 현재 위치</span>`:`<span style="color:var(--red)">❌ 항로 없음</span>`}</div>`;}
+      <br>${blink?`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`:conn?`<span style="color:var(--green)">${I18N.t('ui.moveOK',{cost:cost.toLocaleString()})}</span>`:isCur?`<span style="color:var(--yellow)">${I18N.t('ui.currentLocText')}</span>`:`<span style="color:var(--red)">${I18N.t('ui.noRouteText')}</span>`}</div>`;}
   }
   if(goBtn){goBtn.disabled=isCur||!conn||fog==='L';}
   if(costEl)costEl.textContent=conn&&!isCur?`이동 비용 ₡${cost.toLocaleString()}${blink?' ⚡':''}`:isCur?'현재 위치':'';
@@ -14610,7 +14610,7 @@ function updateFloatBtn(p,fog,conn,isCur,cost){
   const _blink=hasBlinkOnAll();
   if(st2){
     if(_blink)st2.innerHTML=`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`;
-    else if(conn)st2.innerHTML=`<span style="color:var(--green)">₡${cost.toLocaleString()} | 이동 가능</span>`;
+    else if(conn)st2.innerHTML=`<span style="color:var(--green)">${I18N.t('ui.canMoveCost',{cost:cost.toLocaleString()})}</span>`;
     else st2.innerHTML=`<span style="color:var(--red)">${I18N.t('ui.noRouteBlink')}</span>`;
   }
   const mfgo=document.getElementById('mf-go');if(mfgo)mfgo.disabled=!conn&&!_blink;
@@ -17057,7 +17057,7 @@ function _finishCombat(){
         showBossCelebration(()=>{
           showAcquisitionReport({
             title:'🏆 최종 전투 승리 — 지구 해방 보고서',
-            subtitle:`우르사 메이저 격파 — TURN ${G.turn} · 100년 봉쇄 종식`,
+            subtitle:I18N.t('hud.ursaDefeated',{turn:G.turn}),
             items:_buildReport(),
             color:'#ffd700',
             sfx:null,
@@ -18067,7 +18067,7 @@ function _copyFeedback(){
   const{id,msg}=_gatherFeedback();
   if(!msg){notify(I18N.t('notify.enterContent'),'err');return;}
   _saveFeedbackLocal(id,msg);
-  const text=`[데스티네이션 어스 피드백]\n아이디: ${id||'(미입력)'}\n버전: ${window._GAME_VER||'1.1'}\nTURN: ${G?.turn||0}\n\n${msg}\n\n→ toy80318@gmail.com 으로 보내주세요`;
+  const text=I18N.t('ui.feedbackTemplate',{id:id||I18N.t('ui.notEntered'),ver:window._GAME_VER||'1.1',turn:G?.turn||0,msg});
   try{
     navigator.clipboard.writeText(text).then(()=>{
       notify(I18N.t('notify.clipboardCopiedToEmail'),'ok');
@@ -19025,7 +19025,7 @@ function showEndingCredits(onDone){
     // 6단 체인 회상
     Object.assign({tx:`6단 체인을 마지막으로 보던 순간.\n알면서도 갔다. 그것이 인간의 방식이었다.`},BG),
     // 우르사 메이저 마지막 말
-    Object.assign({tx:`우르사 메이저: "나보다 더 큰 위협이 있다."\n${cmdName}의 알겠다는, 100년 무게였다.`},BG),
+    Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
     // 사령관 짧은 호흡
     {sp:cmdName,col:'#ffd700',tx:'우리는 함께 어둠을 뚫었다.'},
     {sp:cmdName,col:'#ffd700',tx:`이제 별들은 우리의 친구다. ${flagshipName}, 마지막 워프 — 집으로.`},
