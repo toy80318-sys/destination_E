@@ -11053,7 +11053,7 @@ function _maybeBlackMarketAmbush(result,tier){
         `<div style="padding:18px;text-align:center">
           <div style="font-size:46px">💀</div>
           <div style="color:var(--red);font-size:18px;font-weight:bold;margin-top:6px">${I18N.t('ui.ambushLose')}</div>
-          <div style="color:var(--txt);font-size:13px;margin-top:4px">방금 획득한 ${_mysteryRewardName(result)}을(를)<br>${I18N.t('ui.piratesTookIt')}</div>
+          <div style="color:var(--txt);font-size:13px;margin-top:4px">${I18N.t('ui.piratesTookAfter',{nm:_mysteryRewardName(result),lost:I18N.t('ui.piratesTookIt')})}</div>
           <div style="color:var(--dim);font-size:11px;margin-top:8px">${I18N.t('ui.ambushStats',{plv:_plv,ambush:_ambushPower,pct:Math.round(_winChance*100)})}</div>
         </div>`,
         [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderTavernView);},cls:'btn-sm'}]);
@@ -19128,7 +19128,7 @@ function showEndingCredits(onDone){
         <div style="max-width:760px;margin:0 auto 60px;font-size:15px;color:#e8e8e8;line-height:2.05;text-align:left;padding:0 28px;word-break:keep-all">
 
           <div style="text-align:center;color:#aaa;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 프롤로그 · 봉쇄의 100년 —</div>
-          <p style="margin:0 0 22px">지구는 한 번 별을 향해 손을 뻗다 거둬졌다. 우르사 메이저의 패권이 태양계로 밀려오던 그날, 인류는 마지막 화물선에 자기 자신을 실어 떠났다. 봉쇄선이 닫혔고, 라디오는 침묵했고, ${cmdName}은(는) 프록시마 b의 동면실에서 눈을 감았다. — 100년이 흘렀다.</p>
+          <p style="margin:0 0 22px">${I18N.t('ui.openingProseFull',{nm:cmdName})}</p>
 
           <div style="text-align:center;color:#ffd87a;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제1막 · 각성 —</div>
           <p style="margin:0 0 22px">${I18N.t('ui.endingShipProse',{ship:shipName,co})}</p>
@@ -19140,7 +19140,7 @@ function showEndingCredits(onDone){
           <p style="margin:0 0 22px">은하의 끝자락에서 100년·1,000년·1,700년을 잠들어 있던 자들이 깨어났다. ${heroEndings.length>0?heroEndings.map(h=>h.nm).slice(0,8).join(' · '):'이순신·장영실·광개토대왕·가가린·넬슨·아인슈타인·테슬라·마르코 폴로'}. 인류 역사상 가장 비현실적인 함대 회의가 ${cmdName}의 함교에서 매일 열렸다.</p>
 
           <div style="text-align:center;color:#ff8866;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제4막 · 치크스의 진실 —</div>
-          <p style="margin:0 0 22px">7링의 균열을 따라가던 끝에 진실이 드러났다. <b style="color:#cc66ff">${I18N.t('ui.chixWereMirror')}</b>. 우리가 100년 전에 풀어둔 자가학습 군집의 변종. 우리가 만든 것이 우리를 가뒀다. 그날 밤 ${cmdName}은(는) 조타를 놓았고, 백구는 옆에 있었다.</p>
+          <p style="margin:0 0 22px">${I18N.t('ui.chixMirrorProse',{title:I18N.t('ui.chixWereMirror'),nm:cmdName})}</p>
 
           <div style="text-align:center;color:#ffd700;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제5막 · 지구 해방 —</div>
           <p style="margin:0 0 22px">${I18N.t('ui.endingFlagshipProse',{ship:flagshipName})}</p>

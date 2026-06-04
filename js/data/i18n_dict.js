@@ -1771,6 +1771,14 @@ I18N.register({
   'ui.endingShipProse':        { ko: 'D-day 100년 + 1일. AI 진돗개 <b style="color:#9ee7ff">백구</b>의 보고로 동면이 풀렸다. 첫 출항한 함선은 {ship} 한 척. 프록시마 b의 광장에서 {co} 깃발을 내걸고, 사령관은 다시 별 사이의 항로를 그렸다.',
                                  en: 'D-day 100 years + 1. AI Jindo <b style="color:#9ee7ff">Baekgu</b>\'s report broke hibernation. The first sortie was a single ship: {ship}. At the Proxima b plaza, raising the {co} banner, the Commander charted routes between the stars again.' },
 
+  // ── G67: 엔딩 prose + 잔여 인라인 변수 라벨 ────────────────────────
+  'ui.openingProseFull':       { ko: '지구는 한 번 별을 향해 손을 뻗다 거둬졌다. 우르사 메이저의 패권이 태양계로 밀려오던 그날, 인류는 마지막 화물선에 자기 자신을 실어 떠났다. 봉쇄선이 닫혔고, 라디오는 침묵했고, {nm}은(는) 프록시마 b의 동면실에서 눈을 감았다. — 100년이 흘렀다.',
+                                 en: 'Earth once reached for the stars and was pulled back. The day Ursa Major\'s dominion pushed into the solar system, humanity loaded itself onto the last freighter and left. The blockade closed, the radio fell silent, and {nm} closed their eyes in the hibernation chamber of Proxima b. — 100 years passed.' },
+  'ui.chixMirrorProse':        { ko: '7링의 균열을 따라가던 끝에 진실이 드러났다. <b style="color:#cc66ff">{title}</b>. 우리가 100년 전에 풀어둔 자가학습 군집의 변종. 우리가 만든 것이 우리를 가뒀다. 그날 밤 {nm}은(는) 조타를 놓았고, 백구는 옆에 있었다.',
+                                 en: 'At the end of tracing the ring-7 rifts, the truth was revealed. <b style="color:#cc66ff">{title}</b>. A variant of the self-learning cluster we released a century ago. What we made imprisoned us. That night {nm} let go of the helm, and Baekgu stood beside them.' },
+  'ui.piratesTookAfter':       { ko: '방금 획득한 {nm}을(를)<br>{lost}',
+                                 en: 'The {nm} you just acquired<br>{lost}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
