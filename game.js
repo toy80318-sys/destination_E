@@ -1876,7 +1876,7 @@ function _formatEnemyPreview(enemies,opts){
   return`<div style="background:rgba(255,60,60,.06);border:1px solid rgba(255,60,60,.3);border-radius:8px;padding:8px 10px;margin-bottom:10px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
       <div style="color:var(--red);font-size:13px;font-weight:bold">🎯 적 함선 스펙 (${total}척)</div>
-      <div style="font-size:11px;color:var(--dim)">사령관 전투력 <span style="color:var(--cyan)">${_plv}</span> · 강화 ×${getLevelMult().toFixed(2)}</div>
+      <div style="font-size:11px;color:var(--dim)">${I18N.t('ui.commanderPowerLine',{plv:_plv,mult:getLevelMult().toFixed(2)})}</div>
     </div>
     <table style="width:100%;border-collapse:collapse;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace">
       <thead><tr style="color:var(--dim);font-size:10px;text-align:left">
@@ -11337,7 +11337,7 @@ function renderTavernView(body){
         "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
         보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
         ${I18N.t('ui.unknownAppearedCode',{thing:I18N.t('ui.oneBlackSmall')})}<br>
-        현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>${I18N.t('ui.callMeThat')}<br>
+        ${I18N.t('ui.blackfalconNickname',{call:I18N.t('ui.callMeThat')})}<br>
         목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
         ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">제타 레티쿨리(P30) 광장</span>에서만 접수 가능."
       </div>
@@ -19143,7 +19143,7 @@ function showEndingCredits(onDone){
           <p style="margin:0 0 22px">7링의 균열을 따라가던 끝에 진실이 드러났다. <b style="color:#cc66ff">${I18N.t('ui.chixWereMirror')}</b>. 우리가 100년 전에 풀어둔 자가학습 군집의 변종. 우리가 만든 것이 우리를 가뒀다. 그날 밤 ${cmdName}은(는) 조타를 놓았고, 백구는 옆에 있었다.</p>
 
           <div style="text-align:center;color:#ffd700;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제5막 · 지구 해방 —</div>
-          <p style="margin:0 0 22px">${flagshipName} 출항. 영웅 8명의 동기화율은 99.7% — 100년 전 사령관을 깨우던 그 숫자였다. 우르사 메이저는 마지막 순간 말했다. <i style="color:#ddd">"나보다 더 큰 위협이 있다."</i> 보스의 외피가 무너지던 그 자정에, 지구의 봉쇄선도 함께 풀렸다.</p>
+          <p style="margin:0 0 22px">${I18N.t('ui.endingFlagshipProse',{ship:flagshipName})}</p>
 
           <div style="text-align:center;color:#cc88ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제6막 · 보이드의 심연 —</div>
           <p style="margin:0 0 22px">우르사가 남긴 한 마디는 좌표였다. 그곳에는 별빛이 닿지 않는 검은 균열이 있었고, 단 한 줄의 메시지가 떠 있었다. — <i style="color:#fff">"누구도 여기서 살아서 나가지 못한다. 네가 원하는 걸 해라."</i> 우리는 갔다. 알면서도 갔다. 그것이 인간의 방식이었다. 그리고 우리는 — 돌아왔다.</p>
@@ -19443,7 +19443,7 @@ function showDevMenu(){
       <div style="color:var(--dim)">현재 상태: ${isAdmin?'<span style="color:var(--green)">✅ 관리자 ('+u.email+')</span>':`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
     </div>
     ${!isAdmin?`
-      <div style="font-size:13px;color:var(--txt);margin-bottom:8px">데이터 조회는 <span style="color:var(--cyan)">${ADMIN_EMAIL}</span> 으로 Google 로그인 후 가능합니다.</div>
+      <div style="font-size:13px;color:var(--txt);margin-bottom:8px">${I18N.t('ui.dataLookupVia',{email:ADMIN_EMAIL})}</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="cloudGoogleSignIn()">🔗 Google로 로그인 (관리자 계정)</button>
     `:''}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">

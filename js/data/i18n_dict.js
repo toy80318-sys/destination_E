@@ -1730,6 +1730,16 @@ I18N.register({
   'ui.noStatInfo':             { ko: '<div style="font-size:12px;color:var(--dim)">정보 없음</div>',
                                  en: '<div style="font-size:12px;color:var(--dim)">No info</div>' },
 
+  // ── G63: 잔여 라벨 + 엔딩 prose ──────────────────────────────────
+  'ui.commanderPowerLine':     { ko: '사령관 전투력 <span style="color:var(--cyan)">{plv}</span> · 강화 ×{mult}',
+                                 en: 'Commander Power <span style="color:var(--cyan)">{plv}</span> · Boost ×{mult}' },
+  'ui.endingFlagshipProse':    { ko: '{ship} 출항. 영웅 8명의 동기화율은 99.7% — 100년 전 사령관을 깨우던 그 숫자였다. 우르사 메이저는 마지막 순간 말했다. <i style="color:#ddd">"나보다 더 큰 위협이 있다."</i> 보스의 외피가 무너지던 그 자정에, 지구의 봉쇄선도 함께 풀렸다.',
+                                 en: '{ship} sets sail. The 8 heroes\' sync rate is 99.7% — the same number that woke the Commander a century ago. In its final moment, Ursa Major said: <i style="color:#ddd">"There is a greater threat than me."</i> At the midnight the boss\'s shell collapsed, Earth\'s blockade lifted with it.' },
+  'ui.dataLookupVia':          { ko: '데이터 조회는 <span style="color:var(--cyan)">{email}</span> 으로 Google 로그인 후 가능합니다.',
+                                 en: 'Data lookup is available after Google login as <span style="color:var(--cyan)">{email}</span>.' },
+  'ui.blackfalconNickname':    { ko: '현지인들은 <span style="color:#ff66ff;font-weight:bold">블랙팔콘</span>{call}',
+                                 en: 'Locals call them <span style="color:#ff66ff;font-weight:bold">Blackfalcon</span>{call}' },
+
   // ── 잔여 정적 notify ────────────────────────────────────────────────
   'notify.fleetFormationReset': { ko: '편대 편성 초기화. 자동 배치(체력·방어 우선)로 복귀.', en: 'Fleet formation reset. Reverted to auto layout (HP/DEF priority).' },
   'notify.startGameFirstLong':  { ko: '❌ 게임 먼저 시작하세요 (새 게임 또는 이어하기)', en: '❌ Start a game first (New Game or Continue)' },
