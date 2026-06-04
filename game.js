@@ -644,7 +644,7 @@ function showShipDetailModal(idx){
         <div style="${groupTitleStyle}"><span>🚀</span><span>${I18N.t('ui.shipLabelShort')}</span></div>
         <div style="${btnRowStyle}">
           ${isFlagship
-            ? `<span style="font-size:12px;color:var(--gold);padding:5px 9px;border:1px solid rgba(212,175,55,.4);border-radius:5px">⚑ 현재 기함</span>`
+            ? `<span style="font-size:12px;color:var(--gold);padding:5px 9px;border:1px solid rgba(212,175,55,.4);border-radius:5px">${I18N.t('hud.flagshipCurrent')}</span>`
             : `<button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-weight:bold;background:rgba(212,175,55,.12)" onclick="setAsFlagship(${idx})">⚑ 기함 설정</button>`}
         </div>
       </div>
@@ -656,7 +656,7 @@ function showShipDetailModal(idx){
             : `<span style="font-size:12px;color:var(--green);padding:5px 9px;border:1px solid rgba(46,204,113,.3);border-radius:5px">${I18N.t('ui.hpMaxBadge')}</span>`}
           ${shMax>0&&(s.sh||0)<shMax&&sc>0
             ? `<button class="btn btn-sm" style="border-color:var(--blue);color:var(--blue)" onclick="repairShipModal(${idx},'sh')" ${G.credits>=sc?'':'disabled'}>🛡️ 실드 수리 ₡${sc.toLocaleString()}</button>`
-            : (shMax>0?`<span style="font-size:12px;color:var(--cyan);padding:5px 9px;border:1px solid rgba(0,243,255,.3);border-radius:5px">✅ 실드 최대</span>`:'')}
+            : (shMax>0?`<span style="font-size:12px;color:var(--cyan);padding:5px 9px;border:1px solid rgba(0,243,255,.3);border-radius:5px">${I18N.t('hud.shieldMax')}</span>`:'')}
           ${(rc+sc)>0
             ? `<button class="btn btn-sm btn-gold" onclick="repairShipFullModal(${idx})" ${G.credits>=(rc+sc)?'':'disabled'}>⚡ 완전수리 ₡${(rc+sc).toLocaleString()}</button>`
             : ''}
@@ -1325,7 +1325,7 @@ function askBaekgu(){
     // 설계도/제작
     {k:['설계도','제작','craft','만들기','전설 아이템','신화 아이템','제작소'],r:()=>`퀘스트 클리어 시 5% 확률로 설계도 드랍. 도크 → 제작소에서 특산물 재료 소모해 전설/신화 함선·파츠 제작 가능. 전설 창고 확장 파츠도 링4+ 행성 퀘스트 3% 확률.`},
     // 보이드
-    {k:['보이드','void','에센스','균열','7링'],r:()=>`보이드 에센스(VE)는 7링 균열지대(P27~P30) 탐험 보상. VE 1000마다 경매 추가 낙찰 1개. 보이드 허브는 활동 8회(F01:3회) 달성 시 해금 — 퀘스트·잔해탐색·해적격파·턴종료가 모두 카운트. 전설기함도 판매해.`},
+    {k:['보이드','void','에센스','균열','7링'],r:()=>I18N.t('ui.voidEssenceTip')},
     // 치크스/전투
     {k:['치크스','chix','적','전투','combat','싸움'],r:()=>`치크스(보라색 적대 행성) 격파 시 크레딧+명성 획득. 나포 확률 있어 — 적 HP 50% 이하에서 23% 이하 확률. 함선 파츠·크루 충분히 갖춰야 이겨.`},
     // 보스/최종전
@@ -2845,7 +2845,7 @@ function renderMain(body){
       <div style="display:flex;align-items:center;gap:14px;padding:4px 16px;overflow-x:auto;height:36px;border-bottom:1px solid rgba(0,243,255,.1)">
         <span style="color:var(--dim);font-size:12px">📋</span>
         <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':`TURN ${G.turn} | ${pd?.nm||''} 정박 중`}</span>
-        ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">영웅: ${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
+        ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">🎬 엔딩 다시 보기</button>`:''}
         ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="우르사 메이저 보스전을 강제로 시작/재도전 (지구 접근 시 보스 미출현 복구용)">☠️ 우르사 재도전</button>`:''}
         ${(()=>{
@@ -4861,7 +4861,7 @@ function renderShipTab(body){
           const _crewExtPrice=_crewExtCanBuy?getCrewMaxUpgradePrice(s):0;
           const _crewExtBtn=_crewExtCanBuy
             ? `<button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:3px 8px;white-space:nowrap" onclick="upgradeCrewMax(${idx})" title="함선실 +${CREW_EXT_PER}칸 확장 (남은 확장 ${CREW_EXT_MAX_BUYS-_crewExtCnt}회) ${G.credits<_crewExtPrice?'· 크레딧 부족':''}" ${G.credits>=_crewExtPrice?'':'disabled'}>👥+${CREW_EXT_PER} ₡${_crewExtPrice.toLocaleString()}</button>`
-            : `<span style="font-size:10px;color:var(--cyan);padding:3px 6px;border:1px solid rgba(0,243,255,.3);border-radius:4px">✅ 함선실 최대</span>`;
+            : `<span style="font-size:10px;color:var(--cyan);padding:3px 6px;border:1px solid rgba(0,243,255,.3);border-radius:4px">${I18N.t('hud.shipBayMax')}</span>`;
           const _crewCol=`<div style="flex:1;min-width:0;padding:0 3px 0 6px;display:flex;flex-direction:column">
             <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
               <span>👥 <b style="color:var(--green)">${I18N.t('ui.shipQuartersCrew')}</b> ${(s.crewIds||[]).length}/${maxCrew}명${(+s.crewMaxExtra)?` <span style="color:var(--gold);font-size:9px">(+${(+s.crewMaxExtra)} 확장)</span>`:''}</span>
@@ -11871,15 +11871,15 @@ function showCodexPlanetModal(pid){
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
           ${p.hostile?`<span style="font-size:11px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:1px 6px">${I18N.t('ui.hostile')}</span>`:''}
           ${p.void?'<span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">💀 보이드</span>':''}
-          ${isOwned?`<span style="font-size:11px;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:1px 6px">🏛️ 소유 ₡${tax.toLocaleString()}/턴</span>`:''}
-          ${p.hero?`<span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">⭐ 영웅</span>`:''}
+          ${isOwned?`<span style="font-size:11px;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:1px 6px">${I18N.t('hud.ownedTax',{tax:tax.toLocaleString()})}</span>`:''}
+          ${p.hero?`<span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">${I18N.t('hud.heroBadge')}</span>`:''}
         </div>
       </div>
     </div>
     ${row('🌌','은하계상 위치',l.loc||I18N.t('ui.noInfo'))}
     ${row('🏛️','문명권',l.civ||I18N.t('ui.noInfo'))}
     ${row('🌍','행성 특징',l.feat||I18N.t('ui.noInfo'))}
-    ${row('⚠️','주의사항',`<span style="color:#ffaa44">${l.warn||'특별한 위험 없음'}</span>`)}
+    ${row('⚠️','주의사항',`<span style="color:#ffaa44">${l.warn||I18N.t('hud.noSpecialRisk')}</span>`)}
     ${row('💰','혜택',`<span style="color:var(--gold)">${l.benefit||I18N.t('ui.noInfo')}</span>`)}
     ${row('💬','개인 의견',`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
@@ -11909,7 +11909,7 @@ function showCodexHeroModal(hid){
         </div>
         <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">
           <span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">⚡ ${h.sk}</span>
-          ${have?`<span style="font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">✅ 영입됨</span>`:''}
+          ${have?`<span style="font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">${I18N.t('hud.recruited')}</span>`:''}
           ${aboard?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 6px">🛸 ${aboard.nm}</span>`:''}
         </div>
       </div>
@@ -12059,7 +12059,7 @@ function showCodexPartModal(partId){
     if(p.revive)_effItems.push(`✨ 격침 시 1회 부활 (HP ${(p.revive*100).toFixed(0)}%)`);
   }
   if(p.cat==='engine'){
-    if(p.TEC)_effItems.push(`⚡ TEC +${p.TEC} → 회피·사격 속도·선제·도주 보너스`);
+    if(p.TEC)_effItems.push(I18N.t('ui.tecBonus',{n:p.TEC}));
   }
   if(p.rarity==='set')_effItems.push('◈ 세트 효과: 2종 보유 시 추가 보너스 (각 파츠 desc 참조)');
   if(p.rarity==='mythic')_effItems.push('✦ 신화 등급 — 최고급 파츠');
@@ -12252,7 +12252,7 @@ function renderCodexTab(body){
               <div style="font-size:12px;font-weight:bold;color:${have?rarCol(p):'var(--dim)'};line-height:1.2;word-break:keep-all">${have?p.nm:'???'}</div>
               <div style="font-size:10px;color:var(--dim);margin-top:2px">${have?('T'+p.tier+' · '+statTxt(p)):I18N.t('ui.statusUndiscovered')}</div>
               ${rarityBadge}
-              <div style="font-size:10px;margin-top:2px">${have?`<span style="color:var(--green)">✅ ×${qty}</span>`:`<span style="color:var(--dim)">❔ 미보유</span>`}</div>
+              <div style="font-size:10px;margin-top:2px">${have?`<span style="color:var(--green)">✅ ×${qty}</span>`:`<span style="color:var(--dim)">${I18N.t('ui.notOwned')}</span>`}</div>
             </div>`;
           }).join('')}
         </div>
@@ -14611,7 +14611,7 @@ function updateFloatBtn(p,fog,conn,isCur,cost){
   if(st2){
     if(_blink)st2.innerHTML=`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`;
     else if(conn)st2.innerHTML=`<span style="color:var(--green)">₡${cost.toLocaleString()} | 이동 가능</span>`;
-    else st2.innerHTML=`<span style="color:var(--red)">항로 없음 — 블링크 엔진 장착 필요</span>`;
+    else st2.innerHTML=`<span style="color:var(--red)">${I18N.t('ui.noRouteBlink')}</span>`;
   }
   const mfgo=document.getElementById('mf-go');if(mfgo)mfgo.disabled=!conn&&!_blink;
 }
