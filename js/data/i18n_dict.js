@@ -5010,5 +5010,17 @@ I18N.register({
   'ending.heroFallbackList':{ ko: '이순신·장영실·광개토대왕·가가린·넬슨·아인슈타인·테슬라·마르코 폴로',
                               en: 'Yi Sun-sin · Jang Yeong-sil · Gwanggaeto · Gagarin · Nelson · Einstein · Tesla · Marco Polo' },
   // 백구 미니게임용 추가 (시그널 키워드)
-  'chat.signal':            { ko: '통신',                 en: 'comm' }
+  'chat.signal':            { ko: '통신',                 en: 'comm' },
+  // 부팅/로딩 화면
+  'boot.preparing':         { ko: '우주를 준비하는 중...',  en: 'Preparing the cosmos...' },
+  'boot.saveRestored':      { ko: '세이브 복원 완료 ({n}개)', en: 'Save restored ({n})' },
+  'boot.subtitleSub':       { ko: '데스티네이션 어스 | BIG PICTURE SPACE', en: 'DESTINATION EARTH | BIG PICTURE SPACE' },
+  'boot.initializing':      { ko: '초기화 중...',           en: 'Initializing...' },
+  'hud.combatPower1':       { ko: '전투력 1',              en: 'Power 1' },
+  'hud.resumeCombatBtn':    { ko: '⚔️ 전투화면',           en: '⚔️ Combat' },
+  'hud.noCombatActive':     { ko: '진행 중인 전투가 없습니다', en: 'No active combat' },
+  'ftue.initialAssetLine':  { ko: '초기 자산: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3회</span> | <span style="color:var(--yellow)">🛸 S01 머스탱</span>',
+                              en: 'Starting assets: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3 rolls</span> | <span style="color:var(--yellow)">🛸 S01 Mustang</span>' },
+  'ftue.startBtn':          { ko: '🚀 출발! 지구를 구하러 가자', en: '🚀 Launch! Go save Earth' },
+  'prologue.next':          { ko: '계속 ▶',                en: 'Continue ▶' }
 });

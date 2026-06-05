@@ -24,7 +24,7 @@
   <div class="bs-content">
     <img src="img/icons/icon-512.png" alt="" class="bs-icon" draggable="false">
     <div class="bs-title">DESTINATION EARTH</div>
-    <div class="bs-subtitle" id="bs-msg">우주를 준비하는 중...</div>
+    <div class="bs-subtitle" id="bs-msg" data-i18n="boot.preparing">우주를 준비하는 중...</div>
     <div class="bs-spinner"></div>
   </div>
 </div>
@@ -56,7 +56,7 @@ window.addEventListener('load',function(){
 // 백업 복구 완료 시 로딩 메시지 갱신
 window.addEventListener('desktop-save-restored',function(e){
   var m=document.getElementById('bs-msg');
-  if(m)m.textContent='세이브 복원 완료 ('+(e.detail&&e.detail.count||0)+'개)';
+  if(m){var _n=(e.detail&&e.detail.count||0);m.textContent=(window.I18N&&window.I18N.t)?window.I18N.t('boot.saveRestored',{n:_n}):('세이브 복원 완료 ('+_n+'개)');}
 });
 </script>
 
@@ -77,8 +77,8 @@ window.addEventListener('desktop-save-restored',function(e){
     <span style="color:var(--gold);font-weight:bold">⭐ <span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle" data-i18n="ui.rankAnonymous">무명</span></span>
   </div>
   <div id="h-status-bar" style="display:flex;flex-direction:row;align-items:center;gap:10px;flex-wrap:nowrap">
-    <div style="color:var(--dim);font-size:13px;white-space:nowrap">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold">전투력 1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)" data-i18n="ui.rankNovice">신참</span></div>
-    <button id="h-resume-combat" onclick="resumeCombat()" disabled style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3);opacity:.35;transition:opacity .2s,box-shadow .2s" title="진행 중인 전투가 없습니다">⚔️ 전투화면</button>
+    <div style="color:var(--dim);font-size:13px;white-space:nowrap">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold" data-i18n="hud.combatPower1">전투력 1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)" data-i18n="ui.rankNovice">신참</span></div>
+    <button id="h-resume-combat" onclick="resumeCombat()" disabled style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3);opacity:.35;transition:opacity .2s,box-shadow .2s" data-i18n-title="hud.noCombatActive" data-i18n="hud.resumeCombatBtn" title="진행 중인 전투가 없습니다">⚔️ 전투화면</button>
   </div>
 </div>
 <div id="notif"></div>
@@ -96,9 +96,9 @@ window.addEventListener('desktop-save-restored',function(e){
     <div id="ld-bk-emoji" style="display:none;font-size:100px;line-height:220px;text-align:center;animation:pulse 2s infinite">🐕</div>
   </div>
   <div style="color:var(--yellow);font-size:29px;letter-spacing:6px;margin-top:4px">DESTINATION EARTH</div>
-  <div style="color:var(--dim);font-size:14px;margin:8px 0 20px">데스티네이션 어스 | BIG PICTURE SPACE</div>
+  <div style="color:var(--dim);font-size:14px;margin:8px 0 20px" data-i18n="boot.subtitleSub">데스티네이션 어스 | BIG PICTURE SPACE</div>
   <div style="width:240px;height:3px;background:var(--card);border-radius:2px"><div id="ld-fill" style="height:100%;background:var(--cyan);border-radius:2px;width:0;transition:width .4s"></div></div>
-  <div id="ld-msg" style="color:var(--dim);font-size:13px;margin-top:8px">초기화 중...</div>
+  <div id="ld-msg" style="color:var(--dim);font-size:13px;margin-top:8px" data-i18n="boot.initializing">초기화 중...</div>
 </div>
 
 <!-- TITLE -->
@@ -183,9 +183,9 @@ window.addEventListener('desktop-save-restored',function(e){
         <button id="df-extreme" data-i18n-html="ftue.diffExtremeFull" onclick="setDifficulty('extreme')" style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:12px;line-height:1.35">☠️<br>극악<br><span style="font-size:10px;color:var(--dim)">×3·+50%</span></button>
       </div>
     </div>
-    <div style="background:var(--card);border-radius:6px;padding:7px 10px;margin-bottom:9px;font-size:12px;color:var(--dim)">초기 자산: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3회</span> | <span style="color:var(--yellow)">🛸 S01 머스탱</span></div>
+    <div style="background:var(--card);border-radius:6px;padding:7px 10px;margin-bottom:9px;font-size:12px;color:var(--dim)" data-i18n-html="ftue.initialAssetLine">초기 자산: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3회</span> | <span style="color:var(--yellow)">🛸 S01 머스탱</span></div>
     <div id="ft-er" style="color:var(--red);font-size:12px;min-height:14px;margin-bottom:6px"></div>
-    <button class="btn btn-lg" style="width:100%;font-size:14px;padding:10px" onclick="startGame()">🚀 출발! 지구를 구하러 가자</button>
+    <button class="btn btn-lg" style="width:100%;font-size:14px;padding:10px" onclick="startGame()" data-i18n="ftue.startBtn">🚀 출발! 지구를 구하러 가자</button>
   </div>
 </div>
 
@@ -200,7 +200,7 @@ window.addEventListener('desktop-save-restored',function(e){
       <div id="pr-baekgu-emoji" style="display:none;font-size:100px;line-height:180px;text-align:center;animation:pulse 2.5s infinite">🐕</div>
     </div>
     <div id="pr-lines" style="margin-bottom:24px;min-height:80px"></div>
-    <button class="btn" id="pr-btn" onclick="nextPrologue()" style="display:none">계속 ▶</button>
+    <button class="btn" id="pr-btn" onclick="nextPrologue()" style="display:none" data-i18n="prologue.next">계속 ▶</button>
   </div>
   <div style="position:absolute;bottom:14px;left:0;right:0;color:var(--muted);font-size:11px;text-align:center;opacity:.65;padding:0 16px;line-height:1.55;word-break:keep-all">
     ※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.
@@ -337,28 +337,28 @@ window.addEventListener('desktop-save-restored',function(e){
 </div><!-- /#game-stage -->
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
-<script>window._GAME_VER='20260604.i18n_g90';</script>
+<script>window._GAME_VER='20260604.i18n_g91';</script>
 <!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
-<script src="js/i18n.js?v=20260604600"></script>
-<script src="js/data/i18n_dict.js?v=20260604600"></script>
-<script src="js/data/factions.js?v=20260604600"></script>
-<script src="js/data/planets.js?v=20260604600"></script>
-<script src="js/data/heroes.js?v=20260604600"></script>
-<script src="js/data/commodities.js?v=20260604600"></script>
-<script src="js/data/parts.js?v=20260604600"></script>
-<script src="js/data/quests.js?v=20260604600"></script>
-<script src="js/data/cargo.js?v=20260604600"></script>
-<script src="js/data/crafting.js?v=20260604600"></script>
-<script src="js/data/ships.js?v=20260604600"></script>
+<script src="js/i18n.js?v=20260604700"></script>
+<script src="js/data/i18n_dict.js?v=20260604700"></script>
+<script src="js/data/factions.js?v=20260604700"></script>
+<script src="js/data/planets.js?v=20260604700"></script>
+<script src="js/data/heroes.js?v=20260604700"></script>
+<script src="js/data/commodities.js?v=20260604700"></script>
+<script src="js/data/parts.js?v=20260604700"></script>
+<script src="js/data/quests.js?v=20260604700"></script>
+<script src="js/data/cargo.js?v=20260604700"></script>
+<script src="js/data/crafting.js?v=20260604700"></script>
+<script src="js/data/ships.js?v=20260604700"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260604600"></script>
+<script defer src="js/cloudsave.js?v=20260604700"></script>
 <!-- ═══ DESKTOP (Electron) BRIDGE — 데스크탑일 때만 동작 ═══ -->
-<script src="js/desktop-bridge.js?v=20260604600"></script>
+<script src="js/desktop-bridge.js?v=20260604700"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260604600"></script>
+<script src="game.js?v=20260604700"></script>
 <!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
 if ('serviceWorker' in navigator && !window.desktopAPI) {
