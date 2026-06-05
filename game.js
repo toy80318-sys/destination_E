@@ -985,8 +985,17 @@ const CHAR_PORTRAITS={
   '블랙팔콘':'img/chars/void_hiden.png',
   '팔콘 스카우트':'img/chars/void_hiden.png',
   '⚠️ 통신 수신 ⚠️':'img/chars/void_hiden.png',
+  '⚠️ Signal Received ⚠️':'img/chars/void_hiden.png',
   [I18N.t('ui.signalReceived')]:'img/chars/void_hiden.png',
   '???':'img/chars/void_hiden.png',
+  // 보스 영문 alias (EN 모드에서 화자명이 영문일 때 매칭)
+  'Ursa Major':'img/chars/ursa.png',
+  'Black Falcon':'img/chars/void_hiden.png',
+  'Falcon Scout':'img/chars/void_hiden.png',
+  '🌑 Black Falcon':'img/chars/void_hiden.png',
+  // 백구/시스템 영문 alias
+  'Baekgu':'img/chars/baekgu1.png',
+  'System':'img/chars/system.png',
   // 영웅 8인 — hero01~08.png 번호 구조 (HEROES H01~H08 순서와 1:1)
   // 짧은 이름·풀네임 둘 다 키로 등록해 대사 화자 변형 모두 커버
   // H01 이순신 / Yi Sun-sin
@@ -1204,7 +1213,7 @@ function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   // 사령관(주인공) 화자 감지 — 성별·진행단계 자동 분기 이미지 사용 (사용자 명세)
   const _cmdName=(G&&G.profile&&G.profile.name)||I18N.t('ui.commander');
   let src=null;
-  if(speaker===_cmdName||speaker===I18N.t('ui.commander')||speaker==='주인공'||(speaker&&speaker.includes(_cmdName))){
+  if(speaker===_cmdName||speaker===I18N.t('ui.commander')||speaker==='주인공'||speaker==='Hero'||speaker==='Protagonist'||(speaker&&_cmdName&&speaker.includes(_cmdName))){
     try{src=_commanderPortraitSrc();}catch(e){}
   }
   // 1순위: 영웅 ID 기반 매핑 (언어 무관) → EN 모드에서도 영웅 초상 정상 표시
@@ -2806,7 +2815,7 @@ function hubTab(tab){
 
 // ═══ 허브 공간 배경 이미지 배너 ════════════════════════════════
 function hubBanner(tabId,emoji,label,factionId){
-  const genSrc='img/hub/'+tabId+'.png';
+  const genSrc='img/hub/'+tabId+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
   // 팩션 폴더 우선 시도는 폴더가 없을 경우 onerror 폴백을 거치며 깜빡임 발생 → 기본 이미지만 사용
   // 팩션별 변형이 필요하면 명시적으로 img/hub/<faction>/<tab>.png 만든 후 코드에서 활성화
   const firstSrc=genSrc;
@@ -8113,7 +8122,7 @@ function renameShip(idx){
         onkeydown="if(event.key==='Enter')confirmRenameShip(${idx})">
       <div style="color:var(--muted);font-size:12px;margin-top:6px">영문·한글·숫자·기호 최대 20자</div>
     </div>`,
-    [{txt:'✅ 변경',fn:()=>confirmRenameShip(idx),cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
+    [{txt:I18N.t('btn.confirmChange'),fn:()=>confirmRenameShip(idx),cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
   setTimeout(()=>{const el=document.getElementById('rename-inp');if(el){el.focus();el.select();}},100);
 }
@@ -8360,6 +8369,7 @@ function renderCrewTab(body){
     <button onclick="dismissLowestCrew(1)" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(255,80,80,.6);background:rgba(255,40,40,.12);color:rgba(255,150,150,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceCrewDismiss')}">${I18N.t('crew.dismissLowest1')}</button>
     <button onclick="dismissLowestCrew(5)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.6);background:rgba(255,40,40,.12);color:rgba(255,150,150,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceCrewDismiss')}">${I18N.t('crew.dismissLowest5')}</button>
     <button onclick="dismissLowestCrew(10)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.7);background:rgba(255,40,40,.15);color:rgba(255,180,180,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceAllCrewDismiss')}">${I18N.t('crew.dismissLowest10')}</button>
+    <button onclick="dismissCrewBelowRare()" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,120,40,.7);background:rgba(255,120,40,.18);color:rgba(255,200,140,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('crew.belowRareTitle')}">${I18N.t('crew.dismissBelowRare')}</button>
     ${_lastDismissedCrew&&_lastDismissedCrew.crew&&_lastDismissedCrew.crew.length>0?`<button onclick="undoDismissCrew()" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(0,243,255,.6);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold;animation:pulse 1.5s infinite" title="${_lastDismissedCrew.crew.map(e=>e.data.nm).join(', ')}">${I18N.t('crew.undoDismiss',{n:_lastDismissedCrew.crew.length})}</button>`:''}
   </div>
     ${sorted.length===0?`<div style="color:var(--dim);font-size:14px">${I18N.t('ui.recruitAtTavern')}</div>`
@@ -8797,6 +8807,45 @@ function dismissLowestCrew(n){
       rerenderTab(renderCrewTab);saveGame(true);
     },cls:'btn-red'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
+// 희귀(R) 등급 이하 일괄 내보내기 — N(일반)·R(희귀) 크루 전원 강제 하선·삭제
+//   영웅(H)·전설(L)·스토리(S)은 보존. 탑승 크루도 자동 하선 후 삭제.
+function dismissCrewBelowRare(){
+  const targets=(G.crew||[]).filter(c=>c.rarity==='N'||c.rarity==='R');
+  if(targets.length===0){notify(I18N.t('notify.noCrewToDismiss'),'warn');return;}
+  const assignedIds=new Set(G.fleet.flatMap(s=>s.crewIds||[]));
+  const names=targets.map(c=>c.nm+(assignedIds.has(c.id)?'⚓':'')).join(', ');
+  const rarSummary=[...targets.reduce((m,c)=>{m.set(c.rarity,(m.get(c.rarity)||0)+1);return m;},new Map())].map(([r,cnt])=>`${r}×${cnt}`).join(' / ');
+  const assignedCount=targets.filter(c=>assignedIds.has(c.id)).length;
+  const warningHtml=assignedCount>0
+    ? `<div style="font-size:12px;color:var(--red);margin-top:6px;background:rgba(255,40,40,.08);border-left:3px solid var(--red);padding:6px 10px">${I18N.t('ui.crewAboardWarn',{n:assignedCount})}</div>`
+    : '';
+  openModal(I18N.t('modal.forceDismissCrew'),
+    `<div style="padding:12px">
+      <div style="font-size:16px;font-weight:bold;margin-bottom:8px">${I18N.t('crew.belowRareConfirm',{n:targets.length})}</div>
+      <div style="font-size:13px;color:var(--dim);margin-bottom:6px">${rarSummary} | ⚓ = ${I18N.t('crew.aboardLegend')}</div>
+      <div style="font-size:12px;color:rgba(255,200,100,.8);max-height:120px;overflow-y:auto;line-height:1.6">${names}</div>
+      ${warningHtml}
+      <div style="font-size:11px;color:var(--cyan);margin-top:8px">💡 ${I18N.t('tip.undoAfterDismiss')}</div>
+    </div>`,
+    [{txt:I18N.t('ui.forceLeaveCount',{n:targets.length}),fn:()=>{
+      closeModal();
+      const entries=targets.map(c=>{
+        let shipIdx=null;
+        G.fleet.forEach((s,si)=>{if(s.crewIds&&s.crewIds.includes(c.id))shipIdx=si;});
+        const insertIdx=G.crew.findIndex(x=>x.id===c.id);
+        return{data:JSON.parse(JSON.stringify(c)),shipIdx,insertIdx};
+      });
+      _lastDismissedCrew={crew:entries};
+      targets.forEach(c=>{
+        G.fleet.forEach(s=>{if(s.crewIds){const i=s.crewIds.indexOf(c.id);if(i>=0)s.crewIds.splice(i,1);}});
+        const idx=G.crew.findIndex(x=>x.id===c.id);
+        if(idx>=0)G.crew.splice(idx,1);
+      });
+      notify(I18N.t('notify.crewForceDismissed',{n:targets.length}),'ok');
+      rerenderTab(renderCrewTab);saveGame(true);
+    },cls:'btn-red'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
+}
+try{if(typeof window!=='undefined')window.dismissCrewBelowRare=dismissCrewBelowRare;}catch(e){}
 function assignCrewFromCrewTab(cid){
   const sel=document.getElementById('cs_'+cid);
   // 함선이 1개이면 자동 선택 (idx 0)
@@ -9918,7 +9967,7 @@ function doGatherSearch(){
         `<div style="font-size:16px;margin-bottom:10px;color:var(--purple)">${I18N.t('ui.encounterChixScan')}</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>${I18N.t('ui.repelCompletesQuest')}</div>`,
         [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
-         {txt:'🚀 도주',fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
+         {txt:I18N.t('btn.fleeShort'),fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
     } else {
       notify(I18N.t('notify.scanNoScouts'),'warn');
       baekgu(I18N.t('baekgu.searchNothing'));
@@ -9959,7 +10008,7 @@ function doGatherSearch(){
       `<div style="font-size:16px;margin-bottom:10px;color:var(--red)">${I18N.t('ui.encounterPirateScan')}</div>
        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>${I18N.t('ui.scanContinues')}</div>`,
       [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
-       {txt:'🚀 도주 (탐색 중단)',fn:()=>{closeModal();notify(I18N.t('notify.searchAborted'),'warn');},cls:'btn-sm'}]);
+       {txt:I18N.t('btn.fleeAbortSearch'),fn:()=>{closeModal();notify(I18N.t('notify.searchAborted'),'warn');},cls:'btn-sm'}]);
 
   } else if(roll<0.40){
     // 10%: 아이템 또는 함선 획득 (전설급 포함)
@@ -10257,7 +10306,7 @@ function doCraft(recipeId){
       const _sd=SHIP_CATALOG.find(x=>x.id===rec.id);
       _cImg=(typeof shipImgSrc==='function')?shipImgSrc({id:rec.id,catalogId:rec.id,tier:_sd?_sd.tier:'대형'}):'img/ships/'+rec.id+'.png';
       _cFb='🚀';
-    } else if(rec.type==='cargo'){_cImg='img/parts/'+rec.id+'.png';_cFb='📦';}
+    } else if(rec.type==='cargo'){_cImg='img/parts/'+rec.id+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');_cFb='📦';}
     const _cImgHtml=_cImg
       ? imgOrEmoji(_cImg,_cFb,128,128,'border-radius:12px;background:rgba(0,0,0,.45);border:1px solid '+(q.col||'#ffd700')+'66;object-fit:contain',rec.type==='ship'?'ship_'+rec.id:'part_'+rec.id)
       : '<div style="font-size:60px">'+_cFb+'</div>';
@@ -10491,7 +10540,7 @@ function renderCraftTab(body){
           _pvFb='🚀';_loreKey='ship_'+selRec.id;
         } else if(selRec.type==='cargo'){
           const _scp=(typeof SPECIAL_CARGO_PARTS!=='undefined'?SPECIAL_CARGO_PARTS:[]).find(c=>c.id===selRec.id);
-          _pvImg='img/parts/'+selRec.id+'.png';_pvFb=(_scp&&_scp.ic)||'📦';_loreKey='part_'+selRec.id;
+          _pvImg='img/parts/'+selRec.id+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');_pvFb=(_scp&&_scp.ic)||'📦';_loreKey='part_'+selRec.id;
         }
         const _imgHtml=_pvImg?imgOrEmoji(_pvImg,_pvFb,150,150,'border-radius:12px;background:rgba(0,0,0,.45);border:1px solid '+_tierColor+'66',_loreKey):'';
         // 스탯 행 빌더
@@ -11245,7 +11294,7 @@ function openMysteryBox(tier){
     let _bpImgSrc='';
     if(result.rec.type==='part'&&typeof partImgSrc==='function')_bpImgSrc=partImgSrc(result.rec.id);
     else if(result.rec.type==='ship'&&typeof shipImgSrc==='function')_bpImgSrc=shipImgSrc({id:result.rec.id,catalogId:result.rec.id,tier:result.rec.tier});
-    else if(result.rec.type==='cargo')_bpImgSrc='img/parts/'+result.rec.id+'.png';
+    else if(result.rec.type==='cargo')_bpImgSrc='img/parts/'+result.rec.id+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
     const _bpImgHtml=_bpImgSrc?`<img src="${_bpImgSrc}" alt="${result.rec.nm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_col};box-shadow:0 0 22px ${_col}88;filter:drop-shadow(0 0 8px ${_col})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>📜</div>'">`:`<div style="font-size:64px">📜</div>`;
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_bpImgHtml}</div>
@@ -12479,7 +12528,7 @@ function renderCodexTab(body){
         </div>`;
       }
       const repName=_repPlanetName(l.rep);
-      const planetImg=`img/planets/${l.rep}.png`;
+      const planetImg=planetImgSrc(l.rep);
       return `<div style="background:rgba(0,0,0,.3);border:1px solid ${col}55;border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px ${col}22">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid ${col}44">
           <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${col};box-shadow:0 0 16px ${col}66;background:radial-gradient(circle at center, ${col}33, #000);position:relative">
@@ -14391,7 +14440,7 @@ function _updateMapHover(e){
   const facDetail=factionLabels[closest.f]||facNm;
   if(fog==='L'){
     // 미탐험: 잠금 표시
-    el.innerHTML=`<div style="color:var(--dim);font-size:11px">🔒 미탐험 행성</div>
+    el.innerHTML=`<div style="color:var(--dim);font-size:11px">${I18N.t('map.unexploredPlanet')}</div>
       <div style="color:var(--dim);font-size:10px;margin-top:2px">${I18N.t('ui.unlockAfterAdj')}</div>`;
   } else {
     const _hostile=closest.hostile?' <span style="color:var(--red)">⚠️</span>':'';
@@ -14497,7 +14546,7 @@ function onMapClick(e){
             </div>
             <div style="color:var(--cyan);font-size:11px;margin-top:8px">${I18N.t('ui.voidLv10Tip')}</div>
           </div>`,
-          [{txt:'🔱 창을 가져가다',fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
+          [{txt:I18N.t('btn.takeVoidSpear'),fn:()=>{closeModal();_grantVoidSpear();G._voidSpearObtained=true;saveGame(true);},cls:'btn-gold'},{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
       } else if(!_allVoid100){
         // 2차 조건: 보이드 100% 투자 아직 미달
         openModal(I18N.t('modal.voidAbyssFinalTest'),
@@ -14914,7 +14963,7 @@ function showHostilePlanetBriefing(planetDef){
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('advisor.bkPreCombat')}${advisor.lvl==='win'?I18N.t('advisor.bkPush'):advisor.lvl==='mid'?I18N.t('advisor.bkCareful'):I18N.t('advisor.bkComeLater')}"</div>`,
     [
       {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
-      {txt:'🚀 후퇴 (다른 행성으로)',fn:()=>{closeModal();notify(I18N.t('notify.retreatOther'),'warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
+      {txt:I18N.t('btn.retreatOther'),fn:()=>{closeModal();notify(I18N.t('notify.retreatOther'),'warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
     ],{wide:true}
   );
 }
@@ -18583,7 +18632,7 @@ function forceUrsaBoss(){
       <div style="color:var(--red);font-weight:bold;font-size:16px;margin-bottom:8px">${I18N.t('ui.forcedUrsa')}</div>
       <div style="color:var(--dim);font-size:13px;line-height:1.8">${I18N.t('ui.forceUrsaBossHelp')}<br>${I18N.t('ui.noVcConsumed')}</div>
     </div>`,
-    [{txt:'⚔️ 전투 시작',fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:'우르사 메이저',ring:5});}catch(e){notify(I18N.t('notify.bossStartErr',{err:e.message}),'err');}},cls:'btn-red'},
+    [{txt:I18N.t('btn.startCombat'),fn:()=>{closeModal();try{if(typeof showUrsaMajorIntro==='function')showUrsaMajorIntro();else startCombat({id:'BOSS',nm:I18N.t('ursa.bossName'),ring:5});}catch(e){notify(I18N.t('notify.bossStartErr',{err:e.message}),'err');}},cls:'btn-red'},
      {txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]);
 }
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
