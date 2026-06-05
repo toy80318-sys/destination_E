@@ -15270,11 +15270,13 @@ try{if(typeof window!=='undefined'){window.confirmFleeCombat=confirmFleeCombat;w
 function renderCombatView(body){
   body.classList.add('cv');
   document.body.classList.add('combat-mode');  // 알림(notif) 위치 조정용
-  body.innerHTML=`<div id="cb-hdr" style="min-height:57px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:flex-start;padding:4px 10px;flex-shrink:0;gap:6px;flex-wrap:wrap;overflow-x:auto">
+  body.innerHTML=`<div id="cb-hdr" style="min-height:42px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:4px 10px;flex-shrink:0;gap:8px;white-space:nowrap;overflow:hidden">
     <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:13px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.title.default')}</div>
     <div id="cb-turn" style="color:var(--cyan);font-size:11px;flex-shrink:0">TURN 0</div>
     <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.statusPreparing')}</div>
   </div>
+  <!-- 사용자 요청: 함대 전술 버튼은 헤더 바로 하단 1행에 정렬 표시 -->
+  <div id="cb-tactics" style="background:rgba(8,16,28,.92);border-bottom:1px solid var(--bdr);padding:4px 10px;flex-shrink:0;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;min-height:42px"></div>
   <div id="cb-fleet-stats" style="background:rgba(8,16,28,.96);border-bottom:1px solid var(--bdr);padding:6px 14px;flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:11px;font-family:Courier New,monospace">
     <div id="cb-fleet-pl" style="color:var(--cyan)">${I18N.t('combat.alliesMeasuring')}</div>
     <div id="cb-fleet-en" style="color:#ff8888;text-align:right">${I18N.t('combat.enemyMeasuring')}</div>
@@ -15329,7 +15331,9 @@ function initCombatCanvas(){
         style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${I18N.t('combat.flee')}</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
   // 일점사 전술 버튼 — H01(이순신) OR H05(넬슨) 영입 시 표시 (사용자 요청: 넬슨 단독도 OK)
+  //   · 부착 위치: cb-tactics (헤더 하단 1행) — 사용자 요청
   if((G.heroes.includes('H01')||G.heroes.includes('H05'))&&!document.getElementById('cb-sunsin-btn')){
+    const _tac=document.getElementById('cb-tactics')||hdr;
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
     sbtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite;white-space:nowrap;flex-shrink:0';
@@ -15337,7 +15341,7 @@ function initCombatCanvas(){
     const _by=G.heroes.includes('H01')?((typeof HEROES!=='undefined'&&HEROES.H01?.nm)||I18N.t('hero.fallbackH01')):((typeof HEROES!=='undefined'&&HEROES.H05?.nm)||I18N.t('hero.fallbackH05'));
     sbtn.title=I18N.t('combat.focusFireTip',{by:_by});
     sbtn.onclick=activateSunsinFocus;
-    hdr.appendChild(sbtn);
+    _tac.appendChild(sbtn);
   }
   }
   // 탭 전환 후 복귀 시 — 이미 활성화/사용된 스킬 버튼 상태 복원
@@ -15981,18 +15985,18 @@ function showAcquisitionReport(opts){
     const imgHtml=it.img
       ? `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${imgOrEmoji(it.img,ic,_icSz-4,_icSz-4,'object-fit:cover')}</div>`
       : `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
-    return `<div style="display:flex;gap:${_gapRow};align-items:center;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
+    return `<div style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
       ${imgHtml}
-      <div style="flex:1;min-width:0;overflow:hidden">
-        <div style="font-size:${_nmFs}px;font-weight:bold;color:${rc};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(it.nm)}${badge}</div>
-        ${it.type?`<div style="font-size:${_typeFs}px;color:var(--dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(it.type)}</div>`:''}
-        ${it.stats?`<div style="font-size:${_statsFs}px;color:var(--cyan);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(it.stats)}</div>`:''}
-        ${it.desc?`<div style="font-size:${_descFs}px;color:var(--muted);margin-top:2px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:${_many?2:3};-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(it.desc)}</div>`:''}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:${_nmFs}px;font-weight:bold;color:${rc};line-height:1.3;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.nm)}${badge}</div>
+        ${it.type?`<div style="font-size:${_typeFs}px;color:var(--dim);margin-top:2px;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.type)}</div>`:''}
+        ${it.stats?`<div style="font-size:${_statsFs}px;color:var(--cyan);margin-top:3px;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.stats)}</div>`:''}
+        ${it.desc?`<div style="font-size:${_descFs}px;color:var(--muted);margin-top:3px;line-height:1.45;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.desc)}</div>`:''}
       </div>
     </div>`;
   }).join('');
-  // 사용자 요청: 모달 폭 0.8× 축소 — 카드 폭은 95%로 확대해 영문 라벨 잘림 방지
-  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:6px':'display:flex;flex-direction:column;gap:6px')+';max-width:95%;margin:0 auto';
+  // 사용자 요청: 영문판 카드/글자 잘림 방지 — 그리드 폭 100% + 단어 단위 줄바꿈
+  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:8px':'display:flex;flex-direction:column;gap:8px')+';width:100%;margin:0 auto';
   const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
   const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
   const html=`<div style="padding:2px 2px">
@@ -16056,6 +16060,47 @@ function drawCombatFrame(){
     const maxW=Math.max(...baseSizes.map(s=>s.w));
     const maxH=Math.max(...baseSizes.map(s=>s.h));
     const n=units.length;
+    // ── 사용자 요청: 적 함대 진형 랜덤 변형 (구형/삼각형) — 아군 향한 화살표 방향 삼각형 ──
+    //  · 전투당 1회 결정 (combatState._enemyFormation), 진형은 유지하되 위치만 lerp로 이동
+    //  · circle: 원형 클러스터 (방어형)  /  triangle: 아군 방향 화살촉 (공격형)
+    if(isEnemy&&!units.some(u=>typeof u._formationCol==='number')&&!units.some(u=>u._isBlackHoleFleet)){
+      if(!combatState._enemyFormation){
+        combatState._enemyFormation=Math.random()<0.5?'circle':'triangle';
+      }
+      const formation=combatState._enemyFormation;
+      const cellW=maxW*1.5, cellH=maxH*1.55;
+      // 적 함대 중심점 — 화면 우측 60% 부근
+      const cxA=W*0.30, cyA=0;
+      const out=new Array(n);
+      if(formation==='circle'){
+        // 구형 — 동심원 클러스터 (반경 = sqrt(n)*cellH 기준, 균등 각도 분배)
+        const R0=Math.max(cellH*1.5,Math.sqrt(n)*cellH*0.9);
+        units.forEach((u,i)=>{
+          if(n===1){out[i]={x:cxA,y:cyA};return;}
+          const ang=(i+0.5)*(Math.PI*2/n)-Math.PI*0.5;
+          // 내·외 2층 분포: 짝수 인덱스 외층, 홀수 내층
+          const r=(i%2===0)?R0:R0*0.55;
+          out[i]={x:cxA+r*Math.cos(ang)*0.7,y:cyA+r*Math.sin(ang)};
+          u._frontRank=Math.floor(i/Math.max(1,n/3));  // 앞·중·뒤 그룹
+        });
+      } else {
+        // 삼각형 — 아군 향한 화살촉(◀): 정점이 좌측(-X), 후방이 우측
+        //   행 r 마다 (r+1)대씩 → 1, 2, 3, 4… 늘어남
+        //   r=0(정점/선봉)이 -X로 가장 멀리, r 커질수록 +X 후방
+        let rowI=0,remaining=n,rowsList=[];
+        while(remaining>0){rowI++;const take=Math.min(rowI,remaining);rowsList.push(take);remaining-=take;}
+        let idx=0;
+        rowsList.forEach((cnt,r)=>{
+          const colH=(cnt-1)*cellH;
+          for(let c=0;c<cnt;c++){
+            out[idx]={x:cxA-cellW*1.2+r*cellW*0.9,y:c*cellH-colH/2};
+            units[idx]._frontRank=r;  // r=0이 가장 앞(선봉)
+            idx++;
+          }
+        });
+      }
+      return out;
+    }
     // ── 우르사 최종전 진형: _formationCol(0~3)로 열 고정 (소형/중형/친위대/보스) ──
     if(isEnemy&&units.some(u=>typeof u._formationCol==='number')){
       const COLS=4;
@@ -17417,7 +17462,7 @@ function _showHaikjinButton(){
   // Ready 플래그 — 탭 전환 후 복귀 시 _restoreSkillButtons가 이 플래그 보고 재생성
   if(combatState)combatState._haikjinReady=true;
   if(document.getElementById('cb-haikjin-btn'))return;
-  const hdr=document.getElementById('cb-hdr');
+  const hdr=document.getElementById('cb-tactics')||document.getElementById('cb-hdr');
   if(!hdr)return;
   const hbtn=document.createElement('button');
   hbtn.id='cb-haikjin-btn';
@@ -17535,7 +17580,7 @@ function activateHaikjin(){
 function _showEinsteinButton(){
   if(combatState)combatState._einsteinReady=true;
   if(document.getElementById('cb-einstein-btn'))return;
-  const hdr=document.getElementById('cb-hdr');
+  const hdr=document.getElementById('cb-tactics')||document.getElementById('cb-hdr');
   if(!hdr)return;
   const ebtn=document.createElement('button');
   ebtn.id='cb-einstein-btn';
@@ -17582,7 +17627,7 @@ function activateEinsteinTimeAttack(){
 function _showTeslaButton(){
   if(combatState)combatState._teslaReady=true;
   if(document.getElementById('cb-tesla-btn'))return;
-  const hdr=document.getElementById('cb-hdr');
+  const hdr=document.getElementById('cb-tactics')||document.getElementById('cb-hdr');
   if(!hdr)return;
   const tbtn=document.createElement('button');
   tbtn.id='cb-tesla-btn';
@@ -17643,7 +17688,7 @@ function activateTeslaHyperspace(){
 function _showGenesisButton(){
   if(combatState)combatState._genesisReady=true;
   if(document.getElementById('cb-genesis-btn'))return;
-  const hdr=document.getElementById('cb-hdr');
+  const hdr=document.getElementById('cb-tactics')||document.getElementById('cb-hdr');
   if(!hdr)return;
   const gbtn=document.createElement('button');
   gbtn.id='cb-genesis-btn';
@@ -17690,7 +17735,7 @@ function activateGenesisImpact(){
 function _showDestinationButton(){
   if(combatState)combatState._destinationReady=true;
   if(document.getElementById('cb-destination-btn'))return;
-  const hdr=document.getElementById('cb-hdr');
+  const hdr=document.getElementById('cb-tactics')||document.getElementById('cb-hdr');
   if(!hdr)return;
   const dbtn=document.createElement('button');
   dbtn.id='cb-destination-btn';
