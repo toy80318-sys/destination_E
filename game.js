@@ -15270,7 +15270,7 @@ try{if(typeof window!=='undefined'){window.confirmFleeCombat=confirmFleeCombat;w
 function renderCombatView(body){
   body.classList.add('cv');
   document.body.classList.add('combat-mode');  // 알림(notif) 위치 조정용
-  body.innerHTML=`<div id="cb-hdr" style="min-height:57px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:4px 10px;flex-shrink:0;gap:8px;white-space:nowrap;overflow:hidden">
+  body.innerHTML=`<div id="cb-hdr" style="min-height:57px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:flex-start;padding:4px 10px;flex-shrink:0;gap:6px;flex-wrap:wrap;overflow-x:auto">
     <div id="cb-title" style="color:var(--yellow);font-weight:bold;font-size:13px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.title.default')}</div>
     <div id="cb-turn" style="color:var(--cyan);font-size:11px;flex-shrink:0">TURN 0</div>
     <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.statusPreparing')}</div>
@@ -15332,7 +15332,7 @@ function initCombatCanvas(){
   if((G.heroes.includes('H01')||G.heroes.includes('H05'))&&!document.getElementById('cb-sunsin-btn')){
     const sbtn=document.createElement('button');sbtn.id='cb-sunsin-btn';
     sbtn.className='btn btn-sm';
-    sbtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite;white-space:nowrap;flex-shrink:0';
+    sbtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:var(--red);color:var(--red);background:rgba(255,60,60,.08);animation:pulse 2s infinite;white-space:nowrap;flex-shrink:0';
     sbtn.textContent=I18N.t('combat.focusFire');
     const _by=G.heroes.includes('H01')?((typeof HEROES!=='undefined'&&HEROES.H01?.nm)||I18N.t('hero.fallbackH01')):((typeof HEROES!=='undefined'&&HEROES.H05?.nm)||I18N.t('hero.fallbackH05'));
     sbtn.title=I18N.t('combat.focusFireTip',{by:_by});
@@ -17422,7 +17422,7 @@ function _showHaikjinButton(){
   const hbtn=document.createElement('button');
   hbtn.id='cb-haikjin-btn';
   hbtn.className='btn btn-sm';
-  hbtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.12);animation:pulse 1.4s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
+  hbtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.12);animation:pulse 1.4s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
   hbtn.textContent=I18N.t('ult.crane');
   hbtn.title=I18N.t('ult.craneTip');
   hbtn.onclick=activateHaikjin;
@@ -17535,7 +17535,7 @@ function _showEinsteinButton(){
   const ebtn=document.createElement('button');
   ebtn.id='cb-einstein-btn';
   ebtn.className='btn btn-sm';
-  ebtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:#cc66ff;color:#cc66ff;background:rgba(204,102,255,.12);animation:pulse 1.2s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
+  ebtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:#cc66ff;color:#cc66ff;background:rgba(204,102,255,.12);animation:pulse 1.2s infinite;margin-left:3px;white-space:nowrap;flex-shrink:0';
   ebtn.textContent=I18N.t('ult.einstein');
   ebtn.title=I18N.t('ult.einsteinTip');
   ebtn.onclick=activateEinsteinTimeAttack;
@@ -17582,7 +17582,7 @@ function _showTeslaButton(){
   const tbtn=document.createElement('button');
   tbtn.id='cb-tesla-btn';
   tbtn.className='btn btn-sm';
-  tbtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:#66ffff;color:#66ffff;background:rgba(0,255,255,.12);animation:pulse 1s infinite;margin-left:3px;text-shadow:0 0 6px rgba(0,255,255,.6);white-space:nowrap;flex-shrink:0';
+  tbtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:#66ffff;color:#66ffff;background:rgba(0,255,255,.12);animation:pulse 1s infinite;margin-left:3px;text-shadow:0 0 6px rgba(0,255,255,.6);white-space:nowrap;flex-shrink:0';
   tbtn.textContent=I18N.t('ult.tesla');
   tbtn.title=I18N.t('ult.teslaTip');
   tbtn.onclick=activateTeslaHyperspace;
@@ -17643,7 +17643,7 @@ function _showGenesisButton(){
   const gbtn=document.createElement('button');
   gbtn.id='cb-genesis-btn';
   gbtn.className='btn btn-sm';
-  gbtn.style.cssText='padding:3px 12px;font-size:17px;min-height:34px;border-color:#ff66cc;color:#ff66cc;background:rgba(255,102,204,.15);animation:pulse .9s infinite;margin-left:3px;text-shadow:0 0 8px rgba(255,102,204,.7);white-space:nowrap;flex-shrink:0';
+  gbtn.style.cssText='padding:5px 14px;font-size:14px;min-height:34px;min-width:130px;letter-spacing:.3px;border-color:#ff66cc;color:#ff66cc;background:rgba(255,102,204,.15);animation:pulse .9s infinite;margin-left:3px;text-shadow:0 0 8px rgba(255,102,204,.7);white-space:nowrap;flex-shrink:0';
   gbtn.textContent=I18N.t('ult.genesis');
   gbtn.title=I18N.t('ult.genesisTip');
   gbtn.onclick=activateGenesisImpact;
