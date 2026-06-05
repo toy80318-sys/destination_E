@@ -10352,6 +10352,7 @@ function doCraft(recipeId){
 }
 
 // 제작 결과 우측 토스트 — 3초 후 자동 사라짐, 연속 제작 가능. 여러 개 stack 가능.
+//   · 사용자 요청: 최신 제작 결과가 항상 상단에 표시되고, 이전 카드는 아래로 밀려나도록 처리 (prepend)
 function _showCraftResultToast(innerHTML,color){
   try{
     let host=document.getElementById('craft-result-toast-host');
@@ -10362,13 +10363,15 @@ function _showCraftResultToast(innerHTML,color){
       document.body.appendChild(host);
     }
     const card=document.createElement('div');
-    card.style.cssText=`background:rgba(8,12,24,.94);border:2px solid ${color||'#ffd700'};border-radius:12px;padding:14px 16px;box-shadow:0 4px 22px rgba(0,0,0,.55), 0 0 18px ${color||'#ffd700'}44;opacity:0;transform:translateX(40px);transition:opacity .35s ease, transform .35s ease;backdrop-filter:blur(6px);pointer-events:auto;color:var(--txt);font-size:13px;line-height:1.45`;
+    card.style.cssText=`background:rgba(8,12,24,.94);border:2px solid ${color||'#ffd700'};border-radius:12px;padding:14px 16px;box-shadow:0 4px 22px rgba(0,0,0,.55), 0 0 18px ${color||'#ffd700'}44;opacity:0;transform:translateX(40px);transition:opacity .35s ease, transform .35s ease, margin-top .3s ease;backdrop-filter:blur(6px);pointer-events:auto;color:var(--txt);font-size:13px;line-height:1.45`;
     card.innerHTML=innerHTML;
-    host.appendChild(card);
+    // 사용자 요청: 최신 카드를 상단에 — prepend로 추가, 기존 카드는 아래로 밀려남
+    if(host.firstChild)host.insertBefore(card,host.firstChild);
+    else host.appendChild(card);
     // 진입 애니메이션
     requestAnimationFrame(()=>{card.style.opacity='1';card.style.transform='translateX(0)';});
-    // 호스트 최대 6개로 제한 — 그 이상은 가장 오래된 카드 제거
-    while(host.children.length>6)host.removeChild(host.firstChild);
+    // 호스트 최대 6개로 제한 — 그 이상은 가장 오래된 카드(맨 아래) 제거
+    while(host.children.length>6)host.removeChild(host.lastChild);
     // 3초 후 fade-out → 0.4초 후 DOM 제거
     setTimeout(()=>{
       card.style.opacity='0';card.style.transform='translateX(40px)';
@@ -15557,6 +15560,30 @@ function _drawShipUnit(ctx,u,x,y,sz){
   const dsz=isEnemy?_enemySize(u):_shipDrawSize(u);
   const col=isEnemy?'#cc44ff':'#00ccff';
   const cached=_cbImgCache[imgSrc];
+  // ── 함선 방향: 가장 가까운 적/아군(공격 대상) 방향을 바라보도록 회전 ──
+  //  · 아군 → 가장 가까운 적 좌표 / 적 → 가장 가까운 아군 좌표
+  //  · 부드러운 회전 보간(turnSpeed=0.02) → 사용자 요청 "회전 5배 느림"
+  //  · 기본 함선 이미지/벡터는 우측(노즈)을 향함. 적은 atan2 + π로 미러 대체
+  let _targetAngle=isEnemy?Math.PI:0;  // 기본 방향
+  try{
+    if(combatState){
+      const others=isEnemy?(combatState.players||[]):(combatState.enemies||[]);
+      let minD=Infinity,tx=null,ty=null;
+      for(let i=0;i<others.length;i++){
+        const o=others[i];if(!o||(o.hp||0)<=0)continue;
+        const pos=_unitPos&&_unitPos[o.id||('X'+i)];if(!pos)continue;
+        const dx=pos.x-x,dy=pos.y-y,d=dx*dx+dy*dy;
+        if(d<minD){minD=d;tx=pos.x;ty=pos.y;}
+      }
+      if(tx!=null)_targetAngle=Math.atan2(ty-y,tx-x);
+    }
+  }catch(e){}
+  // 회전 보간: 최단 경로 + 5배 느린 turnSpeed
+  if(u._drawAngle==null)u._drawAngle=_targetAngle;
+  let _da=_targetAngle-u._drawAngle;
+  while(_da>Math.PI)_da-=Math.PI*2;
+  while(_da<-Math.PI)_da+=Math.PI*2;
+  u._drawAngle+=_da*0.02;  // 사용자 요청: 5배 느린 회전 (이전 즉시 대비 매우 천천히)
   if(cached&&cached!=='ERR'&&cached.complete&&cached.naturalWidth>0){
     ctx.save();
     ctx.globalAlpha=alpha;
@@ -15564,17 +15591,13 @@ function _drawShipUnit(ctx,u,x,y,sz){
     const nat=cached.naturalWidth/Math.max(1,cached.naturalHeight);
     const dh=dsz.h*2;
     const dw=Math.min(dsz.w*2.8, dh*nat);
-    if(isEnemy){
-      // 적 함선: 수평 미러 (왼쪽을 향하게)
-      ctx.translate(x,y);
-      ctx.scale(-1,1);
-      ctx.drawImage(cached,-dw/2,-dh/2,dw,dh);
-    } else {
-      ctx.drawImage(cached,x-dw/2,y-dh/2,dw,dh);
-    }
+    // 타겟 방향으로 회전 — 기본 이미지는 우측(노즈) 향함, 적/아군 무관 동일 회전 사용
+    ctx.translate(x,y);
+    ctx.rotate(u._drawAngle);
+    ctx.drawImage(cached,-dw/2,-dh/2,dw,dh);
     ctx.restore();
   } else {
-    _drawShipVector(ctx,x,y,dsz,isEnemy,col,alpha);
+    _drawShipVector(ctx,x,y,dsz,isEnemy,col,alpha,u._drawAngle);
     if(!cached)_loadCombatImg(imgSrc,function(){if(typeof drawCombatFrame==='function')drawCombatFrame();});
   }
   // 쉴드 오라: SH>0이고 살아있는 함선만. SH%에 따라 강도 조절 + 미세 펄스.
@@ -16128,26 +16151,36 @@ function drawCombatFrame(){
   const ePos=_fleetLayout(en,true,W,H,z);
 
   // 플레이어 함선
-  //   ── 학익진 U자 진형 활성 시: _haikjinTarget으로 lerp 보간 (사용자 요청: 매우 천천히)
-  //   T=0.008 → 매 프레임 0.8% 거리 이동 (이전 0.04 대비 5배 느림)
-  //   약 125 프레임(2초)에 60% 도달 → 장중하게 펼쳐지는 진형 연출
+  //   ── 사용자 요청: 함선 이동/회전 5배 느림 ──
+  //   · 학익진 활성: T=0.008 (매우 천천히, 진형 펼침 연출)
+  //   · 일반 위치 변경: T=0.04 (즉시→lerp, 5배 느림)
   const _hjOn=!!(combatState._haikjinFormation);
   pl.forEach((u,i)=>{
     let{x,y}=pPos[i];
+    // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
+    if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      if(u._curX==null){u._curX=x;u._curY=y;}
-      const T=0.008;  // 5배 느림 (사용자 요청)
+      const T=0.008;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
-      x=u._curX;y=u._curY;
+    } else {
+      const T=0.04;  // 일반 이동 — 사용자 요청 5배 느린 부드러운 추적
+      u._curX+=(x-u._curX)*T;
+      u._curY+=(y-u._curY)*T;
     }
+    x=u._curX;y=u._curY;
     _unitPos[u.id||('P'+i)]={x:x,y:y};
     _drawShipUnit(cbCtx,u,x,y,null);
     _drawHealthBar(cbCtx,u,x,y,_shipDrawSize(u),false);
   });
-  // 적 함선
+  // 적 함선 — 사용자 요청: 동일 5배 느린 이동 적용 (회전은 _drawShipUnit에서 처리)
   en.forEach((u,i)=>{
-    const{x,y}=ePos[i];
+    let{x,y}=ePos[i];
+    if(u._curX==null){u._curX=x;u._curY=y;}
+    const T=0.04;
+    u._curX+=(x-u._curX)*T;
+    u._curY+=(y-u._curY)*T;
+    x=u._curX;y=u._curY;
     _unitPos[u.id||('E'+i)]={x:x,y:y};
     _drawShipUnit(cbCtx,u,x,y,null);
     _drawHealthBar(cbCtx,u,x,y,_enemySize(u),true);
@@ -17435,6 +17468,10 @@ function _setupHaikjinFormation(){
       p._haikjinTargetY=cyE+R_eff*Math.sin(ang);
     });
   }
+  // 사용자 요청: 학익진 전체 진형을 추가로 좌측 30% 평행이동 (배치 구조는 유지)
+  //  · 기준: 평균 포위 거리 R_wing의 30% 만큼 -X 방향 추가 오프셋
+  const _hjLeftOffset=R_wing*0.30;
+  pl.forEach(p=>{if(p._haikjinTargetX!=null)p._haikjinTargetX-=_hjLeftOffset;});
 }
 
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
