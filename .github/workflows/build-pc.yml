@@ -1,4 +1,4 @@
-name: Build PC Release (Windows)
+name: Build PC Release (Multi-OS)
 
 # 트리거:
 # 1. v로 시작하는 태그 푸시 (v1.0.0-beta.1 등) → 자동 빌드 + GitHub Release 생성
@@ -19,8 +19,24 @@ permissions:
   contents: write  # Release 생성·업로드용
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    strategy:
+      fail-fast: false  # 한 OS 실패해도 나머지는 계속
+      matrix:
+        include:
+          - os: windows-latest
+            target: win
+            artifact_name: windows-installer
+          - os: macos-latest
+            target: mac
+            artifact_name: macos-dmg
+          - os: ubuntu-latest
+            target: linux
+            artifact_name: linux-appimage
+
+    runs-on: ${{ matrix.os }}
+    name: Build (${{ matrix.target }})
+
     steps:
       - name: 소스 체크아웃
         uses: actions/checkout@v4
@@ -31,7 +47,8 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: 의존성 설치 (ECONNRESET 대비 3회 재시도)
+      - name: 의존성 설치 (Windows — ECONNRESET 3회 재시도)
+        if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
@@ -46,19 +63,36 @@ jobs:
           Write-Host "❌ $maxAttempts 회 모두 실패"
           exit 1
 
+      - name: 의존성 설치 (macOS/Linux)
+        if: matrix.os != 'windows-latest'
+        run: npm ci --no-audit --no-fund --prefer-offline
+
       - name: 앱 아이콘 재생성 (선택)
         run: npm run icons
         continue-on-error: true
 
-      - name: Windows .exe 빌드 (publish 제외)
+      - name: Windows .exe 빌드
+        if: matrix.os == 'windows-latest'
         run: npm run dist:win
         shell: pwsh
 
-      - name: ⭐ Artifact 업로드 (publish 성공·실패 무관 — 무조건 보존)
-        if: always()
+      - name: macOS .dmg 빌드 (x64 + arm64 Universal)
+        if: matrix.os == 'macos-latest'
+        run: npm run dist:mac
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false  # 코드 사이닝 비활성화 (인증서 미보유)
+
+      - name: Linux AppImage 빌드
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run dist:linux
+        env:
+          USE_HARD_LINKS: false
+
+      - name: ⭐ Artifact 업로드 (Windows)
+        if: always() && matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: windows-installer
+          name: ${{ matrix.artifact_name }}
           path: |
             dist/*.exe
             dist/*.blockmap
@@ -66,18 +100,72 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
 
-      - name: GitHub Release 생성·업로드 (이미 빌드된 dist 파일 첨부)
-        if: success() && (github.event_name == 'push' || inputs.publish_release == true)
+      - name: ⭐ Artifact 업로드 (macOS)
+        if: always() && matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            dist/*.dmg
+            dist/*.dmg.blockmap
+            dist/latest-mac.yml
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: ⭐ Artifact 업로드 (Linux)
+        if: always() && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            dist/*.AppImage
+            dist/latest-linux.yml
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: GitHub Release 업로드 (Windows)
+        if: success() && matrix.os == 'windows-latest' && (github.event_name == 'push' || inputs.publish_release == true)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           draft: false
           prerelease: true
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
           files: |
             dist/*.exe
             dist/*.blockmap
             dist/latest.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: GitHub Release 업로드 (macOS)
+        if: success() && matrix.os == 'macos-latest' && (github.event_name == 'push' || inputs.publish_release == true)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: false
+          files: |
+            dist/*.dmg
+            dist/*.dmg.blockmap
+            dist/latest-mac.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: GitHub Release 업로드 (Linux)
+        if: success() && matrix.os == 'ubuntu-latest' && (github.event_name == 'push' || inputs.publish_release == true)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: false
+          files: |
+            dist/*.AppImage
+            dist/latest-linux.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
