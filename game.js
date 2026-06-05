@@ -9316,10 +9316,10 @@ function _grantVoidBossRewards(){
     partsGranted.push(def?def.nm:pid);
   });
   // ─── 보상 3: 보이드 크리스탈(VC) 대량 ───
-  const _vcGrant=100;  // 100개 (신화 가챠 100회 가능)
+  const _vcGrant=200;  // 사용자 요청 ×2 — 100→200 (신화 가챠 200회 가능)
   G.voidCrystal=(G.voidCrystal||0)+_vcGrant;
   // VE도 추가 (보이드 에센스 — 보이드 행성 투자/뽑기 보조 자원)
-  const _veGrant=5000;
+  const _veGrant=10000;  // 사용자 요청 ×2 — 5000→10000
   G.voidEssence=(G.voidEssence||0)+_veGrant;
   // ─── 알림 + 백구 대사 ───
   const _luckMsg=_lucky?I18N.t('reward.luckyTwo'):'';
@@ -9485,14 +9485,14 @@ function completeQuest(pid,idx){
   const _hubUnlockedQ=isPlanetHubUnlocked(pid);
   const _rewardRate=_hubUnlockedQ?1.0:0.5;
   const _actualCr=Math.round(q.rewardCr*_rm*_rewardRate*_repMult);
-  const _actualVe=q.rewardVe*_repMult;
+  const _actualVe=q.rewardVe*_repMult*2;  // 사용자 요청 ×2 (퀘스트 VE 보상 2배)
   G.credits+=_actualCr;G.voidEssence+=_actualVe;
   // ── 보이드 크리스탈(VC) 드롭 — 보이드 행성(P27~P30) 퀘스트 완료 시 48% 확률 ──
   // (이전 45% → 48%로 +3%p 추가 인상, 사용자 요청)
   const _vcPlanet=PLANET_DEF.find(p=>p.id===pid);
   if(_vcPlanet&&_vcPlanet.void){
     if(Math.random()<0.48){
-      G.voidCrystal=(G.voidCrystal||0)+1;
+      G.voidCrystal=(G.voidCrystal||0)+2;  // 사용자 요청 ×2 — 드롭 1→2
       notify(I18N.t('notify.gotVoidCrystal',{n:G.voidCrystal}),'pur');
       baekgu(I18N.t('baekgu.voidCrystalGet'));
     }
@@ -13756,7 +13756,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
         notify(I18N.t('notify.partWithRarity',{kind:p?.rarity==='set'?I18N.t('ui.setRare'):I18N.t('ui.legendRare'),nm:p?.nm||partId}),'gold');
       }
     }
-    if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}
+    if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew*2;}  // 사용자 요청 ×2 (전투 승리 VE 2배)
     else{G.credits=Math.max(100,(G.credits||0)-pen);}
     // 퀘스트 1회 효과 — 도착 행성 허브 해금 진행도 +1 (해금 요소 1회 차감)
     if(win&&destPid){try{addHubProgress(destPid);}catch(e){}}
