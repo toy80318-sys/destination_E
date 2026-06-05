@@ -11796,9 +11796,17 @@ function renderAuctionView(body){
     const won=wonNames.has(p.nm);
     return discovered||cleared||won||G.act>=4;
   });
-  // 보이드 행성: 신화 파츠 4종 + 전설기함 보유 시 경매 가능
+  // 보이드 행성 경매 — 사용자 요청 (don.png 참고): 조건 완화
+  //   기존: 신화 파츠 4종 모두 + 전설기함 둘 다 필요 (너무 엄격해 게임 후반에도 불가능)
+  //   변경: 탐험된 보이드 행성(fog A/S)이면 항상 경매 가능
+  //         · 신화 파츠/전설기함 보유 시 약간 할인 (canBuyVoid 플래그는 가격 조정용 유지)
+  //         · 가격은 voidCard에서 ×5 배율 유지 → 가격으로 진입장벽 균형
   const canBuyVoid=_hasAllMythicParts()&&_hasLegendaryFlagship();
-  const voidAvail=canBuyVoid?PLANET_DEF.filter(p=>{const st=G.planets[p.id];return p.void&&st&&!st.owned;}):[];
+  const voidAvail=PLANET_DEF.filter(p=>{
+    const st=G.planets[p.id];
+    if(!st||!p.void||st.owned)return false;
+    return st.fog==='A'||st.fog==='S';   // 탐험된 보이드 행성만 노출
+  });
   function normalCard(p){
     const f=FACTION[p.f],startBid=Math.floor(p.tax*8*auctDiff*gwanggaetoDisc*0.8),instBid=Math.floor(startBid*1.3),roi=Math.round(startBid/p.tax);
     const dis=(bidsLeft<=0||_planetsAtLimit)?'disabled':'';
@@ -11866,7 +11874,7 @@ function renderAuctionView(body){
           <div style="font-size:12px;color:var(--cyan);margin-top:2px">보이드 | 링${p.ring} | 균열 지대</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxAndROI',{tax:p.tax.toLocaleString(),roi})}</div>
           <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> ${I18N.t('ui.instantPrefix')}<span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
-          <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">✦신화 파츠 4종 + 신화/전설기함 함선 보유 조건 충족</div>
+          <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">${canBuyVoid?I18N.t('ui.voidPremiumDiscountAvail'):I18N.t('ui.voidExploredAuction')}</div>
         </div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);white-space:nowrap;font-size:11px;padding:4px 8px" onclick="doBid('${p.id}',${instBid},true)" ${G.credits>=instBid&&bidsLeft>0&&!_planetsAtLimit?'':'disabled'}>${I18N.t('ui.instantWin')}<br>₡${instBid.toLocaleString()}</button>
