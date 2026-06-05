@@ -18,12 +18,25 @@ window.I18N = (function () {
 
   let _lang;
   try {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved && SUPPORTED.indexOf(saved) >= 0) {
-      _lang = saved;
+    // 1순위: URL 쿼리 파라미터 ?lang=en|ko (CG Station 등 외부 사이트에서 영문 강제 확인용)
+    let urlLang = null;
+    try {
+      const _qs = (window.location && window.location.search) || '';
+      const _m = _qs.match(/[?&]lang=([a-zA-Z]{2})/);
+      if (_m) urlLang = _m[1].toLowerCase();
+    } catch (e) {}
+    if (urlLang && SUPPORTED.indexOf(urlLang) >= 0) {
+      _lang = urlLang;
+      // 쿼리로 들어온 언어를 localStorage에도 저장 → 새로고침해도 유지
+      try { localStorage.setItem(LANG_KEY, _lang); } catch (e) {}
     } else {
-      const browser = ((navigator.language || 'ko').slice(0, 2)).toLowerCase();
-      _lang = SUPPORTED.indexOf(browser) >= 0 ? browser : DEFAULT_LANG;
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved && SUPPORTED.indexOf(saved) >= 0) {
+        _lang = saved;
+      } else {
+        const browser = ((navigator.language || 'ko').slice(0, 2)).toLowerCase();
+        _lang = SUPPORTED.indexOf(browser) >= 0 ? browser : DEFAULT_LANG;
+      }
     }
   } catch (e) { _lang = DEFAULT_LANG; }
 

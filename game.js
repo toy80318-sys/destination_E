@@ -9730,7 +9730,7 @@ function updateGatherBtn(){
   const btn=document.getElementById('hn-gather-search');
   if(!btn)return;
   const pid=G.currentPlanet;
-  const isCombatQ=(G.quests[pid]||[]).some(q=>q.status==='active'&&q.type==='combat'&&q.nm.includes('치크스'));
+  const isCombatQ=(G.quests[pid]||[]).some(q=>q.status==='active'&&q.type==='combat'&&(q.nm.includes('치크스')||q.nm.toLowerCase().includes('chiks')));
   // 전투 중 모드 — 잔해 해적 합류 호출 (쿨다운 무관, 한 전투당 2회 한도)
   const _inCombat=(typeof combatState!=='undefined')&&combatState&&!combatState.done;
   const _joinUsed=_inCombat?(combatState._debrisJoinCount||0):0;
@@ -9883,7 +9883,7 @@ function doGatherSearch(){
 
   // 활성 퀘스트 판별 (있으면 보너스로 진행도 반영)
   const gatherQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&(q.type==='gather'||q.type==='explore'));
-  const combatQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&q.type==='combat'&&q.nm.includes('치크스'));
+  const combatQ=(G.quests[pid]||[]).find(q=>q.status==='active'&&q.type==='combat'&&(q.nm.includes('치크스')||q.nm.toLowerCase().includes('chiks')));
 
   notify(I18N.t('notify.scanning'),'ok');
   baekgu(I18N.t('baekgu.searchStart'));
@@ -10752,7 +10752,7 @@ function _renderQuestCard(q,pid,qlist){
     return '<button class="btn" style="'+_BTN_STYLE+';background:rgba(255,136,68,'+(_ok?'.2':'.05')+');border:1px solid #ff8844;color:#ffaa66'+(_ok?';animation:pulse 1.5s infinite':';opacity:.5')+'" '+(_ok?'':'disabled')+' onclick="submitBuyQuest(\''+pid+'\','+realIdx+')">'+I18N.t('qcard.reportBtn')+'</button>';
   })():'';
   const gatherSearchBtn=(q.type==='gather'&&q.status==='active')?'<button class="btn" style="'+_BTN_STYLE+';background:rgba(0,255,140,.12);border:1px solid rgba(0,255,140,.6);color:var(--green);animation:pulse 2s infinite" onclick="doGatherSearch()">'+I18N.t('qcard.searchBtn')+'</button>':'';
-  const combatSearchBtn=(q.type==='combat'&&q.status==='active'&&q.nm.includes('치크스'))?'<button class="btn" style="'+_BTN_STYLE+';background:rgba(139,0,255,.14);border:1px solid var(--purple);color:#cc88ff;animation:pulse 2s infinite" onclick="doGatherSearch()">🛸 정찰</button>':'';
+  const combatSearchBtn=(q.type==='combat'&&q.status==='active'&&(q.nm.includes('치크스')||q.nm.toLowerCase().includes('chiks')))?'<button class="btn" style="'+_BTN_STYLE+';background:rgba(139,0,255,.14);border:1px solid var(--purple);color:#cc88ff;animation:pulse 2s infinite" onclick="doGatherSearch()">'+I18N.t('qcard.searchBtn')+'</button>':'';
   const _qrep=G.reputation||0;
   const _qveLock=(q.rewardVe>=40&&_qrep<200)||(q.rewardVe>=30&&_qrep<100);
   const _qlockMsg=q.rewardVe>=40?I18N.t('qcard.fameReq200',{n:_qrep}):I18N.t('qcard.fameReq100',{n:_qrep});
@@ -15371,15 +15371,15 @@ function _shipDrawSize(u){
 }
 // 적 함선 크기 — 아군과 동일 비율 적용
 function _enemySize(u){
-  const nm=u.nm||'',tier=u.tier||'소형';
+  const nm=(u.nm||'').toLowerCase(),tier=u.tier||'소형';
   // 우르사 메이저 보스 본체: 사용자 요청으로 기존의 2배 크기 (압도적 기함 연출)
-  if(u.id==='BOSS_MAIN'||nm.includes('우르사')) return{w:1512,h:918,bar:600,label:26,gap:2400};
+  if(u.id==='BOSS_MAIN'||nm.includes('우르사')||nm.includes('ursa')) return{w:1512,h:918,bar:600,label:26,gap:2400};
   // 일반 해적 모선
-  if(nm.includes('모선')) return{w:252,h:153,bar:324,label:16,gap:700};
+  if(nm.includes('모선')||nm.includes('mothership')||nm.includes('carrier')) return{w:252,h:153,bar:324,label:16,gap:700};
   if(tier==='신화') return{w:224,h:138,bar:264,label:15,gap:640};
   if(tier==='전설기함') return{w:208,h:124,bar:240,label:14,gap:600};
   if(tier==='대형') return{w:144,h:88,bar:176,label:12,gap:480};
-  if(tier==='중형'||nm.includes('포함')||nm.includes('순양함')||nm.includes('전투함')||nm.includes('구축함')) return{w:86,h:53,bar:112,label:11,gap:300};
+  if(tier==='중형'||nm.includes('포함')||nm.includes('순양함')||nm.includes('전투함')||nm.includes('구축함')||nm.includes('gunship')||nm.includes('cruiser')||nm.includes('battleship')||nm.includes('destroyer')||nm.includes('assault')) return{w:86,h:53,bar:112,label:11,gap:300};
   return{w:54,h:33,bar:70,label:10,gap:210};
 }
 
