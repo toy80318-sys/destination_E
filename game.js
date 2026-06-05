@@ -594,7 +594,7 @@ function showShipDetailModal(idx){
     <div style="display:flex;gap:16px;margin-bottom:14px;align-items:flex-start">
       ${imgOrEmoji(shipImgSrc(s),tierIc,144,144,'border-radius:10px;background:rgba(0,0,0,.6);flex-shrink:0;border:1px solid '+fc+'66',shipLoreKey(s))}
       <div style="flex:1;min-width:0">
-        <div style="font-size:19px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?I18N.t('ui.flagshipPrefix'):''}${s.nm}</div>
+        <div style="font-size:19px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?I18N.t('ui.flagshipPrefix'):''}${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
         <div style="font-size:12px;color:var(--dim);margin-bottom:10px">${I18N.tier(s.tier)}</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:10px">
           <span style="color:var(--red)">⚔️ ATT ${ATT}</span>
@@ -665,7 +665,7 @@ function showShipDetailModal(idx){
       </div>
     </div>
   </div>`;
-  openModal(`${isFlagship?'⚑ ':tierIc+' '}${s.nm}`,modalContent,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
+  openModal(`${isFlagship?'⚑ ':tierIc+' '}${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}`,modalContent,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
 
 // ─── 기함 설정 ────────────────────────────────────────────────
@@ -1671,6 +1671,22 @@ window._SHIP_IMG_SET=window._SHIP_IMG_SET||new Set([
   'CHIX_S','CHIX_M','CHIX_L','DBRP_S','DBRP_M','DBRP_L','PIRATE_S','PIRATE_M','PIRATE_L',
   'Boss','Default'
 ]);
+// 함선 표시명 현재 언어로 재조회 — KO/EN 혼재 방지
+//   · catalogId/catId/id 우선순위로 'ship.{id}.nm' i18n 키 조회
+//   · 카탈로그 외 함선(나포·잔해·해적 등)이나 사용자 커스텀 함선명은 ship.nm 폴백
+//   · 사용처: 함선 카드/명단/전투 라벨 등 표시 시점에 한 번 더 호출 → 언어 전환 후에도 일관성
+function shipDisplayNm(s){
+  if(!s)return '';
+  try{
+    const _id=String(s.catalogId||s.catId||(s.id||'').replace(/_(craft|quest|reward|recovered)_.+$/,'')||'').toUpperCase();
+    if(_id){
+      const _k='ship.'+_id+'.nm';
+      if(I18N&&typeof I18N.has==='function'&&I18N.has(_k))return I18N.t(_k);
+    }
+  }catch(e){}
+  return s.nm||'';
+}
+try{if(typeof window!=='undefined')window.shipDisplayNm=shipDisplayNm;}catch(e){}
 // catId/catalogId/id → 실재 함선 이미지 basename 정규화 (해당 없으면 null).
 // CHIX_1·CHIX_PATROL·CAP_*·DBR_* 등 비표준 식별자도 팩션·티어로 보정한다.
 function _resolveShipImgBase(raw,tier){
@@ -4803,7 +4819,7 @@ function renderShipTab(body){
         <!-- ── 헤더 ── -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid var(--bdr)">
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:17px;font-weight:bold;color:${isFlagship?'var(--cyan)':'#ccd6f6'}">${s.nm}</span>
+            <span style="font-size:17px;font-weight:bold;color:${isFlagship?'var(--cyan)':'#ccd6f6'}">${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</span>
             ${isFlagship?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 5px">${I18N.t('ship.flagshipChip')}</span>`:''}
             <span style="font-size:11px;color:${tierCol};border:1px solid ${tierCol};border-radius:3px;padding:1px 5px">${I18N.tier(s.tier)}</span>
           </div>
@@ -8072,7 +8088,7 @@ function confirmSellShip(idx){
   const crewCount=(s.crewIds||[]).length;
   const msg=`<div style="text-align:center;padding:8px">
     <div style="margin-bottom:8px;display:flex;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',80,80,'border-radius:10px;background:rgba(0,0,0,.5);object-fit:contain',shipLoreKey(s))}</div>
-    <div style="font-size:19px;font-weight:bold;margin-bottom:12px">${s.nm}</div>
+    <div style="font-size:19px;font-weight:bold;margin-bottom:12px">${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
     <div style="background:var(--card);border-radius:8px;padding:12px;font-size:14px;line-height:2;text-align:left">
       <div>판매가: <span style="color:var(--gold);font-size:18px;font-weight:bold">₡${sp.total.toLocaleString()}</span> (구매가의 ${sp.ratio}%)${sp.marco?' <span style="color:var(--gold);font-size:12px">🧭+10%</span>':''}</div>
       <div style="color:var(--dim);font-size:13px">${I18N.t('ship.basePrice',{base:sp.base.toLocaleString()})}${sp.cargoRefund>0?I18N.t('ship.cargoRefund',{cargo:sp.cargoRefund.toLocaleString()}):''}</div>
@@ -8118,8 +8134,8 @@ function renameShip(idx){
   const s=G.fleet[idx];if(!s)return;
   openModal(I18N.t('modal.renameShip'),
     `<div style="padding:8px">
-      <div style="color:var(--dim);font-size:14px;margin-bottom:12px">현재 이름: <span style="color:var(--cyan)">${s.nm}</span></div>
-      <input class="inp" id="rename-inp" maxlength="20" placeholder="새 함선명 입력 (최대 20자)" value="${s.nm}"
+      <div style="color:var(--dim);font-size:14px;margin-bottom:12px">현재 이름: <span style="color:var(--cyan)">${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</span></div>
+      <input class="inp" id="rename-inp" maxlength="20" placeholder="새 함선명 입력 (최대 20자)" value="${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}"
         style="width:100%;margin-bottom:4px"
         onkeydown="if(event.key==='Enter')confirmRenameShip(${idx})">
       <div style="color:var(--muted);font-size:12px;margin-top:6px">영문·한글·숫자·기호 최대 20자</div>
@@ -12256,7 +12272,7 @@ function showCodexShipModal(shipId){
         ${imgOrEmoji(shipImgSrc(s),tierIc,92,92,'object-fit:contain')}
       </div>
       <div>
-        <div style="font-size:18px;font-weight:bold;color:${fc}">${tierIc} ${s.nm}</div>
+        <div style="font-size:18px;font-weight:bold;color:${fc}">${tierIc} ${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:2px">${I18N.tier(s.tier)} · ₡${(s.price||0).toLocaleString()}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;font-size:11px">
           <span style="color:var(--red)">⚔️ ATT:${s.ATT}</span>
@@ -12337,7 +12353,7 @@ function renderCodexTab(body){
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
         ${capturedShips.map(s=>`<div style="background:var(--card);border:1px solid rgba(255,136,68,.4);border-radius:8px;padding:8px;text-align:center;min-height:148px">
           <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">${imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',78,78,'')}</div>
-          <div style="font-size:12px;font-weight:bold;color:var(--txt);line-height:1.2">${s.nm}</div>
+          <div style="font-size:12px;font-weight:bold;color:var(--txt);line-height:1.2">${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
           <div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.tier(s.tier)}</div>
           <div style="font-size:10px;margin-top:2px;color:#ff8844">🏴 나포</div>
         </div>`).join('')}
@@ -15975,9 +15991,8 @@ function showAcquisitionReport(opts){
       </div>
     </div>`;
   }).join('');
-  // 사용자 요청: 보상 카드 가로 길이 20% 축소 (max-width:80% + 가운데 정렬)
-  //   → 모달 폭이 1.5× 늘어난 대신 카드 자체는 0.8× 축소하여 더 여유롭게 표시
-  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:6px':'display:flex;flex-direction:column;gap:6px')+';max-width:80%;margin:0 auto';
+  // 사용자 요청: 모달 폭 0.8× 축소 — 카드 폭은 95%로 확대해 영문 라벨 잘림 방지
+  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:6px':'display:flex;flex-direction:column;gap:6px')+';max-width:95%;margin:0 auto';
   const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
   const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
   const html=`<div style="padding:2px 2px">
@@ -16443,7 +16458,7 @@ function _drawHealthBar(ctx,u,x,y,sz,isEnemy){
   ctx.fillStyle=u.hp<=0?'rgba(150,150,150,.6)':'rgba(220,220,255,.85)';
   ctx.font=`${sz.label||10}px sans-serif`;
   ctx.textAlign='center';
-  ctx.fillText((u.nm||'').substring(0,10),x,by-3);
+  ctx.fillText(((typeof shipDisplayNm==='function'?shipDisplayNm(u):u.nm)||'').substring(0,10),x,by-3);
   // ── HP / SH 수치 표기 (함선 아래쪽) ─────────────────────────────
   const _fmt=v=>v>=10000?Math.round(v/100)/10+'k':v>=1000?Math.round(v/100)/10+'k':String(Math.max(0,Math.round(v)));
   const _hpTxt=`HP ${_fmt(u.hp)}/${_fmt(u.maxHP)}`;
