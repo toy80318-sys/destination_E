@@ -1428,7 +1428,7 @@ function getBaekguStoryHint(){
   }
   // ACT 3 힌트 (조건: 60턴 자동 ACT 4 또는 우르사 메이저 격파)
   if(G.act===3){
-    const cheeksCleared=(G.combatHistory||[]).filter(c=>c.win&&(c.planet.includes('치크스')||c.planet.includes('TOI')||c.planet.includes('케플러-452')||c.planet.includes('우르사-알파')||c.planet.includes('오미크론')||c.planet.includes('타이탄-X'))).length;
+    const cheeksCleared=(G.combatHistory||[]).filter(c=>{const _pl=(c.planet||'').toLowerCase();return c.win&&(_pl.includes('치크스')||_pl.includes('chiks')||_pl.includes('toi')||_pl.includes('케플러-452')||_pl.includes('kepler-452')||_pl.includes('우르사-알파')||_pl.includes('ursa-alpha')||_pl.includes('오미크론')||_pl.includes('omicron')||_pl.includes('타이탄-x')||_pl.includes('titan-x'));}).length;
     if(heroCount<8){const m=8-heroCount;return I18N.t('hint.act3.heroN8',{heroCount,remaining:m});}
     if(cheeksCleared===0)return I18N.t('hint.act3.cheeksFirst');
     if(cheeksCleared<5)return I18N.t('hint.act3.cheeksProg',{cleared:cheeksCleared,remaining:5-cheeksCleared});
@@ -5473,8 +5473,8 @@ function _renderUndoSellToast(){
   const _isBuy=ls.type==='buyCargoSnap';
   const _verb=_isBuy?I18N.t('ui.buy'):I18N.t('ui.sell');
   const _refund=_isBuy?I18N.t('sell.refund'):I18N.t('sell.return');
-  el.innerHTML=`<span>↶ 방금 ${_verb}: <b style="color:#fff">${ls.label||''}</b></span>
-    <button onclick="undoLastSell()" style="padding:5px 12px;border:1.5px solid var(--gold);background:rgba(255,215,0,.18);color:var(--gold);border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;letter-spacing:1px">${_verb} 취소 (₡${ls.credits.toLocaleString()} ${_refund})</button>
+  el.innerHTML=`<span>${I18N.t('undo.justNow',{verb:_verb})}: <b style="color:#fff">${ls.label||''}</b></span>
+    <button onclick="undoLastSell()" style="padding:5px 12px;border:1.5px solid var(--gold);background:rgba(255,215,0,.18);color:var(--gold);border-radius:5px;cursor:pointer;font-size:12px;font-weight:bold;letter-spacing:1px">${I18N.t('undo.cancelLine',{verb:_verb,cr:ls.credits.toLocaleString(),refund:_refund})}</button>
     <button onclick="window._lastSell=null;_renderUndoSellToast()" style="padding:3px 7px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--dim);border-radius:4px;cursor:pointer;font-size:11px" title="${I18N.t('title.closeNotification')}">✕</button>`;
 }
 function undoLastSell(){
@@ -14972,7 +14972,7 @@ function _mixInNormalShips(enemies){
   const pool=_normalShipPool();
   if(!pool.length)return;
   enemies.forEach(u=>{
-    if(!u||u.voidBoss||u.id==='BOSS_MAIN'||u._ursaBoss||(u.nm||'').includes('우르사'))return;
+    if(!u||u.voidBoss||u.id==='BOSS_MAIN'||u._ursaBoss||(u.nm||'').toLowerCase().includes('우르사')||(u.nm||'').toLowerCase().includes('ursa'))return;
     if(Math.random()>=0.5)return;  // ~50%
     const sameTier=pool.filter(s=>s.tier===(u.tier||'소형'));
     const arr=sameTier.length?sameTier:pool;
@@ -15268,9 +15268,9 @@ function _combatShipImgSrcRaw(u){
   const nmLow=String(u.nm||'').toLowerCase();
   const catId=sid.replace(/(?:_\d+|_main)$/,'').toUpperCase();
   // 이름 기반 팩션 추정 (catalogId/id 누락 대비)
-  const isChixName=nmLow.includes('치크스')||nmLow.includes('chix');
-  const isPirateName=nmLow.includes('해적')||nmLow.includes('pirate');
-  const isDbrpName=nmLow.includes('잔해')||nmLow.includes('dbrp');
+  const isChixName=nmLow.includes('치크스')||nmLow.includes('chix')||nmLow.includes('chiks');
+  const isPirateName=nmLow.includes('해적')||nmLow.includes('pirate')||nmLow.includes('raider')||nmLow.includes('약탈');
+  const isDbrpName=nmLow.includes('잔해')||nmLow.includes('dbrp')||nmLow.includes('salvage')||nmLow.includes('debris')||nmLow.includes('recovered')||nmLow.includes('회수');
   // ── 블랙팔콘 / 보이드 팔콘 / 히든 팔콘(보이드 시험 보상) 공통 — 적/아군 무관하게 S10.png ──
   // catalogId 변형: BLACKFALCON / VOID_FALCON / HIDDEN_FALCON / FALCON
   // (catalogId의 '_' 이후가 잘려 'HIDDEN'/'VOID'가 되는 경우까지 포함)
@@ -15280,12 +15280,12 @@ function _combatShipImgSrcRaw(u){
     if(catId==='HIDDEN'||catId==='VOID'||catId==='FALCON'||catId==='BLACKFALCON'||catId==='VOIDFALCON')return true;
     if(sid.startsWith('HIDDEN_FALCON')||sid.startsWith('CAP_BLACKFALCON')||sid.startsWith('CAP_VOIDFALCON')||sid.startsWith('BLACKFALCON')||sid.startsWith('VOID_FALCON'))return true;
     if(u._isHiddenFalcon||u._isVoidFalconCaptured||u.voidBoss)return true;
-    if(nmLow.includes('팔콘')||nmLow.includes('블랙')||nmLow.includes('검은 팔콘')||nmLow.includes('다크팔콘'))return true;
+    if(nmLow.includes('팔콘')||nmLow.includes('블랙')||nmLow.includes('검은 팔콘')||nmLow.includes('다크팔콘')||nmLow.includes('falcon')||nmLow.includes('black falcon')||nmLow.includes('dark falcon')||nmLow.includes('blackfalcon'))return true;
     return false;
   })();
   if(_isFalcon)return 'img/ships/S10.png'+_ver;
   if(isEnemy){
-    const isBoss=catId.startsWith('BOSS')||catId==='URSA'||nmLow.includes('우르사');
+    const isBoss=catId.startsWith('BOSS')||catId==='URSA'||nmLow.includes('우르사')||nmLow.includes('ursa');
     if(isBoss)return 'img/combat/enemies/Boss.png'+_ver;
     // 적 함대에 섞인 「일반 구매가능 함선」 — 카탈로그 함선 이미지로 표시
     if(u._useCatalogImg&&(u.catId||u.catalogId)){
@@ -15864,7 +15864,7 @@ function drawCombatFrame(){
     const sizes=units.map(u=>isEnemy?_enemySize(u):_shipDrawSize(u));
     // 보스 본 함은 호위함보다 ~3배 크지만 셀 간격은 호위함 기준으로 계산해야 격자가 너무 벌어지지 않음.
     // (보스는 자기 셀보다 시각적으로 크게 그려져 호위함을 약간 가리며 압도감 연출)
-    const nonBossSizes=units.map((u,i)=>({u,s:sizes[i]})).filter(({u})=>!(isEnemy&&(u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사'))));
+    const nonBossSizes=units.map((u,i)=>({u,s:sizes[i]})).filter(({u})=>{const _nm=(u.nm||'').toLowerCase();return !(isEnemy&&(u.id==='BOSS_MAIN'||_nm.includes('우르사')||_nm.includes('ursa')));});
     const baseSizes=nonBossSizes.length?nonBossSizes.map(x=>x.s):sizes;
     const maxW=Math.max(...baseSizes.map(s=>s.w));
     const maxH=Math.max(...baseSizes.map(s=>s.h));
@@ -15939,7 +15939,7 @@ function drawCombatFrame(){
       // 대상: 우르사 메이저(BOSS_MAIN) + 보이드 보스 기함(voidBoss + '팔콘 스카우트 (기함)')
       // 가로 펼침 모드: 블랙팔콘 신화기함도 포함
       if(isEnemy){
-        const bossIdx=units.findIndex(u=>u.id==='BOSS_MAIN'||(u.nm||'').includes('우르사')||(u.voidBoss&&(u.nm||'').includes('기함'))||u.id==='VOID_FALCON_1'||(u._isBlackHoleFleet&&(u.catalogId==='BLACKFALCON'||(u.nm||'').includes('블랙팔콘'))));
+        const bossIdx=units.findIndex(u=>{const _nm=(u.nm||'').toLowerCase();return u.id==='BOSS_MAIN'||_nm.includes('우르사')||_nm.includes('ursa')||(u.voidBoss&&(_nm.includes('기함')||_nm.includes('flagship')))||u.id==='VOID_FALCON_1'||(u._isBlackHoleFleet&&(u.catalogId==='BLACKFALCON'||_nm.includes('블랙팔콘')||_nm.includes('black falcon')||_nm.includes('blackfalcon')));});
         if(bossIdx>=0){
           // row-first(가로 펼침): 뒤쪽(row=rows-1) 중앙 cols 위치
           // col-first(기본): 마지막 컬럼 중앙
@@ -16731,7 +16731,7 @@ function runCombatTurn(){
     if(gs){gs.hp=target.hp;gs.sh=target.sh;}
     const isDead=target.hp<=0;
     // ─── 보이드 적함: 테슬라식 번개 + 미사일 무작위 ───
-    const _isVoidEnemy=combatState.isVoidBoss||e.voidBoss||(e.nm||'').includes('팔콘');
+    const _isVoidEnemy=combatState.isVoidBoss||e.voidBoss||(e.nm||'').toLowerCase().includes('팔콘')||(e.nm||'').toLowerCase().includes('falcon');
     let _atkKind='beam';  // 'beam' | 'lightning' | 'missile'
     if(_isVoidEnemy){
       const r=Math.random();

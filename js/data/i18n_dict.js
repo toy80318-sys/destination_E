@@ -5011,6 +5011,8 @@ I18N.register({
                               en: 'Yi Sun-sin · Jang Yeong-sil · Gwanggaeto · Gagarin · Nelson · Einstein · Tesla · Marco Polo' },
   // 백구 미니게임용 추가 (시그널 키워드)
   'chat.signal':            { ko: '통신',                 en: 'comm' },
+  'undo.justNow':           { ko: '↶ 방금 {verb}',         en: '↶ Just {verb}' },
+  'undo.cancelLine':        { ko: '{verb} 취소 (₡{cr} {refund})', en: 'Undo {verb} (₡{cr} {refund})' },
   // 부팅/로딩 화면
   'boot.preparing':         { ko: '우주를 준비하는 중...',  en: 'Preparing the cosmos...' },
   'boot.saveRestored':      { ko: '세이브 복원 완료 ({n}개)', en: 'Save restored ({n})' },
