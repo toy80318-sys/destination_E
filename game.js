@@ -3782,7 +3782,7 @@ function renderTradeTab(body){
   const _invSellList=(G.inventory||[]).filter(i=>i.id==='G18'&&i.qty>=2);
   const invSellHTML=_invSellList.length>0?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:10px;margin-bottom:14px">
     <div style="color:var(--gold);font-size:13px;font-weight:bold;margin-bottom:6px">📜 영입 재료 (여분 판매) — 보존 1개 자동 유지</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
     ${_invSellList.map(i=>{
       const c=COMMODITIES.find(cc=>cc.id===i.id);
       const marcoMult=(G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
@@ -3843,11 +3843,11 @@ function renderTradeTab(body){
   const _matCargo=_withIdx.filter(x=>x.s.material);
   const _normalHTML=_normalCargo.length>0?`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px;margin-bottom:10px">
     <div style="color:var(--cyan);font-size:13px;font-weight:bold;margin-bottom:8px">${I18N.t('shop.cargoOwnedTitle')} <span style="color:var(--dim);font-size:11px;font-weight:normal">${I18N.t('shop.cargoOwnedHint')}</span></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">${_normalCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${_normalCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
   </div>`:'';
   const _matHTML=_matCargo.length>0?`<div style="background:rgba(204,102,255,.05);border:1px solid rgba(204,102,255,.3);border-radius:8px;padding:10px;margin-bottom:10px">
     <div style="color:#cc88ff;font-size:13px;font-weight:bold;margin-bottom:8px">${I18N.t('shop.matOwnedTitle')} <span style="color:var(--dim);font-size:11px;font-weight:normal">${I18N.t('shop.matOwnedHint')}</span></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">${_matCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${_matCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
   </div>`:'';
   const cargoHTML=(G.cargo.length>0)?(_normalHTML+_matHTML):`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:14px;margin-bottom:14px;text-align:center;color:var(--dim);font-size:14px">${I18N.t('ui.cargoEmpty')}</div>`;
 
@@ -3939,8 +3939,10 @@ function renderTradeTab(body){
           }).join('');
 
           // ── 제작 재료 그리드 (특산물 카드와 동일한 가로형 레이아웃) ──
+          // 사용자 요청: 헤더와 카드 그리드를 분리해 각각 3열 고정 정렬되도록 처리
+          const matHeader=availMat.length===0?'':
+            `<div style="color:var(--gold);font-size:12px;font-weight:bold;margin:14px 0 8px">⚗️ 제작 재료 <span style="font-weight:normal;color:var(--dim)">${I18N.t('tip.heldInMaterialPanel')}</span></div>`;
           const matCards=availMat.length===0?'':
-            `<div style="color:var(--gold);font-size:12px;font-weight:bold;margin:14px 0 8px;grid-column:1/-1">⚗️ 제작 재료 <span style="font-weight:normal;color:var(--dim)">${I18N.t('tip.heldInMaterialPanel')}</span></div>`+
             availMat.map(c=>{
               const qty=stock[c.id]||0;
               const have=(G.materials&&G.materials[c.id])||0;
@@ -3987,10 +3989,10 @@ function renderTradeTab(body){
               </div>`;
             }).join('');
 
-          return`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
-            ${normalCards}
-            ${matCards}
-          </div>`;
+          // 사용자 요청: 특산물·재료 리스트 각각 1행 3열 고정 표시 (헤더는 그리드 밖에 배치)
+          return`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${normalCards}</div>
+            ${matHeader}
+            ${matCards?`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${matCards}</div>`:''}`;
         })()
       }
     </div>
@@ -16046,8 +16048,18 @@ function drawCombatFrame(){
   const ePos=_fleetLayout(en,true,W,H,z);
 
   // 플레이어 함선
+  //   ── 학익진 포위 진형 활성 시: _haikjinTarget으로 lerp 보간 (천천히 이동)
+  //   T=0.04 → 매 프레임 4% 거리 이동, ~25프레임(약 0.4초)에 80% 도달
+  const _hjOn=!!(combatState._haikjinFormation);
   pl.forEach((u,i)=>{
-    const{x,y}=pPos[i];
+    let{x,y}=pPos[i];
+    if(_hjOn&&u._haikjinTargetX!=null){
+      if(u._curX==null){u._curX=x;u._curY=y;}
+      const T=0.04;
+      u._curX+=(u._haikjinTargetX-u._curX)*T;
+      u._curY+=(u._haikjinTargetY-u._curY)*T;
+      x=u._curX;y=u._curY;
+    }
     _unitPos[u.id||('P'+i)]={x:x,y:y};
     _drawShipUnit(cbCtx,u,x,y,null);
     _drawHealthBar(cbCtx,u,x,y,_shipDrawSize(u),false);
@@ -17286,6 +17298,51 @@ function _showHaikjinButton(){
   hdr.appendChild(hbtn);
 }
 
+// 학익진 포위 진형 셋업 — 아군 함대를 적군 주변 원형으로 배치
+//   · 가장 방어력 높은 아군 1대 → 적 정면(앞쪽 중앙) 탱커 슬롯
+//   · 나머지 아군은 적군을 둘러싸는 시계 분산 배치
+//   · 좌표는 _haikjinTarget(x,y)에 저장하고 drawCombatFrame이 lerp 보간 (천천히 이동)
+function _setupHaikjinFormation(){
+  if(!combatState||!combatState.players||!combatState.enemies)return;
+  const pl=combatState.players.filter(p=>(p.hp||0)>0);
+  const en=combatState.enemies.filter(e=>(e.hp||0)>0);
+  if(pl.length===0||en.length===0)return;
+  combatState._haikjinFormation=true;
+  combatState._haikjinT0=performance.now();
+  // 방어력 점수: maxHP + DEF×8 + maxSH×0.6 + armorTier×30 + shieldTier×15
+  function _defScore(u){return (+u.maxHP||+u.hp||1)+(+u.DEF||0)*8+(+u.maxSH||0)*0.6+(+u.armorTier||0)*30+(+u.shieldTier||0)*15;}
+  const tank=pl.slice().sort((a,b)=>_defScore(b)-_defScore(a))[0];
+  // 적군 중심점 (적 함선의 평균 위치) — _unitPos는 drawCombatFrame이 매 프레임 갱신
+  const _up=_unitPos||{};
+  const _eposx=en.map(u=>_up[u.id]?_up[u.id].x:0);
+  const _eposy=en.map(u=>_up[u.id]?_up[u.id].y:0);
+  const cxE=_eposx.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
+  const cyE=_eposy.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
+  // 포위 반경: 적 함대 spread + 적정 거리
+  const spread=Math.max(...en.map(u=>{const p=_up[u.id]||{};return Math.hypot((p.x||0)-cxE,(p.y||0)-cyE);}),120);
+  const R=spread+220;  // 포위 반경
+  // 탱커는 적 정면(적 함대 → 아군 함대 방향): 적군 좌측(아군은 좌측에 위치)
+  // 적 함대 평균 X가 화면 우측이면 탱커는 적 정면(좌측), 아군 후방은 적 더 우측
+  // 게임에서 적은 우측, 아군은 좌측. 탱커는 적의 정면 = 적 좌측 (아군과 적 사이)
+  if(tank){
+    tank._haikjinTargetX=cxE-R*0.55;  // 적 정면 (아군 측에서 가장 앞)
+    tank._haikjinTargetY=cyE;
+    tank._isHaikjinTank=true;
+  }
+  // 나머지 아군은 적 주변 원형 배치 (아군 측 반원 위주: 적군 둘러쌈)
+  const others=pl.filter(p=>p!==tank);
+  const n=others.length;
+  if(n>0){
+    // 270° 호로 분산: 적의 정면(좌측)을 중심으로 위·아래·뒤쪽까지 둘러쌈
+    // 각도 범위: 90°(위) → 270°(아래, 뒤로 돌아) 시계방향
+    others.forEach((p,i)=>{
+      const ang=Math.PI*0.5+(i+0.5)*(Math.PI*1.5)/n;  // 90°~270°
+      p._haikjinTargetX=cxE+R*Math.cos(ang);
+      p._haikjinTargetY=cyE+R*Math.sin(ang);
+    });
+  }
+}
+
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
 function activateHaikjin(){
   if(!combatState||combatState._haikjinUsed||combatState.done)return;
@@ -17299,6 +17356,11 @@ function activateHaikjin(){
       p.ATT=Math.round(p._origATT*3);
     });
   }
+  // 사용자 요청: 학익진 발동 시 아군 함대가 적군을 둘러싸는 원형 포위 진형으로 천천히 이동
+  //  · 방어력(DEF+장갑+실드 기반) 가장 높은 아군 1대는 적군 정면(앞쪽)에 배치 — 탱커 역할
+  //  · 나머지 아군은 적군 주변에 균등 분산 배치 (시계방향 ARC)
+  //  · drawCombatFrame이 매 프레임 sx/sy를 target으로 lerp 보간해 천천히 이동
+  try{_setupHaikjinFormation();}catch(e){console.warn('[Haikjin formation]',e);}
   addCombatLog(I18N.t('combat.haikjinActivate'),'gold');
   notify(I18N.t('notify.haikjinActivateShort'),'gold');
   baekgu(I18N.t('baekgu.haikjin'));
@@ -17558,7 +17620,16 @@ function _getSlotInfo(n){
 let _saveDebounceTimer=null;
 let _saveDebouncePendingSlot=null;
 function _saveGameImmediate(silent,slotN){
-  const n=(slotN!=null)?slotN:1;
+  // 활성 슬롯 추적: loadGame에서 G._activeSlot에 슬롯 번호 저장 → saveGame은 그 슬롯에 저장
+  // (기존 버그: slotN 미지정 시 무조건 슬롯1에 덮어써 다른 슬롯에서 플레이 중인 데이터가 슬롯1로 이동)
+  const n=(slotN!=null)?slotN:(typeof G==='object'&&G&&G._activeSlot!=null?G._activeSlot:1);
+  // 안전장치: G.profile.name이 비어있으면(타이틀 화면 등) 저장 차단 — 빈 데이터로 슬롯 덮어쓰기 방지
+  if(!silent&&(!G||!G.profile||!G.profile.name)){
+    // 명시적 호출인데 G가 비어있으면 차단하지 말고 진행 (사용자 의도 존중)
+  } else if(silent&&(!G||!G.profile||!G.profile.name)){
+    // 자동 저장이면 빈 G를 슬롯에 덮어쓰는 것 차단
+    return;
+  }
   try{
     // 1) 사이즈 폭증 방지: 전투 기록 마지막 100건만 유지 (이전: 무제한)
     if(G.combatHistory&&G.combatHistory.length>100){
@@ -17684,6 +17755,7 @@ function loadGame(slotN){
     }
     if(!snap){notify(I18N.t('notify.slotNoData',{n}),'err');return false;}
     Object.assign(G,snap);
+    G._activeSlot=n;  // 활성 슬롯 추적 — 이후 saveGame은 이 슬롯에 저장
     // 필수 필드 보완
     if(!G.mapPositions||!Object.keys(G.mapPositions).length){G.mapPositions=generateGalaxy(1000);G.mapConns=buildConnections(G.mapPositions);}
     // 항로(mapConns) 누락 보정 — 이게 없으면 모든 이동이 차단됨 (구버전 세이브 호환)

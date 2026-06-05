@@ -64,8 +64,15 @@ window.I18N = (function () {
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     _lang = lang;
     // 가장 안전하고 일관된 변경: 페이지 새로고침
-    // (게임 진행 중이면 자동저장 후 새로고침 — saveGame은 game.js가 정의)
-    try { if (typeof window.saveGame === 'function') window.saveGame(true); } catch (e) {}
+    // (게임 진행 중일 때만 활성 슬롯에 자동저장 — 타이틀 화면에서는 빈 G가 슬롯을 초기화하지 않도록 차단)
+    try {
+      var _G = window.G;
+      if (typeof window.saveGame === 'function'
+          && _G && _G.profile && _G.profile.name
+          && _G._activeSlot != null) {
+        window.saveGame(true, _G._activeSlot);
+      }
+    } catch (e) {}
     setTimeout(function () { try { window.location.reload(); } catch (e) {} }, 100);
     return true;
   }
