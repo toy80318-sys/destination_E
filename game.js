@@ -2131,7 +2131,7 @@ function renderPrologue(){
   const pl=getPrologues();
   const l=pl[pIdx];
   const box=document.getElementById('pr-lines');
-  const isBaekgu=l.sp==='백구';
+  const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
   // 화자에 따라 캐릭터 이미지 표시/숨김
   const charDiv=document.getElementById('pr-char');
   if(charDiv)charDiv.style.opacity=isBaekgu?'1':'0.25';
@@ -9167,7 +9167,7 @@ function showVoidBossIntro(questRef){
   function _renderLine(){
     const l=lines[_idx];
     const isVoid=l.sp==='???'||l.sp===I18N.t('ui.signalReceived');
-    const isBaekgu=l.sp==='백구';
+    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
     const isCmd=l.sp===cmdName;
     const isHero=!isVoid&&!isBaekgu&&!isCmd;
     const spColor=isVoid?'#cc66ff':isBaekgu?'var(--cyan)':isHero?'#ffaa44':'var(--gold)';
@@ -9235,7 +9235,7 @@ function showVoidBossOutro(){
   function _renderLine(){
     const l=lines[_idx];
     const isVoid=l.sp==='팔콘 스카우트'||l.sp===I18N.t('ui.signalReceived');
-    const isBaekgu=l.sp==='백구';
+    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
     const spColor=isVoid?'#cc66ff':isBaekgu?'var(--cyan)':'var(--gold)';
     const spIc=isVoid?'🌑':isBaekgu?'🐕':'⚑';
     const portrait=charPortraitHTML(l.sp,spIc,216,spColor);
@@ -19000,8 +19000,11 @@ function showUrsaMajorIntro(){
   let _idx=0;
   function _renderLine(){
     const l=lines[_idx];
-    const spColor=l.sp==='우르사 메이저'?'#ff3366':l.sp==='시스템'?'var(--cyan)':l.sp==='백구'?'var(--cyan)':'var(--gold)';
-    const spIc=l.sp==='우르사 메이저'?'☠️':l.sp==='시스템'?'⚡':l.sp==='백구'?'🐕':'⚑';
+    const _isUrsa2=(l.sp==='우르사 메이저'||l.sp==='Ursa Major');
+    const _isSys2=(l.sp==='시스템'||l.sp==='System');
+    const _isBk2=(l.sp==='백구'||l.sp==='Baekgu');
+    const spColor=_isUrsa2?'#ff3366':_isSys2?'var(--cyan)':_isBk2?'var(--cyan)':'var(--gold)';
+    const spIc=_isUrsa2?'☠️':_isSys2?'⚡':_isBk2?'🐕':'⚑';
     const portrait=charPortraitHTML(l.sp,spIc,192,spColor);
     // 마지막 대사에선 적 함대 스펙 브리핑 함께 표시
     const isFinal=_idx===lines.length-1;
@@ -19091,9 +19094,9 @@ function showBossVictoryEpilogue(onDone){
   function _renderLine(){
     const l=lines[_idx];
     const isFinal=_idx===lines.length-1;
-    const isUrsa=l.sp==='우르사 메이저';
-    const isSys=l.sp==='시스템';
-    const isBaekgu=l.sp==='백구';
+    const isUrsa=l.sp==='우르사 메이저'||l.sp==='Ursa Major';
+    const isSys=l.sp==='시스템'||l.sp==='System';
+    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
     const spColor=isUrsa?'#ff3366':isSys?'#66ffcc':isBaekgu?'var(--cyan)':'var(--gold)';
     const spIc=isUrsa?'💀':isSys?'⚡':isBaekgu?'🐕':'⚑';
     const portrait=charPortraitHTML(l.sp,spIc,216,spColor);
