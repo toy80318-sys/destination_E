@@ -1687,6 +1687,35 @@ function shipDisplayNm(s){
   return s.nm||'';
 }
 try{if(typeof window!=='undefined')window.shipDisplayNm=shipDisplayNm;}catch(e){}
+// 상품/재료 표시명 현재 언어로 재조회 — KO/EN 혼재 방지
+//   · c.id로 'commodity.{id}.nm' i18n 키 조회 (G01~G30, R01~R08 등)
+//   · 사용처: 화물창/상점/제작 모달의 상품 카드
+function commDisplayNm(c){
+  if(!c)return '';
+  try{
+    const _id=String(c.id||'').toUpperCase();
+    if(_id){
+      const _k='commodity.'+_id+'.nm';
+      if(I18N&&typeof I18N.has==='function'&&I18N.has(_k))return I18N.t(_k);
+    }
+  }catch(e){}
+  return c.nm||'';
+}
+try{if(typeof window!=='undefined')window.commDisplayNm=commDisplayNm;}catch(e){}
+// 파츠 표시명 현재 언어로 재조회 — KO/EN 혼재 방지
+//   · p.id로 'part.{id}.nm' i18n 키 조회
+function partDisplayNm(p){
+  if(!p)return '';
+  try{
+    const _id=String(p.id||'').toUpperCase();
+    if(_id){
+      const _k='part.'+_id+'.nm';
+      if(I18N&&typeof I18N.has==='function'&&I18N.has(_k))return I18N.t(_k);
+    }
+  }catch(e){}
+  return p.nm||'';
+}
+try{if(typeof window!=='undefined')window.partDisplayNm=partDisplayNm;}catch(e){}
 // catId/catalogId/id → 실재 함선 이미지 basename 정규화 (해당 없으면 null).
 // CHIX_1·CHIX_PATROL·CAP_*·DBR_* 등 비표준 식별자도 팩션·티어로 보정한다.
 function _resolveShipImgBase(raw,tier){
@@ -3808,7 +3837,7 @@ function renderTradeTab(body){
         <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:20px">${c.ic||'📜'}</span>
           <div style="flex:1;min-width:0">
-            <div style="font-size:12px;color:var(--yellow);font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div>
+            <div style="font-size:12px;color:var(--yellow);font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${commDisplayNm(c)}</div>
             <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.ownedQtyPrice',{qty:i.qty,price:unit.toLocaleString()})}</div>
           </div>
         </div>
@@ -3933,7 +3962,7 @@ function renderTradeTab(body){
               <!-- 정보+버튼 영역 (우측) -->
               <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
                 <div>
-                  <div style="font-size:13px;font-weight:bold;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div>
+                  <div style="font-size:13px;font-weight:bold;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${commDisplayNm(c)}</div>
                   <div style="font-size:13px;font-weight:bold;color:var(--gold)">₡${c.buy.toLocaleString()}</div>
                   ${_lockBadge}
                   ${marcoBadge}
@@ -3984,7 +4013,7 @@ function renderTradeTab(body){
                 <!-- 정보+버튼 영역 (우측) -->
                 <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
                   <div>
-                    <div style="font-size:13px;font-weight:bold;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div>
+                    <div style="font-size:13px;font-weight:bold;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${commDisplayNm(c)}</div>
                     <div style="font-size:13px;font-weight:bold;color:var(--gold)">₡${c.buy.toLocaleString()}</div>
                     ${_matLockBadge}
                     <div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.t('ui.ownedQty',{qty:have})}</div>
@@ -6169,7 +6198,7 @@ function renderShipEnhanceTab(body){
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
             ${matInfos.map(m=>`<div style="background:${m.have>=1?'rgba(80,200,120,.12)':'rgba(255,60,60,.12)'};border:1px solid ${m.have>=1?'var(--green)':'var(--red)'};border-radius:5px;padding:6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px">
               <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">${imgOrEmoji(commImgSrc(m.id),m.ic,44,44,'object-fit:cover;width:100%;height:100%','mat_'+m.id)}</div>
-              <div style="font-size:10px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${m.nm}</div>
+              <div style="font-size:10px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${commDisplayNm(m)}</div>
               <div style="font-size:10px;color:${m.have>=1?'var(--green)':'var(--red)'};font-weight:bold">${m.have}/1</div>
             </div>`).join('')}
           </div>
@@ -10687,7 +10716,7 @@ function renderCraftTab(body){
       <!-- 보유 재료 요약 -->
       <div style="margin-top:8px;font-size:13px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span>보유 재료:</span>
-        ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${m.nm}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):I18N.t('craft.noneBuyAtShop')}
+        ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${commDisplayNm(m)}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):I18N.t('craft.noneBuyAtShop')}
       </div>
 
     </div>
