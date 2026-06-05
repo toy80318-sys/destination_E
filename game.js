@@ -10230,12 +10230,10 @@ function doCraft(recipeId){
   }
 
   const grid=document.getElementById('craftMatGrid');
-  if(grid){grid.style.animation='craftFlash 0.5s ease-in-out infinite';grid.style.pointerEvents='none';}
+  // 사용자 요청: 제작 지연(2초) 제거 → 즉시 결과 표시
   baekgu(I18N.t('baekgu.craftingInProgress'));
-  // 사용자 요청: 메인 화면 중앙에 3·2·1 카운트다운 (2초 동안 빠르게)
-  _showCraftCountdown(2000);
 
-  setTimeout(()=>{
+  (()=>{
     if(grid){grid.style.animation='';grid.style.filter='';grid.style.pointerEvents='';}
     const q=rollCraftQuality();
     const mult=q.mult;
@@ -10319,7 +10317,7 @@ function doCraft(recipeId){
       </div>`,
       [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderCraftTab);},cls:'btn-gold'}]
     );
-  },2000);
+  })();
 }
 // 제작 카운트다운 — 화면 가운데 3·2·1 큰 숫자 (사용자 요청)
 function _showCraftCountdown(totalMs){
