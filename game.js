@@ -9500,6 +9500,8 @@ function completeQuest(pid,idx){
   const setRate=_legendUnlocked?Math.min(0.25,0.04+(rep-50)*0.0014+_qveBonus):0;
   // 전설 동료: 50명성=2%, 200명성=12% 캡
   const legendRate=_legendUnlocked?Math.min(0.12,0.02+(rep-50)*0.0007+_qveBonus):0;
+  // 사용자 요청: 거북선(LGD01) 신화 함선 퀘스트 보상 5% 확률 — 신화 게이트와 동일 조건 (rep>=120)
+  const turtleShipRate=_mythicUnlocked?0.05:0;
 
   let bonusMsg='';
   if(roll<legendRate){
@@ -9576,6 +9578,31 @@ function completeQuest(pid,idx){
     </div>`;
     notify(I18N.t('notify.partAcquiredTier',{ic:_icon,kind:isSet?I18N.t('ui.setShort'):I18N.t('ui.legendShort'),nm:p?.nm||partId}),'gold');
     baekgu(isSet?I18N.t('baekgu.setItem',{nm:p?.nm}):I18N.t('baekgu.legendPart',{nm:p?.nm}));
+  } else if(roll<legendRate+mythicRate+setRate+turtleShipRate){
+    // 사용자 요청: 거북선(LGD01) 신화 함선 5% 확률 — 지구 해방 보스전 진입 필수 함선
+    const _lgdDef=(typeof SHIP_CATALOG!=='undefined')?SHIP_CATALOG.find(s=>s.id==='LGD01'):null;
+    if(_lgdDef){
+      const newShip={
+        id:'LGD01_quest_'+Date.now(),catalogId:'LGD01',catId:'LGD01',
+        nm:_lgdDef.nm,tier:'신화',
+        maxHP:_lgdDef.maxHP,hp:_lgdDef.maxHP,
+        maxSH:_lgdDef.maxSH||0,sh:_lgdDef.maxSH||0,
+        ATT:_lgdDef.ATT||_lgdDef.atk||0,
+        INT:_lgdDef.INT||0,TEC:_lgdDef.TEC||0,
+        HP:_lgdDef.maxHP,LOY:_lgdDef.LOY||80,DEF:_lgdDef.DEF||0,
+        cargoSlots:(typeof _lgdDef.cargoStart==='number'?_lgdDef.cargoStart:30),
+        parts:[],crewIds:[]
+      };
+      const _addRes=(typeof addShipToFleet==='function')?addShipToFleet(newShip):null;
+      bonusMsg=`<div style="margin-top:12px;background:rgba(255,136,255,.1);border:1px solid #ff88ff;border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:26px">✦ ${I18N.t('reward.turtleShipTitle')}</div>
+        <div style="font-size:17px;font-weight:bold;color:#ff88ff;margin-top:4px">${_lgdDef.nm}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('reward.turtleShipDesc')}</div>
+        ${_addRes&&_addRes.added==='reserve'?`<div style="font-size:12px;color:var(--cyan);margin-top:3px">${I18N.t('craft.reserveStored')}</div>`:''}
+      </div>`;
+      notify(I18N.t('notify.turtleShipGained'),'pur');
+      baekgu(I18N.t('baekgu.turtleShipGained'));
+    }
   }
 
   // ── 설계도 드롭 (5%, 미보유 시에만, 특별 보상과 독립) ──────────────────
@@ -10310,17 +10337,46 @@ function doCraft(recipeId){
     const _cImgHtml=_cImg
       ? imgOrEmoji(_cImg,_cFb,128,128,'border-radius:12px;background:rgba(0,0,0,.45);border:1px solid '+(q.col||'#ffd700')+'66;object-fit:contain',rec.type==='ship'?'ship_'+rec.id:'part_'+rec.id)
       : '<div style="font-size:60px">'+_cFb+'</div>';
-    openModal(I18N.t('modal.craftComplete'),
-      `<div style="text-align:center;padding:16px">
-        <div style="display:flex;justify-content:center;margin-bottom:12px">${_cImgHtml}</div>
-        ${resultHtml}
-        ${mult>=1.1?`<div style="margin-top:12px;padding:6px 12px;background:rgba(255,136,0,.1);border:1px solid #ff8800;border-radius:6px;font-size:13px;color:#ff8800">${I18N.t('craft.luckMasterpiece')}</div>`:''}
-        ${mult<1.0?`<div style="margin-top:12px;font-size:12px;color:var(--dim)">${I18N.t('ui.retryForBetterQuality')}</div>`:''}
-      </div>`,
-      [{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();saveGame(true);rerenderTab(renderCraftTab);},cls:'btn-gold'}]
-    );
+    // 사용자 요청: 모달 대신 우측 토스트 — 3초 자동 사라짐 + 모달 차단 없음으로 연속 제작 가능
+    _showCraftResultToast(`<div style="text-align:center">
+      <div style="font-size:12px;color:var(--gold);font-weight:bold;letter-spacing:2px;margin-bottom:6px">${I18N.t('modal.craftComplete')}</div>
+      <div style="display:flex;justify-content:center;margin-bottom:8px">${_cImgHtml}</div>
+      ${resultHtml}
+      ${mult>=1.1?`<div style="margin-top:8px;padding:4px 10px;background:rgba(255,136,0,.1);border:1px solid #ff8800;border-radius:6px;font-size:12px;color:#ff8800">${I18N.t('craft.luckMasterpiece')}</div>`:''}
+      ${mult<1.0?`<div style="margin-top:8px;font-size:11px;color:var(--dim)">${I18N.t('ui.retryForBetterQuality')}</div>`:''}
+    </div>`,q.col||'#ffd700');
+    // 저장 및 탭 재렌더는 즉시 — 모달 닫기 대기 없음
+    saveGame(true);
+    try{if(typeof rerenderTab==='function'&&typeof renderCraftTab==='function')rerenderTab(renderCraftTab);}catch(e){}
   })();
 }
+
+// 제작 결과 우측 토스트 — 3초 후 자동 사라짐, 연속 제작 가능. 여러 개 stack 가능.
+function _showCraftResultToast(innerHTML,color){
+  try{
+    let host=document.getElementById('craft-result-toast-host');
+    if(!host){
+      host=document.createElement('div');
+      host.id='craft-result-toast-host';
+      host.style.cssText='position:fixed;top:60px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:340px';
+      document.body.appendChild(host);
+    }
+    const card=document.createElement('div');
+    card.style.cssText=`background:rgba(8,12,24,.94);border:2px solid ${color||'#ffd700'};border-radius:12px;padding:14px 16px;box-shadow:0 4px 22px rgba(0,0,0,.55), 0 0 18px ${color||'#ffd700'}44;opacity:0;transform:translateX(40px);transition:opacity .35s ease, transform .35s ease;backdrop-filter:blur(6px);pointer-events:auto;color:var(--txt);font-size:13px;line-height:1.45`;
+    card.innerHTML=innerHTML;
+    host.appendChild(card);
+    // 진입 애니메이션
+    requestAnimationFrame(()=>{card.style.opacity='1';card.style.transform='translateX(0)';});
+    // 호스트 최대 6개로 제한 — 그 이상은 가장 오래된 카드 제거
+    while(host.children.length>6)host.removeChild(host.firstChild);
+    // 3초 후 fade-out → 0.4초 후 DOM 제거
+    setTimeout(()=>{
+      card.style.opacity='0';card.style.transform='translateX(40px)';
+      setTimeout(()=>{try{card.remove();}catch(e){}},420);
+    },3000);
+  }catch(e){console.warn('[craft toast]',e);}
+}
+try{if(typeof window!=='undefined')window._showCraftResultToast=_showCraftResultToast;}catch(e){}
 // 제작 카운트다운 — 화면 가운데 3·2·1 큰 숫자 (사용자 요청)
 function _showCraftCountdown(totalMs){
   totalMs=totalMs||2000;
@@ -15522,24 +15578,46 @@ function _drawShipUnit(ctx,u,x,y,sz){
     if(!cached)_loadCombatImg(imgSrc,function(){if(typeof drawCombatFrame==='function')drawCombatFrame();});
   }
   // 쉴드 오라: SH>0이고 살아있는 함선만. SH%에 따라 강도 조절 + 미세 펄스.
-  // 함선 외곽선 살짝 바깥 (1.1/1.05) — 가시성 확보
+  // 사용자 요청: 투명도 20% 낮춤(곱 0.8) + 입체감 — 3중 그라데이션(외곽 글로우 → 본체 → 빛반사 하이라이트)
   if(u.hp>0&&(u.sh||0)>0&&(u.maxSH||0)>0){
     const shR=Math.max(0.1,Math.min(1,(u.sh||0)/(u.maxSH||1)));
     const pulse=0.85+0.15*Math.sin(Date.now()*0.005);
-    const rx=dsz.w*1.1, ry=dsz.h*1.05;
+    const rx=dsz.w*1.12, ry=dsz.h*1.07;
+    const A=0.8;  // 전체 알파 곱 (사용자 요청 ×0.8 — 투명도 20% 더 낮춤)
     ctx.save();
     ctx.translate(x,y);
-    // 외곽 글로우 (보이도록 적당히 강하게)
-    ctx.globalAlpha=0.18*shR*pulse;
-    ctx.fillStyle='#66ddff';
-    ctx.shadowColor='#66ddff';ctx.shadowBlur=14;
-    ctx.beginPath();ctx.ellipse(0,0,rx*1.04,ry*1.04,0,0,Math.PI*2);ctx.fill();
-    // 외곽 라인
-    ctx.globalAlpha=0.55*shR*pulse;
+    // ① 외곽 글로우 (가장 옅은 청록빛 후광 — 입체 1층)
+    const gOuter=ctx.createRadialGradient(0,0,rx*0.4,0,0,rx*1.25);
+    gOuter.addColorStop(0,'rgba(102,221,255,0)');
+    gOuter.addColorStop(0.55,'rgba(102,221,255,0.10)');
+    gOuter.addColorStop(1,'rgba(102,221,255,0)');
+    ctx.globalAlpha=0.20*shR*pulse*A;
+    ctx.fillStyle=gOuter;
+    ctx.shadowColor='#66ddff';ctx.shadowBlur=18;
+    ctx.beginPath();ctx.ellipse(0,0,rx*1.18,ry*1.18,0,0,Math.PI*2);ctx.fill();
+    // ② 본체 — 라디얼 그라데이션 (중심 짙음 → 외곽 fade)
+    const gBody=ctx.createRadialGradient(-rx*0.25,-ry*0.3,rx*0.15,0,0,rx);
+    gBody.addColorStop(0,'rgba(180,235,255,0.45)');     // 좌상단 하이라이트
+    gBody.addColorStop(0.45,'rgba(102,221,255,0.20)');
+    gBody.addColorStop(1,'rgba(60,170,230,0.05)');
+    ctx.globalAlpha=0.16*shR*pulse*A;
+    ctx.fillStyle=gBody;
+    ctx.shadowBlur=8;
+    ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();
+    // ③ 외곽 라인 (실드 가장자리 헥사 느낌 — 약간 진하게)
+    ctx.globalAlpha=0.55*shR*pulse*A;
     ctx.strokeStyle='#9ee7ff';
     ctx.lineWidth=1.6;
-    ctx.shadowBlur=8;
+    ctx.shadowBlur=10;
     ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.stroke();
+    // ④ 좌상단 빛반사 호 (입체감 — 작은 흰빛 아크)
+    ctx.globalAlpha=0.42*shR*pulse*A;
+    ctx.strokeStyle='rgba(220,245,255,0.9)';
+    ctx.lineWidth=1.2;
+    ctx.shadowBlur=4;
+    ctx.beginPath();
+    ctx.ellipse(0,0,rx*0.94,ry*0.92,0,Math.PI*1.05,Math.PI*1.55);
+    ctx.stroke();
     ctx.restore();
   }
 }
@@ -15874,7 +15952,9 @@ function showAcquisitionReport(opts){
       </div>
     </div>`;
   }).join('');
-  const _gridStyle=_many?'display:grid;grid-template-columns:1fr 1fr;gap:6px':'display:flex;flex-direction:column;gap:6px';
+  // 사용자 요청: 보상 카드 가로 길이 20% 축소 (max-width:80% + 가운데 정렬)
+  //   → 모달 폭이 1.5× 늘어난 대신 카드 자체는 0.8× 축소하여 더 여유롭게 표시
+  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:6px':'display:flex;flex-direction:column;gap:6px')+';max-width:80%;margin:0 auto';
   const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
   const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
   const html=`<div style="padding:2px 2px">
@@ -16048,14 +16128,15 @@ function drawCombatFrame(){
   const ePos=_fleetLayout(en,true,W,H,z);
 
   // 플레이어 함선
-  //   ── 학익진 포위 진형 활성 시: _haikjinTarget으로 lerp 보간 (천천히 이동)
-  //   T=0.04 → 매 프레임 4% 거리 이동, ~25프레임(약 0.4초)에 80% 도달
+  //   ── 학익진 U자 진형 활성 시: _haikjinTarget으로 lerp 보간 (사용자 요청: 매우 천천히)
+  //   T=0.008 → 매 프레임 0.8% 거리 이동 (이전 0.04 대비 5배 느림)
+  //   약 125 프레임(2초)에 60% 도달 → 장중하게 펼쳐지는 진형 연출
   const _hjOn=!!(combatState._haikjinFormation);
   pl.forEach((u,i)=>{
     let{x,y}=pPos[i];
     if(_hjOn&&u._haikjinTargetX!=null){
       if(u._curX==null){u._curX=x;u._curY=y;}
-      const T=0.04;
+      const T=0.008;  // 5배 느림 (사용자 요청)
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
       x=u._curX;y=u._curY;
@@ -16239,8 +16320,9 @@ function drawCombatFrame(){
       cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
     } else if(ef.type==='shieldHit'){
       // 쉴드 피격 — 헥사곤 임팩트 + 짧은 광점
+      // 사용자 요청: 전체 쉴드 투명도 ×0.8 (20% 감소)
       const radius=ef.r*(0.9+t*0.4);
-      cbCtx.globalAlpha=Math.min(1,a*0.95);
+      cbCtx.globalAlpha=Math.min(1,a*0.95*0.8);
       cbCtx.strokeStyle=ef.col;
       cbCtx.lineWidth=Math.max(1,3*a);
       cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=14*a;
@@ -17309,8 +17391,15 @@ function _setupHaikjinFormation(){
   if(pl.length===0||en.length===0)return;
   combatState._haikjinFormation=true;
   combatState._haikjinT0=performance.now();
-  // 방어력 점수: maxHP + DEF×8 + maxSH×0.6 + armorTier×30 + shieldTier×15
-  function _defScore(u){return (+u.maxHP||+u.hp||1)+(+u.DEF||0)*8+(+u.maxSH||0)*0.6+(+u.armorTier||0)*30+(+u.shieldTier||0)*15;}
+  // 방어 점수: 체력(maxHP) + 실드(maxSH) + 방어력(DEF×10) — 사용자 명시 3개 핵심 스탯
+  //  · 같은 점수일 경우 장갑·실드 tier로 미세 가중
+  function _defScore(u){
+    return (+u.maxHP||+u.hp||1)
+         + (+u.maxSH||0)
+         + (+u.DEF||0)*10
+         + (+u.armorTier||0)*25
+         + (+u.shieldTier||0)*15;
+  }
   const tank=pl.slice().sort((a,b)=>_defScore(b)-_defScore(a))[0];
   // 적군 중심점 (적 함선의 평균 위치) — _unitPos는 drawCombatFrame이 매 프레임 갱신
   const _up=_unitPos||{};
@@ -17318,27 +17407,32 @@ function _setupHaikjinFormation(){
   const _eposy=en.map(u=>_up[u.id]?_up[u.id].y:0);
   const cxE=_eposx.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
   const cyE=_eposy.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
-  // 포위 반경: 적 함대 spread + 적정 거리
+  // 적 함대 spread (적의 분산 크기 — 진형 크기 결정 기준)
   const spread=Math.max(...en.map(u=>{const p=_up[u.id]||{};return Math.hypot((p.x||0)-cxE,(p.y||0)-cyE);}),120);
-  const R=spread+220;  // 포위 반경
-  // 탱커는 적 정면(적 함대 → 아군 함대 방향): 적군 좌측(아군은 좌측에 위치)
-  // 적 함대 평균 X가 화면 우측이면 탱커는 적 정면(좌측), 아군 후방은 적 더 우측
-  // 게임에서 적은 우측, 아군은 좌측. 탱커는 적의 정면 = 적 좌측 (아군과 적 사이)
+  // ── 학익진(U자) ── 적이 우측, 아군이 좌측. U자의 입(오목한 부분)을 적 방향으로 향함
+  //  · 탱커: 적 바로 앞 (적 좌측, 가까운 거리)
+  //  · 나머지: 좌측 반원 호(90°~270°)를 따라 배치, 양 끝(위/아래)은 더 멀게 → 진짜 U/V자
+  const R_tank=spread+80;       // 탱커는 적에 가까이 (정면 방어)
+  const R_wing=spread+260;      // 양 날개 기본 반경 (멀리 펼침)
+  const R_extra=R_wing*0.35;    // U자 양 끝에서 추가 외측 (활처럼 휘어지는 강도)
   if(tank){
-    tank._haikjinTargetX=cxE-R*0.55;  // 적 정면 (아군 측에서 가장 앞)
+    tank._haikjinTargetX=cxE-R_tank;   // 적 정면 (좌측)
     tank._haikjinTargetY=cyE;
     tank._isHaikjinTank=true;
   }
-  // 나머지 아군은 적 주변 원형 배치 (아군 측 반원 위주: 적군 둘러쌈)
   const others=pl.filter(p=>p!==tank);
   const n=others.length;
   if(n>0){
-    // 270° 호로 분산: 적의 정면(좌측)을 중심으로 위·아래·뒤쪽까지 둘러쌈
-    // 각도 범위: 90°(위) → 270°(아래, 뒤로 돌아) 시계방향
+    // 90° (위) → 180° (좌측) → 270° (아래) — 좌측 반원만 사용 (적 우측은 비워서 적이 진입 가능)
     others.forEach((p,i)=>{
-      const ang=Math.PI*0.5+(i+0.5)*(Math.PI*1.5)/n;  // 90°~270°
-      p._haikjinTargetX=cxE+R*Math.cos(ang);
-      p._haikjinTargetY=cyE+R*Math.sin(ang);
+      const t=(i+0.5)/n;                        // 0~1
+      const ang=Math.PI*0.5+t*Math.PI;          // 90°~270° (반시계)
+      // U자 곡률: t=0(위) 또는 t=1(아래) 양 끝에서 거리 +R_extra, t=0.5(좌측 중앙)에서 가까이
+      //   sinusoidal: 양 끝 1, 중앙 0
+      const curveBoost=Math.abs(Math.cos(t*Math.PI));   // 0(중앙)~1(양끝)
+      const R_eff=R_wing+curveBoost*R_extra;
+      p._haikjinTargetX=cxE+R_eff*Math.cos(ang);
+      p._haikjinTargetY=cyE+R_eff*Math.sin(ang);
     });
   }
 }
@@ -18712,6 +18806,23 @@ function tryBossEntry(){
   // 첫 도전 판정 — 실제 격파 흔적(BOSS_URSA 나포함 OR 엔딩 시청)이 없으면 "첫 도전"으로 간주.
   //   _earthLiberated 만 켜져 있고 격파 흔적이 없는 손상 상태(B2 후속)에서도 보스가 정상 트리거되도록 보장.
   const _isFirst=!_isUrsaDefeated();
+  // ── 사용자 요청: 지구 해방 보스전 입장 시 거북선(LGD01) 신화 함선 1대 필수 보유 ──
+  //   catalogId/catId/id 어느 쪽이든 'LGD01'을 포함하면 거북선으로 인정 (제작 함선 id 'LGD01_craft_xxx' 포함)
+  const _hasTurtleShip=(G.fleet||[]).some(s=>{
+    const _cid=String(s.catalogId||s.catId||s.id||'').toUpperCase();
+    return _cid==='LGD01'||_cid.startsWith('LGD01_')||_cid.startsWith('LGD01-');
+  });
+  if(!_hasTurtleShip){
+    notify(I18N.t('notify.needTurtleShip'),'err');
+    openModal(I18N.t('modal.bossEntryBlocked'),
+      `<div style="text-align:center;padding:14px">
+        <div style="font-size:46px;margin-bottom:8px">🛡️</div>
+        <div style="color:var(--yellow);font-weight:bold;font-size:16px;margin-bottom:8px">${I18N.t('ui.needTurtleShipTitle')}</div>
+        <div style="color:var(--dim);font-size:13px;line-height:1.8;word-break:keep-all">${I18N.t('ui.needTurtleShipDesc')}</div>
+      </div>`,
+      [{txt:I18N.t('btn.confirm'),fn:closeModal,cls:'btn-gold'}]);
+    return;
+  }
   // 첫 도전이 아니라면 (재도전) 보이드 크리스탈 필요
   if(!_isFirst&&(!G.voidCrystal||G.voidCrystal<=0)){
     notify(I18N.t('notify.noVoidCrystal'),'err');return;
