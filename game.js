@@ -3859,9 +3859,9 @@ function renderTradeTab(body){
     const bdrCol=samePlanet?'rgba(255,255,255,.1)':sameFaction?'rgba(0,243,255,.35)':profit>0?'rgba(46,204,113,.35)':profit<0?'rgba(255,80,80,.3)':'var(--bdr)';
     const avgNote=isMixed?`<div style="font-size:10px;color:var(--muted)">${I18N.t('ui.avgBuyPrice',{p:slot.buyPrice.toLocaleString()})}</div>`:'';
     const priceLabel=samePlanet
-      ?`<div style="font-size:12px;color:var(--yellow);font-weight:bold">↩ 환불 ₡${sp.toLocaleString()}/개</div>
+      ?`<div style="font-size:12px;color:var(--yellow);font-weight:bold">${I18N.t('ui.refundPerUnit',{p:sp.toLocaleString()})}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.t('ui.samePlanetRefundPct')}</div>`
-      :`<div style="font-size:13px;color:${pC};font-weight:bold">₡${sp.toLocaleString()}/개</div>
+      :`<div style="font-size:13px;color:${pC};font-weight:bold">${I18N.t('ui.perUnitPrice',{p:sp.toLocaleString()})}</div>
         <div style="font-size:10px;color:${pC}">${profit>=0?'+':''}₡${profit.toLocaleString()}</div>
         ${avgNote}`;
     const canSellMore=slot.qty>1;
@@ -5707,9 +5707,9 @@ function _promptSellLowestReserve(){
   const fromLabel=c.from==='reserve'?I18N.t('ship.fromReserve'):I18N.t('ship.fromActive');
   openModal(I18N.t('modal.overflowSellLowest'),
     `<div style="text-align:center;padding:10px;font-size:13px;line-height:1.7">
-      임시 보관함이 8척을 초과했습니다.<br>
-      최하위 함선 <b style="color:var(--yellow)">${c.s.nm}</b> (${c.s.tier}, ${fromLabel})를<br>
-      <b style="color:var(--gold)">₡${price.toLocaleString()}</b>에 매각할까요?
+      ${I18N.t('ui.reserveOver8')}<br>
+      ${I18N.t('ui.lowestShipPick',{nm:shipDisplayNm(c.s),tier:c.s.tier,from:fromLabel})}<br>
+      ${I18N.t('ui.sellAtPriceQ',{p:price.toLocaleString()})}
       <div style="font-size:11px;color:var(--dim);margin-top:8px">${I18N.t('ui.cancelKeepsReserve')}</div>
     </div>`,
     [
@@ -8291,9 +8291,9 @@ function pickCargoExtForSlot(shipIdx){
       ${imgOrEmoji('img/parts/'+iv.id+'.png',sc.ic||'📦',44,44,'border-radius:6px;background:rgba(0,0,0,.4);object-fit:contain;flex-shrink:0','part_'+iv.id)}
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:bold;color:${col}">${sc.nm}</div>
-        <div style="font-size:11px;color:var(--green)">📦 화물 +${sc.cargoBonus}칸 · 보유 ${iv.qty}개</div>
+        <div style="font-size:11px;color:var(--green)">${I18N.t('ui.cargoBonusOwn',{n:sc.cargoBonus,q:iv.qty})}</div>
       </div>
-      <span style="font-size:12px;color:var(--gold);font-weight:bold">장착 ▶</span>
+      <span style="font-size:12px;color:var(--gold);font-weight:bold">${I18N.t('ui.equipArrowChip')}</span>
     </div>`;
   }).join('');
   const ext=_shipCargoExt(s);
@@ -9593,10 +9593,10 @@ function completeQuest(pid,idx){
       const inv=G.inventory.find(i=>i.id===partId);
       if(inv)inv.qty++;else G.inventory.push({id:partId,nm:p.nm,qty:1});
       bonusMsg=`<div style="margin-top:12px;background:rgba(255,136,255,.1);border:1px solid #ff88ff;border-radius:8px;padding:10px;text-align:center">
-        <div style="font-size:26px">✦ 신화급 파츠 획득!</div>
-        <div style="font-size:17px;font-weight:bold;color:#ff88ff;margin-top:4px">${p.nm||partId}</div>
+        <div style="font-size:26px">${I18N.t('ui.mythicPartGained')}</div>
+        <div style="font-size:17px;font-weight:bold;color:#ff88ff;margin-top:4px">${partDisplayNm(p)||partId}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:3px">${p.desc||''}</div>
-        <div style="font-size:12px;color:#ff88ff;margin-top:3px">함선 거래소 → 파츠 탭에서 장착하세요</div>
+        <div style="font-size:12px;color:#ff88ff;margin-top:3px">${I18N.t('ui.partsTabEquipHint')}</div>
       </div>`;
       notify(I18N.t('notify.mythicPartAcquired',{nm:p.nm||partId}),'pur');
       baekgu(I18N.t('baekgu.mythicPart',{nm:p.nm||partId}));
@@ -10319,9 +10319,9 @@ function doCraft(recipeId){
       if(!G.inventory)G.inventory=[];
       G.inventory.push({id:rec.id,qty:1,quality:mult,qualityLabel:q.label,crafted:true});
       const p=PARTS.find(x=>x.id===rec.id);
-      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${p?.nm||rec.nm}</div>
+      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${(p?partDisplayNm(p):rec.nm)||rec.nm}</div>
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
-        <div style="font-size:16px;color:${q.col}">능력치 ×${mult.toFixed(2)}</div>
+        <div style="font-size:16px;color:${q.col}">${I18N.t('ui.statMultLine',{m:mult.toFixed(2)})}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.equipFromInventory')}</div>`;
       notify(I18N.t('notify.craftComplete',{nm:rec.nm,label:q.label}),'gold');
       baekgu(mult>=1.1?I18N.t('baekgu.craftJackpot',{label:q.label,pct:Math.round((mult-1)*100)}):mult<1.0?I18N.t('baekgu.craftPoor',{label:q.label}):I18N.t('baekgu.craftDone',{nm:rec.nm,label:q.label}));
@@ -10330,11 +10330,11 @@ function doCraft(recipeId){
       if(!scDef){notify(I18N.t('notify.holdDefMissing'),'err');return;}
       // 일괄 적용 → 인벤토리 적립. 정비소 파츠창의 창고 확장 슬롯에 함선별 장착.
       addToInventory(rec.id,1);
-      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${scDef.nm}</div>
+      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${partDisplayNm(scDef)||scDef.nm}</div>
         <div style="font-size:36px;font-weight:bold;color:#d4af37;margin:8px 0">📦</div>
         <div style="font-size:18px;font-weight:bold;color:#d4af37">${I18N.t('ui.holdExpCraftDone')}</div>
-        <div style="font-size:13px;color:var(--dim);margin-top:6px">화물 +${scDef.cargoBonus}칸 · 인벤토리에 보관됨</div>
-        <div style="font-size:12px;color:var(--cyan);margin-top:6px">정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하세요</div>`;
+        <div style="font-size:13px;color:var(--dim);margin-top:6px">${I18N.t('ui.cargoBonusKept',{n:scDef.cargoBonus})}</div>
+        <div style="font-size:12px;color:var(--cyan);margin-top:6px">${I18N.t('ui.cargoExpEquipHint')}</div>`;
       notify(I18N.t('notify.holdPartCrafted',{nm:scDef.nm}),'gold');
       baekgu(I18N.t('baekgu.holdPartCrafted',{nm:scDef.nm,bonus:scDef.cargoBonus}));
     } else {
@@ -10358,9 +10358,9 @@ function doCraft(recipeId){
       };
       const _addRes=addShipToFleet(newShip);
       const _addedToReserve=(_addRes&&_addRes.added==='reserve');
-      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${def.nm}</div>
+      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${shipDisplayNm(def)||def.nm}</div>
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
-        <div style="font-size:16px;color:${q.col}">성능 ×${mult.toFixed(2)}</div>
+        <div style="font-size:16px;color:${q.col}">${I18N.t('ui.perfMultLine',{m:mult.toFixed(2)})}</div>
         ${_addedToReserve?`<div style="font-size:13px;color:var(--cyan);margin-top:6px">${I18N.t('craft.reserveStored')}</div>`:''}
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
@@ -10683,12 +10683,12 @@ function renderCraftTab(body){
               ${craftBtnDis?'disabled':''} style="font-size:13px;padding:8px 16px;letter-spacing:.5px;font-weight:bold;width:100%">
               ${craftBtnTxt}
             </button>
-            <div style="font-size:9px;color:var(--dim);margin-top:4px;line-height:1.5">🎲 마스터+30%(6.5%) · 상급+15%(11.5%) · 보통(35%)<br>하급-10%(23.5%) · 불량-20%(23.5%)</div>
+            <div style="font-size:9px;color:var(--dim);margin-top:4px;line-height:1.5">${I18N.t('ui.craftQualityRates')}</div>
           </div>
           <div style="text-align:center;margin-bottom:10px">${_imgHtml}</div>
           <div style="text-align:center;margin-bottom:8px">
             <div style="font-size:11px;color:${_tierColor};font-weight:bold;letter-spacing:1px">${_tierLabel}</div>
-            <div style="font-size:16px;font-weight:bold;color:var(--txt);margin-top:2px">${selRec.nm}</div>
+            <div style="font-size:16px;font-weight:bold;color:var(--txt);margin-top:2px">${(selRec&&selRec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===selRec.id))||selRec.nm):(selRec&&(selRec.type==='part'||selRec.type==='cargo')?(partDisplayNm(PARTS.find(p=>p.id===selRec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===selRec.id)||{})||selRec.nm):selRec.nm))}</div>
           </div>
           <div style="background:rgba(0,0,0,.25);border:1px solid ${_tierColor}44;border-radius:8px;padding:8px 12px">
             <div style="font-size:11px;color:${_tierColor};font-weight:bold;margin-bottom:4px;letter-spacing:.5px">⚙️ 스탯</div>
@@ -10703,19 +10703,19 @@ function renderCraftTab(body){
     <!-- ▶ 우측: 재료 그리드 -->
     <div data-scroll-id="craft-right" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 14px">
 
-      <div style="font-size:14px;font-weight:bold;color:var(--cyan);margin-bottom:2px">⚗️ 함선 제작소</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:8px">좌측 설계도 선택 → 슬롯 클릭으로 재료 투입 → 제작 버튼</div>
+      <div style="font-size:14px;font-weight:bold;color:var(--cyan);margin-bottom:2px">${I18N.t('ui.shipFactoryTitle')}</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px">${I18N.t('ui.craftFlowHint')}</div>
 
       <!-- 재료 상태 -->
       ${matStatusHtml}
 
       <!-- 재료 그리드 (12슬롯 4행×3열) -->
-      <div style="font-size:11px;color:var(--dim);margin-bottom:4px">📦 재료 슬롯 — 슬롯 클릭 시 재료 선택, [✕] 클릭 시 제거</div>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:4px">${I18N.t('ui.matSlotsHint')}</div>
       ${matGridHtml}
 
       <!-- 보유 재료 요약 -->
       <div style="margin-top:8px;font-size:13px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <span>보유 재료:</span>
+        <span>${I18N.t('ui.heldMaterials')}</span>
         ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${commDisplayNm(m)}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):I18N.t('craft.noneBuyAtShop')}
       </div>
 
@@ -11417,8 +11417,8 @@ function openMysteryBox(tier){
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_pImgHtml}</div>
       <div style="font-size:11px;color:${_pcol};letter-spacing:3px;margin-bottom:2px">⚙️ PART</div>
       <div style="color:${_pcol};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.partAcquired')}</div>
-      <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.p.nm}</div>
-      <div style="color:var(--dim);font-size:11px;margin-top:6px">인벤토리에 추가됨 — 정비소에서 장착</div>
+      <div style="color:var(--txt);font-size:14px;margin-top:4px">${partDisplayNm(result.p)||result.p.nm}</div>
+      <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.addedToInventoryHint')}</div>
     </div>`;
     notify(I18N.t('notify.partAcquiredFromBox',{nm:result.p.nm}),'gold');
   } else if(result.type==='ship'){
@@ -11503,10 +11503,10 @@ function renderTavernView(body){
       return `<div style="background:rgba(0,100,40,.13);border:1px solid rgba(0,255,140,.35);border-radius:8px;padding:10px 12px;margin-top:10px">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
           ${_baekguIcon(20)}
-          <div><div style="color:var(--green);font-size:12px;font-weight:bold">백구 — 격파 완료</div></div>
+          <div><div style="color:var(--green);font-size:12px;font-weight:bold">${I18N.t('ui.baekguDefeatedTag')}</div></div>
         </div>
         <div style="font-size:12px;color:rgba(180,255,200,.9);line-height:1.6">
-          "그 검은 함선… 우리가 잡았잖아. 이젠 균열 너머가 조용해. 잠시는."
+          ${I18N.t('ui.baekguAfterFalconDefeat')}
         </div>
       </div>`;
     }
@@ -11520,17 +11520,17 @@ function renderTavernView(body){
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
         ${_baekguIcon(20)}
         <div>
-          <div style="color:var(--purple);font-size:12px;font-weight:bold">백구 — 극비 정보</div>
-          <div style="color:var(--dim);font-size:10px">주점 구석에서 속삭인다…</div>
+          <div style="color:var(--purple);font-size:12px;font-weight:bold">${I18N.t('ui.baekguSecretTag')}</div>
+          <div style="color:var(--dim);font-size:10px">${I18N.t('ui.baekguTavernCorner')}</div>
         </div>
       </div>
       <div style="font-size:12px;color:rgba(220,180,255,.9);line-height:1.6">
-        "주인, 들어봐. 이 근방에서 이상한 신호 잡혔어.<br>
-        보이드 균열지대 전부를 누가 사들였다는 소문 퍼지자마자…<br>
+        ${I18N.t('ui.voidBossRumorLine1')}<br>
+        ${I18N.t('ui.voidBossRumorLine2')}<br>
         ${I18N.t('ui.unknownAppearedCode',{thing:I18N.t('ui.oneBlackSmall')})}<br>
         ${I18N.t('ui.blackfalconNickname',{call:I18N.t('ui.callMeThat')})}<br>
-        목적 불명. 무기 등급 불명. 출신 행성 불명.<br>
-        ※ 의뢰는 <span style="color:#ff66ff;font-weight:bold">${I18N.t('ui.zetaPlaza')}</span>에서만 접수 가능."
+        ${I18N.t('ui.targetUnknownLine')}<br>
+        ${I18N.t('ui.zetaPlazaOnly',{place:I18N.t('ui.zetaPlaza')})}
       </div>
       <div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.08);font-size:12px">${_statusLbl}</div>
     </div>`;
@@ -11617,8 +11617,8 @@ function renderTavernView(body){
       <div style="flex:1;display:flex;flex-direction:column;border-right:1px solid rgba(0,243,255,.2);overflow:hidden;min-width:0;background:rgba(212,175,55,.03)">
         <!-- 헤더 -->
         <div style="padding:8px 12px;border-bottom:1px solid rgba(212,175,55,.2);flex-shrink:0;background:rgba(5,10,22,.6)">
-          <div style="color:var(--gold);font-size:13px;font-weight:bold">🍺 크루 영입 — ${pd?.nm||''} 주점</div>
-          <div style="color:var(--dim);font-size:10px;margin-top:1px">등급 낮은 → 높은 순. 동료를 영입해 함선에 배치하세요</div>
+          <div style="color:var(--gold);font-size:13px;font-weight:bold">${I18N.t('ui.tavernRecruitTitle',{nm:pd?.nm||''})}</div>
+          <div style="color:var(--dim);font-size:10px;margin-top:1px">${I18N.t('ui.crewSortHint')}</div>
         </div>
         <!-- 본문 — 카드 행 → 위쪽 spacer → 버튼 → 아래쪽 spacer (버튼 중간 배치) -->
         <div style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;min-height:0">
@@ -11652,8 +11652,8 @@ function renderTavernView(body){
       <div style="flex:1;display:flex;flex-direction:column;background:rgba(255,80,150,.04);overflow:hidden;min-width:0">
         <!-- 헤더 -->
         <div style="padding:8px 12px;border-bottom:1px solid rgba(255,80,150,.3);flex-shrink:0;background:rgba(5,10,22,.6)">
-          <div style="color:#ff66bb;font-size:13px;font-weight:bold">🎁 블랙마켓 자와 — 미스테리박스</div>
-          <div style="color:var(--dim);font-size:10px;margin-top:1px">희귀 → 영웅 → 전설 순으로 확률 강화</div>
+          <div style="color:#ff66bb;font-size:13px;font-weight:bold">${I18N.t('ui.blackmarketZawaTitle')}</div>
+          <div style="color:var(--dim);font-size:10px;margin-top:1px">${I18N.t('ui.gachaTierBoostHint')}</div>
         </div>
         <!-- 본문 — 좌측과 동일 구조: 카드 행 → spacer → 버튼 → spacer -->
         <div style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;min-height:0">
@@ -11870,8 +11870,8 @@ function renderAuctionView(body){
     return `<div class="pl-item" style="flex-direction:row;align-items:stretch;overflow:hidden;padding:0;border-color:rgba(0,243,255,.5);background:rgba(0,243,255,.05);min-height:130px">
       <div style="flex:1;padding:12px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-width:0">
         <div>
-          <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${p.nm} <span style="font-size:11px;background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.4);padding:1px 5px;border-radius:6px">🌌 균열지대</span></div>
-          <div style="font-size:12px;color:var(--cyan);margin-top:2px">보이드 | 링${p.ring} | 균열 지대</div>
+          <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${p.nm} <span style="font-size:11px;background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.4);padding:1px 5px;border-radius:6px">${I18N.t('ui.fissureZoneChip')}</span></div>
+          <div style="font-size:12px;color:var(--cyan);margin-top:2px">${I18N.t('ui.voidRingFissure',{n:p.ring})}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.taxAndROI',{tax:p.tax.toLocaleString(),roi})}</div>
           <div style="font-size:12px;margin-top:3px">${I18N.t('ui.startingPrice')} <span style="color:var(--cyan)">₡${startBid.toLocaleString()}</span> ${I18N.t('ui.instantPrefix')}<span style="color:var(--gold)">₡${instBid.toLocaleString()}</span></div>
           <div style="font-size:11px;color:rgba(0,243,255,.6);margin-top:2px">${canBuyVoid?I18N.t('ui.voidPremiumDiscountAvail'):I18N.t('ui.voidExploredAuction')}</div>
@@ -11922,8 +11922,8 @@ function renderAuctionView(body){
   const totalTax=ownedList.reduce((s,p)=>s+calcTaxFor(p.id),0);
   const ownedPanel=`<div style="display:flex;flex-direction:column;height:100%;min-height:0">
     <div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 10px;margin-bottom:10px;flex-shrink:0">
-      <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:3px">🏠 내 보유 행성 (${ownedList.length}/${_maxPlanets2})</div>
-      <div style="font-size:11px;color:var(--green)">총 세금 수입: <b>₡${totalTax.toLocaleString()}/턴</b></div>
+      <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:3px">${I18N.t('ui.myOwnedPlanets',{n:ownedList.length,max:_maxPlanets2})}</div>
+      <div style="font-size:11px;color:var(--green)">${I18N.t('ui.totalTaxIncome',{n:totalTax.toLocaleString()})}</div>
     </div>
     <div data-scroll-id="auct-owned" style="flex:1;overflow-y:auto;min-height:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(212,175,55,.3) transparent">${ownedCardHtml}</div>
   </div>`;
@@ -11946,8 +11946,8 @@ function renderAuctionView(body){
         :canBuyVoid&&noVoid
           ?`<div style="background:rgba(0,243,255,.04);border:1px dashed rgba(0,243,255,.25);border-radius:6px;padding:10px;text-align:center;color:var(--cyan);font-size:12px">${I18N.t('ui.voidAuctionDone')}</div>`
           :`<div style="background:rgba(0,243,255,.04);border:1px dashed rgba(0,243,255,.2);border-radius:6px;padding:10px;font-size:12px;color:var(--dim)">
-            <div style="color:var(--cyan);font-weight:bold;margin-bottom:4px">🌌 보이드 균열지대 — 잠금</div>
-            <div style="margin-bottom:4px">신화 파츠 4종 + 전설기함 필요</div>
+            <div style="color:var(--cyan);font-weight:bold;margin-bottom:4px">${I18N.t('ui.voidRiftLocked')}</div>
+            <div style="margin-bottom:4px">${I18N.t('ui.mythicPartsAndFlag')}</div>
             <div style="font-size:11px;line-height:1.6">${mythicStatus}</div>
             <div style="font-size:11px;margin-top:3px;color:${hasFlag?'var(--green)':'var(--dim)'}">${I18N.t('codex.hasFlagshipMyth',{check:hasFlag?'✅':'⬜'})}</div>
           </div>`
@@ -14561,7 +14561,7 @@ function _updateMapHover(e){
     const _void=closest.void?' <span style="color:var(--purple)">🌀</span>':'';
     el.innerHTML=`<div style="color:${facCol};font-size:13px;font-weight:bold">${closest.nm}${_hostile}${_void}</div>
       <div style="color:${facCol};font-size:11px;margin-top:2px">${facDetail}</div>
-      <div style="color:var(--dim);font-size:10px;margin-top:1px">링 ${closest.ring} · 세율 ₡${closest.tax.toLocaleString()}/턴</div>`;
+      <div style="color:var(--dim);font-size:10px;margin-top:1px">${I18N.t('ui.ringTaxLine',{n:closest.ring,tax:closest.tax.toLocaleString()})}</div>`;
   }
   // 화면 좌표 (CSS 픽셀 기준)
   const sp=worldToScreen(G.mapPositions[closest.id].x,G.mapPositions[closest.id].y);
@@ -14616,7 +14616,7 @@ function onMapClick(e){
             `<div style="text-align:center;padding:16px">
               ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
               <div style="color:#cc44ff;font-size:17px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.blackShipApproaching')}</div>
-              <div style="color:#e0c0ff;font-size:13px;line-height:1.8">은하 중심의 시험 — 블랙팔콘과의 결투.<br>격파하면 「보이드의 심연」이 열린다.</div>
+              <div style="color:#e0c0ff;font-size:13px;line-height:1.8">${I18N.t('ui.voidCoreTrialLine')}</div>
             </div>`,
             [{txt:I18N.t('falcon.challengeBtn'),fn:()=>{closeModal();
               if(!G.quests['P30'])G.quests['P30']=[];
@@ -14630,9 +14630,9 @@ function onMapClick(e){
         openModal(I18N.t('modal.voidAbyss'),
           `<div style="text-align:center;padding:16px">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',100,100,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 16px rgba(204,68,255,.6);margin:0 auto 10px')}
-            <div style="color:#cc44ff;font-size:18px;font-weight:bold;margin-bottom:8px">보이드의 심연 — 시험 통과</div>
+            <div style="color:#cc44ff;font-size:18px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.voidAbyssPassed')}</div>
             <div style="color:#fff;font-size:15px;line-height:2;background:#000;padding:12px 16px;border-radius:8px;border:1px solid #cc44ff;margin-bottom:10px">
-              그대는 이미 마지막 시험을 통과하였다.<br>
+              ${I18N.t('ui.finalTrialPassed')}<br>
               <span style="color:#cc44ff">${I18N.t('ui.blackFalconFollowsYourWill')}</span>
             </div>
             <div style="color:var(--dim);font-size:12px;line-height:1.7">${I18N.t('ui.retryMirrorBattle')}</div>
@@ -14650,13 +14650,13 @@ function onMapClick(e){
         openModal(I18N.t('modal.voidAbyss'),
           `<div style="text-align:center;padding:20px;background:linear-gradient(180deg,#0a0015,#1a0030);border-radius:10px;border:1px solid rgba(180,0,255,.4)">
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
-            <div style="color:#dd66ff;font-size:19px;font-weight:bold;margin-bottom:10px;text-shadow:0 0 12px rgba(200,100,255,.6)">◈ 보이드의 심연</div>
+            <div style="color:#dd66ff;font-size:19px;font-weight:bold;margin-bottom:10px;text-shadow:0 0 12px rgba(200,100,255,.6)">${I18N.t('ui.voidAbyssDot')}</div>
             <div style="color:#e0d0ff;font-size:15px;line-height:2;background:rgba(0,0,0,.6);padding:14px 18px;border-radius:8px;border:1px solid rgba(180,0,255,.3);margin-bottom:12px">
-              살아서 이곳을 나간 자는 아직 없다.<br>
+              ${I18N.t('ui.noneLeftAlive')}<br>
               <span style="color:#cc44ff">${I18N.t('ui.youWereDifferent')}</span>
             </div>
             <div style="color:var(--gold);font-size:14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:8px 14px;margin-bottom:8px">
-              🔱 <b>${I18N.t('ui.voidSpearTitle')}</b> 획득 — 신화급 무기 1점
+              ${I18N.t('ui.voidSpearGainedLine',{nm:I18N.t('ui.voidSpearTitle')})}
             </div>
             <div style="color:var(--cyan);font-size:11px;margin-top:8px">${I18N.t('ui.voidLv10Tip')}</div>
           </div>`,
@@ -14668,12 +14668,12 @@ function onMapClick(e){
             ${imgOrEmoji('img/chars/void_hiden.png','🌑',110,110,'border-radius:50%;object-fit:cover;border:2px solid #cc44ff;box-shadow:0 0 18px rgba(204,68,255,.7);margin:0 auto 10px')}
             <div style="color:#dd66ff;font-size:18px;font-weight:bold;margin-bottom:10px">${I18N.t('ui.galaxyCenterClosed')}</div>
             <div style="color:#e0d0ff;font-size:14px;line-height:2;background:rgba(0,0,0,.6);padding:12px 16px;border-radius:8px;border:1px solid rgba(180,0,255,.3);margin-bottom:12px">
-              그날 보이드에서 흘러온 메시지를 기억하는가?<br>
-              <span style="color:#cc44ff">"은하 가운데로 가볼 수 있다면 마지막 시험을 통과할 것이다."</span>
+              ${I18N.t('ui.recallVoidWhisper')}<br>
+              <span style="color:#cc44ff">${I18N.t('ui.voidWhisperQuote')}</span>
             </div>
             <div style="color:var(--yellow);font-size:13px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 14px;line-height:1.8">
-              📍 조건: 보이드 행성(${_voidPlanets.length}개) 모두 Lv10 투자<br>
-              <span style="color:var(--cyan);font-weight:bold">현재 진행: ${_voidProgress} / ${_voidPlanets.length}</span>
+              ${I18N.t('ui.voidAllLv10Cond',{n:_voidPlanets.length})}<br>
+              <span style="color:var(--cyan);font-weight:bold">${I18N.t('ui.voidProgress',{cur:_voidProgress,tot:_voidPlanets.length})}</span>
             </div>
           </div>`,
           [{txt:I18N.t('ui.goBack'),fn:closeModal,cls:'btn-sm'}]);
@@ -14739,8 +14739,8 @@ function updateMapInfo(p,fog){
   if(info){
     if(fog==='L'){info.innerHTML=`<div style="color:var(--dim);font-size:13px">${I18N.t('ui.unexplored')}<br>${I18N.t('ui.unlockAfterAdj')}</div>`;}
     else{info.innerHTML=`<div style="color:${fac.col};font-size:14px;font-weight:bold;margin-bottom:6px">${p.nm}</div>
-      <div style="font-size:12px;color:var(--dim);line-height:2"><span style="color:${fac.col}">${fac.nm}</span>${p.hostile?` <span style="color:var(--red)">${I18N.t('ui.hostileNoSpace')}</span>`:''}${p.void?' <span style="color:var(--cyan)">🌀균열</span>':''}
-      <br>세율: <span style="color:var(--gold)">₡${p.tax.toLocaleString()}/턴</span>
+      <div style="font-size:12px;color:var(--dim);line-height:2"><span style="color:${fac.col}">${fac.nm}</span>${p.hostile?` <span style="color:var(--red)">${I18N.t('ui.hostileNoSpace')}</span>`:''}${p.void?` <span style="color:var(--cyan)">${I18N.t('ui.fissureChipShort')}</span>`:''}
+      <br>${I18N.t('ui.taxRateLine',{n:p.tax.toLocaleString()})}
       ${st?.owned?`<br>${I18N.t('ui.commerceLvDisplay',{lv:st.commerce})}`:''}
       ${p.hero&&!G.heroes.includes(p.hero)?`<br><span style="color:var(--purple)">${I18N.t('ui.heroAvail')}</span>`:''}
       <br>${blink?`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`:conn?`<span style="color:var(--green)">${I18N.t('ui.moveOK',{cost:cost.toLocaleString()})}</span>`:isCur?`<span style="color:var(--yellow)">${I18N.t('ui.currentLocText')}</span>`:`<span style="color:var(--red)">${I18N.t('ui.noRouteText')}</span>`}</div>`;}
@@ -15073,7 +15073,7 @@ function showHostilePlanetBriefing(planetDef){
       </div>
     </div>
     ${_formatEnemyPreview(enemies)}
-    <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">승리 시 행성 정복 + 약탈금 | 패배 시 크레딧 -10%</div>
+    <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('ui.winConquerLoseCr')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('advisor.bkPreCombat')}${advisor.lvl==='win'?I18N.t('advisor.bkPush'):advisor.lvl==='mid'?I18N.t('advisor.bkCareful'):I18N.t('advisor.bkComeLater')}"</div>`,
     [
       {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
@@ -18973,7 +18973,7 @@ function tryBossEntry(){
   openModal(I18N.t('modal.ursaFinalFight'),
     `<div style="text-align:center;padding:12px">
       <div style="font-size:48px;margin-bottom:8px">🌀</div>
-      <div style="color:var(--red);font-weight:bold;margin-bottom:8px">경고: 극도로 위험한 전투</div>
+      <div style="color:var(--red);font-weight:bold;margin-bottom:8px">${I18N.t('ui.extremeDangerWarn')}</div>
       ${_hint}
     </div>`,
     [{txt:I18N.t('ursa.fightEnter'),fn:()=>{if(!_isFirst)G.voidCrystal--;closeModal();showUrsaMajorIntro();},cls:'btn-red'},
@@ -19203,17 +19203,17 @@ function showFinalEndingCredits(){
       <div style="height:30vh"></div>
 
       <div style="font-size:36px;letter-spacing:14px;margin-bottom:12px;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 100%;animation:_finalShim 4s linear infinite">DESTINATION EARTH</div>
-      <div style="font-size:14px;color:#aaa;letter-spacing:10px;margin-bottom:80px">— ACT 5 · 종막 —</div>
+      <div style="font-size:14px;color:#aaa;letter-spacing:10px;margin-bottom:80px">${I18N.t('credits.act5Header')}</div>
 
       <!-- 스토리 정리 -->
-      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:14px">— 그동안의 여정 —</div>
+      <div style="color:#ffd700;font-size:14px;letter-spacing:6px;margin-bottom:14px">${I18N.t('credits.journeyHeader')}</div>
       <div style="font-size:15px;line-height:2.2;color:#dde;text-align:left;background:rgba(255,255,255,.03);padding:24px 28px;border-radius:8px;border:1px solid rgba(255,215,0,.15);margin-bottom:60px;word-break:keep-all">
-        <p style="margin:0 0 14px"><b style="color:#ffd700">ACT 1</b> — 100년의 봉쇄. 우르사 메이저 함대가 지구를 둘러쌌고, 위장 상단 ${co}이(가) 폐지를 주워가며 함대를 일군다. 백구가 ${cmdName}을(를) 깨운다.</p>
-        <p style="margin:0 0 14px"><b style="color:#ffaa44">ACT 2</b> — 일곱 팩션의 우주. 수퍼비아, 아우레우스, 메카니카, 크리그, 치크스, 지구 저항군, 보이드. ${cmdName}은(는) 무역과 전투로 함대를 키우고, 전설의 영웅 ${heroList.length}명을 영입한다.</p>
-        <p style="margin:0 0 14px"><b style="color:#ff66ff">ACT 3</b> — 균열의 너머. 보이드 행성에서 미지의 신호가 잡힌다. 보이드 크리스탈을 모으며 최종전을 준비한다.</p>
-        <p style="margin:0 0 14px"><b style="color:#ff4444">ACT 4</b> — 지구 해방. 우르사 메이저 격파. 100년의 봉쇄가 끝나고, 인류는 다시 우주로 나간다.</p>
-        <p style="margin:0 0 14px"><b style="color:#cc66ff">ACT 5</b> — 보이드의 심연. 1000년의 침묵을 깬 블랙팔콘과의 결투. 모든 시련을 견뎌낸 사령관은 은하 가운데 블랙홀로 들어간다.</p>
-        <p style="margin:0;color:#aaa;font-style:italic">"누구도 여기서 살아서 나가지 못한다.<br>네가 원하는걸 해라."</p>
+        <p style="margin:0 0 14px"><b style="color:#ffd700">ACT 1</b> — ${I18N.t('credits.act1Body',{co:co,cmd:cmdName})}</p>
+        <p style="margin:0 0 14px"><b style="color:#ffaa44">ACT 2</b> — ${I18N.t('credits.act2Body',{cmd:cmdName,n:heroList.length})}</p>
+        <p style="margin:0 0 14px"><b style="color:#ff66ff">ACT 3</b> — ${I18N.t('credits.act3Body')}</p>
+        <p style="margin:0 0 14px"><b style="color:#ff4444">ACT 4</b> — ${I18N.t('credits.act4Body')}</p>
+        <p style="margin:0 0 14px"><b style="color:#cc66ff">ACT 5</b> — ${I18N.t('credits.act5Body')}</p>
+        <p style="margin:0;color:#aaa;font-style:italic">${I18N.t('credits.voidQuote')}</p>
       </div>
 
       <!-- 등장 인물 -->
@@ -19550,29 +19550,29 @@ function showEndingCredits(onDone){
         <div style="color:#ffd87a;font-size:14px;letter-spacing:6px;margin-bottom:18px">${I18N.t('ui.theStorySoFar')}</div>
         <div style="max-width:760px;margin:0 auto 60px;font-size:15px;color:#e8e8e8;line-height:2.05;text-align:left;padding:0 28px;word-break:keep-all">
 
-          <div style="text-align:center;color:#aaa;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 프롤로그 · 봉쇄의 100년 —</div>
+          <div style="text-align:center;color:#aaa;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.prologueHead')}</div>
           <p style="margin:0 0 22px">${I18N.t('ui.openingProseFull',{nm:cmdName})}</p>
 
-          <div style="text-align:center;color:#ffd87a;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제1막 · 각성 —</div>
+          <div style="text-align:center;color:#ffd87a;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act1Head')}</div>
           <p style="margin:0 0 22px">${I18N.t('ui.endingShipProse',{ship:shipName,co})}</p>
 
-          <div style="text-align:center;color:#66ddff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제2막 · 변경의 불길 —</div>
+          <div style="text-align:center;color:#66ddff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act2Head')}</div>
           <p style="margin:0 0 22px">${I18N.t('ui.chixShadowProse')}</p>
 
-          <div style="text-align:center;color:#ff99ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제3막 · 잠든 영웅들 —</div>
+          <div style="text-align:center;color:#ff99ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act3Head')}</div>
           <p style="margin:0 0 22px">${I18N.t('ending.heroEpilogue',{nms:heroEndings.length>0?heroEndings.map(h=>h.nm).slice(0,8).join(' · '):I18N.t('ending.heroFallbackList'),cmd:cmdName})}</p>
 
-          <div style="text-align:center;color:#ff8866;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제4막 · 치크스의 진실 —</div>
+          <div style="text-align:center;color:#ff8866;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act4Head')}</div>
           <p style="margin:0 0 22px">${I18N.t('ui.chixMirrorProse',{title:I18N.t('ui.chixWereMirror'),nm:cmdName})}</p>
 
-          <div style="text-align:center;color:#ffd700;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제5막 · 지구 해방 —</div>
+          <div style="text-align:center;color:#ffd700;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act5Head')}</div>
           <p style="margin:0 0 22px">${I18N.t('ui.endingFlagshipProse',{ship:flagshipName})}</p>
 
-          <div style="text-align:center;color:#cc88ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">— 제6막 · 보이드의 심연 —</div>
-          <p style="margin:0 0 22px">우르사가 남긴 한 마디는 좌표였다. 그곳에는 별빛이 닿지 않는 검은 균열이 있었고, 단 한 줄의 메시지가 떠 있었다. — <i style="color:#fff">"누구도 여기서 살아서 나가지 못한다. 네가 원하는 걸 해라."</i> 우리는 갔다. 알면서도 갔다. 그것이 인간의 방식이었다. 그리고 우리는 — 돌아왔다.</p>
+          <div style="text-align:center;color:#cc88ff;font-size:12px;letter-spacing:4px;margin:8px 0 10px">${I18N.t('ending.act6Head')}</div>
+          <p style="margin:0 0 22px">${I18N.t('ending.act6Body')}</p>
 
-          <div style="text-align:center;color:#66ffcc;font-size:12px;letter-spacing:4px;margin:18px 0 10px">— 에필로그 · 귀향 —</div>
-          <p style="margin:0">D-day 100년 + 412일. ${flagshipName}은(는) 지구의 풀밭 위에 안착했다. 100년 형광등이 흉내 못 한 색이 사령관의 눈에 비쳤고, 백구의 센서엔 처음 보는 액체가 흘렀다. — 인류는 다시 별을 향해 손을 뻗는다. 이번엔 그 손을 거두지 않는다.</p>
+          <div style="text-align:center;color:#66ffcc;font-size:12px;letter-spacing:4px;margin:18px 0 10px">${I18N.t('ending.epilogueHead')}</div>
+          <p style="margin:0">${I18N.t('ending.epilogueBody',{ship:flagshipName})}</p>
         </div>
 
         <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:6px">${I18N.t('ui.credits')}</div>
@@ -19910,8 +19910,8 @@ function devShowSaveStats(){
   }
   const u=window.CloudSave&&CloudSave.getUser&&CloudSave.getUser();
   const html=`<div style="padding:8px;font-size:13px;line-height:1.8">
-    <div><b>로컬 슬롯:</b> ${localCount} / ${SAVE_SLOTS}</div>
-    <div><b>로컬 용량:</b> ${(localBytes/1024).toFixed(1)} KB</div>
+    <div><b>${I18N.t('save.localSlots')}</b> ${localCount} / ${SAVE_SLOTS}</div>
+    <div><b>${I18N.t('save.localBytes')}</b> ${(localBytes/1024).toFixed(1)} KB</div>
     <div><b>${I18N.t('feedback.uidLabel')}</b> ${u?u.uid:I18N.t('feedback.notLoggedIn')}</div>
     <div><b>${I18N.t('feedback.emailLabel')}</b> ${u?(u.email||I18N.t('feedback.anon')):'-'}</div>
   </div>`;
