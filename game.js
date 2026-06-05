@@ -11480,9 +11480,11 @@ function renderTavernView(body){
   }
   // 최근 영입 크루 카드 (5장 가로 행)
   const _RC2={N:'var(--muted)',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7'};
-  const _lcList=(G._lastTavernCrewList||[]).map(c=>({
-    img:c.img,ic:c.ic||'🧑',name:c.nm+(c.isHero?' ⭐':''),color:_RC2[c.rarity]||'var(--cyan)'
-  }));
+  const _lcList=(G._lastTavernCrewList||[]).map(c=>{
+    // KO/EN 혼재 방지: c.id가 영웅 ID(H01~H08)면 현재 언어의 HEROES[id].nm을 사용 (저장 당시 언어 무시)
+    const _curNm=(c.id&&typeof HEROES!=='undefined'&&HEROES[c.id]&&HEROES[c.id].nm)||c.nm;
+    return {img:c.img,ic:c.ic||'🧑',name:_curNm+(c.isHero?' ⭐':''),color:_RC2[c.rarity]||'var(--cyan)'};
+  });
   const leftResultHtml=_miniRow(_lcList);
   // 최근 박스 보상 카드 (5장 가로 행)
   const _lbList=(G._lastTavernBoxRewardList||[]).map(rw=>{
