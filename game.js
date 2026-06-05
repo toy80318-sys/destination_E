@@ -1320,49 +1320,49 @@ function askBaekgu(){
   const Q=q.toLowerCase();
   const KW=[
     // 크레딧/돈
-    {k:['크레딧','돈','자금','수입','벌','earn'],r:()=>I18N.t('chatbot.creditsTip')},
+    {k:['크레딧','돈','자금','수입','벌','earn','credit','credits','money','income','gold'],r:()=>I18N.t('chatbot.creditsTip')},
     // 무역
-    {k:['무역','특산물','상품','거래','trade'],r:()=>I18N.t('chatbot.tradeTip')},
+    {k:['무역','특산물','상품','거래','trade','specialty','goods','merchant','commerce'],r:()=>I18N.t('chatbot.tradeTip')},
     // 함선
-    {k:['함선','배','ship','거래소','중형','대형','전설기함'],r:()=>I18N.t('chatbot.shipShopTip')},
+    {k:['함선','배','ship','거래소','중형','대형','전설기함','ships','exchange','fleet','large','medium','flagship'],r:()=>I18N.t('chatbot.shipShopTip')},
     // 파츠/장착
-    {k:['파츠','part','무기','실드','장갑','엔진','장착','업그레이드'],r:()=>I18N.t('chatbot.partsTip')},
+    {k:['파츠','part','무기','실드','장갑','엔진','장착','업그레이드','parts','weapon','shield','armor','engine','equip','upgrade'],r:()=>I18N.t('chatbot.partsTip')},
     // 크루/동료
-    {k:['크루','동료','영입','가챠','뽑기','crew'],r:()=>I18N.t('chatbot.crewTip',{n:getMaxCrewCount()})},
+    {k:['크루','동료','영입','가챠','뽑기','crew','companion','recruit','gacha','tavern','roll'],r:()=>I18N.t('chatbot.crewTip',{n:getMaxCrewCount()})},
     // 영웅
-    {k:['영웅','hero','특수','스킬','능력'],r:()=>{const hc=(G.heroes||[]).length;returnI18N.t('chatbot.heroTip',{hc});}},
+    {k:['영웅','hero','특수','스킬','능력','heroes','skill','ability','legend','legendary'],r:()=>{const hc=(G.heroes||[]).length;return I18N.t('chatbot.heroTip',{hc});}},
     // 행성 허브 잠금
-    {k:['잠금','허브','개방','시설','unlock'],r:()=>{const pid=G.currentPlanet,prog=getPlanetHubProgress(pid),thr=getPlanetHubThreshold(pid);const unlocked=isPlanetHubUnlocked(pid);const pd=PLANET_DEF.find(p=>p.id===pid);const isSup=pd?.f==='F01';returnI18N.t('chatbot.hubProgress',{prog,thr,done:unlocked?I18N.t('chatbot.hubDone'):'',scale:isSup?I18N.t('chatbot.hubScaleSup'):I18N.t('chatbot.hubScaleStd')});}},
+    {k:['잠금','허브','개방','시설','unlock','hub','open','facility','lock','locked'],r:()=>{const pid=G.currentPlanet,prog=getPlanetHubProgress(pid),thr=getPlanetHubThreshold(pid);const unlocked=isPlanetHubUnlocked(pid);const pd=PLANET_DEF.find(p=>p.id===pid);const isSup=pd?.f==='F01';return I18N.t('chatbot.hubProgress',{prog,thr,done:unlocked?I18N.t('chatbot.hubDone'):'',scale:isSup?I18N.t('chatbot.hubScaleSup'):I18N.t('chatbot.hubScaleStd')});}},
     // 행성/탐험
-    {k:['행성','탐험','지도','경로','항로','fog','안개','어둠'],r:()=>I18N.t('chatbot.travelTip')},
+    {k:['행성','탐험','지도','경로','항로','fog','안개','어둠','planet','planets','explore','exploration','map','route','path'],r:()=>I18N.t('chatbot.travelTip')},
     // 퀘스트
-    {k:['퀘스트','임무','quest','수락','보상'],r:()=>I18N.t('chatbot.questTip')},
+    {k:['퀘스트','임무','quest','수락','보상','quests','mission','missions','accept','reward','rewards'],r:()=>I18N.t('chatbot.questTip')},
     // 설계도/제작
-    {k:['설계도','제작','craft','만들기','전설 아이템','신화 아이템','제작소'],r:()=>I18N.t('chatbot.bpTip')},
+    {k:['설계도','제작','craft','만들기','전설 아이템','신화 아이템','제작소','blueprint','make','factory','crafting','mythic item','legend item'],r:()=>I18N.t('chatbot.bpTip')},
     // 보이드
-    {k:['보이드','void','에센스','균열','7링'],r:()=>I18N.t('ui.voidEssenceTip')},
+    {k:['보이드','void','에센스','균열','7링','essence','rift','ring 7','ring7'],r:()=>I18N.t('ui.voidEssenceTip')},
     // 치크스/전투
-    {k:['치크스','chix','적','전투','combat','싸움'],r:()=>I18N.t('ui.cheeksRuleTip')},
+    {k:['치크스','chix','적','전투','combat','싸움','chiks','enemy','enemies','fight','battle'],r:()=>I18N.t('ui.cheeksRuleTip')},
     // 보스/최종전
-    {k:['보스','boss','우르사','최종','지구','해방'],r:()=>{const hc=(G.heroes||[]).length,fc=G.fleet.length,cr=G.credits;returnI18N.t('chatbot.finalCondition',{hc,fc,cr:cr.toLocaleString()});}},
+    {k:['보스','boss','우르사','최종','지구','해방','ursa','final','earth','liberation','liberate'],r:()=>{const hc=(G.heroes||[]).length,fc=G.fleet.length,cr=G.credits;return I18N.t('chatbot.finalCondition',{hc,fc,cr:cr.toLocaleString()});}},
     // 경매/행성 구매
-    {k:['경매','행성 구매','부동산','auction','소유','세금'],r:()=>{const rep=G.reputation||0,max=1+Math.floor(rep/10);returnI18N.t('chatbot.planetAuctionTip',{max,rep});}},
+    {k:['경매','행성 구매','부동산','auction','소유','세금','real estate','own','tax','buy planet'],r:()=>{const rep=G.reputation||0,max=1+Math.floor(rep/10);return I18N.t('chatbot.planetAuctionTip',{max,rep});}},
     // 저장/불러오기
-    {k:['저장','세이브','save','불러오기','load','슬롯'],r:()=>I18N.t('chatbot.saveTip')},
+    {k:['저장','세이브','save','불러오기','load','슬롯','saving','loading','slot','slots'],r:()=>I18N.t('chatbot.saveTip')},
     // 블링크 엔진
-    {k:['블링크','blink','순간이동','워프'],r:()=>I18N.t('ui.blinkEngineTip')},
+    {k:['블링크','blink','순간이동','워프','warp','teleport','jump'],r:()=>I18N.t('ui.blinkEngineTip')},
     // 명성/평판
-    {k:['명성','평판','reputation','랭크','레벨'],r:()=>{const lv=calcPlayerLevel(),rep=G.reputation||0;returnI18N.t('chatbot.repTip',{lv,rep});}},
+    {k:['명성','평판','reputation','랭크','레벨','fame','rank','level'],r:()=>{const lv=calcPlayerLevel(),rep=G.reputation||0;return I18N.t('chatbot.repTip',{lv,rep});}},
     // 해적
-    {k:['해적','pirate','약탈','항로','조우'],r:()=>I18N.t('chatbot.pirateTip')},
+    {k:['해적','pirate','약탈','항로','조우','pirates','raid','plunder','encounter'],r:()=>I18N.t('chatbot.pirateTip')},
     // 나포
-    {k:['나포','포획','capture','적 함선'],r:()=>I18N.t('ui.captureRuleTip')},
+    {k:['나포','포획','capture','적 함선','captured','enemy ship','seize'],r:()=>I18N.t('ui.captureRuleTip')},
     // 힌트/도움
-    {k:['힌트','help','도움','뭐','어떻게','모르겠','어디'],r:()=>getBaekguStoryHint()},
+    {k:['힌트','help','도움','뭐','어떻게','모르겠','어디','hint','what','how','where','dont know',"don't know",'guide','tip'],r:()=>getBaekguStoryHint()},
   ];
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
-  // 현재 행성 관련 질문
-  if(Q.includes('여기')||Q.includes('이 행성')||Q.includes('현재')||Q.includes('지금')){
+  // 현재 행성 관련 질문 (KO/EN)
+  if(Q.includes('여기')||Q.includes('이 행성')||Q.includes('현재')||Q.includes('지금')||Q.includes('here')||Q.includes('this planet')||Q.includes('current')||Q.includes('now')){
     const fac=pd?FACTION[pd.f]:null;
     setTimeout(()=>baekgu(I18N.t('baekgu.locationInfo',{nm:pd?.nm||'?',fac:fac?.nm||'?',ring:pd?.ring||'?'})),300);
     return;
