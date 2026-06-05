@@ -73,6 +73,12 @@ window.I18N = (function () {
         window.saveGame(true, _G._activeSlot);
       }
     } catch (e) {}
+    // Electron PC 빌드: 메인 프로세스(메뉴 라벨) 동기화 — 새로고침 전에 호출
+    try {
+      if (window.desktopAPI && typeof window.desktopAPI.setLangPref === 'function') {
+        window.desktopAPI.setLangPref(lang);
+      }
+    } catch (e) {}
     setTimeout(function () { try { window.location.reload(); } catch (e) {} }, 100);
     return true;
   }

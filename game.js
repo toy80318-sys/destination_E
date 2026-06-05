@@ -17887,6 +17887,12 @@ function _saveGameImmediate(silent,slotN){
     }catch(_){}
     // 4) 메인 저장
     localStorage.setItem(_slotKey(n),payload);
+    // 4-1) PC(Electron) 빌드: 파일시스템 백업 (localStorage 손상/quota 대비)
+    try{
+      if(window.desktopAPI&&typeof window.desktopAPI.saveSlot==='function'){
+        window.desktopAPI.saveSlot(_slotKey(n).replace(/[^a-zA-Z0-9_-]/g,'_'),payload).catch(()=>{});
+      }
+    }catch(_){}
     // 5) 사이즈 경고 (4MB 초과 시)
     if(payload.length>4*1024*1024&&!silent){
       notify(I18N.t('notify.saveSizeWarn',{mb:(payload.length/1024/1024).toFixed(1)}),'warn');
@@ -18574,7 +18580,10 @@ function showSettingsModal(){
       <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.dataManage')}</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">${I18N.t('settings.replayTutorial')}</button>
-      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>`:''}
+      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#bbddff;color:#bbddff" onclick="window.desktopAPI.checkUpdate()">${I18N.t('settings.checkUpdate')}</button>
+      <div id="pc-ver-line" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${I18N.t('settings.pcVersionLoading')}</div>
+      <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>`:''}
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm(I18N.t('confirm.deleteSave'))){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">

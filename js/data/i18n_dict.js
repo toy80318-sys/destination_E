@@ -5283,5 +5283,9 @@ I18N.register({
   'cheat.pwHint':           { ko: '힌트: 게임 약자 2글자 (소문자)',
                               en: 'Hint: 2-letter game abbreviation (lowercase)' },
   'ui.cannotExpandMore':    { ko: '더 이상 확장할 수 없습니다.',
-                              en: 'No further expansion is possible.' }
+                              en: 'No further expansion is possible.' },
+  // PC(Electron) 전용
+  'settings.checkUpdate':   { ko: '🔄 업데이트 확인',         en: '🔄 Check for Updates' },
+  'settings.pcVersionLoading':{ ko: 'PC 버전 로드 중…',         en: 'Loading PC version…' },
+  'settings.pcVersionLine': { ko: '🖥️ PC 버전 v{v}',          en: '🖥️ PC version v{v}' }
 });

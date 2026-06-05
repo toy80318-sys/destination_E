@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -21,6 +21,7 @@
     "cleanup:aggressive": "node scripts/firebase-cleanup.js 3"
   },
   "dependencies": {
+    "electron-updater": "^6.8.3",
     "puppeteer-core": "^25.0.4"
   },
   "devDependencies": {
