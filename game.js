@@ -1625,6 +1625,10 @@ function hideLoreTip(){
 
 function imgOrEmoji(src,fallback,w,h,style,loreKey){
   w=w||80;h=h||80;
+  // 캐시 버스터: src에 ?v= 없으면 _GAME_VER 자동 추가 (Firebase/CDN 캐시 우회)
+  if(src&&typeof src==='string'&&src.indexOf('?v=')<0&&typeof window!=='undefined'&&window._GAME_VER&&!/^(https?:|data:|blob:)/i.test(src)){
+    src=src+'?v='+encodeURIComponent(window._GAME_VER);
+  }
   var tipAttr=loreKey?(' onmouseover="showLoreTip(\''+loreKey+'\',event)" onmouseout="hideLoreTip()"'):'';
   // 이미지가 로드되면 폴백 이모지(.fb)를 즉시 감추고, 로드 실패 시 이미지를 숨겨 폴백을 노출
   // (투명 PNG여도 이모지가 비치지 않도록 onload에서 fb를 display:none 처리)
@@ -1752,20 +1756,21 @@ function _shipImgSrcRaw(ship){
 function planetImgSrc(pid){
   // P31_free.png는 옵션 파일 — 없으면 기본 P31.png 사용 (이미지가 추가되면 자동으로 활성)
   // imgOrEmoji/직접 <img>가 onerror 폴백을 처리하지만, 누락 파일에 대한 사전 차단도 한다
+  const _v=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
   if(pid==='P31'&&typeof _isEarthFree==='function'&&_isEarthFree()){
     if(typeof window!=='undefined'){
-      if(window._P31_FREE_AVAIL===true)return 'img/planets/P31_free.png';
+      if(window._P31_FREE_AVAIL===true)return 'img/planets/P31_free.png'+_v;
       if(window._P31_FREE_AVAIL===undefined){
         // 한 번만 존재 여부 검사 (HEAD 대신 Image 객체로 비동기 검증)
         window._P31_FREE_AVAIL=false;
         const _t=new Image();
         _t.onload=()=>{window._P31_FREE_AVAIL=true;};
         _t.onerror=()=>{window._P31_FREE_AVAIL=false;};
-        _t.src='img/planets/P31_free.png';
+        _t.src='img/planets/P31_free.png'+_v;
       }
     }
   }
-  return `img/planets/${pid||'P01'}.png`;
+  return `img/planets/${pid||'P01'}.png`+_v;
 }
 // 행성 배경 이미지 경로 — P31(지구)은 해방 후 _free 변형 자동 사용 (해당 파일 없으면 기본으로 fallback)
 // 파일 형식: P01-P30 = .jpg, P31(봉쇄) = .png, P31_free = .jpg
@@ -2006,7 +2011,7 @@ function showEmailLoadModal(){
   const savedEmail=(window.CloudSave&&CloudSave.getEmail)?CloudSave.getEmail():'';
   const html=`<div style="padding:8px 4px">
     <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--card);border:1px solid #66ddff;border-radius:10px;margin-bottom:14px">
-      <img src="img/chars/baekgu1.png" alt="${I18N.t('alt.baekgu')}" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
+      <img src="${_baekguSrcByMood('default')+(window._GAME_VER?'?v='+encodeURIComponent(window._GAME_VER):'')}" alt="${I18N.t('alt.baekgu')}" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:1.5px solid #66ddff" onerror="this.outerHTML='<div style=\\'font-size:32px;flex-shrink:0\\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:14px;line-height:1.7;word-break:keep-all">
         <div style="color:#66ddff;font-size:11px;font-weight:bold;margin-bottom:3px;letter-spacing:1px">${I18N.t('speaker.baekgu')}</div>
         ${I18N.t('emailLoad.baekguHint')}
@@ -2079,7 +2084,7 @@ function renderPrologue(){
   // 화자 레이블: 백구는 이미지 + 이름, 시스템은 아이콘
   const spHTML=isBaekgu
     ?`<div style="display:inline-flex;align-items:center;gap:7px;margin-bottom:6px">
-        <img src="img/chars/baekgu1.png" alt="${I18N.t('alt.baekgu')}"
+        <img src="${_baekguSrcByMood('default')+(window._GAME_VER?'?v='+encodeURIComponent(window._GAME_VER):'')}" alt="${I18N.t('alt.baekgu')}"
           style="width:30px;height:30px;object-fit:contain;border-radius:50%;background:var(--panel);border:1px solid var(--cyan)"
           onerror="this.style.display='none'">
         <span style="color:var(--cyan);font-size:13px;font-weight:bold">${I18N.t('speaker.baekgu')}</span>
@@ -8851,7 +8856,7 @@ function renderPlanetsTab(body){
       return `<div style="background:var(--card);border:1px solid ${st.owned?'var(--gold)':'var(--bdr)'};border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:0">
         <!-- 상단: 행성 이미지 (4열 그리드 가독성) -->
         <div style="width:100%;aspect-ratio:16/7;flex-shrink:0;overflow:hidden;background:${pBg};position:relative">
-          <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover;opacity:.9"
+          <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.9"
             onerror="this.outerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px\'>${fEmoji}</div>'" />
           ${st.owned?'<span style="position:absolute;top:5px;right:5px;color:var(--gold);font-size:10px;background:rgba(0,0,0,.6);border:1px solid var(--gold);padding:1px 5px;border-radius:8px">🏠</span>':''}
         </div>
@@ -10423,7 +10428,7 @@ function renderCraftTab(body){
           }
           return`<div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:3px 7px;background:${ok?'rgba(0,243,255,.1)':'rgba(255,60,60,.1)'};border:1px solid ${ok?'rgba(0,243,255,.3)':'rgba(255,60,60,.3)'};border-radius:5px">
             <div style="display:flex;align-items:center;gap:4px;font-size:11px">
-              <img src="img/commodities/${m.id}.png" alt="" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span>${c?.ic||'💎'}</span>'">
+              <img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span>${c?.ic||'💎'}</span>'">
               <span style="color:var(--dim)">${c?.nm||m.id}</span>
               <span style="font-weight:bold;color:${ok?'var(--cyan)':'var(--red)'}">${have}/${_needShow}${_tdDisc?'<span style=\"color:#d4af37;font-size:9px\">(50%↓)</span>':''}</span>
             </div>
@@ -10558,7 +10563,7 @@ function renderCraftTab(body){
       <!-- 보유 재료 요약 -->
       <div style="margin-top:8px;font-size:13px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span>보유 재료:</span>
-        ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="img/commodities/${m.id}.png" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${m.nm}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):I18N.t('craft.noneBuyAtShop')}
+        ${ownedMats.length>0?ownedMats.map(m=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,255,255,.04);border-radius:5px"><img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;vertical-align:middle;object-fit:contain" onerror="this.outerHTML='${m.ic||'💎'}'"><span style="color:var(--txt);font-size:12px">${m.nm}</span><span style="color:var(--cyan);font-size:12px;font-weight:bold">×${G.materials[m.id]}</span></span>`).join(''):I18N.t('craft.noneBuyAtShop')}
       </div>
 
     </div>
@@ -11380,7 +11385,7 @@ function renderTavernView(body){
   // 행성 팩션 NPC 이미지 — 각 버튼 좌측 배치 (퀘스트 인물 사용)
   const _npcFac=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
   function _npcImg(type,col){
-    const _src='img/quests/'+type+'_'+_npcFac+'.png';
+    const _src='img/quests/'+type+'_'+_npcFac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
     return `<div style="width:44px;height:44px;border-radius:6px;background:rgba(0,0,0,.45);border:1px solid ${col}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
       <img src="${_src}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
     </div>`;
@@ -11659,7 +11664,7 @@ function renderAuctionView(body){
       </div>
       <!-- 우측: 행성 이미지 꽉채움 -->
       <div style="width:110px;flex-shrink:0;overflow:hidden;background:#050a1a">
-        <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover;opacity:.85"
+        <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.85"
           onerror="this.style.display='none'">
       </div>
     </div>`;
@@ -11688,7 +11693,7 @@ function renderAuctionView(body){
       </div>
       <!-- 우측: 행성 이미지 꽉채움 -->
       <div style="width:110px;flex-shrink:0;overflow:hidden;background:#0a0518">
-        <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover;opacity:.8"
+        <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.8"
           onerror="this.style.display='none'">
       </div>
     </div>`;
@@ -11715,7 +11720,7 @@ function renderAuctionView(body){
         </div>
       </div>
       <div style="width:110px;flex-shrink:0;overflow:hidden;background:#050a1a">
-        <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover;opacity:.75" onerror="this.style.display='none'">
+        <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.75" onerror="this.style.display='none'">
       </div>
     </div>`;
   }
@@ -11737,7 +11742,7 @@ function renderAuctionView(body){
         const pBg=p.hostile?'#1a0505':p.void?'#0a0518':'#0a1828';
         return `<div style="background:var(--card);border:1px solid var(--gold);border-radius:10px;overflow:hidden;display:flex;flex-direction:row;min-height:110px">
           <div style="width:80px;flex-shrink:0;overflow:hidden;background:${pBg}">
-            <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.style.display='none'">
+            <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.style.display='none'">
           </div>
           <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:3px;min-width:0">
             <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -11895,7 +11900,7 @@ function showCodexPlanetModal(pid){
   const html=`<div style="padding:4px 0">
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">
       <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${fc}">
-        <img src="img/planets/${p.id}.png" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML='<div style=font-size:30px;display:flex;align-items:center;justify-content:center;height:100%>🪐</div>'">
+        <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML='<div style=font-size:30px;display:flex;align-items:center;justify-content:center;height:100%>🪐</div>'">
       </div>
       <div>
         <div style="font-size:17px;font-weight:bold;color:${fc}">${p.nm}${isCurrent?` <span style="font-size:11px;color:var(--cyan)">${I18N.t('tip.current')}</span>`:''}</div>
@@ -13295,7 +13300,7 @@ function startAsteroidBeltMinigame(destPid, shipIdx){
   cv.focus();
   // 이미지 로드
   const shipImg=new Image();shipImg.src=shipSrc;
-  const pirateImgs={};['PIRATE_S','PIRATE_M','PIRATE_L'].forEach(k=>{pirateImgs[k]=new Image();pirateImgs[k].src='img/combat/enemies/'+k+'.png';});
+  const pirateImgs={};const _piVer=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';['PIRATE_S','PIRATE_M','PIRATE_L'].forEach(k=>{pirateImgs[k]=new Image();pirateImgs[k].src='img/combat/enemies/'+k+'.png'+_piVer;});
   // 백구 AI 무드 이미지 프리로드
   const baekguImgs={};
   ['fight','smile1','smile2','smile4','anger0','anger1','anger2','sad','sad_happy','surprise','advice','think','bothersome','default'].forEach(m=>{
@@ -19102,7 +19107,7 @@ function showEndingCredits(onDone){
           let _pHTML;
           if(l.sp==='???'||l.sp.indexOf(I18N.t('chat.signal'))>=0){
             const _pc=l.col||'#ff6688';
-            _pHTML='<img src="img/chars/void_hiden.png" alt="???" style="width:132px;height:132px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88">';
+            _pHTML='<img src="img/chars/void_hiden.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')+'" alt="???" style="width:132px;height:132px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88">';
           }else{
             _pHTML=charPortraitHTML(_pspk,l.ic||(_isSys?'🤖':'⚑'),132,l.col||'#fff');
           }
