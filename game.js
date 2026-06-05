@@ -1146,7 +1146,8 @@ function _detectBaekguMood(text){
 // 인라인 백구 아이콘 — 이모지 자리에 작은 이미지 노출. 로드 실패 시 🐕 폴백.
 function _baekguIcon(size,mood){
   size=size||20;
-  const src=_baekguSrcByMood(mood);
+  let src=_baekguSrcByMood(mood);
+  if(src&&typeof window!=='undefined'&&window._GAME_VER&&src.indexOf('?v=')<0)src=src+'?v='+encodeURIComponent(window._GAME_VER);
   return `<img src="${src}" alt="${I18N.t('alt.baekgu')}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:${Math.round(size*0.9)}px;line-height:1&quot;>🐕</span>'">`;
 }
 // 화자용 초상 HTML 반환 (이미지가 매핑되어 있으면 <img>, 아니면 폴백 이모지)
@@ -1163,7 +1164,9 @@ function _heroPortrait(h, size, borderColor){
     try{for(const k in HEROES){if(HEROES[k]===h){_hid=k;break;}}}catch(e){}
   }
   // 2순위: 한국어 이름 기반 (CHAR_PORTRAITS). EN 모드에서는 매칭 실패할 수 있어 ID 우선.
-  const src=h&&((_hid&&HERO_PORTRAITS_BY_ID[_hid])||CHAR_PORTRAITS[h.nm]);
+  let src=h&&((_hid&&HERO_PORTRAITS_BY_ID[_hid])||CHAR_PORTRAITS[h.nm]);
+  // 캐시 버스터: _GAME_VER 변경 시 강제 갱신 (Firebase/CDN 24h 캐시 우회)
+  if(src&&typeof window!=='undefined'&&window._GAME_VER)src=src+'?v='+encodeURIComponent(window._GAME_VER);
   const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66`;
   if(src){
     return `<img src="${src}" alt="${(h&&h.nm)||''}" style="${_frame};object-fit:cover" onerror="this.outerHTML='<div style=\\'${_frame};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px\\'>${_ic}</div>'">`;
@@ -1207,6 +1210,8 @@ function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   // 1순위: 영웅 ID 기반 매핑 (언어 무관) → EN 모드에서도 영웅 초상 정상 표시
   if(!src&&_matchedHeroId)src=HERO_PORTRAITS_BY_ID[_matchedHeroId];
   if(!src)src=CHAR_PORTRAITS[speaker];
+  // 캐시 버스터: _GAME_VER 변경 시 강제 갱신
+  if(src&&typeof window!=='undefined'&&window._GAME_VER&&src.indexOf('?v=')<0)src=src+'?v='+encodeURIComponent(window._GAME_VER);
   // 원형 폴백 프레임 — 이미지 로드 실패 시도 동일한 크기·테두리 유지해 레이아웃 흔들림 없음
   const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px`;
   if(src){
@@ -1807,7 +1812,8 @@ function partImgSrc(partId){
   return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_src):_src;
 }
 function crewImgSrc(c){
-  if(!c)return`img/quests/explore_F01.png`;
+  const _gameVer=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  if(!c)return`img/quests/explore_F01.png`+_gameVer;
   // 전설 영웅(8인)은 전용 초상(hero01~08) 사용 — 크루 배치 목록 등에서 캐릭터 이미지 정상 표시
   const _isHero=c.isHero||(c.id&&typeof HEROES!=='undefined'&&HEROES[c.id]);
   if(_isHero){
@@ -1817,10 +1823,11 @@ function crewImgSrc(c){
     let _h=(_hid&&typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[_hid])||null;
     // 2순위: 한국어 이름 기반 (KO 모드 호환). EN 모드에선 c.nm가 영문이라 매칭 실패해도 위에서 처리됨.
     if(!_h&&c.nm&&typeof CHAR_PORTRAITS!=='undefined')_h=CHAR_PORTRAITS[c.nm]||null;
-    if(_h)return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_h):_h;
+    if(_h){const _hv=_h+_gameVer;return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_hv):_hv;}
   }
   // 일반 크루 초상: 퀘스트 의뢰 이미지 임시 매핑(_crewQuestImg)으로 통일 — 명단·가챠 영입·함선 배치 모두 동일
-  const _src=(typeof _crewQuestImg==='function')?_crewQuestImg(c):`img/crew/${c.cl||'Merch'}_m.png`;
+  const _srcRaw=(typeof _crewQuestImg==='function')?_crewQuestImg(c):`img/crew/${c.cl||'Merch'}_m.png`;
+  const _src=(_srcRaw&&_srcRaw.indexOf('?v=')<0)?(_srcRaw+_gameVer):_srcRaw;
   return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_src):_src;
 }
 function commImgSrc(cid){
@@ -2732,7 +2739,7 @@ function hubTab(tab){
               //   ※ 우리 함대 영웅(hero01~08) 사용 금지 — NPC(제독/행정관 등)와 혼동 방지
               const _ltype={quest:'combat',plaza:'combat',trade:'delivery',tavern:'delivery',gacha:'delivery',ship:'explore',craft:'gather',garage:'gather',auction:'combat',planets:'explore',front:'explore'}[tab];
               const _lfac=(pd&&/^F0[1-7]$/.test(pd.f||''))?pd.f:'F01';
-              const _lockImg=_ltype?('img/quests/'+_ltype+'_'+_lfac+'.png'):'';
+              const _lockImg=_ltype?('img/quests/'+_ltype+'_'+_lfac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')):'';
               return _lockImg
                 ? imgOrEmoji(_lockImg,npcInfo.ic,110,110,'border-radius:12px;object-fit:cover;flex-shrink:0;border:2px solid rgba(255,80,80,.4);background:rgba(0,0,0,.4)')
                 : '<div style="font-size:78px;line-height:1;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(255,80,80,.3))">'+npcInfo.ic+'</div>';
@@ -2811,7 +2818,7 @@ function hubBanner(tabId,emoji,label,factionId){
   //   ※ 우리 함대 영웅(hero01~08)을 쓰지 않음 (제독/행정관 등 NPC 와 혼동 방지)
   const _NPC_TYPE={quest:'combat',ship:'explore',garage:'gather',trade:'delivery',craft:'gather',tavern:'delivery',auction:'combat'};
   const _qFac=(/^F0[1-7]$/.test(factionId||''))?factionId:'F01';
-  const npcTemp=_NPC_TYPE[tabId]?('img/quests/'+_NPC_TYPE[tabId]+'_'+_qFac+'.png'):'';
+  const npcTemp=_NPC_TYPE[tabId]?('img/quests/'+_NPC_TYPE[tabId]+'_'+_qFac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')):'';
   // 실제 hub_npc 이미지가 있으면 우선, 없으면 임시 인물 이미지로 폴백
   const npcFirst=npcPlanetSrc||npcFactionSrc||npcGenSrc||npcTemp;
   // 퀘스트·크루를 언급하는 담당자(제독=quest · 주점주인=tavern)는 2배 크게 (사용자 요청)
@@ -8324,7 +8331,8 @@ function _crewQuestImg(c){
   let fn=0;
   if(c.f&&/^F0[1-7]$/.test(c.f))fn=parseInt(c.f.slice(1),10);
   else{const s=String(c.id||c.nm||'x');let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;fn=(h%7)+1;}
-  return 'img/quests/'+type+'_F'+String(fn).padStart(2,'0')+'.png';
+  const _v=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  return 'img/quests/'+type+'_F'+String(fn).padStart(2,'0')+'.png'+_v;
 }
 function renderCrewTab(body){
   if(!body)return;
@@ -10672,10 +10680,12 @@ function _questTypeImg(q){
   const t=q.type||'combat';
   const pd=PLANET_DEF.find(p=>p.id===q.planetId);
   const f=pd?.f;
-  return f?'img/quests/'+t+'_'+f+'.png':'img/quests/'+t+'.png';
+  const _v=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  return (f?'img/quests/'+t+'_'+f+'.png':'img/quests/'+t+'.png')+_v;
 }
 function _questTypeImgGeneric(q){
-  return 'img/quests/'+(q.type||'combat')+'.png';
+  const _v=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  return 'img/quests/'+(q.type||'combat')+'.png'+_v;
 }
 // 퀘스트 썸네일: 팩션별 → generic → 이모지 순으로 폴백
 function _questThumbHtml(q,size){
@@ -11950,7 +11960,8 @@ function showCodexSpecialCharModal(cid){
   if(!c)return;
   const col=c.id==='NPC_BAEKGU'?'#9ee7ff':c.id==='NPC_URSA'?'#ff66cc':c.id==='NPC_BLACKFALCON'?'#cc66ff':'var(--gold)';
   function row(ic,label,val){return`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:16px;flex-shrink:0">${ic}</span><div><div style="font-size:11px;color:var(--dim);margin-bottom:2px">${label}</div><div style="font-size:13px;color:var(--txt);line-height:1.6;word-break:keep-all">${val}</div></div></div>`;}
-  const imgHtml=c.img?`<img src="${c.img}" alt="${c.nm}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66;flex-shrink:0" onerror="this.outerHTML='<div style=\\'width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0\\'>${c.ic}</div>'">`:`<div style="width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0">${c.ic}</div>`;
+  const _cImg=c.img?(c.img+((window._GAME_VER&&c.img.indexOf('?v=')<0)?('?v='+encodeURIComponent(window._GAME_VER)):'')):null;
+  const imgHtml=_cImg?`<img src="${_cImg}" alt="${c.nm}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66;flex-shrink:0" onerror="this.outerHTML='<div style=\\'width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0\\'>${c.ic}</div>'">`:`<div style="width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0">${c.ic}</div>`;
   const html=`<div style="padding:4px 0">
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid ${col}44">
       ${imgHtml}
@@ -12294,7 +12305,8 @@ function renderCodexTab(body){
       const col=isBaekgu?'#9ee7ff':isUrsa?'#ff66cc':isFalcon?'#cc66ff':'var(--gold)';
       const oc=unlocked?`onclick="showCodexSpecialCharModal('${c.id}')"`:'';
       const hover=unlocked?'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'"':'';
-      const imgHtml=unlocked&&c.img?`<img src="${c.img}" alt="${c.nm}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66" onerror="this.outerHTML='<div style=\\'width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid ${col}\\'>${c.ic}</div>'">`:`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr)">❔</div>`;
+      const _cImg=(unlocked&&c.img)?(c.img+((window._GAME_VER&&c.img.indexOf('?v=')<0)?('?v='+encodeURIComponent(window._GAME_VER)):'')):null;
+      const imgHtml=_cImg?`<img src="${_cImg}" alt="${c.nm}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66" onerror="this.outerHTML='<div style=\\'width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid ${col}\\'>${c.ic}</div>'">`:`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr)">❔</div>`;
       return `<div ${oc} ${hover} style="background:var(--card);border:1px solid ${unlocked?col:'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${unlocked?1:.4};min-height:148px;${unlocked?'cursor:pointer':''}">
         <div style="margin:0 auto 6px;display:flex;justify-content:center">${imgHtml}</div>
         <div style="font-size:12px;font-weight:bold;color:${unlocked?col:'var(--dim)'};line-height:1.2">${unlocked?c.nm:'???'}</div>
@@ -14927,9 +14939,10 @@ function _showShakedownPopup(planetDef,proceed){
   }
   if(!_pf)_pf='F0'+(1+Math.floor(Math.random()*7));
   const _pIdx=1+Math.floor(Math.random()*3);
-  const _pSrc1='img/pirates/'+_pf+'_'+_pIdx+'.png';
-  const _pSrc2='img/pirates/'+_pf+'.png';
-  const _pSrc3='img/quests/combat_'+_pf+'.png';
+  const _gv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  const _pSrc1='img/pirates/'+_pf+'_'+_pIdx+'.png'+_gv;
+  const _pSrc2='img/pirates/'+_pf+'.png'+_gv;
+  const _pSrc3='img/quests/combat_'+_pf+'.png'+_gv;
   const portrait=`<div style="width:120px;height:120px;border-radius:50%;background:rgba(0,0,0,.5);border:2px solid ${npc.col};box-shadow:0 0 18px ${npc.col}88;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
     <img src="${_pSrc1}" data-fb2="${_pSrc2}" data-fb3="${_pSrc3}" alt="${npc.nm}" style="width:100%;height:100%;object-fit:cover" onerror="var f2=this.dataset.fb2,f3=this.dataset.fb3;if(f2&&!this.src.endsWith(f2)){this.src=f2}else if(f3&&!this.src.endsWith(f3)){this.src=f3}else{this.outerHTML='<span style=&quot;font-size:64px&quot;>${npc.ic}</span>'}">
   </div>`;
@@ -19127,8 +19140,10 @@ function showEndingCredits(onDone){
           <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:14px">${I18N.t('ui.recruitedHeroesNoCap',{n:heroEndings.length})}</div>
           ${heroEndings.map(h=>{
             // 1순위: 영웅 ID 기반 매핑 — 언어 무관 (EN/KO 동일하게 hero01~08.png)
-            const _hImg=(h.id&&typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[h.id])
+            let _hImg=(h.id&&typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[h.id])
                        ||(typeof CHAR_PORTRAITS!=='undefined'&&CHAR_PORTRAITS[h.nm])||'';
+            // 캐시 버스터: 새 빌드 시 강제 갱신
+            if(_hImg&&window._GAME_VER&&_hImg.indexOf('?v=')<0)_hImg=_hImg+'?v='+encodeURIComponent(window._GAME_VER);
             // 표시 이름은 현재 언어의 HEROES[id].nm 우선 (EN 모드에서 영문명 노출)
             const _dispNm=(h.id&&typeof HEROES!=='undefined'&&HEROES[h.id]&&HEROES[h.id].nm)||h.nm;
             return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px">
