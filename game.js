@@ -15599,7 +15599,7 @@ function _drawShipUnit(ctx,u,x,y,sz){
   let _da=_targetAngle-u._drawAngle;
   while(_da>Math.PI)_da-=Math.PI*2;
   while(_da<-Math.PI)_da+=Math.PI*2;
-  u._drawAngle+=_da*0.0004;  // 사용자 요청: 추가 10배 느린 회전 (0.004→0.0004, 누적 250배 느림)
+  u._drawAngle+=_da*0.00004;  // 사용자 요청: 추가 10배 느린 회전 (0.0004→0.00004, 누적 2500배 느림)
   if(cached&&cached!=='ERR'&&cached.complete&&cached.naturalWidth>0){
     ctx.save();
     ctx.globalAlpha=alpha;
@@ -16167,19 +16167,19 @@ function drawCombatFrame(){
 
   // 플레이어 함선
   //   ── 사용자 요청 (누적): 추가 10배 느림 ──
-  //   · 학익진 활성: T=0.00016 (0.0016→0.00016)
-  //   · 일반 위치 변경: T=0.0008 (0.008→0.0008, 누적 250배 느림)
+  //   · 학익진 활성: T=0.000016 (0.00016→0.000016)
+  //   · 일반 위치 변경: T=0.00008 (0.0008→0.00008, 누적 2500배 느림)
   const _hjOn=!!(combatState._haikjinFormation);
   pl.forEach((u,i)=>{
     let{x,y}=pPos[i];
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
     if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      const T=0.00016;
+      const T=0.000016;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
     } else {
-      const T=0.0008;  // 일반 이동 — 사용자 요청 추가 10배 느림 (0.008→0.0008)
+      const T=0.00008;  // 일반 이동 — 사용자 요청 추가 10배 느림 (0.0008→0.00008)
       u._curX+=(x-u._curX)*T;
       u._curY+=(y-u._curY)*T;
     }
@@ -16193,7 +16193,7 @@ function drawCombatFrame(){
   en.forEach((u,i)=>{
     let{x,y}=ePos[i];
     if(u._curX==null){u._curX=x;u._curY=y;}
-    const T=0.0008;  // 0.008→0.0008
+    const T=0.00008;  // 0.0008→0.00008
     u._curX+=(x-u._curX)*T;
     u._curY+=(y-u._curY)*T;
     x=u._curX;y=u._curY;
@@ -17484,10 +17484,15 @@ function _setupHaikjinFormation(){
       p._haikjinTargetY=cyE+R_eff*Math.sin(ang);
     });
   }
-  // 사용자 요청: 학익진 전체 진형을 추가로 좌측 30% 평행이동 (배치 구조는 유지)
-  //  · 기준: 평균 포위 거리 R_wing의 30% 만큼 -X 방향 추가 오프셋
+  // 사용자 요청: 학익진 진형을 30% 뒤로(좌측) 평행이동 — 단, 적 정면의 탱커는 그대로 유지
+  //  · 탱커(_isHaikjinTank=true)는 적군 바로 앞 위치 보존 → 정면 방어 역할
+  //  · 나머지 날개 함선만 R_wing의 30% 만큼 -X 방향 추가 오프셋 → 후방 지원 형태
   const _hjLeftOffset=R_wing*0.30;
-  pl.forEach(p=>{if(p._haikjinTargetX!=null)p._haikjinTargetX-=_hjLeftOffset;});
+  pl.forEach(p=>{
+    if(p._haikjinTargetX!=null && !p._isHaikjinTank){
+      p._haikjinTargetX-=_hjLeftOffset;
+    }
+  });
 }
 
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
