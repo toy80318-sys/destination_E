@@ -1399,7 +1399,14 @@ function askBaekgu(){
   }
 }
 function randomBaekgu(key){
-  const m={travel:["이동 완료. 다음 목표 정해.","워프 성공."],combat_win:["이겼어. 당연한 거 아닌가.","크레딧 벌었다."],combat_lose:["졌어. 다시 해.","포기하면 안 돼."],gacha_hero:["영웅 등급! 쓸만하겠는데."],gacha_legend:["전설 등급이다!"],low_credits:["크레딧 부족해. 무역해."]};
+  const m={
+    travel:[I18N.t('baekgu.travel1'),I18N.t('baekgu.travel2')],
+    combat_win:[I18N.t('baekgu.cwin1'),I18N.t('baekgu.cwin2')],
+    combat_lose:[I18N.t('baekgu.close1'),I18N.t('baekgu.close2')],
+    gacha_hero:[I18N.t('baekgu.gachaHero1')],
+    gacha_legend:[I18N.t('baekgu.gachaLegend1')],
+    low_credits:[I18N.t('baekgu.lowCred1')]
+  };
   const arr=m[key];if(arr)baekgu(arr[Math.floor(Math.random()*arr.length)]);
 }
 // 순간이동 가능 엔진(블링크 E15 / 신화 타키온 ME01 / 세트 테슬라 SE01) 전체 장착 여부
@@ -3636,14 +3643,14 @@ function triggerPirateRaid(pd){
   openModal(I18N.t('modal.pirateRaid'),
     `<div style="text-align:center;padding:6px 4px">
       <div style="font-size:42px;margin-bottom:6px">☠️</div>
-      <div style="color:var(--red);font-size:17px;font-weight:bold;margin-bottom:6px">${pd?.nm||''} — 해적단 기습!</div>
+      <div style="color:var(--red);font-size:17px;font-weight:bold;margin-bottom:6px">${I18N.t('ui.pirateRaidHere',{nm:pd?.nm||''})}</div>
       <div style="color:var(--dim);font-size:13px;line-height:1.7">
-        같은 행성에 ${G.stayTurns}턴 체류 → 해적 정보 누출!<br>
+        ${I18N.t('ui.pirateStayLeak',{n:G.stayTurns})}<br>
         <span style="color:var(--yellow)">${I18N.t('ui.winLootLoseCr')}</span>
       </div>
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
-    <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} 백구: "내가 경고했잖아. 싸워!"</div>`,
+    <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('baekgu.pirateWarn')}"</div>`,
     [{txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
      {txt:I18N.t('ui.flee'),fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
@@ -3977,7 +3984,7 @@ function renderTradeTab(body){
                       style="flex:1;font-size:11px;padding:3px 6px">${I18N.t('ui.buy')}</button>
                   </div>
                   <button class="btn btn-sm btn-gold" onclick="buyCommMax('${c.id}')" ${canBuy?'':'disabled'}
-                    style="font-size:11px;padding:3px 6px;width:100%" title="재고/크레딧/화물칸 한도까지 한번에 구매">${I18N.t('ui.allBuy')}</button>
+                    style="font-size:11px;padding:3px 6px;width:100%" title="${I18N.t('ui.allBuyTipCargo')}">${I18N.t('ui.allBuy')}</button>
                 </div>
               </div>
             </div>`;
@@ -4028,7 +4035,7 @@ function renderTradeTab(body){
                         style="flex:1;font-size:11px;padding:3px 6px;border-color:var(--gold);color:var(--gold)">${I18N.t('ui.buy')}</button>
                     </div>
                     <button class="btn btn-sm" onclick="buyCommMax('${c.id}')" ${canBuyMat?'':'disabled'}
-                      style="font-size:11px;padding:3px 6px;width:100%;border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)" title="재고/크레딧 한도까지 한번에 구매">${I18N.t('ui.allBuy')}</button>
+                      style="font-size:11px;padding:3px 6px;width:100%;border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08)" title="${I18N.t('ui.allBuyTipNoCargo')}">${I18N.t('ui.allBuy')}</button>
                   </div>
                 </div>
               </div>`;
@@ -4091,7 +4098,7 @@ function buyComm(id,_silent=false){
     stockKey:id,
     planetId:G.currentPlanet,
     credits:comm.buy,
-    label:`${comm.ic||'📦'} ${comm.nm}`
+    label:`${comm.ic||'📦'} ${commDisplayNm(comm)}`
   }:null;
   G.credits-=comm.buy;stock[id]--;
   const ex=G.cargo.find(s=>s.id===id);
@@ -4590,7 +4597,7 @@ function renderShipTab(body){
       return `<div style="background:var(--card);border:1px dashed ${fc};border-radius:8px;padding:10px;display:flex;gap:12px;align-items:center;margin-bottom:8px">
         <div style="width:80px;height:80px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${imgOrEmoji(imgS,tierIc,76,76,'border-radius:5px;object-fit:contain',shipLoreKey(rs))}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:bold;color:${fc}">${tierIc} ${rs.nm} <span style="font-size:11px;color:var(--dim);font-weight:normal">[${I18N.tier(rs.tier)}]</span></div>
+          <div style="font-size:14px;font-weight:bold;color:${fc}">${tierIc} ${shipDisplayNm(rs)} <span style="font-size:11px;color:var(--dim);font-weight:normal">[${I18N.tier(rs.tier)}]</span></div>
           <div style="font-size:11px;color:var(--dim);margin-top:2px">HP ${(rs.maxHP||0).toLocaleString()} · SH ${(rs.maxSH||0).toLocaleString()} · ATT ${rs.ATT||rs.atk||0}</div>
           ${rs.qualityLabel?`<div style="font-size:11px;color:${fc};margin-top:2px">${rs.qualityLabel} (×${(rs.quality||1).toFixed(2)})</div>`:''}
         </div>
@@ -4598,7 +4605,7 @@ function renderShipTab(body){
           ${_isGarage?`${G.fleet.length<16?`<button class="btn btn-sm" style="font-size:10px;padding:3px 8px;border-color:var(--green);color:var(--green);background:rgba(46,204,113,.12);font-weight:bold" onclick="promoteReserveShip(${ri})" title="${I18N.t('ui.promoteTitle')}">${I18N.t('ui.promoteToActive',{n:G.fleet.length})}</button>`:`<span style="font-size:10px;color:var(--dim);text-align:center;padding:2px">${I18N.t('ship.reserveFull')}</span>`}
           <select id="resvSwap_${ri}" style="background:rgba(0,0,0,.5);color:var(--txt);border:1px solid var(--bdr);border-radius:4px;padding:3px 6px;font-size:11px;font-family:inherit">
             <option value="">${I18N.t('ui.selectShipToSwap')}</option>
-            ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${I18N.tier(af.tier)}] ${af.nm}</option>`).join('')}
+            ${G.fleet.map((af,ai)=>`<option value="${ai}">${ai===0?'⭐ ':''}[${I18N.tier(af.tier)}] ${shipDisplayNm(af)}</option>`).join('')}
           </select>
           <button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 8px" onclick="swapReserveShip(${ri})">${I18N.t('ship.swapWithActive')}</button>`:''}
           <button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 8px" onclick="discardReserveShip(${ri})" title="${I18N.t('ship.sellTitle')}">${I18N.t('ship.sellLabel')}</button>
@@ -4696,8 +4703,8 @@ function renderShipTab(body){
       const _bg=_dc?'rgba(212,175,55,.18)':'rgba(0,243,255,.18)';
       const _bd=_dc?'rgba(212,175,55,.55)':'rgba(0,243,255,.45)';
       return `<div style="flex:0.7;min-width:140px;background:rgba(0,0,0,.25);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;justify-content:center;gap:6px">
-        <div style="font-size:13px;font-weight:bold;color:${_col}">🏴 적함 나포 정책</div>
-        <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:12px;padding:6px 10px;border:1.5px solid ${_bd};color:${_col};background:${_bg};width:100%" title="클릭 시 ${_next} 으로 전환">${_lbl}</button>
+        <div style="font-size:13px;font-weight:bold;color:${_col}">${I18N.t('ui.capturePolicyTitle')}</div>
+        <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:12px;padding:6px 10px;border:1.5px solid ${_bd};color:${_col};background:${_bg};width:100%" title="${I18N.t('ui.clickToToggle',{next:_next})}">${_lbl}</button>
       </div>`;
     })()}
     </div>  <!-- /3열 컨테이너 -->
@@ -5818,7 +5825,7 @@ function discardReserveShip(reserveIdx){
   openModal(I18N.t('modal.candidateShipSale'),
     `<div style="padding:14px;text-align:center">
       <div style="font-size:38px;margin-bottom:8px">💰</div>
-      <div style="font-size:15px;color:var(--yellow);margin-bottom:8px"><b>${ship.nm}</b></div>
+      <div style="font-size:15px;color:var(--yellow);margin-bottom:8px"><b>${shipDisplayNm(ship)}</b></div>
       <div style="font-size:13px;color:var(--dim);line-height:1.9;margin-bottom:10px">
         매각가 <span style="color:var(--gold);font-size:16px;font-weight:bold">₡${sellPrice.toLocaleString()}</span><br>
         <span style="color:var(--muted);font-size:11px">(정가의 80%${qLabel}${enhLabel})</span>
@@ -6442,7 +6449,7 @@ function renderFleetFormationTab(body){
         const hpCol=hpP>60?'var(--green)':hpP>30?'var(--yellow)':'var(--red)';
         content=`
           <div style="width:100%;display:flex;justify-content:center;flex-shrink:0">${imgOrEmoji(shipImgSrc(ship),'🛸',104,104,'border-radius:6px',shipLoreKey(ship))}</div>
-          <div style="font-size:10px;color:var(--cyan);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;flex-shrink:0">${isFlagshipHere?'⭐ ':''}${ship.nm}</div>
+          <div style="font-size:10px;color:var(--cyan);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;flex-shrink:0">${isFlagshipHere?'⭐ ':''}${shipDisplayNm(ship)}</div>
           <div style="font-size:9px;color:${hpCol};text-align:center;margin-top:2px">HP ${hpP}%</div>
           <div style="display:flex;justify-content:space-between;width:100%;font-size:9px;color:var(--dim);margin-top:auto;padding-top:3px;border-top:1px solid rgba(255,255,255,.08)">
             <span style="color:#f88">❤${st.HP}</span>
@@ -8218,8 +8225,8 @@ function upgradeCargoSlot(shipIdx, fromModal){
       <div style="font-size:44px;margin-bottom:10px">🚫</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:8px">${I18N.t('ui.cargoMaxReached')}</div>
       <div style="color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:18px">
-        ${I18N.t('ui.cargoBayReachedMax',{nm:s.nm})}<br>
-        더 이상 확장할 수 없습니다.
+        ${I18N.t('ui.cargoBayReachedMax',{nm:shipDisplayNm(s)})}<br>
+        ${I18N.t('ui.cannotExpandMore')}
       </div>
       <button class="btn btn-sm btn-red" style="padding:8px 28px;font-size:14px" onclick="this.closest('[style*=fixed]').remove()">${I18N.t('ui.confirm')}</button>
     </div>`;
@@ -8290,7 +8297,7 @@ function pickCargoExtForSlot(shipIdx){
     return `<div onclick="equipCargoExt(${shipIdx},'${iv.id}')" style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--card);border:1px solid ${col}66;border-radius:8px;cursor:pointer" onmouseover="this.style.background='rgba(212,175,55,.1)'" onmouseout="this.style.background='var(--card)'">
       ${imgOrEmoji('img/parts/'+iv.id+'.png',sc.ic||'📦',44,44,'border-radius:6px;background:rgba(0,0,0,.4);object-fit:contain;flex-shrink:0','part_'+iv.id)}
       <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:bold;color:${col}">${sc.nm}</div>
+        <div style="font-size:13px;font-weight:bold;color:${col}">${partDisplayNm(sc)||sc.nm}</div>
         <div style="font-size:11px;color:var(--green)">${I18N.t('ui.cargoBonusOwn',{n:sc.cargoBonus,q:iv.qty})}</div>
       </div>
       <span style="font-size:12px;color:var(--gold);font-weight:bold">${I18N.t('ui.equipArrowChip')}</span>
@@ -8435,10 +8442,10 @@ function renderCrewTab(body){
         <div style="font-size:12px;color:${rarityCol};font-weight:bold">${rarityNm}</div>
         <div style="font-size:11px;color:var(--dim);margin-top:2px">${bonusTxt||'-'}</div>
         <div style="margin-top:4px">
-          ${assignedShip?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">🛸 ${assignedShip.nm}</div>`:''}
+          ${assignedShip?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">🛸 ${shipDisplayNm(assignedShip)}</div>`:''}
           <select id="cs_${c.id}" style="font-size:10px;background:var(--panel);border:1px solid ${assignedShip?'var(--cyan)':'var(--bdr)'};color:white;border-radius:3px;padding:1px;width:100%">
             ${G.fleet.length===1?'':`<option value="">${I18N.t('ui.shipPickerPlaceholder')}</option>`}
-            ${G.fleet.map((sh,si)=>`<option value="${si}" ${assignedShip===sh||(G.fleet.length===1&&si===0)?'selected':''}>[${sh.tier}] ${sh.nm} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
+            ${G.fleet.map((sh,si)=>`<option value="${si}" ${assignedShip===sh||(G.fleet.length===1&&si===0)?'selected':''}>[${sh.tier}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
           </select>
           <div style="display:flex;gap:4px;margin-top:4px">
             <button class="btn btn-sm" style="font-size:11px;flex:1;padding:3px 4px;${assignedShip?'border-color:var(--cyan);color:var(--cyan)':''}" onclick="assignCrewFromCrewTab('${c.id}')">${assignedShip?I18N.t('ui.crewMoveBtn'):I18N.t('ui.crewBoardBtn')}</button>
@@ -18593,22 +18600,22 @@ function showSettingsModal(){
       <div style="font-size:10px;color:var(--muted);text-align:center;line-height:1.5">${I18N.t('settings.fileSaveHelp')}</div>
     </div>
     <div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
-      <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">🎁 치트 모드 <span style="font-size:10px;color:var(--muted);font-weight:normal">— 비번 "de" 1회 입력</span></div>
+      <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('cheat.pwOnceHint')}</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(10000000)">💰 +₡1천만</button>
-        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">💰 +₡1억</button>
-        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',50)">⭐ 명성 +50</button>
-        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',200)">⭐ 명성 +200</button>
-        <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',10)">💎 VC +10</button>
-        <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',50)">💎 VC +50</button>
-        <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',100)">⚛️ VE +100</button>
-        <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',1000)">⚛️ VE +1000</button>
+        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(10000000)">${I18N.t('cheat.giveCr10m')}</button>
+        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>
+        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',50)">${I18N.t('cheat.giveRep50')}</button>
+        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',200)">${I18N.t('cheat.giveRep200')}</button>
+        <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',10)">${I18N.t('cheat.giveVc10')}</button>
+        <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',50)">${I18N.t('cheat.giveVc50')}</button>
+        <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',100)">${I18N.t('cheat.giveVe100')}</button>
+        <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',1000)">${I18N.t('cheat.giveVe1k')}</button>
       </div>
-      <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#ff66cc;color:#ff66cc;font-weight:bold" onclick="cheatGiveAllMega()">🌟 전체 메가 충전 (₡1억 + 명성 200 + VC 50 + VE 1000)</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border:2px solid #ffd700;color:#ffd700;font-weight:bold;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(255,102,204,.12),rgba(102,255,255,.12))" onclick="cheatMaxAll()">⚡ 맥스 치트 (₡10억 + 명성 999 + VC 99 + VE 9.9만 + 영웅 8명 + 보이드 해금)</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#ff66cc;color:#ff66cc;font-weight:bold" onclick="cheatGiveAllMega()">${I18N.t('cheat.megaCharge')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:4px;border:2px solid #ffd700;color:#ffd700;font-weight:bold;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(255,102,204,.12),rgba(102,255,255,.12))" onclick="cheatMaxAll()">${I18N.t('cheat.maxCheat')}</button>
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>
-      <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">테스트/디버그 용도 — 도전적 플레이를 원하면 사용 자제</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">${I18N.t('cheat.debugWarn')}</div>
     </div>`:''}
   </div>`;
   openModal(I18N.t('modal.settings'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
@@ -18629,7 +18636,7 @@ function _cheatUnlock(onOk){
       <input type="password" id="_cheat-pw" placeholder="${I18N.t('placeholder.password')}" autofocus
         style="width:80%;padding:10px;font-size:16px;background:rgba(0,0,0,.5);border:1px solid var(--cyan);color:#fff;border-radius:6px;text-align:center;font-family:inherit"
         onkeydown="if(event.key==='Enter')document.getElementById('_cheat-ok').click()">
-      <div style="font-size:11px;color:var(--muted);margin-top:8px">힌트: 게임 약자 2글자 (소문자)</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px">${I18N.t('cheat.pwHint')}</div>
     </div>`,
     [
       {txt:I18N.t('cheat.confirmBtn'),id:'_cheat-ok',fn:()=>{
@@ -19863,21 +19870,21 @@ function showDevMenu(){
   const html=`<div style="padding:8px 4px">
     <div style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px;line-height:1.6">
       <div style="font-weight:bold;color:#ffa500;margin-bottom:4px">🔓 개발자 모드 활성화</div>
-      <div style="color:var(--dim)">현재 상태: ${isAdmin?`<span style="color:var(--green)">${I18N.t('ui.adminBadge')} (${u.email})</span>`:`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
+      <div style="color:var(--dim)">${I18N.t('ui.currentStatus')}: ${isAdmin?`<span style="color:var(--green)">${I18N.t('ui.adminBadge')} (${u.email})</span>`:`<span style="color:var(--yellow)">${I18N.t('ui.adminLoginNeeded')}</span>`}</div>
     </div>
     ${!isAdmin?`
       <div style="font-size:13px;color:var(--txt);margin-bottom:8px">${I18N.t('ui.dataLookupVia',{email:ADMIN_EMAIL})}</div>
-      <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="cloudGoogleSignIn()">🔗 Google로 로그인 (관리자 계정)</button>
+      <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="cloudGoogleSignIn()">${I18N.t('dev.googleLoginAdmin')}</button>
     `:''}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
-      <button class="btn btn-sm" ${!isAdmin?'disabled style="opacity:.4"':''} onclick="devShowFeedback()">📬 피드백 조회</button>
-      <button class="btn btn-sm" ${!isAdmin?'disabled style="opacity:.4"':''} onclick="devShowSaveStats()">📊 세이브 통계</button>
-      <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(10000000)">💰 +1천만</button>
-      <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(100000000)">💰 +1억</button>
+      <button class="btn btn-sm" ${!isAdmin?'disabled style="opacity:.4"':''} onclick="devShowFeedback()">${I18N.t('dev.viewFeedback')}</button>
+      <button class="btn btn-sm" ${!isAdmin?'disabled style="opacity:.4"':''} onclick="devShowSaveStats()">${I18N.t('dev.saveStats')}</button>
+      <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(10000000)">${I18N.t('dev.cr10mShort')}</button>
+      <button class="btn btn-sm" style="border-color:#ffa500;color:#ffa500" onclick="cheatGiveCredits(100000000)">${I18N.t('dev.cr100mShort')}</button>
       <button class="btn btn-sm btn-red" onclick="if(confirm(I18N.t('confirm.deleteAllLocal'))){for(let i=0;i<=8;i++)localStorage.removeItem(i===0?'de_save':'de_save_s'+i);notify(I18N.t('notify.allLocalDeleted'),'ok');}">${I18N.t('settings.localDeleteAll')}</button>
       <button class="btn btn-sm" onclick="(function(){const log=JSON.parse(localStorage.getItem('de_feedback_log')||'[]');alert('${I18N.t('feedback.localLogAlert').replace(/'/g,"\\'")}'+JSON.stringify(log,null,2));})()">${I18N.t('feedback.localLog')}</button>
     </div>
-    <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px">개발/디버그 전용 메뉴</div>
+    <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px">${I18N.t('dev.menuTagline')}</div>
   </div>`;
   openModal(I18N.t('modal.devMenu'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
