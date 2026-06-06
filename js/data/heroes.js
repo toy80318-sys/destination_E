@@ -23,15 +23,28 @@ const HERO_LORE={
   'H08':{origin:I18N.t('hero.H08.origin'),found:I18N.t('hero.H08.found'),stats:I18N.t('hero.H08.stats'),char:I18N.t('hero.H08.char'),op:I18N.t('hero.H08.op')}
 };
 
+// 사용자 요청 (2026-06-06): 모집 시점 언어로 nm이 굳어버려 언어 전환 시 혼재되는 문제를 막기 위해
+//   각 엔트리에 _nmKey 키를 부여한다. crew 모집 코드가 이를 G.crew[*]._nmKey 로 복사하고
+//   crewDisplayNm 이 _nmKey 우선 lookup으로 현재 언어를 재조회한다.
 const NPC_POOL=[
-  {nm:I18N.t('hero.npc.kimcheolsun.nm'),cl:'Pilot',f:'F06',ic:'🧑'},{nm:I18N.t('hero.npc.parksoi.nm'),cl:'Eng',f:'F06',ic:'👩'},
-  {nm:I18N.t('hero.npc.leekangho.nm'),cl:'Merch',f:'F06',ic:'🧓'},{nm:I18N.t('hero.npc.junghayeon.nm'),cl:'Pilot',f:'F06',ic:'👩'},
-  {nm:I18N.t('hero.npc.jamesmckenzie.nm'),cl:'Pilot',f:'F01',ic:'🧔'},{nm:I18N.t('hero.npc.rosadelgado.nm'),cl:'Merch',f:'F01',ic:'👩'},
-  {nm:I18N.t('hero.npc.pierredubois.nm'),cl:'Merch',f:'F02',ic:'🦊'},{nm:I18N.t('hero.npc.sophiebeaumont.nm'),cl:'Eng',f:'F02',ic:'🐱'},
-  {nm:I18N.t('hero.npc.dmitriivanov.nm'),cl:'Eng',f:'F03',ic:'🧔'},{nm:I18N.t('hero.npc.natashapetrova.nm'),cl:'Pilot',f:'F03',ic:'👩'},
-  {nm:I18N.t('hero.npc.carlossilva.nm'),cl:'Pilot',f:'F04',ic:'🧑'},{nm:I18N.t('hero.npc.mariagonzalez.nm'),cl:'Merch',f:'F04',ic:'👩'},
-  {nm:I18N.t('hero.npc.rashidaltariq.nm'),cl:'Merch',f:'F07',ic:'👳'},{nm:I18N.t('hero.npc.fatimaalnajjar.nm'),cl:'Eng',f:'F07',ic:'🧕'},
-  {nm:I18N.t('hero.npc.tylerchen.nm'),cl:'Eng',f:'F01',ic:'🧑'},{nm:I18N.t('hero.npc.omaralfaruq.nm'),cl:'Eng',f:'F07',ic:'👳'},
-  {nm:I18N.t('hero.npc.sergeivolkov.nm'),cl:'Merch',f:'F03',ic:'🧔'},{nm:I18N.t('hero.npc.diegoramirez.nm'),cl:'Eng',f:'F04',ic:'🧑'},
-  {nm:I18N.t('hero.npc.hanminseok.nm'),cl:'Eng',f:'F06',ic:'🧑'},{nm:I18N.t('hero.npc.choiyoungjun.nm'),cl:'Pilot',f:'F06',ic:'🧑'}
+  {_nmKey:'hero.npc.kimcheolsun.nm',  nm:I18N.t('hero.npc.kimcheolsun.nm'),  cl:'Pilot',f:'F06',ic:'🧑'},
+  {_nmKey:'hero.npc.parksoi.nm',      nm:I18N.t('hero.npc.parksoi.nm'),      cl:'Eng',  f:'F06',ic:'👩'},
+  {_nmKey:'hero.npc.leekangho.nm',    nm:I18N.t('hero.npc.leekangho.nm'),    cl:'Merch',f:'F06',ic:'🧓'},
+  {_nmKey:'hero.npc.junghayeon.nm',   nm:I18N.t('hero.npc.junghayeon.nm'),   cl:'Pilot',f:'F06',ic:'👩'},
+  {_nmKey:'hero.npc.jamesmckenzie.nm',nm:I18N.t('hero.npc.jamesmckenzie.nm'),cl:'Pilot',f:'F01',ic:'🧔'},
+  {_nmKey:'hero.npc.rosadelgado.nm',  nm:I18N.t('hero.npc.rosadelgado.nm'),  cl:'Merch',f:'F01',ic:'👩'},
+  {_nmKey:'hero.npc.pierredubois.nm', nm:I18N.t('hero.npc.pierredubois.nm'), cl:'Merch',f:'F02',ic:'🦊'},
+  {_nmKey:'hero.npc.sophiebeaumont.nm',nm:I18N.t('hero.npc.sophiebeaumont.nm'),cl:'Eng',f:'F02',ic:'🐱'},
+  {_nmKey:'hero.npc.dmitriivanov.nm', nm:I18N.t('hero.npc.dmitriivanov.nm'), cl:'Eng',  f:'F03',ic:'🧔'},
+  {_nmKey:'hero.npc.natashapetrova.nm',nm:I18N.t('hero.npc.natashapetrova.nm'),cl:'Pilot',f:'F03',ic:'👩'},
+  {_nmKey:'hero.npc.carlossilva.nm',  nm:I18N.t('hero.npc.carlossilva.nm'),  cl:'Pilot',f:'F04',ic:'🧑'},
+  {_nmKey:'hero.npc.mariagonzalez.nm',nm:I18N.t('hero.npc.mariagonzalez.nm'),cl:'Merch',f:'F04',ic:'👩'},
+  {_nmKey:'hero.npc.rashidaltariq.nm',nm:I18N.t('hero.npc.rashidaltariq.nm'),cl:'Merch',f:'F07',ic:'👳'},
+  {_nmKey:'hero.npc.fatimaalnajjar.nm',nm:I18N.t('hero.npc.fatimaalnajjar.nm'),cl:'Eng',f:'F07',ic:'🧕'},
+  {_nmKey:'hero.npc.tylerchen.nm',    nm:I18N.t('hero.npc.tylerchen.nm'),    cl:'Eng',  f:'F01',ic:'🧑'},
+  {_nmKey:'hero.npc.omaralfaruq.nm',  nm:I18N.t('hero.npc.omaralfaruq.nm'),  cl:'Eng',  f:'F07',ic:'👳'},
+  {_nmKey:'hero.npc.sergeivolkov.nm', nm:I18N.t('hero.npc.sergeivolkov.nm'), cl:'Merch',f:'F03',ic:'🧔'},
+  {_nmKey:'hero.npc.diegoramirez.nm', nm:I18N.t('hero.npc.diegoramirez.nm'), cl:'Eng',  f:'F04',ic:'🧑'},
+  {_nmKey:'hero.npc.hanminseok.nm',   nm:I18N.t('hero.npc.hanminseok.nm'),   cl:'Eng',  f:'F06',ic:'🧑'},
+  {_nmKey:'hero.npc.choiyoungjun.nm', nm:I18N.t('hero.npc.choiyoungjun.nm'), cl:'Pilot',f:'F06',ic:'🧑'}
 ];

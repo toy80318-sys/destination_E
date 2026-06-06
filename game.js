@@ -1733,6 +1733,8 @@ try{if(typeof window!=='undefined')window.partDisplayNm=partDisplayNm;}catch(e){
 function crewDisplayNm(c){
   if(!c)return '';
   try{
+    // 1순위: 명시적 _nmKey (NPC_POOL 모집 시 부여) → 표시 시점 언어로 재조회
+    if(c._nmKey&&I18N&&typeof I18N.has==='function'&&I18N.has(c._nmKey))return I18N.t(c._nmKey);
     const cid=String(c.id||'');
     if(I18N&&typeof I18N.has==='function'){
       if(/^H0\d$/.test(cid)&&I18N.has('hero.'+cid+'.nm'))return I18N.t('hero.'+cid+'.nm');
@@ -8704,7 +8706,7 @@ function doGacha(n,useCr,crCost,minRarity){
       const baseDEF={Pilot:10,Eng:15,Merch:8,Sniper:5,Mage:20,Engineer:25,Commander:20}[cl]||10;
       newCrew={
         id:'gc_'+Date.now()+'_'+pull+'_'+Math.floor(Math.random()*9999),
-        nm:base.nm,cl:cl,ic:base.ic||'🧑',f:base.f||'F01',
+        nm:base.nm,_nmKey:base._nmKey,cl:cl,ic:base.ic||'🧑',f:base.f||'F01',
         rarity,
         STR:Math.round(baseSTR*statMul),ATT:Math.round(baseDEX2*statMul),
         INT:Math.round(baseINT2*statMul),DEF:Math.round(baseDEF*statMul),
@@ -18231,6 +18233,24 @@ function loadGame(slotN){
     if(G.difficulty===undefined)G.difficulty='normal';
     if(!G.heroes)G.heroes=[];
     if(!G.crew)G.crew=[];
+    // 사용자 보고 (2026-06-06): 기존 세이브에 nm이 모집 시점 언어로 굳어져 한/영 혼재.
+    //   NPC_POOL 항목별 _nmKey 도입 후 — 기존 G.crew는 _nmKey가 비어있음.
+    //   nm(현재값)을 ko/en 양쪽 i18n 사전에서 역방향 매칭해 _nmKey를 backfill.
+    try{
+      if(typeof NPC_POOL!=='undefined'&&Array.isArray(NPC_POOL)&&I18N&&typeof I18N.getEntry==='function'){
+        const _kRev={};
+        NPC_POOL.forEach(np=>{
+          if(!np._nmKey)return;
+          const ent=I18N.getEntry(np._nmKey);
+          if(!ent)return;
+          if(ent.ko)_kRev[ent.ko]=np._nmKey;
+          if(ent.en)_kRev[ent.en]=np._nmKey;
+        });
+        G.crew.forEach(c=>{
+          if(c&&!c._nmKey&&c.nm&&_kRev[c.nm])c._nmKey=_kRev[c.nm];
+        });
+      }
+    }catch(e){console.warn('[crew _nmKey backfill]',e);}
     if(!G.planets||!Object.keys(G.planets).length)G.planets={};
     // 화물·재료 정합성 — 구버전 세이브 호환 + 직렬화 시 어긋난 카운터 자동 보정
     try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate(load) failed',e);}

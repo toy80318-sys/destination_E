@@ -85,6 +85,8 @@ window.I18N = (function () {
 
   function getLang() { return _lang; }
   function has(key) { return !!_dict[key]; }
+  // 단일 키의 양 언어 원본 엔트리 반환 — 역방향 lookup(이름→키 마이그레이션)에 사용
+  function getEntry(key) { return _dict[key] || null; }
 
   // 한국어 tier enum('소형'/'중형'/'대형'/'신화') → 번역. 데이터 비교(예: s.tier==='소형')는 한국어 enum 유지.
   // 사용: I18N.tier(ship.tier) — UI 표시 사이트에서만 호출
@@ -164,5 +166,5 @@ window.I18N = (function () {
     }
   }
 
-  return { t, setLang, getLang, register, has, tier, rarity, applyI18nToDOM, SUPPORTED, DEFAULT_LANG };
+  return { t, setLang, getLang, register, has, getEntry, tier, rarity, applyI18nToDOM, SUPPORTED, DEFAULT_LANG };
 })();
