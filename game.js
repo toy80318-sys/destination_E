@@ -3937,8 +3937,8 @@ function renderTradeTab(body){
           ${priceLabel}
         </div>
         <div style="display:flex;gap:3px;align-items:center;margin-top:4px">
-          <button class="btn btn-sm ${samePlanet?'':'btn-gold'}" style="flex:1;font-size:10px;padding:3px 2px${samePlanet?';border-color:var(--yellow);color:var(--yellow)':''}" onclick="sellComm(${idx},1)" title="${samePlanet?I18N.t('shop.refundSamePlanet'):I18N.t('shop.sellAct')}">${samePlanet?I18N.t('shop.refundOne'):I18N.t('shop.sellOne')}</button>
-          ${canSellMore?`<button class="btn btn-sm ${samePlanet?'':'btn-gold'}" style="flex:1;font-size:10px;padding:3px 2px${samePlanet?';border-color:var(--yellow);color:var(--yellow)':''}" onclick="sellComm(${idx},${slot.qty})">${samePlanet?I18N.t('ui.sellAllRefund'):I18N.t('ui.sellAllShort')}</button>`:''}
+          <button class="btn btn-sm ${samePlanet?'':'btn-gold'}" style="flex:1;font-size:10px;padding:3px 2px;white-space:nowrap${samePlanet?';border-color:var(--yellow);color:var(--yellow)':''}" onclick="sellComm(${idx},1)" title="${samePlanet?I18N.t('shop.refundSamePlanet'):I18N.t('shop.sellAct')}">${samePlanet?I18N.t('shop.refundOne'):I18N.t('shop.sellOne')}</button>
+          ${canSellMore?`<button class="btn btn-sm ${samePlanet?'':'btn-gold'}" style="flex:1;font-size:10px;padding:3px 2px;white-space:nowrap${samePlanet?';border-color:var(--yellow);color:var(--yellow)':''}" onclick="sellComm(${idx},${slot.qty})">${samePlanet?I18N.t('ui.sellAllRefund'):I18N.t('ui.sellAllShort')}</button>`:''}
         </div>
       </div>
     </div>`;

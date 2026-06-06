@@ -2276,7 +2276,7 @@ I18N.register({
   'ui.unequipAllBtn':                    { ko: '⚙️ 전체 해제', en: '⚙️ Unequip All' },
   'ui.applySkin':                        { ko: '✨ 적용 ₡{p}', en: '✨ Apply ₡{p}' },
   'ui.bulkSellBtn':                      { ko: '🛒 일괄 매각 {n}개 +₡{cr}', en: '🛒 Bulk Sell {n} +₡{cr}' },
-  'ui.sellAllRefund':                    { ko: '전량 환불', en: 'Sell All (Refund)' },
+  'ui.sellAllRefund':                    { ko: '전량환불', en: 'Refund All' },
   'ui.sellAllShort':                     { ko: '전량', en: 'Sell All' },
   'ui.combatLogDmg':                     { ko: '실드{shDmg} HP{hpDmg}', en: 'SH{shDmg} HP{hpDmg}' },
   'ui.partsRowsExt':                     { ko: '🔧 파츠 슬롯 +{n}개 (확장)', en: '🔧 Parts slots +{n} (Expansion)' },
