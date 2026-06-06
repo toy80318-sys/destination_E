@@ -17899,42 +17899,41 @@ function _setupHaikjinFormation(){
   const cyE=_eposy.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
   // 적 함대 spread (적의 분산 크기 — 진형 크기 결정 기준)
   const spread=Math.max(...en.map(u=>{const p=_up[u.id]||{};return Math.hypot((p.x||0)-cxE,(p.y||0)-cyE);}),120);
-  // 사용자 요청 (2026-06-06): 학익진을 "현재 진형 기준 상하 분할 포위" 형태로 변경
-  //   · 16척(혹은 그 이하)을 현재 Y 좌표 기준 정렬 → 상위 절반 ↑, 하위 절반 ↓ 이동
-  //   · 적의 위/아래로 횡대(2열) 형성 → 적이 위아래 협공 받는 핀서(pincer) 진형
-  //   · 탱커는 적 정면(좌측)에 유지 (정면 방어 역할 보존)
-  const R_tank=spread+80;            // 탱커: 적 정면
-  const R_vert=spread+240;           // 상/하 횡대의 수직 거리 (적 중심에서 ±R_vert)
-  const R_horiz=spread+200;          // 횡대 가로 길이(좌→우)
-  const _hjLeftOffset=R_horiz*0.10;  // 횡대를 약간 좌측으로 (적 진입로 확보)
-  if(tank){
-    tank._haikjinTargetX=cxE-R_tank;
-    tank._haikjinTargetY=cyE;
-    tank._isHaikjinTank=true;
-  }
-  const others=pl.filter(p=>p!==tank);
-  const n=others.length;
+  // 사용자 요청 (2026-06-06, hack.png 참조): 학익진 = U자 호 형태, 열린 면이 적군을 향함
+  //   · 16척을 현재 Y 좌표 기준 정렬 → 위쪽 절반은 U의 상단 arm, 아래쪽 절반은 하단 arm
+  //   · U 호의 중심 C(가상 원 중심)은 적 좌측 가까이 → 호의 안쪽(curve)은 좌측, 열린 면은 우측(적군)
+  //   · 각 arm 은 호의 중간(좌측 back) → 외각(상/하측 tip, 적 방향)으로 배치
+  const R_arc=spread+220;                 // 호 반경 (전체 진형 크기)
+  const C_x=cxE-R_arc*0.65;               // 호 중심: 적 좌측 (호의 좌측 끝이 깊이 들어가도록)
+  const C_y=cyE;                          // Y는 적 중심과 같은 높이
+  const ARC_HALF=Math.PI*0.65;            // 각 arm 의 호 각도 범위(rad): π*0.65 ≈ 117° → 두 arm 합 234°
+  // 모든 아군 함선을 현재 Y 좌표 기준 정렬 (tank 구분 없이 일괄 분할)
+  const sorted=pl.slice().sort((a,b)=>{
+    const ya=(_up[a.id]?_up[a.id].y:0);
+    const yb=(_up[b.id]?_up[b.id].y:0);
+    return ya-yb;
+  });
+  const n=sorted.length;
   if(n>0){
-    // 현재 Y 위치 기준 정렬 — 위쪽 함선은 위로, 아래쪽 함선은 아래로 이동
-    const sorted=others.slice().sort((a,b)=>{
-      const ya=(_up[a.id]?_up[a.id].y:0);
-      const yb=(_up[b.id]?_up[b.id].y:0);
-      return ya-yb;
-    });
     const half=Math.ceil(n/2);
-    const top=sorted.slice(0,half);      // Y 작은 쪽 = 위쪽
-    const bottom=sorted.slice(half);     // Y 큰 쪽 = 아래쪽
-    // 상단 횡대: 좌→우 균등 분포, Y = cyE - R_vert
+    const top=sorted.slice(0,half);       // Y 작은 쪽 = 위쪽 → U 상단 arm
+    const bottom=sorted.slice(half);      // Y 큰 쪽 = 아래쪽 → U 하단 arm
+    // 상단 arm: 호의 back(π=좌측) → tip(π+ARC_HALF=상우측)
+    //   캔버스 좌표: +X=우, +Y=아래. sin(angle)<0 이면 캔버스에서 위쪽.
+    //   t=0 → back of U (좌측), t=1 → upper tip (우상단, 적 정면 위)
     top.forEach((p,i)=>{
-      const t=top.length===1?0.5:(i/(top.length-1));   // 0~1
-      p._haikjinTargetX=cxE-R_horiz*(0.5-t)-_hjLeftOffset;  // 좌측 끝(-R/2) ~ 우측 끝(+R/2)
-      p._haikjinTargetY=cyE-R_vert;
+      const t=top.length===1?0.5:(i/(top.length-1));
+      const angle=Math.PI+t*ARC_HALF;     // π → π+0.65π (≈ 1.65π = 297°)
+      p._haikjinTargetX=C_x+R_arc*Math.cos(angle);
+      p._haikjinTargetY=C_y+R_arc*Math.sin(angle);   // sin가 음수 → 캔버스 위쪽
     });
-    // 하단 횡대: 좌→우 균등 분포, Y = cyE + R_vert
+    // 하단 arm: 호의 back(π=좌측) → tip(π-ARC_HALF=하우측)
+    //   t=0 → back of U (좌측), t=1 → lower tip (우하단, 적 정면 아래)
     bottom.forEach((p,i)=>{
       const t=bottom.length===1?0.5:(i/(bottom.length-1));
-      p._haikjinTargetX=cxE-R_horiz*(0.5-t)-_hjLeftOffset;
-      p._haikjinTargetY=cyE+R_vert;
+      const angle=Math.PI-t*ARC_HALF;     // π → π-0.65π (≈ 0.35π = 63°)
+      p._haikjinTargetX=C_x+R_arc*Math.cos(angle);
+      p._haikjinTargetY=C_y+R_arc*Math.sin(angle);   // sin가 양수 → 캔버스 아래쪽
     });
   }
 }
