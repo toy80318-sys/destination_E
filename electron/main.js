@@ -105,10 +105,12 @@ function createWindow() {
   if (state.fullscreen) mainWindow.setFullScreen(true);
   else if (state.maximized) mainWindow.maximize();
 
-  // 언어 prefs를 ?lang=en 쿼리로 게임에 전달 (PC 첫 부팅시 즉시 영문판 적용)
+  // 언어 prefs를 ?lang=ko|en 쿼리로 게임에 전달 — 사용자 보고(2026-06-06): Windows 한글 전환 실패
+  //   원인: ko일 때 쿼리 미포함 → localStorage 잔존값(en)이 우선 적용되어 영문 유지.
+  //   수정: 항상 명시적 ?lang= 쿼리 부여 → 확정적 언어 적용.
   const prefs = loadPrefs();
   const indexPath = path.join(__dirname, '..', 'index.html');
-  const indexUrl = 'file://' + indexPath + (prefs.lang === 'en' ? '?lang=en' : '');
+  const indexUrl = 'file://' + indexPath + '?lang=' + (prefs.lang === 'en' ? 'en' : 'ko');
   mainWindow.loadURL(indexUrl);
 
   mainWindow.once('ready-to-show', () => {
@@ -193,10 +195,15 @@ function switchLanguage(lang) {
   // 메뉴 라벨 즉시 갱신
   buildMenu();
   // 렌더러에 적용 (게임 내 setLang)
+  //   사용자 보고 (2026-06-06): Windows PC 빌드에서 한글 전환 실패 — URL 쿼리 ?lang=en
+  //   잔존으로 i18n 재초기화 시 영문 유지. setLang 내부에서 URL 정리되지만 안전망으로
+  //   메뉴 클릭 경로에서는 새 URL로 명시적 reload.
   if (mainWindow) {
-    mainWindow.webContents.executeJavaScript(
-      `try{ if(window.I18N&&I18N.setLang){ I18N.setLang('${lang}'); if(typeof saveGame==='function')saveGame(true); } }catch(e){}`
-    ).catch(()=>{});
+    const indexPath = path.join(__dirname, '..', 'index.html');
+    // 사용자 보고 (2026-06-06): Windows에서 한글 전환 실패 — ?lang=ko 도 명시적으로 부여해
+    //   localStorage 잔존값에 의존하지 않고 URL 쿼리로 확정적 언어 적용.
+    const indexUrl = 'file://' + indexPath + '?lang=' + (lang === 'en' ? 'en' : 'ko');
+    mainWindow.loadURL(indexUrl).catch(()=>{});
   }
 }
 

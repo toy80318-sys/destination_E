@@ -87,6 +87,19 @@ window.I18N = (function () {
         window.desktopAPI.setLangPref(lang);
       }
     } catch (e) {}
+    // 사용자 보고 (2026-06-06): Windows PC 빌드에서 한글 전환이 동작하지 않는 현상.
+    //   원인: PC 첫 부팅 시 영문 모드면 file://path/index.html?lang=en 으로 로드됨.
+    //         setLang('ko') → reload 시 URL 쿼리(?lang=en)가 보존돼 i18n 재초기화 시
+    //         URL 쿼리가 localStorage(ko)보다 우선 적용 → 영문으로 회귀.
+    //   수정: reload 전 history.replaceState 로 ?lang= 쿼리 제거 → localStorage 가 정상 적용.
+    try {
+      var _u = new URL(window.location.href);
+      if (_u.searchParams.has('lang')) {
+        _u.searchParams.delete('lang');
+        var _newUrl = _u.pathname + (_u.search || '') + (_u.hash || '');
+        window.history.replaceState(null, '', _newUrl);
+      }
+    } catch (e) {}
     // 동기 저장이 끝났으므로 reload 지연을 줄임 (사용자 체감 응답성 개선)
     setTimeout(function () { try { window.location.reload(); } catch (e) {} }, 50);
     return true;
