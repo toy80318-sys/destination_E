@@ -6084,7 +6084,7 @@ function renderShipSkinTab(body){
     return `<div style="background:${isCur?'rgba(0,243,255,.16)':'var(--card)'};border:1.5px solid ${isCur?'var(--cyan)':tc+'66'};border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:160px">
       <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;background:rgba(0,0,0,.3);border:1px solid ${tc}66">${imgOrEmoji(_imgUrl,'🛸',80,80,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="font-size:11px;font-weight:bold;color:${tc};text-align:center;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${shipDisplayNm(sk)}</div>
-      <div style="font-size:10px;color:var(--dim)">[${sk.tier}]</div>
+      <div style="font-size:10px;color:var(--dim)">[${I18N.tier(sk.tier)}]</div>
       ${isCur
         ? `<div style="font-size:11px;color:var(--cyan);font-weight:bold;margin-top:auto">${I18N.t('ui.currentAppearance')}</div>`
         : `<button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 8px;margin-top:auto;width:100%" onclick="applyShipSkin(${_selectedSkinShipIdx},'${sk.id}')" ${canBuy?'':'disabled'}>${I18N.t('ui.applySkin',{p:skinPrice.toLocaleString()})}</button>`}
@@ -8500,7 +8500,7 @@ function renderCrewTab(body){
           ${assignedShip?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">🛸 ${shipDisplayNm(assignedShip)}</div>`:''}
           <select id="cs_${c.id}" style="font-size:10px;background:var(--panel);border:1px solid ${assignedShip?'var(--cyan)':'var(--bdr)'};color:white;border-radius:3px;padding:1px;width:100%">
             ${G.fleet.length===1?'':`<option value="">${I18N.t('ui.shipPickerPlaceholder')}</option>`}
-            ${G.fleet.map((sh,si)=>`<option value="${si}" ${assignedShip===sh||(G.fleet.length===1&&si===0)?'selected':''}>[${sh.tier}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
+            ${G.fleet.map((sh,si)=>`<option value="${si}" ${assignedShip===sh||(G.fleet.length===1&&si===0)?'selected':''}>[${I18N.tier(sh.tier)}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
           </select>
           <div style="display:flex;gap:4px;margin-top:4px">
             <button class="btn btn-sm" style="font-size:11px;flex:1;padding:3px 4px;${assignedShip?'border-color:var(--cyan);color:var(--cyan)':''}" onclick="assignCrewFromCrewTab('${c.id}')">${assignedShip?I18N.t('ui.crewMoveBtn'):I18N.t('ui.crewBoardBtn')}</button>
@@ -8525,7 +8525,7 @@ function renderCrewTab(body){
       ${aboard?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">${I18N.t('ui.aboardShip',{nm:shipDisplayNm(aboard)})}</div>`:''}
       <select id="hero-ship-${h}" style="background:var(--panel);border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:2px;font-size:11px;width:100%">
         <option value="">${I18N.t('ui.selectShipPlaceholder')}</option>
-        ${G.fleet.map((sh,si)=>`<option value="${si}" ${aboard===sh?'selected':''}>[${sh.tier}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
+        ${G.fleet.map((sh,si)=>`<option value="${si}" ${aboard===sh?'selected':''}>[${I18N.tier(sh.tier)}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
       </select>
       <div style="display:flex;gap:3px;margin-top:3px">
         <button onclick="boardHeroToShip('${h}')" style="font-size:11px;flex:1;padding:2px 8px;border:1px solid var(--gold);border-radius:3px;background:rgba(212,175,55,.1);color:var(--gold);cursor:pointer">${aboard?I18N.t('ui.changeShipBtn'):I18N.t('ui.boardBtn')}</button>
@@ -11524,7 +11524,7 @@ function openMysteryBox(tier){
     const _sImgHtml=`<img src="${_sImgSrc}" alt="${shipDisplayNm(result.s)||result.s.nm}" style="width:160px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_scol};box-shadow:0 0 22px ${_scol}88;filter:drop-shadow(0 0 8px ${_scol})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>🚀</div>'">`;
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_sImgHtml}</div>
-      <div style="font-size:11px;color:${_scol};letter-spacing:3px;margin-bottom:2px">🚀 SHIP · ${result.s.tier}</div>
+      <div style="font-size:11px;color:${_scol};letter-spacing:3px;margin-bottom:2px">🚀 SHIP · ${I18N.tier(result.s.tier)}</div>
       <div style="color:${_scol};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.shipAcquired')}</div>
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${shipDisplayNm(result.s)||result.s.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${result.toReserve?I18N.t('gacha.reserveSlot'):I18N.t('gacha.joinedFleet')}</div>
@@ -12517,7 +12517,7 @@ function renderCodexTab(body){
       }).join('');
       const gridBody=discovered>0?cards:`<div style="grid-column:1/-1;font-size:12px;color:var(--dim);padding:10px 4px">${I18N.t('ui.noShipsFoundTier',{tier})}</div>`;
       return`<div style="margin-bottom:16px">
-        <div style="font-size:13px;color:${tierCol[tier]||'var(--dim)'};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${tier} <span style="color:var(--dim);font-size:11px">${I18N.t('ui.tierDiscoverOwn',{disc:discovered,total:ships.length,own:owned})}</span></div>
+        <div style="font-size:13px;color:${tierCol[tier]||'var(--dim)'};font-weight:bold;margin-bottom:8px;letter-spacing:1px">${I18N.tier(tier)} <span style="color:var(--dim);font-size:11px">${I18N.t('ui.tierDiscoverOwn',{disc:discovered,total:ships.length,own:owned})}</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
           ${gridBody}
         </div>
@@ -12877,7 +12877,9 @@ function renderCombatLog(body){
       const pd=PLANET_DEF.find(p=>p.id===(l.planetId||l.pid))||PLANET_DEF.find(p=>p.nm===l.planet);
       const planetImgSrc=pd?`img/planets/${pd.id}.png`:'img/planets/P01.png';
       const pFaction=pd?FACTION[pd.f]:null;
-      const _planetNm=l.planet||pd?.nm||I18N.t('ui.unknownPlanet');
+      // 사용자 보고 (2026-06-06): 전투 기록에 저장된 l.planet은 기록 시점 언어로 굳어 KO/EN 혼재.
+      //   PLANET_DEF에서 현재 언어로 다시 조회 가능하면 그것을 우선 사용.
+      const _planetNm=pd?.nm||l.planet||I18N.t('ui.unknownPlanet');
       const _earned=typeof l.earned==='number'?l.earned:0;
       const _gameTurn=l.gameTurn!=null?l.gameTurn:'?';
       const _turn=l.turn!=null?l.turn:0;
@@ -15209,7 +15211,7 @@ function showHostilePlanetBriefing(planetDef){
       <div style="font-size:42px;margin-bottom:4px">⚠️</div>
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${I18N.t('ui.enemyFleetDetected',{nm:planetDef.nm})}</div>
       <div style="color:var(--dim);font-size:12px;line-height:1.7">
-        링 ${planetDef.ring||2} · ${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')} 난이도<br>
+        ${I18N.t('ui.briefingRingDiff',{ring:planetDef.ring||2,diff:({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')})}<br>
         <span style="color:${advisor.c};font-weight:bold">${I18N.t('ui.powerAssessment',{t:advisor.t})}</span>
       </div>
     </div>
@@ -16937,7 +16939,7 @@ function runCombatTurn(){
         _tgt._origATT_LGD2=_tgt.ATT;
         _tgt.ATT=Math.max(1,Math.round((_tgt.ATT||1)*0.5));
         _tgt._wardClyffeDebuffTurn=combatState.turn;
-        addCombatLog(I18N.t('combat.wardenclyffe',{nm:_tgt.nm||I18N.t('combat.enemyLabel')}),'gold');
+        addCombatLog(I18N.t('combat.wardenclyffe',{nm:shipDisplayNm(_tgt)||I18N.t('combat.enemyLabel')}),'gold');
       }
     }
   }
@@ -16968,7 +16970,7 @@ function runCombatTurn(){
           return ar-br;
         })[0];
       combatState._focusTargetId=_next?_next.id:null;
-      if(_next)addCombatLog(I18N.t('combat.focusTargetSwitch',{nm:_next.nm}),'gold');
+      if(_next)addCombatLog(I18N.t('combat.focusTargetSwitch',{nm:shipDisplayNm(_next)}),'gold');
     }
   }
 
@@ -17018,7 +17020,7 @@ function runCombatTurn(){
             }
             try{_cbStartAnimLoop();}catch(_e){}
             try{AudioMgr.playSfx('gacha_pull',{vol:0.4});}catch(e){}
-            addCombatLog(I18N.t('combat.voidSpearCharging',{nm:p.nm||I18N.t('combat.allyLabel')}),'gold');
+            addCombatLog(I18N.t('combat.voidSpearCharging',{nm:shipDisplayNm(p)||I18N.t('combat.allyLabel')}),'gold');
           }
         } else if(_now>=p._voidSpearChargeFireAt){
           // 충전 완료 — 발사
@@ -17036,8 +17038,8 @@ function runCombatTurn(){
           // 데미지: 무조건 즉사 (DEF·SHD 완전 관통)
           tgt.sh=0; tgt.hp=0;
           const gs=G.fleet.find(s=>s.id===p.id);  // (참조용 — 데미지는 enemy 상태에만)
-          log.push(`💥 ${p.nm||I18N.t('ui.allyShort')} ▶ ${I18N.t('combat.voidSpearLaunch')} ${tgt.nm||I18N.t('ui.enemyShort')} ${I18N.t('combat.instantKill')} ✦`);
-          addCombatLog(I18N.t('combat.voidSpearFired',{nm:p.nm||I18N.t('combat.allyLabel'),tgt:tgt.nm||I18N.t('combat.enemyLabel')}),'gold');
+          log.push(`💥 ${shipDisplayNm(p)||I18N.t('ui.allyShort')} ▶ ${I18N.t('combat.voidSpearLaunch')} ${shipDisplayNm(tgt)||I18N.t('ui.enemyShort')} ${I18N.t('combat.instantKill')} ✦`);
+          addCombatLog(I18N.t('combat.voidSpearFired',{nm:shipDisplayNm(p)||I18N.t('combat.allyLabel'),tgt:shipDisplayNm(tgt)||I18N.t('combat.enemyLabel')}),'gold');
           if(ap&&ep){
             const a1=_txPos(ap), a2=_txPos(ep);
             // 충전 글로우 (붉은색)
@@ -17126,7 +17128,7 @@ function runCombatTurn(){
       }
     }
     const _healLog=(_healHP>0||_healSH>0)?` 🩸+HP${_healHP}${_healSH>0?'/SH'+_healSH:''}`:'';
-    log.push(`${usesMissile?'🚀':'⚡'} ${p.nm||I18N.t('ui.allyShort')} → ${target.nm||I18N.t('ui.enemyShort')}: ${I18N.t('ui.combatLogDmg',{shDmg,hpDmg})}`+(isDead?' 격침!':'')+_healLog);
+    log.push(`${usesMissile?'🚀':'⚡'} ${shipDisplayNm(p)||I18N.t('ui.allyShort')} → ${shipDisplayNm(target)||I18N.t('ui.enemyShort')}: ${I18N.t('ui.combatLogDmg',{shDmg,hpDmg})}`+(isDead?' '+I18N.t('ui.killedSuffix'):'')+_healLog);
     const ap=_unitPos[p.id||('P'+0)], ep=_unitPos[target.id];
     if(ap&&ep){
       const a1=_txPos(ap), a2=_txPos(ep);
@@ -17213,7 +17215,7 @@ function runCombatTurn(){
           v.hp=0;v.sh=0;
           const gs=G.fleet.find(s=>s.id===v.id);
           if(gs){gs.hp=0;gs.sh=0;}
-          addCombatLog(I18N.t('combat.dimRayFired',{nm:v.nm}),'err');
+          addCombatLog(I18N.t('combat.dimRayFired',{nm:shipDisplayNm(v)}),'err');
         }
         _skipNormalEnemyAttack=true;  // 평시 ATT 공격 생략 (이 페이즈는 절단광선만)
       }
@@ -17233,7 +17235,7 @@ function runCombatTurn(){
     let _evChance=Math.min(0.40, _tTEC/2500);
     if(_eTEC>0)_evChance*=Math.max(0.30, 1 - Math.min(0.70, _eTEC/(_tTEC+1)*0.4));
     if(_evChance>0 && Math.random()<_evChance){
-      log.push(`🌀 ${target.nm||I18N.t('ui.allyShort')} ${I18N.t('combat.dodged')} (${e.nm||I18N.t('ui.enemyShort')} ${I18N.t('combat.attackVoid')} · TEC ${_tTEC})`);
+      log.push(`🌀 ${shipDisplayNm(target)||I18N.t('ui.allyShort')} ${I18N.t('combat.dodged')} (${shipDisplayNm(e)||I18N.t('ui.enemyShort')} ${I18N.t('combat.attackVoid')} · TEC ${_tTEC})`);
       const _ep=_unitPos[target.id];
       if(_ep){const a=_txPos(_ep);_cbEffects.push({type:'exp',x:a.x,y:a.y,col:'#66ddff',r:18,life:14,maxLife:14,delay:_fireDelay});try{_cbStartAnimLoop();}catch(_e){}}
       _fireDelay+=8;
@@ -17257,7 +17259,7 @@ function runCombatTurn(){
       _atkKind=r<0.45?'lightning':r<0.90?'missile':'beam';
     }
     const _iconMap={beam:'💥',lightning:'⚡',missile:'🚀'};
-    log.push(`${_iconMap[_atkKind]} ${e.nm||I18N.t('ui.enemyShort')} → ${target.nm||I18N.t('ui.allyShort')}: ${I18N.t('ui.combatLogDmg',{shDmg,hpDmg})}`+(isDead?' '+I18N.t('ui.killedSuffix'):''));
+    log.push(`${_iconMap[_atkKind]} ${shipDisplayNm(e)||I18N.t('ui.enemyShort')} → ${shipDisplayNm(target)||I18N.t('ui.allyShort')}: ${I18N.t('ui.combatLogDmg',{shDmg,hpDmg})}`+(isDead?' '+I18N.t('ui.killedSuffix'):''));
     const ap=_unitPos[e.id], ep=_unitPos[target.id];
     if(ap&&ep){
       const a1=_txPos(ap),a2=_txPos(ep);
@@ -17704,7 +17706,7 @@ function activateSunsinFocus(){
       p.ATT=Math.round(p._origATT*2);
     });
   }
-  addCombatLog(I18N.t('combat.focusFireLog',{nm:target.nm}),'gold');
+  addCombatLog(I18N.t('combat.focusFireLog',{nm:shipDisplayNm(target)}),'gold');
   notify(I18N.t('notify.focusFireShort'),'gold');
   baekgu(I18N.t('baekgu.focusFireOn',{nm:target.nm}));
   const sbtn=document.getElementById('cb-sunsin-btn');

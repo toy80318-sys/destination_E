@@ -5101,6 +5101,7 @@ I18N.register({
   'enemy.voidLarge':         { ko: '보이드 대형함 {n}',     en: 'Void Battleship {n}' },
   'enemy.voidCruiser':       { ko: '보이드 순양함 {n}',     en: 'Void Cruiser {n}' },
   'enemy.voidScout':         { ko: '보이드 정찰선 {n}',     en: 'Void Scout {n}' },
+  'ui.briefingRingDiff':     { ko: '링 {ring} · {diff} 난이도', en: 'Ring {ring} · {diff} difficulty' },
   'enemy.leviathan':        { ko: '레비아탄 (적)',        en: 'Leviathan (Enemy)' },
   'enemy.armada':           { ko: '아르마다 (적)',        en: 'Armada (Enemy)' },
   'enemy.ursaCrusher':      { ko: '우르사 파쇄기 (적)',   en: 'Ursa Crusher (Enemy)' },
