@@ -15350,6 +15350,11 @@ function initCombatCanvas(){
   cbCV.onmouseup=e=>{if(e.button===0)cbPan=false;};
   cbCV.onmouseleave=()=>{cbPan=false;};
   cbCV.oncontextmenu=e=>e.preventDefault();
+  // 터치 리스너 — addEventListener는 중복 추가되므로 element에 한 번만 attach (data-touch-init 가드)
+  // ※ renderCombatView가 매번 cb-cv를 새로 만들지만, 같은 노드를 재사용하는 경로(resumeCombat 등)에서는
+  //    가드 없이 그대로 두면 매 호출마다 touchstart/move/end 리스너가 누적되어 RAM/이벤트 폭주를 유발.
+  if(cbCV.dataset.touchInit!=='1'){
+  cbCV.dataset.touchInit='1';
   // 터치: 핀치 줌 + 이동
   let cbTouches=[];
   cbCV.addEventListener('touchstart',e=>{e.preventDefault();cbTouches=[...e.touches];},{passive:false});
@@ -15366,6 +15371,7 @@ function initCombatCanvas(){
     cbTouches=[...e.touches];
   },{passive:false});
   cbCV.addEventListener('touchend',e=>{cbTouches=[];},{passive:false});
+  }
   // 전투 헤더에 줌 버튼 추가
   const hdr=document.getElementById('cb-hdr');
   if(hdr&&!document.getElementById('cb-zoom-btns')){
@@ -15532,9 +15538,23 @@ function _preloadCombatImages(){
     });
   }
 }
-const _mapImgCache={};
+// 맵 이미지 캐시 — LRU 64개 캡 (행성 30+ × 변형 + 캐시버스터 변경 대비 충분)
+const _MAP_IMG_CACHE_MAX=64;
+const _mapImgCacheMap=new Map();
+const _mapImgCache=new Proxy({},{
+  get(_,k){return _mapImgCacheMap.get(k);},
+  set(_,k,v){_mapImgCacheMap.delete(k);_mapImgCacheMap.set(k,v);
+    while(_mapImgCacheMap.size>_MAP_IMG_CACHE_MAX){
+      const oldest=_mapImgCacheMap.keys().next().value;if(oldest===undefined)break;
+      _mapImgCacheMap.delete(oldest);
+    }
+    return true;
+  },
+  has(_,k){return _mapImgCacheMap.has(k);},
+  deleteProperty(_,k){return _mapImgCacheMap.delete(k);}
+});
 function _loadMapImg(src,onLoad){
-  if(_mapImgCache[src]!==undefined) return _mapImgCache[src];
+  if(_mapImgCacheMap.has(src)) return _mapImgCacheMap.get(src);
   const img=new Image();
   img.onload=()=>{_mapImgCache[src]=img;if(onLoad)onLoad();};
   img.onerror=()=>{_mapImgCache[src]=null;};
@@ -15937,18 +15957,26 @@ window.AudioMgr=(function(){
   function stopBgm(){if(curBgmAudio){try{curBgmAudio.pause();curBgmAudio.src='';}catch(e){}}curBgmAudio=null;curBgmName=null;pendingBgm=null;}
   const sfxCooldown={};
   const _activeSfx=new Set();  // 현재 재생 중인 SFX Audio 인스턴스 (stopAllSfx 용)
+  const _MAX_CONCURRENT_SFX=8;  // 누수 방지 — 8개 초과 시 가장 오래된 SFX 즉시 정지
   function playSfx(name,opts){
     opts=opts||{};
     if(sfxOff||masterVol<=0||sfxVol<=0)return;
     if(!userInteracted)return;
     const cd=opts.cooldown||0;
     if(cd>0){const now=performance.now();if(sfxCooldown[name]&&now-sfxCooldown[name]<cd)return;sfxCooldown[name]=now;}
+    // 동시 SFX 캡 — 오래된 인스턴스부터 정지·해제(Set은 삽입 순서 유지)
+    while(_activeSfx.size>=_MAX_CONCURRENT_SFX){
+      const oldest=_activeSfx.values().next().value;
+      if(!oldest)break;
+      _activeSfx.delete(oldest);
+      try{oldest.pause();oldest.src='';}catch(e){}
+    }
     try{
       const _sfxVer=(typeof window!=='undefined'&&window._GAME_VER)?window._GAME_VER:'';
       const a=new Audio(SFX_BASE+name+'.mp3'+(_sfxVer?'?v='+encodeURIComponent(_sfxVer):''));
       a.volume=Math.min(1,(opts.vol||1)*masterVol*sfxVol);
       _activeSfx.add(a);
-      const _cleanup=()=>{_activeSfx.delete(a);};
+      const _cleanup=()=>{_activeSfx.delete(a);try{a.src='';}catch(e){}};
       a.addEventListener('ended',_cleanup,{once:true});
       a.addEventListener('error',_cleanup,{once:true});
       a.play().catch(()=>{_cleanup();});
