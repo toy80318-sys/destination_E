@@ -15833,6 +15833,22 @@ function _cbStartAnimLoop(){
 // 빔 한 발 + 피격 + (필요 시) 격침 폭발/파편
 // delay: 발사 시작까지 대기 프레임 수 (순차 발사용)
 // wasShielded: 피격 시점에 타겟의 쉴드가 살아있었는지 (true면 헥사 임팩트)
+// 데미지 텍스트 — 피격 시 함선 위로 떠오르는 숫자 (사용자 요청 2026-06-06)
+//   · 50% 투명도, 12프레임(약 0.2s) 동안 아래→위로 페이드인·페이크·페이드아웃
+//   · 쉴드가 흡수한 피해는 청록, 순수 HP 피해는 적색
+//   · pos: 타겟 함선의 변환된 좌표(_txPos 통과 후), delay: 시각 이펙트와 동기화될 프레임 지연
+function _cbAddDmgText(pos,rawDmg,shDmg,delay){
+  if(!pos||!(rawDmg>0))return;
+  _cbEffects.push({
+    type:'dmgText',
+    x:pos.x,
+    y:pos.y-28,                     // 함선 위로 시작 (베이스 오프셋)
+    txt:'-'+Math.round(rawDmg),
+    col:shDmg>0?'#66ddff':'#ff6b6b',
+    life:12,maxLife:12,
+    delay:Math.max(0,delay||0)
+  });
+}
 function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
   delay=delay||0;
   // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
@@ -16550,6 +16566,22 @@ function drawCombatFrame(){
       cbCtx.fillStyle=ef.col;
       cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=8*a;
       cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
+    } else if(ef.type==='dmgText'){
+      // 데미지 텍스트 — 0.2s 동안 50% 투명도, 아래→위로 부드러운 등장·소멸 (사용자 요청 2026-06-06)
+      //   · alpha 곡선: 0 → 0.5 → 0 (sin(t·π)) — 등장→피크→소멸이 자연스럽게 이어짐
+      //   · y 위치: 베이스에서 24px 위로 천천히 부유
+      const rise=24*t;
+      const alpha=0.5*Math.sin(t*Math.PI);
+      if(alpha>0.001){
+        cbCtx.globalAlpha=Math.min(0.5,Math.max(0,alpha));
+        cbCtx.font='bold 16px "Courier New", monospace';
+        cbCtx.textAlign='center';
+        cbCtx.textBaseline='bottom';
+        cbCtx.shadowColor='rgba(0,0,0,.85)';
+        cbCtx.shadowBlur=4;
+        cbCtx.fillStyle=ef.col||'#ff6b6b';
+        cbCtx.fillText(ef.txt||'', ef.x, ef.y - rise);
+      }
     } else if(ef.type==='shieldHit'){
       // 쉴드 피격 — 헥사곤 임팩트 + 짧은 광점
       // 사용자 요청: 전체 쉴드 투명도 ×0.8 (20% 감소)
@@ -17022,11 +17054,13 @@ function runCombatTurn(){
         if(combatState._genesisUsed){    _mSize*=1.1; _mCol='#ff6633';}
         if(combatState._destinationUsed){_mSize*=1.1; _mCol='#ff3333';}
         _cbAddMissileSalvo(a1,a2,_mCol,isDead,mcnt,_fireDelay,wasShielded,_mSize);
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+50);  // 미사일 도달 시점에 데미지 표시
         _fireDelay+=18+mcnt*2;
       } else {
         // 데스티네이션 어스 발동 시 레이저 색상 → 핑크/퍼플 (무지개급 피니셔)
         const _laserCol=combatState._destinationUsed?'#ff44ff':'#00f3ff';
         _cbAddBeamAndHit(a1,a2,_laserCol,isDead,_fireDelay,wasShielded);
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+4);   // 빔 도달 시점에 데미지 표시
         _fireDelay+=14;
       }
     }
@@ -17141,14 +17175,17 @@ function runCombatTurn(){
         _cbEffects.push({type:'lightning',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:'#cc66ff',life:16,maxLife:16,delay:_fireDelay,thickMul:1.4,seed:Math.random()*9999});
         if(wasShielded)_cbEffects.push({type:'shieldHit',x:a2.x,y:a2.y,col:'#cc66ff',r:30,life:18,maxLife:18,delay:_fireDelay+4});
         _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:isDead?'#ff3300':'#cc66ff',r:isDead?32:18,life:isDead?36:24,maxLife:isDead?36:24,delay:_fireDelay+5});
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+5);  // 번개 도달 시점에 데미지 표시
         try{_cbStartAnimLoop();}catch(_e){}
         _fireDelay+=15;
       } else if(_atkKind==='missile'){
         // 사용자 요청: 한번에 여러 발 발사 시스템 제거 → 1발만
         _cbAddMissileSalvo(a1,a2,'#cc66ff',isDead,1,_fireDelay,wasShielded,1.2);
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+50);  // 미사일 도달 시점에 데미지 표시
         _fireDelay+=22;
       } else {
         _cbAddBeamAndHit(a1,a2,_isVoidEnemy?'#cc66ff':'#cc44ff',isDead,_fireDelay,wasShielded);
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+4);   // 빔 도달 시점에 데미지 표시
         _fireDelay+=14;
       }
     }
