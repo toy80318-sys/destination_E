@@ -60,8 +60,8 @@ body.combat-mode #notif{top:138px;max-width:260px}
 .modal.modal-wide{max-width:624px}
 /* 보스 인트로/엔딩 + 보스전 최종 보상 — 사용자 요청: 영문 보상 잘림 방지 위해 확대 (713→1100) */
 .modal.modal-bossfight{max-width:1100px}
-/* 사용자 요청: 영문판 보고서 폭 확대 (691→900). 카드 내부 단어 줄바꿈 + 패딩 유지 */
-.modal.modal-report{max-width:900px;padding:14px 16px;max-height:88vh}
+/* 사용자 요청: 일반 전투 승리 보고 가로폭 30% 축소 (900→630). 카드 단어 줄바꿈은 유지 */
+.modal.modal-report{max-width:630px;padding:14px 16px;max-height:88vh}
 /* 영문판 보상 카드 텍스트 잘림 방지 — 단어 단위 줄바꿈 + 카드 안 글자 가독성 */
 .modal.modal-bossfight div, .modal.modal-report div{word-break:keep-all;overflow-wrap:break-word}
 /* 사용자 요청: 모든 팝업 확인/액션 버튼 1.5배 크기 — 손가락 터치 친화 */

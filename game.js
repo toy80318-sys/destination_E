@@ -17624,7 +17624,7 @@ function _finishCombat(){
       }),600);
     } else {
       setTimeout(()=>{
-        showAcquisitionReport({title:'🏆 전투 승리 보고',subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?'완승 + 적함 '+_capturedShips.length+'척 나포!':'완승!'});
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin')});
       },900);
     }
     checkQuestCombatDone();
