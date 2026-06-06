@@ -16621,8 +16621,9 @@ function drawCombatFrame(){
   // ★ 미사일→폭발 변환 시 filter 콜백 내부에서 새 이펙트가 발생 — _newEffs로 수집해 손실 방지
   const _newEffs=[];
   // ★ 이펙트 다수일 때 shadowBlur 자동 비활성화 — Canvas GPU 가속 무력화 방지
-  // 인스턴스 프로퍼티로 prototype shadowBlur를 일시 가리는 트릭 (필터 끝나면 delete로 복원)
-  const _heavyMode=(_cbEffects||[]).length>150;
+  //   사용자 보고 (2026-06-06): 전투 진행 중 느려지는 현상 — heavyMode 임계 100으로 하향
+  //   shadowBlur 가 가장 큰 성능 hog 임. 100 이상이면 즉시 shadowBlur OFF로 fps 보호.
+  const _heavyMode=(_cbEffects||[]).length>100;
   if(_heavyMode){
     try{Object.defineProperty(cbCtx,'shadowBlur',{value:0,writable:true,configurable:true});}catch(e){}
   }
@@ -16840,8 +16841,31 @@ function drawCombatFrame(){
   });
   // 미사일→폭발 등 filter 콜백 내부에서 발생한 신규 이펙트 합치기
   if(_newEffs.length)_cbEffects.push(..._newEffs);
-  // 이펙트 상한 120 — 다운 재보고 (2026-06-06) 후 150 → 120 (-20%)
-  if(_cbEffects.length>120)_cbEffects.splice(0,_cbEffects.length-120);
+  // 사용자 보고 (2026-06-06): 전투가 길어지면 미사일·레이저가 사라지는 현상.
+  //   종전: _cbEffects.splice(0, ...) → 가장 오래된 effect 무차별 컷
+  //   문제: missile(life:60), beam(life:18) 같이 "시각적으로 진행 중"인 effect가
+  //         muzzle(life:8), shieldHit(life:16) 같은 짧은 effect와 함께 큐 앞쪽에 있으면
+  //         같이 컷되어 발사체가 사라지는 시각적 버그 발생.
+  //   수정: 상한 120 → 200 으로 증가 + 컷 대상을 "짧은 effect 우선"으로 스마트 선택.
+  //         lifeRatio (life/maxLife) > 0.66 (수명 1/3 이내 발사체)는 보호.
+  const _EF_CAP=200;
+  if(_cbEffects.length>_EF_CAP){
+    const _excess=_cbEffects.length-_EF_CAP;
+    // 후보 인덱스: 보호 대상이 아닌 effect (수명 2/3 이상 지나거나 짧은 muzzle/shieldHit 류)
+    const _victims=[];
+    for(let _i=0;_i<_cbEffects.length&&_victims.length<_excess;_i++){
+      const _ef=_cbEffects[_i]; if(!_ef)continue;
+      const _r=(_ef.life||0)/(_ef.maxLife||1);
+      const _isProjectile=_ef.type==='missile'||_ef.type==='beam'||_ef.type==='lightning';
+      // 보호: 발사체 + 수명 1/3 이내 (도달 전) — 미사일이 화면 가운데 사라지지 않게
+      if(_isProjectile&&_r>0.66)continue;
+      _victims.push(_i);
+    }
+    // 뒤에서부터 splice → 인덱스 안정
+    for(let _i=_victims.length-1;_i>=0;_i--)_cbEffects.splice(_victims[_i],1);
+    // 그래도 초과 시 (모두 발사체 보호 중) — 가장 오래된 발사체부터 컷
+    if(_cbEffects.length>_EF_CAP){_cbEffects.splice(0,_cbEffects.length-_EF_CAP);}
+  }
   // heavyMode shadowBlur 오버라이드 해제 — prototype의 shadowBlur 다시 사용
   if(_heavyMode){try{delete cbCtx.shadowBlur;}catch(e){}}
   cbCtx.restore();
@@ -17458,11 +17482,26 @@ function _finishCombat(){
   // 충돌 해소 풀 청소 — 전투 종료 후 stale 객체 보존 방지
   try{if(window._resolvedPool)window._resolvedPool.length=0;}catch(e){}
   // 함선 _curX/_curY 보존 → 다음 전투 시작점에서 깜빡임 발생할 수 있어 정리
+  //   사용자 보고 (2026-06-06): 전투 누적 시 미사일·레이저가 사라지는 현상.
+  //   원인: 휘발성 필드(학익진 target/_origATT 등)가 이전 전투 데이터로 남아
+  //         후속 전투의 위치 계산/공격력 산정 등에 잔존 영향.
+  //   대책: 전투 종료 시 모든 휘발성 필드 일괄 삭제 + combatState 자체도 null로 강제 해제 (참조 보존 방지)
   try{
     [...(combatState.players||[]),...(combatState.enemies||[])].forEach(u=>{
-      if(u){delete u._curX;delete u._curY;delete u._drawAngle;delete u._frontRank;}
+      if(!u)return;
+      delete u._curX;delete u._curY;delete u._drawAngle;delete u._frontRank;
+      // 학익진 진형 휘발성 필드
+      delete u._haikjinTargetX;delete u._haikjinTargetY;delete u._isHaikjinTank;
+      // 공격력 원본/누적 보너스 필드
+      delete u._origATT;
+      // 보스 무적·각성 페이즈 플래그
+      delete u._invincible;delete u._awakened;
+      // 보이드 창 충전 타임스탬프 등 일시적 상태
+      delete u._voidSpearReadyAt;delete u._voidSpearTotal;
     });
   }catch(e){}
+  // 충돌 해소 풀 청소 (위에서도 1회 했지만 안전망)
+  try{if(window._resolvedPool)window._resolvedPool.length=0;}catch(e){}
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
