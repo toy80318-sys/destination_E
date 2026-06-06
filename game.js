@@ -1479,6 +1479,8 @@ function openModal(title,bodyHTML,buttons=[],opts={}){
     mbox.classList.toggle('modal-report',!!opts.report);
     // 보스 인트로 같이 줄바꿈이 어색한 긴 대사 박스 — 폭만 1.1× 확장 (폰트 그대로)
     mbox.classList.toggle('modal-bossfight',!!opts.bossfight);
+    // 사용자 요청 (2026-06-06): 크루 영입 전설 등장 팝업 추가 30% 축소
+    mbox.classList.toggle('modal-crew-reveal',!!opts.crewReveal);
   }
   const mbg=document.getElementById('modal-bg');
   const wasOpen=mbg.classList.contains('on');
@@ -8876,7 +8878,8 @@ function doGacha(n,useCr,crCost,minRarity){
         items,
         color:'var(--gold)',
         sfx:null,
-        congrats:I18N.t('gacha.legendCongrats')
+        congrats:I18N.t('gacha.legendCongrats'),
+        crewReveal:true  // 사용자 요청 (2026-06-06): 전설 크루 등장 팝업 추가 30% 축소
       });
     },600);
   }
@@ -16282,7 +16285,7 @@ function showAcquisitionReport(opts){
   </div>`;
   const _onClose=opts.onClose;
   // 보스 승리 보고서 등 폭 1.1× 옵션 (opts.bossfight 전파)
-  openModal(title,html,[{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();if(typeof _onClose==='function')_onClose();},cls:'btn-gold'}],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight});
+  openModal(title,html,[{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();if(typeof _onClose==='function')_onClose();},cls:'btn-gold'}],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight,crewReveal:!!opts.crewReveal});
 }
 // 퀘스트 보상 수령
 function sfxCoin(){AudioMgr.playSfx('coin');}
