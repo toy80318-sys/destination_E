@@ -9213,35 +9213,37 @@ function generateQuests(pid){
 // 호러 + 글리치 + 영웅 반응 + 위트있는 마무리
 function showVoidBossIntro(questRef){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
+  // 사용자 요청 (2026-06-06): 영문판에서 화자명/효과음 텍스트 한글 잔재 제거 — i18n 라우팅
+  const _spBk=I18N.t('speaker.baekgu');
   // 영입한 영웅 반응 자동 삽입 (있는 영웅만)
   const _hl=G.heroes||[];
   const heroLines=[];
-  if(_hl.includes('H01'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H01?.nm)||'이순신',tx:I18N.t('voidQ.h01.line')});
-  if(_hl.includes('H03'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H03?.nm)||'광개토대왕',tx:I18N.t('voidQ.h03.line')});
-  if(_hl.includes('H06'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H06?.nm)||'아인슈타인',tx:I18N.t('voidQ.h06.line')});
-  if(_hl.includes('H07'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H07?.nm)||'테슬라',tx:I18N.t('voidQ.h07.line')});
-  if(_hl.includes('H04'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H04?.nm)||'유리 가가린',tx:I18N.t('voidQ.h04.line')});
-  if(_hl.includes('H08'))heroLines.push({sp:(typeof HEROES!=='undefined'&&HEROES.H08?.nm)||'마르코 폴로',tx:I18N.t('voidQ.h08.line')});
+  if(_hl.includes('H01'))heroLines.push({sp:I18N.t('hero.H01.nm'),tx:I18N.t('voidQ.h01.line')});
+  if(_hl.includes('H03'))heroLines.push({sp:I18N.t('hero.H03.nm'),tx:I18N.t('voidQ.h03.line')});
+  if(_hl.includes('H06'))heroLines.push({sp:I18N.t('hero.H06.nm'),tx:I18N.t('voidQ.h06.line')});
+  if(_hl.includes('H07'))heroLines.push({sp:I18N.t('hero.H07.nm'),tx:I18N.t('voidQ.h07.line')});
+  if(_hl.includes('H04'))heroLines.push({sp:I18N.t('hero.H04.nm'),tx:I18N.t('voidQ.h04.line')});
+  if(_hl.includes('H08'))heroLines.push({sp:I18N.t('hero.H08.nm'),tx:I18N.t('voidQ.h08.line')});
   // 영웅이 없으면 위트있는 폴백
   if(heroLines.length===0)heroLines.push({sp:cmdName,tx:I18N.t('voidQ.cmdNoHero')});
 
   const lines=[
     // 1) 백구의 다급한 외침
-    {sp:'백구',tx:I18N.t('ui.blackShipApprox',{nm:cmdName}),fx:'baekgu'},
-    // 2~5) 호러풍 글리치 통신
-    {sp:I18N.t('ui.signalReceived'),tx:'지지직...... 치직.. 츠츠츠..... 지직...',fx:'static'},
+    {sp:_spBk,tx:I18N.t('ui.blackShipApprox',{nm:cmdName}),fx:'baekgu'},
+    // 2~5) 호러풍 글리치 통신 — '치지직' 사운드 텍스트도 i18n 키화 (voidQ.staticNoise)
+    {sp:I18N.t('ui.signalReceived'),tx:I18N.t('voidQ.staticNoise'),fx:'static'},
     {sp:'???',tx:I18N.t('voidQ.unknown1'),fx:'glitch'},
     {sp:'???',tx:I18N.t('voidQ.unknown2'),fx:'glitch'},
     {sp:'???',tx:I18N.t('voidQ.unknown3'),fx:'glitch'},
     // 6) 백구의 놀란 반응
-    {sp:'백구',tx:I18N.t('ui.voidGovernorReact'),fx:'baekgu'},
+    {sp:_spBk,tx:I18N.t('ui.voidGovernorReact'),fx:'baekgu'},
     // 7~N) 영웅들의 반응 (영입한 영웅들만)
     ...heroLines,
     // 마지막 위트 있는 마무리들
     {sp:cmdName,tx:I18N.t('voidQ.cmdAccept')},
-    {sp:'백구',tx:I18N.t('voidQ.bkHorrorJoke')},
+    {sp:_spBk,tx:I18N.t('voidQ.bkHorrorJoke')},
     {sp:cmdName,tx:I18N.t('voidQ.cmdBkScold')},
-    {sp:'백구',tx:I18N.t('ui.allFleetWaiting',{cmdName})}
+    {sp:_spBk,tx:I18N.t('ui.allFleetWaiting',{cmdName})}
   ];
   let _idx=0;
   function _renderLine(){
@@ -9302,19 +9304,25 @@ function showVoidBossIntro(questRef){
 // 히든 보스 격파/철수 시 — 작별 메시지 + 함대 복구 + 보상 수령
 function showVoidBossOutro(){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
+  // 사용자 요청 (2026-06-06): 영문판 화자명/효과음 한글 잔재 제거
+  const _spBk=I18N.t('speaker.baekgu');
+  const _spFalcon=I18N.t('speaker.blackfalcon');
   const lines=[
-    {sp:I18N.t('ui.signalReceived'),tx:'지지직...... 츠츠..',fx:'static'},
-    {sp:'블랙팔콘',tx:I18N.t('falconEnd.l1')},
-    {sp:'블랙팔콘',tx:I18N.t('falconEnd.l2')},
-    {sp:'블랙팔콘',tx:I18N.t('falconEnd.l3')},
-    {sp:I18N.t('ui.signalReceived'),tx:'..... 메시지 전송 끝 .....',fx:'static'},
-    {sp:'백구',tx:I18N.t('ui.victoryLine3',{nm:cmdName})},
+    {sp:I18N.t('ui.signalReceived'),tx:I18N.t('voidQ.staticShort'),fx:'static'},
+    {sp:_spFalcon,tx:I18N.t('falconEnd.l1')},
+    {sp:_spFalcon,tx:I18N.t('falconEnd.l2')},
+    {sp:_spFalcon,tx:I18N.t('falconEnd.l3')},
+    {sp:I18N.t('ui.signalReceived'),tx:I18N.t('voidQ.staticEnd'),fx:'static'},
+    {sp:_spBk,tx:I18N.t('ui.victoryLine3',{nm:cmdName})},
     {sp:cmdName,tx:I18N.t('falconEnd.cmd')}
   ];
   let _idx=0;
   function _renderLine(){
     const l=lines[_idx];
-    const isVoid=l.sp==='팔콘 스카우트'||l.sp===I18N.t('ui.signalReceived');
+    // 사용자 요청 (2026-06-06): 화자 비교에 한/영 양쪽 alias 포함 — 영문 모드에서도 정상 분기
+    const isVoid=l.sp==='팔콘 스카우트'||l.sp==='Falcon Scout'
+              ||l.sp==='블랙팔콘'||l.sp==='Blackfalcon'||l.sp==='Black Falcon'
+              ||l.sp===I18N.t('ui.signalReceived');
     const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
     const spColor=isVoid?'#cc66ff':isBaekgu?'var(--cyan)':'var(--gold)';
     const spIc=isVoid?'🌑':isBaekgu?'🐕':'⚑';
@@ -9422,7 +9430,8 @@ function _grantVoidBossRewards(){
     const def=(typeof partById==='function')?partById(pid):(PARTS.find(p=>p.id===pid));
     const inv=G.inventory.find(i=>i.id===pid);
     if(inv)inv.qty++;else G.inventory.push({id:pid,qty:1});
-    partsGranted.push(def?def.nm:pid);
+    // 사용자 요청 (2026-06-06): 보상 모달의 파츠 이름을 표시 시점 언어로 표시
+    partsGranted.push(def?(partDisplayNm(def)||def.nm):pid);
   });
   // ─── 보상 3: 보이드 크리스탈(VC) 대량 ───
   const _vcGrant=200;  // 사용자 요청 ×2 — 100→200 (신화 가챠 200회 가능)
@@ -9441,7 +9450,8 @@ function _grantVoidBossRewards(){
     const items=[];
     // 나포 팔콘 — S10.png 함선 이미지
     _capturedShips.forEach(s=>{
-      items.push({ic:'🏴',img:shipImgSrc({id:'S10',catId:'S10',tier:'소형'}),nm:s.nm,type:I18N.t('reward.voidScout'),color:'#cc66ff',
+      // 사용자 요청 (2026-06-06): 함선 이름 표시 시점 언어로 — shipDisplayNm 우회
+      items.push({ic:'🏴',img:shipImgSrc({id:'S10',catId:'S10',tier:'소형'}),nm:(shipDisplayNm(s)||s.nm),type:I18N.t('reward.voidScout'),color:'#cc66ff',
         stats:`HP ${_capHP.toLocaleString()} · SH ${_capSH.toLocaleString()} · ATT ${_capATT}`,
         desc:I18N.t('reward.voidScoutDesc'),rarity:'mythic'});
     });
