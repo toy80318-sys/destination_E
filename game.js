@@ -1733,12 +1733,16 @@ try{if(typeof window!=='undefined')window.partDisplayNm=partDisplayNm;}catch(e){
 function crewDisplayNm(c){
   if(!c)return '';
   try{
-    // 1순위: 명시적 _nmKey (NPC_POOL 모집 시 부여) → 표시 시점 언어로 재조회
+    // 1순위: 명시적 _nmKey (NPC_POOL/QL 모집 시 부여) → 표시 시점 언어로 재조회
     if(c._nmKey&&I18N&&typeof I18N.has==='function'&&I18N.has(c._nmKey))return I18N.t(c._nmKey);
     const cid=String(c.id||'');
     if(I18N&&typeof I18N.has==='function'){
+      // 영웅: H0X
       if(/^H0\d$/.test(cid)&&I18N.has('hero.'+cid+'.nm'))return I18N.t('hero.'+cid+'.nm');
-      if(/^QL0\d$/.test(cid)&&I18N.has('quest.crew.'+cid+'.nm'))return I18N.t('quest.crew.'+cid+'.nm');
+      // 퀘스트 전설 크루: 모집 시 id가 QL0X_g<timestamp>_<pull> 형태로 바뀌므로 prefix 매칭
+      //   사용자 보고 (2026-06-06): 한글판에서 전설 크루 이름이 영어로 표시되던 원인
+      const _qlMatch=cid.match(/^(QL0\d)(?:_|$)/);
+      if(_qlMatch&&I18N.has('quest.crew.'+_qlMatch[1]+'.nm'))return I18N.t('quest.crew.'+_qlMatch[1]+'.nm');
     }
   }catch(e){}
   return c.nm||'';
