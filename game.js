@@ -9808,17 +9808,20 @@ function completeQuest(pid,idx){
     }
   }
 
-  // ── 전설 영웅 조우 (30%, 행성당 최대 2명, 1명당 1회) ──────────────
-  // H01~H08은 각자 지정된 행성의 퀘스트 보상에서 30% 확률로 등장
+  // ── 전설 영웅 조우 ────────────────────────────────────────────────
+  // 사용자 요청 (2026-06-06, 옵션 E):
+  //   · 확률 30% → 50% 상향
+  //   · 행성당 시도 횟수 제한 제거 (종전: _phCount < 2) → 무제한 시도
+  //   · 같은 행성을 반복 방문/퀘스트 수행 시 결국 영입 가능 (RNG 영영 실패 차단)
+  // H01~H08은 각자 지정된 행성의 퀘스트 보상에서 50% 확률로 등장
   {const _hPd=PLANET_DEF.find(function(p){return p.id===pid;});
   const _hHId=_hPd&&_hPd.hero;
   if(!G.planetHeroCount)G.planetHeroCount={};
-  const _phCount=G.planetHeroCount[pid]||0;
   // H01(이순신)은 난중일기 영인본(G18) 보유 시에만 등장 — 없으면 다음 기회로 보존
   const _hasG18Q=!!(G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0));
   const _hReqOk=(_hHId!=='H01')||_hasG18Q;
-  if(_hHId&&_hReqOk&&!(G.heroes||[]).includes(_hHId)&&_phCount<2&&Math.random()<0.30){
-    G.planetHeroCount[pid]=_phCount+1;
+  if(_hHId&&_hReqOk&&!(G.heroes||[]).includes(_hHId)&&Math.random()<0.50){
+    G.planetHeroCount[pid]=(G.planetHeroCount[pid]||0)+1;  // 통계용 카운터 (UI 힌트에서 사용)
     setTimeout(function(){showHeroRecruit(_hHId);},1400);
   }}
   changeReputation(1);
@@ -14950,7 +14953,18 @@ function updateMapInfo(p,fog){
       <div style="font-size:12px;color:var(--dim);line-height:2"><span style="color:${fac.col}">${fac.nm}</span>${p.hostile?` <span style="color:var(--red)">${I18N.t('ui.hostileNoSpace')}</span>`:''}${p.void?` <span style="color:var(--cyan)">${I18N.t('ui.fissureChipShort')}</span>`:''}
       <br>${I18N.t('ui.taxRateLine',{n:p.tax.toLocaleString()})}
       ${st?.owned?`<br>${I18N.t('ui.commerceLvDisplay',{lv:st.commerce})}`:''}
-      ${p.hero&&!G.heroes.includes(p.hero)?`<br><span style="color:var(--purple)">${I18N.t('ui.heroAvail')}</span>`:''}
+      ${p.hero&&!G.heroes.includes(p.hero)?(()=>{
+        // 사용자 요청 (2026-06-06, 옵션 E): 영웅 힌트에 영웅 이름·아이콘·조건 명시
+        const _hkey='hero.'+p.hero+'.nm';
+        const _hnm=(I18N&&I18N.has&&I18N.has(_hkey))?I18N.t(_hkey):(HEROES[p.hero]?.nm||p.hero);
+        const _hic=HEROES[p.hero]?.ic||'⭐';
+        const _attemptCnt=(G.planetHeroCount&&G.planetHeroCount[p.id])||0;
+        const _g18Req=p.hero==='H01';
+        const _g18Has=!!(G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0));
+        const _g18Note=_g18Req?(_g18Has?` <span style="color:var(--green)">(${I18N.t('ui.g18Ok')})</span>`:` <span style="color:var(--red)">(${I18N.t('ui.g18Need')})</span>`):'';
+        const _atTxt=_attemptCnt>0?` <span style="color:var(--dim);font-size:11px">×${_attemptCnt}</span>`:'';
+        return `<br><span style="color:var(--purple)">${I18N.t('ui.heroAvailHere',{ic:_hic,nm:_hnm})}${_g18Note}${_atTxt}</span>`;
+      })():''}
       <br>${blink?`<span style="color:var(--cyan)">${I18N.t('ui.blinkJump',{cost:cost.toLocaleString()})}</span>`:conn?`<span style="color:var(--green)">${I18N.t('ui.moveOK',{cost:cost.toLocaleString()})}</span>`:isCur?`<span style="color:var(--yellow)">${I18N.t('ui.currentLocText')}</span>`:`<span style="color:var(--red)">${I18N.t('ui.noRouteText')}</span>`}</div>`;}
   }
   if(goBtn){goBtn.disabled=isCur||!conn||fog==='L';}
