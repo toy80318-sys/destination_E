@@ -19367,9 +19367,10 @@ function showUrsaMajorIntro(){
       `<div style="padding:14px;min-height:220px">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:14px;background:linear-gradient(135deg,rgba(255,30,80,.08),rgba(20,5,5,.7));border:1px solid rgba(255,80,80,.45);border-radius:10px;box-shadow:0 0 18px rgba(255,40,40,.2)">
           ${portrait}
-          <div style="flex:1">
-            <div style="font-size:13px;color:${spColor};font-weight:bold;margin-bottom:6px;letter-spacing:1px">${l.sp}</div>
-            <div style="font-size:17px;color:var(--yellow);line-height:1.8;word-break:keep-all">"${l.tx}"</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;color:${spColor};font-weight:bold;margin-bottom:6px;letter-spacing:1px;word-break:keep-all;overflow-wrap:break-word">${l.sp}</div>
+            <!-- 사용자 요청 (2026-06-06): 비정상 줄바꿈 방지 — 한글 어절 단위 + 영문 단어 단위만 줄바꿈 허용 -->
+            <div style="font-size:17px;color:var(--yellow);line-height:1.8;word-break:keep-all;overflow-wrap:break-word;hyphens:none">"${l.tx}"</div>
           </div>
         </div>
         ${isFinal?_bossSpecHTML:''}

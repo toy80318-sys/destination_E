@@ -58,14 +58,15 @@ body.combat-mode #notif{top:138px;max-width:260px}
         하단 버튼이 잘리거나 가려지는 문제. 본문만 스크롤되도록 분리. */
 .modal{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:24px;max-width:520px;width:96%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
 .modal.modal-wide{max-width:624px}
-/* 보스 인트로/엔딩 + 보스전 최종 보상 — 사용자 요청: 영문 보상 잘림 방지 위해 확대 (713→1100) */
-.modal.modal-bossfight{max-width:1100px}
+/* 보스 인트로/엔딩 + 보스전 최종 보상 — 사용자 요청 (2026-06-06): 1100→1210 (+10%) */
+.modal.modal-bossfight{max-width:1210px}
 /* 사용자 요청: 일반 전투 승리 보고 가로폭 30% 축소 (900→630). 카드 단어 줄바꿈은 유지 */
 .modal.modal-report{max-width:630px;padding:14px 16px;max-height:88vh}
 /* 사용자 요청 (2026-06-06): 크루 영입 시 전설 크루 등장 팝업 추가 30% 축소 (630→441) */
 .modal.modal-report.modal-crew-reveal{max-width:441px;padding:12px 14px}
-/* 영문판 보상 카드 텍스트 잘림 방지 — 단어 단위 줄바꿈 + 카드 안 글자 가독성 */
-.modal.modal-bossfight div, .modal.modal-report div{word-break:keep-all;overflow-wrap:break-word}
+/* 영문판 보상 카드 텍스트 잘림 방지 — 한글 어절 단위 + 영문 단어 단위만 줄바꿈 (단어 중간 강제 끊김 금지)
+   사용자 보고 (2026-06-06): 우르사 인트로에서 단어 중간 비정상 줄바꿈 → overflow-wrap을 anywhere→break-word로 유지(이미 안전) */
+.modal.modal-bossfight div, .modal.modal-report div{word-break:keep-all;overflow-wrap:break-word;hyphens:none}
 /* 사용자 요청: 모든 팝업 확인/액션 버튼 1.5배 크기 — 손가락 터치 친화 */
 #modal-btns .btn{font-size:21px;padding:9px 24px;min-height:42px;letter-spacing:1.5px;border-radius:6px}
 #modal-btns .btn-sm{font-size:17px;padding:7px 18px;min-height:34px}
