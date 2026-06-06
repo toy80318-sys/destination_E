@@ -3039,7 +3039,12 @@ function _planetBaseTax(pd){
   }
   return pd.tax||0;
 }
-function calcTaxFor(pid){const pd=PLANET_DEF.find(p=>p.id===pid),st=G.planets[pid];if(!pd||!st||!st.owned)return 0;const aurBonus=pd.f==='F02'?1.25:1.0;/* 행성 세금: 2배 기본 + 투자 레벨당 1.3배 복리. 지구는 보이드×1.2 기준 */return Math.floor(_planetBaseTax(pd)*Math.pow(1.3,st.commerce||0)*1.8*aurBonus*1.0);}
+function calcTaxFor(pid){const pd=PLANET_DEF.find(p=>p.id===pid),st=G.planets[pid];if(!pd||!st||!st.owned)return 0;const aurBonus=pd.f==='F02'?1.25:1.0;/* 행성 세금 (사용자 요청 2026-06-06):
+  · 기준치 ×1.5 (현재보다 1.5배 인상)
+  · 투자 레벨당 최초금액에서 +20% 선형 누적 (Lv0→1.0, Lv1→1.2, Lv2→1.4, ... Lv10→3.0)
+  · 종전: Math.pow(1.3, commerce) 복리 → 누적증가 직관성을 위해 선형(1+0.2×lv)로 전환 */
+  const lv=st.commerce||0;
+  return Math.floor(_planetBaseTax(pd)*(1+0.2*lv)*1.8*aurBonus*1.5);}
 function calcTurnTax(){return PLANET_DEF.reduce((s,p)=>s+calcTaxFor(p.id),0);}
 function getPirateTurnMult(){
   // 15턴마다 1.5배, 최대 3배
@@ -3326,6 +3331,24 @@ function doNextTurn(){
   tickLoyalty();       // ← 충성도 하락 (크루 없는 함선)
   checkLoyaltyCapture(); // ← 충성도 붕괴 나포 체크
   const tax=calcTurnTax();G.credits+=tax;
+  // 사용자 요청 (2026-06-06): 행성 세금 징수 시 설계도 드롭 확률
+  //   기본 5%, 투자 레벨 1당 +3%p 누적 (Lv0 5% / Lv5 20% / Lv10 35%).
+  //   미보유 + BLUEPRINT_MAP 매핑이 있는 행성만 대상.
+  try{
+    if(!G.blueprints)G.blueprints={};
+    PLANET_DEF.forEach(pd=>{
+      const st=G.planets[pd.id]; if(!st||!st.owned)return;
+      const bpId=(typeof BLUEPRINT_MAP!=='undefined')?BLUEPRINT_MAP[pd.id]:null;
+      if(!bpId||G.blueprints[bpId])return;
+      const rate=0.05+0.03*(st.commerce||0);
+      if(Math.random()<rate){
+        G.blueprints[bpId]=true;
+        const rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===bpId):null;
+        notify(I18N.t('notify.bpAcquired',{nm:rec?.nm||bpId}),'gold');
+        baekgu(I18N.t('baekgu.blueprintDrop',{nm:rec?.nm||bpId}));
+      }
+    });
+  }catch(e){console.warn('[tax-bp drop]',e);}
   // 보이드 균열 P29: 5턴마다 전설 파츠 분출
   if(G.turn%5===0&&G.planets['P29']?.fog!=='L'){
     const lParts=PARTS.filter(p=>p.tier>=12);
@@ -15712,16 +15735,12 @@ function _drawShipUnit(ctx,u,x,y,sz){
     const nat=cached.naturalWidth/Math.max(1,cached.naturalHeight);
     const dh=dsz.h*2;
     const dw=Math.min(dsz.w*2.8, dh*nat);
-    // 타겟 방향으로 회전 — 기본 이미지는 우측(노즈) 향함.
-    //   ※ 단순 rotate(angle)만 쓰면 좌측을 향할 때(±π) 함선이 거꾸로 뒤집힌다(뱃속이 위).
-    //   2D 빌보드 기법: cos(angle)<0(타겟이 좌측 반평면)이면 X축 미러 후 (π−angle) 회전 →
-    //     함선이 정상 자세(상하 그대로)로 좌측을 향한다.
+    // 사용자 요청 (2026-06-06): 적 함선이 회전 시 상하 뒤집혀 표시되는 현상 완전 차단.
+    //   접근: 회전 보간을 제거하고, 적은 항상 X축 미러로 좌측을 향함(노즈 좌측), 아군은 미러 없이 우측 향함.
+    //   ※ 단순 미러는 ship sprite의 "위/아래"를 절대 뒤집지 않으므로 상하 반전 현상이 원천 차단된다.
     ctx.translate(x,y);
-    if(Math.cos(u._drawAngle)<0){
-      ctx.scale(-1,1);
-      ctx.rotate(Math.PI - u._drawAngle);
-    } else {
-      ctx.rotate(u._drawAngle);
+    if(isEnemy){
+      ctx.scale(-1,1);  // 좌측 향하게 수평 미러만 적용 — 회전 없음
     }
     ctx.drawImage(cached,-dw/2,-dh/2,dw,dh);
     ctx.restore();
@@ -15990,30 +16009,32 @@ window.AudioMgr=(function(){
   }
   function stopBgm(){if(curBgmAudio){try{curBgmAudio.pause();curBgmAudio.src='';}catch(e){}}curBgmAudio=null;curBgmName=null;pendingBgm=null;}
   const sfxCooldown={};
-  const _activeSfx=new Set();  // 현재 재생 중인 SFX Audio 인스턴스 (stopAllSfx 용)
-  const _MAX_CONCURRENT_SFX=8;  // 누수 방지 — 8개 초과 시 가장 오래된 SFX 즉시 정지
+  const _activeSfx=new Set();  // 재생 중 인스턴스 추적 (stopAllSfx 용)
+  // ── SFX Audio 풀링 (메모리 누수 방지) ──────────────────────────────
+  //   사용자 보고: 전투 도중 RAM 폭증 → Chrome 'Aw, Snap!' 크래시.
+  //   원인: 매 playSfx 호출마다 new Audio() 생성 → mp3 디코드 파이프라인이
+  //         GC보다 빨리 적재되어 렌더러 프로세스 OOM.
+  //   대책: 8개짜리 인스턴스 풀을 미리 만들어 재사용 (LRU 라운드로빈).
+  //         같은 src 재할당 시 Chrome은 디코드 결과를 캐시하여 추가 메모리 사용 0.
+  const _MAX_SFX_POOL=8;
+  const _sfxPool=new Array(_MAX_SFX_POOL).fill(null).map(()=>{const a=new Audio();a.preload='none';return a;});
+  let _sfxIdx=0;
   function playSfx(name,opts){
     opts=opts||{};
     if(sfxOff||masterVol<=0||sfxVol<=0)return;
     if(!userInteracted)return;
     const cd=opts.cooldown||0;
     if(cd>0){const now=performance.now();if(sfxCooldown[name]&&now-sfxCooldown[name]<cd)return;sfxCooldown[name]=now;}
-    // 동시 SFX 캡 — 오래된 인스턴스부터 정지·해제(Set은 삽입 순서 유지)
-    while(_activeSfx.size>=_MAX_CONCURRENT_SFX){
-      const oldest=_activeSfx.values().next().value;
-      if(!oldest)break;
-      _activeSfx.delete(oldest);
-      try{oldest.pause();oldest.src='';}catch(e){}
-    }
     try{
       const _sfxVer=(typeof window!=='undefined'&&window._GAME_VER)?window._GAME_VER:'';
-      const a=new Audio(SFX_BASE+name+'.mp3'+(_sfxVer?'?v='+encodeURIComponent(_sfxVer):''));
+      const a=_sfxPool[_sfxIdx];
+      _sfxIdx=(_sfxIdx+1)%_MAX_SFX_POOL;
+      try{a.pause();}catch(e){}
+      a.src=SFX_BASE+name+'.mp3'+(_sfxVer?'?v='+encodeURIComponent(_sfxVer):'');
+      a.currentTime=0;
       a.volume=Math.min(1,(opts.vol||1)*masterVol*sfxVol);
       _activeSfx.add(a);
-      const _cleanup=()=>{_activeSfx.delete(a);try{a.src='';}catch(e){}};
-      a.addEventListener('ended',_cleanup,{once:true});
-      a.addEventListener('error',_cleanup,{once:true});
-      a.play().catch(()=>{_cleanup();});
+      a.play().catch(()=>{_activeSfx.delete(a);});
     }catch(e){}
   }
   // 진행 중인 모든 SFX 즉시 정지 (전투 종료 / 엔딩 진입 시 호출)
@@ -16570,8 +16591,8 @@ function drawCombatFrame(){
   });
   // 미사일→폭발 등 filter 콜백 내부에서 발생한 신규 이펙트 합치기
   if(_newEffs.length)_cbEffects.push(..._newEffs);
-  // 이펙트 상한 300 — 다중 살보·광역 공격 누적 시 메모리 폭증 차단
-  if(_cbEffects.length>300)_cbEffects.splice(0,_cbEffects.length-300);
+  // 이펙트 상한 200 — 다중 살보·광역 공격 누적 시 메모리 폭증 차단 (사용자 크래시 보고 후 300→200 축소)
+  if(_cbEffects.length>200)_cbEffects.splice(0,_cbEffects.length-200);
   // heavyMode shadowBlur 오버라이드 해제 — prototype의 shadowBlur 다시 사용
   if(_heavyMode){try{delete cbCtx.shadowBlur;}catch(e){}}
   cbCtx.restore();
