@@ -9652,8 +9652,11 @@ function completeQuest(pid,idx){
   const setRate=_legendUnlocked?Math.min(0.25,0.04+(rep-50)*0.0014+_qveBonus):0;
   // 전설 동료: 50명성=2%, 200명성=12% 캡
   const legendRate=_legendUnlocked?Math.min(0.12,0.02+(rep-50)*0.0007+_qveBonus):0;
-  // 사용자 요청: 거북선(LGD01) 신화 함선 퀘스트 보상 5% 확률 — 신화 게이트와 동일 조건 (rep>=120)
-  const turtleShipRate=_mythicUnlocked?0.05:0;
+  // 사용자 요청 (2026-06-06): 거북선(LGD01) 획득 확률 낮음 보고
+  //   · 직접 드롭 확률 5% → 10% (×2)
+  //   · 게이트 rep>=120 → 60 (중반부터 가능, 별도 게이트 _turtleShipUnlocked)
+  const _turtleShipUnlocked=rep>=60;
+  const turtleShipRate=_turtleShipUnlocked?0.10:0;
 
   let bonusMsg='';
   if(roll<legendRate){
@@ -9772,10 +9775,12 @@ function completeQuest(pid,idx){
     _bpTier==='legend'||_bpTier==='flagship'?(rep>=15):
     true;
   // 설계도 드롭 확률 — 사용자 요청 +5%p 추가 인상
-  //   전설(legend): 25%   /   신화(mythic): 20%
-  let _bpDropRate=(_bpTier==='mythic')?0.20:0.25;
+  //   전설(legend): 25%   /   신화(mythic): 20% → 30% (사용자 보고 2026-06-06)
+  let _bpDropRate=(_bpTier==='mythic')?0.30:0.25;
   // 사용자 요청: 이휘소 방정식 미사일(MMB01) 설계도 +5%p 추가 가산
   if(_bpId==='MMB01')_bpDropRate+=0.05;
+  // 사용자 요청 (2026-06-06): 거북선(LGD01) 설계도 +5%p 추가 가산 — 신화 함선 핵심 보스 진입 필수
+  if(_bpId==='LGD01')_bpDropRate+=0.05;
   if(_bpId&&_bpRepOK&&!G.blueprints[_bpId]&&Math.random()<_bpDropRate){
     G.blueprints[_bpId]=true;
     const _bpRec=_bpRecCheck;
