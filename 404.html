@@ -32,8 +32,19 @@ a:hover{text-decoration:underline}
 <div class="box">
   <div class="spin"></div>
   <div class="title">DESTINATION EARTH</div>
-  <div class="sub">메인 화면으로 이동 중...</div>
-  <a href="/">즉시 이동 →</a>
+  <div class="sub" id="sub-msg">Redirecting to main…</div>
+  <a id="go-link" href="/">Go now →</a>
 </div>
+<script>
+(function(){
+  try{
+    var lang=(localStorage.getItem('de_language')||(navigator.language||'').slice(0,2)||'en').toLowerCase();
+    if(lang==='ko'){
+      var s=document.getElementById('sub-msg'); if(s)s.textContent='메인 화면으로 이동 중...';
+      var a=document.getElementById('go-link'); if(a)a.textContent='즉시 이동 →';
+    }
+  }catch(_){}
+})();
+</script>
 </body>
 </html>

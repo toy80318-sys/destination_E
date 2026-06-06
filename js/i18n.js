@@ -145,6 +145,14 @@ window.I18N = (function () {
         const key = el.getAttribute('data-i18n-placeholder');
         if (key) el.setAttribute('placeholder', t(key));
       });
+      root.querySelectorAll('[data-i18n-value]').forEach(el => {
+        const key = el.getAttribute('data-i18n-value');
+        if (key) el.value = t(key);
+      });
+      root.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-alt');
+        if (key) el.setAttribute('alt', t(key));
+      });
     } catch (e) { /* ignore — DOM may not be ready */ }
   }
   // DOMContentLoaded 시 자동 적용 (이미 로드됐으면 즉시)

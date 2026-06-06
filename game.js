@@ -1685,6 +1685,9 @@ window._SHIP_IMG_SET=window._SHIP_IMG_SET||new Set([
 function shipDisplayNm(s){
   if(!s)return '';
   try{
+    if(s._nmKey&&I18N&&typeof I18N.has==='function'&&I18N.has(s._nmKey)){
+      return I18N.t(s._nmKey,s._nmKeyParams||{});
+    }
     const _id=String(s.catalogId||s.catId||(s.id||'').replace(/_(craft|quest|reward|recovered)_.+$/,'')||'').toUpperCase();
     if(_id){
       const _k='ship.'+_id+'.nm';
@@ -9475,11 +9478,11 @@ function startVoidBossCombat(questRef){
   // ── 진형(열): 0=보이드 소형 / 1=중형 / 2=대형 / 3=블랙팔콘 부대+본체(최후방) ──
   //   본체는 enemies[0] 유지(기존 페이즈 로직 호환). HP ×10(현 전투 한정), 호위 전멸 전까지 무적.
   const enemies=[];
-  enemies.push({...VOID_BOSS,id:'VOID_FALCON_1',nm:'🌑 블랙팔콘 ✦신화',tier:'신화',isEnemy:true,
+  enemies.push({...VOID_BOSS,id:'VOID_FALCON_1',nm:'🌑 블랙팔콘 ✦신화',_nmKey:'enemy.blackfalconMythic',tier:'신화',isEnemy:true,
     hp:_flagHP*10,maxHP:_flagHP*10,HP:_flagHP*10,sh:_flagSH,maxSH:_flagSH,ATT:_flagATT,
     DEF:800,armorTier:60,shieldTier:60,voidBoss:true,_formationCol:3,_invincible:true});
   // 4열: 블랙팔콘 부대 3척 (신화 호위 — 본체와 같은 열)
-  for(let i=0;i<3;i++){enemies.push({...VOID_BOSS,id:'VOID_FALCON_E'+(i+1),nm:'🌑 블랙팔콘 부대 '+(i+1),tier:'대형',isEnemy:true,
+  for(let i=0;i<3;i++){enemies.push({...VOID_BOSS,id:'VOID_FALCON_E'+(i+1),nm:'🌑 블랙팔콘 부대 '+(i+1),_nmKey:'enemy.blackfalconSquad',_nmKeyParams:{n:i+1},tier:'대형',isEnemy:true,
     hp:_escortHP,maxHP:_escortHP,HP:_escortHP,sh:_escortSH,maxSH:_escortSH,ATT:_escortATT,
     DEF:450,armorTier:48,shieldTier:48,voidBoss:false,_formationCol:3});}
   // 3열: 보이드 대형 전투선 3척 (F07 보이드 함선 외형)
@@ -10040,8 +10043,8 @@ function doGatherSearch(){
       const _cChP=clampEnemyStats(_rcpHP,_rcpATK,_rcpINT,_rcpTEC,calcFleetAvgPower());
       const eHP=_cChP.eHP,eATK=_cChP.eATK,eINT=_cChP.eINT,eTEC=_cChP.eTEC;
       const chixFleet=[
-        {id:'CHIX_1',nm:'치크스 정찰기',tier:'소형',isEnemy:true,maxHP:eHP,hp:eHP,maxSH:Math.floor(eHP*0.4),sh:Math.floor(eHP*0.4),ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]},
-        {id:'CHIX_2',nm:'치크스 정찰기 B',tier:'소형',isEnemy:true,maxHP:Math.floor(eHP*.8),hp:Math.floor(eHP*.8),maxSH:Math.floor(eHP*0.3),sh:Math.floor(eHP*0.3),ATT:Math.floor(eATK*.9),INT:eINT,TEC:eTEC,HP:Math.floor(eHP*.8),LOY:0,parts:[],crewIds:[]}
+        {id:'CHIX_1',nm:'치크스 정찰기',_nmKey:'enemy.chiksScout',tier:'소형',isEnemy:true,maxHP:eHP,hp:eHP,maxSH:Math.floor(eHP*0.4),sh:Math.floor(eHP*0.4),ATT:eATK,INT:eINT,TEC:eTEC,HP:eHP,LOY:0,parts:[],crewIds:[]},
+        {id:'CHIX_2',nm:'치크스 정찰기 B',_nmKey:'enemy.chiksScoutB',tier:'소형',isEnemy:true,maxHP:Math.floor(eHP*.8),hp:Math.floor(eHP*.8),maxSH:Math.floor(eHP*0.3),sh:Math.floor(eHP*0.3),ATT:Math.floor(eATK*.9),INT:eINT,TEC:eTEC,HP:Math.floor(eHP*.8),LOY:0,parts:[],crewIds:[]}
       ];
       const raidDef={id:'CHIX_PATROL',nm:I18N.t('chix.patrolName'),ring,f:'F05',hostile:true,tax:0,_enemies:chixFleet,_questPid:pid,_questId:combatQ.id};
       openModal(I18N.t('modal.chixScoutFound'),
@@ -15213,12 +15216,12 @@ function startCombat(planetDef){
     }
     // 1열: 치크스 소형 정찰대 8척
     for(let i=0;i<8;i++){const _h=8000;
-      enemies.push({id:'CHIX_S_BOSS_'+i,nm:'치크스 정찰기',tier:'소형',isEnemy:true,
+      enemies.push({id:'CHIX_S_BOSS_'+i,nm:'치크스 정찰기',_nmKey:'enemy.chiksScout',tier:'소형',isEnemy:true,
         hp:_h,maxHP:_h,HP:_h,sh:2000,maxSH:2000,ATT:300,INT:60,TEC:45,LOY:0,
         shieldTier:4,armorTier:3,_formationCol:0});}
     // 2열: 치크스 중형 순양함 6척
     for(let i=0;i<6;i++){const _h=25000;
-      enemies.push({id:'CHIX_M_BOSS_'+i,nm:'치크스 순양함',tier:'중형',isEnemy:true,
+      enemies.push({id:'CHIX_M_BOSS_'+i,nm:'치크스 순양함',_nmKey:'enemy.chiksCruiser',tier:'중형',isEnemy:true,
         hp:_h,maxHP:_h,HP:_h,sh:6000,maxSH:6000,ATT:600,INT:120,TEC:70,LOY:0,
         shieldTier:7,armorTier:5,_formationCol:1});}
   } else if(planetDef._previewEnemies){
@@ -15655,9 +15658,17 @@ function _drawShipUnit(ctx,u,x,y,sz){
     const nat=cached.naturalWidth/Math.max(1,cached.naturalHeight);
     const dh=dsz.h*2;
     const dw=Math.min(dsz.w*2.8, dh*nat);
-    // 타겟 방향으로 회전 — 기본 이미지는 우측(노즈) 향함, 적/아군 무관 동일 회전 사용
+    // 타겟 방향으로 회전 — 기본 이미지는 우측(노즈) 향함.
+    //   ※ 단순 rotate(angle)만 쓰면 좌측을 향할 때(±π) 함선이 거꾸로 뒤집힌다(뱃속이 위).
+    //   2D 빌보드 기법: cos(angle)<0(타겟이 좌측 반평면)이면 X축 미러 후 (π−angle) 회전 →
+    //     함선이 정상 자세(상하 그대로)로 좌측을 향한다.
     ctx.translate(x,y);
-    ctx.rotate(u._drawAngle);
+    if(Math.cos(u._drawAngle)<0){
+      ctx.scale(-1,1);
+      ctx.rotate(Math.PI - u._drawAngle);
+    } else {
+      ctx.rotate(u._drawAngle);
+    }
     ctx.drawImage(cached,-dw/2,-dh/2,dw,dh);
     ctx.restore();
   } else {
@@ -17325,15 +17336,15 @@ function _finishCombat(){
     // 보고 팝업 구성 (보스/일반 공통)
     const _buildReport=()=>{
       const items=[];
-      items.push({ic:'💰',nm:'전투 보상 크레딧',type:'크레딧',color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
-      if(_repGained>0)items.push({ic:'⭐',nm:'명성',type:'평판',color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:'해적/치크스 격파로 사령관 평판 상승'});
+      items.push({ic:'💰',nm:I18N.t('report.creditsNm'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
+      if(_repGained>0)items.push({ic:'⭐',nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
       const enemyCount=_enemyCountSnap;
       items.push({ic:'☠️',nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
       _capturedShips.forEach(s=>{
-        items.push({ic:'🏴',nm:s.nm,type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:'전투 중 무력화 후 편대 합류 — 정비소에서 크루 배치 및 충성도 관리 필요'});
+        items.push({ic:'🏴',nm:(typeof shipDisplayNm==='function'?shipDisplayNm(s):s.nm),type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:I18N.t('report.captureDesc')});
       });
       if(_autoSoldCount>0){
-        items.push({ic:'💰',nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:'즉시 환금',color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:'편대편성 「나포 거절」 ON 상태 → 나포 함선을 받지 않고 즉시 매각하여 크레딧으로 환산.'});
+        items.push({ic:'💰',nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:I18N.t('report.autoSoldType'),color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:I18N.t('report.autoSoldDesc')});
       }
       if(!_isBossWin){
         const hp=getPlanetHubProgress(pid),thr=_getHubThr(pid);
@@ -17342,7 +17353,7 @@ function _finishCombat(){
       // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선 (이미지 추가 — 보상 시각화)
       if(_isBossWin){
         items.push({ic:'💰',nm:I18N.t('report.bossBonus'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡10,000,000`,desc:I18N.t('report.bossBonusDesc')});
-        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:'우르사 메이저',type:'신화급 함선',color:'#ff66cc',stats:I18N.t('ui.ursaSpec'),desc:'적 기함을 노획하여 아군 함대에 편입. 압도적 화력의 함대 주력으로 활용 가능.'});
+        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:I18N.t('ship.URSA.nm'),type:I18N.t('report.ursaType'),color:'#ff66cc',stats:I18N.t('ui.ursaSpec'),desc:I18N.t('report.ursaDesc')});
         items.push({ic:'⚔️',img:partImgSrc('MW01'),nm:I18N.t('reward.hermeticGunNm'),type:I18N.t('reward.partWeaponType'),color:'#ff66cc',stats:'ATT +320',desc:I18N.t('reward.hermeticDesc'),rarity:'mythic'});
         items.push({ic:'🛡️',img:partImgSrc('MS01'),nm:I18N.t('reward.kronosShieldNm'),type:I18N.t('reward.partShieldType'),color:'#ff66cc',stats:'INT +280 · '+I18N.t('ui.shieldShort')+' +8000',desc:I18N.t('reward.kronosDesc'),rarity:'mythic'});
         items.push({ic:'🪖',img:partImgSrc('MA01'),nm:I18N.t('reward.adamanArmorNm'),type:I18N.t('reward.partArmorType'),color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:I18N.t('reward.adamanDesc'),rarity:'mythic'});
@@ -19338,43 +19349,43 @@ function showEndingCredits(onDone){
   const BG={sp:I18N.t('baekgu.diaryTitle'),col:'#9ee7ff',ic:'📓'};
   function _bgPage(tx){return Object.assign({tx},BG);}
   if(_hl.includes('H01')){
-    heroEndings.push({id:'H01',nm:'이순신',ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H01?.nm)||'이순신',col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
+    heroEndings.push({id:'H01',nm:I18N.t('hero.H01.nm'),ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
+    heroBlocks.push({sp:I18N.t('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h01.diary')));
   }
   if(_hl.includes('H02')){
-    heroEndings.push({id:'H02',nm:'장영실',ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H02?.nm)||'장영실',col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
+    heroEndings.push({id:'H02',nm:I18N.t('hero.H02.nm'),ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
+    heroBlocks.push({sp:I18N.t('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h02.diary',{flagshipName})));
   }
   if(_hl.includes('H03')){
-    heroEndings.push({id:'H03',nm:'광개토대왕',ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H03?.nm)||'광개토대왕',col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
+    heroEndings.push({id:'H03',nm:I18N.t('hero.H03.nm'),ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
+    heroBlocks.push({sp:I18N.t('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h03.diary',{cmdName})));
   }
   if(_hl.includes('H04')){
-    heroEndings.push({id:'H04',nm:'유리 가가린',ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H04?.nm)||'유리 가가린',col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
+    heroEndings.push({id:'H04',nm:I18N.t('hero.H04.nm'),ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
+    heroBlocks.push({sp:I18N.t('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h04.diary')));
   }
   if(_hl.includes('H05')){
-    heroEndings.push({id:'H05',nm:'호레이쇼 넬슨',ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H05?.nm)||'호레이쇼 넬슨',col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
+    heroEndings.push({id:'H05',nm:I18N.t('hero.H05.nm'),ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
+    heroBlocks.push({sp:I18N.t('hero.H05.nm'),col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h05.diary')));
   }
   if(_hl.includes('H06')){
-    heroEndings.push({id:'H06',nm:'아인슈타인',ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H06?.nm)||'아인슈타인',col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroEndings.push({id:'H06',nm:I18N.t('hero.H06.nm'),ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroBlocks.push({sp:I18N.t('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
     heroBlocks.push(_bgPage(I18N.t('ending.h06.diary')));
   }
   if(_hl.includes('H07')){
-    heroEndings.push({id:'H07',nm:'니콜라 테슬라',ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H07?.nm)||'니콜라 테슬라',col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
+    heroEndings.push({id:'H07',nm:I18N.t('hero.H07.nm'),ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
+    heroBlocks.push({sp:I18N.t('hero.H07.nm'),col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h07.diary')));
   }
   if(_hl.includes('H08')){
-    heroEndings.push({id:'H08',nm:'마르코 폴로',ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
-    heroBlocks.push({sp:(typeof HEROES!=='undefined'&&HEROES.H08?.nm)||'마르코 폴로',col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
+    heroEndings.push({id:'H08',nm:I18N.t('hero.H08.nm'),ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
+    heroBlocks.push({sp:I18N.t('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
     heroBlocks.push(_bgPage(I18N.t('ending.h08.diary',{shipName})));
   }
 
