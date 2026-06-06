@@ -1,0 +1,467 @@
+// ═══════════════════════════════════════════════════════════════════
+// DESTINATION EARTH — PC 전용 시나리오 컷씬·대화 시스템
+//   · Electron(PC) 빌드에서만 로드됨
+//   · 웹 PWA 배포 제외 (firebase.json ignore + service-worker no-precache)
+//   · 캐릭터 이미지 폴백: img/chars-hd/ → img/chars/
+//   · 데이터 출처: Doc/DE_시나리오_정리본.md §2 (영웅 첫만남 대화)
+// ═══════════════════════════════════════════════════════════════════
+(function(){
+  if(typeof window==='undefined') return;
+  if(window.STORY_SCENES_PC) return;  // 중복 로드 방지
+
+  // ─── 변수 치환 (시나리오 §0) ───
+  function rep(s){
+    if(typeof s!=='string') return s;
+    var p = (window.G && window.G.profile) || {};
+    return s
+      .replace(/\{사령관\}/g, p.name || '사령관')
+      .replace(/\{commander\}/gi, p.name || 'Commander')
+      .replace(/\{함선\}/g, p.ship || '머스탱')
+      .replace(/\{ship\}/gi, p.ship || 'Mustang')
+      .replace(/\{기함\}/g, p.ship ? (p.ship + '(거북선급)') : '위대한 화랑')
+      .replace(/\{flagship\}/gi, p.ship ? (p.ship + ' (Geobukseon-class)') : 'Great Hwarang')
+      .replace(/\{회사\}/g, p.company || '빅 픽처 스페이스')
+      .replace(/\{company\}/gi, p.company || 'Big Picture Space');
+  }
+
+  // ─── 캐릭터 이미지 폴백 체인 ───
+  // 1순위: img/chars-hd/{key}.png  (PC 전용 고해상도 원본, 1024+ 권장)
+  // 2순위: img/chars/{key}.png      (기본 최적화 이미지)
+  // 3순위: img/chars/system.png     (최종 폴백)
+  function _ver(){
+    return window._GAME_VER ? '?v=' + encodeURIComponent(window._GAME_VER) : '';
+  }
+  function _charImgHD(key){
+    return 'img/chars-hd/' + key + '.png' + _ver();
+  }
+
+  // ─── 대화 팝업 UI ───
+  // opts: {
+  //   scenes: [{char:'hero01', name:'이순신', color:'#ffd700', text:'...'}, ...]
+  //   onDone: function()
+  // }
+  function showCharDialog(opts){
+    if(!opts || !opts.scenes || !opts.scenes.length){
+      if(typeof opts === 'object' && typeof opts.onDone === 'function') opts.onDone();
+      return;
+    }
+
+    // 기존 오버레이 제거
+    var existing = document.getElementById('story-scene-overlay');
+    if(existing) existing.remove();
+
+    var sceneIdx = 0;
+    var scenes = opts.scenes;
+
+    // ── 오버레이 컨테이너 ──
+    var ov = document.createElement('div');
+    ov.id = 'story-scene-overlay';
+    ov.style.cssText = [
+      'position:fixed','left:0','top:0','width:100vw','height:100vh',
+      'background:rgba(0,0,0,0.88)','z-index:99999',
+      'display:flex','align-items:stretch',
+      'cursor:pointer','font-family:inherit',
+      'animation:storySceneIn 0.35s ease-out'
+    ].join(';');
+
+    // 애니메이션 한 번만 추가
+    if(!document.getElementById('story-scene-style')){
+      var st = document.createElement('style');
+      st.id = 'story-scene-style';
+      st.textContent = '@keyframes storySceneIn{from{opacity:0}to{opacity:1}}'
+                     + '#story-scene-overlay .ssc-name{animation:nameIn 0.4s ease-out}'
+                     + '#story-scene-overlay .ssc-text{animation:textIn 0.5s ease-out}'
+                     + '@keyframes nameIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}'
+                     + '@keyframes textIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}'
+                     + '#story-scene-overlay .ssc-img{animation:imgIn 0.5s ease-out}'
+                     + '@keyframes imgIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}';
+      document.head.appendChild(st);
+    }
+
+    // ── 캐릭터 패널 (왼쪽 1/3, 매우 큰 인물) ──
+    var charPanel = document.createElement('div');
+    charPanel.style.cssText = [
+      'flex:0 0 33.33%','display:flex','align-items:center','justify-content:center',
+      'background:linear-gradient(135deg,rgba(20,40,80,0.45),rgba(0,0,0,0.7))',
+      'border-right:1px solid rgba(0,243,255,0.25)',
+      'padding:20px','box-sizing:border-box','overflow:hidden'
+    ].join(';');
+
+    var charImg = document.createElement('img');
+    charImg.className = 'ssc-img';
+    charImg.style.cssText = [
+      'max-width:100%','max-height:96vh','width:auto','height:auto',
+      'object-fit:contain','image-rendering:auto',
+      'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
+    ].join(';');
+    // HD 실패 → 기본 → system
+    charImg.onerror = function(){
+      var src = this.src;
+      if(src.indexOf('chars-hd') > -1){
+        this.src = src.replace('chars-hd', 'chars');
+        return;
+      }
+      if(src.indexOf('system.png') < 0){
+        this.src = 'img/chars/system.png' + _ver();
+      }
+    };
+    charPanel.appendChild(charImg);
+
+    // ── 대사 패널 (오른쪽 2/3) ──
+    var dialogPanel = document.createElement('div');
+    dialogPanel.style.cssText = [
+      'flex:1','display:flex','flex-direction:column','justify-content:center',
+      'padding:60px 60px 60px 55px','box-sizing:border-box','color:#fff','overflow:hidden'
+    ].join(';');
+
+    var nameBox = document.createElement('div');
+    nameBox.className = 'ssc-name';
+    nameBox.style.cssText = [
+      'font-size:32px','font-weight:bold','letter-spacing:3px',
+      'margin-bottom:28px','text-shadow:0 0 16px currentColor'
+    ].join(';');
+
+    var textBox = document.createElement('div');
+    textBox.className = 'ssc-text';
+    textBox.style.cssText = [
+      'font-size:22px','line-height:1.85','letter-spacing:0.5px',
+      'color:#eaf6ff','text-shadow:0 1px 3px rgba(0,0,0,0.9)',
+      'max-width:820px','min-height:180px','word-break:keep-all'
+    ].join(';');
+
+    var progressBox = document.createElement('div');
+    progressBox.style.cssText = [
+      'margin-top:36px','display:flex','justify-content:space-between','align-items:center',
+      'color:rgba(255,255,255,0.55)','font-size:13px','letter-spacing:0.5px'
+    ].join(';');
+
+    var hintLeft = document.createElement('div');
+    var counterRight = document.createElement('div');
+
+    progressBox.appendChild(hintLeft);
+    progressBox.appendChild(counterRight);
+
+    dialogPanel.appendChild(nameBox);
+    dialogPanel.appendChild(textBox);
+    dialogPanel.appendChild(progressBox);
+
+    ov.appendChild(charPanel);
+    ov.appendChild(dialogPanel);
+    document.body.appendChild(ov);
+
+    // 언어별 안내
+    function getHint(){
+      var lang = (window.I18N && window.I18N.getLang) ? window.I18N.getLang() : 'ko';
+      return lang === 'en' ? 'Click / Enter to continue · ESC to skip' : '클릭 / 엔터 = 다음 · ESC = 건너뛰기';
+    }
+
+    function renderScene(){
+      var s = scenes[sceneIdx];
+      if(!s){ closeOverlay(); return; }
+      // 매 장면 애니메이션 재시작
+      charImg.style.animation = 'none';
+      nameBox.style.animation = 'none';
+      textBox.style.animation = 'none';
+      void charImg.offsetWidth;
+      charImg.style.animation = '';
+      nameBox.style.animation = '';
+      textBox.style.animation = '';
+
+      charImg.src = _charImgHD(s.char || 'system');
+      charImg.alt = rep(s.name || '');
+      nameBox.textContent = rep(s.name || '');
+      nameBox.style.color = s.color || '#00f3ff';
+      textBox.textContent = rep(s.text || '');
+      hintLeft.textContent = getHint();
+      counterRight.textContent = (sceneIdx+1) + ' / ' + scenes.length;
+    }
+
+    function next(){
+      sceneIdx++;
+      if(sceneIdx >= scenes.length){
+        closeOverlay();
+      } else {
+        renderScene();
+      }
+    }
+
+    function closeOverlay(){
+      document.removeEventListener('keydown', onKey);
+      ov.style.transition = 'opacity 0.3s';
+      ov.style.opacity = '0';
+      setTimeout(function(){
+        if(ov.parentNode) ov.parentNode.removeChild(ov);
+        if(typeof opts.onDone === 'function'){
+          try{ opts.onDone(); }catch(e){ console.error('[STORY_SCENES_PC] onDone error:', e); }
+        }
+      }, 300);
+    }
+
+    function onKey(e){
+      if(e.key === 'Escape' || e.key === 'Esc'){ e.preventDefault(); closeOverlay(); }
+      else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); next(); }
+    }
+
+    ov.addEventListener('click', next);
+    document.addEventListener('keydown', onKey);
+
+    renderScene();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 영웅 첫만남 대화 데이터 — Doc/DE_시나리오_정리본.md §2 기반
+  // 색상: 영웅별 시그니처 컬러 (game.js 엔딩 큐와 동일)
+  // ═══════════════════════════════════════════════════════════════════
+  var H01_KO = [
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'…100년. 내가 100년을 잠들었군.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'이순신 제독님.'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'그대가 나를 깨웠소? …지구는.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아직 봉쇄 중입니다.'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'이길 수 있는 싸움이오?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'이겨야 하는 싸움입니다.'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'{사령관}. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.'}
+  ];
+
+  // H04 — 사용자 타임라인 기준 #7 (이순신 영입 전 등장 가능 → 분기)
+  function H04_KO_dyn(){
+    var hasYi = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H01') >= 0);
+    var hasMarco = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H08') >= 0);
+    var lines = [
+      {char:'hero04', name:'유리 가가린', color:'#66ddff', text:'Поехали! 출발합시다! …아, 아직 전쟁 중인가요?'},
+      {char:'commander', name:'{사령관}', color:'#00f3ff', text:'네. 100년이 지났습니다.'},
+      {char:'hero04', name:'유리 가가린', color:'#66ddff', text:'100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.'},
+      {char:'hero04', name:'유리 가가린', color:'#66ddff', text:'그래도 우주는 여전히 아름다울 거예요.'}
+    ];
+    if(hasYi){
+      lines.push({char:'hero04', name:'유리 가가린', color:'#66ddff', text:'이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.'});
+    } else if(hasMarco){
+      lines.push({char:'hero04', name:'유리 가가린', color:'#66ddff', text:'와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.'});
+    } else {
+      lines.push({char:'hero04', name:'유리 가가린', color:'#66ddff', text:'{사령관}이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.'});
+    }
+    return lines;
+  }
+
+  // H08 — 사용자 타임라인 기준 #6 (첫 영웅 → 분기)
+  function H08_KO_dyn(){
+    var hasYi = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H01') >= 0);
+    var lines = [
+      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'허허. 100년을 기다렸소. 이런 통쾌한 광경을.'},
+      {char:'commander', name:'{사령관}', color:'#00f3ff', text:'당신은…?'},
+      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'마르코 폴로요. 제네시스 프로토콜 H08.'},
+      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.'}
+    ];
+    if(hasYi){
+      lines.push({char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.'});
+    } else {
+      lines.push({char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.'});
+    }
+    lines.push({char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'대신 지구까지 데려다 주시오.'});
+    return lines;
+  }
+
+  var H05_KO = [
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#aaffaa', text:'…이순신. 설마 당신이오?'},
+    {char:'hero01', name:'이순신', color:'#ffd700', text:'나요. 넬슨. 오래됐소.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#aaffaa', text:'200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#aaffaa', text:'England expects— 아니. 이제는 지구가 기대한다. 합시다, {사령관}.'}
+  ];
+
+  var H02_KO = [
+    {char:'hero02', name:'장영실', color:'#9ee7ff', text:'구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'찾았습니다. 설계도 1권을 가지고 있습니다.'},
+    {char:'hero02', name:'장영실', color:'#9ee7ff', text:'…!'},
+    {char:'hero02', name:'장영실', color:'#9ee7ff', text:'내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.'},
+    {char:'hero02', name:'장영실', color:'#9ee7ff', text:'다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!'}
+  ];
+
+  var H06_KO = [
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'당신이 왔군요. 예상했습니다.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'예상했다고요?'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, P27 균열의 간섭을 받는 P01 프록시마 b. {사령관}의 각성 지점이었습니다.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.'}
+  ];
+
+  var H07_KO = [
+    {char:'hero07', name:'니콜라 테슬라', color:'#66ffff', text:'들어오지 마세요! 지금 정밀 조정 중이에요!'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'10만 크레딧 무역 실적 보유 팀이 왔습니다.'},
+    {char:'hero07', name:'니콜라 테슬라', color:'#66ffff', text:'진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.'},
+    {char:'hero02', name:'장영실', color:'#9ee7ff', text:'(코일을 살피며 0.3mm 핀 오차를 맨눈으로 잡아낸다) 천 년 전에도 나는 이렇게 했소.'},
+    {char:'hero07', name:'니콜라 테슬라', color:'#66ffff', text:'완성이에요! 100년 만에 완성! 이제 갈 수 있어요!'}
+  ];
+
+  var H03_KO = [
+    {char:'hero03', name:'광개토대왕', color:'#ff6644', text:'1,700년. 내 땅이 다시 내 손에 돌아왔구나.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'광개토대왕.'},
+    {char:'hero03', name:'광개토대왕', color:'#ff6644', text:'{사령관}이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.'},
+    {char:'hero03', name:'광개토대왕', color:'#ff6644', text:'고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.'},
+    {char:'hero03', name:'광개토대왕', color:'#ff6644', text:'{사령관}, 최종 명령권은 그대에게 있소.'}
+  ];
+
+  // 정적 영웅 = 배열, 동적(분기 필요) 영웅 = 함수
+  var HERO_RECRUIT_SCENES_KO = {
+    H01: H01_KO,
+    H02: H02_KO,
+    H03: H03_KO,
+    H04: H04_KO_dyn,
+    H05: H05_KO,
+    H06: H06_KO,
+    H07: H07_KO,
+    H08: H08_KO_dyn
+  };
+
+  // 영문 — 핵심 영웅(H01)만 우선 작성, 나머지는 한국어로 폴백
+  var H01_EN = [
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'…One hundred years. I slept for a century.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Admiral Yi.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'You woke me? …And Earth?'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Still under blockade.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'The Cheeks remain. Then there is still a reason to fight.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'Is this a war we can win?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'It is a war we must win.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'Different words. You did not say "we shall," but "we must." A more honest answer. I will join you.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'{사령관}. I do not fight unnecessary battles. Only wars I can win.'}
+  ];
+  var HERO_RECRUIT_SCENES_EN = { H01: H01_EN };
+
+  function getScenes(hid){
+    var lang = (window.I18N && window.I18N.getLang) ? window.I18N.getLang() : 'ko';
+    var src = (lang === 'en' && HERO_RECRUIT_SCENES_EN[hid])
+      ? HERO_RECRUIT_SCENES_EN[hid]
+      : HERO_RECRUIT_SCENES_KO[hid];
+    if(!src) return null;
+    // 함수면 호출해서 동적 분기 적용, 배열이면 그대로
+    return (typeof src === 'function') ? src() : src;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 시나리오 영웅 등장 순서 — 사용자 타임라인 확정
+  // 기반: Doc/QUEST_TIMELINE_HERO_ROUTE.md + Doc/galaxy_map_hero_route_analysis.html
+  // 실제 지도 이동 경로 기반 — 백트래킹 최소화
+  //
+  //   step #6  → H08 마르코 폴로     (우르사-알파, CH05)
+  //   step #7  → H04 유리 가가린      (로스 128-b, CH04)
+  //   step #10 → H01 이순신          (Kepler-22b, CH03)
+  //   step #17 → H05 호레이쇼 넬슨    (Kepler-442b, CH06)
+  //   step ★   → H02 장영실          (넥서스 프라임 귀환, CH07)
+  //   step #19 → H03 광개토대왕      (글리제 667Cc 재방문, CH13~14)
+  //   step #23 → H06 아인슈타인      (캅테인b 균열, CH09)
+  //   step #31 → H07 니콜라 테슬라    (TRAPPIST-1e, CH10~12)
+  // ═══════════════════════════════════════════════════════════════════
+  var SCENARIO_ORDER = ['H08','H04','H01','H05','H02','H03','H06','H07'];
+
+  // 영웅 ↔ 행성 캐논 매핑 + 영입 조건
+  // planet: 캐논 영입 행성 (현재 게임 코드의 행성 ID 추정 — 매핑 필요시 game.js 측 PLANET_DEF 참조)
+  // cond: 영입 추가 조건 함수 (해당 영웅이 등장하기 위해 필요한 추가 조건)
+  // step: 사용자 타임라인 step 번호 (디버그/로깅용)
+  var HERO_PLANET_MAP = {
+    H08: { planet:'P19', step:6,  ko:'우르사-알파',        cond:function(){ return true; } },
+    H04: { planet:'P04', step:7,  ko:'로스 128-b',         cond:function(){ return true; } },
+    H01: { planet:'P13', step:10, ko:'Kepler-22b',         cond:function(){
+      // 난중일기 영인본(G18) 보유 시
+      return !!(window.G && window.G.inventory && window.G.inventory.find(function(i){ return i.id==='G18' && i.qty>0; }));
+    }},
+    H05: { planet:'P14', step:17, ko:'Kepler-442b',        cond:function(){ return true; } },
+    H02: { planet:'P06', step:18, ko:'넥서스 프라임 (귀환)', cond:function(){
+      // 설계도 1권 보유 (H05 넬슨 영입 후 자연 획득 가정)
+      // 단순화: H05 영입 완료 시 = 설계도 1권 확보 상태로 간주
+      return !!(window.G && window.G.heroes && window.G.heroes.indexOf('H05') >= 0);
+    }},
+    H03: { planet:'P08', step:19, ko:'글리제 667Cc (재)',   cond:function(){
+      // 4,100만 크레딧 누적 (경매 자본)
+      return !!(window.G && (window.G.credits||0) >= 41000000);
+    }},
+    H06: { planet:'P28', step:23, ko:'캅테인b 균열',        cond:function(){ return true; } },
+    H07: { planet:'P09', step:31, ko:'TRAPPIST-1e',        cond:function(){
+      // 무역 누적 100,000 크레딧 (game.js 측의 _tradeTotalEarned 또는 유사 필드)
+      var total = 0;
+      if(window.G){
+        total = window.G._tradeTotalEarned || window.G.tradeTotal || window.G._totalTradeProfit || 0;
+      }
+      return total >= 100000;
+    }}
+  };
+
+  // 현재 행성에서 등장 가능한 다음 영웅 (시나리오 순서 + 조건 충족)
+  function nextHeroAtPlanet(pid){
+    var next = nextStoryHero();
+    if(!next) return null;
+    var info = HERO_PLANET_MAP[next];
+    if(!info) return null;
+    if(info.planet !== pid) return null;
+    if(typeof info.cond === 'function' && !info.cond()) return null;
+    return next;
+  }
+
+  function canHeroAppear(hid){
+    var idx = SCENARIO_ORDER.indexOf(hid);
+    if(idx < 0) return true;
+    if(!window.G || !window.G.heroes) return idx === 0;
+    var prev = SCENARIO_ORDER.slice(0, idx);
+    for(var i=0;i<prev.length;i++){
+      if(window.G.heroes.indexOf(prev[i]) < 0) return false;
+    }
+    return true;
+  }
+
+  function nextStoryHero(){
+    if(!window.G || !window.G.heroes) return SCENARIO_ORDER[0];
+    for(var i=0;i<SCENARIO_ORDER.length;i++){
+      if(window.G.heroes.indexOf(SCENARIO_ORDER[i]) < 0) return SCENARIO_ORDER[i];
+    }
+    return null;  // 8영웅 전원 영입 완료
+  }
+
+  // ─── 영웅 영입 시 트리거 (중복 방지) ───
+  function triggerHeroRecruitScene(hid, onDone){
+    var scenes = getScenes(hid);
+    if(!scenes){
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    if(!window.G) window.G = {};
+    if(!window.G._scenesSeen) window.G._scenesSeen = {};
+    var key = 'hero_' + hid;
+    if(window.G._scenesSeen[key]){
+      // 이미 본 컷씬 — 스킵
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    window.G._scenesSeen[key] = true;
+    // 세이브에 즉시 반영 (game.js saveGame 사용)
+    if(typeof window.saveGame === 'function'){
+      try{ window.saveGame(true); }catch(e){}
+    }
+    showCharDialog({ scenes: scenes, onDone: onDone });
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 전역 노출
+  // ═══════════════════════════════════════════════════════════════════
+  window.STORY_SCENES_PC = {
+    version: '1.0.0',
+    showCharDialog: showCharDialog,
+    triggerHeroRecruitScene: triggerHeroRecruitScene,
+    canHeroAppear: canHeroAppear,
+    nextStoryHero: nextStoryHero,
+    nextHeroAtPlanet: nextHeroAtPlanet,
+    SCENARIO_ORDER: SCENARIO_ORDER,
+    HERO_PLANET_MAP: HERO_PLANET_MAP,
+    rep: rep,
+    // 테스트용: 콘솔에서 window.STORY_SCENES_PC.testScene('H01') 가능
+    testScene: function(hid){
+      var scenes = getScenes(hid);
+      if(!scenes){ console.warn('[STORY_SCENES_PC] No scenes for', hid); return; }
+      showCharDialog({ scenes: scenes });
+    }
+  };
+
+  console.log('[STORY_SCENES_PC] Loaded v' + window.STORY_SCENES_PC.version
+    + ' — scenario order:', SCENARIO_ORDER.join(' → '));
+})();

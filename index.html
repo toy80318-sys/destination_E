@@ -346,7 +346,7 @@ window.addEventListener('desktop-save-restored',function(e){
 </div><!-- /#game-stage -->
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
-<script>window._GAME_VER='20260606.pc_v1.0.0-beta.43';</script>
+<script>window._GAME_VER='20260606.pc_v1.0.0-beta.44';</script>
 <!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
 <script src="js/i18n.js?v=20260605730"></script>
 <script src="js/data/i18n_dict.js?v=20260605730"></script>
@@ -368,6 +368,23 @@ window.addEventListener('desktop-save-restored',function(e){
 <script src="js/desktop-bridge.js?v=20260605730"></script>
 <!-- ═══ GAME LOGIC ═══ -->
 <script src="game.js?v=20260605730"></script>
+<!-- ═══ PC 전용 시나리오 컷씬·대화 (Electron 빌드에서만 로드) ═══
+     · 캐시 부담 분리: 웹 PWA 배포에서 제외 (firebase.json + service-worker 처리)
+     · 영웅 첫만남 대화 + 캐릭터 풀스크린 팝업 + 시나리오 영입 순서 -->
+<script>
+(function(){
+  // Electron 환경 감지 — desktop-bridge.js가 먼저 로드되어 window.desktopAPI 세팅됨
+  // userAgent 폴백도 같이 (preload 미설정 빌드 대비)
+  var isElectron = !!(window.desktopAPI)
+    || /Electron/i.test(navigator.userAgent||'');
+  if(!isElectron) return;
+  var s = document.createElement('script');
+  s.src = 'js/story-scenes-pc.js' + (window._GAME_VER?'?v='+encodeURIComponent(window._GAME_VER):'?v=20260605730');
+  s.async = false;
+  s.onerror = function(){ console.warn('[STORY_SCENES_PC] failed to load (file missing on this build?)'); };
+  document.head.appendChild(s);
+})();
+</script>
 <!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
 if ('serviceWorker' in navigator && !window.desktopAPI) {

@@ -8752,20 +8752,34 @@ function doGacha(n,useCr,crCost,minRarity){
     const cl=CLASSES[Math.floor(Math.random()*CLASSES.length)];
     let newCrew;
     if(rarity==='L'){
-      // 전설 등급 — 30% 확률로 8인의 영웅(H01~H08) 중 미영입 영웅 등장
-      // 단, 현재 행성당 영웅 최대 2명 제한 (행성별 카운터)
-      // 70%는 기존 QUEST_LEGEND_CREW 풀에서 선정
+      // 전설 등급 — 시나리오 순서 + 캐논 행성 매칭 (사용자 타임라인 기반)
+      // 영웅은 정해진 행성에서, 시나리오 순서대로만 등장 (랜덤 제거)
+      // PC 빌드: STORY_SCENES_PC.HERO_PLANET_MAP 사용 / 웹 빌드: 내장 폴백 사용
       if(!G.planetHeroCount)G.planetHeroCount={};
       const _curPid=G.currentPlanet;
       const _phCountG=G.planetHeroCount[_curPid]||0;
-      // H01 이순신은 난중일기 영인본(G18) 보유 시에만 풀 포함 — 없으면 다음 기회로 보존
-      const _hasG18=!!(G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0));
-      const _unrecruitedHeroes=Object.keys(HEROES||{}).filter(hid=>!(G.heroes||[]).includes(hid)&&(hid!=='H01'||_hasG18));
-      if(_unrecruitedHeroes.length>0&&_phCountG<2&&Math.random()<0.30){
-        const _hid=_unrecruitedHeroes[Math.floor(Math.random()*_unrecruitedHeroes.length)];
+      // 캐논 매핑 + 조건 (story-scenes-pc.js와 일치하는 폴백 — 웹/PC 공통)
+      const _SCN_ORDER=['H08','H04','H01','H05','H02','H03','H06','H07'];
+      const _HPMAP={
+        H08:{planet:'P19',cond:()=>true},
+        H04:{planet:'P04',cond:()=>true},
+        H01:{planet:'P13',cond:()=>!!(G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0))},
+        H05:{planet:'P14',cond:()=>true},
+        H02:{planet:'P06',cond:()=>(G.heroes||[]).includes('H05')},
+        H03:{planet:'P08',cond:()=>(G.credits||0)>=41000000},
+        H06:{planet:'P28',cond:()=>true},
+        H07:{planet:'P09',cond:()=>{
+          const t=G._tradeTotalEarned||G.tradeTotal||G._totalTradeProfit||0;
+          return t>=100000;
+        }}
+      };
+      // 다음 영웅 = 시나리오 순서대로 미영입 첫 번째
+      const _nextHid=_SCN_ORDER.find(h=>!(G.heroes||[]).includes(h));
+      const _hpInfo=_nextHid?_HPMAP[_nextHid]:null;
+      // 현재 행성 = 그 영웅 캐논 행성 + 영입 조건 충족 → 가챠 풀에 추가
+      if(_nextHid&&_hpInfo&&_hpInfo.planet===_curPid&&_hpInfo.cond()&&_phCountG<2&&Math.random()<0.30){
         G.planetHeroCount[_curPid]=_phCountG+1;
-        // 영웅은 G.heroes에 추가하므로 특수 플래그로 표시 (이후 모달 트리거)
-        results.push({_heroRoll:_hid,id:_hid,nm:HEROES[_hid].nm,ic:HEROES[_hid].ic,rarity:'S',cl:HEROES[_hid].cl||'Pilot',isHero:true});
+        results.push({_heroRoll:_nextHid,id:_nextHid,nm:HEROES[_nextHid].nm,ic:HEROES[_nextHid].ic,rarity:'S',cl:HEROES[_nextHid].cl||'Pilot',isHero:true});
         continue;  // 일반 크루 처리 건너뜀
       }
       // 전설은 QUEST_LEGEND_CREW 풀에서
@@ -13118,6 +13132,10 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
   // 장영실: 모든 행성 안개 제거
   if(heroId==='H02'){applyJangYeongsilEffect();notify(I18N.t('notify.jangYeongsilEffect'),'gold');}
   saveGame(true);
+  // PC 전용: 영입 직후 시나리오 첫만남 컷씬 재생 (이미 본 장면은 자동 스킵)
+  if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
+    setTimeout(function(){ window.STORY_SCENES_PC.triggerHeroRecruitScene(heroId); }, 400);
+  }
 }
 function applyJangYeongsilEffect(){
   if(!G.heroes.includes('H02'))return;

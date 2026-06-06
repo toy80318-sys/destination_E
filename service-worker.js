@@ -1,6 +1,6 @@
 // DESTINATION EARTH — PWA Service Worker
 // 캐시 버전은 game.js의 _GAME_VER 가 바뀔 때마다 함께 올려야 새 빌드가 강제 갱신됨.
-const CACHE_VERSION = 'de-cache-v20260606-111';
+const CACHE_VERSION = 'de-cache-v20260606-112';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -43,6 +43,7 @@ self.addEventListener('activate', (event) => {
 // · Firebase / 외부 도메인: 항상 네트워크 (캐시하지 않음)
 // · HTML / JS / CSS / JSON: network-first → 실패 시 cache
 // · 이미지·오디오·폰트: cache-first → 없으면 네트워크 후 캐시
+// · PC 전용 콘텐츠(js/story-scenes-pc.js, img/chars-hd/*): 가로채지 않음 (웹 빌드엔 부재)
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -51,6 +52,11 @@ self.addEventListener('fetch', (event) => {
 
   // 같은 출처가 아니면(예: firebase, gstatic) 가로채지 않음 → 브라우저 기본 처리
   if (url.origin !== self.location.origin) return;
+
+  // PC 전용 리소스는 캐싱·폴백 대상 아님 (웹 빌드엔 존재하지 않음)
+  if (url.pathname.includes('/story-scenes-pc.js') || url.pathname.includes('/chars-hd/')) {
+    return;
+  }
 
   const dest = req.destination;
   const isAsset = ['image', 'audio', 'video', 'font'].includes(dest);
