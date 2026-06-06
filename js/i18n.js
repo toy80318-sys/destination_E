@@ -63,23 +63,32 @@ window.I18N = (function () {
     if (_lang === lang) return true;
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     _lang = lang;
-    // 가장 안전하고 일관된 변경: 페이지 새로고침
-    // (게임 진행 중일 때만 활성 슬롯에 자동저장 — 타이틀 화면에서는 빈 G가 슬롯을 초기화하지 않도록 차단)
+    // 사용자 보고 (2026-06-06, eng2.png): 언어 전환 시 함선·행성이 사라지는 현상.
+    //   원인: 종전 코드는 _activeSlot != null 일 때만 저장 → 새 게임은 _activeSlot 미설정이라
+    //         저장이 스킵됨. 또한 saveGame(silent=true)는 800ms 디바운스라 100ms 후 reload 전
+    //         실제 저장이 완료되지 않을 수 있음.
+    //   수정: G.profile.name 만 있으면 (게임 진행 중) 강제로 동기 저장. 슬롯이 없으면 1번 폴백.
     try {
       var _G = window.G;
-      if (typeof window.saveGame === 'function'
-          && _G && _G.profile && _G.profile.name
-          && _G._activeSlot != null) {
-        window.saveGame(true, _G._activeSlot);
+      if (_G && _G.profile && _G.profile.name) {
+        var _slot = (_G._activeSlot != null) ? _G._activeSlot : 1;
+        // 디바운스 우회: 내부 즉시 저장 함수가 노출돼 있으면 그것을 호출, 없으면 saveGame(false)로
+        // 명시적(non-silent) 호출하여 디바운스를 우회 (saveGame은 silent=false에서 즉시 실행).
+        if (typeof window._saveGameImmediate === 'function') {
+          window._saveGameImmediate(true, _slot);
+        } else if (typeof window.saveGame === 'function') {
+          window.saveGame(false, _slot);
+        }
       }
-    } catch (e) {}
+    } catch (e) { console.warn('[setLang autosave]', e); }
     // Electron PC 빌드: 메인 프로세스(메뉴 라벨) 동기화 — 새로고침 전에 호출
     try {
       if (window.desktopAPI && typeof window.desktopAPI.setLangPref === 'function') {
         window.desktopAPI.setLangPref(lang);
       }
     } catch (e) {}
-    setTimeout(function () { try { window.location.reload(); } catch (e) {} }, 100);
+    // 동기 저장이 끝났으므로 reload 지연을 줄임 (사용자 체감 응답성 개선)
+    setTimeout(function () { try { window.location.reload(); } catch (e) {} }, 50);
     return true;
   }
 

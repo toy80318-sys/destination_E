@@ -2091,6 +2091,9 @@ function startGame(){
   G.profile.name=nm;G.profile.company=co||I18N.t('ui.companyDefault');G.profile.ship=sh||I18N.t('ui.shipDefault');
   // 명예의 전당 — 플레이 시간 기록용
   if(!G._gameStartedAt)G._gameStartedAt=Date.now();
+  // 사용자 보고 (2026-06-06): 새 게임 시 _activeSlot 미설정 → 언어 전환 등에서 저장 실패.
+  //   슬롯 1을 기본으로 할당. 이후 사용자가 다른 슬롯에 저장하면 그것으로 갱신.
+  G._activeSlot=1;
   err.textContent='';initGame();show('s-prologue');startPrologue();
 }
 
@@ -18194,6 +18197,7 @@ function _getSlotInfo(n){
 // 큰 G의 JSON.stringify는 100~500ms 동기 블로킹이라 매 액션마다 호출 시 멈춤 원인.
 let _saveDebounceTimer=null;
 let _saveDebouncePendingSlot=null;
+// 사용자 보고 (2026-06-06): 언어 전환 시 즉시 동기 저장이 필요해 window에 노출
 function _saveGameImmediate(silent,slotN){
   // 활성 슬롯 추적: loadGame에서 G._activeSlot에 슬롯 번호 저장 → saveGame은 그 슬롯에 저장
   // (기존 버그: slotN 미지정 시 무조건 슬롯1에 덮어써 다른 슬롯에서 플레이 중인 데이터가 슬롯1로 이동)
@@ -18271,6 +18275,8 @@ function _saveGameImmediate(silent,slotN){
   }
 }
 // 공개 진입점 — silent 호출은 800ms 디바운스, 사용자 트리거는 즉시 실행
+// _saveGameImmediate를 window에 노출 — 언어 전환 시 즉시 저장에 사용 (i18n.js setLang)
+try{if(typeof window!=='undefined')window._saveGameImmediate=_saveGameImmediate;}catch(e){}
 function saveGame(silent,slotN){
   if(!silent){
     // 사용자 트리거: 대기 중인 디바운스 취소 + 즉시 실행 (피드백 보장)
