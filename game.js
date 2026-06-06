@@ -3345,6 +3345,52 @@ function _checkActAdvance(){
   }
 }
 try{if(typeof window!=='undefined')window._checkActAdvance=_checkActAdvance;}catch(e){}
+
+// ── 게임 전체 메모리 위생 (사용자 보고 2026-06-06): 장시간 플레이 시 누적 슬로다운 ──
+// 매 N턴마다 호출 — 누적 배열·캐시·DOM 트림. 전투 중에는 스킵 (전투 종료 후 별도 정리).
+let _lastHygieneTurn=0;
+function _periodicMemoryHygiene(){
+  try{
+    if(typeof combatState!=='undefined'&&combatState&&!combatState.done)return;
+    if(G.turn-_lastHygieneTurn<10)return;
+    _lastHygieneTurn=G.turn;
+    // 전투 기록 강제 트림 (push 시점에 100 캡이 있지만 안전망)
+    if(Array.isArray(G.combatHistory)&&G.combatHistory.length>100){
+      G.combatHistory.splice(0,G.combatHistory.length-100);
+    }
+    // 명예의 전당 기록은 ACT당 최신 50개만 유지
+    if(Array.isArray(G.hallOfFame)&&G.hallOfFame.length>50){
+      G.hallOfFame.splice(0,G.hallOfFame.length-50);
+    }
+    // 알림 컨테이너 잔재 노드 (떠나는 DOM 강제 정리)
+    try{
+      const c=document.getElementById('notifications');
+      if(c){while(c.children.length>5)c.removeChild(c.firstChild);}
+    }catch(e){}
+    // 백구 메시지 컨테이너 잔재
+    try{
+      const m=document.getElementById('bk-msgs');
+      if(m){while(m.children.length>6)m.removeChild(m.firstChild);}
+    }catch(e){}
+    // 전투 잔존 이펙트/위치 — 비전투 시 무조건 비움
+    try{if(typeof _cbEffects!=='undefined')_cbEffects.length=0;}catch(e){}
+    try{if(typeof _unitPos!=='undefined'){for(const k in _unitPos)delete _unitPos[k];}}catch(e){}
+    // 전투 이미지 캐시 — 비전투 시 절반 트림 (LRU 가장 오래된 절반 제거)
+    try{
+      if(typeof _cbImgCacheMap!=='undefined'&&_cbImgCacheMap.size>20){
+        const _drop=_cbImgCacheMap.size-20;
+        const _it=_cbImgCacheMap.keys();
+        for(let i=0;i<_drop;i++){const _k=_it.next().value;if(_k===undefined)break;_cbImgCacheMap.delete(_k);}
+      }
+    }catch(e){}
+    // 충돌 해소 풀
+    try{if(window._resolvedPool)window._resolvedPool.length=0;}catch(e){}
+    // 전투 배경 캔버스 — 다음 전투 진입 시 재생성
+    try{if(typeof _cbBgCache!=='undefined')_cbBgCache=null;}catch(e){}
+  }catch(e){console.warn('[memHygiene]',e);}
+}
+try{if(typeof window!=='undefined')window._periodicMemoryHygiene=_periodicMemoryHygiene;}catch(e){}
+
 function doNextTurn(){
   G.turn++;
   // 턴 종료 — 현재 행성 허브 해금 진행도 +1 (퀘스트·잔해탐색·해적격파와 동일 카운트)
@@ -3468,6 +3514,8 @@ function doNextTurn(){
       if(restocked)notify(I18N.t('notify.matsPartialRestock'),'ok');
     }
   })();
+  // 주기적 메모리 위생 (10턴마다, 비전투 시) — 누적 슬로다운 방지
+  try{_periodicMemoryHygiene();}catch(e){}
   saveGame(true);hubTab('main');
 }
 // ── 적군 스탯 밸런스 캡 ────────────────────────────────────────────
@@ -15098,6 +15146,8 @@ function travelTo(){
   G.turn++;
   // ACT 전환 체크 — 이동도 턴을 소모하므로 doNextTurn 과 동일 트리거 필요 (버그 수정)
   try{_checkActAdvance();}catch(e){}
+  // 행성 이동 시에도 주기적 메모리 위생 (10턴마다, 비전투)
+  try{_periodicMemoryHygiene();}catch(e){}
   updateHUD();renderMap();G.mapSelected=null;
   // 행성 도착 즉시 사이드바 잠금/진행도 표시 갱신 (이전 행성 상태 잔존 차단)
   try{updateHubLockButtons();}catch(e){}
