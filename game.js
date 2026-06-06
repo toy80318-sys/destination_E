@@ -15578,7 +15578,7 @@ function _restoreCombatSkillButtons(){
 //                img/combat/enemies/{enemyType}.png (적 함선)
 // PNG 없으면 벡터 폴백으로 자동 전환
 // 전투 이미지 캐시: LRU 상한으로 메모리 누수 방지 (장시간 플레이 시 다운 예방)
-const _CB_IMG_CACHE_MAX=128;
+const _CB_IMG_CACHE_MAX=80;  // 사용자 보고 (2026-06-06): 다운/RAM 폭증 — 128 → 80 (약 -37%)
 const _cbImgCacheMap=new Map();   // 실제 LRU 순서 보존용
 const _cbImgCache=new Proxy({},{   // 기존 코드 호환 (cache[src] 형태로 접근)
   get(_,k){return _cbImgCacheMap.get(k);},
@@ -15688,8 +15688,8 @@ function _preloadCombatImages(){
     });
   }
 }
-// 맵 이미지 캐시 — LRU 64개 캡 (행성 30+ × 변형 + 캐시버스터 변경 대비 충분)
-const _MAP_IMG_CACHE_MAX=64;
+// 맵 이미지 캐시 — LRU 48개 캡 (행성 30+ × 변형, 다운 보고 2026-06-06 후 64→48)
+const _MAP_IMG_CACHE_MAX=48;
 const _mapImgCacheMap=new Map();
 const _mapImgCache=new Proxy({},{
   get(_,k){return _mapImgCacheMap.get(k);},
@@ -16732,8 +16732,8 @@ function drawCombatFrame(){
   });
   // 미사일→폭발 등 filter 콜백 내부에서 발생한 신규 이펙트 합치기
   if(_newEffs.length)_cbEffects.push(..._newEffs);
-  // 이펙트 상한 200 — 다중 살보·광역 공격 누적 시 메모리 폭증 차단 (사용자 크래시 보고 후 300→200 축소)
-  if(_cbEffects.length>200)_cbEffects.splice(0,_cbEffects.length-200);
+  // 이펙트 상한 150 — 다중 살보·광역 공격 누적 시 메모리 폭증 차단 (다운 재보고 후 200→150)
+  if(_cbEffects.length>150)_cbEffects.splice(0,_cbEffects.length-150);
   // heavyMode shadowBlur 오버라이드 해제 — prototype의 shadowBlur 다시 사용
   if(_heavyMode){try{delete cbCtx.shadowBlur;}catch(e){}}
   cbCtx.restore();
@@ -17334,6 +17334,16 @@ function _finishCombat(){
   // (예약된 setTimeout SFX는 클로저로 combatState.done 체크해서 자동 차단)
   try{AudioMgr.stopAllSfx();}catch(e){}
   try{_cbEffects=[];if(typeof _cbAnimReq!=='undefined'&&_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}}catch(e){}
+  // 사용자 보고 (2026-06-06): 장기간 플레이 중 RAM 폭증·다운 — 전투 종료마다
+  //   배경 캔버스(~1-2MB)와 이미지 캐시 절반을 즉시 해제해 GC 압박 완화.
+  try{_cbBgCache=null;}catch(e){}
+  try{
+    if(typeof _cbImgCacheMap!=='undefined'&&_cbImgCacheMap.size>_CB_IMG_CACHE_MAX/2){
+      const _toDrop=_cbImgCacheMap.size-Math.floor(_CB_IMG_CACHE_MAX/2);
+      const _iter=_cbImgCacheMap.keys();
+      for(let i=0;i<_toDrop;i++){const _k=_iter.next().value;if(_k===undefined)break;_cbImgCacheMap.delete(_k);}
+    }
+  }catch(e){}
   const win=combatState.enemies.filter(u=>u.hp>0).length===0;
   const pid=combatState._planetId||G.currentPlanet;
   const pd=combatState.planetDef||{};
