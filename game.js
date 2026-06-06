@@ -10271,15 +10271,26 @@ function takeLoan(){
   saveGame(true);rerenderTab(renderQuestTab);
 }
 // ═══ 제작소 ═════════════════════════════════════════════════════════
-function rollCraftQuality(){
+function rollCraftQuality(superiorBonus){
   // 제작 품질 등급 (확률 동일, 배율만 조정)
   // 마스터작 +30% / 상급작 +15% / 보통 ±0% / 하급 -10% / 불량 -20%
+  //
+  // 사용자 요청 (2026-06-06): 함선 제작 시 "상급 이상(상급작+마스터작)" 확률에
+  //   100회 제작당 +1%p 누적 보너스. 보너스는 superiorBonus(0~1) 인자로 받음.
+  //   상급작/마스터작 영역을 확장하고 보통(이하) 영역을 그만큼 축소.
+  const _bonus=Math.max(0,Math.min(0.30,+superiorBonus||0));  // 최대 30%p 안전 캡
   const r=Math.random();
-  if(r<0.065)return{mult:1.30,label:I18N.t('craft.masterpiece'),col:'#ff8800'};
-  if(r<0.18) return{mult:1.15,label:I18N.t('craft.superior'),col:'#d4af37'};
-  if(r<0.53) return{mult:1.00,label:I18N.t('craft.normal'),col:'var(--cyan)'};
-  if(r<0.765)return{mult:0.90,label:I18N.t('craft.poor'),col:'var(--dim)'};
+  if(r<0.065+_bonus*0.36)return{mult:1.30,label:I18N.t('craft.masterpiece'),col:'#ff8800'};  // 마스터작도 비율 따라 소폭 상승
+  if(r<0.18+_bonus)       return{mult:1.15,label:I18N.t('craft.superior'),col:'#d4af37'};
+  if(r<0.53+_bonus)       return{mult:1.00,label:I18N.t('craft.normal'),col:'var(--cyan)'};
+  if(r<0.765+_bonus)      return{mult:0.90,label:I18N.t('craft.poor'),col:'var(--dim)'};
   return{mult:0.80,label:I18N.t('craft.faulty'),col:'var(--red)'};
+}
+// 함선 제작 누적 카운터 기반 상급이상 보너스 — 10회당 +0.1%p (사용자 정정 2026-06-06),
+//   최대 30%p 캡은 rollCraftQuality 내부에서 안전망 적용.
+function _shipCraftSuperiorBonus(){
+  const _n=(G&&G.craftCount)?G.craftCount:0;
+  return Math.floor(_n/10)*0.001;
 }
 // 폭죽 연출 — 마스터작 제작 시 화면 전체에 분출 + 효과음 (사용자 요청)
 function _fireFireworks(){
@@ -10378,7 +10389,12 @@ function doCraft(recipeId){
 
   (()=>{
     if(grid){grid.style.animation='';grid.style.filter='';grid.style.pointerEvents='';}
-    const q=rollCraftQuality();
+    // 사용자 요청 (2026-06-06): 함선 제작 시 누적 카운터 기반 "상급 이상" 확률 +0.1%/10회 보너스.
+    //   카운터는 모든 제작(파츠/창고/함선)에서 누적되며 함선 제작 품질 롤에만 보너스 적용.
+    if(G.craftCount==null)G.craftCount=0;
+    G.craftCount++;
+    const _shipBonus=(rec.type==='ship')?_shipCraftSuperiorBonus():0;
+    const q=rollCraftQuality(_shipBonus);
     const mult=q.mult;
     // 마스터작(최고 등급) 발생 시 폭죽 연출 (사용자 요청)
     if(mult>=1.30)try{_fireFireworks();}catch(_e){}
@@ -10754,6 +10770,7 @@ function renderCraftTab(body){
               ${craftBtnTxt}
             </button>
             <div style="font-size:9px;color:var(--dim);margin-top:4px;line-height:1.5">${I18N.t('ui.craftQualityRates')}</div>
+            ${selRec.type==='ship'?(()=>{const _b=_shipCraftSuperiorBonus();const _cnt=(G&&G.craftCount)||0;return `<div style="font-size:10px;color:${_b>0?'var(--gold)':'var(--dim)'};margin-top:3px;line-height:1.5">${I18N.t('craft.superiorBonusLine',{cnt:_cnt,pct:(_b*100).toFixed(1)})}</div>`;})():''}
           </div>
           <div style="text-align:center;margin-bottom:10px">${_imgHtml}</div>
           <div style="text-align:center;margin-bottom:8px">

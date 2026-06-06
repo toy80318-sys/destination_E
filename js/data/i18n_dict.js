@@ -5105,6 +5105,8 @@ I18N.register({
   'report.victoryTitle':     { ko: '🏆 전투 승리 보고',         en: '🏆 Victory Report' },
   'report.allWinCaptured':   { ko: '완승 + 적함 {n}척 나포!',    en: 'Total victory + captured {n} enemy ship(s)!' },
   'report.allWin':           { ko: '완승!',                    en: 'Total victory!' },
+  'craft.superiorBonusLine': { ko: '🛠️ 누적 제작 {cnt}회 · 상급 이상 보너스 +{pct}%p (10회당 +0.1%)',
+                                en: '🛠️ {cnt} crafts done · superior+ bonus +{pct}%p (+0.1% per 10)' },
   'enemy.leviathan':        { ko: '레비아탄 (적)',        en: 'Leviathan (Enemy)' },
   'enemy.armada':           { ko: '아르마다 (적)',        en: 'Armada (Enemy)' },
   'enemy.ursaCrusher':      { ko: '우르사 파쇄기 (적)',   en: 'Ursa Crusher (Enemy)' },
