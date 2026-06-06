@@ -5371,6 +5371,7 @@ I18N.register({
   'ui.recruitMatSellHeader':{ ko: '📜 영입 재료 (여분 판매) — 보존 1개 자동 유지', en: '📜 Recruit Mats (Sell Surplus) — 1 always kept' },
   'ui.sellOneBtn':          { ko: '📜 1개 판매',                  en: '📜 Sell 1' },
   'ui.sellAllMinusOne':     { ko: '📜 전량 (-1개)',               en: '📜 Sell All (-1)' },
+  'ui.sellKeepOne':         { ko: '📜 {n}개 매각 (+₡{cr})',        en: '📜 Sell {n} (+₡{cr})' },
   'ui.buyAllShop':          { ko: '🛒 일괄 구매',                 en: '🛒 Buy All' },
   'ui.cargoExpandShortcut': { ko: '🛸 창고 확장↗',                en: '🛸 Expand Cargo↗' },
   'ui.buyableCommHeader':   { ko: '🛒 구매 가능 특산물',          en: '🛒 Buyable Specialties' },
