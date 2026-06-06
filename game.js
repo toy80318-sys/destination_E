@@ -11783,6 +11783,22 @@ function _hasLegendaryFlagship(){
   // 신화 함선 보유 시 해금 (LGD01·02·03 또는 신화 등급 함선 어떤 것이든)
   return (G.fleet||[]).some(sh=>sh.tier==='신화'||sh.tier==='전설기함');
 }
+// ── 행성 경매 가격 계산 ──────────────────────────────────────────────
+//   사용자 요청 (2026-06):
+//     • 즉시구매가(instBid) = 종전 대비 1.5배 인상
+//     • 최저입찰가(minBid)  = 즉시구매가 × 0.3 (70% 더 저렴 — 최저가부터 입찰 가능)
+//   행성 유형별 배율
+//     • 일반:   tax × 8 × auctDiff × disc × 0.8 × 1   → 즉시구매 ×1.3×1.5 → 최저 ×0.3
+//     • 적대:   동일 베이스 × 2.5
+//     • 보이드: 동일 베이스 × 5 (즉시구매 ×1.4×1.5)
+function _calcAuctionPrices(p,auctDiff,gwanggaetoDisc){
+  const mult=p.void?5:p.hostile?2.5:1;
+  const instPremium=(p.void?1.4:1.3)*1.5;  // ×1.5 — 사용자 요청
+  const baseRef=Math.floor(p.tax*8*auctDiff*gwanggaetoDisc*0.8*mult);
+  const instBid=Math.floor(baseRef*instPremium);
+  const minBid =Math.floor(instBid*0.3);   // 30% — 사용자 요청 (70% 할인 최저 입찰)
+  return {minBid,instBid};
+}
 function renderAuctionView(body){
   const auctDiff={easy:1.05,normal:1.15,hard:1.22,extreme:1.30}[G.difficulty]||1.15;
   const gwanggaetoDisc=G.heroes.includes('H03')?0.70:1.0; // 광개토대왕: 경매가 30% 할인
@@ -11818,7 +11834,9 @@ function renderAuctionView(body){
     return st.fog==='A'||st.fog==='S';   // 탐험된 보이드 행성만 노출
   });
   function normalCard(p){
-    const f=FACTION[p.f],startBid=Math.floor(p.tax*8*auctDiff*gwanggaetoDisc*0.8),instBid=Math.floor(startBid*1.3),roi=Math.round(startBid/p.tax);
+    const f=FACTION[p.f];
+    const {minBid:startBid,instBid}=_calcAuctionPrices(p,auctDiff,gwanggaetoDisc);
+    const roi=Math.round(startBid/p.tax);
     const dis=(bidsLeft<=0||_planetsAtLimit)?'disabled':'';
     return `<div class="pl-item" style="flex-direction:row;align-items:stretch;overflow:hidden;padding:0;min-height:130px">
       <!-- 좌측: 정보 + 버튼 -->
@@ -11844,8 +11862,7 @@ function renderAuctionView(body){
   }
   function hostileCard(p){
     const f=FACTION[p.f];
-    const startBid=Math.floor(p.tax*8*auctDiff*2.5*gwanggaetoDisc*0.8);
-    const instBid=Math.floor(startBid*1.3);
+    const {minBid:startBid,instBid}=_calcAuctionPrices(p,auctDiff,gwanggaetoDisc);
     const roi=Math.round(startBid/p.tax);
     const dis=(bidsLeft<=0||_planetsAtLimit)?'disabled':'';
     return `<div class="pl-item" style="flex-direction:row;align-items:stretch;overflow:hidden;padding:0;border-color:#8b00ff88;background:rgba(139,0,255,.06);min-height:130px">
@@ -11874,8 +11891,8 @@ function renderAuctionView(body){
   // 보이드 카드 (치크스 2배 세금, 5배 배율 투자)
   function voidCard(p){
     // 보이드: 치크스(25000)의 2배 세율(50000) × 5배 배율 입찰 (치크스 2.5× → 보이드 5×)
-    const startBid=Math.floor(p.tax*8*auctDiff*5*gwanggaetoDisc*0.8);
-    const instBid=Math.floor(startBid*1.4); // 보이드는 +40% 프리미엄
+    //  · 사용자 요청 (2026-06): 즉시구매 ×1.5, 최저입찰 = 즉시구매 ×0.3 (_calcAuctionPrices 일괄 처리)
+    const {minBid:startBid,instBid}=_calcAuctionPrices(p,auctDiff,gwanggaetoDisc);
     const roi=Math.round(startBid/p.tax);
     return `<div class="pl-item" style="flex-direction:row;align-items:stretch;overflow:hidden;padding:0;border-color:rgba(0,243,255,.5);background:rgba(0,243,255,.05);min-height:130px">
       <div style="flex:1;padding:12px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-width:0">
@@ -11940,8 +11957,8 @@ function renderAuctionView(body){
   // 우측: 입찰 중 행성 (기존 카드들)
   const biddingHtml=`<div style="display:flex;flex-direction:column;height:100%;min-height:0">
     <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--dim);margin-bottom:10px;line-height:1.6;flex-shrink:0">
-      💡 <b style="color:var(--gold)">${I18N.t('ui.instantWin')}</b> +30% 프리미엄 100% 확정 · <b style="color:var(--cyan)">${I18N.t('ui.directBidShort')}</b> 60~90% 확률<br>
-      💡 난이도 ${{easy:I18N.t('ui.diffEasyPlus'),normal:I18N.t('ui.diffNormalPlus'),hard:I18N.t('ui.diffHardPlus'),extreme:I18N.t('ui.diffExtremePlus')}[G.difficulty]||I18N.t('ui.diffNormalPlus')} · 턴당 2회 입찰
+      ${I18N.t('ui.auctionHintLine1',{inst:I18N.t('ui.instantWin'),dir:I18N.t('ui.directBidShort')})}<br>
+      ${I18N.t('ui.auctionHintLine2',{diff:{easy:I18N.t('ui.diffEasyPlus'),normal:I18N.t('ui.diffNormalPlus'),hard:I18N.t('ui.diffHardPlus'),extreme:I18N.t('ui.diffExtremePlus')}[G.difficulty]||I18N.t('ui.diffNormalPlus')})}
     </div>
     ${G.heroes.includes('H03')?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--gold);margin-bottom:8px;flex-shrink:0">${I18N.t('ui.gwanggaetoEffect')}</div>`:''}
     ${bidsLeft<=0?`<div style="background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.3);border-radius:6px;padding:8px;text-align:center;color:var(--red);font-size:12px;margin-bottom:8px;flex-shrink:0">${I18N.t('ui.bidsExhausted')}</div>`:''}
@@ -11983,25 +12000,42 @@ function doBid(pid,amount,instant=false){
   const _maxPlanets=_maxOwnedPlanets();
   if(_ownedCnt>=_maxPlanets){notify(I18N.t('notify.planetLimitOver',{now:_ownedCnt,max:_maxPlanets,rep:_maxPlanets*20}),'err');return;}
   if(!instant){
-    // 직접입찰: 낙찰 확률 60~90% (입찰금액 / 즉시낙찰가 비율로 계산)
+    // 직접입찰 (사용자 요청 2026-06): 0~2명의 경쟁 입찰자가 [minBid, instPrice] 범위에서 무작위 입찰.
+    //   • 경쟁자 0명 → 무조건 낙찰 (최저가 구매 가능)
+    //   • 경쟁자 1~2명 → 플레이어 입찰액 > 모든 경쟁자 최고가일 때 낙찰
+    //   • 패배 시 수수료 10%만 차감 (기존 동일)
     const _auctDiff={easy:1.05,normal:1.15,hard:1.22,extreme:1.30}[G.difficulty]||1.15;
-    // 보이드(균열지대) 5배, 치크스(적대) 2.5배, 일반 1배 배율 적용
-    const _bidMult=pd.void?5:pd.hostile?2.5:1;
-    const instPrice=Math.floor((pd.tax*8)*_auctDiff*_bidMult*1.3);
-    const ratio=Math.min(1.0,amount/instPrice);
-    const chance=Math.round(60+ratio*30); // 60%~90%
-    if(Math.random()*100>chance){
+    const _gd=G.heroes.includes('H03')?0.70:1.0;
+    const {minBid,instBid:instPrice}=_calcAuctionPrices(pd,_auctDiff,_gd);
+    const numComp=Math.floor(Math.random()*3); // 0, 1, 또는 2
+    let maxCompBid=0;
+    for(let i=0;i<numComp;i++){
+      const cb=minBid+Math.random()*Math.max(0,instPrice-minBid);
+      if(cb>maxCompBid)maxCompBid=cb;
+    }
+    if(amount<=maxCompBid){
       G.credits-=Math.floor(amount*0.1); // 수수료 10% 차감
       if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}G.auctionBids++;
-      notify(I18N.t('notify.auctionLost',{nm:pd.nm,pct:chance,fee:Math.floor(amount*0.1).toLocaleString(),remain:Math.max(0,2-G.auctionBids)}),'err');
+      notify(I18N.t('notify.auctionLost',{nm:pd.nm,comp:numComp,top:Math.ceil(maxCompBid).toLocaleString(),fee:Math.floor(amount*0.1).toLocaleString(),remain:Math.max(0,2-G.auctionBids)}),'err');
       baekgu(I18N.t('baekgu.auctionLost'));
       updateHUD();rerenderTab(renderAuctionView);return;
     }
+    // 낙찰 — 경쟁자 정보는 아래 baekgu에서 안내 (auctionWon notify는 win path 끝에서 일괄 발화)
+    window._lastBidComp={n:numComp,top:Math.ceil(maxCompBid)};
   }
   if(!G.auctionBids)G.auctionBids=0;if((G.auctionBidTurn||-1)!==G.turn){G.auctionBids=0;G.auctionBidTurn=G.turn;}
   G.credits-=amount;G.planets[pid].owned=true;G.planets[pid].commerce=1;G.auctionBids++;
+  // 직접입찰 + 낙찰 시 — 경쟁자 정보 부가 안내 (alone / over)
+  const _lbc=window._lastBidComp; window._lastBidComp=null;
   if(pd.hostile){G.planets[pid].hostile_cleared=true;notify(I18N.t('notify.chixMerged',{nm:pd.nm}),'pur');baekgu(I18N.t('baekgu.chixMerged',{nm:pd.nm}));}
-  else{notify(I18N.t('notify.auctionWon',{nm:pd.nm}),'gold');baekgu(I18N.t('baekgu.auctionTax',{nm:pd.nm,tax:calcTaxFor(pid).toLocaleString()}));}
+  else{
+    if(_lbc){
+      notify(I18N.t(_lbc.n===0?'notify.auctionWonAlone':'notify.auctionWonOver',{nm:pd.nm,comp:_lbc.n,top:_lbc.top.toLocaleString()}),'gold');
+    } else {
+      notify(I18N.t('notify.auctionWon',{nm:pd.nm}),'gold');
+    }
+    baekgu(I18N.t('baekgu.auctionTax',{nm:pd.nm,tax:calcTaxFor(pid).toLocaleString()}));
+  }
   updateHUD();saveGame(true);
   // 낙찰 후 경매 화면 그대로 유지 — 페이지 이동 없이 현재 탭 새로고침
   if(typeof rerenderTab==='function'&&typeof renderAuctionView==='function'){
