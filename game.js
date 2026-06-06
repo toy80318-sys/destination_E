@@ -16494,6 +16494,37 @@ function drawCombatFrame(){
   //   · 학익진 활성: T=0.00016 (0.000016→0.00016)
   //   · 일반 위치 변경: T=0.0008 (0.00008→0.0008)
   const _hjOn=!!(combatState._haikjinFormation);
+  // 사용자 요청 (2026-06-06): 진형 이동 중 함선이 완벽 겹침 방지 — 최대 70% 겹침까지만 허용.
+  //   각 함선 페어에 대해 중심간 거리 < (각 함선 폭+높이 평균) × 0.3 이면 둘을 외측으로 살짝 밀어냄.
+  //   여러 패스를 실행해 다중 충돌도 점진적으로 해소.
+  const _resolved=[];  // {u, x, y, w, h, isEnemy}
+  function _resolveOverlap(){
+    for(let _it=0;_it<3;_it++){
+      let moved=false;
+      for(let a=0;a<_resolved.length;a++){
+        for(let b=a+1;b<_resolved.length;b++){
+          const A=_resolved[a],B=_resolved[b];
+          // 자기 자신 또는 같은 객체 스킵
+          const minDx=(A.w+B.w)*0.5*0.30;  // 최소 X 간격 (70% 겹침 허용)
+          const minDy=(A.h+B.h)*0.5*0.30;
+          const dx=B.x-A.x, dy=B.y-A.y;
+          const adx=Math.abs(dx), ady=Math.abs(dy);
+          if(adx<minDx && ady<minDy){
+            // 더 작은 축 방향으로 밀어내기 (간섭이 적은 방향)
+            const pushX=(minDx-adx)*0.5*Math.sign(dx||0.5);
+            const pushY=(minDy-ady)*0.5*Math.sign(dy||0.5);
+            if(Math.abs(pushX)<Math.abs(pushY)){
+              A.x-=pushX; B.x+=pushX;
+            } else {
+              A.y-=pushY; B.y+=pushY;
+            }
+            moved=true;
+          }
+        }
+      }
+      if(!moved)break;
+    }
+  }
   pl.forEach((u,i)=>{
     let{x,y}=pPos[i];
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
@@ -16507,10 +16538,8 @@ function drawCombatFrame(){
       u._curX+=(x-u._curX)*T;
       u._curY+=(y-u._curY)*T;
     }
-    x=u._curX;y=u._curY;
-    _unitPos[u.id||('P'+i)]={x:x,y:y};
-    _drawShipUnit(cbCtx,u,x,y,null);
-    _drawHealthBar(cbCtx,u,x,y,_shipDrawSize(u),false);
+    const sz=_shipDrawSize(u);
+    _resolved.push({u,x:u._curX,y:u._curY,w:sz.w*2,h:sz.h*2,isEnemy:false,sz});
   });
   // 적 함선 — 사용자 요청: 동일 10배 빠르게 (회전은 _drawShipUnit에서 처리)
   //   · 적도 아군 향해 회전 — _drawShipUnit이 isEnemy 분기로 가장 가까운 아군 좌표를 타겟으로 atan2 사용
@@ -16520,10 +16549,17 @@ function drawCombatFrame(){
     const T=0.0008;  // 0.00008→0.0008
     u._curX+=(x-u._curX)*T;
     u._curY+=(y-u._curY)*T;
-    x=u._curX;y=u._curY;
-    _unitPos[u.id||('E'+i)]={x:x,y:y};
-    _drawShipUnit(cbCtx,u,x,y,null);
-    _drawHealthBar(cbCtx,u,x,y,_enemySize(u),true);
+    const sz=_enemySize(u);
+    _resolved.push({u,x:u._curX,y:u._curY,w:sz.w*2,h:sz.h*2,isEnemy:true,sz});
+  });
+  // 충돌 해소 — 70% 겹침 한계 강제
+  _resolveOverlap();
+  // 해소된 위치를 함선에 반영(_curX/_curY로 다음 프레임에도 기억) + 렌더
+  _resolved.forEach((r,_idx)=>{
+    r.u._curX=r.x; r.u._curY=r.y;
+    _unitPos[r.u.id||((r.isEnemy?'E':'P')+_idx)]={x:r.x,y:r.y};
+    _drawShipUnit(cbCtx,r.u,r.x,r.y,null);
+    _drawHealthBar(cbCtx,r.u,r.x,r.y,r.sz,r.isEnemy);
   });
   // 이펙트 렌더링
   // 타입: beam(레이저 빔) / exp(폭발) / shockwave(충격파 링) / shard(파편)
