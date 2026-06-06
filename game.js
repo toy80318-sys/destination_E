@@ -6308,8 +6308,10 @@ function doShipEnhance(shipIdx){
   const success=Math.random()<succRate;
   if(success){
     s._enhanceLv=nextLv;
-    notify(I18N.t('notify.enhanceSuccess',{nm:shipDisplayNm(s),lv:nextLv,pct:nextLv*5}),'gold');
-    try{baekgu(I18N.t('baekgu.enhanceCongrats',{nm:shipDisplayNm(s),lv:nextLv,pct:nextLv*5}));}catch(e){}
+    // 사용자 요청 (2026-06-06): 강화 알림에 함선 등급 표시 (한/영 공통 prefix)
+    const _enhTierShort=I18N.tier(s.tier||'소형');
+    notify(I18N.t('notify.enhanceSuccess',{nm:`[${_enhTierShort}] ${shipDisplayNm(s)}`,lv:nextLv,pct:nextLv*5}),'gold');
+    try{baekgu(I18N.t('baekgu.enhanceCongrats',{nm:`[${_enhTierShort}] ${shipDisplayNm(s)}`,lv:nextLv,pct:nextLv*5}));}catch(e){}
     // 사용자 요청: 강화 성공 시 항상 폭죽 + 축하 효과음
     try{_fireFireworks();}catch(e){}
     try{AudioMgr.playSfx('coin',{vol:0.9,cooldown:0});}catch(e){}
@@ -6319,7 +6321,10 @@ function doShipEnhance(shipIdx){
       const host=document.getElementById('game-stage')||document.body;
       const banner=document.createElement('div');
       banner.style.cssText='position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.6);opacity:0;background:linear-gradient(135deg,rgba(255,215,0,.95),rgba(255,100,200,.92));color:#1a0c00;font-size:34px;font-weight:bold;letter-spacing:4px;padding:18px 36px;border-radius:14px;border:3px solid #fff;box-shadow:0 8px 40px rgba(255,215,0,.7),0 0 80px rgba(255,200,255,.5);z-index:99970;pointer-events:none;text-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;text-align:center;font-family:Malgun Gothic,sans-serif;white-space:nowrap';
-      banner.innerHTML=I18N.t('ui.enhanceSuccess',{lv:nextLv})+`<div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${I18N.t('ui.enhanceSubline',{nm:shipDisplayNm(s),pct:nextLv*5})}</div>`;
+      // 사용자 요청 (2026-06-06): 강화 성공 배너에 함선 등급 표시
+      const _enhTier=I18N.tier(s.tier||'소형');
+      const _enhTierCol={'신화':'#cc66ff','전설기함':'#d4af37','대형':'#ffd700','중형':'#66ddff','소형':'#88ccff'}[s.tier]||'#88ccff';
+      banner.innerHTML=I18N.t('ui.enhanceSuccess',{lv:nextLv})+`<div style="font-size:13px;letter-spacing:2px;margin-top:8px"><span style="border:1px solid ${_enhTierCol};color:${_enhTierCol};border-radius:4px;padding:1px 8px;background:rgba(0,0,0,.25)">${_enhTier}</span></div><div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${I18N.t('ui.enhanceSubline',{nm:shipDisplayNm(s),pct:nextLv*5})}</div>`;
       host.appendChild(banner);
       requestAnimationFrame(()=>{banner.style.opacity='1';banner.style.transform='translate(-50%,-50%) scale(1)';});
       setTimeout(()=>{banner.style.opacity='0';banner.style.transform='translate(-50%,-50%) scale(1.2)';setTimeout(()=>{try{banner.remove();}catch(_e){}},400);},2400);
@@ -6328,11 +6333,13 @@ function doShipEnhance(shipIdx){
     const regress=_enhanceFailRegress(nextLv);
     const newLv=Math.max(0,curLv-regress);
     s._enhanceLv=newLv;
+    const _enhTierShort2=I18N.tier(s.tier||'소형');
+    const _nmWithTier=`[${_enhTierShort2}] ${shipDisplayNm(s)}`;
     if(regress>0){
-      notify(I18N.t('notify.enhanceFailRegress',{nm:shipDisplayNm(s),lv:nextLv,regress,newLv}),'err');
-      try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:shipDisplayNm(s),regress,newLv}));}catch(e){}
+      notify(I18N.t('notify.enhanceFailRegress',{nm:_nmWithTier,lv:nextLv,regress,newLv}),'err');
+      try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:_nmWithTier,regress,newLv}));}catch(e){}
     } else {
-      notify(I18N.t('notify.enhanceFailNoRegress',{nm:shipDisplayNm(s),lv:nextLv}),'err');
+      notify(I18N.t('notify.enhanceFailNoRegress',{nm:_nmWithTier,lv:nextLv}),'err');
       try{baekgu(I18N.t('baekgu.enhanceFailSimple'));}catch(e){}
     }
   }
@@ -10444,14 +10451,22 @@ function doCraft(recipeId){
       };
       const _addRes=addShipToFleet(newShip);
       const _addedToReserve=(_addRes&&_addRes.added==='reserve');
-      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:8px">${shipDisplayNm(def)||def.nm}</div>
+      // 사용자 요청 (2026-06-06): 제작 결과 함선 등급(tier) 표시 추가
+      const _tierLbl=I18N.tier(newShip.tier||def.tier||'소형');
+      const _tierCol={'신화':'var(--purple)','전설기함':'#d4af37','대형':'var(--gold)','중형':'var(--blue)','소형':'var(--cyan)'}[newShip.tier||def.tier]||'var(--cyan)';
+      resultHtml=`<div style="font-size:16px;color:var(--dim);margin-bottom:4px">${shipDisplayNm(def)||def.nm}</div>
+        <div style="font-size:13px;color:${_tierCol};margin-bottom:6px;letter-spacing:1.5px"><span style="border:1px solid ${_tierCol};border-radius:4px;padding:1px 8px">${_tierLbl}</span></div>
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
         <div style="font-size:16px;color:${q.col}">${I18N.t('ui.perfMultLine',{m:mult.toFixed(2)})}</div>
         ${_addedToReserve?`<div style="font-size:13px;color:var(--cyan);margin-top:6px">${I18N.t('craft.reserveStored')}</div>`:''}
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
-      notify(I18N.t('notify.shipBuilt',{nm:shipDisplayNm(newShip)||newShip.nm,label:q.label}),'gold');
-      baekgu(mult>=1.1?I18N.t('baekgu.shipCraftJackpot',{label:q.label}):I18N.t('baekgu.shipCraftDone',{nm:shipDisplayNm(def)||def.nm,label:q.label}));
+      // 사용자 요청 (2026-06-06): 제작 알림에도 함선 등급 prefix
+      const _nbTier=I18N.tier(newShip.tier||def.tier||'소형');
+      const _nbNm=`[${_nbTier}] ${shipDisplayNm(newShip)||newShip.nm}`;
+      const _defNm=`[${_nbTier}] ${shipDisplayNm(def)||def.nm}`;
+      notify(I18N.t('notify.shipBuilt',{nm:_nbNm,label:q.label}),'gold');
+      baekgu(mult>=1.1?I18N.t('baekgu.shipCraftJackpot',{label:q.label}):I18N.t('baekgu.shipCraftDone',{nm:_defNm,label:q.label}));
     }
 
     // 제작 완료 팝업 — 해당 파츠/함선 이미지 표시 (사용자 요청)
