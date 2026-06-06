@@ -3796,6 +3796,10 @@ function _validateCargoIntegrity(){
       const existingSlot=G.cargo.find(s=>s.id===id&&s.material);
       if(existingSlot){
         if(existingSlot.qty!==matQty)existingSlot.qty=matQty;
+        // 사용자 보고 (2026-06-06): 기존 슬롯의 buyPrice 가 0이면 COMMODITIES 정가로 복원
+        //   → sellComm에서 폴백 가격이 정상 계산되어 매각 차단 해소
+        const _commFix=COMMODITIES.find(c=>c.id===id);
+        if(_commFix&&(!existingSlot.buyPrice||existingSlot.buyPrice<=0))existingSlot.buyPrice=_commFix.buy||0;
         return;
       }
       const comm=COMMODITIES.find(c=>c.id===id);
@@ -3803,10 +3807,17 @@ function _validateCargoIntegrity(){
       G.cargo.push({id:id,nm:comm.nm,qty:matQty,buyPrice:comm.buy||0,buyPlanetId:'unknown',material:true});
     });
   }
-  // 4) nm 필드 누락 보완
+  // 4) nm 필드 누락 보완 + material 플래그 복원
+  //    사용자 보고 (2026-06-06): 함선 교체 후 일부 재료의 material 플래그가 손실되어
+  //    매각 분기가 잘못 타는 현상 — COMMODITIES 정의 기준으로 material 플래그 강제 복원.
   if(typeof COMMODITIES!=='undefined'){
     G.cargo.forEach(s=>{
-      if(!s.nm){const c=COMMODITIES.find(x=>x.id===s.id);if(c)s.nm=c.nm;}
+      const c=COMMODITIES.find(x=>x.id===s.id);
+      if(c){
+        if(!s.nm)s.nm=c.nm;
+        // material 플래그는 COMMODITIES 정의를 단일 진실로 신뢰
+        if(c.material&&!s.material)s.material=true;
+      }
     });
   }
 }
@@ -4292,16 +4303,22 @@ function sellComm(idx,qty){
       // 재료 판매가:
       //  ① 매입한 행성: 매입가 × 0.8 (환불)
       //  ② 다른 행성(어디든): 구매가 × 3.0 (3배 차익)
+      //  사용자 보고 (2026-06-06): 함선 교체 후 buyPrice 누락·buyPlanetId='unknown'
+      //  으로 sellPriceRaw가 0이 되어 매각이 차단되는 현상. 폴백 강화.
       const _atSame=slot.buyPlanetId===G.currentPlanet;
       let sellPriceRaw, _label;
       if(_atSame){
         sellPriceRaw=Math.floor((slot.buyPrice||commDef.buy||0)*0.8);
         _label=I18N.t('shop.refundLabel');
       } else {
-        sellPriceRaw=Math.floor((commDef.buy||0)*3.0);
+        sellPriceRaw=Math.floor((commDef.buy||slot.buyPrice||0)*3.0);
         _label=I18N.t('shop.otherPlanetPremium');
       }
-      if(!sellPriceRaw){notify(I18N.t('notify.materialCantSell'),'err');return;}
+      // 폴백: 위 두 공식 모두 0이면 calcSellPrice의 재료 70% 공식으로 최소 보장
+      if(!sellPriceRaw){
+        sellPriceRaw=Math.floor((commDef.buy||slot.buyPrice||0)*0.7);
+        if(!sellPriceRaw){notify(I18N.t('notify.materialCantSell'),'err');return;}
+      }
       const sellQty=qty||1;
       if(G.materials&&G.materials[slot.id]){G.materials[slot.id]=Math.max(0,(G.materials[slot.id]||0)-sellQty);}
       slot.qty-=sellQty;if(slot.qty<=0)G.cargo.splice(idx,1);
@@ -17882,41 +17899,44 @@ function _setupHaikjinFormation(){
   const cyE=_eposy.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
   // 적 함대 spread (적의 분산 크기 — 진형 크기 결정 기준)
   const spread=Math.max(...en.map(u=>{const p=_up[u.id]||{};return Math.hypot((p.x||0)-cxE,(p.y||0)-cyE);}),120);
-  // ── 학익진(U자) ── 적이 우측, 아군이 좌측. U자의 입(오목한 부분)을 적 방향으로 향함
-  //  · 탱커: 적 바로 앞 (적 좌측, 가까운 거리)
-  //  · 나머지: 좌측 반원 호(90°~270°)를 따라 배치, 양 끝(위/아래)은 더 멀게 → 진짜 U/V자
-  const R_tank=spread+80;       // 탱커는 적에 가까이 (정면 방어)
-  const R_wing=spread+260;      // 양 날개 기본 반경 (멀리 펼침)
-  const R_extra=R_wing*0.35;    // U자 양 끝에서 추가 외측 (활처럼 휘어지는 강도)
+  // 사용자 요청 (2026-06-06): 학익진을 "현재 진형 기준 상하 분할 포위" 형태로 변경
+  //   · 16척(혹은 그 이하)을 현재 Y 좌표 기준 정렬 → 상위 절반 ↑, 하위 절반 ↓ 이동
+  //   · 적의 위/아래로 횡대(2열) 형성 → 적이 위아래 협공 받는 핀서(pincer) 진형
+  //   · 탱커는 적 정면(좌측)에 유지 (정면 방어 역할 보존)
+  const R_tank=spread+80;            // 탱커: 적 정면
+  const R_vert=spread+240;           // 상/하 횡대의 수직 거리 (적 중심에서 ±R_vert)
+  const R_horiz=spread+200;          // 횡대 가로 길이(좌→우)
+  const _hjLeftOffset=R_horiz*0.10;  // 횡대를 약간 좌측으로 (적 진입로 확보)
   if(tank){
-    tank._haikjinTargetX=cxE-R_tank;   // 적 정면 (좌측)
+    tank._haikjinTargetX=cxE-R_tank;
     tank._haikjinTargetY=cyE;
     tank._isHaikjinTank=true;
   }
   const others=pl.filter(p=>p!==tank);
   const n=others.length;
   if(n>0){
-    // 90° (위) → 180° (좌측) → 270° (아래) — 좌측 반원만 사용 (적 우측은 비워서 적이 진입 가능)
-    others.forEach((p,i)=>{
-      const t=(i+0.5)/n;                        // 0~1
-      const ang=Math.PI*0.5+t*Math.PI;          // 90°~270° (반시계)
-      // U자 곡률: t=0(위) 또는 t=1(아래) 양 끝에서 거리 +R_extra, t=0.5(좌측 중앙)에서 가까이
-      //   sinusoidal: 양 끝 1, 중앙 0
-      const curveBoost=Math.abs(Math.cos(t*Math.PI));   // 0(중앙)~1(양끝)
-      const R_eff=R_wing+curveBoost*R_extra;
-      p._haikjinTargetX=cxE+R_eff*Math.cos(ang);
-      p._haikjinTargetY=cyE+R_eff*Math.sin(ang);
+    // 현재 Y 위치 기준 정렬 — 위쪽 함선은 위로, 아래쪽 함선은 아래로 이동
+    const sorted=others.slice().sort((a,b)=>{
+      const ya=(_up[a.id]?_up[a.id].y:0);
+      const yb=(_up[b.id]?_up[b.id].y:0);
+      return ya-yb;
+    });
+    const half=Math.ceil(n/2);
+    const top=sorted.slice(0,half);      // Y 작은 쪽 = 위쪽
+    const bottom=sorted.slice(half);     // Y 큰 쪽 = 아래쪽
+    // 상단 횡대: 좌→우 균등 분포, Y = cyE - R_vert
+    top.forEach((p,i)=>{
+      const t=top.length===1?0.5:(i/(top.length-1));   // 0~1
+      p._haikjinTargetX=cxE-R_horiz*(0.5-t)-_hjLeftOffset;  // 좌측 끝(-R/2) ~ 우측 끝(+R/2)
+      p._haikjinTargetY=cyE-R_vert;
+    });
+    // 하단 횡대: 좌→우 균등 분포, Y = cyE + R_vert
+    bottom.forEach((p,i)=>{
+      const t=bottom.length===1?0.5:(i/(bottom.length-1));
+      p._haikjinTargetX=cxE-R_horiz*(0.5-t)-_hjLeftOffset;
+      p._haikjinTargetY=cyE+R_vert;
     });
   }
-  // 사용자 요청: 학익진 진형을 30% 뒤로(좌측) 평행이동 — 단, 적 정면의 탱커는 그대로 유지
-  //  · 탱커(_isHaikjinTank=true)는 적군 바로 앞 위치 보존 → 정면 방어 역할
-  //  · 나머지 날개 함선만 R_wing의 30% 만큼 -X 방향 추가 오프셋 → 후방 지원 형태
-  const _hjLeftOffset=R_wing*0.30;
-  pl.forEach(p=>{
-    if(p._haikjinTargetX!=null && !p._isHaikjinTank){
-      p._haikjinTargetX-=_hjLeftOffset;
-    }
-  });
 }
 
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
