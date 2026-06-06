@@ -2180,6 +2180,7 @@ I18N.register({
   'ui.craftMatsHeading':                { ko: '⚗️ 제작 재료', en: '⚗️ Crafting Materials' },
   'ui.finalBossIntro':                  { ko: '보이드 크리스탈 1개를 소모하여 최종 보스와 전투합니다.', en: 'Consume 1 Void Crystal to fight the final boss.' },
   'ui.crystalsOwned':                   { ko: '보유 크리스탈: ', en: 'Crystals owned: ' },
+  'ui.crystalsOwnedFull':               { ko: '보유 크리스탈: {n}개', en: 'Crystals owned: {n}' },
   'ui.maxSellRaw':                      { ko: '최대₡{p}', en: 'Max ₡{p}' },
 
   // ── G83: 파츠 스탯 + 함선 관리 버튼 + 행성/허브 라벨 ────────────────

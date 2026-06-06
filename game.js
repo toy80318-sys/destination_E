@@ -19343,7 +19343,7 @@ function tryBossEntry(){
   }
   const _hint=_isFirst
     ?`<div style="color:#ffd700;font-weight:bold;margin-bottom:6px">${I18N.t('ui.firstEarthEntry')}</div><div style="color:var(--dim);margin-bottom:12px">${I18N.t('ui.firstBossFree')}<br>${I18N.t('ui.winLiftsBlockade')}</div>`
-    :`<div style="color:var(--dim);margin-bottom:12px">${I18N.t('ui.finalBossIntro')}<br>${I18N.t('ui.winClearsGame')}</div><div style="font-size:13px;color:var(--yellow)">${I18N.t('ui.crystalsOwned')}`+(G.voidCrystal||0)+'개</div>';
+    :`<div style="color:var(--dim);margin-bottom:12px">${I18N.t('ui.finalBossIntro')}<br>${I18N.t('ui.winClearsGame')}</div><div style="font-size:13px;color:var(--yellow)">${I18N.t('ui.crystalsOwnedFull',{n:G.voidCrystal||0})}</div>`;
   openModal(I18N.t('modal.ursaFinalFight'),
     `<div style="text-align:center;padding:12px">
       <div style="font-size:48px;margin-bottom:8px">🌀</div>
@@ -19361,14 +19361,17 @@ function showUrsaMajorIntro(){
   if(typeof BOSS!=='undefined')_bossEnemies.push({...BOSS,id:'BOSS_MAIN',isEnemy:true,nm:BOSS.nm,tier:BOSS.tier,maxHP:BOSS.maxHP,maxSH:BOSS.maxSH,ATT:BOSS.ATT,INT:BOSS.INT,TEC:BOSS.TEC});
   if(typeof BOSS_ESCORT!=='undefined')BOSS_ESCORT.forEach(e=>_bossEnemies.push({...e}));
   const _bossSpecHTML=(typeof _formatEnemyPreview==='function')?_formatEnemyPreview(_bossEnemies):'';
+  // 사용자 요청 (2026-06-06): 영문판에서 화자명이 한글로 표시되던 문제 해결 — i18n 라우팅
+  const _spUrsa=I18N.t('speaker.ursaMajor');
+  const _spBk=I18N.t('speaker.baekgu');
   const lines=[
     {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.intro.sys1')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.intro.ursa1')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.intro.ursa2')},
+    {sp:_spUrsa,tx:I18N.t('ursa.intro.ursa1')},
+    {sp:_spUrsa,tx:I18N.t('ursa.intro.ursa2')},
     {sp:cmdName,tx:I18N.t('ursa.intro.cmd1')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.intro.ursa3')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.intro.ursa4')},
-    {sp:'백구',tx:I18N.t('ursa.intro.bk')},
+    {sp:_spUrsa,tx:I18N.t('ursa.intro.ursa3')},
+    {sp:_spUrsa,tx:I18N.t('ursa.intro.ursa4')},
+    {sp:_spBk,tx:I18N.t('ursa.intro.bk')},
     {sp:cmdName,tx:I18N.t('ursa.intro.cmd2')}
   ];
   let _idx=0;
@@ -19411,7 +19414,8 @@ function showUrsaMajorIntro(){
 // ─── 우르사 메이저 2페이즈 진입 팝업 (호위 전멸 → 본체 각성) ───
 function _showUrsaPhase2Popup(onClose){
   const _line=I18N.t('ursa.phase2Line');
-  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML('우르사 메이저','☠️',216,'#ff3366'):'';
+  // 사용자 요청 (2026-06-06): 영문판에서 화자명 한글 잔재 제거 — i18n speaker 라우팅 (CHAR_PORTRAITS에 EN alias 있음)
+  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML(I18N.t('speaker.ursaMajor'),'☠️',216,'#ff3366'):'';
   openModal(I18N.t('modal.ursaPhase2'),
     `<div style="padding:14px;min-height:160px">
       <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(255,30,80,.1),rgba(20,5,5,.88));border:1.5px solid rgba(255,80,80,.6);border-radius:12px;box-shadow:0 0 26px rgba(255,40,40,.4)">
@@ -19430,7 +19434,8 @@ function _showUrsaPhase2Popup(onClose){
 // ─── 블랙팔콘 히든전: 호위 전멸 → 본체 각성 팝업 ───
 function _showBlackfalconPhase2Popup(onClose){
   const _line=I18N.t('falcon.afterUrsa');
-  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML('블랙팔콘','🌑',216,'#cc66ff'):'';
+  // 사용자 요청 (2026-06-06): 영문판 화자명 한글 잔재 제거 — i18n 라우팅
+  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML(I18N.t('speaker.blackfalcon'),'🌑',216,'#cc66ff'):'';
   openModal(I18N.t('modal.blackfalconAwaken'),
     `<div style="padding:14px;min-height:160px">
       <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(120,0,180,.18),rgba(8,2,18,.92));border:1.5px solid rgba(204,102,255,.6);border-radius:12px;box-shadow:0 0 26px rgba(204,102,255,.4)">
@@ -19451,17 +19456,20 @@ function _showBlackfalconPhase2Popup(onClose){
 // ※ 보이드/추가 컨텐츠 언급 제거 — 우르사 메이저 격파가 진정한 엔딩
 function showBossVictoryEpilogue(onDone){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
+  // 사용자 요청 (2026-06-06): 영문판 화자명 한글 잔재 제거 — i18n 라우팅
+  const _spUrsa=I18N.t('speaker.ursaMajor');
+  const _spBk=I18N.t('speaker.baekgu');
   const lines=[
-    {sp:'우르사 메이저',tx:I18N.t('ursa.outro.1')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.outro.2')},
-    {sp:'우르사 메이저',tx:I18N.t('ursa.outro.3')},
+    {sp:_spUrsa,tx:I18N.t('ursa.outro.1')},
+    {sp:_spUrsa,tx:I18N.t('ursa.outro.2')},
+    {sp:_spUrsa,tx:I18N.t('ursa.outro.3')},
     {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys1')},
-    {sp:'백구',tx:I18N.t('ui.victoryLine1',{nm:cmdName})},
-    {sp:'백구',tx:I18N.t('ursa.outro.bk')},
+    {sp:_spBk,tx:I18N.t('ui.victoryLine1',{nm:cmdName})},
+    {sp:_spBk,tx:I18N.t('ursa.outro.bk')},
     {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys2')},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd1')},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd2')},
-    {sp:'백구',tx:I18N.t('ui.victoryLine2',{nm:cmdName})},
+    {sp:_spBk,tx:I18N.t('ui.victoryLine2',{nm:cmdName})},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd3')},
     {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys3')}
   ];
