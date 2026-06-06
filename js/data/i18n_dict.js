@@ -5107,6 +5107,8 @@ I18N.register({
   'report.allWin':           { ko: '완승!',                    en: 'Total victory!' },
   'craft.superiorBonusLine': { ko: '🛠️ 누적 제작 {cnt}회 · 상급 이상 보너스 +{pct}%p (10회당 +0.1%)',
                                 en: '🛠️ {cnt} crafts done · superior+ bonus +{pct}%p (+0.1% per 10)' },
+  'combat.tacticSpeedBoost': { ko: '⚡ 함대 기동력 +{pct}% (학익진 이후 전술 누적)',
+                                en: '⚡ Fleet speed +{pct}% (cumulative tactic bonus)' },
   'enemy.leviathan':        { ko: '레비아탄 (적)',        en: 'Leviathan (Enemy)' },
   'enemy.armada':           { ko: '아르마다 (적)',        en: 'Armada (Enemy)' },
   'enemy.ursaCrusher':      { ko: '우르사 파쇄기 (적)',   en: 'Ursa Crusher (Enemy)' },

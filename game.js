@@ -17325,7 +17325,10 @@ function runCombatTurn(){
   if(stEl)stEl.textContent=I18N.t('ui.combatStatus',{ally:stillAlivePl,allyMax:combatState.players.length,enemy:stillAliveEn,enemyMax:combatState.enemies.length});
   _updateCombatFleetStats();
   // 모든 사격이 시각적으로 끝날 때까지 대기 (마지막 이펙트 페이드 포함 ~60프레임 여유)
-  const turnMs=Math.min(3000,Math.max(700,(_fireDelay+60)*16));
+  // 사용자 요청 (2026-06-06): 학익진 이후 전술 사용마다 함선 속도 +10% 누적.
+  //   _tacticSpeedMul 로 턴 사이 대기 시간을 단축 → 다음 턴이 빠르게 도래.
+  const _tspd=Math.max(1,(combatState&&combatState._tacticSpeedMul)||1);
+  const turnMs=Math.round(Math.min(3000,Math.max(700,(_fireDelay+60)*16))/_tspd);
   if(!stillAliveEn||!stillAlivePl){
     setTimeout(function(){if(combatState&&!combatState.done)_finishCombat();},Math.max(900,turnMs));
   } else {
@@ -17858,6 +17861,8 @@ function activateHaikjin(){
   try{_showTacticPortrait('img/chars/hero01.png',12000);}catch(e){}
   combatState._haikjinUsed=true;
   combatState._playerAttMult=3;
+  // 사용자 요청 (2026-06-06): 학익진부터 전술 사용마다 함선 속도 +10% 누적
+  combatState._tacticSpeedMul=(combatState._tacticSpeedMul||1)+0.10;
   if(combatState.players){
     combatState.players.forEach(p=>{
       if(!p._origATT)p._origATT=p.ATT;
@@ -17870,6 +17875,8 @@ function activateHaikjin(){
   //  · drawCombatFrame이 매 프레임 sx/sy를 target으로 lerp 보간해 천천히 이동
   try{_setupHaikjinFormation();}catch(e){console.warn('[Haikjin formation]',e);}
   addCombatLog(I18N.t('combat.haikjinActivate'),'gold');
+  // 누적 속도 +N% 안내 (사용자 요청 2026-06-06)
+  try{addCombatLog(I18N.t('combat.tacticSpeedBoost',{pct:Math.round(((combatState._tacticSpeedMul||1)-1)*100)}),'gold');}catch(e){}
   notify(I18N.t('notify.haikjinActivateShort'),'gold');
   baekgu(I18N.t('baekgu.haikjin'));
   const hbtn=document.getElementById('cb-haikjin-btn');
@@ -17910,6 +17917,7 @@ function activateEinsteinTimeAttack(){
   try{_showTacticPortrait('img/chars/hero06.png',12000);}catch(e){}
   combatState._einsteinUsed=true;
   combatState._playerAttMult=4;
+  combatState._tacticSpeedMul=(combatState._tacticSpeedMul||1)+0.10;  // +10% 누적 (학익진 이후 전술)
   if(combatState.players){
     combatState.players.forEach(p=>{
       if(!p._origATT)p._origATT=p.ATT;
@@ -17917,6 +17925,7 @@ function activateEinsteinTimeAttack(){
     });
   }
   addCombatLog(I18N.t('combat.einsteinActivate'),'gold');
+  try{addCombatLog(I18N.t('combat.tacticSpeedBoost',{pct:Math.round(((combatState._tacticSpeedMul||1)-1)*100)}),'gold');}catch(e){}
   notify(I18N.t('notify.einsteinActivateShort'),'gold');
   baekgu(I18N.t('baekgu.einsteinRelativity'));
   const ebtn=document.getElementById('cb-einstein-btn');
@@ -17957,6 +17966,7 @@ function activateTeslaHyperspace(){
   try{_showTacticPortrait('img/chars/hero07.png',12000);}catch(e){}
   combatState._teslaUsed=true;
   combatState._playerAttMult=5;
+  combatState._tacticSpeedMul=(combatState._tacticSpeedMul||1)+0.10;  // +10% 누적 (학익진 이후 전술)
   if(combatState.players){
     combatState.players.forEach(p=>{
       if(!p._origATT)p._origATT=p.ATT;
@@ -17964,6 +17974,7 @@ function activateTeslaHyperspace(){
     });
   }
   addCombatLog(I18N.t('combat.teslaActivate'),'gold');
+  try{addCombatLog(I18N.t('combat.tacticSpeedBoost',{pct:Math.round(((combatState._tacticSpeedMul||1)-1)*100)}),'gold');}catch(e){}
   notify(I18N.t('notify.teslaActivateShort'),'gold');
   baekgu(I18N.t('baekgu.teslaHyperspace'));
   // 발동 순간 전기장 플래시 — 모든 아군 함선 위치에 번개 폭발
@@ -18018,6 +18029,7 @@ function activateGenesisImpact(){
   try{_showTacticPortrait('img/chars/hero03.png',12000);}catch(e){}
   combatState._genesisUsed=true;
   combatState._playerAttMult=6;
+  combatState._tacticSpeedMul=(combatState._tacticSpeedMul||1)+0.10;  // +10% 누적 (학익진 이후 전술)
   if(combatState.players){
     combatState.players.forEach(p=>{
       if(!p._origATT)p._origATT=p.ATT;
@@ -18025,6 +18037,7 @@ function activateGenesisImpact(){
     });
   }
   addCombatLog(I18N.t('combat.genesisActivate'),'gold');
+  try{addCombatLog(I18N.t('combat.tacticSpeedBoost',{pct:Math.round(((combatState._tacticSpeedMul||1)-1)*100)}),'gold');}catch(e){}
   notify(I18N.t('notify.genesisActivateShort'),'gold');
   baekgu(I18N.t('baekgu.genesisImpact'));
   const gbtn=document.getElementById('cb-genesis-btn');
@@ -18065,6 +18078,7 @@ function activateDestinationEarth(){
   try{_showTacticPortrait(_commanderPortraitSrc(),14000);}catch(e){}
   combatState._destinationUsed=true;
   combatState._playerAttMult=10;
+  combatState._tacticSpeedMul=(combatState._tacticSpeedMul||1)+0.10;  // +10% 누적 (학익진 이후 전술)
   if(combatState.players){
     combatState.players.forEach(p=>{
       if(!p._origATT)p._origATT=p.ATT;
@@ -18072,6 +18086,7 @@ function activateDestinationEarth(){
     });
   }
   addCombatLog(I18N.t('combat.destinationActivate'),'gold');
+  try{addCombatLog(I18N.t('combat.tacticSpeedBoost',{pct:Math.round(((combatState._tacticSpeedMul||1)-1)*100)}),'gold');}catch(e){}
   notify(I18N.t('notify.destinationActivateShort'),'gold');
   baekgu(I18N.t('baekgu.destinationEarth'));
   const dbtn=document.getElementById('cb-destination-btn');
