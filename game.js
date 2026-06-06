@@ -9537,15 +9537,15 @@ function startVoidBossCombat(questRef){
     DEF:450,armorTier:48,shieldTier:48,voidBoss:false,_formationCol:3});}
   // 3열: 보이드 대형 전투선 3척 (F07 보이드 함선 외형)
   for(let i=0;i<3;i++){const _h=Math.round(_escortHP*0.8),_s=Math.round(_escortSH*0.7);
-    enemies.push({id:'VOID_L'+(i+1),nm:'보이드 대형함 '+(i+1),tier:'대형',isEnemy:true,catalogId:'F07_L',catId:'F07_L',_useCatalogImg:true,
+    enemies.push({id:'VOID_L'+(i+1),nm:'보이드 대형함 '+(i+1),_nmKey:'enemy.voidLarge',_nmKeyParams:{n:i+1},tier:'대형',isEnemy:true,catalogId:'F07_L',catId:'F07_L',_useCatalogImg:true,
       hp:_h,maxHP:_h,HP:_h,sh:_s,maxSH:_s,ATT:Math.round(_escortATT*0.8),INT:300,TEC:200,LOY:0,DEF:300,armorTier:32,shieldTier:32,_formationCol:2});}
   // 2열: 보이드 중형 순양함 4척
   for(let i=0;i<4;i++){const _h=Math.round(_escortHP*0.5),_s=Math.round(_escortSH*0.5);
-    enemies.push({id:'VOID_M'+(i+1),nm:'보이드 순양함 '+(i+1),tier:'중형',isEnemy:true,catalogId:'F07_M',catId:'F07_M',_useCatalogImg:true,
+    enemies.push({id:'VOID_M'+(i+1),nm:'보이드 순양함 '+(i+1),_nmKey:'enemy.voidCruiser',_nmKeyParams:{n:i+1},tier:'중형',isEnemy:true,catalogId:'F07_M',catId:'F07_M',_useCatalogImg:true,
       hp:_h,maxHP:_h,HP:_h,sh:_s,maxSH:_s,ATT:Math.round(_escortATT*0.6),INT:180,TEC:120,LOY:0,DEF:160,armorTier:20,shieldTier:20,_formationCol:1});}
   // 1열: 보이드 소형 정찰선 5척
   for(let i=0;i<5;i++){const _h=Math.round(_escortHP*0.3),_s=Math.round(_escortSH*0.3);
-    enemies.push({id:'VOID_S'+(i+1),nm:'보이드 정찰선 '+(i+1),tier:'소형',isEnemy:true,catalogId:'F07_S',catId:'F07_S',_useCatalogImg:true,
+    enemies.push({id:'VOID_S'+(i+1),nm:'보이드 정찰선 '+(i+1),_nmKey:'enemy.voidScout',_nmKeyParams:{n:i+1},tier:'소형',isEnemy:true,catalogId:'F07_S',catId:'F07_S',_useCatalogImg:true,
       hp:_h,maxHP:_h,HP:_h,sh:_s,maxSH:_s,ATT:Math.round(_escortATT*0.4),INT:100,TEC:80,LOY:0,DEF:80,armorTier:10,shieldTier:10,_formationCol:0});}
   const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wt=_wpn?(_wpn.tier||1):1;const _wtype=_wpn?(_wpn.wtype||'laser'):'laser';const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:s.hp,maxHP:st.HP,sh:s.sh,maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wtype,wpnTier:_wt,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier};});
   combatState={players,enemies,turn:0,done:false,log:[],planetDef:pd,isBoss:false,isVoidBoss:true,_questRef:questRef,_rndSeed:Date.now()%9999,_entranceT:0,_entranceDone:false,_planetId:'P30'};
