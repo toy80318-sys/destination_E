@@ -17606,7 +17606,8 @@ function _finishCombat(){
         nm:I18N.t('enemy.ursaPrefix'),
         tier:'신화',
         maxHP:10000000,hp:10000000,maxSH:300000,sh:300000,
-        ATT:6000,INT:600,TEC:280,HP:10000000,DEF:200,LOY:80,
+        // 사용자 요청 (2026-06-06): BOSS.ATT 6,000 → 30,000 (×5)에 맞춰 노획함 보상도 동기화
+        ATT:30000,INT:600,TEC:280,HP:10000000,DEF:200,LOY:80,
         parts:['MW01','MS01','MA01','ME01'],crewIds:[],cargoSlots:40,
         catalogId:'URSA',crafted:false
       };

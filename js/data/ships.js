@@ -75,8 +75,12 @@ const SHIP_CATALOG=[
   {id:'F07_L',civ:'F07',nm:I18N.t('ship.F07_L.nm'),tier:'대형',price:1650000,maxHP:39000,maxSH:18000,ATT:192,INT:192,TEC:158,LOY:100,ic:'🌟',cargoStart:24,desc:I18N.t('ship.F07_L.desc')},
 ];
 
-// 최종 보스 ─ 우르사 메이저 (신화 풀셋 장착) — HP 1,000만 (현실적 격파 가능 밸런스) / ATT 6000 / SH 30만
-const BOSS={id:'URSA',nm:I18N.t('ship.BOSS.nm'),tier:'신화',hp:10000000,maxHP:10000000,sh:300000,maxSH:300000,ATT:6000,INT:600,TEC:280,HP:10000000,LOY:0,phases:5,parts:['MW01','MS01','MA01','ME01']};
+// 최종 보스 ─ 우르사 메이저 (신화 풀셋 장착) — HP 1,000만 / ATT 30,000 / SH 30만
+// 사용자 요청 (2026-06-06): ATT 6,000 → 30,000 (×5) 인상.
+//   · 보스전 baseline _BASE_ATT = ATT × 3 = 90,000
+//   · 본체 각성 2페이즈 후 추가 ×3 — 최종 270,000
+//   · 캡처 시 보상 함선 ATT = ATT × 2 = 60,000 (격파한 만큼 강력해진 노획함)
+const BOSS={id:'URSA',nm:I18N.t('ship.BOSS.nm'),tier:'신화',hp:10000000,maxHP:10000000,sh:300000,maxSH:300000,ATT:30000,INT:600,TEC:280,HP:10000000,LOY:0,phases:5,parts:['MW01','MS01','MA01','ME01']};
 // 보스 호위 함대 (치크스 대형 함선 15척) — 우르사 메이저와 함께 등장 (보스 1 + 호위 15 = 총 16척)
 const BOSS_ESCORT=(()=>{
   // 그리스 문자 키 (i18n_dict.js: ship.greek.*) — 호위함 이름 접미사
