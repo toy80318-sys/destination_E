@@ -3889,7 +3889,8 @@ function renderTradeTab(body){
       const c=COMMODITIES.find(cc=>cc.id===i.id);
       const marcoMult=(G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
       const unit=Math.floor((c.maxSell||c.buy||0)*marcoMult);
-      const _sellAllQty=i.qty-1;  // 1개 보존
+      // 사용자 요청 (2026-06-06): "전량(-1개)" 판매 버튼 삭제, 1개씩 판매만 유지.
+      //   영입 보존용 1개는 sellInventoryItem 내부 가드(line 4263+)가 자동 유지.
       return `<div style="background:var(--card);border:1px solid rgba(255,215,0,.35);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:5px">
         <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:20px">${c.ic||'📜'}</span>
@@ -3900,7 +3901,6 @@ function renderTradeTab(body){
         </div>
         <div style="display:flex;gap:4px">
           <button class="btn btn-sm btn-gold" style="flex:1;font-size:11px;padding:4px 6px" onclick="sellInventoryItem('${c.id}',1)">${I18N.t('ui.sellOneBtn')}</button>
-          <button class="btn btn-sm btn-gold" style="flex:1;font-size:11px;padding:4px 6px" onclick="sellInventoryItem('${c.id}',${_sellAllQty})">${I18N.t('ui.sellAllMinusOne')}</button>
         </div>
       </div>`;
     }).join('')}
