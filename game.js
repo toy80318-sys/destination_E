@@ -16530,7 +16530,8 @@ function drawCombatFrame(){
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
     if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      const T=0.00016;
+      // 사용자 요청 (2026-06-06): 학익진 이동 속도 +50% (0.00016 → 0.00024)
+      const T=0.00024;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
     } else {
