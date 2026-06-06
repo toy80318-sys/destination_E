@@ -19082,19 +19082,8 @@ function showSettingsModal(){
       <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>`:''}
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm(I18N.t('confirm.deleteSave'))){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
     </div>
-    <div style="margin-bottom:16px;background:rgba(135,200,255,.04);border:1px solid rgba(135,200,255,.2);border-radius:8px;padding:12px">
-      <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.cloudSave')}</div>
-      <div id="set-cloud-status" style="font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.5">${_cloudStatusText()}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <button class="btn btn-sm" onclick="cloudGoogleSignIn()">${I18N.t('settings.googleConnect')}</button>
-        <button class="btn btn-sm" onclick="cloudPushAll()">${I18N.t('settings.uploadAll')}</button>
-        <button class="btn btn-sm" onclick="cloudPullAll()">${I18N.t('settings.downloadAll')}</button>
-        <button class="btn btn-sm" onclick="cloudSignOut()">${I18N.t('settings.signOut')}</button>
-      </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">${I18N.t('settings.cloudHelp')}</div>
-    </div>
     <div style="margin-bottom:16px;background:rgba(102,255,153,.05);border:1px solid rgba(102,255,153,.3);border-radius:8px;padding:12px">
-      <div style="font-weight:bold;margin-bottom:8px;color:#66ff99">${I18N.t('settings.offlineBackup')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('settings.whenCloudFail')}</span></div>
+      <div style="font-weight:bold;margin-bottom:8px;color:#66ff99">${I18N.t('settings.offlineBackup')}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
         <button class="btn btn-sm" style="border-color:#66ff99;color:#66ff99" onclick="exportSaveFile(1)">${I18N.t('settings.dlSlot1')}</button>
         <button class="btn btn-sm" style="border-color:#66ff99;color:#66ff99" onclick="exportAllSavesFile()">${I18N.t('settings.dlAllSlots')}</button>
