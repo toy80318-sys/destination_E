@@ -527,7 +527,7 @@ function updateFleetBar(){
       <div style="display:flex;align-items:center;gap:6px;flex:1;min-height:0">
         ${imgOrEmoji(shipImgSrc(s),tierIc,44,44,'border-radius:5px;background:rgba(0,0,0,.5);flex-shrink:0',shipLoreKey(s))}
         <div style="min-width:0;flex:1;overflow:hidden">
-          <div style="color:${fc};font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlagship?'⚑ ':''}${s.nm||I18N.t('ui.shipDefault2')}</div>
+          <div style="color:${fc};font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlagship?'⚑ ':''}${shipDisplayNm(s)||I18N.t('ui.shipDefault2')}</div>
           <div style="color:var(--muted);font-size:10px">${I18N.tier(s.tier)}</div>
           <div style="display:flex;gap:5px">
             <span style="font-size:9px;color:var(--red)">ATT ${_att}</span>
@@ -566,7 +566,7 @@ function showShipDetailModal(idx){
     if(!c)return'';
     return`<div style="display:flex;align-items:center;gap:5px;padding:3px 6px;background:rgba(0,0,0,.4);border-radius:4px;border:1px solid rgba(255,255,255,.08);min-width:0">
       <span style="font-size:16px;flex-shrink:0">${c.ic||'🧑'}</span>
-      <div style="min-width:0"><div style="font-size:11px;color:${RC2[c.rarity]||'#888'};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm}</div><div style="font-size:9px;color:var(--dim)">${c.cl}</div></div>
+      <div style="min-width:0"><div style="font-size:11px;color:${RC2[c.rarity]||'#888'};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${crewDisplayNm(c)}</div><div style="font-size:9px;color:var(--dim)">${c.cl}</div></div>
     </div>`;
   }).join(''):`<div style="color:var(--dim);font-size:12px;grid-column:span 2">${I18N.t('ui.noCrewAboard')}</div>`;
   // 파츠
@@ -578,7 +578,7 @@ function showShipDetailModal(idx){
     const ci=catIcMap[p2.cat]||'⚙️';const cc=catColMap[p2.cat]||'var(--dim)';
     return`<div style="display:flex;align-items:center;gap:4px;padding:3px 6px;background:rgba(0,0,0,.4);border-radius:4px;border:1px solid rgba(255,255,255,.08);min-width:0">
       <span style="font-size:14px;flex-shrink:0">${ci}</span>
-      <div style="font-size:11px;color:${cc};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p2.nm}</div>
+      <div style="font-size:11px;color:${cc};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${partDisplayNm(p2)}</div>
     </div>`;
   }).join(''):`<div style="color:var(--dim);font-size:12px;grid-column:span 2">${I18N.t('ui.noPartsEquipped')}</div>`;
   const ATT=(s.ATT||0)+(bonus.att||0)+(crewBonus.att||0);
@@ -675,8 +675,8 @@ function setAsFlagship(idx){
   G.fleet.splice(idx,1);
   G.fleet.unshift(tmp);
   updateHUD();updateFleetBar();
-  notify(I18N.t('notify.flagshipSetTmp',{nm:tmp.nm}),'gold');
-  baekgu(I18N.t('baekgu.flagshipPromoted',{nm:tmp.nm}));
+  notify(I18N.t('notify.flagshipSetTmp',{nm:shipDisplayNm(tmp)}),'gold');
+  baekgu(I18N.t('baekgu.flagshipPromoted',{nm:shipDisplayNm(tmp)}));
   saveGame(true);
   showShipDetailModal(0); // 기함 위치(0)로 팝업 갱신
 }
@@ -1726,6 +1726,22 @@ function partDisplayNm(p){
   return p.nm||'';
 }
 try{if(typeof window!=='undefined')window.partDisplayNm=partDisplayNm;}catch(e){}
+// 크루 표시명 현재 언어로 재조회 — KO/EN 혼재 방지
+//   · 영웅(H01~H08): hero.{id}.nm 키 조회
+//   · 퀘스트 전설 크루(QL01~QL05): quest.crew.{id}.nm 키 조회
+//   · 일반 NPC 크루: c.nm 폴백 (i18n 키 없음)
+function crewDisplayNm(c){
+  if(!c)return '';
+  try{
+    const cid=String(c.id||'');
+    if(I18N&&typeof I18N.has==='function'){
+      if(/^H0\d$/.test(cid)&&I18N.has('hero.'+cid+'.nm'))return I18N.t('hero.'+cid+'.nm');
+      if(/^QL0\d$/.test(cid)&&I18N.has('quest.crew.'+cid+'.nm'))return I18N.t('quest.crew.'+cid+'.nm');
+    }
+  }catch(e){}
+  return c.nm||'';
+}
+try{if(typeof window!=='undefined')window.crewDisplayNm=crewDisplayNm;}catch(e){}
 // catId/catalogId/id → 실재 함선 이미지 basename 정규화 (해당 없으면 null).
 // CHIX_1·CHIX_PATROL·CAP_*·DBR_* 등 비표준 식별자도 팩션·티어로 보정한다.
 function _resolveShipImgBase(raw,tier){
@@ -3130,8 +3146,8 @@ function tickLoyalty(){
       const prevLoy=s.LOY||80;
       s.LOY=Math.max(1,prevLoy-3);
       if(s.LOY<=10&&s.LOY!==prevLoy){
-        notify(I18N.t('notify.loyaltyAtRisk',{nm:s.nm,loy:s.LOY}),'err');
-        baekgu(I18N.t('baekgu.loyaltyWarn',{nm:s.nm,loy:s.LOY}));
+        notify(I18N.t('notify.loyaltyAtRisk',{nm:shipDisplayNm(s),loy:s.LOY}),'err');
+        baekgu(I18N.t('baekgu.loyaltyWarn',{nm:shipDisplayNm(s),loy:s.LOY}));
       }
     }
   });
@@ -3158,8 +3174,8 @@ function boostLoyalty(reason){
         s.maxHP=Math.round((s.maxHP||1000)*1.1);
         s.hp=Math.min(s.hp||s.maxHP,s.maxHP);
         s._loyBonusApplied=true;
-        notify(I18N.t('notify.loyaltyMax',{nm:s.nm}),'gold');
-        baekgu(I18N.t('baekgu.loyaltyMaxStrong',{nm:s.nm}));
+        notify(I18N.t('notify.loyaltyMax',{nm:shipDisplayNm(s)}),'gold');
+        baekgu(I18N.t('baekgu.loyaltyMaxStrong',{nm:shipDisplayNm(s)}));
       }
     }
   });
@@ -3176,8 +3192,8 @@ function checkLoyaltyCapture(){
       // 나포 확률: 매 턴 15%
       if(Math.random()<0.15){
         toRemove.push(idx);
-        notify(I18N.t('notify.loyaltyCollapse',{nm:s.nm,loy,hp:Math.round(hpRatio*100)}),'err');
-        baekgu(I18N.t('baekgu.loyaltyDefected',{nm:s.nm}));
+        notify(I18N.t('notify.loyaltyCollapse',{nm:shipDisplayNm(s),loy,hp:Math.round(hpRatio*100)}),'err');
+        baekgu(I18N.t('baekgu.loyaltyDefected',{nm:shipDisplayNm(s)}));
         // 전투 기록에 나포 사건 남기기
         if(!G.combatHistory)G.combatHistory=[];
         const pd2=PLANET_DEF.find(function(p){return p.id===G.currentPlanet;});
@@ -3344,15 +3360,15 @@ function doNextTurn(){
       if(Math.random()<rate){
         G.blueprints[bpId]=true;
         const rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===bpId):null;
-        notify(I18N.t('notify.bpAcquired',{nm:rec?.nm||bpId}),'gold');
-        baekgu(I18N.t('baekgu.blueprintDrop',{nm:rec?.nm||bpId}));
+        notify(I18N.t('notify.bpAcquired',{nm:(rec?partDisplayNm(rec):'')||rec?.nm||bpId}),'gold');
+        baekgu(I18N.t('baekgu.blueprintDrop',{nm:(rec?partDisplayNm(rec):'')||rec?.nm||bpId}));
       }
     });
   }catch(e){console.warn('[tax-bp drop]',e);}
   // 보이드 균열 P29: 5턴마다 전설 파츠 분출
   if(G.turn%5===0&&G.planets['P29']?.fog!=='L'){
     const lParts=PARTS.filter(p=>p.tier>=12);
-    if(lParts.length){const p=lParts[Math.floor(Math.random()*lParts.length)];addToInventory(p.id,1);notify(I18N.t('notify.voidRiftDrop',{nm:p.nm}),'pur');}
+    if(lParts.length){const p=lParts[Math.floor(Math.random()*lParts.length)];addToInventory(p.id,1);notify(I18N.t('notify.voidRiftDrop',{nm:partDisplayNm(p)||p.nm}),'pur');}
   }
   updateHUD();
   if(tax>0)notify(I18N.t('notify.taxIncomeTurn',{turn:G.turn,tax:tax.toLocaleString()}),'gold');
@@ -3373,8 +3389,8 @@ function doNextTurn(){
         if(!G.inventory)G.inventory=[];
         const _inv=G.inventory.find(i=>i.id===_pid);
         if(_inv)_inv.qty++;else G.inventory.push({id:_pid,nm:_p?_p.nm:_pid,qty:1});
-        notify(I18N.t('notify.planetLv10Reward',{nm:pd2.nm,item:_p?_p.nm:_pid}),'gold');
-        baekgu(I18N.t('baekgu.planetMaxReward',{nm:pd2.nm,item:_p?_p.nm:_pid}));
+        notify(I18N.t('notify.planetLv10Reward',{nm:pd2.nm,item:_p?(partDisplayNm(_p)||_p.nm):_pid}),'gold');
+        baekgu(I18N.t('baekgu.planetMaxReward',{nm:pd2.nm,item:_p?(partDisplayNm(_p)||_p.nm):_pid}));
       }
     }
   });
@@ -3905,7 +3921,7 @@ function renderTradeTab(body){
       </div>
       <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
         <div>
-          <div style="font-size:13px;font-weight:bold;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${slot.nm}">${slot.nm}</div>
+          <div style="font-size:13px;font-weight:bold;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${commDisplayNm(slot)}">${commDisplayNm(slot)}</div>
           ${priceLabel}
         </div>
         <div style="display:flex;gap:3px;align-items:center;margin-top:4px">
@@ -3930,8 +3946,13 @@ function renderTradeTab(body){
   const cargoHTML=(G.cargo.length>0)?(_normalHTML+_matHTML):`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:14px;margin-bottom:14px;text-align:center;color:var(--dim);font-size:14px">${I18N.t('ui.cargoEmpty')}</div>`;
 
   const availComm=COMMODITIES.filter(c=>stock[c.id]>0);
-  const availNormal=availComm.filter(c=>!c.material);
-  const availMat=availComm.filter(c=>c.material);
+  // 사용자 요청 (2026-06-06): 상점 상단에 "높은 금액 순서" 정렬 버튼.
+  //   _shopSortMode = 'default' (입고 순) | 'priceDesc' (구매가 내림차순)
+  const _sortMode=window._shopSortMode||'default';
+  const _byPriceDesc=(a,b)=>(b.buy||0)-(a.buy||0);
+  let availNormal=availComm.filter(c=>!c.material);
+  let availMat=availComm.filter(c=>c.material);
+  if(_sortMode==='priceDesc'){availNormal=availNormal.slice().sort(_byPriceDesc);availMat=availMat.slice().sort(_byPriceDesc);}
   const hasMarco=G.heroes.includes('H08');
   const marcoBonus=hasMarco?`<span style="color:var(--gold);font-size:12px;margin-left:8px">${I18N.t('shop.marcoApplied')}</span>`:'';
   body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
@@ -3963,8 +3984,9 @@ function renderTradeTab(body){
     </div>
     <!-- 오른쪽: 구매 가능 특산물 + 제작 재료 -->
     <div data-scroll-id="trade-buy" style="flex:1;overflow-y:auto;min-height:0;padding:10px 14px 16px 10px;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div style="color:var(--cyan);font-size:13px;font-weight:bold">${I18N.t('ui.buyableCommHeader')} <span style="color:var(--dim);font-weight:normal;font-size:12px">${I18N.t('tip.outOfStockNoRestock')}</span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap">
+        <div style="color:var(--cyan);font-size:13px;font-weight:bold;flex:1;min-width:0">${I18N.t('ui.buyableCommHeader')} <span style="color:var(--dim);font-weight:normal;font-size:12px">${I18N.t('tip.outOfStockNoRestock')}</span></div>
+        <button onclick="window._shopSortMode=(window._shopSortMode==='priceDesc'?'default':'priceDesc');rerenderTab(renderTradeTab);" style="padding:3px 10px;border:1px solid ${_sortMode==='priceDesc'?'var(--gold)':'var(--bdr)'};background:${_sortMode==='priceDesc'?'rgba(255,215,0,.12)':'transparent'};color:${_sortMode==='priceDesc'?'var(--gold)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:11px;font-family:Courier New,monospace;flex-shrink:0" title="${I18N.t('ui.sortByPrice')}">${I18N.t('shop.sortPriceDesc')}${_sortMode==='priceDesc'?' ↓':''}</button>
         ${(()=>{const matAvail=availComm.filter(c=>c.material);if(!matAvail.length)return'';return`<span style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--gold)">${I18N.t('ui.craftMatsIncluded')}</span>`;})()}
       </div>
       ${availComm.length===0
@@ -4105,12 +4127,12 @@ function buyComm(id,_silent=false){
           _mEx.qty++;
         } else G.cargo.push({id,nm:comm.nm,qty:1,buyPrice:comm.buy,buyPlanetId:G.currentPlanet,buyFaction:PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f,material:true});
       }
-      updateHUD();if(!_silent){notify(I18N.t('notify.gotMaterial',{ic:comm.ic||'💎',nm:comm.nm,qty:G.materials[id]}),'gold');rerenderTab(renderTradeTab);}
+      updateHUD();if(!_silent){notify(I18N.t('notify.gotMaterial',{ic:comm.ic||'💎',nm:commDisplayNm(comm),qty:G.materials[id]}),'gold');rerenderTab(renderTradeTab);}
     } else {
       if(!G.inventory)G.inventory=[];
       const inv=G.inventory.find(i=>i.id===id);
       if(inv)inv.qty++;else G.inventory.push({id,nm:comm.nm,qty:1});
-      updateHUD();if(!_silent){notify(I18N.t('notify.gotHeroMaterial',{nm:comm.nm}),'gold');rerenderTab(renderTradeTab);}
+      updateHUD();if(!_silent){notify(I18N.t('notify.gotHeroMaterial',{nm:commDisplayNm(comm)}),'gold');rerenderTab(renderTradeTab);}
     }
     saveGame(true);return;
   }
@@ -4138,7 +4160,7 @@ function buyComm(id,_silent=false){
   }
   if(!_silent)saveGame(true);
   if(_undoSnap)try{_recordSell(_undoSnap);}catch(e){}
-  updateHUD();if(!_silent){notify(I18N.t('notify.commBuyProgress',{nm:comm.nm,n:totalQty+1,max:cargoMax}),'ok');rerenderTab(renderTradeTab);}
+  updateHUD();if(!_silent){notify(I18N.t('notify.commBuyProgress',{nm:commDisplayNm(comm),n:totalQty+1,max:cargoMax}),'ok');rerenderTab(renderTradeTab);}
 }
 function buyCargoItem(id){
   const ci=CARGO_ITEMS.find(function(c){return c.id===id;});
@@ -4162,11 +4184,11 @@ function buyCargoItem(id){
   if(ex)ex.qty++;
   else G.inventory.push({id:ci.id,qty:1});
   updateHUD();
-  notify(I18N.t('notify.partsBuy',{ic:ci.ic,nm:ci.nm,slots:ci.slots}),'ok');
+  notify(I18N.t('notify.partsBuy',{ic:ci.ic,nm:partDisplayNm(ci)||ci.nm,slots:ci.slots}),'ok');
   if(G._currentHubTab==='ship'||G._currentHubTab==='garage')rerenderShipOrGarage();
   saveGame(true);
 }
-function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=G.cargo.reduce((s,c)=>s+c.qty,0);if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:comm?.nm||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}}
+function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=G.cargo.reduce((s,c)=>s+c.qty,0);if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:(comm?commDisplayNm(comm):'')||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}}
 function buyCommN(id){
   const inp=document.getElementById('qty_'+id);
   const n=Math.max(1,parseInt(inp?.value)||1);
@@ -4181,7 +4203,7 @@ function buyCommN(id){
     if(G.credits<comm.buy){notify(I18N.t('notify.notEnoughCredits'),'err');break;}
     buyComm(id,true);bought++;
   }
-  if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:comm?.nm||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}
+  if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:(comm?commDisplayNm(comm):'')||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}
 }
 // 단일 특산물 전체구매 — 해당 행성의 재고/크레딧/화물칸 한도까지 한 번에 구매
 function buyCommMax(id){
@@ -4199,7 +4221,7 @@ function buyCommMax(id){
   }
   if(bought>0){
     const totalCost=bought*comm.buy;
-    notify(I18N.t('notify.commBulkBuy',{nm:comm.nm,n:bought,cost:totalCost.toLocaleString(),reason:blockedReason?' · '+blockedReason:''}),'ok');
+    notify(I18N.t('notify.commBulkBuy',{nm:commDisplayNm(comm),n:bought,cost:totalCost.toLocaleString(),reason:blockedReason?' · '+blockedReason:''}),'ok');
     rerenderTab(renderTradeTab);saveGame(true);
   } else {
     notify(I18N.t('notify.buyBlocked',{reason:blockedReason}),'err');
@@ -4245,7 +4267,7 @@ function sellInventoryItem(id, qty){
   const total=unitPrice*sellable;
   inv.qty-=sellable;
   G.credits=(G.credits||0)+total;
-  notify(I18N.t('notify.commSellWithReserve',{nm:comm.nm,n:sellable,cr:total.toLocaleString(),keep:inv.qty}),'gold');
+  notify(I18N.t('notify.commSellWithReserve',{nm:commDisplayNm(comm),n:sellable,cr:total.toLocaleString(),keep:inv.qty}),'gold');
   try{updateHUD();saveGame(true);rerenderTab(renderTradeTab);}catch(e){}
 }
 try{if(typeof window!=='undefined')window.sellInventoryItem=sellInventoryItem;}catch(e){}
@@ -4272,7 +4294,7 @@ function sellComm(idx,qty){
       if(G.materials&&G.materials[slot.id]){G.materials[slot.id]=Math.max(0,(G.materials[slot.id]||0)-sellQty);}
       slot.qty-=sellQty;if(slot.qty<=0)G.cargo.splice(idx,1);
       G.credits+=sellPriceRaw*sellQty;
-      updateHUD();notify(I18N.t('notify.materialSold',{nm:commDef.nm,n:sellQty,cr:(sellPriceRaw*sellQty).toLocaleString(),label:_label}),'gold');
+      updateHUD();notify(I18N.t('notify.materialSold',{nm:commDisplayNm(commDef),n:sellQty,cr:(sellPriceRaw*sellQty).toLocaleString(),label:_label}),'gold');
       rerenderTab(renderTradeTab);saveGame(true);return;
     }
     // 사용자 요청: 영입 재료(난중일기 영인본 G18 등 special, !material) — 1개 보존 후 판매 허용
@@ -4289,13 +4311,13 @@ function sellComm(idx,qty){
     const _gain=_unit*_sellable;
     slot.qty-=_sellable;if(slot.qty<=0)G.cargo.splice(idx,1);
     G.credits=(G.credits||0)+_gain;
-    notify(I18N.t('notify.sellPartial',{nm:commDef.nm,n:_sellable,cr:_gain.toLocaleString(),rem:_total-_sellable}),'gold');
+    notify(I18N.t('notify.sellPartial',{nm:commDisplayNm(commDef),n:_sellable,cr:_gain.toLocaleString(),rem:_total-_sellable}),'gold');
     updateHUD();rerenderTab(renderTradeTab);saveGame(true);return;
   }
   const sp=calcSellPrice(slot,G.currentPlanet),profit=(sp-slot.buyPrice)*qty;
   // 매각 취소용 카고 스냅샷 (슬롯 변경 직전)
   const _cargoSnap=JSON.parse(JSON.stringify(G.cargo));
-  const _commLabel=I18N.t('shop.commQtyLabel',{nm:commDef?commDef.nm:slot.id,qty});
+  const _commLabel=I18N.t('shop.commQtyLabel',{nm:commDef?commDisplayNm(commDef):slot.id,qty});
   G.credits+=sp*qty;slot.qty-=qty;if(slot.qty===0)G.cargo.splice(idx,1);
   try{_recordSell({type:'cargoSnap',cargoSnap:_cargoSnap,credits:sp*qty,label:_commLabel});}catch(e){}
   // 상점 거래 수익 10만 이상 시 명성 +1 (상거래 평판 보상)
@@ -4424,7 +4446,7 @@ function upgradeCrewMax(shipIdx,fromModal){
   const s=G.fleet[shipIdx];if(!s)return;
   const cnt=Math.floor(((+s.crewMaxExtra)||0)/CREW_EXT_PER);
   if(cnt>=CREW_EXT_MAX_BUYS){
-    notify(I18N.t('notify.crewQuartersMax',{nm:s.nm,max:CREW_EXT_MAX_BUYS*CREW_EXT_PER}),'warn');
+    notify(I18N.t('notify.crewQuartersMax',{nm:shipDisplayNm(s),max:CREW_EXT_MAX_BUYS*CREW_EXT_PER}),'warn');
     return;
   }
   const cost=getCrewMaxUpgradePrice(s);
@@ -4432,7 +4454,7 @@ function upgradeCrewMax(shipIdx,fromModal){
   G.credits-=cost;
   s.crewMaxExtra=((+s.crewMaxExtra)||0)+CREW_EXT_PER;
   updateHUD();
-  notify(I18N.t('notify.crewQuartersExpand',{nm:s.nm,add:CREW_EXT_PER,max:getMaxCrew(s),cost:cost.toLocaleString()}),'gold');
+  notify(I18N.t('notify.crewQuartersExpand',{nm:shipDisplayNm(s),add:CREW_EXT_PER,max:getMaxCrew(s),cost:cost.toLocaleString()}),'gold');
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
   else rerenderShipOrGarage();
@@ -4483,7 +4505,7 @@ function buildCrewManifest(s,idx){
     return '<div style="display:flex;align-items:center;gap:6px">'
       +'<span style="font-size:17px;flex-shrink:0">'+(c.ic||'🧑')+'</span>'
       +'<div style="flex:1;min-width:0">'
-        +'<div style="font-size:12px;font-weight:bold;color:'+rc+';'+(c.rarity==="L"||c.isHero?'text-shadow:0 0 5px '+rc+'.6':'')+'">'+(c.isHero?'⭐ ':c.rarity==="L"?'✨ ':'')+c.nm+' <span style="font-size:11px;opacity:.7">['+rnm+']</span></div>'
+        +'<div style="font-size:12px;font-weight:bold;color:'+rc+';'+(c.rarity==="L"||c.isHero?'text-shadow:0 0 5px '+rc+'.6':'')+'">'+(c.isHero?'⭐ ':c.rarity==="L"?'✨ ':'')+crewDisplayNm(c)+' <span style="font-size:11px;opacity:.7">['+rnm+']</span></div>'
         +'<div style="font-size:11px;color:var(--dim)">'+(c.cl||'')+( b2?' · '+b2:'')+'</div>'
       +'</div>'
       +'<button onclick="unassignCrew('+idx+','+ci+')" style="background:none;border:1px solid rgba(255,60,60,.3);border-radius:3px;color:var(--red);cursor:pointer;padding:1px 5px;font-size:11px;flex-shrink:0">'+I18N.t('ui.disembark')+'</button>'
@@ -4544,7 +4566,7 @@ function upgradePartsRow(shipIdx,fromModal){
   if(cur>=maxExtra){
     // 실제 기본 행 수(카탈로그 override 포함) 계산
     const _baseRowsActual=getShipPartsGridRows(s)-cur;
-    notify(I18N.t('notify.partsSlotMax',{nm:s.nm,rows:_baseRowsActual+maxExtra}),'warn');
+    notify(I18N.t('notify.partsSlotMax',{nm:shipDisplayNm(s),rows:_baseRowsActual+maxExtra}),'warn');
     return;
   }
   const cost=getPartsUpgradePrice(s);
@@ -4554,8 +4576,8 @@ function upgradePartsRow(shipIdx,fromModal){
   const newRows=getShipPartsGridRows(s);
   const cols=getShipPartsGridCols(s.tier);
   updateHUD();
-  notify(I18N.t('notify.partsSlotExpand',{nm:s.nm,rows:newRows,cols,total:newRows*cols,cost:cost.toLocaleString()}),'gold');
-  baekgu(I18N.t('baekgu.partSlotsAdded',{nm:s.nm}));
+  notify(I18N.t('notify.partsSlotExpand',{nm:shipDisplayNm(s),rows:newRows,cols,total:newRows*cols,cost:cost.toLocaleString()}),'gold');
+  baekgu(I18N.t('baekgu.partSlotsAdded',{nm:shipDisplayNm(s)}));
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
   else rerenderShipOrGarage();
@@ -4860,10 +4882,11 @@ function renderShipTab(body){
           // 1×1 셀(51px)에 더 큰 이미지(40px) — 기존 22px는 너무 작아서 식별 어려움
           const _isz=_is2x2?94:_is2x1?72:42;
           const _st2=p2.cat==='weapon'?'ATT+'+p2.ATT+(p2.wtype?' ['+p2.wtype+']':''):p2.cat==='shield'?'SHD+'+p2.INT+' SH+'+p2.maxSH:p2.cat==='armor'?'HP+'+p2.HP+(p2.DEF?' DEF+'+p2.DEF:''):'ENG+'+p2.TEC;
-          const _tp2=p2.nm+' [T'+p2.tier+(p2.rarity==='mythic'?I18N.t('ship.partMythicTag'):p2.rarity==='set'?I18N.t('ship.partSetTag'):'')+']\n'+p2.desc+'\n'+_st2+(cell.forced?I18N.t('ship.partForced'):'')+'\n'+I18N.t('ship.clickDetach');
+          const _p2Nm=partDisplayNm(p2)||p2.nm;
+          const _tp2=_p2Nm+' [T'+p2.tier+(p2.rarity==='mythic'?I18N.t('ship.partMythicTag'):p2.rarity==='set'?I18N.t('ship.partSetTag'):'')+']\n'+p2.desc+'\n'+_st2+(cell.forced?I18N.t('ship.partForced'):'')+'\n'+I18N.t('ship.clickDetach');
           // 파츠 이름 — 셀 내부 상단에 absolute 로 띄움 (사용자 요청: 이미지 위로)
           const _nmW=cell.spanC*CELL_SZ+3*(cell.spanC-1)-6;
-          const _nmLabel=(_is2x2||_is2x1)?('<span style="position:absolute;left:2px;right:2px;top:2px;background:rgba(0,0,0,.75);font-size:9px;color:'+_cc2+';pointer-events:none;text-align:center;line-height:1.1;padding:1px 2px;border-radius:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:'+_nmW+'px;z-index:2">'+p2.nm.slice(0,_is2x2?11:8)+'</span>'):'';
+          const _nmLabel=(_is2x2||_is2x1)?('<span style="position:absolute;left:2px;right:2px;top:2px;background:rgba(0,0,0,.75);font-size:9px;color:'+_cc2+';pointer-events:none;text-align:center;line-height:1.1;padding:1px 2px;border-radius:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:'+_nmW+'px;z-index:2">'+_p2Nm.slice(0,_is2x2?11:8)+'</span>'):'';
           return '<button onclick="detachPartAt('+idx+','+cell.pi+')" title="'+_tp2+'" style="grid-column:'+(cell.c+1)+'/span '+cell.spanC+';grid-row:'+(cell.r+1)+'/span '+cell.spanR+';background:rgba(0,0,0,.65);border:1px solid '+_rb2+';border-radius:5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px;position:relative;overflow:hidden" onmouseover="this.style.borderWidth=\'2px\'" onmouseout="this.style.borderWidth=\'1px\'">'
             +imgOrEmoji(partImgSrc(p2.id),_ci2,_isz,_isz,'pointer-events:none;object-fit:contain;max-width:100%;max-height:100%')
             +_nmLabel
@@ -4896,7 +4919,7 @@ function renderShipTab(body){
             let cargoOffset=0;
             for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}
             const cargoFlat=[];
-            G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:c.nm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});
+            G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);const _dnm=commDisplayNm(c);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:_dnm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});
             const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);
             // 화물 그리드: 슬롯 수에 따라 동적 행/셀 사이즈 조정 (80칸까지 화면에 들어가게)
             // 8칸 이하: 4행, 9~24칸: 6행, 25~48칸: 7행, 49~80칸: 8행
@@ -4941,7 +4964,7 @@ function renderShipTab(body){
             if(_cpid){
               const _csc=SPECIAL_CARGO_PARTS.find(c=>c.id===_cpid);
               const _cb=_csc?_csc.cargoBonus:0;
-              _cextCells+='<button onclick="unequipCargoExt('+idx+','+_ce+')" title="'+((_csc?_csc.nm:_cpid))+' '+I18N.t('ship.cargoExtTip',{n:_cb})+'" style="width:46px;height:46px;background:rgba(212,175,55,.12);border:1px solid var(--gold);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:2px">'
+              _cextCells+='<button onclick="unequipCargoExt('+idx+','+_ce+')" title="'+((_csc?(partDisplayNm(_csc)||_csc.nm):_cpid))+' '+I18N.t('ship.cargoExtTip',{n:_cb})+'" style="width:46px;height:46px;background:rgba(212,175,55,.12);border:1px solid var(--gold);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:2px">'
                 +imgOrEmoji('img/parts/'+_cpid+'.png',(_csc&&_csc.ic)||'📦',38,38,'pointer-events:none;object-fit:contain;max-width:100%;max-height:100%','part_'+_cpid)
                 +'<span style="position:absolute;bottom:-3px;right:-2px;font-size:8px;color:#fff;background:var(--gold);border-radius:3px;padding:0 2px;font-weight:bold">+'+_cb+'</span>'
                 +'</button>';
@@ -5054,7 +5077,7 @@ function renderShipTab(body){
           <!-- Col 4: Cargo 그리드 -->
           <div style="flex:1;padding:8px 10px;min-width:196px;">
             <div style="font-size:10px;color:var(--dim);margin-bottom:5px">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}칸 / 최대80칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
-            ${(()=>{const slots=Math.min(s.cargoSlots||4,80);let cargoOffset=0;for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}const cargoFlat=[];G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:c.nm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);let h='<div style="display:grid;grid-template-rows:repeat(5,42px);grid-auto-flow:column;grid-auto-columns:42px;gap:3px;">';for(let i=0;i<slots;i++){if(i<myCargo.length){const ci=myCargo[i];h+='<div style="width:42px;height:42px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n구매가: ₡'+ci.price.toLocaleString()+'"><img src="'+ci.img+'" style="width:38px;height:38px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:18px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}else{const isMax=(slots>=80);h+='<div '+''+' style="width:42px;height:42px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}}h+='</div>';return h;})()}
+            ${(()=>{const slots=Math.min(s.cargoSlots||4,80);let cargoOffset=0;for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}const cargoFlat=[];G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);const _dnm=commDisplayNm(c);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:_dnm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);let h='<div style="display:grid;grid-template-rows:repeat(5,42px);grid-auto-flow:column;grid-auto-columns:42px;gap:3px;">';for(let i=0;i<slots;i++){if(i<myCargo.length){const ci=myCargo[i];h+='<div style="width:42px;height:42px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n구매가: ₡'+ci.price.toLocaleString()+'"><img src="'+ci.img+'" style="width:38px;height:38px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:18px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}else{const isMax=(slots>=80);h+='<div '+''+' style="width:42px;height:42px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}}h+='</div>';return h;})()}
           </div>
         </div>`}
 
@@ -5118,7 +5141,7 @@ function renderShipTab(body){
         '<div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">'+
           // 이름 + 티어 배지
           '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">'+
-            '<span style="font-size:12px;font-weight:bold;color:'+(isFlagship?'var(--cyan)':tc)+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+s.nm+'">'+(isFlagship?'⭐ ':'')+shipDisplayName(s)+'</span>'+
+            '<span style="font-size:12px;font-weight:bold;color:'+(isFlagship?'var(--cyan)':tc)+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+(shipDisplayNm(s)||s.nm)+'">'+(isFlagship?'⭐ ':'')+shipDisplayName(s)+'</span>'+
             '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+I18N.tier(s.tier)+'</span>'+
           '</div>'+
           // 상태
@@ -5224,7 +5247,7 @@ function renderShipTab(body){
               '<div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">'+
                 // 이름 + 티어 배지
                 '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">'+
-                  '<span style="font-size:12px;font-weight:bold;color:'+tc+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+s.nm+'">'+s.nm+'</span>'+
+                  '<span style="font-size:12px;font-weight:bold;color:'+tc+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+shipDisplayNm(s)+'">'+shipDisplayNm(s)+'</span>'+
                   '<span style="font-size:9px;color:'+tc+';background:rgba(0,0,0,.6);border:1px solid '+tc+';border-radius:3px;padding:1px 4px;flex-shrink:0">'+I18N.tier(s.tier)+'</span>'+
                 '</div>'+
                 // 재고 상태
@@ -5311,7 +5334,7 @@ function renderShipTab(body){
             const bdrCol=p.rarity==='mythic'?'rgba(255,136,255,.5)':p.rarity==='set'?'rgba(192,128,255,.5)':'var(--bdr)';
             return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
               <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
-                <div style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all">${p.nm}</div>
+                <div style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all">${partDisplayNm(p)}</div>
                 <div style="display:flex;gap:4px">
                   <span style="font-size:10px;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:0 4px">T${p.tier}</span>
                   <span style="color:var(--dim);font-size:10px">${I18N.t('ui.stockPrefix')}${qty}</span>
@@ -5349,7 +5372,7 @@ function renderShipTab(body){
             return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
               <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
                 <div style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap">
-                  <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${p.nm}</span>${rarBadge}
+                  <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${partDisplayNm(p)}</span>${rarBadge}
                 </div>
                 <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
                   <span style="font-size:10px;color:${catCol};border:1px solid ${catCol};border-radius:3px;padding:0 4px">T${p.tier}</span>
@@ -5385,7 +5408,7 @@ function renderShipTab(body){
           return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:5px">
             <div style="display:flex;align-items:center;gap:8px">
               ${imgOrEmoji('img/parts/'+p.id+'.png',p.ic||'📦',44,44,'border-radius:6px;background:rgba(0,0,0,.4);object-fit:contain;flex-shrink:0','part_'+p.id)}
-              <div style="flex:1;font-size:12px;font-weight:bold;color:${nmCol};min-width:0">${p.nm}</div>
+              <div style="flex:1;font-size:12px;font-weight:bold;color:${nmCol};min-width:0">${partDisplayNm(p)}</div>
             </div>
             <div style="display:flex;gap:4px">
               <span style="font-size:10px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:0 4px">T${p.tier}</span>
@@ -5446,7 +5469,7 @@ function renderShipTab(body){
         return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
           <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
             <div style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap">
-              <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${p2.nm}</span>${rarBadge}
+              <span style="font-size:12px;font-weight:bold;color:${nmCol};line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;flex:1;min-width:0">${partDisplayNm(p2)}</span>${rarBadge}
             </div>
             <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
               <span style="font-size:10px;color:${catCol};border:1px solid ${catCol};border-radius:3px;padding:0 4px">T${p2.tier}</span>
@@ -5648,15 +5671,15 @@ function sellPartFromInventory(partId){
   openModal(I18N.t('modal.partsSale'),
     `<div style="text-align:center;padding:10px">
       <div style="font-size:34px;margin-bottom:6px">${{weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡'}[p.cat]||'⚙️'}</div>
-      <div style="font-size:18px;font-weight:bold;margin-bottom:8px">${p.nm}</div>
+      <div style="font-size:18px;font-weight:bold;margin-bottom:8px">${partDisplayNm(p)}</div>
       <div style="font-size:16px;color:var(--gold)">${I18N.t('ui.sellPrice',{cr:sellVal.toLocaleString(),marco:marcoNote})}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:4px">${I18N.t('ui.buy50Percent',{marco:marcoMult>1?' × 1.1':''})}</div>
     </div>`,
     [{txt:I18N.t('ui.sellVal',{p:sellVal.toLocaleString()}),fn:()=>{
       inv.qty--;if(inv.qty<=0)G.inventory.splice(G.inventory.indexOf(inv),1);
       G.credits+=sellVal;
-      try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:p.nm});}catch(e){}
-      updateHUD();notify(I18N.t('notify.partSold',{nm:p.nm,cr:sellVal.toLocaleString()}),'gold');
+      try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:partDisplayNm(p)||p.nm});}catch(e){}
+      updateHUD();notify(I18N.t('notify.partSold',{nm:partDisplayNm(p)||p.nm,cr:sellVal.toLocaleString()}),'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
     },cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
   );
@@ -5710,7 +5733,7 @@ function addShipToFleet(ship){
     G.fleet.push(ship);added='fleet';
   } else {
     G.reserveFleet.push(ship);added='reserve';
-    notify(I18N.t('notify.shipToReserve',{max:FLEET_CAP,nm:ship.nm,now:G.reserveFleet.length,cap:RESERVE_CAP}),'warn');
+    notify(I18N.t('notify.shipToReserve',{max:FLEET_CAP,nm:shipDisplayNm(ship),now:G.reserveFleet.length,cap:RESERVE_CAP}),'warn');
   }
   // 임시창 초과 시 최하위 함선 매각 프롬프트
   if(G.reserveFleet.length>RESERVE_CAP){
@@ -5750,7 +5773,7 @@ function _promptSellLowestReserve(){
         if(c.from==='reserve'){G.reserveFleet.splice(c.i,1);}
         else{G.fleet.splice(c.i,1);_promoteReserveIfRoom();}
         G.credits=(G.credits||0)+price;
-        notify(I18N.t('notify.shipSoldSimple',{nm:c.s.nm,cr:price.toLocaleString()}),'gold');
+        notify(I18N.t('notify.shipSoldSimple',{nm:shipDisplayNm(c.s),cr:price.toLocaleString()}),'gold');
         closeModal();saveGame(true);
         if(typeof rerenderShipOrGarage==='function')rerenderShipOrGarage();
       }},
@@ -5774,8 +5797,8 @@ function promoteReserveShip(reserveIdx){
   if(G.fleet.length>=16){notify(I18N.t('notify.activeFleetFull'),'err');return;}
   const ship=G.reserveFleet.splice(reserveIdx,1)[0];
   G.fleet.push(ship);
-  notify(I18N.t('notify.shipJoinActive',{nm:ship.nm,now:G.fleet.length}),'gold');
-  baekgu(I18N.t('baekgu.shipReadyForBattle',{nm:ship.nm}));
+  notify(I18N.t('notify.shipJoinActive',{nm:shipDisplayNm(ship),now:G.fleet.length}),'gold');
+  baekgu(I18N.t('baekgu.shipReadyForBattle',{nm:shipDisplayNm(ship)}));
   saveGame(true);rerenderShipOrGarage();
 }
 
@@ -5868,9 +5891,9 @@ function discardReserveShip(reserveIdx){
         const _undoShip=JSON.parse(JSON.stringify(ship));
         G.credits+=sellPrice;
         G.reserveFleet.splice(reserveIdx,1);
-        try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:I18N.t('ship.sellCandidate',{nm:ship.nm})});}catch(e){}
-        notify(I18N.t('notify.shipSoldRecovered',{nm:ship.nm,cr:sellPrice.toLocaleString(),parts:returnedParts,crew:returnedCrew,cargo:returnedCargo>0?I18N.t('notify.fleetCargoRecovered',{n:returnedCargo}):''}),'gold');
-        baekgu(I18N.t('baekgu.shipSoldAtGarage',{nm:ship.nm,cr:sellPrice.toLocaleString()}));
+        try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:I18N.t('ship.sellCandidate',{nm:shipDisplayNm(ship)})});}catch(e){}
+        notify(I18N.t('notify.shipSoldRecovered',{nm:shipDisplayNm(ship),cr:sellPrice.toLocaleString(),parts:returnedParts,crew:returnedCrew,cargo:returnedCargo>0?I18N.t('notify.fleetCargoRecovered',{n:returnedCargo}):''}),'gold');
+        baekgu(I18N.t('baekgu.shipSoldAtGarage',{nm:shipDisplayNm(ship),cr:sellPrice.toLocaleString()}));
         updateHUD();saveGame(true);
         rerenderShipOrGarage();
       },cls:'btn-gold'},
@@ -5905,7 +5928,7 @@ function renderCargoOnlyTab(body){
     let cargoOffset=0;
     for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}
     const cargoFlat=[];
-    G.cargo.forEach(c=>{const imgSrc=commImgSrc(c.id);for(let q=0;q<(c.qty||1);q++)cargoFlat.push({nm:c.nm,ic:c.ic||'📦',img:imgSrc,price:c.buyPrice,id:c.id});});
+    G.cargo.forEach(c=>{const imgSrc=commImgSrc(c.id);const _dnm=commDisplayNm(c);for(let q=0;q<(c.qty||1);q++)cargoFlat.push({nm:_dnm,ic:c.ic||'📦',img:imgSrc,price:c.buyPrice,id:c.id});});
     const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);
     const _cgRows=slots<=8?4:slots<=24?6:slots<=48?7:8;
     const _cgCell=slots<=24?40:slots<=48?36:32;
@@ -6054,7 +6077,7 @@ function renderShipSkinTab(body){
     const _imgUrl=shipImgSrc({...sk,id:sk.id,catalogId:sk.catalogId||sk.id,catId:sk.catalogId||sk.id});
     return `<div style="background:${isCur?'rgba(0,243,255,.16)':'var(--card)'};border:1.5px solid ${isCur?'var(--cyan)':tc+'66'};border-radius:8px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:160px">
       <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;background:rgba(0,0,0,.3);border:1px solid ${tc}66">${imgOrEmoji(_imgUrl,'🛸',80,80,'object-fit:cover;width:100%;height:100%')}</div>
-      <div style="font-size:11px;font-weight:bold;color:${tc};text-align:center;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${sk.nm}</div>
+      <div style="font-size:11px;font-weight:bold;color:${tc};text-align:center;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${shipDisplayNm(sk)}</div>
       <div style="font-size:10px;color:var(--dim)">[${sk.tier}]</div>
       ${isCur
         ? `<div style="font-size:11px;color:var(--cyan);font-weight:bold;margin-top:auto">${I18N.t('ui.currentAppearance')}</div>`
@@ -6077,7 +6100,7 @@ function renderShipSkinTab(body){
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
       </div>
       <div data-scroll-id="skin-gallery" style="background:rgba(5,10,26,.4);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
-        <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:8px">${I18N.t('ship.skinGallery',{label:sel?I18N.t('ship.skinChange',{nm:sel.nm}):I18N.t('ship.skinSelectFirst')})}</div>
+        <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:8px">${I18N.t('ship.skinGallery',{label:sel?I18N.t('ship.skinChange',{nm:shipDisplayNm(sel)}):I18N.t('ship.skinSelectFirst')})}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">${gallery}</div>
       </div>
     </div>
@@ -6093,15 +6116,15 @@ function applyShipSkin(shipIdx, skinId){
   G.credits-=price;
   // catalogId 가 있으면 그것을, 없으면 id 를 사용 (URSA, CHIX_S 등의 별칭 처리)
   s._skinCatId=sk.catalogId||skinId;
-  notify(I18N.t('notify.skinApplied',{nm:s.nm,skin:sk.nm,cr:price.toLocaleString()}),'gold');
-  try{baekgu(I18N.t('baekgu.skinApplied',{nm:s.nm,skin:sk.nm}));}catch(e){}
+  notify(I18N.t('notify.skinApplied',{nm:shipDisplayNm(s),skin:shipDisplayNm(sk),cr:price.toLocaleString()}),'gold');
+  try{baekgu(I18N.t('baekgu.skinApplied',{nm:shipDisplayNm(s),skin:shipDisplayNm(sk)}));}catch(e){}
   updateHUD();saveGame(true);rerenderTab(renderGarageTab);
 }
 function removeShipSkin(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s._skinCatId)return;
   delete s._skinCatId;
-  notify(I18N.t('notify.skinRemoved',{nm:s.nm}),'ok');
-  try{baekgu(I18N.t('baekgu.skinRemoved',{nm:s.nm}));}catch(e){}
+  notify(I18N.t('notify.skinRemoved',{nm:shipDisplayNm(s)}),'ok');
+  try{baekgu(I18N.t('baekgu.skinRemoved',{nm:shipDisplayNm(s)}));}catch(e){}
   saveGame(true);rerenderTab(renderGarageTab);
 }
 try{if(typeof window!=='undefined'){window.applyShipSkin=applyShipSkin;window.removeShipSkin=removeShipSkin;}}catch(e){}
@@ -6269,7 +6292,7 @@ function doShipEnhance(shipIdx){
   const mats=_enhanceMatsFor(s,curLv);
   if(!G.materials)G.materials={};
   for(const m of mats){
-    if((G.materials[m]||0)<1){const c=COMMODITIES.find(x=>x.id===m);notify(I18N.t('notify.needMaterial',{nm:c?.nm||m}),'err');return;}
+    if((G.materials[m]||0)<1){const c=COMMODITIES.find(x=>x.id===m);notify(I18N.t('notify.needMaterial',{nm:(c?commDisplayNm(c):'')||m}),'err');return;}
   }
   // 자원 소모
   G.credits-=cost;
@@ -6279,8 +6302,8 @@ function doShipEnhance(shipIdx){
   const success=Math.random()<succRate;
   if(success){
     s._enhanceLv=nextLv;
-    notify(I18N.t('notify.enhanceSuccess',{nm:s.nm,lv:nextLv,pct:nextLv*5}),'gold');
-    try{baekgu(I18N.t('baekgu.enhanceCongrats',{nm:s.nm,lv:nextLv,pct:nextLv*5}));}catch(e){}
+    notify(I18N.t('notify.enhanceSuccess',{nm:shipDisplayNm(s),lv:nextLv,pct:nextLv*5}),'gold');
+    try{baekgu(I18N.t('baekgu.enhanceCongrats',{nm:shipDisplayNm(s),lv:nextLv,pct:nextLv*5}));}catch(e){}
     // 사용자 요청: 강화 성공 시 항상 폭죽 + 축하 효과음
     try{_fireFireworks();}catch(e){}
     try{AudioMgr.playSfx('coin',{vol:0.9,cooldown:0});}catch(e){}
@@ -6290,7 +6313,7 @@ function doShipEnhance(shipIdx){
       const host=document.getElementById('game-stage')||document.body;
       const banner=document.createElement('div');
       banner.style.cssText='position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.6);opacity:0;background:linear-gradient(135deg,rgba(255,215,0,.95),rgba(255,100,200,.92));color:#1a0c00;font-size:34px;font-weight:bold;letter-spacing:4px;padding:18px 36px;border-radius:14px;border:3px solid #fff;box-shadow:0 8px 40px rgba(255,215,0,.7),0 0 80px rgba(255,200,255,.5);z-index:99970;pointer-events:none;text-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;text-align:center;font-family:Malgun Gothic,sans-serif;white-space:nowrap';
-      banner.innerHTML=I18N.t('ui.enhanceSuccess',{lv:nextLv})+`<div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${I18N.t('ui.enhanceSubline',{nm:s.nm,pct:nextLv*5})}</div>`;
+      banner.innerHTML=I18N.t('ui.enhanceSuccess',{lv:nextLv})+`<div style="font-size:16px;letter-spacing:2px;margin-top:6px;font-weight:normal">${I18N.t('ui.enhanceSubline',{nm:shipDisplayNm(s),pct:nextLv*5})}</div>`;
       host.appendChild(banner);
       requestAnimationFrame(()=>{banner.style.opacity='1';banner.style.transform='translate(-50%,-50%) scale(1)';});
       setTimeout(()=>{banner.style.opacity='0';banner.style.transform='translate(-50%,-50%) scale(1.2)';setTimeout(()=>{try{banner.remove();}catch(_e){}},400);},2400);
@@ -6300,10 +6323,10 @@ function doShipEnhance(shipIdx){
     const newLv=Math.max(0,curLv-regress);
     s._enhanceLv=newLv;
     if(regress>0){
-      notify(I18N.t('notify.enhanceFailRegress',{nm:s.nm,lv:nextLv,regress,newLv}),'err');
-      try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:s.nm,regress,newLv}));}catch(e){}
+      notify(I18N.t('notify.enhanceFailRegress',{nm:shipDisplayNm(s),lv:nextLv,regress,newLv}),'err');
+      try{baekgu(I18N.t('baekgu.enhanceFailRegress',{nm:shipDisplayNm(s),regress,newLv}));}catch(e){}
     } else {
-      notify(I18N.t('notify.enhanceFailNoRegress',{nm:s.nm,lv:nextLv}),'err');
+      notify(I18N.t('notify.enhanceFailNoRegress',{nm:shipDisplayNm(s),lv:nextLv}),'err');
       try{baekgu(I18N.t('baekgu.enhanceFailSimple'));}catch(e){}
     }
   }
@@ -6406,11 +6429,11 @@ function onFormationSlotClick(slot){
         // 두 슬롯 모두 점유 → 스왑
         f[srcShip.id]=slot;
         f[dstShip.id]=_formationSelectedSlot;
-        notify(I18N.t('notify.shipSwap',{a:srcShip.nm,b:dstShip.nm}),'ok');
+        notify(I18N.t('notify.shipSwap',{a:shipDisplayNm(srcShip),b:shipDisplayNm(dstShip)}),'ok');
       } else {
         // 이동
         f[srcShip.id]=slot;
-        notify(I18N.t('notify.shipMoved',{nm:srcShip.nm,col:Math.floor(slot/4)+1,row:slot%4+1}),'ok');
+        notify(I18N.t('notify.shipMoved',{nm:shipDisplayNm(srcShip),col:Math.floor(slot/4)+1,row:slot%4+1}),'ok');
       }
       saveGame(true);
       _formationSelectedSlot=null;
@@ -6521,7 +6544,7 @@ function renderFleetFormationTab(body){
         const _selOcc=getFormationShipForSlot(_formationSelectedSlot);
         const _selLbl=I18N.t('ui.gridSlot',{col:Math.floor(_formationSelectedSlot/4)+1,row:_formationSelectedSlot%4+1});
         const _info=_selOcc
-          ? I18N.t('ui.slotSelectedHint',{nm:`<b>${_selOcc.nm}</b>`,lbl:_selLbl})
+          ? I18N.t('ui.slotSelectedHint',{nm:`<b>${shipDisplayNm(_selOcc)}</b>`,lbl:_selLbl})
           : I18N.t('ui.emptySlotSelected',{lbl:_selLbl});
         return `<div style="background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:6px;padding:8px;text-align:center;color:var(--gold);font-size:12px">${_info}</div>`;
       })()
@@ -6582,7 +6605,7 @@ function repairShip(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:s.nm,cr:cost.toLocaleString()}),'ok');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'ok');rerenderShipOrGarage();saveGame(true);
 }
 // 모달 내 수리 — 수리 후 상세 팝업 재오픈
 function repairShipModal(idx,type){
@@ -6594,7 +6617,7 @@ function repairShipModal(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:s.nm,cr:cost.toLocaleString()}),'ok');
+  updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'ok');
   saveGame(true);showShipDetailModal(idx);
 }
 function repairShipFullModal(idx){
@@ -6605,7 +6628,7 @@ function repairShipFullModal(idx){
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');showShipDetailModal(idx);return;}
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:s.nm,cr:cost.toLocaleString()}),'gold');
+  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'gold');
   saveGame(true);showShipDetailModal(idx);
 }
 // ── 자동 배치 (파츠/크루 × 기함중심/평균배분) ───────────────────────
@@ -7922,12 +7945,12 @@ function pickPartModal(shipIdx){
     const sizeLabel=gs.cols===2&&gs.rows===2?'[2×2]':gs.cols===2?'[2×1]':'[1×1]';
     html2+=`<button onclick="attachPart(${shipIdx},'${i.id}');showShipDetailModal(${shipIdx})" style="display:flex;align-items:center;gap:10px;width:100%;background:rgba(0,0,0,.4);border:1px solid ${cc};border-radius:8px;padding:8px 10px;cursor:pointer;margin-bottom:6px;text-align:left" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'">`
       +imgOrEmoji(`img/parts/${p.id}.png`,ic,36,36,'border-radius:5px;flex-shrink:0')
-      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${cc}">${p.nm}<span style="font-size:11px;margin-left:5px;opacity:.7">${sizeLabel}</span></div>`
+      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${cc}">${partDisplayNm(p)}<span style="font-size:11px;margin-left:5px;opacity:.7">${sizeLabel}</span></div>`
       +`<div style="font-size:12px;color:var(--dim)">T${p.tier} · ${st}</div></div>`
       +`<span style="font-size:12px;color:var(--green);flex-shrink:0">×${i.qty}</span>`
       +'</button>';
   });
-  openModal(I18N.t('modal.partsMount',{nm:s.nm}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.backArrow'),fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
+  openModal(I18N.t('modal.partsMount',{nm:shipDisplayNm(s)}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.backArrow'),fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
 }
 // 모달 내 크루 배치 — 배치 후 상세 팝업 재오픈
 function pickCrewModal(shipIdx){
@@ -7948,16 +7971,16 @@ function pickCrewModal(shipIdx){
     const cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
     const m2=RARITY_MULT[c.rarity]||1;
     const bn=[cb2.att?'ATT+'+Math.round(cb2.att*m2):'',cb2.int2?'SHD+'+Math.round(cb2.int2*m2):'',cb2.tec?'ENG+'+Math.round(cb2.tec*m2):''].filter(Boolean).join(' ');
-    const lbl=onThis?I18N.t('ui.aboardLabel'):curShip?I18N.t('hud.currentShip',{nm:curShip.nm}):'';
+    const lbl=onThis?I18N.t('ui.aboardLabel'):curShip?I18N.t('hud.currentShip',{nm:shipDisplayNm(curShip)}):'';
     html3+=`<button ${onThis?'disabled':''} onclick="${onThis?'':(`assignCrewById(${shipIdx},'${c.id}');showShipDetailModal(${shipIdx})`)}" style="display:flex;align-items:center;gap:7px;width:100%;background:rgba(0,0,0,.4);border:1px solid ${onThis?'rgba(255,255,255,.15)':col};border-radius:8px;padding:7px 8px;cursor:${onThis?'default':'pointer'};text-align:left;opacity:${onThis?.5:1}" ${onThis?'':`onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'"`}>`
       +imgOrEmoji(imgSrc3,c.ic||'🧑',36,36,`border-radius:50%;flex-shrink:0;border:1px solid ${col}`)
-      +`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${c.nm}</div>`
+      +`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${crewDisplayNm(c)}</div>`
       +`<div style="font-size:11px;color:var(--dim)">${c.cl||''}${bn?' · '+bn:''}</div>`
       +(lbl?`<div style="font-size:11px;color:var(--gold)">${lbl}</div>`:'')
       +'</div>'
       +'</button>';
   });
-  openModal(I18N.t('modal.crewAssignTitle',{nm:s.nm,now:(s.crewIds||[]).length,max:maxC}),
+  openModal(I18N.t('modal.crewAssignTitle',{nm:shipDisplayNm(s),now:(s.crewIds||[]).length,max:maxC}),
     `<div style="max-height:380px;overflow-y:auto"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${html3}</div></div>`,
     [{txt:I18N.t('btn.goBack'),fn:()=>showShipDetailModal(shipIdx),cls:'btn-sm'}]);
 }
@@ -7967,7 +7990,7 @@ function unassignCrewModal(shipIdx,crewSlotIdx){
   if(crewSlotIdx<0||crewSlotIdx>=s.crewIds.length){notify(I18N.t('notify.invalidCrewSlot'),'err');return;}
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||(G.heroes||[]).map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
-  notify(I18N.t('notify.crewDisembark',{nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
+  notify(I18N.t('notify.crewDisembark',{nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort')}),'ok');
   saveGame(true);showShipDetailModal(shipIdx);
 }
 // 함선의 모든 크루 일괄 하선
@@ -7989,7 +8012,7 @@ function unassignAllParts(shipIdx){
   const _stAft=getShipStats(s);
   s.hp=Math.min(s.hp||0,_stAft.HP);
   s.sh=Math.min(s.sh||0,_stAft.maxSH);
-  notify(I18N.t('notify.partsAllUnequip',{nm:s.nm,n}),'ok');
+  notify(I18N.t('notify.partsAllUnequip',{nm:shipDisplayNm(s),n}),'ok');
   saveGame(true);rerenderShipOrGarage();
 }
 function repairShipFull(idx){
@@ -8001,7 +8024,7 @@ function repairShipFull(idx){
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);
   if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
-  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:s.nm,cr:cost.toLocaleString()}),'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function assignCrew(shipIdx){
   const s=G.fleet[shipIdx];
@@ -8022,8 +8045,8 @@ function assignCrew(shipIdx){
   _syncShipCapacity(s,_stBefAC);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
-  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}));
+  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort'),ship:shipDisplayNm(s)}),'ok');
+  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort'),ship:shipDisplayNm(s)}));
   rerenderShipOrGarage();saveGame(true);
 }
 // 이미지 카드 클릭으로 직접 크루 탑승 (ID 기반)
@@ -8041,14 +8064,14 @@ function assignCrewById(shipIdx,cid){
   _syncShipCapacity(s,_stBefACB);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(I18N.t('notify.crewBoard',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
+  notify(I18N.t('notify.crewBoard',{ic:c?.ic||'🧑',nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort'),ship:shipDisplayNm(s)}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 function unassignCrew(shipIdx,crewSlotIdx){
   const s=G.fleet[shipIdx];if(!s||!s.crewIds)return;
   const cid=s.crewIds[crewSlotIdx];const c=G.crew.find(x=>x.id===cid)||G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S'})).find(x=>x.id===cid);
   s.crewIds.splice(crewSlotIdx,1);
-  notify(I18N.t('notify.crewDisembark',{nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
+  notify(I18N.t('notify.crewDisembark',{nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort')}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 function pickPartForSlot(shipIdx){
@@ -8069,12 +8092,12 @@ function pickPartForSlot(shipIdx){
     const _gradeBadge=i.crafted&&i.qualityLabel?`<span style="display:inline-block;margin-left:6px;font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(255,215,0,.15);color:#ffd700;border:1px solid rgba(255,215,0,.5);font-weight:bold">${i.qualityLabel}${i.quality?' ×'+(+i.quality).toFixed(2):''}</span>`:'';
     html2+=`<button onclick="attachPart(${shipIdx},'${i.id}');closeModal()" style="display:flex;align-items:center;gap:10px;width:100%;background:rgba(0,0,0,.4);border:1px solid ${cc};border-radius:8px;padding:8px 10px;cursor:pointer;margin-bottom:6px;text-align:left" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'">`
       +imgOrEmoji(`img/parts/${p.id}.png`,ic,36,36,'border-radius:5px;flex-shrink:0')
-      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${cc}">${p.nm}<span style="font-size:11px;margin-left:5px;opacity:.7">${sizeLabel}</span>${_gradeBadge}</div>`
+      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${cc}">${partDisplayNm(p)}<span style="font-size:11px;margin-left:5px;opacity:.7">${sizeLabel}</span>${_gradeBadge}</div>`
       +`<div style="font-size:12px;color:var(--dim)">T${p.tier} · ${st}</div></div>`
       +`<span style="font-size:12px;color:var(--green);flex-shrink:0">×${i.qty}</span>`
       +'</button>';
   });
-  openModal(I18N.t('modal.partsMount',{nm:s.nm}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.exitX'),fn:closeModal,cls:'btn-sm'}]);
+  openModal(I18N.t('modal.partsMount',{nm:shipDisplayNm(s)}),`<div style="max-height:340px;overflow-y:auto">${html2}</div>`,[{txt:I18N.t('ui.exitX'),fn:closeModal,cls:'btn-sm'}]);
 }
 let _crewPickSort='rarity'; // rarity | cl | name
 function pickCrewForSlot(shipIdx){
@@ -8109,16 +8132,16 @@ function pickCrewForSlot(shipIdx){
     const cb2=CREW_BONUS_TABLE[c.cl]||{att:3,int2:3,tec:3};
     const m2=RARITY_MULT[c.rarity]||1;
     const bn=[cb2.att?'ATT+'+Math.round(cb2.att*m2):'',cb2.int2?'SHD+'+Math.round(cb2.int2*m2):'',cb2.tec?'ENG+'+Math.round(cb2.tec*m2):''].filter(Boolean).join(' ');
-    const lbl=onThis?I18N.t('ui.alreadyAboardLabel'):curShip?I18N.t('hud.currentShip',{nm:curShip.nm}):'';
+    const lbl=onThis?I18N.t('ui.alreadyAboardLabel'):curShip?I18N.t('hud.currentShip',{nm:shipDisplayNm(curShip)}):'';
     html3+=`<button ${onThis?'disabled':''} onclick="${onThis?'':(`assignCrewById(${shipIdx},'${c.id}');closeModal()`)}" style="display:flex;align-items:center;gap:7px;width:100%;min-width:0;background:rgba(0,0,0,.4);border:1px solid ${onThis?'rgba(255,255,255,.15)':col};border-radius:8px;padding:7px 8px;cursor:${onThis?'default':'pointer'};text-align:left;opacity:${onThis?.5:1}" ${onThis?'':`onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(0,0,0,.4)'"`}>`
       +imgOrEmoji(imgSrc3,c.ic||'🧑',36,36,`border-radius:50%;flex-shrink:0;border:1px solid ${col}`)
-      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${c.nm}</div>`
+      +`<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:bold;color:${col}">${c.isHero?'⭐ ':''}${crewDisplayNm(c)}</div>`
       +`<div style="font-size:12px;color:var(--dim)">${c.cl||''}${bn?' · '+bn:''}</div>`
       +(lbl?`<div style="font-size:11px;color:var(--gold)">${lbl}</div>`:'')
       +'</div>'
       +'</button>';
   });
-  openModal(I18N.t('modal.crewAssignTitle',{nm:s.nm,now:(s.crewIds||[]).length,max:maxC}),
+  openModal(I18N.t('modal.crewAssignTitle',{nm:shipDisplayNm(s),now:(s.crewIds||[]).length,max:maxC}),
     `<div>${sortBar3}<div style="max-height:380px;overflow-y:auto"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${html3}</div></div></div>`,
     [{txt:I18N.t('btn.exitX'),fn:closeModal,cls:'btn-sm'}]);
 }
@@ -8186,10 +8209,10 @@ function sellShip(idx){
   _promoteReserveIfRoom();
   // 화물·재료 정합성 보정 — 함선 판매 후 cargoSlots 합이 줄어도 재료가 누락되지 않게 G.materials 기반 슬롯 복구
   try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate(sellShip) failed',e);}
-  try{_recordSell({type:'ship',ship:_undoShip,credits:sp.total,label:s.nm});}catch(e){}
+  try{_recordSell({type:'ship',ship:_undoShip,credits:sp.total,label:shipDisplayNm(s)});}catch(e){}
   updateHUD();
-  notify(I18N.t('notify.shipSoldFull',{nm:s.nm,cr:sp.total.toLocaleString(),cargo:_cargoBack>0?I18N.t('notify.cargoRecoveredN',{n:_cargoBack}):''}),'gold');
-  baekgu(I18N.t('baekgu.shipSoldCash',{nm:s.nm,cr:sp.total.toLocaleString()}));
+  notify(I18N.t('notify.shipSoldFull',{nm:shipDisplayNm(s),cr:sp.total.toLocaleString(),cargo:_cargoBack>0?I18N.t('notify.cargoRecoveredN',{n:_cargoBack}):''}),'gold');
+  baekgu(I18N.t('baekgu.shipSoldCash',{nm:shipDisplayNm(s),cr:sp.total.toLocaleString()}));
   rerenderShipOrGarage();saveGame(true);
 }
 function renameShip(idx){
@@ -8223,7 +8246,7 @@ function confirmRenameShip(idx){
 function setFlagship(idx){
   if(idx===0){notify(I18N.t('notify.alreadyFlagship'),'err');return;}
   const tmp=G.fleet[0];G.fleet[0]=G.fleet[idx];G.fleet[idx]=tmp;
-  const fnm=G.fleet[0]?.nm||I18N.t('ui.flagship');notify(I18N.t('notify.flagshipSet',{nm:fnm}),'gold');
+  const fnm=(G.fleet[0]?shipDisplayNm(G.fleet[0]):'')||I18N.t('ui.flagship');notify(I18N.t('notify.flagshipSet',{nm:fnm}),'gold');
   baekgu(I18N.t('baekgu.flagshipChanged',{nm:fnm}));
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8263,8 +8286,8 @@ function upgradeCargoSlot(shipIdx, fromModal){
   const cost=getCargoUpgradePrice(s);
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;s.cargoSlots=Math.min(80,cur+2);
-  updateHUD();notify(I18N.t('notify.holdExpanded',{nm:s.nm,n:s.cargoSlots,cr:cost.toLocaleString()}),'ok');
-  baekgu(I18N.t('baekgu.holdExpanded',{nm:s.nm,n:s.cargoSlots,note:s.cargoSlots>=80?I18N.t('baekgu.holdMaxReached'):I18N.t('baekgu.holdNextExpensive')}));
+  updateHUD();notify(I18N.t('notify.holdExpanded',{nm:shipDisplayNm(s),n:s.cargoSlots,cr:cost.toLocaleString()}),'ok');
+  baekgu(I18N.t('baekgu.holdExpanded',{nm:shipDisplayNm(s),n:s.cargoSlots,note:s.cargoSlots>=80?I18N.t('baekgu.holdMaxReached'):I18N.t('baekgu.holdNextExpensive')}));
   if(fromModal){showShipDetailModal(shipIdx);}else{rerenderShipOrGarage();}
   saveGame(true);
 }
@@ -8278,8 +8301,8 @@ function buyCargoExtPart(id){
   stock['scargo_'+id]--;
   addToInventory(id,1);
   updateHUD();
-  notify(I18N.t('notify.holdPartBought',{nm:ci.nm}),'gold');
-  baekgu(I18N.t('baekgu.holdPartBought',{nm:ci.nm,bonus:ci.cargoBonus}));
+  notify(I18N.t('notify.holdPartBought',{nm:partDisplayNm(ci)||ci.nm}),'gold');
+  baekgu(I18N.t('baekgu.holdPartBought',{nm:partDisplayNm(ci)||ci.nm,bonus:ci.cargoBonus}));
   rerenderShipOrGarage();saveGame(true);
 }
 // ── 창고 확장 전용 슬롯 (함선당 최대 8칸) — 장착/해제/선택 ─────────────────
@@ -8296,7 +8319,7 @@ function equipCargoExt(shipIdx,partId){
   ext.push(partId);
   s.cargoSlots=(s.cargoSlots||4)+sc.cargoBonus;
   closeModal();
-  notify(I18N.t('notify.holdPartEquipped',{nm:s.nm,part:sc.nm,bonus:sc.cargoBonus,n:s.cargoSlots}),'gold');
+  notify(I18N.t('notify.holdPartEquipped',{nm:shipDisplayNm(s),part:partDisplayNm(sc)||sc.nm,bonus:sc.cargoBonus,n:s.cargoSlots}),'gold');
   updateHUD();rerenderShipOrGarage();saveGame(true);
 }
 function unequipCargoExt(shipIdx,slotIdx){
@@ -8307,7 +8330,7 @@ function unequipCargoExt(shipIdx,slotIdx){
   ext.splice(slotIdx,1);
   if(sc)s.cargoSlots=Math.max((({소형:5,중형:10,대형:20,전설기함:30,신화:40})[s.tier]||4),(s.cargoSlots||4)-sc.cargoBonus);
   addToInventory(partId,1);
-  notify(I18N.t('notify.holdPartUnequip',{nm:sc?sc.nm:I18N.t('ui.cargoExp')}),'ok');
+  notify(I18N.t('notify.holdPartUnequip',{nm:sc?(partDisplayNm(sc)||sc.nm):I18N.t('ui.cargoExp')}),'ok');
   updateHUD();rerenderShipOrGarage();saveGame(true);
 }
 function pickCargoExtForSlot(shipIdx){
@@ -8330,7 +8353,7 @@ function pickCargoExtForSlot(shipIdx){
     </div>`;
   }).join('');
   const ext=_shipCargoExt(s);
-  openModal(I18N.t('modal.holdExpSlot',{nm:s.nm,now:ext.length,max:CARGO_EXT_MAX}),
+  openModal(I18N.t('modal.holdExpSlot',{nm:shipDisplayNm(s),now:ext.length,max:CARGO_EXT_MAX}),
     `<div style="padding:6px 4px;display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto">${cards}</div>`,
     [{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}]);
 }
@@ -8349,7 +8372,7 @@ function buyShip(shipId){
   const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
   const _initCargo=(typeof def.cargoStart==='number')?def.cargoStart:(slotsByTier[def.tier]||5);
   addShipToFleet({id:def.id+'_'+Date.now(),catalogId:def.catalogId||def.id,nm:def.nm,tier:def.tier,maxHP:def.maxHP,hp:def.maxHP,maxSH:def.maxSH,sh:def.maxSH,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:80,parts:[],crewIds:[],cargoSlots:_initCargo});
-  updateHUD();baekgu(I18N.t('baekgu.shipBought',{nm:def.nm}));notify(I18N.t('notify.shipBought',{nm:def.nm}),'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();baekgu(I18N.t('baekgu.shipBought',{nm:shipDisplayNm(def)||def.nm}));notify(I18N.t('notify.shipBought',{nm:shipDisplayNm(def)||def.nm}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function buyPart(partId){
   const p=PARTS.find(x=>x.id===partId);if(!p)return;
@@ -8358,7 +8381,7 @@ function buyPart(partId){
   const partFinalPr=G.heroes.includes('H01')?Math.floor(p.price*0.85):p.price;
   if(G.credits<partFinalPr){notify(I18N.t('notify.notEnoughCredits'),'err');return;}
   G.credits-=partFinalPr;stock['part_'+partId]--;addToInventory(partId);
-  updateHUD();notify(I18N.t('notify.partBought',{nm:p.nm}),'gold');rerenderShipOrGarage();saveGame(true);
+  updateHUD();notify(I18N.t('notify.partBought',{nm:partDisplayNm(p)||p.nm}),'gold');rerenderShipOrGarage();saveGame(true);
 }
 function attachPart(shipIdx,partId){
   const s=G.fleet[shipIdx];if(!s)return;
@@ -8374,7 +8397,7 @@ function attachPart(shipIdx,partId){
   inv.qty--;if(inv.qty===0)G.inventory.splice(G.inventory.indexOf(inv),1);
   _syncShipCapacity(s,_stBef);
   const p=PARTS.find(x=>x.id===partId);
-  notify(I18N.t('notify.partEquipped',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');
+  notify(I18N.t('notify.partEquipped',{nm:(p?partDisplayNm(p):'')||p?.nm||I18N.t('ui.partFallback')}),'ok');
   // 워프 엔진(블링크/타키온/테슬라) 전 함선 장착 완료 알림
   const _isWarp=WARP_ENGINE_IDS.includes(partId);
   if(_isWarp&&hasBlinkOnAll()){
@@ -8382,7 +8405,7 @@ function attachPart(shipIdx,partId){
     baekgu(I18N.t('baekgu.warpAllInstalled'));
   } else if(_isWarp){
     const lacking=G.fleet.filter(sh=>!(sh.parts||[]).some(pid=>WARP_ENGINE_IDS.includes(pid))).length;
-    baekgu(I18N.t('baekgu.warpEquipProgress',{nm:p?.nm||'Warp Engine',done:G.fleet.length-lacking,total:G.fleet.length}));
+    baekgu(I18N.t('baekgu.warpEquipProgress',{nm:(p?partDisplayNm(p):'')||p?.nm||'Warp Engine',done:G.fleet.length-lacking,total:G.fleet.length}));
   }
   rerenderShipOrGarage();saveGame(true);
 }
@@ -8390,7 +8413,7 @@ function detachPart(shipIdx){
   const s=G.fleet[shipIdx];if(!s||!s.parts||s.parts.length===0){notify(I18N.t('notify.noEquippedParts'),'err');return;}
   const pid=s.parts.pop();const p=partById(pid);
   {const _stA=getShipStats(s);s.hp=Math.min(s.hp||0,_stA.HP);s.sh=Math.min(s.sh||0,_stA.maxSH);}
-  addToInventory(pid);notify(I18N.t('notify.partUnequipToInv',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');rerenderShipOrGarage();saveGame(true);
+  addToInventory(pid);notify(I18N.t('notify.partUnequipToInv',{nm:(p?partDisplayNm(p):'')||p?.nm||I18N.t('ui.partFallback')}),'ok');rerenderShipOrGarage();saveGame(true);
 }
 // 특정 인덱스의 파츠 탈착 (파츠 버튼 클릭 시 호출)
 function detachPartAt(shipIdx,partIdx){
@@ -8409,7 +8432,7 @@ function detachPartAt(shipIdx,partIdx){
   } else {
     addToInventory(pid);
   }
-  notify(I18N.t('notify.partUnequipDone',{nm:p?.nm||I18N.t('ui.partFallback')}),'ok');
+  notify(I18N.t('notify.partUnequipDone',{nm:(p?partDisplayNm(p):'')||p?.nm||I18N.t('ui.partFallback')}),'ok');
   rerenderShipOrGarage();saveGame(true);
 }
 
@@ -8450,7 +8473,7 @@ function renderCrewTab(body){
     <button onclick="dismissLowestCrew(5)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.6);background:rgba(255,40,40,.12);color:rgba(255,150,150,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceCrewDismiss')}">${I18N.t('crew.dismissLowest5')}</button>
     <button onclick="dismissLowestCrew(10)" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,80,80,.7);background:rgba(255,40,40,.15);color:rgba(255,180,180,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('title.forceAllCrewDismiss')}">${I18N.t('crew.dismissLowest10')}</button>
     <button onclick="dismissCrewBelowRare()" style="margin-left:4px;padding:6px 16px;border:1px solid rgba(255,120,40,.7);background:rgba(255,120,40,.18);color:rgba(255,200,140,1);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold" title="${I18N.t('crew.belowRareTitle')}">${I18N.t('crew.dismissBelowRare')}</button>
-    ${_lastDismissedCrew&&_lastDismissedCrew.crew&&_lastDismissedCrew.crew.length>0?`<button onclick="undoDismissCrew()" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(0,243,255,.6);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold;animation:pulse 1.5s infinite" title="${_lastDismissedCrew.crew.map(e=>e.data.nm).join(', ')}">${I18N.t('crew.undoDismiss',{n:_lastDismissedCrew.crew.length})}</button>`:''}
+    ${_lastDismissedCrew&&_lastDismissedCrew.crew&&_lastDismissedCrew.crew.length>0?`<button onclick="undoDismissCrew()" style="margin-left:10px;padding:6px 16px;border:1px solid rgba(0,243,255,.6);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;border-radius:5px;font-size:13px;font-family:Courier New,monospace;font-weight:bold;animation:pulse 1.5s infinite" title="${_lastDismissedCrew.crew.map(e=>crewDisplayNm(e.data)).join(', ')}">${I18N.t('crew.undoDismiss',{n:_lastDismissedCrew.crew.length})}</button>`:''}
   </div>
     ${sorted.length===0?`<div style="color:var(--dim);font-size:14px">${I18N.t('ui.recruitAtTavern')}</div>`
     :`<div class="crew-grid">${sorted.map(c=>{
@@ -8463,7 +8486,7 @@ function renderCrewTab(body){
       const bonusTxt=Object.entries(cb).filter(([,v])=>v>0).map(([k,v])=>`${k.replace('int2','SHD').replace('att','ATT').replace('tec','ENG').replace('def','DEF')}+${Math.round(v*m)}`).join(' ');
       return`<div class="crew-c" style="border:1px solid ${assignedShip?'rgba(0,243,255,.3)':'var(--bdr)'};position:relative">
         <div class="crew-av" style="position:relative;overflow:hidden;justify-content:center">${imgOrEmoji(_crewQuestImg(c),c.ic||'🧑',64,64,'border-radius:50%;background:var(--panel);border:2px solid '+rarityCol+';object-fit:cover')}</div>
-        <div class="crew-nm" style="color:${rarityCol};${c.rarity==='L'?'text-shadow:0 0 6px rgba(212,175,55,.5);font-size:14px':''}" title="${c.nm}">${c.nm||I18N.t('ui.unnamed')}</div>
+        <div class="crew-nm" style="color:${rarityCol};${c.rarity==='L'?'text-shadow:0 0 6px rgba(212,175,55,.5);font-size:14px':''}" title="${crewDisplayNm(c)}">${crewDisplayNm(c)||I18N.t('ui.unnamed')}</div>
         <div class="crew-cl">${c.cl}</div>
         <div style="font-size:12px;color:${rarityCol};font-weight:bold">${rarityNm}</div>
         <div style="font-size:11px;color:var(--dim);margin-top:2px">${bonusTxt||'-'}</div>
@@ -8488,15 +8511,15 @@ function renderCrewTab(body){
   const _hrr=getRepRank(G.reputation||0);
   return`<div class="crew-c" style="border:1px solid var(--gold);padding:10px">
     <div class="crew-av" style="padding-top:2px">${_heroPortrait({...hd,id:h},56,'var(--gold)')}</div>
-    <div class="crew-nm" style="color:var(--gold);margin-top:4px">${hd.nm}</div>
+    <div class="crew-nm" style="color:var(--gold);margin-top:4px">${(I18N&&I18N.has&&I18N.has('hero.'+h+'.nm'))?I18N.t('hero.'+h+'.nm'):hd.nm}</div>
     <div class="crew-cl" style="color:var(--purple)">${hd.sk}</div>
     <div class="cr-L">${I18N.t('ui.legendBoost')}</div>
     <div style="margin-top:4px;font-size:11px;color:${_hrr.col};border:1px solid ${_hrr.col};border-radius:8px;padding:1px 6px;display:inline-block">${_hrr.ic} ${I18N.t('ui.fameLabelInline')}: ${_hrr.lb}</div>
     <div style="margin-top:4px">
-      ${aboard?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">${I18N.t('ui.aboardShip',{nm:aboard.nm})}</div>`:''}
+      ${aboard?`<div style="font-size:11px;color:var(--cyan);margin-bottom:3px">${I18N.t('ui.aboardShip',{nm:shipDisplayNm(aboard)})}</div>`:''}
       <select id="hero-ship-${h}" style="background:var(--panel);border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:2px;font-size:11px;width:100%">
         <option value="">${I18N.t('ui.selectShipPlaceholder')}</option>
-        ${G.fleet.map((sh,si)=>`<option value="${si}" ${aboard===sh?'selected':''}>[${sh.tier}] ${sh.nm} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
+        ${G.fleet.map((sh,si)=>`<option value="${si}" ${aboard===sh?'selected':''}>[${sh.tier}] ${shipDisplayNm(sh)} (${(sh.crewIds||[]).length}/${getMaxCrew(sh)})</option>`).join('')}
       </select>
       <div style="display:flex;gap:3px;margin-top:3px">
         <button onclick="boardHeroToShip('${h}')" style="font-size:11px;flex:1;padding:2px 8px;border:1px solid var(--gold);border-radius:3px;background:rgba(212,175,55,.1);color:var(--gold);cursor:pointer">${aboard?I18N.t('ui.changeShipBtn'):I18N.t('ui.boardBtn')}</button>
@@ -8513,7 +8536,7 @@ function unassignCrewById(cid){
     if(i>=0){
       sh.crewIds.splice(i,1);
       const c=G.crew.find(x=>x.id===cid);
-      notify(I18N.t('notify.crewDisembarkIc',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort')}),'ok');
+      notify(I18N.t('notify.crewDisembarkIc',{ic:c?.ic||'🧑',nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort')}),'ok');
     }
   });
   rerenderShipOrGarage();saveGame(true);
@@ -8523,10 +8546,10 @@ function confirmDismissCrew(cid){
   const c=G.crew.find(x=>x.id===cid);
   if(!c){notify(I18N.t('notify.crewNotFound'),'err');return;}
   if(c.rarity==='L'||c.rarity==='H'){
-    openModal(I18N.t('modal.crewDismissTitle',{ic:c.ic||'🧑',nm:c.nm}),
+    openModal(I18N.t('modal.crewDismissTitle',{ic:c.ic||'🧑',nm:crewDisplayNm(c)}),
       `<div style="padding:12px;text-align:center">
         <div style="font-size:34px;margin-bottom:8px">${c.ic||'🧑'}</div>
-        <div style="font-size:17px;font-weight:bold;margin-bottom:6px">${c.nm}</div>
+        <div style="font-size:17px;font-weight:bold;margin-bottom:6px">${crewDisplayNm(c)}</div>
         <div style="color:${c.rarity==='L'?'var(--gold)':'var(--purple)'};font-size:14px;margin-bottom:12px">
           ${I18N.t('crew.dangerLegendOrHero',{rank:c.rarity==='L'?I18N.t('crew.rankLegend'):I18N.t('crew.rankHero')})}
         </div>
@@ -8538,7 +8561,7 @@ function confirmDismissCrew(cid){
     openModal(I18N.t('modal.dismissCrew'),
       `<div style="padding:12px;text-align:center">
         <div style="font-size:34px;margin-bottom:8px">${c.ic||'🧑'}</div>
-        <div style="font-size:16px;font-weight:bold;margin-bottom:10px">${I18N.t('crew.expelByName',{nm:c.nm})}</div>
+        <div style="font-size:16px;font-weight:bold;margin-bottom:10px">${I18N.t('crew.expelByName',{nm:crewDisplayNm(c)})}</div>
         <div style="font-size:13px;color:var(--dim)">${I18N.t('ui.confirmRecruitCrew')}</div>
       </div>`,
       [{txt:I18N.t('crew.expel'),fn:()=>{closeModal();_doDismissCrew(cid);},cls:'btn-red'},
@@ -8559,7 +8582,7 @@ function _doDismissCrew(cid){
     // 되돌리기 저장 (통합 배열 포맷: crew: [{data, shipIdx, insertIdx}])
     _lastDismissedCrew={crew:[{data:JSON.parse(JSON.stringify(c)),shipIdx:savedShipIdx,insertIdx:idx}]};
     G.crew.splice(idx,1);
-    notify(I18N.t('notify.crewDismissedUndo',{ic:c.ic||'🧑',nm:c.nm}),'ok');
+    notify(I18N.t('notify.crewDismissedUndo',{ic:c.ic||'🧑',nm:crewDisplayNm(c)}),'ok');
   }
   rerenderTab(renderCrewTab);saveGame(true);
 }
@@ -8611,15 +8634,19 @@ function doGacha(n,useCr,crCost,minRarity){
   if(!useCr&&G.voidCrystal<cost_vc){notify(I18N.t('notify.notEnoughVoidCrystal'),'err');return;}
   if(useCr)G.credits-=cost_cr;else G.voidCrystal-=cost_vc;
   try{AudioMgr.playSfx('gacha_pull');}catch(e){}
-  // 넬슨 영웅 보유 시 전설 확률 +10%
+  // 사용자 요청 (2026-06-06): 넬슨(H05) 보유 시 전설 확률을 3% (10.5% → 3%로 하향),
+  //   영웅 1명 영입할 때마다 추가 +1%p 누적. 최대 8인 영입 시 3 + 8 = 11%.
   const hasNelson=G.heroes&&G.heroes.includes('H05');
+  const _heroAcqCnt=(G.heroes||[]).filter(h=>/^H0[1-8]$/.test(h)).length;
   const results=[];
   const CLASSES=['Pilot','Eng','Merch'];
   for(let pull=0;pull<n;pull++){
     G.gachaPity++;
     const pity=G.gachaPity;
     // 확률 계산: 전설(L), 영웅(H), 희귀(R), 일반(N)
-    let pL=0.005+(hasNelson?0.1:0)+(pity>=80?1:pity>=60?(pity-60)/20*0.495:0);
+    //   · Nelson 미보유: 기본 0.5%
+    //   · Nelson 보유:    3% + 1%×영웅수
+    let pL=(hasNelson?(0.03+0.01*_heroAcqCnt):0.005)+(pity>=80?1:pity>=60?(pity-60)/20*0.495:0);
     // minRarity 기반 확률 재조정
     const _minR=minRarity||'N';
     let pH=0.055,pR=0.24;
@@ -8743,7 +8770,7 @@ function doGacha(n,useCr,crCost,minRarity){
           ${imgOrEmoji(imgSrc,c.ic||'🧑',56,56,'border-radius:50%;border:2px solid '+rcol+';background:var(--panel);flex-shrink:0')}
           <div style="flex:1;min-width:0">
             <div style="font-size:10px;color:${roleColor};font-weight:bold">${roleLabel}</div>
-            <div style="font-size:14px;font-weight:bold;color:${rcol};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nm||I18N.t('ui.unnamed')}</div>
+            <div style="font-size:14px;font-weight:bold;color:${rcol};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${crewDisplayNm(c)||I18N.t('ui.unnamed')}</div>
             <div style="font-size:11px;color:var(--dim)">${cl} · <span style="color:${rcol};font-weight:bold">${rlbl}</span> ${I18N.t('ui.rankShort')}${c.f?' · '+c.f:''}</div>
           </div>
         </div>
@@ -8770,7 +8797,7 @@ function doGacha(n,useCr,crCost,minRarity){
           ${_crewCard(sc,'var(--cyan)','rgba(0,243,255,.08)',I18N.t('crew.candidateNew'))}
         </div>
         <div style="font-size:12px;color:var(--dim);text-align:center;line-height:1.6">
-          ${I18N.t('ui.swapRecruitConfirm',{old:tgt.nm,new:sc.nm})}<br>
+          ${I18N.t('ui.swapRecruitConfirm',{old:crewDisplayNm(tgt),new:crewDisplayNm(sc)})}<br>
           ${I18N.t('crew.swapHint')}
         </div>
       </div>`,
@@ -8783,10 +8810,10 @@ function doGacha(n,useCr,crCost,minRarity){
         // 신규 크루 추가
         delete sc._swapCandidate;delete sc._swapTarget;
         G.crew.push(sc);
-        notify(I18N.t('notify.crewSwapRecruit',{old:tgt.nm,new:sc.nm}),'gold');
+        notify(I18N.t('notify.crewSwapRecruit',{old:crewDisplayNm(tgt),new:crewDisplayNm(sc)}),'gold');
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
         saveGame(true);
-        baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:sc.nm,old:tgt.nm}));
+        baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:crewDisplayNm(sc),old:crewDisplayNm(tgt)}));
       },cls:'btn-gold'},{txt:I18N.t('ui.decline'),fn:()=>{
         closeModal();
         renderGachaCards(results.filter(r=>!r._swapCandidate&&!r._rejected));
@@ -8944,7 +8971,7 @@ function assignCrewFromCrewTab(cid){
   const _newC=_allP.find(x=>x.id===cid);
   const _newCost=getCrewSlotCost(_newC);
   const _usedSlots=getTotalSlotUsed(s);
-  if(_usedSlots+_newCost>_maxSlots){notify(I18N.t('notify.slotShort',{nm:s.nm,used:_usedSlots,need:_newCost,max:_maxSlots}),'err');return;}
+  if(_usedSlots+_newCost>_maxSlots){notify(I18N.t('notify.slotShort',{nm:shipDisplayNm(s),used:_usedSlots,need:_newCost,max:_maxSlots}),'err');return;}
   // 다른 함선에서 자동 이전
   G.fleet.forEach(sh=>{if(sh.crewIds){const i=sh.crewIds.indexOf(cid);if(i>=0)sh.crewIds.splice(i,1);}});
   const _stBefACT=getShipStats(s);
@@ -8952,8 +8979,8 @@ function assignCrewFromCrewTab(cid){
   _syncShipCapacity(s,_stBefACT);
   const allPeople=[...G.crew,...G.heroes.map(h=>({...HEROES[h],id:h,rarity:'S',isHero:true}))];
   const c=allPeople.find(x=>x.id===cid);
-  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}),'ok');
-  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:c?.nm||I18N.t('ui.crewShort'),ship:s.nm}));
+  notify(I18N.t('notify.crewBoardDone',{ic:c?.ic||'🧑',nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort'),ship:shipDisplayNm(s)}),'ok');
+  baekgu(I18N.t('baekgu.crewBoardedShip',{nm:(c?crewDisplayNm(c):'')||I18N.t('ui.crewShort'),ship:shipDisplayNm(s)}));
   rerenderTab(renderCrewTab);saveGame(true);
 }
 function renderPlanetsTab(body){
@@ -9591,30 +9618,31 @@ function completeQuest(pid,idx){
       const newCrew={...lucky,id:lucky.id+'_'+Date.now()};
       // 크루 이미지 (보너스 메시지에 표시)
       const _crewImg=(typeof crewImgSrc==='function')?crewImgSrc(newCrew):`img/quests/explore_F01.png`;
-      const _imgHtml=`<img src="${_crewImg}" alt="${lucky.nm}" style="width:84px;height:84px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:rgba(0,0,0,.4);box-shadow:0 0 14px rgba(255,215,0,.4);margin-bottom:8px" onerror="this.outerHTML='<div style=\\'font-size:50px;margin-bottom:8px\\'>'+'${lucky.ic||'🧑'}'+'</div>'">`;
+      const _luckyDispNm=crewDisplayNm(lucky)||lucky.nm;
+      const _imgHtml=`<img src="${_crewImg}" alt="${_luckyDispNm}" style="width:84px;height:84px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:rgba(0,0,0,.4);box-shadow:0 0 14px rgba(255,215,0,.4);margin-bottom:8px" onerror="this.outerHTML='<div style=\\'font-size:50px;margin-bottom:8px\\'>'+'${lucky.ic||'🧑'}'+'</div>'">`;
       if(G.crew.length>=getMaxCrewCount()){
         // 크루 가득 찬 경우: 교체 팝업 예약
         G._pendingQuestCrew=newCrew;
         bonusMsg=`<div style="margin-top:12px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
           ${_imgHtml}
           <div style="font-size:22px">${I18N.t('ui.legendCrewAcquired')}</div>
-          <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${lucky.nm}</div>
+          <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${_luckyDispNm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--red);font-weight:bold;margin-top:6px">${I18N.t('ui.crewListFullWarn')}</div>
         </div>`;
-        notify(I18N.t('notify.legendCompGotNeedSwap',{nm:lucky.nm}),'gold');
-        baekgu(I18N.t('baekgu.legendCompChooseSwap',{nm:lucky.nm}));
+        notify(I18N.t('notify.legendCompGotNeedSwap',{nm:_luckyDispNm}),'gold');
+        baekgu(I18N.t('baekgu.legendCompChooseSwap',{nm:_luckyDispNm}));
       } else {
         G.crew.push(newCrew);
         bonusMsg=`<div style="margin-top:12px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
           ${_imgHtml}
           <div style="font-size:22px">${I18N.t('ui.legendCrewAcquired')}</div>
-          <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${lucky.nm}</div>
+          <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${lucky.ic} ${_luckyDispNm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${lucky.desc}</div>
           <div style="font-size:12px;color:var(--yellow);margin-top:3px">${I18N.t('ui.boardCrewFromList')}</div>
         </div>`;
-        notify(I18N.t('notify.legendCompJoined',{nm:lucky.nm}),'gold');
-        baekgu(I18N.t('baekgu.legendCompJoinedBoard',{nm:lucky.nm}));
+        notify(I18N.t('notify.legendCompJoined',{nm:_luckyDispNm}),'gold');
+        baekgu(I18N.t('baekgu.legendCompJoinedBoard',{nm:_luckyDispNm}));
       }
     }
   } else if(roll<legendRate+mythicRate){
@@ -9631,8 +9659,8 @@ function completeQuest(pid,idx){
         <div style="font-size:12px;color:var(--dim);margin-top:3px">${p.desc||''}</div>
         <div style="font-size:12px;color:#ff88ff;margin-top:3px">${I18N.t('ui.partsTabEquipHint')}</div>
       </div>`;
-      notify(I18N.t('notify.mythicPartAcquired',{nm:p.nm||partId}),'pur');
-      baekgu(I18N.t('baekgu.mythicPart',{nm:p.nm||partId}));
+      notify(I18N.t('notify.mythicPartAcquired',{nm:partDisplayNm(p)||p.nm||partId}),'pur');
+      baekgu(I18N.t('baekgu.mythicPart',{nm:partDisplayNm(p)||p.nm||partId}));
     }
   } else if(roll<legendRate+mythicRate+setRate){
     // 세트/전설 파츠 획득 — 풀에 set과 legend(ML06/ML07)이 섞여 있음. 실제 rarity로 라벨 분기
@@ -9650,12 +9678,12 @@ function completeQuest(pid,idx){
     const _title=isSet?I18N.t('reward.setItemTitle'):I18N.t('reward.legendPartTitle');
     bonusMsg=`<div style="margin-top:12px;background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:8px;padding:10px;text-align:center">
       <div style="font-size:26px">${_icon} ${_title}</div>
-      <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${p?.nm||partId}</div>
+      <div style="font-size:17px;font-weight:bold;color:var(--gold);margin-top:4px">${(p?partDisplayNm(p):'')||p?.nm||partId}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${p?.desc||''}</div>
       ${setComplete?`<div style="font-size:12px;color:var(--gold);margin-top:3px">${I18N.t('reward.setComplete')}</div>`:''}
     </div>`;
-    notify(I18N.t('notify.partAcquiredTier',{ic:_icon,kind:isSet?I18N.t('ui.setShort'):I18N.t('ui.legendShort'),nm:p?.nm||partId}),'gold');
-    baekgu(isSet?I18N.t('baekgu.setItem',{nm:p?.nm}):I18N.t('baekgu.legendPart',{nm:p?.nm}));
+    notify(I18N.t('notify.partAcquiredTier',{ic:_icon,kind:isSet?I18N.t('ui.setShort'):I18N.t('ui.legendShort'),nm:(p?partDisplayNm(p):'')||p?.nm||partId}),'gold');
+    baekgu(isSet?I18N.t('baekgu.setItem',{nm:partDisplayNm(p)||p?.nm}):I18N.t('baekgu.legendPart',{nm:partDisplayNm(p)||p?.nm}));
   } else if(roll<legendRate+mythicRate+setRate+turtleShipRate){
     // 사용자 요청: 거북선(LGD01) 신화 함선 5% 확률 — 지구 해방 보스전 진입 필수 함선
     const _lgdDef=(typeof SHIP_CATALOG!=='undefined')?SHIP_CATALOG.find(s=>s.id==='LGD01'):null;
@@ -9674,7 +9702,7 @@ function completeQuest(pid,idx){
       const _addRes=(typeof addShipToFleet==='function')?addShipToFleet(newShip):null;
       bonusMsg=`<div style="margin-top:12px;background:rgba(255,136,255,.1);border:1px solid #ff88ff;border-radius:8px;padding:10px;text-align:center">
         <div style="font-size:26px">✦ ${I18N.t('reward.turtleShipTitle')}</div>
-        <div style="font-size:17px;font-weight:bold;color:#ff88ff;margin-top:4px">${_lgdDef.nm}</div>
+        <div style="font-size:17px;font-weight:bold;color:#ff88ff;margin-top:4px">${shipDisplayNm(_lgdDef)||_lgdDef.nm}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('reward.turtleShipDesc')}</div>
         ${_addRes&&_addRes.added==='reserve'?`<div style="font-size:12px;color:var(--cyan);margin-top:3px">${I18N.t('craft.reserveStored')}</div>`:''}
       </div>`;
@@ -9707,11 +9735,11 @@ function completeQuest(pid,idx){
     const _bpTierCol=_bpRec?.tier==='mythic'?'#cc66ff':_bpRec?.tier==='flagship'?'#ff8800':'#d4af37';
     bonusMsg+=`<div style="margin-top:12px;background:rgba(212,175,55,.08);border:1px solid ${_bpTierCol};border-radius:8px;padding:10px;text-align:center">
       <div style="font-size:26px">${I18N.t('ui.bpAcquired')}</div>
-      <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${_bpRec?.nm||_bpId}</div>
+      <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
-    notify(I18N.t('notify.bpAcquired',{nm:_bpRec?.nm||_bpId}),'gold');
-    baekgu(I18N.t('baekgu.blueprintDrop',{nm:_bpRec?.nm||_bpId}));
+    notify(I18N.t('notify.bpAcquired',{nm:(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}),'gold');
+    baekgu(I18N.t('baekgu.blueprintDrop',{nm:(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}));
   }
   // ── 전설 창고 확장 설계도 드롭 (링4+ 행성에서 3% 확률, 명성 100+) ──
   const _pd4=PLANET_DEF.find(p=>p.id===pid);
@@ -9724,10 +9752,10 @@ function completeQuest(pid,idx){
         const _cbRec=CRAFT_RECIPES.find(r=>r.id===_cb.id);
         bonusMsg+=`<div style="margin-top:12px;background:rgba(212,175,55,.08);border:1px solid #d4af37;border-radius:8px;padding:10px;text-align:center">
           <div style="font-size:26px">${I18N.t('ui.cargoBpAcquired')}</div>
-          <div style="font-size:17px;font-weight:bold;color:#d4af37;margin-top:4px">${_cbRec?.nm||_cb.id}</div>
+          <div style="font-size:17px;font-weight:bold;color:#d4af37;margin-top:4px">${(_cbRec?partDisplayNm(_cbRec):'')||_cbRec?.nm||_cb.id}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftLegendaryHold')}</div>
         </div>`;
-        notify(I18N.t('notify.cargoBpAcquired',{nm:_cbRec?.nm||_cb.id}),'gold');
+        notify(I18N.t('notify.cargoBpAcquired',{nm:(_cbRec?partDisplayNm(_cbRec):'')||_cbRec?.nm||_cb.id}),'gold');
         break;
       }
     }
@@ -9782,19 +9810,19 @@ function completeQuest(pid,idx){
                 <div style="font-size:15px;font-weight:bold;margin-bottom:10px;color:var(--gold)">${I18N.t('ui.legendCompanionChance')}</div>
                 <div style="display:flex;gap:16px;align-items:center;justify-content:center;margin-bottom:12px">
                   <div style="text-align:center;padding:10px;background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;min-width:110px">
-                    <img src="${_lowImg}" alt="${_lowest.nm}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--red);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_lowest.ic||'🧑'}'+'</div>'">
-                    <div style="font-size:13px;font-weight:bold;margin-top:4px">${_lowest.nm}</div>
+                    <img src="${_lowImg}" alt="${crewDisplayNm(_lowest)}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--red);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_lowest.ic||'🧑'}'+'</div>'">
+                    <div style="font-size:13px;font-weight:bold;margin-top:4px">${crewDisplayNm(_lowest)}</div>
                     <div style="font-size:11px;color:var(--dim)">${I18N.t('ui.rarityRank',{lbl:I18N.rarity(_lowest.rarity)||_lowest.rarity})}</div>
                   </div>
                   <div style="font-size:22px;color:var(--dim)">→</div>
                   <div style="text-align:center;padding:10px;background:rgba(255,215,0,.1);border:1px solid var(--gold);border-radius:8px;min-width:110px">
-                    <img src="${_pendImg}" alt="${_pend.nm}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_pend.ic||'🧑'}'+'</div>'">
-                    <div style="font-size:13px;font-weight:bold;margin-top:4px">${_pend.nm}</div>
+                    <img src="${_pendImg}" alt="${crewDisplayNm(_pend)}" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;background:rgba(0,0,0,.4);margin-bottom:4px" onerror="this.outerHTML='<div style=\\'font-size:30px;margin-bottom:4px\\'>'+'${_pend.ic||'🧑'}'+'</div>'">
+                    <div style="font-size:13px;font-weight:bold;margin-top:4px">${crewDisplayNm(_pend)}</div>
                     <div style="font-size:11px;color:var(--gold)">${I18N.t('ui.legendTier')}</div>
                   </div>
                 </div>
                 <div style="font-size:12px;color:var(--dim);text-align:center;margin-bottom:6px">${_pend.desc||''}</div>
-                <div style="font-size:13px;color:var(--dim);text-align:center">${I18N.t('ui.swapLegendConfirm',{old:_lowest.nm,new:_pend.nm})}</div>
+                <div style="font-size:13px;color:var(--dim);text-align:center">${I18N.t('ui.swapLegendConfirm',{old:crewDisplayNm(_lowest),new:crewDisplayNm(_pend)})}</div>
               </div>`,
               [{txt:I18N.t('ui.acceptSwap'),fn:()=>{
                 G.fleet.forEach(s=>{if(s.crewIds){const _i=s.crewIds.indexOf(_lowest.id);if(_i>=0)s.crewIds.splice(_i,1);}});
@@ -9802,8 +9830,8 @@ function completeQuest(pid,idx){
                 if(_ti>=0)G.crew.splice(_ti,1);
                 G.crew.push(_pend);
                 closeModal();
-                notify(I18N.t('notify.legendSwapRecruit',{old:_lowest.nm,new:_pend.nm}),'gold');
-                baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:_pend.nm,old:_lowest.nm}));
+                notify(I18N.t('notify.legendSwapRecruit',{old:crewDisplayNm(_lowest),new:crewDisplayNm(_pend)}),'gold');
+                baekgu(I18N.t('baekgu.crewJoinedDismiss',{nm:crewDisplayNm(_pend),old:crewDisplayNm(_lowest)}));
                 saveGame(true);
                 if(_fromTavern)rerenderTab(renderTavernView);else rerenderTab(renderQuestTab);
               },cls:'btn-gold'},{txt:I18N.t('ui.decline'),fn:()=>{
@@ -10161,8 +10189,8 @@ function _grantDebrisReward(ring,q,pid){
     const p=pool[Math.floor(Math.random()*pool.length)];
     addToInventory(p.id,1);
     const isLegend=p.tier>=12;
-    notify(I18N.t('notify.partFoundTier',{kind:isLegend?I18N.t('ui.legendStar'):I18N.t('ui.legendSparkle'),nm:p.nm,tier:p.tier}),isLegend?'pur':'gold');
-    baekgu(I18N.t('baekgu.partFound',{nm:p.nm,quality:isLegend?I18N.t('baekgu.partQualityLegend'):I18N.t('baekgu.partQualityGood')}));
+    notify(I18N.t('notify.partFoundTier',{kind:isLegend?I18N.t('ui.legendStar'):I18N.t('ui.legendSparkle'),nm:partDisplayNm(p)||p.nm,tier:p.tier}),isLegend?'pur':'gold');
+    baekgu(I18N.t('baekgu.partFound',{nm:partDisplayNm(p)||p.nm,quality:isLegend?I18N.t('baekgu.partQualityLegend'):I18N.t('baekgu.partQualityGood')}));
   } else {
     // 함선: ring 3+에서 중형, ring 5+에서 대형 가능
     const tierPool=ring>=5?['소형','소형','중형','중형','대형']:ring>=3?['소형','소형','중형']:['소형'];
@@ -10172,9 +10200,9 @@ function _grantDebrisReward(ring,q,pid){
     const def=shipPool[Math.floor(Math.random()*shipPool.length)];
     {
       const slotsByTier={소형:4,중형:8,대형:12,전설기함:16,신화:20};
-      addShipToFleet({id:'DBR_'+Date.now(),catId:def.catalogId||def.catId||def.id,nm:I18N.t('debris.recovered',{nm:def.nm}),tier:def.tier,maxHP:Math.floor(def.maxHP*.7),hp:Math.floor(def.maxHP*.5),maxSH:Math.floor(def.maxSH*.7),sh:0,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:55,parts:[],crewIds:[],cargoSlots:slotsByTier[def.tier]||5});
-      notify(I18N.t('notify.shipSalvaged',{tier:def.tier,nm:def.nm}),'gold');
-      baekgu(I18N.t('baekgu.shipSalvaged',{nm:def.nm}));
+      addShipToFleet({id:'DBR_'+Date.now(),catId:def.catalogId||def.catId||def.id,nm:I18N.t('debris.recovered',{nm:shipDisplayNm(def)||def.nm}),tier:def.tier,maxHP:Math.floor(def.maxHP*.7),hp:Math.floor(def.maxHP*.5),maxSH:Math.floor(def.maxSH*.7),sh:0,ATT:def.ATT,INT:def.INT,TEC:def.TEC,HP:def.maxHP,LOY:55,parts:[],crewIds:[],cargoSlots:slotsByTier[def.tier]||5});
+      notify(I18N.t('notify.shipSalvaged',{tier:def.tier,nm:shipDisplayNm(def)||def.nm}),'gold');
+      baekgu(I18N.t('baekgu.shipSalvaged',{nm:shipDisplayNm(def)||def.nm}));
     }
   }
   // 퀘스트도 진행
@@ -10319,11 +10347,13 @@ function doCraft(recipeId){
     if((G.materials[m.id]||0)<needQty){
       const comm=COMMODITIES.find(c=>c.id===m.id);
       const _disc=_isTierDiscount?I18N.t('craft.legendDiscount'):'';
-      notify(I18N.t('notify.needMaterialQty',{nm:comm?.nm||m.id,have:G.materials[m.id]||0,need:needQty,extra:_disc}),'err');return;
+      notify(I18N.t('notify.needMaterialQty',{nm:(comm?commDisplayNm(comm):'')||m.id,have:G.materials[m.id]||0,need:needQty,extra:_disc}),'err');return;
     }
   }
   if(rec.heroReq&&!(G.heroes||[]).includes(rec.heroReq)){
-    notify(I18N.t('notify.heroNeeded',{nm:HEROES[rec.heroReq]?.nm||rec.heroReq}),'err');return;
+    const _hKey='hero.'+rec.heroReq+'.nm';
+    const _heroNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[rec.heroReq]?.nm||rec.heroReq);
+    notify(I18N.t('notify.heroNeeded',{nm:_heroNm}),'err');return;
   }
 
   const btn=document.getElementById('craftBtn');
@@ -10356,8 +10386,9 @@ function doCraft(recipeId){
         <div style="font-size:36px;font-weight:bold;color:${q.col};margin:8px 0">${q.label}</div>
         <div style="font-size:16px;color:${q.col}">${I18N.t('ui.statMultLine',{m:mult.toFixed(2)})}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.equipFromInventory')}</div>`;
-      notify(I18N.t('notify.craftComplete',{nm:rec.nm,label:q.label}),'gold');
-      baekgu(mult>=1.1?I18N.t('baekgu.craftJackpot',{label:q.label,pct:Math.round((mult-1)*100)}):mult<1.0?I18N.t('baekgu.craftPoor',{label:q.label}):I18N.t('baekgu.craftDone',{nm:rec.nm,label:q.label}));
+      const _recDispNm=(p?partDisplayNm(p):'')||rec.nm;
+      notify(I18N.t('notify.craftComplete',{nm:_recDispNm,label:q.label}),'gold');
+      baekgu(mult>=1.1?I18N.t('baekgu.craftJackpot',{label:q.label,pct:Math.round((mult-1)*100)}):mult<1.0?I18N.t('baekgu.craftPoor',{label:q.label}):I18N.t('baekgu.craftDone',{nm:_recDispNm,label:q.label}));
     } else if(rec.type==='cargo'){
       const scDef=SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id);
       if(!scDef){notify(I18N.t('notify.holdDefMissing'),'err');return;}
@@ -10368,8 +10399,8 @@ function doCraft(recipeId){
         <div style="font-size:18px;font-weight:bold;color:#d4af37">${I18N.t('ui.holdExpCraftDone')}</div>
         <div style="font-size:13px;color:var(--dim);margin-top:6px">${I18N.t('ui.cargoBonusKept',{n:scDef.cargoBonus})}</div>
         <div style="font-size:12px;color:var(--cyan);margin-top:6px">${I18N.t('ui.cargoExpEquipHint')}</div>`;
-      notify(I18N.t('notify.holdPartCrafted',{nm:scDef.nm}),'gold');
-      baekgu(I18N.t('baekgu.holdPartCrafted',{nm:scDef.nm,bonus:scDef.cargoBonus}));
+      notify(I18N.t('notify.holdPartCrafted',{nm:partDisplayNm(scDef)||scDef.nm}),'gold');
+      baekgu(I18N.t('baekgu.holdPartCrafted',{nm:partDisplayNm(scDef)||scDef.nm,bonus:scDef.cargoBonus}));
     } else {
       const def=SHIP_CATALOG.find(s=>s.id===rec.id);
       if(!def){notify(I18N.t('notify.shipDataError'),'err');return;}
@@ -10397,8 +10428,8 @@ function doCraft(recipeId){
         ${_addedToReserve?`<div style="font-size:13px;color:var(--cyan);margin-top:6px">${I18N.t('craft.reserveStored')}</div>`:''}
         <div style="font-size:13px;color:var(--dim);margin-top:4px">HP:${newShip.maxHP} | ATT:${newShip.ATT||newShip.atk||0}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:8px">${I18N.t('ui.shipAddedToFleet')}</div>`;
-      notify(I18N.t('notify.shipBuilt',{nm:newShip.nm,label:q.label}),'gold');
-      baekgu(mult>=1.1?I18N.t('baekgu.shipCraftJackpot',{label:q.label}):I18N.t('baekgu.shipCraftDone',{nm:def.nm,label:q.label}));
+      notify(I18N.t('notify.shipBuilt',{nm:shipDisplayNm(newShip)||newShip.nm,label:q.label}),'gold');
+      baekgu(mult>=1.1?I18N.t('baekgu.shipCraftJackpot',{label:q.label}):I18N.t('baekgu.shipCraftDone',{nm:shipDisplayNm(def)||def.nm,label:q.label}));
     }
 
     // 제작 완료 팝업 — 해당 파츠/함선 이미지 표시 (사용자 요청)
@@ -10505,7 +10536,7 @@ function renderCraftTab(body){
     const hasBp=G.blueprints[rec.id];
     const sel=G._craftSelected===rec.id;
     const tierCol=rec.tier==='flagship'?'#ff8800':rec.tier==='mythic'?'#cc66ff':rec.tier==='legend'?'#d4af37':'var(--cyan)';
-    const matTip=rec.mats.map(m=>{const c=COMMODITIES.find(x=>x.id===m.id);return`${c?.ic||'💎'}${c?.nm||m.id}×${m.qty}`;}).join('  ');
+    const matTip=rec.mats.map(m=>{const c=COMMODITIES.find(x=>x.id===m.id);return`${c?.ic||'💎'}${(c?commDisplayNm(c):'')||m.id}×${m.qty}`;}).join('  ');
     return`<div
       onclick="selectCraftRecipe('${rec.id}')"
       class="bp-card"
@@ -10522,7 +10553,7 @@ function renderCraftTab(body){
     >
       <span style="font-size:19px">${hasBp?'📜':'🔒'}</span>
       <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:bold;color:${hasBp?tierCol:'var(--muted)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${rec.nm}</div>
+        <div style="font-size:12px;font-weight:bold;color:${hasBp?tierCol:'var(--muted)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(rec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===rec.id))||rec.nm):(partDisplayNm(PARTS.find(p=>p.id===rec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id)||{})||rec.nm))}</div>
         <div style="font-size:10px;color:var(--dim);margin-top:1px">${I18N.t('ui.matKinds',{n:rec.mats.length})}</div>
       </div>
       ${sel?`<span style="color:${tierCol};font-size:13px">▶</span>`:''}
@@ -10565,7 +10596,7 @@ function renderCraftTab(body){
       border-radius:12px;cursor:pointer;padding:8px;position:relative;transition:all .2s
     " onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='${ok?'var(--cyan)':partial?'#ffd700':hasItem?'rgba(255,255,255,.25)':'rgba(255,255,255,.1)'}'">\n      ${hasItem?`
         ${imgOrEmoji(matImgSrc,mat.ic||'💎',96,96,'border-radius:8px;margin-bottom:6px',mat?'mat_'+mat.id:'')}
-        <div style="font-size:13px;color:var(--txt);text-align:center;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3;font-weight:bold">${mat.nm}</div>
+        <div style="font-size:13px;color:var(--txt);text-align:center;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3;font-weight:bold">${commDisplayNm(mat)}</div>
         <div style="font-size:15px;font-weight:bold;color:${ok?'var(--cyan)':partial?'#ffd700':'var(--red)'};margin-top:2px">${have}${needed>0?'/'+needed:''}</div>
         <div style="position:absolute;top:4px;right:7px;font-size:14px;color:var(--dim);cursor:pointer" onclick="event.stopPropagation();removeCraftSlot(${i})">✕</div>
       `:`<div style="font-size:48px;color:rgba(255,255,255,.15)">+</div>`}
@@ -10580,9 +10611,9 @@ function renderCraftTab(body){
     const matOk=selRec.mats.every(m=>(G.materials[m.id]||0)>=(_recTierDisc?Math.max(1,Math.floor(m.qty/2)):m.qty));
     const heroOk=!selRec.heroReq||(G.heroes&&G.heroes.includes(selRec.heroReq));
     if(!hasBp){craftBtnTxt=I18N.t('craft.lockNoBp');}
-    else if(!heroOk){craftBtnTxt=I18N.t('ui.heroRequired',{nm:HEROES[selRec.heroReq]?.nm||selRec.heroReq});}
+    else if(!heroOk){const _hKey='hero.'+selRec.heroReq+'.nm';const _heroNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[selRec.heroReq]?.nm||selRec.heroReq);craftBtnTxt=I18N.t('ui.heroRequired',{nm:_heroNm});}
     else if(!matOk){craftBtnTxt=I18N.t('craft.lockNoMat');}
-    else{canCraft=true;craftBtnTxt=I18N.t('craft.craftRec',{nm:selRec.nm});craftBtnDis=false;}
+    else{const _selDisp=selRec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===selRec.id))||selRec.nm):(partDisplayNm(PARTS.find(p=>p.id===selRec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===selRec.id)||{})||selRec.nm);canCraft=true;craftBtnTxt=I18N.t('craft.craftRec',{nm:_selDisp});craftBtnDis=false;}
   }
 
   // 선택된 레시피 재료 상태 요약
@@ -10591,7 +10622,7 @@ function renderCraftTab(body){
     const hasBp=G.blueprints[selRec.id];
     const tierCol=selRec.tier==='flagship'?'#ff8800':selRec.tier==='mythic'?'#cc66ff':selRec.tier==='legend'?'#d4af37':'var(--cyan)';
     matStatusHtml=`<div style="background:rgba(0,0,0,.3);border:1px solid ${tierCol}44;border-radius:8px;padding:6px 10px;margin-bottom:8px">
-      <div style="font-size:13px;font-weight:bold;color:${tierCol};margin-bottom:5px">${I18N.t('ui.bpRecipe',{nm:selRec.nm})}</div>
+      <div style="font-size:13px;font-weight:bold;color:${tierCol};margin-bottom:5px">${I18N.t('ui.bpRecipe',{nm:(selRec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===selRec.id))||selRec.nm):(partDisplayNm(PARTS.find(p=>p.id===selRec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===selRec.id)||{})||selRec.nm))})}</div>
       <div style="display:flex;flex-wrap:wrap;gap:5px">
         ${selRec.mats.map(m=>{
           const c=COMMODITIES.find(x=>x.id===m.id);
@@ -10615,7 +10646,7 @@ function renderCraftTab(body){
           return`<div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:3px 7px;background:${ok?'rgba(0,243,255,.1)':'rgba(255,60,60,.1)'};border:1px solid ${ok?'rgba(0,243,255,.3)':'rgba(255,60,60,.3)'};border-radius:5px">
             <div style="display:flex;align-items:center;gap:4px;font-size:11px">
               <img src="${commImgSrc(m.id)}" alt="" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span>${c?.ic||'💎'}</span>'">
-              <span style="color:var(--dim)">${c?.nm||m.id}</span>
+              <span style="color:var(--dim)">${(c?commDisplayNm(c):'')||m.id}</span>
               <span style="font-weight:bold;color:${ok?'var(--cyan)':'var(--red)'}">${have}/${_needShow}${_tdDisc?'<span style=\"color:#d4af37;font-size:9px\">(50%↓)</span>':''}</span>
             </div>
             ${plHtml}
@@ -10702,7 +10733,7 @@ function renderCraftTab(body){
           const sd=(typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[]).find(x=>x.id===selRec.id);
           if(sd)_statHtml=_rowsHtml([[I18N.t('shipStat.tier'),I18N.tier(sd.tier)],[I18N.t('shipStat.hp'),(sd.maxHP||0).toLocaleString()],[I18N.t('shipStat.sh'),(sd.maxSH||0).toLocaleString()],[I18N.t('shipStat.att'),String(sd.ATT||0)],[I18N.t('shipStat.int'),String(sd.INT||0)],[I18N.t('shipStat.tec'),String(sd.TEC||0)]]);
         }
-        const _heroReqHtml=selRec.heroReq?`<div style="font-size:11px;color:var(--purple);margin-top:6px">${I18N.t('ui.heroRecruitNeeded',{nm:HEROES[selRec.heroReq]?.nm||selRec.heroReq})}</div>`:'';
+        const _heroReqHtml=selRec.heroReq?(()=>{const _hKey='hero.'+selRec.heroReq+'.nm';const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[selRec.heroReq]?.nm||selRec.heroReq);return `<div style="font-size:11px;color:var(--purple);margin-top:6px">${I18N.t('ui.heroRecruitNeeded',{nm:_hNm})}</div>`;})():'';
         // 스토리/설명 — 스탯 아래에 노출 (사용자 요청)
         const _lore=(_loreKey&&typeof LORE_TEXT!=='undefined'&&LORE_TEXT[_loreKey])||'';
         const _storyHtml=_lore?`<div style="margin-top:10px;border-top:1px solid ${_tierColor}33;padding-top:8px">
@@ -10766,7 +10797,7 @@ function showMatSlotTip(el,ev){
   const fac=c.f||null;
   const tip=document.getElementById('bp-tip');
   if(!tip)return;
-  let lines=[`${c.ic||'💎'} ${c.nm}`];
+  let lines=[`${c.ic||'💎'} ${commDisplayNm(c)}`];
   if(fac){
     const allPl=PLANET_DEF.filter(p=>p.f===fac);
     const _allHeroIds=Object.keys(HEROES);
@@ -10835,7 +10866,7 @@ function openCraftSlot(idx){
     " onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='${isRec?'rgba(212,175,55,.35)':'var(--bdr)'}'">
       ${imgOrEmoji(commImgSrc(m.id),m.ic||'💎',40,40,'border-radius:6px;background:rgba(0,0,0,.3);flex-shrink:0')}
       <div style="flex:1">
-        <div style="font-size:14px;color:var(--txt)">${m.nm}${isRec?` <span style="font-size:11px;color:#d4af37">${I18N.t('ui.matsRequired')}</span>`:''}</div>
+        <div style="font-size:14px;color:var(--txt)">${commDisplayNm(m)}${isRec?` <span style="font-size:11px;color:#d4af37">${I18N.t('ui.matsRequired')}</span>`:''}</div>
         <div style="font-size:12px;color:var(--dim)">${m.desc||''}</div>
       </div>
       <div style="text-align:right">
@@ -11226,12 +11257,38 @@ function _showFireworks(){
   try{AudioMgr.playSfx('gacha_pull',{vol:0.7});}catch(e){}
 }
 
+// 경매 낙찰 팝업 — 사용자 요청 (2026-06-06): 폭죽 + 중앙 팝업, 2초 후 자동 해제
+function _showAuctionWinPopup(pd,lbc,amount){
+  if(!pd)return;
+  // 폭죽 이펙트 (재사용)
+  try{_showFireworks();}catch(e){}
+  // 중앙 팝업 — 2초 후 페이드아웃 + 제거
+  const pop=document.createElement('div');
+  pop.style.cssText='position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.85);z-index:99980;background:linear-gradient(135deg,rgba(20,30,55,.96),rgba(40,30,70,.96));border:2px solid var(--gold);border-radius:14px;padding:22px 36px;text-align:center;box-shadow:0 12px 50px rgba(255,215,0,.45),0 0 80px rgba(255,150,0,.3);min-width:300px;max-width:480px;opacity:0;transition:opacity .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1);font-family:inherit;pointer-events:none';
+  const fac=FACTION&&FACTION[pd.f]; const facCol=fac?fac.col:'var(--gold)';
+  const headerKey=pd.hostile?'ui.mergeAcquired':(lbc&&lbc.n===0?'auction.popup.alone':lbc?'auction.popup.over':'auction.popup.normal');
+  const headerTxt=(typeof I18N!=='undefined'&&I18N.has&&I18N.has(headerKey))?I18N.t(headerKey,lbc?{comp:lbc.n}:{}):'🏛️ 낙찰!';
+  pop.innerHTML=`<div style="font-size:38px;line-height:1">🎉</div>
+    <div style="font-size:20px;font-weight:bold;color:var(--gold);letter-spacing:2px;margin:8px 0 4px">${headerTxt}</div>
+    <div style="font-size:17px;font-weight:bold;color:#fff;margin-bottom:6px">${pd.nm}</div>
+    ${fac?`<div style="font-size:11px;color:${facCol};letter-spacing:1px">${fac.nm}</div>`:''}
+    <div style="font-size:13px;color:var(--cyan);margin-top:10px">${(typeof I18N!=='undefined'?I18N.t('ui.paid',{n:(amount||0).toLocaleString()}):'지불 ₡'+(amount||0).toLocaleString())}</div>`;
+  document.body.appendChild(pop);
+  requestAnimationFrame(()=>{pop.style.opacity='1';pop.style.transform='translate(-50%,-50%) scale(1)';});
+  // 2초 후 사라짐 — 페이드아웃 후 DOM 제거
+  setTimeout(()=>{
+    pop.style.opacity='0';
+    pop.style.transform='translate(-50%,-50%) scale(.92)';
+    setTimeout(()=>{try{pop.remove();}catch(e){}},380);
+  },2000);
+}
+
 // 보상명 표시 (해적 매복 결과창용)
 function _mysteryRewardName(result){
   if(!result)return I18N.t('ui.fallbackReward');
-  if(result.type==='bp')return I18N.t('gacha.bpLabel',{nm:result.rec?.nm||''});
-  if(result.type==='part')return I18N.t('gacha.partLabel',{nm:result.p?.nm||''});
-  if(result.type==='ship')return I18N.t('gacha.shipLabel',{nm:result.s?.nm||''});
+  if(result.type==='bp'){const _r=result.rec;const _nm=_r?((_r.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_r.id))||_r.nm):(partDisplayNm(PARTS.find(p=>p.id===_r.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_r.id)||{})||_r.nm))):'';return I18N.t('gacha.bpLabel',{nm:_nm});}
+  if(result.type==='part')return I18N.t('gacha.partLabel',{nm:(result.p?partDisplayNm(result.p):'')||result.p?.nm||''});
+  if(result.type==='ship')return I18N.t('gacha.shipLabel',{nm:(result.s?shipDisplayNm(result.s):'')||result.s?.nm||''});
   return I18N.t('ui.fallbackReward');
 }
 // 해적 매복 시 방금 받은 보상 회수
@@ -11432,20 +11489,21 @@ function openMysteryBox(tier){
     if(result.rec.type==='part'&&typeof partImgSrc==='function')_bpImgSrc=partImgSrc(result.rec.id);
     else if(result.rec.type==='ship'&&typeof shipImgSrc==='function')_bpImgSrc=shipImgSrc({id:result.rec.id,catalogId:result.rec.id,tier:result.rec.tier});
     else if(result.rec.type==='cargo')_bpImgSrc='img/parts/'+result.rec.id+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
-    const _bpImgHtml=_bpImgSrc?`<img src="${_bpImgSrc}" alt="${result.rec.nm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_col};box-shadow:0 0 22px ${_col}88;filter:drop-shadow(0 0 8px ${_col})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>📜</div>'">`:`<div style="font-size:64px">📜</div>`;
+    const _bpRecDispNm=(result.rec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===result.rec.id))||result.rec.nm):(partDisplayNm(PARTS.find(p=>p.id===result.rec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===result.rec.id)||{})||result.rec.nm));
+    const _bpImgHtml=_bpImgSrc?`<img src="${_bpImgSrc}" alt="${_bpRecDispNm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_col};box-shadow:0 0 22px ${_col}88;filter:drop-shadow(0 0 8px ${_col})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>📜</div>'">`:`<div style="font-size:64px">📜</div>`;
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_bpImgHtml}</div>
       <div style="font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:2px">📜 BLUEPRINT</div>
       <div style="color:${_col};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.bpAcquired')}</div>
-      <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.rec.nm}</div>
+      <div style="color:var(--txt);font-size:14px;margin-top:4px">${_bpRecDispNm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
-    notify(I18N.t('notify.bpAcquiredFromBox',{nm:result.rec.nm}),'gold');
+    notify(I18N.t('notify.bpAcquiredFromBox',{nm:_bpRecDispNm}),'gold');
   } else if(result.type==='part'){
     const _rc=result.p.rarity;
     const _pcol=_rc==='mythic'?'#cc66ff':_rc==='set'?'#33ddff':_rc==='legend'||_rc==='L'?'#d4af37':'var(--cyan)';
     const _pImgSrc=(typeof partImgSrc==='function')?partImgSrc(result.p.id):'img/parts/'+result.p.id+'.png';
-    const _pImgHtml=`<img src="${_pImgSrc}" alt="${result.p.nm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_pcol};box-shadow:0 0 22px ${_pcol}88;filter:drop-shadow(0 0 8px ${_pcol})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>⚙️</div>'">`;
+    const _pImgHtml=`<img src="${_pImgSrc}" alt="${partDisplayNm(result.p)||result.p.nm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_pcol};box-shadow:0 0 22px ${_pcol}88;filter:drop-shadow(0 0 8px ${_pcol})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>⚙️</div>'">`;
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_pImgHtml}</div>
       <div style="font-size:11px;color:${_pcol};letter-spacing:3px;margin-bottom:2px">⚙️ PART</div>
@@ -11453,29 +11511,31 @@ function openMysteryBox(tier){
       <div style="color:var(--txt);font-size:14px;margin-top:4px">${partDisplayNm(result.p)||result.p.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${I18N.t('ui.addedToInventoryHint')}</div>
     </div>`;
-    notify(I18N.t('notify.partAcquiredFromBox',{nm:result.p.nm}),'gold');
+    notify(I18N.t('notify.partAcquiredFromBox',{nm:partDisplayNm(result.p)||result.p.nm}),'gold');
   } else if(result.type==='ship'){
     const _scol=result.s.tier==='신화'?'#cc66ff':result.s.tier==='전설기함'?'#ff8800':'var(--green)';
     const _sImgSrc=(typeof shipImgSrc==='function')?shipImgSrc({id:result.s.id,catalogId:result.s.id,tier:result.s.tier}):'img/ships/'+result.s.id+'.png';
-    const _sImgHtml=`<img src="${_sImgSrc}" alt="${result.s.nm}" style="width:160px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_scol};box-shadow:0 0 22px ${_scol}88;filter:drop-shadow(0 0 8px ${_scol})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>🚀</div>'">`;
+    const _sImgHtml=`<img src="${_sImgSrc}" alt="${shipDisplayNm(result.s)||result.s.nm}" style="width:160px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_scol};box-shadow:0 0 22px ${_scol}88;filter:drop-shadow(0 0 8px ${_scol})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>🚀</div>'">`;
     _bodyHtml=`<div style="padding:18px;text-align:center">
       <div style="margin-bottom:10px;display:flex;justify-content:center">${_sImgHtml}</div>
       <div style="font-size:11px;color:${_scol};letter-spacing:3px;margin-bottom:2px">🚀 SHIP · ${result.s.tier}</div>
       <div style="color:${_scol};font-size:20px;font-weight:bold;margin-top:6px">${I18N.t('ui.shipAcquired')}</div>
-      <div style="color:var(--txt);font-size:14px;margin-top:4px">${result.s.nm}</div>
+      <div style="color:var(--txt);font-size:14px;margin-top:4px">${shipDisplayNm(result.s)||result.s.nm}</div>
       <div style="color:var(--dim);font-size:11px;margin-top:6px">${result.toReserve?I18N.t('gacha.reserveSlot'):I18N.t('gacha.joinedFleet')}</div>
     </div>`;
-    notify(I18N.t('notify.shipAcquiredFromBox',{nm:result.s.nm}),'gold');
+    notify(I18N.t('notify.shipAcquiredFromBox',{nm:shipDisplayNm(result.s)||result.s.nm}),'gold');
   }
   // 최근 박스 보상 저장 — 우측 상단 카드용 (단일 + 최근 5장 목록)
   if(result){
     let _rwInfo=null;
     if(result.type==='bp'){
-      _rwInfo={type:'bp',nm:result.rec.nm,id:result.rec.id,tier:result.rec.tier||'legend',boxTier:tier,img:null,ic:'📜'};
+      const _r=result.rec;
+      const _bpNm=(_r.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_r.id))||_r.nm):(partDisplayNm(PARTS.find(p=>p.id===_r.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_r.id)||{})||_r.nm));
+      _rwInfo={type:'bp',nm:_bpNm,id:_r.id,tier:_r.tier||'legend',boxTier:tier,img:null,ic:'📜'};
     } else if(result.type==='part'){
-      _rwInfo={type:'part',nm:result.p.nm,id:result.p.id,rarity:result.p.rarity||'N',boxTier:tier,img:(typeof partImgSrc==='function')?partImgSrc(result.p.id):('img/parts/'+result.p.id+'.png'),ic:'⚙️'};
+      _rwInfo={type:'part',nm:partDisplayNm(result.p)||result.p.nm,id:result.p.id,rarity:result.p.rarity||'N',boxTier:tier,img:(typeof partImgSrc==='function')?partImgSrc(result.p.id):('img/parts/'+result.p.id+'.png'),ic:'⚙️'};
     } else if(result.type==='ship'){
-      _rwInfo={type:'ship',nm:result.s.nm,id:result.s.id,tier:result.s.tier,boxTier:tier,img:(typeof shipImgSrc==='function')?shipImgSrc({id:result.s.id,catalogId:result.s.id,tier:result.s.tier}):('img/ships/'+result.s.id+'.png'),ic:'🚀'};
+      _rwInfo={type:'ship',nm:shipDisplayNm(result.s)||result.s.nm,id:result.s.id,tier:result.s.tier,boxTier:tier,img:(typeof shipImgSrc==='function')?shipImgSrc({id:result.s.id,catalogId:result.s.id,tier:result.s.tier}):('img/ships/'+result.s.id+'.png'),ic:'🚀'};
     }
     if(_rwInfo){
       G._lastTavernBoxReward=_rwInfo;
@@ -11499,7 +11559,9 @@ function renderTavernView(body){
   body.classList.add('cv');
   const vc=G.voidCrystal,cr=G.credits;
   const hasNelson=G.heroes.includes('H05');
-  const legRate=hasNelson?'10.5%':'0.5%';
+  // 사용자 요청 (2026-06-06): Nelson 보유 시 전설 확률 = 3% + 1%×영웅수
+  const _heroAcqCnt2=(G.heroes||[]).filter(h=>/^H0[1-8]$/.test(h)).length;
+  const legRate=hasNelson?((3+_heroAcqCnt2).toFixed(0)+'%'):'0.5%';
   // 블랙마켓 자와 — 미스테리박스 (30% 행성 랜덤, 매 턴 위치 변경)
   const pid=G.currentPlanet;
   generateQuests(pid);
@@ -11942,7 +12004,8 @@ function renderAuctionView(body){
   const mythicStatus=QUEST_MYTHIC_PARTS.map(pid=>{
     const p=partById(pid);
     const has=(G.inventory||[]).some(i=>i.id===pid&&i.qty>0)||(G.fleet||[]).some(sh=>(sh.parts||[]).includes(pid));
-    return `<span style="color:${has?'var(--green)':'var(--dim)'}">■${p?.nm?.replace(I18N.t('codex.mythicSuffix'),'').replace(I18N.t('codex.mythicSuffix2'),'')||pid}</span>`;
+    const _pn=(p?partDisplayNm(p):'')||p?.nm||pid;
+    return `<span style="color:${has?'var(--green)':'var(--dim)'}">■${_pn.replace(I18N.t('codex.mythicSuffix'),'').replace(I18N.t('codex.mythicSuffix2'),'')}</span>`;
   }).join('&nbsp;');
   const hasFlag=_hasLegendaryFlagship();
   // 좌측: 내 보유 행성 카드 리스트
@@ -12059,6 +12122,8 @@ function doBid(pid,amount,instant=false){
     }
     baekgu(I18N.t('baekgu.auctionTax',{nm:pd.nm,tax:calcTaxFor(pid).toLocaleString()}));
   }
+  // 사용자 요청 (2026-06-06): 경매 낙찰 시 폭죽 + 중앙 팝업 (2초 후 자동 해제)
+  try{_showAuctionWinPopup(pd,_lbc,amount);}catch(e){console.warn('[auction popup]',e);}
   updateHUD();saveGame(true);
   // 낙찰 후 경매 화면 그대로 유지 — 페이지 이동 없이 현재 탭 새로고침
   if(typeof rerenderTab==='function'&&typeof renderAuctionView==='function'){
@@ -12166,7 +12231,7 @@ function showCodexHeroModal(hid){
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">
       ${_heroPortrait({...h,id:hid},64,'var(--gold)')}
       <div>
-        <div style="font-size:17px;font-weight:bold;color:var(--gold)">${h.nm}</div>
+        <div style="font-size:17px;font-weight:bold;color:var(--gold)">${(I18N&&I18N.has&&I18N.has('hero.'+hid+'.nm'))?I18N.t('hero.'+hid+'.nm'):h.nm}</div>
         <div style="font-size:12px;color:${clCol};margin-top:2px">${clNm} · LOY:${h.LOY}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;font-size:11px;color:var(--dim)">
           <span style="color:var(--red)">⚔️ ATT:${h.ATT}</span>
@@ -12177,7 +12242,7 @@ function showCodexHeroModal(hid){
         <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">
           <span style="font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:3px;padding:1px 6px">⚡ ${h.sk}</span>
           ${have?`<span style="font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">${I18N.t('hud.recruited')}</span>`:''}
-          ${aboard?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 6px">🛸 ${aboard.nm}</span>`:''}
+          ${aboard?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 6px">🛸 ${shipDisplayNm(aboard)}</span>`:''}
         </div>
       </div>
     </div>
@@ -12187,7 +12252,7 @@ function showCodexHeroModal(hid){
     ${row('🎭',I18N.t('ui.prosCons'),l.char||I18N.t('ui.noInfo'))}
     ${row('💬',I18N.t('ui.opinion'),`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
   </div>`;
-  openModal('⭐ '+h.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('⭐ '+((I18N&&I18N.has&&I18N.has('hero.'+hid+'.nm'))?I18N.t('hero.'+hid+'.nm'):h.nm),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 // 도감 — 특수 인물(백구·우르사·블랙팔콘) 상세 모달
 function showCodexSpecialCharModal(cid){
@@ -12225,7 +12290,7 @@ function showCodexCommanderModal(){
   const _img=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():'img/chars/commander_m0.png';
   const _nm=G.profile?.name||I18N.t('ui.commander');
   const _co=G.profile?.company||I18N.t('ui.companyDefault');
-  const _ship=G.fleet&&G.fleet[0]?G.fleet[0].nm:I18N.t('ui.shipDefault');
+  const _ship=G.fleet&&G.fleet[0]?(shipDisplayNm(G.fleet[0])||G.fleet[0].nm):I18N.t('ui.shipDefault');
   const _g=(G.profile?.gender==='female')?I18N.t('ui.gender.female'):I18N.t('ui.gender.male');
   const _rep=G.reputation||0;
   const _plv=(typeof calcPlayerLevel==='function')?calcPlayerLevel():1;
@@ -12340,7 +12405,7 @@ function showCodexPartModal(partId){
         ${imgOrEmoji(partImgSrc(p.id),catIc,92,92,'object-fit:contain')}
       </div>
       <div>
-        <div style="font-size:18px;font-weight:bold;color:${rarCol}">${rarIc} ${p.nm}</div>
+        <div style="font-size:18px;font-weight:bold;color:${rarCol}">${rarIc} ${partDisplayNm(p)}</div>
         <div style="font-size:12px;color:var(--dim);margin-top:2px">T${p.tier} ${p.cat==='weapon'?I18N.t('part.kindWeapon'):p.cat==='shield'?I18N.t('part.kindShield'):p.cat==='armor'?(typeof p.repairRate==='number'&&p.repairRate>0?I18N.t('part.kindRepairDrone'):I18N.t('part.kindArmor')):p.cat==='engine'?I18N.t('part.kindEngine'):''} · ${p.price?'₡'+p.price.toLocaleString():I18N.t('part.shopNoSell')}</div>
         <div style="font-size:12px;color:${rarCol};margin-top:4px;font-weight:bold">${statText}</div>
         ${qty>0?`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:1px 6px">${I18N.t('ui.heldInInv',{qty,inv:inv?.qty||0,eq:eqQty})}</span>`:`<span style="display:inline-block;margin-top:6px;font-size:11px;color:var(--dim);border:1px solid var(--dim);border-radius:3px;padding:1px 6px">${I18N.t('ui.notOwned')}</span>`}
@@ -12353,7 +12418,7 @@ function showCodexPartModal(partId){
     ${row('⚔️',I18N.t('part.rowCombatPerf'),power)}
     ${row('💬',I18N.t('part.rowOneLine'),op)}
   </div>`;
-  openModal('⚙️ '+p.nm,html,[{txt:I18N.t('btn.confirm'),fn:closeModal,cls:'btn-gold'}],{wide:true});
+  openModal('⚙️ '+partDisplayNm(p),html,[{txt:I18N.t('btn.confirm'),fn:closeModal,cls:'btn-gold'}],{wide:true});
 }
 function showCodexShipModal(shipId){
   const s=SHIP_CATALOG.find(x=>x.id===shipId);if(!s)return;
@@ -12408,7 +12473,7 @@ function showCodexShipModal(shipId){
     ${row('⚔️',I18N.t('part.rowProsCons'),power)}
     ${row('💬',I18N.t('ui.opinion'),`<span style="color:var(--cyan);font-style:italic">${op}</span>`)}
   </div>`;
-  openModal('🛸 '+s.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  openModal('🛸 '+(shipDisplayNm(s)||s.nm),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }
 function switchCodexTab(t){_codexTab=t;rerenderTab(renderCodexTab);}
 function renderCodexTab(body){
@@ -12439,7 +12504,7 @@ function renderCodexTab(body){
         const _bdr=have?(tierCol[tier]||'var(--bdr)'):'rgba(0,243,255,.3)';
         return'<div onclick="showCodexShipModal(\''+s.id+'\')" style="cursor:pointer;background:var(--card);border:1px solid '+_bdr+';border-radius:8px;padding:8px;text-align:center;min-height:148px">'
           +'<div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">'+imgOrEmoji(shipImgSrc(s),s.ic||'🛸',78,78,'','ship_'+s.id)+'</div>'
-          +'<div style="font-size:12px;font-weight:bold;color:var(--txt);line-height:1.2">'+s.nm+'</div>'
+          +'<div style="font-size:12px;font-weight:bold;color:var(--txt);line-height:1.2">'+(shipDisplayNm(s)||s.nm)+'</div>'
           +'<div style="font-size:10px;color:var(--dim);margin-top:2px">₡'+s.price.toLocaleString()+'</div>'
           +badge
           +'</div>';
@@ -12517,7 +12582,7 @@ function renderCodexTab(body){
             const _onclick=have?`onclick="showCodexPartModal('${p.id}')" title="${I18N.t('ui.codexClickDetail')}"`:'';
             return`<div style="background:var(--card);border:1px solid ${have?rarBdr(p):'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.55};position:relative;min-height:148px">
               <div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px;${_clickAttr}" ${_onclick}>${_imgHtml}</div>
-              <div style="font-size:12px;font-weight:bold;color:${have?rarCol(p):'var(--dim)'};line-height:1.2;word-break:keep-all">${have?p.nm:'???'}</div>
+              <div style="font-size:12px;font-weight:bold;color:${have?rarCol(p):'var(--dim)'};line-height:1.2;word-break:keep-all">${have?partDisplayNm(p):'???'}</div>
               <div style="font-size:10px;color:var(--dim);margin-top:2px">${have?('T'+p.tier+' · '+statTxt(p)):I18N.t('ui.statusUndiscovered')}</div>
               ${rarityBadge}
               <div style="font-size:10px;margin-top:2px">${have?`<span style="color:var(--green)">✅ ×${qty}</span>`:`<span style="color:var(--dim)">${I18N.t('ui.notOwned')}</span>`}</div>
@@ -12555,7 +12620,7 @@ function renderCodexTab(body){
     const _cmdImg=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():'img/chars/commander_m0.png';
     const _cmdName=G.profile?.name||I18N.t('ui.commander');
     const _cmdCo=G.profile?.company||I18N.t('ui.companyDefault');
-    const _cmdShip=G.fleet&&G.fleet[0]?G.fleet[0].nm:I18N.t('ui.shipDefault');
+    const _cmdShip=G.fleet&&G.fleet[0]?(shipDisplayNm(G.fleet[0])||G.fleet[0].nm):I18N.t('ui.shipDefault');
     const _cmdRep=G.reputation||0;
     const _cmdPlv=(typeof calcPlayerLevel==='function')?calcPlayerLevel():1;
     const totalChars=1+heroList.length+_specials.length;
@@ -12588,9 +12653,9 @@ function renderCodexTab(body){
         const hover=have?'onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'"':'';
         return`<div ${oc} ${hover} style="background:var(--card);border:1px solid ${have?'var(--gold)':'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${have?1:.4};min-height:148px;${cl}">
           <div style="margin:0 auto 6px;display:flex;justify-content:center">${have?_heroPortrait({...h,id},78,'var(--gold)'):`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr);flex-shrink:0">❔</div>`}</div>
-          <div style="font-size:12px;font-weight:bold;color:${have?'var(--gold)':'var(--dim)'};line-height:1.2">${have?h.nm:'???'}</div>
-          <div style="font-size:10px;color:var(--purple);margin-top:2px">${have?h.sk:I18N.t('ui.notRecruited')}</div>
-          ${have?`<div style="font-size:10px;color:${aboard?'var(--cyan)':'var(--dim)'};margin-top:2px">🛸 ${aboard?aboard.nm:I18N.t('ui.notAboard')}</div>`:''}
+          <div style="font-size:12px;font-weight:bold;color:${have?'var(--gold)':'var(--dim)'};line-height:1.2">${have?((I18N&&I18N.has&&I18N.has('hero.'+id+'.nm'))?I18N.t('hero.'+id+'.nm'):h.nm):'???'}</div>
+          <div style="font-size:10px;color:var(--purple);margin-top:2px">${have?((I18N&&I18N.has&&I18N.has('hero.'+id+'.sk'))?I18N.t('hero.'+id+'.sk'):h.sk):I18N.t('ui.notRecruited')}</div>
+          ${have?`<div style="font-size:10px;color:${aboard?'var(--cyan)':'var(--dim)'};margin-top:2px">🛸 ${aboard?shipDisplayNm(aboard):I18N.t('ui.notAboard')}</div>`:''}
         </div>`;
       }).join('')}
     </div>
@@ -12662,7 +12727,7 @@ function renderCodexTab(body){
           : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--dim);background:rgba(0,0,0,.45);border-radius:50%">❔</div>';
         return '<div style="background:var(--card);border:1px solid '+bdr+';border-radius:8px;padding:8px;text-align:center;min-height:148px'+(seen?'':';opacity:.55')+'">'
           +'<div style="width:78px;height:78px;border-radius:50%;overflow:hidden;margin:0 auto 6px">'+imgHtml+'</div>'
-          +'<div style="font-size:12px;font-weight:bold;color:'+nc+';line-height:1.2">'+(seen?c.nm:'???')+'</div>'
+          +'<div style="font-size:12px;font-weight:bold;color:'+nc+';line-height:1.2">'+(seen?commDisplayNm(c):'???')+'</div>'
           +(seen?'<div style="font-size:10px;color:var(--gold);margin-top:2px">₡'+c.buy.toLocaleString()+'</div>':`<div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.t('ui.undiscoveredShort')}</div>`)
           +'<div style="font-size:10px;color:'+(seen?'var(--green)':'var(--dim)')+';margin-top:2px">'+(seen?I18N.t('codex.commDiscovered'):'')+'</div>'
           +'</div>';
@@ -12826,7 +12891,7 @@ function renderCombatLog(body){
           </div>
           ${flagImgSrc?`<div style="display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:6px;border-top:1px solid rgba(255,255,255,.07)">
             <img src="${flagImgSrc}" style="width:48px;height:32px;object-fit:contain;border-radius:4px;border:1px solid var(--bdr);background:rgba(0,0,0,.4)" onerror="this.style.display='none'">
-            <span style="font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${flagship?.nm||''}</span>
+            <span style="font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(flagship?shipDisplayNm(flagship):'')||''}</span>
           </div>`:''}
         </div>
         <!-- 우측: 행성 + 함선 이미지 -->
@@ -12870,11 +12935,11 @@ function showHeroRecruit(heroId){
   openModal(I18N.t('modal.legendHeroJoined',{ic:h.ic}),
     `<div style="text-align:center;padding:8px">
       <div style="display:flex;justify-content:center;margin-bottom:10px;filter:drop-shadow(0 0 28px gold)">${_heroPortrait({...h,id:heroId},288,'var(--gold)')}</div>
-      <div style="color:var(--gold);font-size:24px;font-weight:bold;margin-bottom:4px">${h.nm}</div>
+      <div style="color:var(--gold);font-size:24px;font-weight:bold;margin-bottom:4px">${(I18N&&I18N.has&&I18N.has('hero.'+heroId+'.nm'))?I18N.t('hero.'+heroId+'.nm'):h.nm}</div>
       <div style="font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:10px">${_ok?I18N.t('ui.recruitCompleteDesc'):I18N.t('ui.recruitFailedCond')}</div>
       ${_greet?`<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.35);border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:16px;line-height:1.8;color:var(--yellow);font-style:italic;word-break:keep-all">"${_greet}"</div>`:''}
       <div style="background:var(--card);border-radius:8px;padding:12px;font-size:13px;line-height:2">
-        ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}<br>${I18N.t('ui.specialSign')}: <span style="color:var(--purple)">${h.sk}</span>
+        ATT:${h.ATT} INT:${h.INT} DEF:${h.DEF} HP:${h.HP}<br>${I18N.t('ui.specialSign')}: <span style="color:var(--purple)">${(I18N&&I18N.has&&I18N.has('hero.'+heroId+'.sk'))?I18N.t('hero.'+heroId+'.sk'):h.sk}</span>
       </div>
     </div>`,
     [{txt:I18N.t('ui.confirm'),fn:closeModal,cls:'btn-gold'}]);
@@ -12893,15 +12958,17 @@ function boardHeroToShip(hid){
   const _stBefH=getShipStats(s);
   s.crewIds.push(hid);
   _syncShipCapacity(s,_stBefH);
-  notify(I18N.t('notify.heroBoarded',{nm:HEROES[hid]?.nm,ship:s.nm}),'gold');
-  baekgu(I18N.t('baekgu.heroBoarded',{nm:HEROES[hid]?.nm}));
+  const _hKey='hero.'+hid+'.nm';
+  const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[hid]?.nm||'');
+  notify(I18N.t('notify.heroBoarded',{nm:_hNm,ship:shipDisplayNm(s)}),'gold');
+  baekgu(I18N.t('baekgu.heroBoarded',{nm:_hNm}));
   rerenderShipOrGarage();saveGame(true);
 }
 function unassignHero(hid){
   G.fleet.forEach(sh=>{
     if(!sh.crewIds)return;
     const idx=sh.crewIds.indexOf(hid);
-    if(idx>=0){sh.crewIds.splice(idx,1);notify(I18N.t('notify.heroDisembark',{nm:HEROES[hid]?.nm}),'ok');}
+    if(idx>=0){sh.crewIds.splice(idx,1);const _hKey='hero.'+hid+'.nm';const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[hid]?.nm||'');notify(I18N.t('notify.heroDisembark',{nm:_hNm}),'ok');}
   });
   rerenderShipOrGarage();saveGame(true);
 }
@@ -12917,7 +12984,7 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
     const inv=G.inventory.find(i=>i.id==='G18');inv.qty--;
     notify(I18N.t('notify.nanjungSubmitted'),'ok');
   }
-  G.heroes.push(heroId);closeModal();notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[heroId]?.ic,nm:HEROES[heroId]?.nm}),'pur');baekgu(I18N.t('baekgu.heroJoined',{nm:HEROES[heroId]?.nm}));
+  G.heroes.push(heroId);closeModal();{const _hKey='hero.'+heroId+'.nm';const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[heroId]?.nm||'');notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[heroId]?.ic,nm:_hNm}),'pur');baekgu(I18N.t('baekgu.heroJoined',{nm:_hNm}));}
   // 장영실: 모든 행성 안개 제거
   if(heroId==='H02'){applyJangYeongsilEffect();notify(I18N.t('notify.jangYeongsilEffect'),'gold');}
   saveGame(true);
@@ -13295,7 +13362,7 @@ function _showAsteroidShipPicker(destPid, onPick){
         padding:7px 8px;width:104px;text-align:center;transition:all .15s ease;
         box-shadow:0 2px 8px rgba(180,80,255,.15)">
         <img src="${shipImgSrc(s)}" style="width:52px;height:52px;object-fit:contain;image-rendering:pixelated" onerror="this.style.opacity=.3">
-        <div style="margin-top:4px;font-weight:bold;color:${_rarColor};font-size:10px;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.nm||'#'+idx}</div>
+        <div style="margin-top:4px;font-weight:bold;color:${_rarColor};font-size:10px;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${shipDisplayNm(s)||'#'+idx}</div>
         <div style="margin-top:2px;font-size:9px;color:#aaa">${tierBadge} · ATT ${_att}</div>
         <div style="margin-top:2px;font-size:9px;color:#ff8888">HP ${_hp>=10000?Math.round(_hp/1000)+'k':_hp}</div>
         <div style="font-size:9px;color:#66ddff">SH ${_sh>=10000?Math.round(_sh/1000)+'k':_sh}</div>
@@ -14834,13 +14901,13 @@ function _updateMapShopPanel(p,fog){
   // 특산물(일반 G* / 제작재료 R*) — qty>0 만
   const commList=(typeof COMMODITIES!=='undefined'?COMMODITIES:[])
     .filter(c=>!c.material&&(stock[c.id]||0)>0)
-    .map(c=>({nm:c.nm,ic:c.ic||'📦',qty:stock[c.id],buy:c.buy||0}));
+    .map(c=>({nm:commDisplayNm(c),ic:c.ic||'📦',qty:stock[c.id],buy:c.buy||0}));
   const matList=(typeof COMMODITIES!=='undefined'?COMMODITIES:[])
     .filter(c=>c.material&&(stock[c.id]||0)>0)
-    .map(c=>({nm:c.nm,ic:c.ic||'⚙️',qty:stock[c.id],buy:c.buy||0}));
+    .map(c=>({nm:commDisplayNm(c),ic:c.ic||'⚙️',qty:stock[c.id],buy:c.buy||0}));
   const shipList=(typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[])
     .filter(s=>(stock['ship_'+s.id]||0)>0)
-    .map(s=>({nm:s.nm,ic:s.ic||'🛸',tier:s.tier,qty:stock['ship_'+s.id],price:s.price||0,att:s.ATT||0,hp:s.maxHP||0}));
+    .map(s=>({nm:shipDisplayNm(s),ic:s.ic||'🛸',tier:s.tier,qty:stock['ship_'+s.id],price:s.price||0,att:s.ATT||0,hp:s.maxHP||0}));
   const _row=(it,kind)=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 6px;border-radius:4px;background:rgba(0,0,0,.18);font-size:11px;line-height:1.3">
     <span style="font-size:13px;width:16px;text-align:center;flex-shrink:0">${it.ic}</span>
     <div style="flex:1;min-width:0;overflow:hidden">
@@ -14981,17 +15048,17 @@ function travelTo(){
     const _hasBp=_bpId&&G.blueprints[_bpId];
     if(!G.planets[pid]._craftHinted&&_bpRec&&!_hasBp){
       // 첫 방문: 설계도 드롭 힌트
-      setTimeout(()=>baekgu(I18N.t('baekgu.bpDropHint',{nm:pd.nm,bp:_bpRec.nm})),1500);
+      setTimeout(()=>baekgu(I18N.t('baekgu.bpDropHint',{nm:pd.nm,bp:(_bpRec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_bpRec.id))||_bpRec.nm):(partDisplayNm(PARTS.find(p=>p.id===_bpRec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_bpRec.id)||{})||_bpRec.nm))})),1500);
       G.planets[pid]._craftHinted=true;
     } else if(_hasBp&&_fMat){
       // 설계도 보유 시 재료 힌트
       const have=G.materials[_fMatId]||0;
       const needed=(_bpRec?.mats||[]).find(m=>m.id===_fMatId)?.qty||0;
       if(needed>0&&have<needed){
-        setTimeout(()=>baekgu(I18N.t('baekgu.materialAtShop',{mat:_fMat.nm,have,need:needed,bp:_bpRec.nm})),1500);
+        setTimeout(()=>baekgu(I18N.t('baekgu.materialAtShop',{mat:commDisplayNm(_fMat)||_fMat.nm,have,need:needed,bp:(_bpRec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_bpRec.id))||_bpRec.nm):(partDisplayNm(PARTS.find(p=>p.id===_bpRec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_bpRec.id)||{})||_bpRec.nm))})),1500);
       }
     } else if(_fMat&&(G.materials[_fMatId]||0)<5){
-      setTimeout(()=>baekgu(I18N.t('baekgu.materialOriginPlanet',{nm:pd.nm,mat:_fMat.nm})),1500);
+      setTimeout(()=>baekgu(I18N.t('baekgu.materialOriginPlanet',{nm:pd.nm,mat:commDisplayNm(_fMat)||_fMat.nm})),1500);
     }
   }
 
@@ -15042,9 +15109,10 @@ function getHeroPassiveBonus(){
   return{attMul,intMul,tecMul,hpMul,shMul};
 }
 // 함선 이름에 강화 등급(+N) + 제작 품질(✨ 마스터작 등) 접두/접미 부착 — 일관 표시 헬퍼
+//   · 베이스 이름은 shipDisplayNm 로 i18n 재조회 (KO/EN 혼재 방지)
 function shipDisplayName(s){
   if(!s)return '';
-  let nm=s.nm||'';
+  let nm=(typeof shipDisplayNm==='function'?shipDisplayNm(s):s.nm)||s.nm||'';
   if(s._enhanceLv&&s._enhanceLv>0)nm='+'+s._enhanceLv+' '+nm;
   if(s.qualityLabel)nm=nm+' '+s.qualityLabel;
   return nm;
@@ -15833,18 +15901,32 @@ function _cbStartAnimLoop(){
 // 빔 한 발 + 피격 + (필요 시) 격침 폭발/파편
 // delay: 발사 시작까지 대기 프레임 수 (순차 발사용)
 // wasShielded: 피격 시점에 타겟의 쉴드가 살아있었는지 (true면 헥사 임팩트)
-// 데미지 텍스트 — 피격 시 함선 위로 떠오르는 숫자 (사용자 요청 2026-06-06)
-//   · 50% 투명도, 12프레임(약 0.2s) 동안 아래→위로 페이드인·페이크·페이드아웃
-//   · 쉴드가 흡수한 피해는 청록, 순수 HP 피해는 적색
-//   · pos: 타겟 함선의 변환된 좌표(_txPos 통과 후), delay: 시각 이펙트와 동기화될 프레임 지연
+// 데미지 텍스트 — 피격 시 함선 위로 떠오르는 숫자
+//   사용자 요청 (2026-06-06 갱신):
+//     · 폰트 ×2 (16 → 32px), 투명도 90%로 가독성 강화
+//     · 데미지: 빨강 #ff3333 / 회복: 파랑 #3399ff (_cbAddHealText)
+//     · 0.2s(12프레임) 동안 아래→위로 페이드인·피크·페이드아웃
 function _cbAddDmgText(pos,rawDmg,shDmg,delay){
   if(!pos||!(rawDmg>0))return;
   _cbEffects.push({
     type:'dmgText',
     x:pos.x,
-    y:pos.y-28,                     // 함선 위로 시작 (베이스 오프셋)
+    y:pos.y-28,
     txt:'-'+Math.round(rawDmg),
-    col:shDmg>0?'#66ddff':'#ff6b6b',
+    col:'#ff3333',                  // 피해: 빨강 (쉴드/HP 구분 없이 통일)
+    life:12,maxLife:12,
+    delay:Math.max(0,delay||0)
+  });
+}
+// 회복 텍스트 — 아군 자가수리/흡혈 등 HP·실드 회복 시 함선 위로 +N 표시
+function _cbAddHealText(pos,healAmt,delay){
+  if(!pos||!(healAmt>0))return;
+  _cbEffects.push({
+    type:'dmgText',                 // 동일 이펙트 타입 재사용 (렌더 로직 공유)
+    x:pos.x,
+    y:pos.y-28,
+    txt:'+'+Math.round(healAmt),
+    col:'#3399ff',                  // 회복: 파랑
     life:12,maxLife:12,
     delay:Math.max(0,delay||0)
   });
@@ -16567,19 +16649,21 @@ function drawCombatFrame(){
       cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=8*a;
       cbCtx.beginPath();cbCtx.arc(ef.x,ef.y,2.5*a,0,Math.PI*2);cbCtx.fill();
     } else if(ef.type==='dmgText'){
-      // 데미지 텍스트 — 0.2s 동안 50% 투명도, 아래→위로 부드러운 등장·소멸 (사용자 요청 2026-06-06)
-      //   · alpha 곡선: 0 → 0.5 → 0 (sin(t·π)) — 등장→피크→소멸이 자연스럽게 이어짐
+      // 데미지 텍스트 — 사용자 요청 (2026-06-06 갱신):
+      //   · 폰트 크기 ×2: 16 → 32px
+      //   · 투명도 피크 90% (가독성 강화 — 종전 50%)
+      //   · alpha 곡선: 0 → 0.9 → 0 (sin(t·π)) — 등장→피크→소멸
       //   · y 위치: 베이스에서 24px 위로 천천히 부유
       const rise=24*t;
-      const alpha=0.5*Math.sin(t*Math.PI);
+      const alpha=0.9*Math.sin(t*Math.PI);
       if(alpha>0.001){
-        cbCtx.globalAlpha=Math.min(0.5,Math.max(0,alpha));
-        cbCtx.font='bold 16px "Courier New", monospace';
+        cbCtx.globalAlpha=Math.min(0.9,Math.max(0,alpha));
+        cbCtx.font='bold 32px "Courier New", monospace';
         cbCtx.textAlign='center';
         cbCtx.textBaseline='bottom';
-        cbCtx.shadowColor='rgba(0,0,0,.85)';
-        cbCtx.shadowBlur=4;
-        cbCtx.fillStyle=ef.col||'#ff6b6b';
+        cbCtx.shadowColor='rgba(0,0,0,.9)';
+        cbCtx.shadowBlur=6;
+        cbCtx.fillStyle=ef.col||'#ff3333';
         cbCtx.fillText(ef.txt||'', ef.x, ef.y - rise);
       }
     } else if(ef.type==='shieldHit'){
@@ -17040,6 +17124,8 @@ function runCombatTurn(){
     const ap=_unitPos[p.id||('P'+0)], ep=_unitPos[target.id];
     if(ap&&ep){
       const a1=_txPos(ap), a2=_txPos(ep);
+      // 흡혈 회복 시 발사 함선 위로 파란 +N 표시 (사용자 요청 2026-06-06)
+      if(_healHP+_healSH>0) _cbAddHealText(a1, _healHP+_healSH, _fireDelay+5);
       if(usesMissile){
         // 사용자 명세: 기본 1발, 전설(set/legend)·신화(mythic) 미사일 장착 시 최대 4발
         const _bestR=_wc.missileBestRarity;
@@ -17341,7 +17427,7 @@ function _finishCombat(){
             const _slot=G.cargo.find(x=>x.id===c.id&&x.loot===true);
             if(_slot){_slot.qty+=_giveQty;}
             else{G.cargo.push({id:c.id,nm:c.nm,qty:_giveQty,buyPrice:0,buyPlanetId:null,buyFaction:_facId,loot:true});}
-            _gotten.push(`${c.ic||'📦'} ${c.nm}×${_giveQty}`);
+            _gotten.push(`${c.ic||'📦'} ${commDisplayNm(c)}×${_giveQty}`);
           });
           if(_gotten.length>0){
             addCombatLog(I18N.t('combat.loot',{items:_gotten.join(' · ')}),'gold');
