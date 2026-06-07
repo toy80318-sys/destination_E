@@ -33,19 +33,40 @@
       .replace(/\{company\}/gi, p.company || defCompany);
   }
 
-  // ─── 캐릭터 이미지 경로 ───
-  // 기본: img/chars/{key}.png (모든 빌드 보장)
-  // HD: img/chars-hd/{key}.png — 실제 파일이 있는 경우에만 onerror 폴백 거치지 않고 사용
-  // (HD 미존재 시 404가 콘솔 시끄럽고 일부 환경에서 너무 많은 동시 요청으로 ERR_INSUFFICIENT_RESOURCES 유발 가능)
-  // → HD 사용은 명시적 opt-in: window.STORY_USE_HD = true 로 켤 때만 시도
+  // ─── 캐릭터 이미지 경로 해석 ───
+  // key 타입별 라우팅:
+  //   1. 'commander'             → img/chars/commander_{m|f}{0-3}.png (성별·외형 자동)
+  //   2. 'baekgu*', 'hero0X' etc.→ img/chars/{key}.png (기존 캐릭터)
+  //   3. 'delivery_F0X' 'gather_F0X' 'combat_F0X' 'explore_F0X' (Phase NPC 폴백)
+  //                              → img/quests/{key}.png
+  //   4. 'system'                → img/chars/system.png (시스템·UI)
+  //   5. 기타                    → img/chars/{key}.png 시도, onerror 시 system 폴백
+  // HD 시도는 명시적 opt-in (window.STORY_USE_HD = true)
   function _ver(){
     return window._GAME_VER ? '?v=' + encodeURIComponent(window._GAME_VER) : '';
   }
+  function _resolveCommanderImg(){
+    var p = (window.G && window.G.profile) || {};
+    var gender = (p.gender === 'female' || p.gender === 'f') ? 'f' : 'm';
+    // 외형 인덱스(0~3) — G.profile.appearance 가 있으면 사용, 없으면 1번 기본
+    var idx = (typeof p.appearance === 'number') ? Math.max(0, Math.min(3, p.appearance)) : 1;
+    return 'commander_' + gender + idx;
+  }
   function _charImgPath(key){
-    if(window.STORY_USE_HD === true){
-      return 'img/chars-hd/' + key + '.png' + _ver();
+    var resolvedKey = key || 'system';
+    // commander → 성별·외형 자동 해석
+    if(resolvedKey === 'commander'){
+      resolvedKey = _resolveCommanderImg();
     }
-    return 'img/chars/' + key + '.png' + _ver();
+    // Phase NPC 폴백 키 (img/quests/ 경로)
+    if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(resolvedKey)){
+      return 'img/quests/' + resolvedKey + '.png' + _ver();
+    }
+    // HD 우선 (opt-in)
+    if(window.STORY_USE_HD === true){
+      return 'img/chars-hd/' + resolvedKey + '.png' + _ver();
+    }
+    return 'img/chars/' + resolvedKey + '.png' + _ver();
   }
 
   // ─── 대화 팝업 UI ───
@@ -118,13 +139,22 @@
       'object-fit:contain','image-rendering:auto',
       'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
     ].join(';');
-    // 실패 시 fallback: HD → 기본 → system (단일 단계만)
+    // 실패 시 fallback 체인:
+    //   chars-hd/ → chars/ → chars/system.png (Phase NPC는 별도 quests/ 폴백 — 코드에서 직접 처리)
     charImg.onerror = function(){
       var src = this.src;
+      var key = this.dataset.charKey || 'system';
+      // 1) HD 실패 → chars/ 시도
       if(src.indexOf('chars-hd') > -1){
-        this.src = 'img/chars/' + (this.dataset.charKey||'system') + '.png' + _ver();
+        this.src = 'img/chars/' + key + '.png' + _ver();
         return;
       }
+      // 2) chars/ 실패 + Phase NPC 패턴 → quests/ 시도
+      if(src.indexOf('/chars/') > -1 && /^(delivery|gather|combat|explore)_F0[1-7]$/.test(key)){
+        this.src = 'img/quests/' + key + '.png' + _ver();
+        return;
+      }
+      // 3) 모든 경로 실패 → system 폴백
       if(src.indexOf('system.png') < 0){
         this.src = 'img/chars/system.png' + _ver();
       } else {
