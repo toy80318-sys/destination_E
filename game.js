@@ -3229,9 +3229,32 @@ function triggerTravelPirate(pd){
     }))
   };
   const chance=calcTravelPirateChance(pd);
+  // 사용자 요청 2026-06-07: ☠️ 이모지 → 문명권 전사 이미지 + 2배 (48 → 96px)
+  // 행성 팩션 기반 combat NPC 이미지 사용. PIRATE 폴백은 F01.
+  const _pFac=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
+  const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  const _warriorSrc='img/quests/combat_'+_pFac+'.png'+_ver;
+  const _commanderSrc=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():('img/chars/commander_m1.png'+_ver);
   openModal(I18N.t('modal.routePirate'),
-    `<div style="text-align:center;padding:10px 6px 6px">
-      <div style="font-size:48px;margin-bottom:4px">☠️</div>
+    `<div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:10px 6px 8px">
+      <!-- 좌측: 사령관 (우리) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:96px;height:96px;border-radius:12px;overflow:hidden;border:2px solid var(--cyan);box-shadow:0 0 16px rgba(0,243,255,.4);background:rgba(0,0,0,.5)">
+          <img src="${_commanderSrc}" alt="commander" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
+        </div>
+        <div style="color:var(--cyan);font-size:11px;font-weight:bold;letter-spacing:1px">${G.profile?.name||I18N.t('ui.commander')}</div>
+      </div>
+      <!-- 중앙: VS + 충돌 이모지 -->
+      <div style="font-size:32px;color:var(--red);font-weight:bold;text-shadow:0 0 12px rgba(255,80,80,.6)">⚡VS⚡</div>
+      <!-- 우측: 적 (해당 문명권 전사) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:96px;height:96px;border-radius:12px;overflow:hidden;border:2px solid var(--red);box-shadow:0 0 16px rgba(255,80,80,.4);background:rgba(20,0,0,.5)">
+          <img src="${_warriorSrc}" alt="pirate" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<div style=&quot;font-size:60px;display:flex;align-items:center;justify-content:center;height:100%&quot;>☠️</div>'">
+        </div>
+        <div style="color:var(--red);font-size:11px;font-weight:bold;letter-spacing:1px">${I18N.t('pirate.routeName')}</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:0 6px 8px">
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${I18N.t('pirate.routeEncounter',{nm:pd?.nm||''})}</div>
       <div style="color:var(--dim);font-size:12px;line-height:1.7">
         ${I18N.t('pirate.routeAmbushBy',{n:eCount})}<br>
@@ -11710,10 +11733,11 @@ function renderTavernView(body){
     </div>`;
   })();
   // 행성 팩션 NPC 이미지 — 각 버튼 좌측 배치 (퀘스트 인물 사용)
+  // 사용자 요청 2026-06-07: 44→132 (3배). 주점·블랙마켓 양쪽에 동시 적용됨.
   const _npcFac=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
   function _npcImg(type,col){
     const _src='img/quests/'+type+'_'+_npcFac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
-    return `<div style="width:44px;height:44px;border-radius:6px;background:rgba(0,0,0,.45);border:1px solid ${col}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+    return `<div style="width:132px;height:132px;border-radius:10px;background:rgba(0,0,0,.45);border:2px solid ${col}99;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 0 16px ${col}33">
       <img src="${_src}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
     </div>`;
   }
@@ -11734,18 +11758,19 @@ function renderTavernView(body){
     </div>`;
   }
   // 미니 카드 — 5장 가로 행 (사용자 요청)
+  // 사용자 요청 2026-06-07: 인물 이미지 36→72 (2배 확대)
   function _miniCard(opts){
     const _col=opts.color||'var(--cyan)';
-    return `<div style="flex:1;min-width:0;background:rgba(0,0,0,.4);border:1.5px solid ${_col};border-radius:6px;padding:4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 0 6px ${_col}33">
-      <div style="width:36px;height:36px;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid ${_col}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
-        ${opts.img?`<img src="${opts.img}" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:4px" onerror="this.outerHTML='<span style=&quot;font-size:20px&quot;>${opts.ic||'?'}</span>'">`:`<span style="font-size:20px">${opts.ic||'?'}</span>`}
+    return `<div style="flex:1;min-width:0;background:rgba(0,0,0,.4);border:1.5px solid ${_col};border-radius:8px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 0 8px ${_col}33">
+      <div style="width:72px;height:72px;border-radius:8px;background:rgba(0,0,0,.5);border:1px solid ${_col}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        ${opts.img?`<img src="${opts.img}" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:6px" onerror="this.outerHTML='<span style=&quot;font-size:36px&quot;>${opts.ic||'?'}</span>'">`:`<span style="font-size:36px">${opts.ic||'?'}</span>`}
       </div>
-      <div style="color:${_col};font-size:9px;font-weight:bold;line-height:1.1;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${opts.name}</div>
+      <div style="color:${_col};font-size:10px;font-weight:bold;line-height:1.15;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${opts.name}</div>
     </div>`;
   }
   function _miniEmpty(){
-    return `<div style="flex:1;min-width:0;background:rgba(0,0,0,.2);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:62px">
-      <span style="font-size:14px;color:rgba(255,255,255,.15)">·</span>
+    return `<div style="flex:1;min-width:0;background:rgba(0,0,0,.2);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100px">
+      <span style="font-size:22px;color:rgba(255,255,255,.15)">·</span>
     </div>`;
   }
   // 5장 카드 행 — flex로 가로 분포
