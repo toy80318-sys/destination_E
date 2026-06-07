@@ -15,5 +15,11 @@ contextBridge.exposeInMainWorld('desktopAPI', {
   // 언어 동기화 (메뉴 라벨 즉시 갱신)
   setLangPref: (lang) => ipcRenderer.invoke('set-lang-pref', lang),
   // 수동 업데이트 확인
-  checkUpdate: () => ipcRenderer.invoke('check-update')
+  checkUpdate: () => ipcRenderer.invoke('check-update'),
+  // 자동 업데이트 상태 수신 (메인 → 렌더러 push)
+  // status: {stage: 'available'|'downloading'|'downloaded'|'error', percent, version, message}
+  onUpdateStatus: (cb) => {
+    if (typeof cb !== 'function') return;
+    ipcRenderer.on('update-status', (_evt, status) => { try { cb(status); } catch (_) {} });
+  }
 });

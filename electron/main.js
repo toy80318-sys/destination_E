@@ -223,38 +223,80 @@ function showAboutDialog() {
   dialog.showMessageBox(mainWindow, opts);
 }
 
-// ── 자동 업데이트 ────────────────────────────────────────────────────
+// ── 자동 업데이트 (무음 자동 다운로드 + 종료 시 자동 설치) ─────────────
 function setupAutoUpdater() {
   if (!autoUpdater || isDev) return;
-  autoUpdater.autoDownload = false;
+  // 사용자 개입 최소화: 즉시 자동 다운로드 + 종료 시 자동 설치
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  // 새 버전 감지 — 토스트성 알림만 (사용자 작업 방해 안 함)
   autoUpdater.on('update-available', (info) => {
-    const prefs = loadPrefs();
-    const lang = prefs.lang === 'en' ? 'en' : 'ko';
-    dialog.showMessageBox(mainWindow, {
-      type: 'info',
-      title: lang === 'en' ? 'Update Available' : '업데이트 알림',
-      message: lang === 'en'
-        ? `A new version ${info.version} is available.`
-        : `새 버전 ${info.version} 이(가) 출시되었습니다.`,
-      detail: lang === 'en'
-        ? 'Download now? Installation will start automatically.'
-        : '지금 다운로드할까요? 다운로드 완료 후 자동 설치됩니다.',
-      buttons: lang === 'en' ? ['Download', 'Later'] : ['다운로드', '나중에']
-    }).then(r => { if (r.response === 0) autoUpdater.downloadUpdate(); });
+    if (mainWindow && mainWindow.webContents) {
+      try {
+        mainWindow.webContents.send('update-status', {
+          stage: 'available',
+          version: info && info.version
+        });
+      } catch (_) {}
+    }
   });
-  autoUpdater.on('update-downloaded', () => {
+
+  // 다운로드 진행률 — 렌더러에 전달 (UI에서 옵션 표시)
+  autoUpdater.on('download-progress', (p) => {
+    if (mainWindow && mainWindow.webContents) {
+      try {
+        mainWindow.webContents.send('update-status', {
+          stage: 'downloading',
+          percent: Math.round(p.percent || 0),
+          bytesPerSecond: p.bytesPerSecond,
+          transferred: p.transferred,
+          total: p.total
+        });
+      } catch (_) {}
+    }
+  });
+
+  // 다운로드 완료 — 사용자에게 비차단 알림 (모달 X). 다음 종료 시 자동 설치됨.
+  autoUpdater.on('update-downloaded', (info) => {
+    if (mainWindow && mainWindow.webContents) {
+      try {
+        mainWindow.webContents.send('update-status', {
+          stage: 'downloaded',
+          version: info && info.version
+        });
+      } catch (_) {}
+    }
     const prefs = loadPrefs();
     const lang = prefs.lang === 'en' ? 'en' : 'ko';
+    // 비차단 알림 (작업 방해 최소화) — 동의 시 즉시 재시작, 거부 시 다음 종료 때 자동 설치
     dialog.showMessageBox(mainWindow, {
       type: 'info',
       title: lang === 'en' ? 'Update Ready' : '업데이트 준비 완료',
-      message: lang === 'en' ? 'Restart now to install?' : '지금 재시작하여 설치할까요?',
-      buttons: lang === 'en' ? ['Restart Now', 'Later'] : ['지금 재시작', '나중에']
+      message: lang === 'en'
+        ? `Update downloaded. Apply now?`
+        : `업데이트 다운로드 완료. 지금 적용할까요?`,
+      detail: lang === 'en'
+        ? 'Choose "Later" to apply automatically the next time you quit.'
+        : '"나중에"를 선택하면 다음 종료 시 자동 적용됩니다.',
+      buttons: lang === 'en' ? ['Restart Now', 'Later'] : ['지금 재시작', '나중에'],
+      defaultId: 1,  // 기본은 "나중에" (작업 흐름 보호)
+      cancelId: 1
     }).then(r => { if (r.response === 0) autoUpdater.quitAndInstall(); });
   });
-  autoUpdater.on('error', (err) => { console.warn('[updater]', err && err.message); });
-  // 부팅 후 30초 뒤 1회 자동 확인 (수동 확인은 메뉴에서)
-  setTimeout(() => { try { autoUpdater.checkForUpdates(); } catch (_) {} }, 30000);
+
+  autoUpdater.on('error', (err) => {
+    console.warn('[updater]', err && err.message);
+    if (mainWindow && mainWindow.webContents) {
+      try { mainWindow.webContents.send('update-status', { stage: 'error', message: err && err.message }); } catch (_) {}
+    }
+  });
+
+  // 부팅 후 10초 뒤 자동 확인 (단축 — 사용자가 빠르게 최신 버전 받도록)
+  setTimeout(() => { try { autoUpdater.checkForUpdates(); } catch (_) {} }, 10000);
+
+  // 1시간마다 백그라운드 자동 확인 (장시간 켜둔 사용자 대응)
+  setInterval(() => { try { autoUpdater.checkForUpdates(); } catch (_) {} }, 60 * 60 * 1000);
 }
 function checkForUpdatesManual() {
   const prefs = loadPrefs();
