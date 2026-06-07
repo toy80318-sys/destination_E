@@ -2307,12 +2307,13 @@ function showHub(){
     baekgu(tips[Math.floor(Math.random()*tips.length)]);
   },25000);  // 25초 간격 (이전 45초 → 25초)
   // 기존 온보딩 튜토리얼 자동 실행 제거됨 (2026-06-07)
-  // → Phase 1 시나리오 퀘스트가 동일 역할 수행 (백구 컷씬 + 보라색 메인 퀘스트)
-  // → 튜토리얼 ↔ 시나리오 중복 차단
-  // Phase 시나리오 퀘스트 자동 spawn — 현재 행성(첫 게임은 P01) 진입 컷씬 자동 재생
-  // showHub 진입은 새 게임·이어하기·전투 종료·행성 이동 등 모든 진입에서 호출됨 → 중복 차단은 spawnPhasedQuests 내부 가드로 처리
-  if(typeof spawnPhasedQuests==='function' && G && G.currentPlanet){
-    setTimeout(()=>{try{spawnPhasedQuests(G.currentPlanet);}catch(e){console.warn('[phase] spawn fail (hub)',e);}}, 600);
+  // → Phase 1 시나리오 퀘스트가 동일 역할 수행
+  // 새 게임·이어하기 시작 시 일반 퀘스트 + 시나리오 퀘 + 인트로 컷씬 보장
+  if(G && G.currentPlanet){
+    setTimeout(()=>{
+      try{ if(typeof generateQuests==='function')generateQuests(G.currentPlanet); }catch(e){console.warn('[quest] gen fail (hub)',e);}
+      try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(G.currentPlanet); }catch(e){console.warn('[phase] spawn fail (hub)',e);}
+    }, 600);
   }
 }
 
@@ -9454,20 +9455,27 @@ function spawnPhasedQuests(pid){
   if(added>0){
     saveGame(true);
     // 현재 퀘스트 탭을 보고 있을 때만 재렌더링 — 메인 화면 등 다른 탭 침범 방지
-    // (사용자 보고 2026-06-07: 메인 화면에 갑자기 퀘스트 카드가 등장하는 버그 수정)
     try{
       if(G._currentHubTab==='quest' && typeof renderQuestTab==='function'){
         rerenderTab(renderQuestTab);
       }
     }catch(e){}
-    // 행성 첫 도착 시 메인 퀘스트의 진입 컷씬 자동 재생 (메인 카테고리 1개 한정)
-    if(!G._phasedIntroSeen)G._phasedIntroSeen={};
-    if(!G._phasedIntroSeen[pid]){
-      const _firstMain=(G.quests[pid]||[]).find(q=>q&&q.type==='story_quest'&&q.category==='main'&&q.cutscene_pre);
-      if(_firstMain&&window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.triggerScene==='function'){
-        G._phasedIntroSeen[pid]=true;
-        setTimeout(()=>window.STORY_SCENES_PC.triggerScene(_firstMain.cutscene_pre), 800);
-      }
+  }
+  // ★ 행성 인트로 컷씬 자동 재생 — 퀘스트 spawn 여부와 무관하게 행성 첫 도착 시 보장
+  //   (사용자 보고 2026-06-07: 행성 도착 시 컷씬이 안 나오는 문제)
+  //   PHASE1_PLANET_INTROS / PHASE2_PLANET_INTROS 매핑 사용
+  if(!G._phasedIntroSeen)G._phasedIntroSeen={};
+  const _introKey='intro_'+pid;
+  if(!G._phasedIntroSeen[_introKey]){
+    const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS];
+    let _introSceneId=null;
+    for(let i=0;i<_introMaps.length;i++){
+      if(_introMaps[i] && _introMaps[i][pid]){ _introSceneId=_introMaps[i][pid]; break; }
+    }
+    if(_introSceneId && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
+      G._phasedIntroSeen[_introKey]=true;
+      try{saveGame(true);}catch(e){}
+      setTimeout(()=>window.STORY_SCENES_PC.triggerScene(_introSceneId), 800);
     }
   }
   return added>0;
@@ -15143,8 +15151,11 @@ function travelTo(){
     }
   }
   checkDeliveryQuests(pid);  // ← 배달 퀘스트 완료 체크
-  // Phase 1 시나리오 퀘스트 자동 spawn (PHASE1_QUESTS 데이터 사용)
+  // Phase 시나리오 퀘스트 자동 spawn (인트로 컷씬 포함)
   if(typeof spawnPhasedQuests==='function'){try{spawnPhasedQuests(pid);}catch(e){console.warn('[phase] spawn fail',e);}}
+  // 일반 퀘스트 시드 — 행성 도착 시 즉시 (퀘스트 탭 열기 전에도 보장)
+  // 사용자 보고 2026-06-07: 행성 도착 후 퀘스트가 안 보이는 문제
+  if(typeof generateQuests==='function'){try{generateQuests(pid);}catch(e){console.warn('[quest] gen fail',e);}}
   // 영웅 자동 영입 제거 — H01~H08은 해당 행성의 퀘스트 완료 시 5% 확률로만 등장
   // 제작소 관련 백구 힌트 (행성 첫 방문 또는 20% 확률 재방문)
   if(Math.random()<0.20||!G.planets[pid]._craftHinted){

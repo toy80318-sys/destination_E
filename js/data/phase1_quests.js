@@ -28,7 +28,7 @@ const PHASE1_QUESTS={
       rewardCr:2000, rewardVe:30,
       rewardItems:[],
       rewardFlags:['p1_planet_unlocked_P02'],
-      cutscene_pre:null,
+      cutscene_pre:'p1_p01_intro',  // 게임 시작 즉시 백구 깨움 컷씬 (사용자 보고 2026-06-07)
       cutscene_post:'p1_p01_outro'
     },
     {
@@ -311,10 +311,21 @@ const PHASE1_CUTSCENES_KO={
 // getScene() 폴백: EN 미존재 시 KO 사용
 const PHASE1_CUTSCENES_EN={};
 
+// 행성별 인트로 컷씬 매핑 (행성 첫 도착 시 자동 재생 — 퀘스트와 무관)
+// 사용자 보고 2026-06-07: 행성 도착 시 컷씬이 안 나오는 문제 → 별도 매핑으로 보장
+const PHASE1_PLANET_INTROS={
+  P01:'p1_p01_intro',
+  P02:'p1_p02_intro',
+  P03:'p1_p03_intro',
+  P05:'p1_p05_intro',
+  P06:'p1_p06_intro'
+};
+
 // 전역 노출
 window.PHASE1_QUESTS=PHASE1_QUESTS;
 window.PHASE1_CUTSCENES_KO=PHASE1_CUTSCENES_KO;
 window.PHASE1_CUTSCENES_EN=PHASE1_CUTSCENES_EN;
+window.PHASE1_PLANET_INTROS=PHASE1_PLANET_INTROS;
 
 console.log('[PHASE1_QUESTS] Loaded — 12 quests across 5 planets (P01·P02·P03·P05·P06), 11 cutscenes');
 })();
