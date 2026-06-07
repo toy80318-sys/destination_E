@@ -9453,7 +9453,13 @@ function spawnPhasedQuests(pid){
   });
   if(added>0){
     saveGame(true);
-    try{rerenderTab(renderQuestTab);}catch(e){}
+    // 현재 퀘스트 탭을 보고 있을 때만 재렌더링 — 메인 화면 등 다른 탭 침범 방지
+    // (사용자 보고 2026-06-07: 메인 화면에 갑자기 퀘스트 카드가 등장하는 버그 수정)
+    try{
+      if(G._currentHubTab==='quest' && typeof renderQuestTab==='function'){
+        rerenderTab(renderQuestTab);
+      }
+    }catch(e){}
     // 행성 첫 도착 시 메인 퀘스트의 진입 컷씬 자동 재생 (메인 카테고리 1개 한정)
     if(!G._phasedIntroSeen)G._phasedIntroSeen={};
     if(!G._phasedIntroSeen[pid]){
