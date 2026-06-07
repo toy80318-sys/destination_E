@@ -19135,19 +19135,14 @@ function showSettingsModal(){
     </div>
     <div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('cheat.pwOnceHint')}</span></div>
+      <!-- 사용자 요청 2026-06-07: 자원당 1버튼(최대 수치)만 유지, 일괄 지급(메가/맥스) 삭제 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(10000000)">${I18N.t('cheat.giveCr10m')}</button>
         <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>
-        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',50)">${I18N.t('cheat.giveRep50')}</button>
         <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',200)">${I18N.t('cheat.giveRep200')}</button>
-        <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',10)">${I18N.t('cheat.giveVc10')}</button>
         <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',50)">${I18N.t('cheat.giveVc50')}</button>
-        <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',100)">${I18N.t('cheat.giveVe100')}</button>
         <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',1000)">${I18N.t('cheat.giveVe1k')}</button>
       </div>
-      <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#ff66cc;color:#ff66cc;font-weight:bold" onclick="cheatGiveAllMega()">${I18N.t('cheat.megaCharge')}</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border:2px solid #ffd700;color:#ffd700;font-weight:bold;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(255,102,204,.12),rgba(102,255,255,.12))" onclick="cheatMaxAll()">${I18N.t('cheat.maxCheat')}</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">${I18N.t('cheat.debugWarn')}</div>
     </div>`:''}
