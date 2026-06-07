@@ -3235,20 +3235,21 @@ function triggerTravelPirate(pd){
   const _warriorSrc='img/quests/combat_'+_pFac+'.png'+_ver;
   const _commanderSrc=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():('img/chars/commander_m1.png'+_ver);
   openModal(I18N.t('modal.routePirate'),
-    `<div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:14px 6px 10px">
-      <!-- 좌측: 사령관 (우리) — 192×192 (2배) -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-        <div style="width:192px;height:192px;border-radius:16px;overflow:hidden;border:3px solid var(--cyan);box-shadow:0 0 28px rgba(0,243,255,.5);background:rgba(0,0,0,.5)">
-          <img src="${_commanderSrc}" alt="commander" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
+    `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 6px 10px;flex-wrap:nowrap">
+      <!-- 사용자 요청 2026-06-07: 이미지가 좌우로 잘리는 문제 → object-fit:contain + gap 32→14 + 사이즈 192→160 -->
+      <!-- 좌측: 사령관 (우리) — 160×160 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+        <div style="width:160px;height:160px;border-radius:14px;overflow:hidden;border:3px solid var(--cyan);box-shadow:0 0 22px rgba(0,243,255,.5);background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center">
+          <img src="${_commanderSrc}" alt="commander" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'">
         </div>
         <div style="color:var(--cyan);font-size:13px;font-weight:bold;letter-spacing:1.5px">${G.profile?.name||I18N.t('ui.commander')}</div>
       </div>
-      <!-- 중앙: VS + 충돌 이모지 (이미지 확대에 맞춰 폰트도 키움) -->
-      <div style="font-size:48px;color:var(--red);font-weight:bold;text-shadow:0 0 16px rgba(255,80,80,.7)">⚡VS⚡</div>
-      <!-- 우측: 적 (해당 문명권 전사) — 192×192 (2배) -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-        <div style="width:192px;height:192px;border-radius:16px;overflow:hidden;border:3px solid var(--red);box-shadow:0 0 28px rgba(255,80,80,.5);background:rgba(20,0,0,.5)">
-          <img src="${_warriorSrc}" alt="pirate" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<div style=&quot;font-size:120px;display:flex;align-items:center;justify-content:center;height:100%&quot;>☠️</div>'">
+      <!-- 중앙: VS — 사용자 요청 70% 작게 (48px → 14px), 번개 제거 -->
+      <div style="font-size:14px;color:var(--red);font-weight:bold;text-shadow:0 0 8px rgba(255,80,80,.7);letter-spacing:1px;flex-shrink:0">VS</div>
+      <!-- 우측: 적 (해당 문명권 전사) — 160×160 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+        <div style="width:160px;height:160px;border-radius:14px;overflow:hidden;border:3px solid var(--red);box-shadow:0 0 22px rgba(255,80,80,.5);background:rgba(20,0,0,.5);display:flex;align-items:center;justify-content:center">
+          <img src="${_warriorSrc}" alt="pirate" style="width:100%;height:100%;object-fit:contain" onerror="this.outerHTML='<div style=&quot;font-size:100px;display:flex;align-items:center;justify-content:center;height:100%&quot;>☠️</div>'">
         </div>
         <div style="color:var(--red);font-size:13px;font-weight:bold;letter-spacing:1.5px">${I18N.t('pirate.routeName')}</div>
       </div>
