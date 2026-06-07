@@ -581,13 +581,72 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════
+  // Phase 시나리오 컷씬 — ID 기반 트리거 (PHASE1/2/3+_CUTSCENES_KO/EN)
+  // ═══════════════════════════════════════════════════════════════════
+  function _getPhaseScene(sceneId){
+    var lang = _curLang();
+    var sources = lang === 'en'
+      ? [window.PHASE1_CUTSCENES_EN, window.PHASE2_CUTSCENES_EN, window.PHASE3_CUTSCENES_EN]
+      : [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO];
+    for(var i=0;i<sources.length;i++){
+      if(sources[i] && sources[i][sceneId]) return sources[i][sceneId];
+    }
+    // EN 미존재 시 KO 폴백
+    if(lang === 'en'){
+      var fallback = [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO];
+      for(var j=0;j<fallback.length;j++){
+        if(fallback[j] && fallback[j][sceneId]) return fallback[j][sceneId];
+      }
+    }
+    return null;
+  }
+
+  function triggerScene(sceneId, onDone){
+    if(!sceneId){
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    var scenes = _getPhaseScene(sceneId);
+    if(!scenes){
+      console.warn('[STORY_SCENES_PC] No scene found for ID:', sceneId);
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    if(!window.G) window.G = {};
+    if(!window.G._scenesSeen) window.G._scenesSeen = {};
+    // 짧은 시간 중복 트리거 차단
+    var now = Date.now();
+    if(_lastTriggeredAt[sceneId] && (now - _lastTriggeredAt[sceneId]) < 1500){
+      console.log('[STORY_SCENES_PC] duplicate scene trigger suppressed:', sceneId);
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    _lastTriggeredAt[sceneId] = now;
+    window.G._scenesSeen['scene_' + sceneId] = true;
+    if(typeof window.saveGame === 'function'){
+      try{ window.saveGame(true); }catch(e){}
+    }
+    console.log('[STORY_SCENES_PC] opening scene:', sceneId, '— lines:', scenes.length);
+    showCharDialog({ scenes: scenes, onDone: onDone });
+  }
+
+  // 강제 재생 (씬 ID)
+  function forceReplayScene(sceneId){
+    if(window.G && window.G._scenesSeen) delete window.G._scenesSeen['scene_' + sceneId];
+    delete _lastTriggeredAt[sceneId];
+    return triggerScene(sceneId);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
   // 전역 노출
   // ═══════════════════════════════════════════════════════════════════
   window.STORY_SCENES_PC = {
-    version: '1.1.0',
+    version: '1.2.0',
     showCharDialog: showCharDialog,
     triggerHeroRecruitScene: triggerHeroRecruitScene,
+    triggerScene: triggerScene,
     forceReplay: forceReplay,
+    forceReplayScene: forceReplayScene,
     canHeroAppear: canHeroAppear,
     nextStoryHero: nextStoryHero,
     nextHeroAtPlanet: nextHeroAtPlanet,

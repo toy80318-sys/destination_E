@@ -9715,9 +9715,127 @@ function _spawnHeroQuest(heroId){
   return true;
 }
 
+// ═══════════════════════════════════════════════════════════════════
+// Phase 시나리오 퀘스트 자동 spawn (PHASE1/2/3+_QUESTS 데이터 사용)
+//   행성 도착 시 doArrivePlanet → 호출 → 해당 행성의 미스폰 퀘스트 일괄 추가
+//   중복 방지: 같은 id가 이미 존재하면 skip
+//   캐릭터별 다국어: nm/desc를 {ko, en} 객체로 받아 현재 언어 적용
+// ═══════════════════════════════════════════════════════════════════
+function spawnPhasedQuests(pid){
+  if(!pid)return false;
+  const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+  const _lang=_isEn?'en':'ko';
+  let added=0;
+  // PHASE1 + PHASE2 + ... 모두 시도
+  ['PHASE1_QUESTS','PHASE2_QUESTS','PHASE3_QUESTS'].forEach(srcName=>{
+    const src=window[srcName];
+    if(!src||!src[pid])return;
+    if(!G.quests[pid])G.quests[pid]=[];
+    src[pid].forEach(template=>{
+      // 중복 방지
+      if(G.quests[pid].some(q=>q&&q.id===template.id))return;
+      // 다국어 필드 처리
+      const _nm=(typeof template.nm==='object')?(template.nm[_lang]||template.nm.ko||''):template.nm;
+      const _desc=(typeof template.desc==='object')?(template.desc[_lang]||template.desc.ko||''):template.desc;
+      const _lockReason=template.lockReason&&typeof template.lockReason==='object'
+        ?(template.lockReason[_lang]||template.lockReason.ko||'')
+        :template.lockReason;
+      // 목표 라벨 다국어
+      const _objs=(template.objectives||[]).map(o=>({
+        ...o,
+        label:(typeof o.label==='object')?(o.label[_lang]||o.label.ko||''):o.label
+      }));
+      // 첫 objective의 type/item/qty → 메인 quest로 사용 (gather/combat은 기존 시스템 활용)
+      const _firstObj=_objs[0]||{};
+      G.quests[pid].push({
+        id:template.id,
+        type:template.type||'story_quest',
+        phaseQuestType:template.type, // 별도 보존
+        category:template.category,
+        phase:template.phase||1,
+        ic:template.ic||'⭐',
+        npc:template.npc||'',
+        npcIc:template.npcIc||'❓',
+        npcKey:template.npcKey||'system',
+        nm:_nm,
+        desc:_desc,
+        objectives:_objs,
+        rewardCr:template.rewardCr||0,
+        rewardVe:template.rewardVe||0,
+        rewardItems:template.rewardItems||[],
+        rewardFlags:template.rewardFlags||[],
+        cutscene_pre:template.cutscene_pre||null,
+        cutscene_post:template.cutscene_post||null,
+        locked:!!template.locked,
+        lockReason:_lockReason||'',
+        // 일반 퀘 호환 필드
+        status:template.locked?'available':'available',
+        targetId:_firstObj.target||null,
+        targetCommId:_firstObj.item||null,
+        progress:0,
+        required:_firstObj.qty||1,
+        planetId:pid
+      });
+      added++;
+    });
+  });
+  if(added>0){
+    saveGame(true);
+    try{rerenderTab(renderQuestTab);}catch(e){}
+    // 행성 첫 도착 시 메인 퀘스트의 진입 컷씬 자동 재생 (메인 카테고리 1개 한정)
+    if(!G._phasedIntroSeen)G._phasedIntroSeen={};
+    if(!G._phasedIntroSeen[pid]){
+      const _firstMain=(G.quests[pid]||[]).find(q=>q&&q.type==='story_quest'&&q.category==='main'&&q.cutscene_pre);
+      if(_firstMain&&window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.triggerScene==='function'){
+        G._phasedIntroSeen[pid]=true;
+        setTimeout(()=>window.STORY_SCENES_PC.triggerScene(_firstMain.cutscene_pre), 800);
+      }
+    }
+  }
+  return added>0;
+}
+try{if(typeof window!=='undefined')window.spawnPhasedQuests=spawnPhasedQuests;}catch(e){}
+
 function completeQuest(pid,idx){
   var q=G.quests[pid]&&G.quests[pid][idx];if(!q||q.status!=='done')return;
   const _fromTavern=G._currentHubTab==='tavern';
+  // ─── 시나리오 퀘스트 처리 (PHASE1/2/3 — story_quest 타입) ───
+  // 보상 + 아이템 + 플래그 + 완료 컷씬 트리거
+  if(q.type==='story_quest'){
+    q.status='claimed';
+    try{sfxCoin();}catch(e){}
+    G.credits=(G.credits||0)+(q.rewardCr||0);
+    G.voidEssence=(G.voidEssence||0)+(q.rewardVe||0);
+    // 아이템 보상 인벤토리 추가 (R-시리즈는 materials, G-시리즈는 inventory)
+    (q.rewardItems||[]).forEach(it=>{
+      if(!it||!it.id)return;
+      if(/^R0[0-9]/.test(it.id)){
+        if(!G.materials)G.materials={};
+        G.materials[it.id]=(G.materials[it.id]||0)+(it.qty||1);
+      } else {
+        if(!G.inventory)G.inventory=[];
+        const inv=G.inventory.find(i=>i.id===it.id);
+        if(inv)inv.qty+=(it.qty||1);
+        else G.inventory.push({id:it.id,qty:it.qty||1});
+      }
+    });
+    // 스토리 플래그
+    if(!G._storyFlags)G._storyFlags={};
+    (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
+    // 알림
+    const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+    notify(_isEn?('✓ '+q.nm+' completed (+'+(q.rewardCr||0).toLocaleString()+'₡)')
+                :('✓ '+q.nm+' 완료 (+'+(q.rewardCr||0).toLocaleString()+'₡)'),'pur');
+    updateHUD();
+    saveGame(true);
+    // 완료 컷씬 트리거 (있는 경우, 400ms 딜레이로 알림 표시 후)
+    if(q.cutscene_post && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
+      setTimeout(()=>window.STORY_SCENES_PC.triggerScene(q.cutscene_post), 400);
+    }
+    if(_fromTavern)rerenderTab(renderTavernView);
+    else rerenderTab(renderQuestTab);
+    return;
+  }
   // ─── 영웅 퀘스트 처리 (보상받기 = 영웅 영입 + 컷씬 트리거) ───
   if(q.type==='hero_quest'&&q.heroId){
     q.status='claimed';
@@ -10041,8 +10159,8 @@ function completeQuest(pid,idx){
     _showQuestRewardToast(_actualCr,_actualVe,_rm,_repMult);
   }
   // ─── 영웅 퀘스트 자동 등장 카운터 (일반 퀘스트만 집계) ───
-  // void_boss, hero_quest 는 카운트 제외 (특수 퀘스트는 페이싱 기준 아님)
-  if(q.type!=='hero_quest'&&q.type!=='void_boss'){
+  // void_boss, hero_quest, story_quest 는 카운트 제외 (특수 퀘스트는 페이싱 기준 아님)
+  if(q.type!=='hero_quest'&&q.type!=='void_boss'&&q.type!=='story_quest'){
     G._normalQuestCount=(G._normalQuestCount||0)+1;
     if(G._normalQuestCount>=_HERO_QUEST_THRESHOLD){
       const _nextHero=_nextScenarioHero();
@@ -11204,6 +11322,36 @@ function _renderQuestCard(q,pid,qlist){
       col:'#e0b3ff',
       lbl:_hLbl
     };
+  }
+  // 시나리오 메인 퀘스트 (story_quest) — 보라색 카테고리별 변형
+  const isStoryQuest=q.type==='story_quest';
+  if(isStoryQuest){
+    const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+    const _cat=q.category||'main';
+    const _catLbl={
+      main:_isEn?'MAIN':'메인',
+      sub :_isEn?'SUB' :'서브',
+      hidden:_isEn?'HIDDEN':'히든'
+    }[_cat]||(_isEn?'MAIN':'메인');
+    const _statLbl={
+      available:_isEn?'AVAIL':'수락 가능',
+      active   :_isEn?'ACTIVE':'진행 중',
+      done     :_isEn?'CLAIM':'보상 받기',
+      claimed  :_isEn?'DONE':'완료'
+    }[q.status]||(_isEn?'AVAIL':'수락 가능');
+    sc={
+      bg:'linear-gradient(135deg,rgba(170,80,255,.22),rgba(40,10,80,.85))',
+      bd:'#cc88ff',
+      col:'#e0b3ff',
+      lbl:'['+_catLbl+'] '+_statLbl
+    };
+    // 잠긴 퀘스트: 옅게
+    if(q.locked){
+      sc.bg='linear-gradient(135deg,rgba(80,80,100,.18),rgba(20,20,30,.85))';
+      sc.bd='#666';
+      sc.col='#aaa';
+      sc.lbl='🔒 '+_catLbl;
+    }
   }
   let progHTML='';
   if(q.type==='gather'&&q.status==='active'){
@@ -15313,6 +15461,8 @@ function travelTo(){
     }
   }
   checkDeliveryQuests(pid);  // ← 배달 퀘스트 완료 체크
+  // Phase 1 시나리오 퀘스트 자동 spawn (PHASE1_QUESTS 데이터 사용)
+  if(typeof spawnPhasedQuests==='function'){try{spawnPhasedQuests(pid);}catch(e){console.warn('[phase] spawn fail',e);}}
   // 영웅 자동 영입 제거 — H01~H08은 해당 행성의 퀘스트 완료 시 5% 확률로만 등장
   // 제작소 관련 백구 힌트 (행성 첫 방문 또는 20% 확률 재방문)
   if(Math.random()<0.20||!G.planets[pid]._craftHinted){
