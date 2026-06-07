@@ -131,22 +131,26 @@
       document.head.appendChild(st);
     }
 
-    // ── 캐릭터 패널 (왼쪽 2/3, 매우 큰 인물) ──
-    // 사용자 요청 2026-06-07: 컷씬 좌측 캐릭터 이미지 2배 확대 (33.33% → 66.67%)
+    // ── 캐릭터 패널 ──
+    // 사용자 요청 2026-06-07:
+    //   주인공(commander) + 백구(baekgu*) → 2배 사이즈 (66.67% 패널)
+    //   그 외 NPC (영웅·바텐더·NPC) → 원래 사이즈 (33.33% 패널)
+    // 렌더링 시점에 _charKey 따라 동적으로 적용 (renderScene 안에서 처리)
     var charPanel = document.createElement('div');
     charPanel.style.cssText = [
-      'flex:0 0 66.67%','display:flex','align-items:center','justify-content:center',
+      'flex:0 0 33.33%','display:flex','align-items:center','justify-content:center',
       'background:linear-gradient(135deg,rgba(20,40,80,0.45),rgba(0,0,0,0.7))',
       'border-right:1px solid rgba(0,243,255,0.25)',
-      'padding:8px','box-sizing:border-box','overflow:hidden'
+      'padding:20px','box-sizing:border-box','overflow:hidden',
+      'transition:flex 0.35s ease, padding 0.35s ease'
     ].join(';');
 
     var charImg = document.createElement('img');
     charImg.className = 'ssc-img';
     charImg.style.cssText = [
-      'max-width:100%','max-height:100vh','width:auto','height:auto',
+      'max-width:100%','max-height:96vh','width:auto','height:auto',
       'object-fit:contain','image-rendering:auto',
-      'filter:drop-shadow(0 0 48px rgba(0,243,255,0.6))'
+      'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
     ].join(';');
     // 실패 시 fallback 체인:
     //   chars-hd/ → chars/ → chars/system.png (Phase NPC는 별도 quests/ 폴백 — 코드에서 직접 처리)
@@ -239,8 +243,17 @@
       if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
       charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
+      // 사용자 요청 2026-06-07: 주인공(commander_*) + 백구(baekgu*) 만 2배 사이즈
+      // 그 외 NPC (영웅·바텐더 등) 는 원래 사이즈 유지
+      var _isLargeChar = /^commander_[mf][0-3]$/.test(_charKey) || /^baekgu/.test(_charKey);
+      charPanel.style.flex = _isLargeChar ? '0 0 66.67%' : '0 0 33.33%';
+      charPanel.style.padding = _isLargeChar ? '8px' : '20px';
+      charImg.style.maxHeight = _isLargeChar ? '100vh' : '96vh';
+      charImg.style.filter = _isLargeChar
+        ? 'drop-shadow(0 0 48px rgba(0,243,255,0.6))'
+        : 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';
       console.log('[STORY_SCENES_PC] scene', sceneIdx+1, '/', scenes.length,
-                  '· char:', s.char, '→ resolved:', _charKey, '· src:', charImg.src);
+                  '· char:', s.char, '→ resolved:', _charKey, '· large:', _isLargeChar);
       charImg.alt = rep(s.name || '');
       nameBox.textContent = rep(s.name || '');
       nameBox.style.color = s.color || '#00f3ff';

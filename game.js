@@ -8396,14 +8396,21 @@ function toggleSysMenu(){
   if(arrow)arrow.textContent=isOpen?'▲':'▼';
 }
 // ── 주점 가챠 ─────────────────────────────────────────────────────
-function doGacha(n,useCr,crCost,minRarity){
+function doGacha(n,useCr,crCost,minRarity,veCost){
   if(!G.gachaPity)G.gachaPity=0;
   const _crCost=crCost||500;
-  const cost_vc=useCr?0:n;
-  const cost_cr=useCr?_crCost:0;
-  if(useCr&&G.credits<cost_cr){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}
-  if(!useCr&&G.voidCrystal<cost_vc){notify(I18N.t('notify.notEnoughVoidCrystal'),'err');return;}
-  if(useCr)G.credits-=cost_cr;else G.voidCrystal-=cost_vc;
+  // 사용자 요청 2026-06-07: VE 기반 모집 지원 (5번째 파라미터)
+  //   veCost 가 지정되면 VE 차감, useCr 과 무관
+  if(veCost){
+    if((G.voidEssence||0)<veCost){notify(I18N.t('notify.notEnoughVoidEssence')||'VE 부족','err');return;}
+    G.voidEssence-=veCost;
+  } else if(useCr){
+    if(G.credits<_crCost){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}
+    G.credits-=_crCost;
+  } else {
+    if(G.voidCrystal<n){notify(I18N.t('notify.notEnoughVoidCrystal'),'err');return;}
+    G.voidCrystal-=n;
+  }
   try{AudioMgr.playSfx('gacha_pull');}catch(e){}
   // 사용자 요청 (2026-06-06): 넬슨(H05) 보유 시 전설 확률을 3% (10.5% → 3%로 하향),
   //   영웅 1명 영입할 때마다 추가 +1%p 누적. 최대 8인 영입 시 3 + 8 = 11%.
@@ -11743,7 +11750,10 @@ function renderTavernView(body){
   }
   // 가차 버튼 — NPC 이미지 + 정보 + 비용 + 영입 (컴팩트 사용자 요청)
   function _gachaBtn(opts){
-    const aff=opts.cost>0?(cr>=opts.cost):((G.voidCrystal||0)>=opts.vcCost);
+    // 사용자 요청 2026-06-07: veCost 파라미터 지원 (VE 기반 모집)
+    const aff=opts.cost>0?(cr>=opts.cost)
+             :opts.veCost>0?((G.voidEssence||0)>=opts.veCost)
+             :((G.voidCrystal||0)>=opts.vcCost);
     return `<div style="background:${opts.bg};border:1.5px solid ${aff?opts.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;${aff?'':'opacity:.6'}">
       ${_npcImg(opts.npcType||'delivery',opts.col)}
       <div style="flex:1;min-width:0">
@@ -11752,6 +11762,7 @@ function renderTavernView(body){
       </div>
       <div style="text-align:right;flex-shrink:0;font-size:10px">
         ${opts.cost>0?`<div style="color:${cr>=opts.cost?opts.col:'#ff8888'};font-weight:bold">₡${opts.cost.toLocaleString()}</div>`:''}
+        ${opts.veCost>0?`<div style="color:${(G.voidEssence||0)>=opts.veCost?'#99ffcc':'#ff8888'};font-weight:bold">VE ${opts.veCost}</div>`:''}
         ${opts.vcCost>0?`<div style="color:${(G.voidCrystal||0)>=opts.vcCost?'#cc88ff':'#ff8888'};font-weight:bold">VC×${opts.vcCost}</div>`:''}
       </div>
       <button class="btn" onclick="${opts.onClick}" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?opts.col:'var(--bdr)'};color:${aff?opts.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.recruit')}</button>
@@ -11824,11 +11835,12 @@ function renderTavernView(body){
           <!-- 최근 영입 카드 5장 (상단) -->
           ${leftResultHtml}
           <div style="flex:1;min-height:14px"></div>
-          <!-- 가차 버튼 (3종 — 좌측 NPC 이미지 포함, 중앙 위치) -->
-          <div style="display:flex;flex-direction:column;gap:8px">
+          <!-- 가차 버튼 (4종 — 2x2 그리드, VC×5 → VE 기반 2종 교체) (사용자 요청 2026-06-07) -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             ${_gachaBtn({icon:'💰',label:I18N.t('gacha.btnRecruit500'),sub:I18N.t('gacha.btnRecruit500Sub'),cost:500,onClick:"doGacha(1,true,500,'N')",bg:'rgba(0,243,255,.08)',bdr:'var(--cyan)',col:'var(--cyan)',npcType:'delivery'})}
             ${_gachaBtn({icon:'💎',label:I18N.t('gacha.btnRecruit2k'),sub:I18N.t('gacha.btnRecruit2kSub'),cost:2000,onClick:"doGacha(1,true,2000,'R')",bg:'rgba(30,100,255,.12)',bdr:'#4499ff',col:'#88ccff',npcType:'explore'})}
-            ${_gachaBtn({icon:'💜',label:I18N.t('gacha.btnRecruitVC5'),sub:I18N.t('gacha.btnRecruitVC5Sub',{rate:legRate}),vcCost:5,onClick:'doGacha(5)',bg:'rgba(139,0,255,.14)',bdr:'var(--purple)',col:'#cc88ff',npcType:'combat'})}
+            ${_gachaBtn({icon:'💜',label:'VE 5 · 희귀~전설 ×5',sub:'5회 모집 (R~L)',veCost:5,onClick:"doGacha(5,false,0,'R',5)",bg:'rgba(102,255,200,.10)',bdr:'#66ddaa',col:'#99ffcc',npcType:'gather'})}
+            ${_gachaBtn({icon:'✨',label:'VE 20 · 영웅~전설 ×5',sub:'5회 모집 (H~L)',veCost:20,onClick:"doGacha(5,false,0,'H',20)",bg:'rgba(255,200,80,.12)',bdr:'#ffcc66',col:'#ffd700',npcType:'combat'})}
           </div>
           <div style="flex:1;min-height:14px"></div>
         </div>
