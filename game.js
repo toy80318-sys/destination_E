@@ -9677,17 +9677,22 @@ function _nextScenarioHero(){
 }
 
 function _spawnHeroQuest(heroId){
-  if(!heroId||!HEROES||!HEROES[heroId])return false;
+  // 의존성 가드 — 데이터 파일 미로드 시 NPE 방지
+  if(!heroId||typeof HEROES==='undefined'||!HEROES[heroId])return false;
+  if(typeof PLANET_DEF==='undefined')return false;
   const planetId=_HERO_QUEST_PLANET_MAP[heroId];
   if(!planetId)return false;
+  if(!G.quests)G.quests={};
   if(!G.quests[planetId])G.quests[planetId]=[];
   // 중복 방지
   if(G.quests[planetId].some(q=>q&&q.heroId===heroId))return false;
+  // I18N 미초기화 시 폴백 — has/t/getLang 함수 존재 모두 검증
+  const _i18nReady=(typeof I18N!=='undefined'&&typeof I18N.t==='function');
   const heroNmKey='hero.'+heroId+'.nm';
-  const heroNm=(I18N&&I18N.has&&I18N.has(heroNmKey))?I18N.t(heroNmKey):(HEROES[heroId].nm||heroId);
+  const heroNm=(_i18nReady&&I18N.has&&I18N.has(heroNmKey))?I18N.t(heroNmKey):(HEROES[heroId].nm||heroId);
   const heroIc=HEROES[heroId].ic||'⭐';
   const planetNm=(PLANET_DEF.find(p=>p.id===planetId)||{}).nm||planetId;
-  const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+  const _isEn=(_i18nReady&&typeof I18N.getLang==='function'&&I18N.getLang()==='en');
   const _nmText=_isEn?('[Special] Recruit '+heroNm):('[특별] '+heroNm+' 영입');
   const _descText=_isEn
     ?('A trace of the legendary '+heroNm+' has been detected at '+planetNm+'. Travel there and recruit.')
@@ -10041,7 +10046,8 @@ function completeQuest(pid,idx){
     _showQuestRewardToast(_actualCr,_actualVe,_rm,_repMult);
   }
   // ─── 영웅 퀘스트 자동 등장 카운터 (일반 퀘스트만 집계) ───
-  if(q.type!=='hero_quest'){
+  // void_boss, hero_quest 는 카운트 제외 (특수 퀘스트는 페이싱 기준 아님)
+  if(q.type!=='hero_quest'&&q.type!=='void_boss'){
     G._normalQuestCount=(G._normalQuestCount||0)+1;
     if(G._normalQuestCount>=_HERO_QUEST_THRESHOLD){
       const _nextHero=_nextScenarioHero();
@@ -13170,6 +13176,8 @@ const HERO_GREETING={
   get H08(){return I18N.t('heroGreet.H08');}
 };
 function showHeroRecruit(heroId){
+  // HEROES 데이터 미로드 시 안전 종료
+  if(typeof HEROES==='undefined')return;
   const h=HEROES[heroId];if(!h)return;
   // ★ 시나리오 컷씬 즉시 트리거 — 어느 경로든 영입 모달 호출 시 컷씬 보장 (사용자 요청)
   if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
