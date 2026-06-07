@@ -224,8 +224,14 @@
       nameBox.style.animation = '';
       textBox.style.animation = '';
 
-      charImg.dataset.charKey = s.char || 'system';
+      // commander 는 성별·외형 자동 해석된 키를 dataset 에 저장
+      // (폴백 시 정확한 파일명 사용 + 디버그 시 실제 시도 키 추적)
+      var _charKey = s.char || 'system';
+      if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
+      charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
+      console.log('[STORY_SCENES_PC] scene', sceneIdx+1, '/', scenes.length,
+                  '· char:', s.char, '→ resolved:', _charKey, '· src:', charImg.src);
       charImg.alt = rep(s.name || '');
       nameBox.textContent = rep(s.name || '');
       nameBox.style.color = s.color || '#00f3ff';
