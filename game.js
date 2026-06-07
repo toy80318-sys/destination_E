@@ -8916,8 +8916,15 @@ function generateQuests(pid){
       status:'available',targetId:null,progress:0,required:1,planetId:'P30'
     });
   }
-  // 이미 available/active/done 퀘스트가 있으면 일반 퀘스트 추가 생성 안 함
-  if(G.quests[pid].some(function(q){return q.status!=='claimed'&&q.id!=='q_void_boss';}))return;
+  // 이미 미완료 일반 퀘스트가 있으면 추가 생성 안 함
+  // 특수 퀘스트(시나리오·영웅·보이드 보스)는 카운트 제외 — 일반 퀘 생성 차단 안 함
+  if(G.quests[pid].some(function(q){
+    return q && q.status!=='claimed'
+      && q.id!=='q_void_boss'
+      && q.type!=='story_quest'
+      && q.type!=='hero_quest'
+      && q.type!=='void_boss';
+  }))return;
   // 신규 행성 — 4개 초기 시드
   for(var i=0;i<4;i++){
     var q=_generateSingleQuest(pid,i);

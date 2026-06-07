@@ -47,9 +47,17 @@
   }
   function _resolveCommanderImg(){
     var p = (window.G && window.G.profile) || {};
+    // 성별: FTUE에서 setGender() 호출 시 'male' / 'female' 문자열 저장됨
+    // 폴백: 미설정 시 'male' 기본
     var gender = (p.gender === 'female' || p.gender === 'f') ? 'f' : 'm';
-    // 외형 인덱스(0~3) — G.profile.appearance 가 있으면 사용, 없으면 1번 기본
-    var idx = (typeof p.appearance === 'number') ? Math.max(0, Math.min(3, p.appearance)) : 1;
+    // 외형 stage 0~3 — game.js의 _commanderStage() 우선 사용 (레벨·진행도 기반)
+    // 없으면 G.profile.appearance, 그것도 없으면 1번 기본
+    var idx = 1;
+    if(typeof window._commanderStage === 'function'){
+      try{ idx = Math.max(0, Math.min(3, window._commanderStage())); }catch(e){}
+    } else if(typeof p.appearance === 'number'){
+      idx = Math.max(0, Math.min(3, p.appearance));
+    }
     return 'commander_' + gender + idx;
   }
   function _charImgPath(key){
