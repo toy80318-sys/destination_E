@@ -243,12 +243,17 @@
       if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
       charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
-      // 사용자 요청 2026-06-07: 주인공(commander_*) + 백구(baekgu*) 만 2배 사이즈
-      // 그 외 NPC (영웅·바텐더 등) 는 원래 사이즈 유지
+      // 사용자 보고 2026-06-07: 패널만 커지고 원본 이미지(200×200)는 작게 보이는 문제
+      // → 영역 50%로 축소 + 이미지 강제 확대(원본 200px을 90vh로 늘려 패널을 채움)
       var _isLargeChar = /^commander_[mf][0-3]$/.test(_charKey) || /^baekgu/.test(_charKey);
-      charPanel.style.flex = _isLargeChar ? '0 0 66.67%' : '0 0 33.33%';
-      charPanel.style.padding = _isLargeChar ? '8px' : '20px';
-      charImg.style.maxHeight = _isLargeChar ? '100vh' : '96vh';
+      charPanel.style.flex = _isLargeChar ? '0 0 50%' : '0 0 33.33%';
+      charPanel.style.padding = _isLargeChar ? '12px' : '20px';
+      // 큰 캐릭터: width:100% + max-height로 강제 확대 (200×200 원본을 화면 높이만큼 늘림)
+      // image-rendering: pixelated 대신 auto로 부드럽게 (브라우저가 보간)
+      charImg.style.width = _isLargeChar ? '100%' : 'auto';
+      charImg.style.maxWidth = _isLargeChar ? 'none' : '100%';
+      charImg.style.maxHeight = _isLargeChar ? '92vh' : '96vh';
+      charImg.style.imageRendering = _isLargeChar ? 'auto' : 'auto';
       charImg.style.filter = _isLargeChar
         ? 'drop-shadow(0 0 48px rgba(0,243,255,0.6))'
         : 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';

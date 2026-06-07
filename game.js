@@ -2294,9 +2294,8 @@ function showHub(){
   hubTab('main');
   // 안전망: 행성 재방문 시 사이드바 잠금 표시 즉시 갱신 (이전 행성 상태 잔존 방지)
   try{updateHubLockButtons();}catch(e){}
-  // 초기 백구 인사
-  const greets=[I18N.t('hubGreet.0'),I18N.t('hubGreet.1'),I18N.t('hubGreet.2'),I18N.t('hubGreet.3')];
-  setTimeout(()=>baekgu(greets[Math.floor(Math.random()*greets.length)]),500);
+  // 초기 백구 인사 제거 (사용자 요청 2026-06-07): 시나리오 컷씬이 자동 재생되므로 중복 차단
+  // 페이즈 1 P01 첫 도착 시 p1_ch01a 컷씬이 spawnPhasedQuests 안에서 자동 트리거됨
   // 주기적 조언 (45초 간격)
   if(showHub._tip)clearInterval(showHub._tip);
   const tips=[I18N.t('hubTip.0'),I18N.t('hubTip.1'),I18N.t('hubTip.2'),I18N.t('hubTip.3'),I18N.t('hubTip.4'),I18N.t('hubTip.5'),I18N.t('hubTip.6'),I18N.t('hubTip.7')];
@@ -11199,9 +11198,39 @@ function _renderQuestCard(q,pid,qlist){
   // 종류별 색상 (이미지 폴백 배경)
   const typeCol=q.type==='combat'?'rgba(255,59,59,.12)':q.type==='delivery'?'rgba(0,243,255,.12)':q.type==='gather'?'rgba(0,255,140,.12)':q.type==='explore'?'rgba(212,175,55,.15)':'rgba(180,100,255,.15)';
   const typeBdr=q.type==='combat'?'rgba(255,80,80,.4)':q.type==='delivery'?'rgba(0,243,255,.4)':q.type==='gather'?'rgba(0,255,140,.4)':q.type==='explore'?'rgba(212,175,55,.4)':'rgba(180,100,255,.4)';
-  const thumb='<div style="width:92px;height:92px;flex-shrink:0;background:'+typeCol+';border:1px solid '+typeBdr+';border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">'
-    +_questThumbHtml(q,88)
-    +'</div>';
+  // 시나리오 퀘스트(story_quest) — 행성 배경 + 행성 이미지 + 인물 이미지 합성 히어로 썸네일
+  // 사용자 요청 2026-06-07: "이미지는 행성이미지, 행성 배경이미지, 인물이미지로 넣어줘. 백구이미지활용해줘."
+  let thumb;
+  if(isStoryQuest && q.npcKey){
+    const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+    const _pid=q.planetId||pid;
+    const _bgSrc=(typeof planetBgSrc==='function')?planetBgSrc(_pid):('img/bg/'+_pid+'.jpg'+_ver);
+    const _planetSrc=(typeof planetImgSrc==='function')?planetImgSrc(_pid):('img/planets/'+_pid+'.png'+_ver);
+    // 인물 이미지 경로 — NPC 영웅(hero01~08)·백구·사령관·Phase NPC 라우팅
+    let _charSrc;
+    if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(q.npcKey)){
+      _charSrc='img/quests/'+q.npcKey+'.png'+_ver;
+    } else if(q.npcKey==='commander'){
+      // 성별·외형 자동 (commander_m1 기본)
+      const _g=(G&&G.profile&&G.profile.gender==='female')?'f':'m';
+      const _outfit=(G&&G.profile&&G.profile.outfitIdx)||1;
+      _charSrc='img/chars/commander_'+_g+_outfit+'.png'+_ver;
+    } else {
+      _charSrc='img/chars/'+q.npcKey+'.png'+_ver;
+    }
+    thumb=
+      '<div style="width:140px;height:108px;flex-shrink:0;border:1.5px solid '+typeBdr+';border-radius:8px;overflow:hidden;position:relative;background:#0a0a18">'
+        +'<img src="'+_bgSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55" onerror="this.style.display=\'none\'">'
+        +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,100,255,.18),rgba(0,0,0,.35) 60%,rgba(0,0,0,.65))"></div>'
+        +'<img src="'+_planetSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;left:6px;top:6px;width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,243,255,.6))" onerror="this.style.display=\'none\'">'
+        +'<img src="'+_charSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;right:0;bottom:0;width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))" onerror="this.style.display=\'none\'">'
+        +'<div style="position:absolute;left:6px;bottom:4px;font-size:10px;color:#e0b3ff;background:rgba(0,0,0,.55);padding:1px 6px;border-radius:8px;font-weight:bold;letter-spacing:.5px">'+_pid+'</div>'
+      +'</div>';
+  } else {
+    thumb='<div style="width:92px;height:92px;flex-shrink:0;background:'+typeCol+';border:1px solid '+typeBdr+';border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">'
+      +_questThumbHtml(q,88)
+      +'</div>';
+  }
   // 보이드 히든 퀘스트 — 보라색 글로우 + 펄스 강조 (특별 카드)
   const _voidStyle=isVoidQuest
     ?';box-shadow:0 0 16px rgba(204,102,255,.45),inset 0 0 12px rgba(204,102,255,.08);animation:_voidPulse 2.4s ease-in-out infinite'
