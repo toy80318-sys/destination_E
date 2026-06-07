@@ -2536,7 +2536,12 @@ function showOnboardingTutorial(){
     };
     tgt.addEventListener('click',_clickHandler);
   };
+  // 진행 중인 step 의 target 이 아직 나타나지 않았을 때, 재시도 폴링
+  // (전역 누수 방지를 위해 _close 보다 먼저 선언)
+  let _waitTimer=null;
+  const _stopWait=()=>{if(_waitTimer){clearInterval(_waitTimer);_waitTimer=null;}};
   const _close=()=>{
+    _stopWait();  // 폴링 타이머 누수 차단 (튜토리얼 도중 ESC/완료 시)
     _detachClickAdvance();
     // ESC 핸들러 정리 — 다시보기 반복 시 누적되어 한 번의 ESC가 중복 발동되는 버그 방지
     try{if(ov._escHandler)window.removeEventListener('keydown',ov._escHandler);}catch(e){}
@@ -2544,9 +2549,6 @@ function showOnboardingTutorial(){
   };
   // 전투 진행 중 여부 — 튜토리얼이 끼어들지 않게 사용
   const _isInCombat=()=>!!(window.combatState&&!combatState.done);
-  // 진행 중인 step 의 target 이 아직 나타나지 않았을 때, 재시도 폴링
-  let _waitTimer=null;
-  const _stopWait=()=>{if(_waitTimer){clearInterval(_waitTimer);_waitTimer=null;}};
   const _render=()=>{
     _stopWait();
     const s=steps[_idx];
@@ -13271,30 +13273,33 @@ function initMapCanvas(){
   };
   mapCV.onmouseleave=()=>{panDrag=false;rotateDrag=false;mapCV.style.cursor='crosshair';_hideMapHover();};
   mapCV.onwheel=e=>{e.preventDefault();G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom+(e.deltaY>0?-.12:.12)));renderMap();};
-  // touch events
-  let touches=[],touchStartT=0;
-  mapCV.addEventListener('touchstart',e=>{e.preventDefault();touches=[...e.touches];moved=false;touchStartT=Date.now();if(e.touches[0]){sx0=e.touches[0].clientX;sy0=e.touches[0].clientY;}},{passive:false});
-  mapCV.addEventListener('touchmove',e=>{
-    e.preventDefault();
-    if(e.touches.length===1&&touches.length>=1){
-      const dx=e.touches[0].clientX-touches[0].clientX,dy=e.touches[0].clientY-touches[0].clientY;
-      const totalDx=e.touches[0].clientX-sx0,totalDy=e.touches[0].clientY-sy0;
-      if(Math.hypot(totalDx,totalDy)>CLICK_PX)moved=true;
-      mapOffX+=dx;mapOffY+=dy;
-      renderMap();
-    } else if(e.touches.length===2&&touches.length>=2){
-      const d0=Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
-      const d1=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-      if(d0>0)G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom*(d1/d0)));renderMap();
-    }
-    touches=[...e.touches];
-  },{passive:false});
-  mapCV.addEventListener('touchend',e=>{
-    e.preventDefault();
-    const elapsed=Date.now()-touchStartT;
-    if((!moved||elapsed<CLICK_MS)&&e.changedTouches.length===1){onMapClick(e.changedTouches[0]);}
-    touches=[];
-  },{passive:false});
+  // touch events — mapCV는 동일 DOM 인스턴스 재사용이므로 1회만 부착 (반복 진입 누수 차단)
+  if(!mapCV.dataset.touchInit){
+    let touches=[],touchStartT=0;
+    mapCV.addEventListener('touchstart',e=>{e.preventDefault();touches=[...e.touches];moved=false;touchStartT=Date.now();if(e.touches[0]){sx0=e.touches[0].clientX;sy0=e.touches[0].clientY;}},{passive:false});
+    mapCV.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      if(e.touches.length===1&&touches.length>=1){
+        const dx=e.touches[0].clientX-touches[0].clientX,dy=e.touches[0].clientY-touches[0].clientY;
+        const totalDx=e.touches[0].clientX-sx0,totalDy=e.touches[0].clientY-sy0;
+        if(Math.hypot(totalDx,totalDy)>CLICK_PX)moved=true;
+        mapOffX+=dx;mapOffY+=dy;
+        renderMap();
+      } else if(e.touches.length===2&&touches.length>=2){
+        const d0=Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
+        const d1=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+        if(d0>0)G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom*(d1/d0)));renderMap();
+      }
+      touches=[...e.touches];
+    },{passive:false});
+    mapCV.addEventListener('touchend',e=>{
+      e.preventDefault();
+      const elapsed=Date.now()-touchStartT;
+      if((!moved||elapsed<CLICK_MS)&&e.changedTouches.length===1){onMapClick(e.changedTouches[0]);}
+      touches=[];
+    },{passive:false});
+    mapCV.dataset.touchInit='1';
+  }
 }
 function mapZoom(d){G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom+d));renderMap();}
 function resetMapView(){mapOffX=0;mapOffY=0;G.mapZoom=1.0;map3dRotX=0.35;map3dRotY=0.0;renderMap();}
@@ -16230,13 +16235,18 @@ window.AudioMgr=(function(){
   }catch(e){}
   function save(){try{localStorage.setItem('de_audio_settings',JSON.stringify({master:masterVol,bgm:bgmVol,sfx:sfxVol,bgmOff,sfxOff}));}catch(e){}}
   let curBgmName=null,curBgmAudio=null,userInteracted=false,pendingBgm=null;
+  const _INTERACT_EVENTS=['click','keydown','touchstart','pointerdown'];
   function _onInteract(){
     if(userInteracted)return;
     userInteracted=true;
+    // 첫 상호작용 후 4개 리스너 즉시 해제 (장시간 플레이 시 document 리스너 누적 방지)
+    _INTERACT_EVENTS.forEach(ev=>{
+      try{document.removeEventListener(ev,_onInteract,{capture:true});}catch(e){}
+    });
     if(pendingBgm){playBgm(pendingBgm);pendingBgm=null;}
     else if(curBgmAudio&&curBgmAudio.paused&&!bgmOff)curBgmAudio.play().catch(()=>{});
   }
-  ['click','keydown','touchstart','pointerdown'].forEach(ev=>{
+  _INTERACT_EVENTS.forEach(ev=>{
     document.addEventListener(ev,_onInteract,{capture:true,passive:true});
   });
   function _bgmTargetVol(){return bgmOff?0:masterVol*bgmVol;}
