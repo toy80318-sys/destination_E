@@ -3,7 +3,7 @@
 // 출처: Doc/PHASE1_QUEST_CARDS.md v2.0
 // 페이즈 1 · 각성 | 행성 P01·P03·P05·P06·P09 | CH01~CH02
 // 27개 퀘스트 + 9개 컷씬 (한·영 분기)
-// 영웅 합류: 백구(H01) 초기 / 마르코 폴로(H04) P03 / 가가린(H05) P05
+// 영웅 합류: 백구(H01) 초기 / 마르코 폴로(H08) P03 / 가가린(H04) P05
 // R-재료 사용 없음 — G01~G30 행성 특산물만 사용
 // ═══════════════════════════════════════════════════════════════════
 (function(){
@@ -133,7 +133,7 @@ const PHASE1_QUESTS={
     // ── Q02-04 소형 추진 파츠 업그레이드 (서브 함선구매) ──
     {
       id:'p1_q0204', type:'story_quest', category:'sub', phase:1,
-      ic:'🚀', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero04',
+      ic:'🚀', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'추진 파츠 업그레이드', en:'Thruster Upgrade'},
       desc:{ko:'마르코: "에리다니까지 가려면 함선이 좀 더 빨라야 해. P03 도크에서 추진 파츠 달자."\n소형 추진 파츠 구매(20,000₡) → 파츠 슬롯 +1 장착 → 기동력 +10%.',
             en:'Marco: "We need speed to reach Eridani." Buy a thruster part (20,000₡) for +10% mobility.'},
@@ -230,7 +230,7 @@ const PHASE1_QUESTS={
     // ── Q03-04 함선 강화 — 아우레우스 방어 파츠 (서브) ──
     {
       id:'p1_q0304', type:'story_quest', category:'sub', phase:1,
-      ic:'🛡️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero04',
+      ic:'🛡️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'아우레우스 방어 파츠 강화', en:'Aureus Defense Part'},
       desc:{ko:'마르코: "P05 파츠샵에 좋은 게 있어. G06 LHS 크리스탈이 있으면 보조 결제 돼서 싸게 살 수 있어."\nG06 ×1 + 15,000₡ → 아우레우스 방어 파츠 장착 → 방어력 +15%.',
             en:'Marco: "Pay with G06 for a discount." G06 ×1 + 15,000₡ → defense part (+15% defense).'},
@@ -245,7 +245,7 @@ const PHASE1_QUESTS={
     // ── Q03-05 에리다니 소형 경매 참여 (서브) ──
     {
       id:'p1_q0305', type:'story_quest', category:'sub', phase:1,
-      ic:'🏛️', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'🏛️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'에리다니 경매 참여', en:'Eridani Auction'},
       desc:{ko:'가가린: "저 경매소 — 아우레우스 소형 파츠 경매야. 한 번 참여해봐."\n에리다니 소형 경매 참여 — 최저 5,000₡ ~ 즉시구매 40,000₡. 낙찰 시 G23 ×2 또는 소형 파츠 ×1.',
             en:'Gagarin: "Try the Eridani auction." Min bid 5,000₡ ~ buyout 40,000₡. Win → G23 ×2 or small part.'},
@@ -260,7 +260,7 @@ const PHASE1_QUESTS={
     // ── Q03-M 가가린 합류 & 이순신 단서 + 거북선 설계도 단편 2 (이벤트) ──
     {
       id:'p1_q03m', type:'story_quest', category:'hidden', phase:1,
-      ic:'⭐', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'⭐', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린 합류 & 거북선 외피', en:'Gagarin Joins · Geobukseon Hull'},
       desc:{ko:'가가린: "내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게."\nG24 아우레우스 정보 칩 ×1 소비 → 분석 결과: P06 LHS 광산 방향에서 이순신 신호 패턴 탐지.\n해독 데이터 안에 거북선 설계도 두 번째 단편이 들어 있다 — 외피 가시 돌기 구조도 2/3.',
             en:'Gagarin joins your crew. Consume G24 ×1 → P06 LHS Mine signal detected. Decoded data includes Geobukseon hull plate fragment 2/3.'},
@@ -312,7 +312,7 @@ const PHASE1_QUESTS={
     // ── Q04-03 강화 선체 코팅 제작 (서브) ──
     {
       id:'p1_q0403', type:'story_quest', category:'sub', phase:1,
-      ic:'🛒', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'🛒', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'강화 선체 코팅 제작', en:'Craft Hull Coating'},
       desc:{ko:'가가린: "제작소 장비 써봐. G01 ×2 + G06 ×1 조합하면 선체 코팅 만들 수 있어."\n강화 선체 코팅 제작 → 장착 시 방어력 +8%.',
             en:'Craft Reinforced Hull Coating: G01 ×2 + G06 ×1 → +8% defense.'},
@@ -328,7 +328,7 @@ const PHASE1_QUESTS={
     // ── Q04-04 LHS 광산 행성 투자 (서브) ──
     {
       id:'p1_q0404', type:'story_quest', category:'sub', phase:1,
-      ic:'📈', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero04',
+      ic:'📈', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'LHS 광산 행성 투자', en:'LHS Mine Investment'},
       desc:{ko:'마르코: "광산 되찾았으니 투자 딱이야. 크리그 없으니 수익 바로 나."\nP06 커머스 레벨 1 투자(~18,000₡) → 매 턴 수입 +20% 증가.',
             en:'Marco: "Mine\'s free now. Invest." P06 commerce L1 invest (~18,000₡) → +20% revenue.'},
@@ -343,7 +343,7 @@ const PHASE1_QUESTS={
     // ── Q04-05 광산 폐기 구역 잔해 탐색 (서브) ──
     {
       id:'p1_q0405', type:'story_quest', category:'sub', phase:1,
-      ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'광산 폐기 구역 탐색', en:'Mine Wreck Search'},
       desc:{ko:'린다: "크리그가 파고 있던 구역 — 거기 더 있을 수 있어요."\nLHS 광산 폐기 구역 잔해 탐색 2회. 70% 자원 / 30% 크리그 잔존 세력.',
             en:'Search the mine wreck zone 2 times. 70% resources / 30% Krieg remnants.'},
@@ -358,7 +358,7 @@ const PHASE1_QUESTS={
     // ── Q04-M 이순신 캡슐 신호 중계기 발견 (이벤트) ──
     {
       id:'p1_q04m', type:'story_quest', category:'hidden', phase:1,
-      ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 신호 중계기 발견', en:'Yi Sun-sin Relay Found'},
       desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. G23 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
             en:'Found an old signal relay. Consume G23 ×2 to restore → signal points to P09 Galileo outpost.'},
@@ -410,7 +410,7 @@ const PHASE1_QUESTS={
     // ── Q05-03 소형 정찰 드론 모듈 제작 (서브 함선 제작) ──
     {
       id:'p1_q0503', type:'story_quest', category:'sub', phase:1,
-      ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'정찰 드론 모듈 제작', en:'Scout Drone Module'},
       desc:{ko:'가가린: "P19 치크스 영역은 적대야. 정찰 드론이 있으면 유리해."\nG01 ×3 + G07 ×1 소비 → 소형 정찰 드론 모듈 제작.\n효과: 잔해 탐색 탐지 범위 +10% · 적 선제 감지 +1턴.',
             en:'Gagarin: "Cygnus is hostile. A drone helps." G01 ×3 + G07 ×1 → +10% detection, +1 turn pre-emption.'},
@@ -426,7 +426,7 @@ const PHASE1_QUESTS={
     // ── Q05-04 기지 외곽 잔해 탐색 (서브) ──
     {
       id:'p1_q0504', type:'story_quest', category:'sub', phase:1,
-      ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero04',
+      ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'기지 외곽 잔해 탐색', en:'Base Outskirt Wreck'},
       desc:{ko:'마르코: "메카니카 폐기 파츠 — 팔면 돈 돼. 아니면 강화에 써."\n기지 외곽 폐기 구역 잔해 탐색 2회 실시.',
             en:'Marco: "Mech scrap sells well." Wreck search ×2 at base outskirts.'},
@@ -441,7 +441,7 @@ const PHASE1_QUESTS={
     // ── Q05-M 이순신 캡슐 좌표 확정 + 거북선 설계도 단편 3 (이벤트 · 페이즈 1 종료) ──
     {
       id:'p1_q05m', type:'story_quest', category:'hidden', phase:1,
-      ic:'🎯', npc:'가가린', npcIc:'🚀', npcKey:'hero05',
+      ic:'🎯', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 좌표 확정 · 거북선 코어', en:'Yi Sun-sin Coordinates · Geobukseon Core'},
       desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "P19. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... P19... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 페이즈 1 종료 시 3단편 통합 완성도 확인.',
             en:'Coordinates confirmed. Last Geobukseon fragment — Active Core blueprint 3/3 — recovered from antenna stream.'},
@@ -499,8 +499,8 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── 마르코 폴로 영입 ───
   p1_marco_join:[
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'이순신이요? 그 이름 오래간만에 듣네. 에리다니 쪽 노인네들이 그 신호를 잡았다고 했거든.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'우리 한 팀 하자. 정보는 내가 맡지.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'이순신이요? 그 이름 오래간만에 듣네. 에리다니 쪽 노인네들이 그 신호를 잡았다고 했거든.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우리 한 팀 하자. 정보는 내가 맡지.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'마르코 폴로 — 정보 브로커 등록. 신뢰도 추적 시작합니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'잘 부탁해.'}
   ],
@@ -508,43 +508,43 @@ const PHASE1_CUTSCENES_KO={
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 Ring 1. 세금도 비싸고 규정도 엄격해요. G05 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'(한숨) 첫 아우레우스 방문인데 일이 커지네.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(한숨) 첫 아우레우스 방문인데 일이 커지네.'}
   ],
 
   // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
   p1_gagarin_join:[
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게.'},
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'P06 LHS 광산 방향에서 아주 오래된 통신 패턴이 잡혀. 100년 전 것 같아. 이순신이라는 이름이랑 연결돼 있어.'},
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'그리고 — 데이터 안에 함선 외피 도면도 들어있어. 가시 돌기 구조. 너희가 가지고 있는 골격 단편이랑 짝이 맞아.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'P06 LHS 광산 방향에서 아주 오래된 통신 패턴이 잡혀. 100년 전 것 같아. 이순신이라는 이름이랑 연결돼 있어.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'그리고 — 데이터 안에 함선 외피 도면도 들어있어. 가시 돌기 구조. 너희가 가지고 있는 골격 단편이랑 짝이 맞아.'},
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'거북선 설계도 단편 2/3 확보. 외피 가시 돌기 구조도. 코어 단편 1개만 더 있으면 복원 가능합니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'간다.'}
   ],
 
   // ─── CH02-B "크리그의 그림자" (P06 도착) ───
   p1_ch02b:[
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'크리그 소형 3기, 중형 지휘선 1기 확인됩니다. 광부 민간인 7명 억류 중이에요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'먼저 사람부터.'}
   ],
 
   // ─── CH02-C "신호의 근원" (P09 도착) ───
   p1_ch02c:[
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'해적 소형 2기, 지휘선 1기 감지됩니다. 기지 외곽 배치.'},
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
   ],
 
   // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'안테나 데이터 — 좌표 외에 도면 한 장 더. 격자 외장에 활성 코어가 들어가는 구조야.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'안테나 데이터 — 좌표 외에 도면 한 장 더. 격자 외장에 활성 코어가 들어가는 구조야.'},
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'거북선 설계도 단편 3/3 확보. 골격·외피·코어 모두 모였습니다. 복원도 산출 — 완전체 거북선 제작 가능.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 이순신이 두고 간 거야.'},
-    {char:'hero04', name:'마르코 폴로', color:'#ffd700', text:'P19 치크스 Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
-    {char:'hero05', name:'가가린', color:'#ffd700', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'P19 치크스 Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},
     {char:'baekgu2_sad', name:'백구', color:'#66ddff', text:'(잠시 침묵) ...알겠습니다. P19 항로 계산 시작하겠습니다.'},

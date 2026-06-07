@@ -9620,7 +9620,7 @@ function completeQuest(pid,idx){
     else rerenderTab(renderQuestTab);
     return;
   }
-  // ─── 영웅 퀘스트 처리 (보상받기 = 영웅 영입 + 컷씬 트리거) ───
+  // ─── 영웅 퀘스트 처리 (보상받기 = 영웅 영입 + 컷씬 트리거 + 세트 아이템) ───
   if(q.type==='hero_quest'&&q.heroId){
     q.status='claimed';
     if(!G.heroes.includes(q.heroId)){
@@ -9635,10 +9635,29 @@ function completeQuest(pid,idx){
       baekgu(I18N.t('baekgu.heroJoined',{nm:_hNm}));
       // 장영실 효과
       if(q.heroId==='H02'&&typeof applyJangYeongsilEffect==='function')applyJangYeongsilEffect();
+      // 영웅 세트 아이템 보상 (예: 이순신 SW01 + SA01) — 인벤토리 자동 추가
+      // (사용자 요청 2026-06-07 페이즈 2 v4.0: Q10-M 이순신 합류 시 자동 장착 세트)
+      (q.rewardItems||[]).forEach(it=>{
+        if(!it||!it.id)return;
+        if(/^R0[0-9]/.test(it.id)){
+          if(!G.materials)G.materials={};
+          G.materials[it.id]=(G.materials[it.id]||0)+(it.qty||1);
+        } else {
+          if(!G.inventory)G.inventory=[];
+          const _inv=G.inventory.find(i=>i.id===it.id);
+          if(_inv)_inv.qty+=(it.qty||1);
+          else G.inventory.push({id:it.id,qty:it.qty||1});
+        }
+      });
+      // 스토리 플래그
+      if(!G._storyFlags)G._storyFlags={};
+      (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
       saveGame(true);
       updateHUD();
-      // 시나리오 컷씬 자동 재생 (PC/웹 공통)
-      if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
+      // 시나리오 컷씬 자동 재생 (PC/웹 공통) — Phase NPC scene 우선
+      if(q.cutscene_post && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
+        setTimeout(()=>window.STORY_SCENES_PC.triggerScene(q.cutscene_post), 400);
+      } else if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
         setTimeout(()=>window.STORY_SCENES_PC.triggerHeroRecruitScene(q.heroId), 400);
       }
     }
