@@ -131,21 +131,22 @@
       document.head.appendChild(st);
     }
 
-    // ── 캐릭터 패널 (왼쪽 1/3, 매우 큰 인물) ──
+    // ── 캐릭터 패널 (왼쪽 2/3, 매우 큰 인물) ──
+    // 사용자 요청 2026-06-07: 컷씬 좌측 캐릭터 이미지 2배 확대 (33.33% → 66.67%)
     var charPanel = document.createElement('div');
     charPanel.style.cssText = [
-      'flex:0 0 33.33%','display:flex','align-items:center','justify-content:center',
+      'flex:0 0 66.67%','display:flex','align-items:center','justify-content:center',
       'background:linear-gradient(135deg,rgba(20,40,80,0.45),rgba(0,0,0,0.7))',
       'border-right:1px solid rgba(0,243,255,0.25)',
-      'padding:20px','box-sizing:border-box','overflow:hidden'
+      'padding:8px','box-sizing:border-box','overflow:hidden'
     ].join(';');
 
     var charImg = document.createElement('img');
     charImg.className = 'ssc-img';
     charImg.style.cssText = [
-      'max-width:100%','max-height:96vh','width:auto','height:auto',
+      'max-width:100%','max-height:100vh','width:auto','height:auto',
       'object-fit:contain','image-rendering:auto',
-      'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
+      'filter:drop-shadow(0 0 48px rgba(0,243,255,0.6))'
     ].join(';');
     // 실패 시 fallback 체인:
     //   chars-hd/ → chars/ → chars/system.png (Phase NPC는 별도 quests/ 폴백 — 코드에서 직접 처리)
