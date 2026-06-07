@@ -1,6 +1,6 @@
 // DESTINATION EARTH — PWA Service Worker
 // 캐시 버전은 game.js의 _GAME_VER 가 바뀔 때마다 함께 올려야 새 빌드가 강제 갱신됨.
-const CACHE_VERSION = 'de-cache-v20260607-113';
+const CACHE_VERSION = 'de-cache-v20260607-114';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -53,8 +53,8 @@ self.addEventListener('fetch', (event) => {
   // 같은 출처가 아니면(예: firebase, gstatic) 가로채지 않음 → 브라우저 기본 처리
   if (url.origin !== self.location.origin) return;
 
-  // PC 전용 리소스는 캐싱·폴백 대상 아님 (웹 빌드엔 존재하지 않음)
-  if (url.pathname.includes('/story-scenes-pc.js') || url.pathname.includes('/chars-hd/')) {
+  // HD 캐릭터 이미지(PC 전용)는 캐싱·폴백 대상 아님 (웹 빌드엔 존재하지 않음)
+  if (url.pathname.includes('/chars-hd/')) {
     return;
   }
 
