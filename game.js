@@ -15342,9 +15342,31 @@ function showHostilePlanetBriefing(planetDef){
   const advisor=totFleetAtk>=totEnemyAtk*1.2?{c:'var(--green)',t:I18N.t('advisor.advantage'),lvl:'win'}
                 :totFleetAtk>=totEnemyAtk*0.8?{c:'var(--yellow)',t:I18N.t('advisor.even'),lvl:'mid'}
                 :{c:'var(--red)',t:I18N.t('advisor.disadvantage'),lvl:'lose'};
+  // 사용자 요청 2026-06-07: 행성 도착 자동 전투 팝업에 사령관 VS 적 NPC 이미지 (2배 사이즈)
+  const _hFac=(/^F0[1-7]$/.test(planetDef?.f||''))?planetDef.f:'F05';
+  const _hVer=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  const _enemySrc='img/quests/combat_'+_hFac+'.png'+_hVer;
+  const _cmdSrc=(typeof _commanderPortraitSrc==='function')?_commanderPortraitSrc():('img/chars/commander_m1.png'+_hVer);
   openModal(I18N.t('modal.hostilePlanetEntry',{nm:planetDef.nm}),
-    `<div style="text-align:center;padding:10px 6px 6px">
-      <div style="font-size:42px;margin-bottom:4px">⚠️</div>
+    `<div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:10px 6px 8px">
+      <!-- 좌측: 사령관 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:96px;height:96px;border-radius:12px;overflow:hidden;border:2px solid var(--cyan);box-shadow:0 0 16px rgba(0,243,255,.4);background:rgba(0,0,0,.5)">
+          <img src="${_cmdSrc}" alt="commander" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
+        </div>
+        <div style="color:var(--cyan);font-size:11px;font-weight:bold;letter-spacing:1px">${G.profile?.name||I18N.t('ui.commander')}</div>
+      </div>
+      <!-- 중앙: VS -->
+      <div style="font-size:32px;color:var(--red);font-weight:bold;text-shadow:0 0 12px rgba(255,80,80,.6)">⚠️VS⚠️</div>
+      <!-- 우측: 적 문명권 전사 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:96px;height:96px;border-radius:12px;overflow:hidden;border:2px solid var(--red);box-shadow:0 0 16px rgba(255,80,80,.4);background:rgba(20,0,0,.5)">
+          <img src="${_enemySrc}" alt="enemy" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<div style=&quot;font-size:60px;display:flex;align-items:center;justify-content:center;height:100%&quot;>⚠️</div>'">
+        </div>
+        <div style="color:var(--red);font-size:11px;font-weight:bold;letter-spacing:1px">${planetDef.nm}</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:0 6px 6px">
       <div style="color:var(--red);font-size:18px;font-weight:bold;margin-bottom:4px">${I18N.t('ui.enemyFleetDetected',{nm:planetDef.nm})}</div>
       <div style="color:var(--dim);font-size:12px;line-height:1.7">
         ${I18N.t('ui.briefingRingDiff',{ring:planetDef.ring||2,diff:({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')})}<br>
@@ -17792,19 +17814,31 @@ function _finishCombat(){
     // 보고 팝업 구성 (보스/일반 공통)
     const _buildReport=()=>{
       const items=[];
-      items.push({ic:'💰',nm:I18N.t('report.creditsNm'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
+      // 사용자 요청 2026-06-07: 보고 아이콘 → 실제 이미지로 교체
+      //   · 크레딧 항목: img/ui/credit.png
+      //   · 격파 적함: 해적선 이미지 (img/combat/enemies/PIRATE_M.png 등)
+      //   · 행성 허브 진행도: 행성 이미지 (planetImgSrc)
+      const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+      // 크레딧 — credit.png 아이콘
+      items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('report.creditsNm'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
       if(_repGained>0)items.push({ic:'⭐',nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
       const enemyCount=_enemyCountSnap;
-      items.push({ic:'☠️',nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
+      // 격파 적함 — 적군 종류에 따른 해적선 이미지
+      const _enemyImg=combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
+                     :combatState.isPirate?('img/combat/enemies/PIRATE_M.png'+_ver)
+                     :('img/combat/enemies/PIRATE_M.png'+_ver);
+      items.push({ic:'☠️',img:_enemyImg,nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
       _capturedShips.forEach(s=>{
         items.push({ic:'🏴',nm:(typeof shipDisplayNm==='function'?shipDisplayNm(s):s.nm),type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:I18N.t('report.captureDesc')});
       });
       if(_autoSoldCount>0){
-        items.push({ic:'💰',nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:I18N.t('report.autoSoldType'),color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:I18N.t('report.autoSoldDesc')});
+        items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:I18N.t('report.autoSoldType'),color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:I18N.t('report.autoSoldDesc')});
       }
       if(!_isBossWin){
         const hp=getPlanetHubProgress(pid),thr=_getHubThr(pid);
-        items.push({ic:'🏛️',nm:I18N.t('report.planetHubProg'),type:I18N.t('report.unlockProg'),color:'var(--cyan)',stats:`${hp}/${thr.s3}`,desc:I18N.t('report.unlockDesc')});
+        // 행성 허브 진행도 — 현재 행성 이미지
+        const _planetImg=(typeof planetImgSrc==='function')?planetImgSrc(pid):null;
+        items.push({ic:'🏛️',img:_planetImg,nm:I18N.t('report.planetHubProg'),type:I18N.t('report.unlockProg'),color:'var(--cyan)',stats:`${hp}/${thr.s3}`,desc:I18N.t('report.unlockDesc')});
       }
       // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선 (이미지 추가 — 보상 시각화)
       if(_isBossWin){
