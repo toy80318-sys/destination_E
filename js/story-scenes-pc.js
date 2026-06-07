@@ -24,15 +24,19 @@
       .replace(/\{company\}/gi, p.company || 'Big Picture Space');
   }
 
-  // ─── 캐릭터 이미지 폴백 체인 ───
-  // 1순위: img/chars-hd/{key}.png  (PC 전용 고해상도 원본, 1024+ 권장)
-  // 2순위: img/chars/{key}.png      (기본 최적화 이미지)
-  // 3순위: img/chars/system.png     (최종 폴백)
+  // ─── 캐릭터 이미지 경로 ───
+  // 기본: img/chars/{key}.png (모든 빌드 보장)
+  // HD: img/chars-hd/{key}.png — 실제 파일이 있는 경우에만 onerror 폴백 거치지 않고 사용
+  // (HD 미존재 시 404가 콘솔 시끄럽고 일부 환경에서 너무 많은 동시 요청으로 ERR_INSUFFICIENT_RESOURCES 유발 가능)
+  // → HD 사용은 명시적 opt-in: window.STORY_USE_HD = true 로 켤 때만 시도
   function _ver(){
     return window._GAME_VER ? '?v=' + encodeURIComponent(window._GAME_VER) : '';
   }
-  function _charImgHD(key){
-    return 'img/chars-hd/' + key + '.png' + _ver();
+  function _charImgPath(key){
+    if(window.STORY_USE_HD === true){
+      return 'img/chars-hd/' + key + '.png' + _ver();
+    }
+    return 'img/chars/' + key + '.png' + _ver();
   }
 
   // ─── 대화 팝업 UI ───
@@ -41,6 +45,17 @@
   //   onDone: function()
   // }
   function showCharDialog(opts){
+    try {
+      _showCharDialogInner(opts);
+    } catch(err){
+      console.error('[STORY_SCENES_PC] showCharDialog FAILED:', err);
+      // 폴백: 에러 시에도 onDone 호출하여 다음 단계로 진행 보장
+      if(opts && typeof opts.onDone === 'function') {
+        try { opts.onDone(); } catch(e){}
+      }
+    }
+  }
+  function _showCharDialogInner(opts){
     if(!opts || !opts.scenes || !opts.scenes.length){
       if(typeof opts === 'object' && typeof opts.onDone === 'function') opts.onDone();
       return;
@@ -94,15 +109,18 @@
       'object-fit:contain','image-rendering:auto',
       'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
     ].join(';');
-    // HD 실패 → 기본 → system
+    // 실패 시 fallback: HD → 기본 → system (단일 단계만)
     charImg.onerror = function(){
       var src = this.src;
       if(src.indexOf('chars-hd') > -1){
-        this.src = src.replace('chars-hd', 'chars');
+        this.src = 'img/chars/' + (this.dataset.charKey||'system') + '.png' + _ver();
         return;
       }
       if(src.indexOf('system.png') < 0){
         this.src = 'img/chars/system.png' + _ver();
+      } else {
+        // 최종 폴백도 실패한 경우 onerror 끊어서 무한루프 방지
+        this.onerror = null;
       }
     };
     charPanel.appendChild(charImg);
@@ -167,7 +185,8 @@
       nameBox.style.animation = '';
       textBox.style.animation = '';
 
-      charImg.src = _charImgHD(s.char || 'system');
+      charImg.dataset.charKey = s.char || 'system';
+      charImg.src = _charImgPath(s.char || 'system');
       charImg.alt = rep(s.name || '');
       nameBox.textContent = rep(s.name || '');
       nameBox.style.color = s.color || '#00f3ff';

@@ -1108,7 +1108,15 @@ function _baekguSrcByMood(mood){
     // 보스급
     'ursa.png','void_hiden.png'
   ];
-  const _doPreload=()=>{_arr.forEach(f=>{const i=new Image();i.src='img/chars/'+f;});};
+  // 단계별 프리로드 — 한꺼번에 29개 요청 시 일부 환경에서 ERR_INSUFFICIENT_RESOURCES 유발 가능
+  // 5개씩 100ms 간격으로 분산 (총 ~600ms, 사용자 체감 영향 없음)
+  const _doPreload=()=>{
+    const _batch=5;
+    for(let i=0;i<_arr.length;i+=_batch){
+      const _slice=_arr.slice(i,i+_batch);
+      setTimeout(()=>_slice.forEach(f=>{const img=new Image();img.src='img/chars/'+f;}), Math.floor(i/_batch)*100);
+    }
+  };
   if(document.readyState==='complete'||document.readyState==='interactive')_doPreload();
   else window.addEventListener('DOMContentLoaded',_doPreload,{once:true});
 })();
