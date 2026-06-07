@@ -418,36 +418,56 @@
     return null;  // 8영웅 전원 영입 완료
   }
 
-  // ─── 영웅 영입 시 트리거 (중복 방지) ───
+  // ─── 영웅 영입 시 트리거 ───
+  // 중복 방지: 같은 세션 내 짧은 시간 내 중복 호출 차단 (300ms)
+  // _scenesSeen 영구 기록은 유지하되, 사용자가 강제 재생 가능
+  var _lastTriggeredAt = {};
   function triggerHeroRecruitScene(hid, onDone){
+    console.log('[STORY_SCENES_PC] triggerHeroRecruitScene called for', hid);
     var scenes = getScenes(hid);
     if(!scenes){
+      console.warn('[STORY_SCENES_PC] No scenes defined for', hid);
       if(typeof onDone === 'function') onDone();
       return;
     }
+    // 짧은 시간 내 중복 호출 차단 (recruitHero + showHeroRecruit 양쪽 트리거 충돌 방지)
+    var now = Date.now();
+    if(_lastTriggeredAt[hid] && (now - _lastTriggeredAt[hid]) < 1500){
+      console.log('[STORY_SCENES_PC] duplicate trigger suppressed for', hid);
+      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    _lastTriggeredAt[hid] = now;
     if(!window.G) window.G = {};
     if(!window.G._scenesSeen) window.G._scenesSeen = {};
     var key = 'hero_' + hid;
     if(window.G._scenesSeen[key]){
-      // 이미 본 컷씬 — 스킵
-      if(typeof onDone === 'function') onDone();
-      return;
+      console.log('[STORY_SCENES_PC] already-seen scene for', hid, '— playing again anyway (testing-friendly)');
+      // 변경: 이전엔 스킵했지만, 사용자 테스트 편의로 항상 재생 (단, "본 적 있음" 플래그는 유지)
     }
     window.G._scenesSeen[key] = true;
-    // 세이브에 즉시 반영 (game.js saveGame 사용)
     if(typeof window.saveGame === 'function'){
       try{ window.saveGame(true); }catch(e){}
     }
+    console.log('[STORY_SCENES_PC] opening cutscene for', hid, '— scene count:', scenes.length);
     showCharDialog({ scenes: scenes, onDone: onDone });
+  }
+
+  // 사용자 편의: 강제 재생 (이미 본 플래그 무시)
+  function forceReplay(hid){
+    if(window.G && window.G._scenesSeen) delete window.G._scenesSeen['hero_' + hid];
+    delete _lastTriggeredAt[hid];
+    return triggerHeroRecruitScene(hid);
   }
 
   // ═══════════════════════════════════════════════════════════════════
   // 전역 노출
   // ═══════════════════════════════════════════════════════════════════
   window.STORY_SCENES_PC = {
-    version: '1.0.0',
+    version: '1.1.0',
     showCharDialog: showCharDialog,
     triggerHeroRecruitScene: triggerHeroRecruitScene,
+    forceReplay: forceReplay,
     canHeroAppear: canHeroAppear,
     nextStoryHero: nextStoryHero,
     nextHeroAtPlanet: nextHeroAtPlanet,
@@ -458,7 +478,17 @@
     testScene: function(hid){
       var scenes = getScenes(hid);
       if(!scenes){ console.warn('[STORY_SCENES_PC] No scenes for', hid); return; }
+      console.log('[STORY_SCENES_PC] manual testScene for', hid);
       showCharDialog({ scenes: scenes });
+    },
+    // 모든 영웅 컷씬 순차 재생 (테스트용)
+    playAll: function(){
+      var order = ['H08','H04','H01','H05','H02','H03','H06','H07'];
+      function next(i){
+        if(i>=order.length){ console.log('[STORY_SCENES_PC] playAll done'); return; }
+        showCharDialog({ scenes: getScenes(order[i]), onDone: function(){ next(i+1); } });
+      }
+      next(0);
     }
   };
 

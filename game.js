@@ -13071,6 +13071,13 @@ const HERO_GREETING={
 };
 function showHeroRecruit(heroId){
   const h=HEROES[heroId];if(!h)return;
+  // ★ 시나리오 컷씬 즉시 트리거 — 어느 경로든 영입 모달 호출 시 컷씬 보장 (사용자 요청)
+  if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
+    try{ window.STORY_SCENES_PC.triggerHeroRecruitScene(heroId); }
+    catch(e){console.warn('[STORY] showHeroRecruit trigger fail',e);}
+  } else {
+    console.warn('[STORY] STORY_SCENES_PC not loaded — cutscene skipped for', heroId);
+  }
   // 1) 먼저 영입 확정 (notify + baekgu + saveGame 포함). 실패해도 본 함수는 정보용으로 계속 진행.
   const _already=(G.heroes||[]).includes(heroId);
   if(!_already){try{recruitHero(heroId);}catch(e){console.warn('[hero] auto-recruit',e.message);}}
