@@ -2915,25 +2915,20 @@ function hubBanner(tabId,emoji,label,factionId){
   const _NPC_TABS=['trade','quest','tavern','craft','ship','garage','auction'];
   const _hasNpc=_NPC_TABS.indexOf(tabId)>=0;
   const _pid=G&&G.currentPlanet;
-  // 폴백 체인: planet → faction → generic
-  const npcPlanetSrc=_hasNpc&&_pid?'img/hub_npc/'+tabId+'_'+_pid+'.png':'';
-  const npcFactionSrc=_hasNpc&&factionId?'img/hub_npc/'+tabId+'_'+factionId+'.png':'';
-  const npcGenSrc=_hasNpc?'img/hub_npc/'+tabId+'.png':'';
-  // 시설 담당자 임시 이미지 — 직업에 맞는 기존 인물(영웅) 이미지 사용 (실제 hub_npc 추가 전까지)
-  // 시설 담당자 임시 이미지 — 퀘스트 의뢰 인물 이미지(img/quests) 사용. 행성 팩션별로 분기.
+  // 시설 담당자 이미지 — 퀘스트 의뢰 인물 이미지(img/quests) 사용. 행성 팩션별로 분기.
   //   ※ 우리 함대 영웅(hero01~08)을 쓰지 않음 (제독/행정관 등 NPC 와 혼동 방지)
+  // img/hub_npc/ 폴더는 현재 미존재 — 매 렌더링마다 3중 404 폭주 차단을 위해
+  // 곧장 img/quests/{type}_{faction}.png 사용 (실제 존재 보장)
   const _NPC_TYPE={quest:'combat',ship:'explore',garage:'gather',trade:'delivery',craft:'gather',tavern:'delivery',auction:'combat'};
   const _qFac=(/^F0[1-7]$/.test(factionId||''))?factionId:'F01';
   const npcTemp=_NPC_TYPE[tabId]?('img/quests/'+_NPC_TYPE[tabId]+'_'+_qFac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')):'';
-  // 실제 hub_npc 이미지가 있으면 우선, 없으면 임시 인물 이미지로 폴백
-  const npcFirst=npcPlanetSrc||npcFactionSrc||npcGenSrc||npcTemp;
+  const npcFirst=npcTemp;
   // 퀘스트·크루를 언급하는 담당자(제독=quest · 주점주인=tavern)는 2배 크게 (사용자 요청)
   const _npcBig=(tabId==='quest'||tabId==='tavern');
   const _npcH=_npcBig?208:104;
   const _npcMaxW=_npcBig?300:140;
-  const npcHtml=_hasNpc?(
-    '<img src="'+npcFirst+'" data-fac="'+npcFactionSrc+'" data-gen="'+npcGenSrc+'" data-temp="'+npcTemp+'" alt="" style="position:absolute;right:8px;bottom:0;height:'+_npcH+'px;width:auto;max-width:'+_npcMaxW+'px;object-fit:contain;object-position:bottom right;z-index:2;filter:drop-shadow(-2px 0 8px rgba(0,0,0,.5));pointer-events:none" '+
-    'onerror="var f=this.dataset.fac,g=this.dataset.gen,t=this.dataset.temp;if(f&&!this.src.endsWith(f)){this.src=f}else if(g&&!this.src.endsWith(g)){this.src=g}else if(t&&!this.src.endsWith(t)){this.src=t}else{this.style.display=\'none\'}">'
+  const npcHtml=_hasNpc&&npcFirst?(
+    '<img src="'+npcFirst+'" alt="" style="position:absolute;right:8px;bottom:0;height:'+_npcH+'px;width:auto;max-width:'+_npcMaxW+'px;object-fit:contain;object-position:bottom right;z-index:2;filter:drop-shadow(-2px 0 8px rgba(0,0,0,.5));pointer-events:none" onerror="this.onerror=null;this.style.display=\'none\'">'
   ):'';
   const bannerH=_hasNpc?(_npcBig?200:96):60;
   return '<div style="position:relative;width:100%;height:'+bannerH+'px;border-radius:8px;overflow:hidden;margin-bottom:8px;flex-shrink:0;background:rgba(5,10,22,.8)">'

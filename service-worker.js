@@ -1,12 +1,22 @@
-// DESTINATION EARTH — PWA Service Worker
+// DESTINATION EARTH — PWA Service Worker (v2 — 캐시 효율화)
 // 캐시 버전은 game.js의 _GAME_VER 가 바뀔 때마다 함께 올려야 새 빌드가 강제 갱신됨.
-const CACHE_VERSION = 'de-cache-v20260607-118';
+const CACHE_VERSION = 'de-cache-v20260607-119';
+
+// ── 캐시를 두 종류로 분리하여 LRU·정리 효율화 ──────────────────────────
+// · CORE: 핵심 코드(HTML/JS/CSS) — 항상 최신 (network-first)
+// · ASSETS: 이미지·오디오·폰트 — cache-first + LRU 200개 캡
+const CORE_CACHE = CACHE_VERSION + '-core';
+const ASSETS_CACHE = CACHE_VERSION + '-assets';
+const ASSETS_MAX_ENTRIES = 200;
+
+// 설치 시 미리 캐싱하는 최소 핵심 파일 (게임 부팅 필수)
 const CORE_ASSETS = [
   './',
   './index.html',
   './game.css',
   './game.js',
   './manifest.json',
+  './js/data/i18n_dict.js',
   './js/data/factions.js',
   './js/data/planets.js',
   './js/data/heroes.js',
@@ -20,76 +30,97 @@ const CORE_ASSETS = [
   './img/chars/baekgu1.png'
 ];
 
-// ── 설치: 핵심 파일 사전 캐싱(설치 실패 방지를 위해 개별 시도) ─────────
+// ── LRU 정리: 캐시가 너무 커지면 가장 오래된 키부터 제거 ────────────────
+async function _trimCache(cacheName, maxEntries){
+  try{
+    const cache = await caches.open(cacheName);
+    const keys = await cache.keys();
+    if(keys.length <= maxEntries) return;
+    const toDelete = keys.length - maxEntries;
+    for(let i = 0; i < toDelete; i++){
+      await cache.delete(keys[i]);
+    }
+  }catch(e){/* 정리 실패 시 무시 — 다음 기회 */}
+}
+
+// ── 설치: 핵심 파일 사전 캐싱 (실패해도 게임 시작 가능) ────────────────
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) =>
+    caches.open(CORE_CACHE).then((cache) =>
       Promise.allSettled(CORE_ASSETS.map((url) => cache.add(url).catch(() => null)))
     )
   );
 });
 
-// ── 활성화: 옛 캐시 정리 ─────────────────────────────────────────────
+// ── 활성화: 옛 버전 캐시 모두 정리 ──────────────────────────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => !k.startsWith(CACHE_VERSION)).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-// ── 요청 가로채기 전략 ───────────────────────────────────────────────
-// · Firebase / 외부 도메인: 항상 네트워크 (캐시하지 않음)
-// · HTML / JS / CSS / JSON: network-first → 실패 시 cache
-// · 이미지·오디오·폰트: cache-first → 없으면 네트워크 후 캐시
-// · PC 전용 콘텐츠(js/story-scenes-pc.js, img/chars-hd/*): 가로채지 않음 (웹 빌드엔 부재)
+// ── 요청 가로채기 ──────────────────────────────────────────────────────
+// · 외부 도메인 (Firebase 등): 가로채지 않음
+// · HD 캐릭터 이미지 (PC 전용 img/chars-hd/*): 가로채지 않음
+// · HTML/JS/CSS/JSON: CORE_CACHE network-first
+// · 이미지/오디오/폰트: ASSETS_CACHE cache-first + LRU 200 cap
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-
-  // 같은 출처가 아니면(예: firebase, gstatic) 가로채지 않음 → 브라우저 기본 처리
   if (url.origin !== self.location.origin) return;
-
-  // HD 캐릭터 이미지(PC 전용)는 캐싱·폴백 대상 아님 (웹 빌드엔 존재하지 않음)
-  if (url.pathname.includes('/chars-hd/')) {
-    return;
-  }
+  if (url.pathname.includes('/chars-hd/')) return;
 
   const dest = req.destination;
   const isAsset = ['image', 'audio', 'video', 'font'].includes(dest);
 
   if (isAsset) {
-    // cache-first
-    event.respondWith(
-      caches.match(req).then((cached) => {
-        if (cached) return cached;
-        return fetch(req).then((res) => {
-          if (res && res.status === 200) {
-            const copy = res.clone();
-            caches.open(CACHE_VERSION).then((c) => c.put(req, copy));
-          }
-          return res;
-        }).catch(() => cached);
-      })
-    );
-  } else {
-    // network-first (HTML/JS/CSS 등 — 최신 빌드 즉시 반영)
-    event.respondWith(
-      fetch(req).then((res) => {
+    // cache-first (ASSETS_CACHE)
+    event.respondWith((async () => {
+      const cache = await caches.open(ASSETS_CACHE);
+      const cached = await cache.match(req);
+      if (cached) return cached;
+      try {
+        const res = await fetch(req);
         if (res && res.status === 200) {
-          const copy = res.clone();
-          caches.open(CACHE_VERSION).then((c) => c.put(req, copy));
+          cache.put(req, res.clone());
+          // LRU 정리는 비동기로 (응답 지연 차단)
+          _trimCache(ASSETS_CACHE, ASSETS_MAX_ENTRIES);
         }
         return res;
-      }).catch(() => caches.match(req).then((m) => m || caches.match('./index.html')))
-    );
+      } catch (e) {
+        return cached || new Response('', { status: 504 });
+      }
+    })());
+  } else {
+    // network-first (CORE_CACHE)
+    event.respondWith((async () => {
+      try {
+        const res = await fetch(req);
+        if (res && res.status === 200) {
+          const cache = await caches.open(CORE_CACHE);
+          cache.put(req, res.clone());
+        }
+        return res;
+      } catch (e) {
+        const cached = await caches.match(req);
+        return cached || (await caches.match('./index.html'));
+      }
+    })());
   }
 });
 
-// ── 메시지: 페이지에서 캐시 강제 갱신 트리거 가능 ──────────────────────
+// ── 메시지: 페이지에서 강제 갱신 / 캐시 비우기 트리거 ────────────────────
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data === 'CLEAR_ASSETS_CACHE') {
+    caches.delete(ASSETS_CACHE).catch(() => {});
+  }
+  if (event.data === 'CLEAR_ALL_CACHE') {
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
+  }
 });
