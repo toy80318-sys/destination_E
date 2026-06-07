@@ -8762,36 +8762,9 @@ function doGacha(n,useCr,crCost,minRarity){
     const cl=CLASSES[Math.floor(Math.random()*CLASSES.length)];
     let newCrew;
     if(rarity==='L'){
-      // 전설 등급 — 시나리오 순서 + 캐논 행성 매칭 (사용자 타임라인 기반)
-      // 영웅은 정해진 행성에서, 시나리오 순서대로만 등장 (랜덤 제거)
-      // PC 빌드: STORY_SCENES_PC.HERO_PLANET_MAP 사용 / 웹 빌드: 내장 폴백 사용
-      if(!G.planetHeroCount)G.planetHeroCount={};
-      const _curPid=G.currentPlanet;
-      const _phCountG=G.planetHeroCount[_curPid]||0;
-      // 캐논 매핑 + 조건 (story-scenes-pc.js와 일치하는 폴백 — 웹/PC 공통)
-      const _SCN_ORDER=['H08','H04','H01','H05','H02','H03','H06','H07'];
-      const _HPMAP={
-        H08:{planet:'P19',cond:()=>true},
-        H04:{planet:'P04',cond:()=>true},
-        H01:{planet:'P13',cond:()=>!!(G.inventory&&G.inventory.find(i=>i.id==='G18'&&i.qty>0))},
-        H05:{planet:'P14',cond:()=>true},
-        H02:{planet:'P06',cond:()=>(G.heroes||[]).includes('H05')},
-        H03:{planet:'P08',cond:()=>(G.credits||0)>=41000000},
-        H06:{planet:'P28',cond:()=>true},
-        H07:{planet:'P09',cond:()=>{
-          const t=G._tradeTotalEarned||G.tradeTotal||G._totalTradeProfit||0;
-          return t>=100000;
-        }}
-      };
-      // 다음 영웅 = 시나리오 순서대로 미영입 첫 번째
-      const _nextHid=_SCN_ORDER.find(h=>!(G.heroes||[]).includes(h));
-      const _hpInfo=_nextHid?_HPMAP[_nextHid]:null;
-      // 현재 행성 = 그 영웅 캐논 행성 + 영입 조건 충족 → 가챠 풀에 추가
-      if(_nextHid&&_hpInfo&&_hpInfo.planet===_curPid&&_hpInfo.cond()&&_phCountG<2&&Math.random()<0.30){
-        G.planetHeroCount[_curPid]=_phCountG+1;
-        results.push({_heroRoll:_nextHid,id:_nextHid,nm:HEROES[_nextHid].nm,ic:HEROES[_nextHid].ic,rarity:'S',cl:HEROES[_nextHid].cl||'Pilot',isHero:true});
-        continue;  // 일반 크루 처리 건너뜀
-      }
+      // 전설 등급 — 가챠 영웅 등장 제거됨 (사용자 요청 2026-06-07)
+      // 영웅은 이제 보라색 특별 퀘스트로만 영입 (일반 퀘스트 8회마다 자동 등장)
+      // → 가챠는 전설 동료 풀(QUEST_LEGEND_CREW)로만 진행
       // 전설은 QUEST_LEGEND_CREW 풀에서
       const pool=(typeof QUEST_LEGEND_CREW!=='undefined'?QUEST_LEGEND_CREW:[]).filter(c=>!G.crew.find(x=>x.id===c.id));
       if(pool.length>0){
@@ -9683,9 +9656,94 @@ function getQuestRepTierMult(q){
   if(q.rewardVe>=30)return 2;
   return 1;
 }
+// ─── 영웅 퀘스트 시스템 (사용자 요청 2026-06-07) ──────────────────────
+// · 일반 퀘스트 8회 완료마다 1개씩 보라색 특별 퀘스트 자동 등장
+// · 영웅의 캐논 행성에서 등장 (시나리오 순서 보존)
+// · 클릭 → 컷씬 재생 → 영웅 자동 영입
+const _HERO_QUEST_PLANET_MAP={
+  H08:'P19', H04:'P04', H01:'P13', H05:'P14',
+  H02:'P06', H03:'P08', H06:'P28', H07:'P09'
+};
+const _HERO_SCENARIO_ORDER=['H08','H04','H01','H05','H02','H03','H06','H07'];
+const _HERO_QUEST_THRESHOLD=8;  // 일반 퀘스트 N회마다 등장
+
+function _nextScenarioHero(){
+  // 시나리오 순서대로 미영입 첫 영웅
+  for(let i=0;i<_HERO_SCENARIO_ORDER.length;i++){
+    const hid=_HERO_SCENARIO_ORDER[i];
+    if(!(G.heroes||[]).includes(hid)) return hid;
+  }
+  return null;
+}
+
+function _spawnHeroQuest(heroId){
+  if(!heroId||!HEROES||!HEROES[heroId])return false;
+  const planetId=_HERO_QUEST_PLANET_MAP[heroId];
+  if(!planetId)return false;
+  if(!G.quests[planetId])G.quests[planetId]=[];
+  // 중복 방지
+  if(G.quests[planetId].some(q=>q&&q.heroId===heroId))return false;
+  const heroNmKey='hero.'+heroId+'.nm';
+  const heroNm=(I18N&&I18N.has&&I18N.has(heroNmKey))?I18N.t(heroNmKey):(HEROES[heroId].nm||heroId);
+  const heroIc=HEROES[heroId].ic||'⭐';
+  const planetNm=(PLANET_DEF.find(p=>p.id===planetId)||{}).nm||planetId;
+  const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+  const _nmText=_isEn?('[Special] Recruit '+heroNm):('[특별] '+heroNm+' 영입');
+  const _descText=_isEn
+    ?('A trace of the legendary '+heroNm+' has been detected at '+planetNm+'. Travel there and recruit.')
+    :(planetNm+'에서 전설의 '+heroNm+' 단서가 포착되었습니다. 추적하여 영입하세요.');
+  G.quests[planetId].unshift({
+    id:'q_hero_'+heroId,
+    type:'hero_quest',
+    heroId:heroId,
+    ic:'⭐',
+    npc:heroNm,
+    npcIc:heroIc,
+    nm:_nmText,
+    desc:_descText,
+    rewardCr:1000000,
+    rewardVe:50,
+    status:'done',  // 도착 = 완료, 바로 보상 받기 가능
+    targetId:null,
+    progress:1,
+    required:1,
+    planetId:planetId
+  });
+  // 알림 + 백구
+  if(typeof notify==='function')notify(_isEn?('⭐ Special Quest: '+heroNm+' ('+planetNm+')'):('⭐ 특별 퀘스트: '+heroNm+' ('+planetNm+')'),'pur');
+  if(typeof baekgu==='function')baekgu(_isEn?(heroNm+' detected at '+planetNm+'. Set course, Commander.'):(planetNm+'에서 '+heroNm+'의 위치 단서를 포착했습니다.'));
+  return true;
+}
+
 function completeQuest(pid,idx){
   var q=G.quests[pid]&&G.quests[pid][idx];if(!q||q.status!=='done')return;
   const _fromTavern=G._currentHubTab==='tavern';
+  // ─── 영웅 퀘스트 처리 (보상받기 = 영웅 영입 + 컷씬 트리거) ───
+  if(q.type==='hero_quest'&&q.heroId){
+    q.status='claimed';
+    if(!G.heroes.includes(q.heroId)){
+      G.heroes.push(q.heroId);
+      // 보상 (영웅 퀘스트는 정상 보상 + 추가)
+      G.credits=(G.credits||0)+(q.rewardCr||0);
+      G.voidEssence=(G.voidEssence||0)+(q.rewardVe||0);
+      try{sfxCoin();}catch(e){}
+      const _hKey='hero.'+q.heroId+'.nm';
+      const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[q.heroId]?.nm||q.heroId);
+      notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[q.heroId]?.ic,nm:_hNm}),'pur');
+      baekgu(I18N.t('baekgu.heroJoined',{nm:_hNm}));
+      // 장영실 효과
+      if(q.heroId==='H02'&&typeof applyJangYeongsilEffect==='function')applyJangYeongsilEffect();
+      saveGame(true);
+      updateHUD();
+      // 시나리오 컷씬 자동 재생 (PC/웹 공통)
+      if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
+        setTimeout(()=>window.STORY_SCENES_PC.triggerHeroRecruitScene(q.heroId), 400);
+      }
+    }
+    if(_fromTavern)rerenderTab(renderTavernView);
+    else rerenderTab(renderQuestTab);
+    return;
+  }
   q.status='claimed';try{sfxCoin();}catch(e){}
   const _rm=getTotalRewardMult(); // 레벨×난이도 통합 배율
   const _repMult=getQuestRepTierMult(q); // 명성 티어 배율 (VE≥40:×3, VE≥30:×2)
@@ -9981,6 +10039,23 @@ function completeQuest(pid,idx){
     else rerenderTab(renderQuestTab);
     // 일반 퀘스트 완료 시 — 작은 확인 팝업 (보상은 이미 지급됨, 확인용)
     _showQuestRewardToast(_actualCr,_actualVe,_rm,_repMult);
+  }
+  // ─── 영웅 퀘스트 자동 등장 카운터 (일반 퀘스트만 집계) ───
+  if(q.type!=='hero_quest'){
+    G._normalQuestCount=(G._normalQuestCount||0)+1;
+    if(G._normalQuestCount>=_HERO_QUEST_THRESHOLD){
+      const _nextHero=_nextScenarioHero();
+      if(_nextHero){
+        const _spawned=_spawnHeroQuest(_nextHero);
+        if(_spawned){
+          G._normalQuestCount=0;  // 카운터 리셋
+          try{saveGame(true);}catch(e){}
+        }
+      } else {
+        // 8영웅 전원 영입 완료 — 카운터 영구 동결
+        G._normalQuestCount=0;
+      }
+    }
   }
 }
 // 퀘스트 완료 시 작은 보상 안내 팝업 (보너스 없는 일반 완료용)
@@ -11110,6 +11185,23 @@ function _renderQuestCard(q,pid,qlist){
       bd:'#cc66ff',
       col:'#cc66ff',
       lbl:_vLbl
+    };
+  }
+  // 영웅 퀘스트 — 보라색 + 금테 글로우 (사용자 요청 2026-06-07)
+  const isHeroQuest=q.type==='hero_quest';
+  if(isHeroQuest){
+    const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+    const _hLbl={
+      available:_isEn?'[SPECIAL]':'[특별]',
+      active:_isEn?'[INVESTIGATING]':'[추적 중]',
+      done:_isEn?'[READY TO RECRUIT]':'[영입 가능]',
+      claimed:_isEn?'[RECRUITED]':'[영입 완료]'
+    }[q.status]||(_isEn?'[SPECIAL]':'[특별]');
+    sc={
+      bg:'linear-gradient(135deg,rgba(170,80,255,.22),rgba(40,10,80,.85))',
+      bd:'#cc88ff',
+      col:'#e0b3ff',
+      lbl:_hLbl
     };
   }
   let progHTML='';
