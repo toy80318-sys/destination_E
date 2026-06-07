@@ -17957,17 +17957,20 @@ function _finishCombat(){
       // 명성 — reputation.png 아이콘 (사용자가 추가할 파일, 없으면 ⭐ 폴백)
       if(_repGained>0)items.push({ic:'⭐',img:'img/ui/reputation.png'+_ver,nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
       const enemyCount=_enemyCountSnap;
-      // 격파 적함 — 적군 종류에 따른 해적선 이미지
-      //   잔해 합류 전투(_debrisJoinCount>0 또는 _isDebris): DBRP_M.png
-      //   치크스: CHIX_M.png
-      //   일반 해적: PIRATE_M.png
+      // 격파 적함 — 첫 번째 적 함선의 실제 이미지를 우선 사용 (배저스카우트·치크스·잔해해적 등)
+      // 사용자 요청 2026-06-07: 좌측 이미지는 반드시 함선 실제 이미지로 (아이콘 금지)
       const _isDebrisCombat=(combatState._debrisJoinCount||0)>0||combatState.planetDef?.id==='DEBRIS_PIRATE'||combatState.planetDef?._isDebris;
-      const _enemyImg=_isDebrisCombat?('img/combat/enemies/DBRP_M.png'+_ver)
-                     :combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
-                     :('img/combat/enemies/PIRATE_M.png'+_ver);
+      const _firstEnemy=(combatState.enemies||[])[0];
+      const _enemyImg=(_firstEnemy && typeof shipImgSrc==='function')
+        ? shipImgSrc(_firstEnemy)
+        : (_isDebrisCombat?('img/combat/enemies/DBRP_M.png'+_ver)
+            :combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
+            :('img/combat/enemies/PIRATE_M.png'+_ver));
       items.push({ic:'☠️',img:_enemyImg,nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
+      // 나포 함선 — 각 함선의 실제 이미지 (shipImgSrc로 팩션·등급 자동 라우팅)
       _capturedShips.forEach(s=>{
-        items.push({ic:'🏴',nm:(typeof shipDisplayNm==='function'?shipDisplayNm(s):s.nm),type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:I18N.t('report.captureDesc')});
+        const _sImg=(typeof shipImgSrc==='function')?shipImgSrc(s):null;
+        items.push({ic:'🏴',img:_sImg,nm:(typeof shipDisplayNm==='function'?shipDisplayNm(s):s.nm),type:I18N.t('ship.capturedLabel',{tier:I18N.tier(s.tier)}),color:'#ff8844',stats:I18N.t('ui.attHpLoyalty',{att:s.ATT,hp:s.maxHP}),desc:I18N.t('report.captureDesc')});
       });
       if(_autoSoldCount>0){
         items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('ui.captureDeclinedSold',{n:_autoSoldCount}),type:I18N.t('report.autoSoldType'),color:'var(--gold)',stats:`+₡${_autoSoldRevenue.toLocaleString()}`,desc:I18N.t('report.autoSoldDesc')});
