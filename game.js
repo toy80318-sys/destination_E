@@ -8820,10 +8820,11 @@ function _allVoidOwned(){
   return PLANET_DEF.filter(p=>p.void).every(p=>G.planets[p.id]?.owned);
 }
 // ── 퀘스트 시스템 설정 ────────────────────────────────────────────
-// 행성당 동시 available 최대치 (제독+브로커 합산). 턴 종료시 2~4개씩 증가
-const QUEST_MAX_AVAILABLE=8;
-const QUEST_SPAWN_PER_TURN_MIN=2;
-const QUEST_SPAWN_PER_TURN_MAX=4;
+// 행성당 동시 미완료 퀘스트 최대치 (시나리오·영웅·일반 모두 합산)
+// 사용자 요청 (2026-06-07): 최대 6개로 제한 — 6개 초과 시 신규 spawn 차단, 순차 진행 유도
+const QUEST_MAX_AVAILABLE=6;
+const QUEST_SPAWN_PER_TURN_MIN=1;
+const QUEST_SPAWN_PER_TURN_MAX=2;
 
 // 단일 퀘스트 생성 (제독 or 브로커 무작위 선택)
 function _generateSingleQuest(pid,suffix){
@@ -8916,17 +8917,16 @@ function generateQuests(pid){
       status:'available',targetId:null,progress:0,required:1,planetId:'P30'
     });
   }
-  // 이미 미완료 일반 퀘스트가 있으면 추가 생성 안 함
-  // 특수 퀘스트(시나리오·영웅·보이드 보스)는 카운트 제외 — 일반 퀘 생성 차단 안 함
-  if(G.quests[pid].some(function(q){
-    return q && q.status!=='claimed'
-      && q.id!=='q_void_boss'
-      && q.type!=='story_quest'
-      && q.type!=='hero_quest'
-      && q.type!=='void_boss';
-  }))return;
-  // 신규 행성 — 4개 초기 시드
-  for(var i=0;i<4;i++){
+  // 전체 미완료 퀘스트 카운트 — 시나리오·영웅·보이드 포함 모든 종류 합산 (사용자 요청)
+  // 최대 6개 한도 → 한도 도달 시 추가 일반 퀘 생성 안 함 (순차 진행 유도)
+  var _activeQuests=G.quests[pid].filter(function(q){
+    return q && q.status!=='claimed';
+  }).length;
+  if(_activeQuests>=QUEST_MAX_AVAILABLE)return;
+  // 신규 행성 — 6개 한도 안에서 일반 퀘 시드 채움 (시나리오·영웅 퀘 spawn 후 남는 만큼)
+  var _seedRoom=QUEST_MAX_AVAILABLE-_activeQuests;
+  var _seedCount=Math.min(4,_seedRoom);  // 기본 4개 시드, 단 한도 초과 안 함
+  for(var i=0;i<_seedCount;i++){
     var q=_generateSingleQuest(pid,i);
     if(q)G.quests[pid].push(q);
   }
@@ -9215,16 +9215,18 @@ function _grantVoidBossRewards(){
 function tickQuestSpawn(){
   var pid=G.currentPlanet;if(!pid)return;
   if(!G.quests[pid])G.quests[pid]=[];
-  var available=G.quests[pid].filter(function(q){return q.status==='available';}).length;
-  if(available>=QUEST_MAX_AVAILABLE)return;
-  var room=QUEST_MAX_AVAILABLE-available;
+  // 사용자 요청 (2026-06-07): 전체 미완료 퀘스트(시나리오·영웅·일반·보이드) 합산하여 최대 6개 한도
+  // 한도 도달 시 추가 spawn 차단 — 순차 진행 유도
+  var _active=G.quests[pid].filter(function(q){return q && q.status!=='claimed';}).length;
+  if(_active>=QUEST_MAX_AVAILABLE)return;
+  var room=QUEST_MAX_AVAILABLE-_active;
   var addCount=Math.min(room,QUEST_SPAWN_PER_TURN_MIN+Math.floor(Math.random()*(QUEST_SPAWN_PER_TURN_MAX-QUEST_SPAWN_PER_TURN_MIN+1)));
   var added=0,startIdx=G.quests[pid].length;
   for(var i=0;i<addCount;i++){
     var q=_generateSingleQuest(pid,startIdx+i);
     if(q){G.quests[pid].push(q);added++;}
   }
-  if(added>0)notify(I18N.t('notify.newQuestsPosted',{added,total:available+added,max:QUEST_MAX_AVAILABLE}),'ok');
+  if(added>0)notify(I18N.t('notify.newQuestsPosted',{added,total:_active+added,max:QUEST_MAX_AVAILABLE}),'ok');
 }
 function acceptQuest(pid,idx){
   generateQuests(pid);
@@ -9391,6 +9393,8 @@ function spawnPhasedQuests(pid){
   const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
   const _lang=_isEn?'en':'ko';
   let added=0;
+  // 6개 한도 적용 — 시나리오 퀘는 우선 spawn하되 한도 초과 안 함
+  // (사용자 요청 2026-06-07: 동시 진행 최대 6개)
   // PHASE1 + PHASE2 + ... 모두 시도
   ['PHASE1_QUESTS','PHASE2_QUESTS','PHASE3_QUESTS'].forEach(srcName=>{
     const src=window[srcName];
@@ -9399,6 +9403,9 @@ function spawnPhasedQuests(pid){
     src[pid].forEach(template=>{
       // 중복 방지
       if(G.quests[pid].some(q=>q&&q.id===template.id))return;
+      // 6개 한도 체크 (시나리오 퀘도 카운트 — 전체 합산)
+      const _active=G.quests[pid].filter(q=>q&&q.status!=='claimed').length;
+      if(_active>=QUEST_MAX_AVAILABLE)return;
       // 다국어 필드 처리
       const _nm=(typeof template.nm==='object')?(template.nm[_lang]||template.nm.ko||''):template.nm;
       const _desc=(typeof template.desc==='object')?(template.desc[_lang]||template.desc.ko||''):template.desc;
