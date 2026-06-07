@@ -9422,6 +9422,58 @@ function _spawnHeroQuest(heroId){
 //   중복 방지: 같은 id가 이미 존재하면 skip
 //   캐릭터별 다국어: nm/desc를 {ko, en} 객체로 받아 현재 언어 적용
 // ═══════════════════════════════════════════════════════════════════
+// ─── 거북선 설계도 진화도 팝업 ───
+// 사용자 요청 2026-06-07: Gaubuk01·02·03.png 단편 보상 표시
+// 골격(1) → 외피(2) → 완성(3) 순으로 누적 진화 도면 노출
+function showGeobukseonBlueprintModal(latestPart){
+  try{
+    const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+    if(!G.geobukseonBP)G.geobukseonBP={p1:0,p2:0,p3:0};
+    const _has1=(G.geobukseonBP.p1||0)>0;
+    const _has2=(G.geobukseonBP.p2||0)>0;
+    const _has3=(G.geobukseonBP.p3||0)>0;
+    const _total=(_has1?1:0)+(_has2?1:0)+(_has3?1:0);
+    const _ver=(window._GAME_VER?'?v='+window._GAME_VER:'');
+    const _title=_isEn?'Geobukseon Blueprint':'거북선 설계도';
+    const _subtitle=_isEn?('Fragment '+_total+'/3 acquired'):('설계도 단편 '+_total+'/3 확보');
+    const _stageNm=[_isEn?'Frame':'골격', _isEn?'Hull':'외피', _isEn?'Active Core':'활성 코어'];
+    const _stageNote=[
+      _isEn?'Basic skeletal structure — long hull and 3 module hints':'기본 골격 구조 — 긴 몸체 + 모듈 단편 3종',
+      _isEn?'Spiked outer hull formed — defensive plating':'외피 가시 돌기 형성 — 방어 외장',
+      _isEn?'Lattice armor + active core matrix — completion blueprint':'격자 외장 + 활성 코어 — 완성 도면'
+    ];
+    // 카드 3장 — 단편 미보유는 흐림 처리
+    let _cards='';
+    for(let i=1;i<=3;i++){
+      const _has=(i===1?_has1:i===2?_has2:_has3);
+      const _isLatest=(i===latestPart);
+      _cards += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px;background:'+(_has?'rgba(0,243,255,.06)':'rgba(255,255,255,.02)')+';border:1px solid '+(_isLatest?'rgba(0,243,255,.85)':_has?'rgba(0,243,255,.35)':'rgba(255,255,255,.1)')+';border-radius:10px;'+(_has?'':'opacity:.35;filter:grayscale(.85)')+';transition:all .3s;'+(_isLatest?'box-shadow:0 0 24px rgba(0,243,255,.5);transform:scale(1.04)':'')+'">'+
+        '<div style="font-size:11px;color:#a8b3c0;margin-bottom:6px">'+_stageNm[i-1]+' '+i+'/3</div>'+
+        '<img src="img/ui/Gaubuk0'+i+'.png'+_ver+'" alt="Geobukseon stage '+i+'" style="width:100%;max-width:180px;aspect-ratio:1/1;object-fit:contain;border-radius:8px;background:rgba(0,0,0,.4)" onerror="this.style.display=\'none\'">'+
+        '<div style="font-size:11px;color:#cbd5e1;margin-top:8px;text-align:center;min-height:32px;line-height:1.4">'+_stageNote[i-1]+'</div>'+
+        (_isLatest?'<div style="margin-top:6px;font-size:10px;color:#00f3ff;font-weight:bold">★ '+(_isEn?'NEW':'신규 획득')+'</div>':'')+
+      '</div>';
+    }
+    const _completion = (_total===3)?
+      ('<div style="margin-top:14px;padding:12px;background:linear-gradient(90deg,rgba(212,175,55,.15),rgba(0,243,255,.15));border:1px solid rgba(212,175,55,.5);border-radius:10px;text-align:center;color:#ffd700;font-weight:bold;font-size:13px">★ '+
+       (_isEn?'All 3 fragments collected — Geobukseon restoration possible in Phase 2/3 (Yi Sun-sin Workshop)':'★ 3단편 모두 확보 — 페이즈 2/3 이순신 공방에서 거북선 복원 가능')+
+       '</div>'):'';
+    const _modalHtml =
+      '<div style="text-align:center;margin-bottom:14px">'+
+        '<div style="font-size:18px;color:#00f3ff;font-weight:bold;margin-bottom:4px">'+_title+'</div>'+
+        '<div style="font-size:12px;color:#a8b3c0">'+_subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:10px;margin-bottom:6px">'+_cards+'</div>'+
+      _completion;
+    if(typeof openModal==='function'){
+      openModal(_title, _modalHtml, [{txt:_isEn?'Continue':'계속', cls:'btn-gold', fn:closeModal}]);
+    } else {
+      try{notify((_isEn?'Geobukseon blueprint fragment ':'거북선 설계도 단편 ')+_total+'/3','pur');}catch(e){}
+    }
+  }catch(e){console.warn('[geobukseon] modal fail',e);}
+}
+try{if(typeof window!=='undefined')window.showGeobukseonBlueprintModal=showGeobukseonBlueprintModal;}catch(e){}
+
 function spawnPhasedQuests(pid){
   if(!pid)return false;
   const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
@@ -9526,9 +9578,17 @@ function completeQuest(pid,idx){
     G.credits=(G.credits||0)+(q.rewardCr||0);
     G.voidEssence=(G.voidEssence||0)+(q.rewardVe||0);
     // 아이템 보상 인벤토리 추가 (R-시리즈는 materials, G-시리즈는 inventory)
+    // 거북선 단편(turtleBP1/2/3)은 G.geobukseonBP 별도 카운터로 추적
+    let _turtleGained=null;
     (q.rewardItems||[]).forEach(it=>{
       if(!it||!it.id)return;
-      if(/^R0[0-9]/.test(it.id)){
+      if(/^turtleBP[1-3]$/.test(it.id)){
+        if(!G.geobukseonBP)G.geobukseonBP={p1:0,p2:0,p3:0};
+        const _idx=parseInt(it.id.slice(-1));
+        const _key='p'+_idx;
+        G.geobukseonBP[_key]=(G.geobukseonBP[_key]||0)+(it.qty||1);
+        _turtleGained=_idx;
+      } else if(/^R0[0-9]/.test(it.id)){
         if(!G.materials)G.materials={};
         G.materials[it.id]=(G.materials[it.id]||0)+(it.qty||1);
       } else {
@@ -9538,6 +9598,11 @@ function completeQuest(pid,idx){
         else G.inventory.push({id:it.id,qty:it.qty||1});
       }
     });
+    // 거북선 단편 획득 시 진화도 팝업 (컷씬 끝난 후 1.6초 딜레이)
+    if(_turtleGained && typeof showGeobukseonBlueprintModal==='function'){
+      const _delay = q.cutscene_post ? 2400 : 600;
+      setTimeout(()=>showGeobukseonBlueprintModal(_turtleGained), _delay);
+    }
     // 스토리 플래그
     if(!G._storyFlags)G._storyFlags={};
     (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
