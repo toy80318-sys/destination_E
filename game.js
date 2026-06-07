@@ -12228,16 +12228,20 @@ function _markShipDiscovered(ship){
   if(!G.discoveredShips)G.discoveredShips=[];
   _shipDiscoveryIds(ship).forEach(id=>{if(id&&G.discoveredShips.indexOf(id)<0)G.discoveredShips.push(id);});
 }
-// 발견된 함선 id 세트 — "실제 보유했던(현재+과거)" 함선만 인정 (사용자 요청: 미획득 함선 비노출)
-//   ※ 이전 로직은 방문 행성 상점에 입고된 함선까지 노출 → 시작부터 도감이 가득 차는 문제 → 폐지.
+// 발견된 함선 id 세트 — "실제로 본·보유한 함선"만 노출 (사용자 요청 2026-06-07 재확정)
+//   포함:
+//     1) 현재 보유 (G.fleet + G.reserveFleet)
+//     2) 영구 발견 기록 (G.discoveredShips) — 상점에서 본 함선·과거 보유 함선
+//   미포함:
+//     · 미발견 신화·전설·대형 함선 (자동 노출 차단)
+//     · 보스 전용함(URSA·BLACKFALCON)도 나포 전까지 비노출
 function getDiscoveredShipIds(){
-  // 사용자 요청: 보스 전용함(우르사·블랙팔콘)만 숨기고 나머지 함선은 도감에 모두 노출.
-  //   (보스함은 나포해 보유한 경우에만 노출)
   const seen=new Set();
-  const _BOSS_SHIP=new Set(['URSA','BLACKFALCON']);
-  (typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[]).forEach(s=>{if(s&&!_BOSS_SHIP.has(s.id))seen.add(s.id);});
-  // 보유(나포 포함)·영구 발견 기록은 보스함이라도 노출
-  [...(G.fleet||[]),...(G.reserveFleet||[])].forEach(s=>{if(s)_shipDiscoveryIds(s).forEach(id=>seen.add(id));});
+  // 1) 현재 보유 함선
+  [...(G.fleet||[]),...(G.reserveFleet||[])].forEach(s=>{
+    if(s)_shipDiscoveryIds(s).forEach(id=>seen.add(id));
+  });
+  // 2) 영구 발견 기록 (상점에서 본 함선·과거 보유)
   (G.discoveredShips||[]).forEach(id=>seen.add(id));
   return seen;
 }
