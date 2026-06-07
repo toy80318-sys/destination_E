@@ -11164,7 +11164,10 @@ function renderQuestTab(body){
   myQ.sort((a,b)=>(_stOrder[a.status]||9)-(_stOrder[b.status]||9));
   // 타입별 정렬: 제독 먼저. EN/KO 양쪽 라벨 매칭 (i18n 적용된 라벨 또는 한국어 원본)
   const _adminN=I18N.t('quest.npc.admiral'),_brokerN=I18N.t('quest.npc.broker');
-  const _isAdm=q=>q.npc===_adminN||q.npc==='제독'||q.type==='void_boss';
+  // 사용자 보고 2026-06-07: 시나리오 퀘스트(story_quest)·영웅 퀘(hero_quest)가
+  //   npc='백구' 등으로 제독·브로커 어디에도 안 잡혀 화면에 표시 안 됨 → 제독 섹션에 합류
+  //   (보라색 카드 스타일로 시각 구분되므로 혼동 없음)
+  const _isAdm=q=>q.npc===_adminN||q.npc==='제독'||q.type==='void_boss'||q.type==='story_quest'||q.type==='hero_quest';
   const _isBrk=q=>q.npc===_brokerN||q.npc==='브로커';
   availQ.sort((a,b)=>((_isAdm(a)?0:1)-(_isAdm(b)?0:1)));
   // 히든 보스(void_boss)는 npc='???'라 제독/브로커 어디에도 안 잡힘 → 제독 섹션에 합쳐서 노출
@@ -16387,9 +16390,10 @@ function showAcquisitionReport(opts){
   try{AudioMgr.playSfx(opts.sfx||'notify',{cooldown:80});}catch(e){}
   const escapeHtml=s=>String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
   // 항목 수에 따른 컴팩트 모드: 5개 이상이면 더 빽빽하게, 2열 그리드 사용
+  // 사용자 요청 2026-06-07: 이미지 2배 확대 (40/48 → 80/96)
   const _many=items.length>=5;
-  const _icSz=_many?40:48;
-  const _icFont=_many?22:28;
+  const _icSz=_many?80:96;
+  const _icFont=_many?44:56;
   const _padRow=_many?'5px 8px':'7px 9px';
   const _gapRow=_many?'8px':'10px';
   const _nmFs=_many?12:13;
@@ -17833,11 +17837,16 @@ function _finishCombat(){
       const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
       // 크레딧 — credit.png 아이콘
       items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('report.creditsNm'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
-      if(_repGained>0)items.push({ic:'⭐',nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
+      // 명성 — reputation.png 아이콘 (사용자가 추가할 파일, 없으면 ⭐ 폴백)
+      if(_repGained>0)items.push({ic:'⭐',img:'img/ui/reputation.png'+_ver,nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
       const enemyCount=_enemyCountSnap;
       // 격파 적함 — 적군 종류에 따른 해적선 이미지
-      const _enemyImg=combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
-                     :combatState.isPirate?('img/combat/enemies/PIRATE_M.png'+_ver)
+      //   잔해 합류 전투(_debrisJoinCount>0 또는 _isDebris): DBRP_M.png
+      //   치크스: CHIX_M.png
+      //   일반 해적: PIRATE_M.png
+      const _isDebrisCombat=(combatState._debrisJoinCount||0)>0||combatState.planetDef?.id==='DEBRIS_PIRATE'||combatState.planetDef?._isDebris;
+      const _enemyImg=_isDebrisCombat?('img/combat/enemies/DBRP_M.png'+_ver)
+                     :combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
                      :('img/combat/enemies/PIRATE_M.png'+_ver);
       items.push({ic:'☠️',img:_enemyImg,nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
       _capturedShips.forEach(s=>{
