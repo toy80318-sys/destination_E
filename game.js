@@ -3671,10 +3671,11 @@ function renderTradeTab(body){
         <div style="font-size:10px;color:${pC}">${profit>=0?'+':''}₡${profit.toLocaleString()}</div>
         ${avgNote}`;
     const canSellMore=slot.qty>1;
-    return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;display:flex;flex-direction:row;overflow:hidden;transition:border-color .2s;min-height:126px">
-      <div style="background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;position:relative;width:70px;flex-shrink:0;align-self:stretch">
-        ${imgOrEmoji(commImgSrc(slot.id),slotIc,52,52,'border-radius:6px;object-fit:cover','comm_'+slot.id)}
-        <span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:9px;padding:1px 0">×${slot.qty}</span>
+    // 사용자 요청 2026-06-07: 이미지 2배 (52→104, 컨테이너 70→140), 카드 min-height 126→200
+    return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;display:flex;flex-direction:row;overflow:hidden;transition:border-color .2s;min-height:200px">
+      <div style="background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:10px;position:relative;width:140px;flex-shrink:0;align-self:stretch">
+        ${imgOrEmoji(commImgSrc(slot.id),slotIc,104,104,'border-radius:8px;object-fit:cover','comm_'+slot.id)}
+        <span style="position:absolute;bottom:4px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:11px;padding:2px 0;font-weight:bold">×${slot.qty}</span>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
         <div>
@@ -3694,11 +3695,11 @@ function renderTradeTab(body){
   const _matCargo=_withIdx.filter(x=>x.s.material);
   const _normalHTML=_normalCargo.length>0?`<div style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px;margin-bottom:10px">
     <div style="color:var(--cyan);font-size:13px;font-weight:bold;margin-bottom:8px">${I18N.t('shop.cargoOwnedTitle')} <span style="color:var(--dim);font-size:11px;font-weight:normal">${I18N.t('shop.cargoOwnedHint')}</span></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${_normalCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${_normalCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
   </div>`:'';
   const _matHTML=_matCargo.length>0?`<div style="background:rgba(204,102,255,.05);border:1px solid rgba(204,102,255,.3);border-radius:8px;padding:10px;margin-bottom:10px">
     <div style="color:#cc88ff;font-size:13px;font-weight:bold;margin-bottom:8px">${I18N.t('shop.matOwnedTitle')} <span style="color:var(--dim);font-size:11px;font-weight:normal">${I18N.t('shop.matOwnedHint')}</span></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${_matCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${_matCargo.map(x=>_renderCargoCard(x.s,x.i)).join('')}</div>
   </div>`:'';
   const cargoHTML=(G.cargo.length>0)?(_normalHTML+_matHTML):`<div style="background:var(--card);border:1px dashed var(--bdr);border-radius:8px;padding:14px;margin-bottom:14px;text-align:center;color:var(--dim);font-size:14px">${I18N.t('ui.cargoEmpty')}</div>`;
 
@@ -3759,18 +3760,19 @@ function renderTradeTab(body){
             const _lockBadge=_pLock?`<div style="font-size:10px;color:var(--purple);font-weight:bold;margin-top:1px">🔒 ${c.buy>=10000?I18N.t('ui.lockPowerHigh'):I18N.t('ui.lockPowerMid')}</div>`:'';
             const isOrigin=c.f===pd?.f;
             const marcoBadge=hasMarco?`<div style="font-size:10px;color:var(--gold);margin-top:2px">${I18N.t('ui.maxSellPrice',{p:Math.floor(c.maxSell*1.1).toLocaleString()})}</div>`:`<div style="font-size:10px;color:var(--dim);margin-top:2px">${I18N.t('ui.maxSellRaw',{p:(c.maxSell||0).toLocaleString()})}</div>`;
+            // 사용자 요청 2026-06-07: 이미지 2배 + min-height 확대
             return`<div style="
               background:var(--card);
               border:1px solid ${isOrigin?'rgba(0,243,255,.4)':'var(--bdr)'};
               border-radius:10px;display:flex;flex-direction:row;overflow:hidden;
               transition:border-color .2s;
-              min-height:126px;
+              min-height:200px;
               ${canBuy?'':'opacity:.55'}
             " onmouseover="this.style.borderColor='${isOrigin?'rgba(0,243,255,.7)':'rgba(0,243,255,.3)'}'" onmouseout="this.style.borderColor='${isOrigin?'rgba(0,243,255,.4)':'var(--bdr)'}'">
-              <!-- 이미지 영역 (좌측) -->
-              <div style="background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:8px;position:relative;width:70px;flex-shrink:0;align-self:stretch">
-                ${imgOrEmoji(commImgSrc(c.id),c.ic||'📦',52,52,'border-radius:6px;object-fit:cover','comm_'+c.id)}
-                ${isOrigin?`<span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:9px;padding:1px 0">${I18N.t('ui.origin')}</span>`:''}
+              <!-- 이미지 영역 (좌측) — 104×104 (2배) -->
+              <div style="background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:10px;position:relative;width:140px;flex-shrink:0;align-self:stretch">
+                ${imgOrEmoji(commImgSrc(c.id),c.ic||'📦',104,104,'border-radius:8px;object-fit:cover','comm_'+c.id)}
+                ${isOrigin?`<span style="position:absolute;bottom:4px;left:0;right:0;text-align:center;background:rgba(0,243,255,.25);color:var(--cyan);font-size:11px;padding:2px 0;font-weight:bold">${I18N.t('ui.origin')}</span>`:''}
               </div>
               <!-- 정보+버튼 영역 (우측) -->
               <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
@@ -3810,18 +3812,19 @@ function renderTradeTab(body){
               const _matLock=_matLockBasic||_matLockHigh;
               const canBuyMat=G.credits>=c.buy&&qty>0&&!_matLock;
               const _matLockBadge=_matLock?`<div style="font-size:10px;color:var(--purple);font-weight:bold;margin-top:1px">🔒 ${_matLockBasic?I18N.t('ui.matsBasic'):c.buy>=10000?I18N.t('ui.lockPowerHigh'):I18N.t('ui.lockPowerMid')}</div>`:'';
+              // 사용자 요청 2026-06-07: 이미지 2배 + min-height 확대
               return`<div style="
                 background:rgba(212,175,55,.04);
                 border:1px solid ${canBuyMat?'rgba(212,175,55,.4)':'rgba(212,175,55,.15)'};
                 border-radius:10px;display:flex;flex-direction:row;overflow:hidden;
                 transition:border-color .2s;
-                min-height:126px;
+                min-height:200px;
                 ${canBuyMat?'':'opacity:.5'}
               " onmouseover="this.style.borderColor='rgba(212,175,55,.8)'" onmouseout="this.style.borderColor='${canBuyMat?'rgba(212,175,55,.4)':'rgba(212,175,55,.15)'}'">
-                <!-- 이미지 영역 (좌측) -->
-                <div style="background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;padding:8px;position:relative;width:70px;flex-shrink:0;align-self:stretch">
-                  ${imgOrEmoji(commImgSrc(c.id),c.ic||'💎',52,52,'border-radius:6px;object-fit:cover','mat_'+c.id)}
-                  <span style="position:absolute;bottom:3px;left:0;right:0;text-align:center;background:rgba(212,175,55,.25);color:var(--gold);font-size:9px;padding:1px 0">${I18N.t('ui.matsBadge')}</span>
+                <!-- 이미지 영역 (좌측) — 104×104 (2배) -->
+                <div style="background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;padding:10px;position:relative;width:140px;flex-shrink:0;align-self:stretch">
+                  ${imgOrEmoji(commImgSrc(c.id),c.ic||'💎',104,104,'border-radius:8px;object-fit:cover','mat_'+c.id)}
+                  <span style="position:absolute;bottom:4px;left:0;right:0;text-align:center;background:rgba(212,175,55,.25);color:var(--gold);font-size:11px;padding:2px 0;font-weight:bold">${I18N.t('ui.matsBadge')}</span>
                 </div>
                 <!-- 정보+버튼 영역 (우측) -->
                 <div style="flex:1;display:flex;flex-direction:column;min-width:0;padding:7px 9px;justify-content:space-between">
@@ -3847,10 +3850,10 @@ function renderTradeTab(body){
               </div>`;
             }).join('');
 
-          // 사용자 요청: 특산물·재료 리스트 각각 1행 3열 고정 표시 (헤더는 그리드 밖에 배치)
-          return`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${normalCards}</div>
+          // 사용자 요청 2026-06-07: 1행 2열로 변경 (이미지 2배 적용에 맞춰)
+          return`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${normalCards}</div>
             ${matHeader}
-            ${matCards?`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${matCards}</div>`:''}`;
+            ${matCards?`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${matCards}</div>`:''}`;
         })()
       }
     </div>
