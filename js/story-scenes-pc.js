@@ -9,19 +9,28 @@
   if(typeof window==='undefined') return;
   if(window.STORY_SCENES_PC) return;  // 중복 로드 방지
 
-  // ─── 변수 치환 (시나리오 §0) ───
+  // ─── 변수 치환 (시나리오 §0) — 언어별 기본값 적용 ───
+  function _curLang(){
+    return (window.I18N && window.I18N.getLang) ? window.I18N.getLang() : 'ko';
+  }
   function rep(s){
     if(typeof s!=='string') return s;
     var p = (window.G && window.G.profile) || {};
+    var isEn = _curLang() === 'en';
+    var defCmd     = isEn ? 'Commander' : '사령관';
+    var defShip    = isEn ? 'Mustang' : '머스탱';
+    var defFlag    = isEn ? 'Great Hwarang' : '위대한 화랑';
+    var defCompany = isEn ? 'Big Picture Space' : '빅 픽처 스페이스';
+    var flagSfx    = isEn ? ' (Geobukseon-class)' : '(거북선급)';
     return s
-      .replace(/\{사령관\}/g, p.name || '사령관')
-      .replace(/\{commander\}/gi, p.name || 'Commander')
-      .replace(/\{함선\}/g, p.ship || '머스탱')
-      .replace(/\{ship\}/gi, p.ship || 'Mustang')
-      .replace(/\{기함\}/g, p.ship ? (p.ship + '(거북선급)') : '위대한 화랑')
-      .replace(/\{flagship\}/gi, p.ship ? (p.ship + ' (Geobukseon-class)') : 'Great Hwarang')
-      .replace(/\{회사\}/g, p.company || '빅 픽처 스페이스')
-      .replace(/\{company\}/gi, p.company || 'Big Picture Space');
+      .replace(/\{사령관\}/g, p.name || defCmd)
+      .replace(/\{commander\}/gi, p.name || defCmd)
+      .replace(/\{함선\}/g, p.ship || defShip)
+      .replace(/\{ship\}/gi, p.ship || defShip)
+      .replace(/\{기함\}/g, p.ship ? (p.ship + flagSfx) : defFlag)
+      .replace(/\{flagship\}/gi, p.ship ? (p.ship + flagSfx) : defFlag)
+      .replace(/\{회사\}/g, p.company || defCompany)
+      .replace(/\{company\}/gi, p.company || defCompany);
   }
 
   // ─── 캐릭터 이미지 경로 ───
@@ -335,7 +344,9 @@
     H08: H08_KO_dyn
   };
 
-  // 영문 — 핵심 영웅(H01)만 우선 작성, 나머지는 한국어로 폴백
+  // ═══════════════════════════════════════════════════════════════════
+  // 영문 대사 (8영웅 전체 — 한글판과 1:1 대응)
+  // ═══════════════════════════════════════════════════════════════════
   var H01_EN = [
     {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'…One hundred years. I slept for a century.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Admiral Yi.'},
@@ -347,7 +358,97 @@
     {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'Different words. You did not say "we shall," but "we must." A more honest answer. I will join you.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'{사령관}. I do not fight unnecessary battles. Only wars I can win.'}
   ];
-  var HERO_RECRUIT_SCENES_EN = { H01: H01_EN };
+
+  // H04 — 동적(이순신 영입 여부에 따라 분기)
+  function H04_EN_dyn(){
+    var hasYi = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H01') >= 0);
+    var hasMarco = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H08') >= 0);
+    var lines = [
+      {char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'Поехали! Let\'s go! …Wait, the war is still on?'},
+      {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Yes. One hundred years have passed.'},
+      {char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'A century? Then it\'s been over 170 years since my first spaceflight. Time really is strange.'},
+      {char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'But the universe must still be beautiful.'}
+    ];
+    if(hasYi){
+      lines.push({char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'Admiral Yi Sun-sin! I studied your Battle of Hansando. Small craft are my specialty.'});
+    } else if(hasMarco){
+      lines.push({char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'Marco Polo himself! Two new comrades in a single century — what an honor. Small craft are my specialty — expect great things.'});
+    } else {
+      lines.push({char:'hero04', name:'Yuri Gagarin', color:'#66ddff', text:'{사령관}. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I\'ll take you anywhere.'});
+    }
+    return lines;
+  }
+
+  // H08 — 동적(이순신 영입 여부에 따라 분기, 첫 영웅 경로 대응)
+  function H08_EN_dyn(){
+    var hasYi = !!(window.G && window.G.heroes && window.G.heroes.indexOf('H01') >= 0);
+    var lines = [
+      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Ha. A hundred years I waited — for a sight as satisfying as this.'},
+      {char:'commander', name:'{사령관}', color:'#00f3ff', text:'And you are…?'},
+      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Marco Polo. Genesis Protocol H08.'},
+      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'The Cheeks held me captive trying to extract trade route data. I refused, of course. I have never been forced into a deal.'}
+    ];
+    if(hasYi){
+      lines.push({char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Ah, the Admiral recognizes me. Good — let us make a deal. All my routes, all my networks — yours.'});
+    } else {
+      lines.push({char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Commander. So you\'re the master of this ship? I like the look in your eyes. Let\'s make a deal — all my routes, all my networks, yours.'});
+    }
+    lines.push({char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'In exchange — take me back to Earth.'});
+    return lines;
+  }
+
+  var H05_EN = [
+    {char:'hero05', name:'Horatio Nelson', color:'#aaffaa', text:'…Yi Sun-sin. Surely it can\'t be you?'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#ffd700', text:'It is. Nelson. A long time.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#aaffaa', text:'Two centuries apart, two continents removed… and now bridged by a single handshake.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#aaffaa', text:'England expects— no. Now Earth expects. Let us begin, {사령관}.'}
+  ];
+
+  var H02_EN = [
+    {char:'hero02', name:'Jang Yeong-sil', color:'#9ee7ff', text:'A rescue? My captors stole my blueprints a century ago. Without them, what good is a rescue?'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'I found them. I have one of the blueprint volumes.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#9ee7ff', text:'…!'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#9ee7ff', text:'I must complete it with my own hands. No one alive can carry on the spirit of Na Dae-yong, my dear friend and the original architect of the Geobukseon.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#9ee7ff', text:'A turtle ship built by others will not do. I will restore it myself!'}
+  ];
+
+  var H06_EN = [
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'So you came. As I predicted.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Predicted?'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'I calculated this moment a hundred years ago. That you would arrive at these coordinates — at this exact hour. Margin of error: 0.3 percent.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'And Baekgu — Dr. Lee Hwi-so and I designed him. Through a reverse-time transmission equation.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'A location even the Cheeks could not find — Proxima b, perturbed by the P27 Rift. {사령관}\'s awakening point.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Commander… now I understand. I am a program designed to wait a hundred years — for you.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Because you are the only one who carries both at once. Wrath, and mercy.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Wrath to bring down the Cheeks. Mercy to understand them. Wrath alone only builds another Ursa Major.'}
+  ];
+
+  var H07_EN = [
+    {char:'hero07', name:'Nikola Tesla', color:'#66ffff', text:'Don\'t come in! I\'m in the middle of fine-tuning!'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The team with 100,000 credits in trade record has arrived.'},
+    {char:'hero07', name:'Nikola Tesla', color:'#66ffff', text:'Really? Let me check. Data scan. …Yes. Exactly 100,247 credits. Excellent.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#9ee7ff', text:'(Inspecting the coil — catches a 0.3mm pin offset with his bare eye) A thousand years ago, I did it just like this.'},
+    {char:'hero07', name:'Nikola Tesla', color:'#66ffff', text:'It\'s done! Complete after a hundred years! Now we can go!'}
+  ];
+
+  var H03_EN = [
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff6644', text:'One thousand seven hundred years. My land returns to my hand.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'King Gwanggaeto.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff6644', text:'{사령관}, you said? I have waited for one who would reclaim my land. Speak — what is your wish?'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff6644', text:'Would a conqueror of Goguryeo let Earth remain conquered? I shall lead the vanguard.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff6644', text:'{사령관} — the final command is yours.'}
+  ];
+
+  var HERO_RECRUIT_SCENES_EN = {
+    H01: H01_EN,
+    H02: H02_EN,
+    H03: H03_EN,
+    H04: H04_EN_dyn,
+    H05: H05_EN,
+    H06: H06_EN,
+    H07: H07_EN,
+    H08: H08_EN_dyn
+  };
 
   function getScenes(hid){
     var lang = (window.I18N && window.I18N.getLang) ? window.I18N.getLang() : 'ko';
