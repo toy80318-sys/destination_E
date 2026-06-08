@@ -2145,8 +2145,10 @@
   window.isWithinHops=isWithinHops;
   window.hasLegendaryEngineOnAny=hasLegendaryEngineOnAny;
   window.startAsteroidBeltMinigame=startAsteroidBeltMinigame;
-  window.showHostilePlanetBriefing=showHostilePlanetBriefing;
-  window._buildHostilePlanetEnemies=_buildHostilePlanetEnemies;
+  // 사용자 버그 보고 2026-06-08: showHostilePlanetBriefing 와 _buildHostilePlanetEnemies 는
+  //   game.js 에 정의돼 있어 starmap IIFE 내 식별자로 미해결. 노출 시도가 ReferenceError 를
+  //   던져 이후의 window 할당 + console.log 가 실행 안 되던 문제. → 라인 제거.
+  //   (해당 두 함수는 game.js 의 글로벌 함수 선언이라 window 에 자동 노출됨)
   window.rotate3D=rotate3D;
   window.project3D=project3D;
   window.worldToScreen=worldToScreen;
