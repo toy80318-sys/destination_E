@@ -29,6 +29,29 @@ function _relaxQty(qty, objType){
 function spawnPhasedQuests(pid){
   if(!pid||!window.G||!window.G.quests)return false;
   const G=window.G;
+  // 사용자 보고 2026-06-08: 이전 버그로 인트로가 seen 마킹만 되고 실제 재생 안 된 경우
+  // 다시 못 봄. v2 마이그레이션 — _phasedIntroSeen 안의 항목 중 G._scenesSeen 에 대응
+  // 'scene_*' 가 없는 것(=실제로 본 적 없음)은 마킹 해제.
+  if(G._phasedIntroSeen && !G._phasedIntroSeenV2){
+    var _scenesSeen=G._scenesSeen||{};
+    var _intros=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
+    Object.keys(G._phasedIntroSeen).forEach(function(key){
+      // key = 'intro_<planetId>' 형태
+      if(!key.startsWith('intro_'))return;
+      var planetId=key.substring(6);
+      var sceneId=null;
+      for(var i=0;i<_intros.length;i++){
+        if(_intros[i] && _intros[i][planetId]){sceneId=_intros[i][planetId];break;}
+      }
+      if(sceneId && !_scenesSeen['scene_'+sceneId]){
+        // 실제로 컷씬을 본 적이 없음 → seen 마킹 해제 (재생 보장)
+        delete G._phasedIntroSeen[key];
+        console.log('[story-quest-engine] v2 migration — restored unseen intro:', key);
+      }
+    });
+    G._phasedIntroSeenV2=true;
+    try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+  }
   const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
   const _lang=_isEn?'en':'ko';
   const QUEST_MAX=(typeof QUEST_MAX_AVAILABLE!=='undefined')?QUEST_MAX_AVAILABLE:6;
@@ -94,6 +117,9 @@ function spawnPhasedQuests(pid){
     try{if(G._currentHubTab==='quest' && typeof rerenderTab==='function' && typeof renderQuestTab==='function')rerenderTab(renderQuestTab);}catch(e){}
   }
   // 행성 첫 도착 인트로 컷씬 자동 재생
+  // 사용자 보고 2026-06-08: 컷씬이 안 나오는 문제 — 인트로를 seen 으로 마킹한 뒤
+  // 800ms 후 triggerScene 호출하는 순서라서, 마킹 직후 어떤 이유로 트리거가
+  // 실패하면 영구히 안 나옴. → 실제로 onDone 콜백이 호출됐을 때만 seen 마킹.
   if(!G._phasedIntroSeen)G._phasedIntroSeen={};
   const _introKey='intro_'+pid;
   if(!G._phasedIntroSeen[_introKey]){
@@ -102,10 +128,42 @@ function spawnPhasedQuests(pid){
     for(let i=0;i<_introMaps.length;i++){
       if(_introMaps[i] && _introMaps[i][pid]){ _introSceneId=_introMaps[i][pid]; break; }
     }
-    if(_introSceneId && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
-      G._phasedIntroSeen[_introKey]=true;
-      try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
-      setTimeout(()=>window.STORY_SCENES_PC.triggerScene(_introSceneId), 800);
+    if(_introSceneId){
+      console.log('[story-quest-engine] intro scene queued:', _introSceneId, 'for', pid);
+      if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
+        setTimeout(()=>{
+          try{
+            window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
+              // 실제로 컷씬이 끝났을 때만 seen 마킹 (사용자가 봤음을 확실히 보장)
+              G._phasedIntroSeen[_introKey]=true;
+              try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+            });
+          }catch(e){
+            console.error('[story-quest-engine] intro trigger failed:', _introSceneId, e);
+          }
+        }, 800);
+      } else {
+        // STORY_SCENES_PC 가 아직 로드되지 않은 경우 — 폴링 재시도 (최대 5초)
+        var _retries=0;
+        var _retryTimer=setInterval(function(){
+          _retries++;
+          if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
+            clearInterval(_retryTimer);
+            console.log('[story-quest-engine] STORY_SCENES_PC ready after',_retries*200,'ms — triggering',_introSceneId);
+            try{
+              window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
+                G._phasedIntroSeen[_introKey]=true;
+                try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+              });
+            }catch(e){
+              console.error('[story-quest-engine] retry trigger failed:', e);
+            }
+          } else if(_retries>=25){  // 25 × 200ms = 5초 후 포기
+            clearInterval(_retryTimer);
+            console.warn('[story-quest-engine] STORY_SCENES_PC never loaded — intro skipped:', _introSceneId);
+          }
+        }, 200);
+      }
     }
   }
   return added>0;
