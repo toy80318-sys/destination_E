@@ -60,6 +60,12 @@
     }
     return 'commander_' + gender + idx;
   }
+  // HD 파일명 매핑 — img/chars/H/ 폴더의 실제 파일명이 게임 키와 다른 경우
+  // (사용자 업로드 2026-06-07: baekgu1 의 HD 원본이 baekgu002.png 로 저장됨)
+  var _HD_FILENAME_MAP = {
+    'baekgu1': 'baekgu002',
+    'baekgu1_surprise': 'baekgu_surprise'
+  };
   function _charImgPath(key){
     var resolvedKey = key || 'system';
     // commander → 성별·외형 자동 해석
@@ -70,11 +76,11 @@
     if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(resolvedKey)){
       return 'img/quests/' + resolvedKey + '.png' + _ver();
     }
-    // HD 우선 (opt-in)
-    if(window.STORY_USE_HD === true){
-      return 'img/chars-hd/' + resolvedKey + '.png' + _ver();
-    }
-    return 'img/chars/' + resolvedKey + '.png' + _ver();
+    // 사용자 요청 2026-06-08: 모든 캐릭터(사령관·백구·영웅·NPC) HD 폴더(img/chars/H/) 우선 시도
+    //   · 영웅 HD 이미지를 향후 H/ 폴더에 추가하면 자동 활용 (현재 hero01~08 미존재 → onerror 폴백)
+    //   · onerror 체인: img/chars/H/ → img/chars-hd/ → img/chars/ → system.png
+    var hdName = _HD_FILENAME_MAP[resolvedKey] || resolvedKey;
+    return 'img/chars/H/' + hdName + '.png' + _ver();
   }
 
   // ─── 대화 팝업 UI ───
@@ -153,11 +159,17 @@
       'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
     ].join(';');
     // 실패 시 fallback 체인:
-    //   chars-hd/ → chars/ → chars/system.png (Phase NPC는 별도 quests/ 폴백 — 코드에서 직접 처리)
+    //   chars/H/ → chars-hd/ → chars/ → chars/system.png
+    //   (Phase NPC는 별도 quests/ 폴백 — 코드에서 직접 처리)
     charImg.onerror = function(){
       var src = this.src;
       var key = this.dataset.charKey || 'system';
-      // 1) HD 실패 → chars/ 시도
+      // 1) HD(H/) 실패 → chars-hd/ 또는 chars/ 시도
+      if(src.indexOf('/chars/H/') > -1){
+        // 우선 chars-hd/ 시도 (영웅 등 다른 HD 자산)
+        this.src = 'img/chars-hd/' + key + '.png' + _ver();
+        return;
+      }
       if(src.indexOf('chars-hd') > -1){
         this.src = 'img/chars/' + key + '.png' + _ver();
         return;
@@ -243,22 +255,20 @@
       if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
       charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
-      // 사용자 보고 2026-06-07: 패널만 커지고 원본 이미지(200×200)는 작게 보이는 문제
-      // → 영역 50%로 축소 + 이미지 강제 확대(원본 200px을 90vh로 늘려 패널을 채움)
-      var _isLargeChar = /^commander_[mf][0-3]$/.test(_charKey) || /^baekgu/.test(_charKey);
-      charPanel.style.flex = _isLargeChar ? '0 0 50%' : '0 0 33.33%';
-      charPanel.style.padding = _isLargeChar ? '12px' : '20px';
-      // 큰 캐릭터: width:100% + max-height로 강제 확대 (200×200 원본을 화면 높이만큼 늘림)
-      // image-rendering: pixelated 대신 auto로 부드럽게 (브라우저가 보간)
-      charImg.style.width = _isLargeChar ? '100%' : 'auto';
-      charImg.style.maxWidth = _isLargeChar ? 'none' : '100%';
-      charImg.style.maxHeight = _isLargeChar ? '92vh' : '96vh';
-      charImg.style.imageRendering = _isLargeChar ? 'auto' : 'auto';
-      charImg.style.filter = _isLargeChar
-        ? 'drop-shadow(0 0 48px rgba(0,243,255,0.6))'
-        : 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';
+      // 사용자 요청 2026-06-08 (1.png 기준): 모든 캐릭터 동일한 컴팩트 구조 + HD 해상도 보호
+      //   · 패널 폭 ~37%, 이미지 width:auto + object-fit:contain (종횡비 보존)
+      //   · max-height:88vh — HD 1024px 원본을 다운샘플링하여 선명 표시
+      charPanel.style.flex = '0 0 37%';
+      charPanel.style.padding = '18px';
+      charImg.style.width = 'auto';
+      charImg.style.height = 'auto';
+      charImg.style.maxWidth = '100%';
+      charImg.style.maxHeight = '88vh';
+      charImg.style.objectFit = 'contain';
+      charImg.style.imageRendering = 'high-quality';
+      charImg.style.filter = 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';
       console.log('[STORY_SCENES_PC] scene', sceneIdx+1, '/', scenes.length,
-                  '· char:', s.char, '→ resolved:', _charKey, '· large:', _isLargeChar);
+                  '· char:', s.char, '→ resolved:', _charKey);
       charImg.alt = rep(s.name || '');
       nameBox.textContent = rep(s.name || '');
       nameBox.style.color = s.color || '#00f3ff';
@@ -649,14 +659,14 @@
   function _getPhaseScene(sceneId){
     var lang = _curLang();
     var sources = lang === 'en'
-      ? [window.PHASE1_CUTSCENES_EN, window.PHASE2_CUTSCENES_EN, window.PHASE3_CUTSCENES_EN]
-      : [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO];
+      ? [window.PHASE1_CUTSCENES_EN, window.PHASE2_CUTSCENES_EN, window.PHASE3_CUTSCENES_EN, window.PHASE4_CUTSCENES_EN, window.PHASE5_CUTSCENES_EN, window.PHASE6_CUTSCENES_EN]
+      : [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO, window.PHASE4_CUTSCENES_KO, window.PHASE5_CUTSCENES_KO, window.PHASE6_CUTSCENES_KO];
     for(var i=0;i<sources.length;i++){
       if(sources[i] && sources[i][sceneId]) return sources[i][sceneId];
     }
     // EN 미존재 시 KO 폴백
     if(lang === 'en'){
-      var fallback = [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO];
+      var fallback = [window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO, window.PHASE4_CUTSCENES_KO, window.PHASE5_CUTSCENES_KO, window.PHASE6_CUTSCENES_KO];
       for(var j=0;j<fallback.length;j++){
         if(fallback[j] && fallback[j][sceneId]) return fallback[j][sceneId];
       }

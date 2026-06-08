@@ -23,7 +23,8 @@
       "404.html",
       "screen.png",
       "20260523_162049.png",
-      "img/chars-hd/**"
+      "img/chars-hd/**",
+      "img/chars/H/**"
     ],
     "rewrites": [
       {

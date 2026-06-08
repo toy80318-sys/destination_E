@@ -346,7 +346,7 @@ window.addEventListener('desktop-save-restored',function(e){
 </div><!-- /#game-stage -->
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
-<script>window._GAME_VER='20260607.web_v1.0.0-beta.74';</script>
+<script>window._GAME_VER='20260608.web_v1.0.0-beta.81';</script>
 <!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
 <script src="js/i18n.js?v=20260607142"></script>
 <script src="js/data/i18n_dict.js?v=20260607142"></script>
@@ -359,10 +359,17 @@ window.addEventListener('desktop-save-restored',function(e){
 <script src="js/data/cargo.js?v=20260607142"></script>
 <script src="js/data/crafting.js?v=20260607142"></script>
 <script src="js/data/ships.js?v=20260607142"></script>
-<!-- ═══ PHASE 시나리오 퀘스트 데이터 (Phase 1·2·3 도입) ═══ -->
+<!-- ═══ PHASE 시나리오 퀘스트 데이터 (Phase 1·2·3·4·5·6) ═══ -->
 <script src="js/data/phase1_quests.js?v=20260607142"></script>
 <script src="js/data/phase2_quests.js?v=20260607142"></script>
 <script src="js/data/phase3_quests.js?v=20260607142"></script>
+<script src="js/data/phase4_quests.js?v=20260607142"></script>
+<script src="js/data/phase5_quests.js?v=20260607142"></script>
+<script src="js/data/phase6_quests.js?v=20260607142"></script>
+<!-- ═══ PHASE 시나리오 퀘스트 엔진 (spawnPhasedQuests + tickStoryQuests) ═══ -->
+<script src="js/story-quest-engine.js?v=20260607142"></script>
+<!-- ═══ 치트 메뉴 (디버그 자원 지급) ═══ -->
+<script src="js/cheat-menu.js?v=20260607142"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>

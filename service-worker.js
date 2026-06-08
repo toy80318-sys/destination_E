@@ -67,7 +67,7 @@ self.addEventListener('activate', (event) => {
 
 // ── 요청 가로채기 ──────────────────────────────────────────────────────
 // · 외부 도메인 (Firebase 등): 가로채지 않음
-// · HD 캐릭터 이미지 (PC 전용 img/chars-hd/*): 가로채지 않음
+// · HD 캐릭터 이미지 (PC 전용 img/chars-hd/*, img/chars/H/*): 가로채지 않음
 // · HTML/JS/CSS/JSON: CORE_CACHE network-first
 // · 이미지/오디오/폰트: ASSETS_CACHE cache-first + LRU 200 cap
 self.addEventListener('fetch', (event) => {
@@ -77,6 +77,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
   if (url.pathname.includes('/chars-hd/')) return;
+  if (url.pathname.includes('/img/chars/H/')) return;
 
   const dest = req.destination;
   const isAsset = ['image', 'audio', 'video', 'font'].includes(dest);

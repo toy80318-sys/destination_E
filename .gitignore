@@ -8,8 +8,19 @@ img_backup/
 .firebase/
 # 로컬 시나리오 문서
 Doc/
-# 임시 업로드
+# 임시 업로드 (사용자 참조용 스크린샷)
 en.png
+/1.png
+/2.png
+/3.png
+/M.png
+/m.png
+/BG.png
+/Cut.png
+/img.png
+/re.png
+/BP01.png
+/HN01.png
 # 로컬 UI 검증 스크린샷 (mobile-audit.js / mobile-screenshot.js 출력)
 .screens/
 # Electron 빌드 산출물
