@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>GitHub 배포 가이드 — Destination Earth</title>
+<style>
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, sans-serif;
+    background: #0d1a2a;
+    color: #e8e8f0;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 24px 80px;
+    line-height: 1.7;
+  }
+  h1 {
+    color: #00f3ff;
+    border-bottom: 2px solid #00f3ff;
+    padding-bottom: 8px;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  h2 {
+    color: #ffd700;
+    margin-top: 36px;
+    padding-left: 10px;
+    border-left: 4px solid #ffd700;
+  }
+  h3 { color: #cc88ff; margin-top: 24px; }
+  .status {
+    background: rgba(0, 243, 255, 0.05);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .warn {
+    background: rgba(255, 200, 0, 0.06);
+    border-color: rgba(255, 200, 0, 0.4);
+  }
+  .danger {
+    background: rgba(255, 80, 80, 0.06);
+    border-color: rgba(255, 80, 80, 0.4);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 22px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    text-align: left;
+  }
+  th {
+    background: rgba(0, 243, 255, 0.08);
+    color: #66ddff;
+    font-weight: bold;
+  }
+  .cmd-box {
+    position: relative;
+    background: #0a0f1a;
+    border: 1px solid #2a4060;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 10px 0 24px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13.5px;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .cmd-box code {
+    color: #99ffcc;
+    white-space: pre;
+    display: block;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #00f3ff 0%, #0088cc 100%);
+    color: #0d1a2a;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    background: linear-gradient(135deg, #66ddff 0%, #00f3ff 100%);
+    transform: translateY(-1px);
+  }
+  .copy-btn.copied {
+    background: #33dd66;
+    color: #0d1a2a;
+  }
+  .placeholder {
+    color: #ffaa66;
+    background: rgba(255, 170, 102, 0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+  .pat-input {
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid #00f3ff;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+  .generated-cmd {
+    background: #001a2a;
+    border: 2px solid #ffd700;
+    margin-top: 8px;
+  }
+  .step {
+    background: rgba(180, 100, 255, 0.06);
+    border-left: 4px solid #cc88ff;
+    padding: 12px 18px;
+    margin: 16px 0 8px;
+    border-radius: 0 6px 6px 0;
+  }
+  .step-num {
+    color: #cc88ff;
+    font-weight: bold;
+    font-size: 17px;
+    margin-right: 6px;
+  }
+  a { color: #66ddff; }
+  ul { padding-left: 22px; }
+  li { margin: 4px 0; }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #33dd66;
+    color: #0d1a2a;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<h1>🚀 GitHub 배포 가이드 — Destination Earth v1.0.0-beta.81</h1>
+
+<div class="status">
+<b>✅ 준비 완료된 항목</b>
+<ul>
+  <li>로컬 커밋 완료: <code>b7d5e9e</code> (45개 파일, +1774 / -417 lines)</li>
+  <li>main 브랜치, origin보다 1 커밋 앞섬 — push 대상 명확</li>
+  <li>credential.helper = store 설정됨</li>
+  <li>원격 URL: <code>https://github.com/toy80318-sys/destination_E.git</code></li>
+</ul>
+</div>
+
+<div class="status danger">
+<b>❌ 막혀있는 것 (단 한 가지)</b>
+<ul>
+  <li><code>~/.git-credentials</code> 파일에 <b>Personal Access Token이 저장되지 않음</b></li>
+  <li>VS Code의 죽은 askpass 소켓 때문에 인증 프롬프트가 작동 안 함</li>
+  <li>해결: <b>PAT를 파일에 직접 저장</b>하면 끝</li>
+</ul>
+</div>
+
+<h2>🔑 PAT 발급 (이미 발급하셨다면 스킵)</h2>
+
+<div class="step">
+<span class="step-num">1.</span> <a href="https://github.com/settings/tokens/new" target="_blank">https://github.com/settings/tokens/new</a> 접속
+</div>
+
+<div class="step">
+<span class="step-num">2.</span> 설정:
+<ul>
+  <li><b>Note</b>: <code>Destination Earth CLI</code></li>
+  <li><b>Expiration</b>: 90 days (권장)</li>
+  <li><b>Scopes</b>: ✅ <code>repo</code> (전체 체크)</li>
+</ul>
+</div>
+
+<div class="step">
+<span class="step-num">3.</span> Generate token → 표시된 <code>ghp_...</code> 토큰 <b>즉시 복사</b> (다시 안 보임)
+</div>
+
+<h2>📋 한 줄 명령 자동 생성기</h2>
+
+<p>아래 입력란에 PAT를 붙여넣으면 복사 가능한 명령이 자동 생성됩니다:</p>
+
+<input type="password" id="pat-input" class="pat-input"
+       placeholder="여기에 PAT 붙여넣기 (ghp_로 시작)"
+       oninput="updateCmd()">
+
+<div class="cmd-box generated-cmd">
+  <button class="copy-btn" onclick="copyGenerated(this)">COPY</button>
+  <code id="generated-cmd">! PAT를 위에 입력하세요...</code>
+</div>
+
+<p style="font-size:13px;color:#aaa">
+💡 위 COPY 버튼을 누르고 <b>Claude 채팅창 입력란에 붙여넣기</b> → Enter
+</p>
+
+<h2>🛠️ 또는 직접 복사 (PAT 부분만 교체)</h2>
+
+<h3>방법 A — 한 줄로 끝 (가장 간단)</h3>
+
+<div class="cmd-box">
+  <button class="copy-btn" onclick="copyText(this, 'cmd-a')">COPY</button>
+<code id="cmd-a">! echo "https://toy80318-sys:여기에_PAT@github.com" > ~/.git-credentials && chmod 600 ~/.git-credentials && git -C /home/user/destinatione push origin main</code>
+</div>
+
+<p><span class="placeholder">여기에_PAT</span> 부분을 본인 PAT(<code>ghp_...</code>)로 교체 후 채팅창에 입력</p>
+
+<h3>방법 B — 두 단계 (분리 입력)</h3>
+
+<div class="cmd-box">
+  <button class="copy-btn" onclick="copyText(this, 'cmd-b1')">COPY</button>
+<code id="cmd-b1">! echo "https://toy80318-sys:여기에_PAT@github.com" > ~/.git-credentials && chmod 600 ~/.git-credentials</code>
+</div>
+
+<div class="cmd-box">
+  <button class="copy-btn" onclick="copyText(this, 'cmd-b2')">COPY</button>
+<code id="cmd-b2">! git -C /home/user/destinatione push origin main</code>
+</div>
+
+<h2>✅ push 성공 시 출력 예시</h2>
+
+<div class="cmd-box" style="background:#001a0a;border-color:#33dd66">
+<code style="color:#99ff99">Enumerating objects: 64, done.
+Counting objects: 100% (64/64), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (35/35), done.
+Writing objects: 100% (38/38), 48.5 MiB | 5.2 MiB/s, done.
+Total 38 (delta 14), reused 0 (delta 0)
+remote: Resolving deltas: 100% (14/14), completed with 8 local objects.
+To https://github.com/toy80318-sys/destination_E.git
+   751bc45..b7d5e9e  main -> main</code>
+</div>
+
+<h2>🎁 push 성공 후 추가 단계 (선택)</h2>
+
+<h3>1. 릴리스 태그 생성</h3>
+
+<div class="cmd-box">
+  <button class="copy-btn" onclick="copyText(this, 'cmd-tag')">COPY</button>
+<code id="cmd-tag">! cd /home/user/destinatione && git tag -a v1.0.0-beta.81 -m "v1.0.0-beta.81 — 페이즈 4·5·6 완성" && git push origin v1.0.0-beta.81</code>
+</div>
+
+<h3>2. GitHub Releases 바이너리 업로드</h3>
+
+<p><a href="https://github.com/toy80318-sys/destination_E/releases/new?tag=v1.0.0-beta.81" target="_blank">
+https://github.com/toy80318-sys/destination_E/releases/new?tag=v1.0.0-beta.81</a> 접속</p>
+
+<p>아래 두 파일을 끌어다 놓기:</p>
+<ul>
+  <li><code>dist/Destination Earth-1.0.0-beta.81.AppImage</code> (316 MB)</li>
+  <li><code>dist/DestinationEarth-1.0.0-beta.81-win-x64.zip</code> (321 MB)</li>
+</ul>
+
+<h2>⚠️ 보안 주의</h2>
+
+<div class="status warn">
+<ul>
+  <li>PAT는 비밀번호와 같습니다. 화면 공유·스크린샷·공개 채팅에 노출하지 마세요.</li>
+  <li>push 성공 후 PAT를 사용한 명령은 bash 히스토리에서 제거 권장:
+<div class="cmd-box" style="margin-top:8px">
+  <button class="copy-btn" onclick="copyText(this, 'cmd-clean')">COPY</button>
+<code id="cmd-clean">! history -d $(history 1) 2>/dev/null; chmod 600 ~/.git-credentials</code>
+</div>
+  </li>
+  <li>PAT 노출 의심 시 즉시 <a href="https://github.com/settings/tokens" target="_blank">Settings → Tokens</a>에서 Revoke</li>
+</ul>
+</div>
+
+<h2>🔗 빠른 링크</h2>
+
+<table>
+  <tr><th>용도</th><th>링크</th></tr>
+  <tr><td>PAT 발급</td><td><a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a></td></tr>
+  <tr><td>리포지토리</td><td><a href="https://github.com/toy80318-sys/destination_E" target="_blank">github.com/toy80318-sys/destination_E</a></td></tr>
+  <tr><td>릴리스 생성</td><td><a href="https://github.com/toy80318-sys/destination_E/releases/new" target="_blank">github.com/.../releases/new</a></td></tr>
+  <tr><td>커밋 히스토리</td><td><a href="https://github.com/toy80318-sys/destination_E/commits/main" target="_blank">github.com/.../commits/main</a></td></tr>
+</table>
+
+<div id="toast" class="toast">✓ 복사됨!</div>
+
+<script>
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+function copyText(btn, id){
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent = '✓ COPIED';
+    btn.classList.add('copied');
+    showToast('✓ 복사됨!');
+    setTimeout(()=>{
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 1500);
+  }).catch(err=>{
+    // 폴백: textarea로 복사
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    btn.textContent = '✓ COPIED';
+    btn.classList.add('copied');
+    showToast('✓ 복사됨!');
+    setTimeout(()=>{
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+function updateCmd(){
+  const pat = document.getElementById('pat-input').value.trim();
+  const cmdEl = document.getElementById('generated-cmd');
+  if(!pat){
+    cmdEl.textContent = '! PAT를 위에 입력하세요...';
+    cmdEl.style.color = '#888';
+    return;
+  }
+  cmdEl.style.color = '#99ffcc';
+  cmdEl.textContent = `! echo "https://toy80318-sys:${pat}@github.com" > ~/.git-credentials && chmod 600 ~/.git-credentials && git -C /home/user/destinatione push origin main`;
+}
+
+function copyGenerated(btn){
+  const text = document.getElementById('generated-cmd').textContent;
+  if(text.includes('PAT를 위에')){
+    showToast('⚠ PAT를 먼저 입력하세요');
+    return;
+  }
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent = '✓ COPIED';
+    btn.classList.add('copied');
+    showToast('✓ 복사됨! 채팅창에 붙여넣기 → Enter');
+    setTimeout(()=>{
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+</script>
+
+</body>
+</html>
