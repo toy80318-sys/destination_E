@@ -4926,9 +4926,9 @@ function renderShipTab(body){
             '<button class="btn btn-sm btn-red" style="padding:3px 10px;font-size:11px;'+(canSell?'':'opacity:.4')+'" onclick="confirmSellShip('+i+')" '+(canSell?'':'disabled')+'>'+I18N.t('ui.sell')+'</button>'+
           '</div>'+
         '</div>'+
-        // ── 오른쪽: 이미지 ──
+        // ── 오른쪽: 이미지 ── (사용자 요청 2026-06-08: 정비소 모드에서 2배 확대 165→330)
         '<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">'+
-          imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',165,165,'border-radius:10px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
+          imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',G._garageMode?330:165,G._garageMode?330:165,'border-radius:10px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
         '</div>'+
       '</div>';
     }).join('');
@@ -5811,8 +5811,8 @@ function renderShipSkinTab(body){
     const sel2=i===_selectedSkinShipIdx;
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
-    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:8px;align-items:center;margin-bottom:6px">
-      <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',72,72,'object-fit:cover;width:100%;height:100%')}</div>
+    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:10px;align-items:center;margin-bottom:6px">
+      <div style="width:144px;height:144px;border-radius:10px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',144,144,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
@@ -5954,8 +5954,8 @@ function renderShipEnhanceTab(body){
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const lv=s._enhanceLv||0;
-    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:8px;align-items:center;margin-bottom:6px">
-      <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',72,72,'object-fit:cover;width:100%;height:100%')}</div>
+    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:10px;align-items:center;margin-bottom:6px">
+      <div style="width:144px;height:144px;border-radius:10px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',144,144,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
@@ -5992,7 +5992,7 @@ function renderShipEnhanceTab(body){
       const succColor=succ>=1?'var(--green)':succ>=0.6?'#ffd700':succ>=0.4?'#ff8800':'var(--red)';
       rightPanel=`<div style="background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:10px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:96px;height:96px;border-radius:10px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',96,96,'object-fit:cover;width:100%;height:100%')}</div>
+          <div style="width:192px;height:192px;border-radius:12px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',192,192,'object-fit:cover;width:100%;height:100%')}</div>
           <div style="flex:1">
             <div style="font-size:15px;font-weight:bold;color:var(--cyan)">${(typeof shipDisplayNm==='function'?shipDisplayNm(sel):sel.nm)}</div>
             <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.curEnhanceLine',{cur:curLv,curPct:curLv*5,next:nextLv,nextPct:nextLv*5})}</div>
