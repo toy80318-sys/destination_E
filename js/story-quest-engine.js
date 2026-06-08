@@ -40,8 +40,8 @@ function spawnPhasedQuests(pid){
     if(!G.quests[pid])G.quests[pid]=[];
     src[pid].forEach(template=>{
       if(G.quests[pid].some(q=>q&&q.id===template.id))return;
-      const _active=G.quests[pid].filter(q=>q&&q.status!=='claimed').length;
-      if(_active>=QUEST_MAX)return;
+      // 시나리오 퀘는 일반 퀘 한도(QUEST_MAX) 면제 — 스토리 진행이 일반 퀘에 밀려 막히지 않도록.
+      // 사용자 보고 2026-06-08: 일반 퀘 6개 한도가 시나리오 퀘 등장을 차단해 컷씬·퀘가 안 뜨던 문제.
       const _nm=(typeof template.nm==='object')?(template.nm[_lang]||template.nm.ko||''):template.nm;
       const _desc=(typeof template.desc==='object')?(template.desc[_lang]||template.desc.ko||''):template.desc;
       const _lockReason=template.lockReason&&typeof template.lockReason==='object'

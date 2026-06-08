@@ -255,15 +255,23 @@
       if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
       charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
-      // 사용자 요청 2026-06-08 (1.png 기준): 모든 캐릭터 동일한 컴팩트 구조 + HD 해상도 보호
-      //   · 패널 폭 ~37%, 이미지 width:auto + object-fit:contain (종횡비 보존)
-      //   · max-height:88vh — HD 1024px 원본을 다운샘플링하여 선명 표시
-      charPanel.style.flex = '0 0 37%';
-      charPanel.style.padding = '18px';
+      // 사용자 요청 2026-06-08: 전설영웅 합류 컷씬 1024×1024 큰 이미지 활용
+      //   · hero01~08 / 빌런(ursa·void_hiden) → 패널 55%, 이미지 최대 1024px (HD 풀해상도)
+      //   · 그 외 (commander·baekgu·NPC) → 기존 37% 컴팩트 레이아웃
+      var _isHeroOrBoss = /^(hero0[1-8]|ursa|void_hiden)$/.test(_charKey);
+      if(_isHeroOrBoss){
+        charPanel.style.flex = '0 0 55%';
+        charPanel.style.padding = '24px';
+        charImg.style.maxWidth = '1024px';
+        charImg.style.maxHeight = '96vh';
+      } else {
+        charPanel.style.flex = '0 0 37%';
+        charPanel.style.padding = '18px';
+        charImg.style.maxWidth = '100%';
+        charImg.style.maxHeight = '88vh';
+      }
       charImg.style.width = 'auto';
       charImg.style.height = 'auto';
-      charImg.style.maxWidth = '100%';
-      charImg.style.maxHeight = '88vh';
       charImg.style.objectFit = 'contain';
       charImg.style.imageRendering = 'high-quality';
       charImg.style.filter = 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';

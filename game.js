@@ -2354,8 +2354,10 @@ function showHub(){
   // 새 게임·이어하기 시작 시 일반 퀘스트 + 시나리오 퀘 + 인트로 컷씬 보장
   if(G && G.currentPlanet){
     setTimeout(()=>{
-      try{ if(typeof generateQuests==='function')generateQuests(G.currentPlanet); }catch(e){console.warn('[quest] gen fail (hub)',e);}
+      // 사용자 보고 2026-06-08: 일반 퀘가 6개 한도를 먼저 채워 시나리오 퀘·인트로 컷씬이 차단되던 문제.
+      // → spawnPhasedQuests 를 먼저 호출해 시나리오 퀘·컷씬을 보장한 뒤 일반 퀘 시드.
       try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(G.currentPlanet); }catch(e){console.warn('[phase] spawn fail (hub)',e);}
+      try{ if(typeof generateQuests==='function')generateQuests(G.currentPlanet); }catch(e){console.warn('[quest] gen fail (hub)',e);}
     }, 600);
   }
 }
@@ -4926,7 +4928,7 @@ function renderShipTab(body){
         '</div>'+
         // ── 오른쪽: 이미지 ──
         '<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">'+
-          imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',110,110,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
+          imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',165,165,'border-radius:10px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
         '</div>'+
       '</div>';
     }).join('');
@@ -5039,7 +5041,7 @@ function renderShipTab(body){
               '</div>'+
               // ── 오른쪽: 이미지 ──
               '<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">'+
-                imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',110,110,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
+                imgOrEmoji(shipImgSrc(s),TIER_EMOJI[s.tier]||'🛸',165,165,'border-radius:10px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.08);object-fit:contain',shipLoreKey(s))+
               '</div>'+
             '</div>';
           }).join('')+'</div>';
@@ -5810,7 +5812,7 @@ function renderShipSkinTab(body){
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:8px;align-items:center;margin-bottom:6px">
-      <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',48,48,'object-fit:cover;width:100%;height:100%')}</div>
+      <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',72,72,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
@@ -5953,7 +5955,7 @@ function renderShipEnhanceTab(body){
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const lv=s._enhanceLv||0;
     return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:8px;align-items:center;margin-bottom:6px">
-      <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',48,48,'object-fit:cover;width:100%;height:100%')}</div>
+      <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(s),'🛸',72,72,'object-fit:cover;width:100%;height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
@@ -5990,7 +5992,7 @@ function renderShipEnhanceTab(body){
       const succColor=succ>=1?'var(--green)':succ>=0.6?'#ffd700':succ>=0.4?'#ff8800':'var(--red)';
       rightPanel=`<div style="background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:10px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:64px;height:64px;border-radius:8px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',64,64,'object-fit:cover;width:100%;height:100%')}</div>
+          <div style="width:96px;height:96px;border-radius:10px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',96,96,'object-fit:cover;width:100%;height:100%')}</div>
           <div style="flex:1">
             <div style="font-size:15px;font-weight:bold;color:var(--cyan)">${(typeof shipDisplayNm==='function'?shipDisplayNm(sel):sel.nm)}</div>
             <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.curEnhanceLine',{cur:curLv,curPct:curLv*5,next:nextLv,nextPct:nextLv*5})}</div>
@@ -7938,7 +7940,7 @@ function confirmSellShip(idx){
   const partsCount=(s.parts||[]).length;
   const crewCount=(s.crewIds||[]).length;
   const msg=`<div style="text-align:center;padding:8px">
-    <div style="margin-bottom:8px;display:flex;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',80,80,'border-radius:10px;background:rgba(0,0,0,.5);object-fit:contain',shipLoreKey(s))}</div>
+    <div style="margin-bottom:8px;display:flex;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',160,160,'border-radius:14px;background:rgba(0,0,0,.5);object-fit:contain',shipLoreKey(s))}</div>
     <div style="font-size:19px;font-weight:bold;margin-bottom:12px">${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
     <div style="background:var(--card);border-radius:8px;padding:12px;font-size:14px;line-height:2;text-align:left">
       <div>${I18N.t('ui.sellPriceRatio',{cr:sp.total.toLocaleString(),pct:sp.ratio,marco:sp.marco?' <span style="color:var(--gold);font-size:12px">🧭+10%</span>':''})}</div>
@@ -9212,7 +9214,7 @@ function _grantVoidBossRewards(){
     };
     bpGranted.forEach(nm=>{
       // 사용자 요청 2026-06-07: 설계도 이미지 폴백 → BP01.png (해당 함선/파츠 이미지가 있으면 그대로 사용)
-      items.push({ic:'📜',img:_bpImgMap[nm]||'img/ui/BP01.png',nm,type:I18N.t('reward.mythicBp'),color:'#ff66cc',stats:I18N.t('reward.craftable'),desc:I18N.t('reward.mythicBpDesc'),rarity:'mythic'});
+      items.push({ic:'📜',img:_bpImgMap[nm]||'img/ui/BP02.png',nm,type:I18N.t('reward.mythicBp'),color:'#ff66cc',stats:I18N.t('reward.craftable'),desc:I18N.t('reward.mythicBpDesc'),rarity:'mythic'});
     });
     // 신화 파츠 — 각 파츠 이미지 (mythicParts와 partsGranted는 같은 순서)
     partsGranted.forEach((nm,idx)=>{
@@ -9460,7 +9462,7 @@ function showGeobukseonBlueprintModal(latestPart){
        '</div>'):'';
     const _modalHtml =
       '<div style="text-align:center;margin-bottom:14px">'+
-        '<img src="img/ui/BP01.png'+_ver+'" alt="BP" style="width:64px;height:64px;object-fit:contain;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7))" onerror="this.style.display=\'none\'">'+
+        '<img src="img/ui/BP02.png'+_ver+'" alt="BP" style="width:64px;height:64px;object-fit:contain;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7))" onerror="this.style.display=\'none\'">'+
         '<div style="font-size:18px;color:#00f3ff;font-weight:bold;margin-bottom:4px">'+_title+'</div>'+
         '<div style="font-size:12px;color:#a8b3c0">'+_subtitle+'</div>'+
       '</div>'+
@@ -10632,7 +10634,7 @@ function renderCraftTab(body){
       onmouseover="showBpTip(this)" onmouseout="hideBpTip()"
     >
       ${hasBp
-        ? `<img src="img/ui/BP01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.outerHTML='<span style=&quot;font-size:19px&quot;>📜</span>'">`
+        ? `<img src="img/ui/BP02.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.outerHTML='<span style=&quot;font-size:19px&quot;>📜</span>'">`
         : `<span style="font-size:19px">🔒</span>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:bold;color:${hasBp?tierCol:'var(--muted)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(rec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===rec.id))||rec.nm):(partDisplayNm(PARTS.find(p=>p.id===rec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id)||{})||rec.nm))}</div>
@@ -10747,7 +10749,7 @@ function renderCraftTab(body){
 
     <!-- ◀ 좌측: 설계도 목록 (240px 고정) -->
     <div data-scroll-id="craft-bpl" style="width:260px;flex-shrink:0;overflow-y:auto;border-right:1px solid rgba(0,243,255,.12);padding:10px 12px;display:flex;flex-direction:column;gap:0">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><img src="img/ui/BP01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:20px;height:20px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.style.display='none'"><div style="font-size:13px;font-weight:bold;color:var(--cyan);letter-spacing:.5px">${I18N.t('ui.blueprintListHeader')}</div></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><img src="img/ui/BP02.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:20px;height:20px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.style.display='none'"><div style="font-size:13px;font-weight:bold;color:var(--cyan);letter-spacing:.5px">${I18N.t('ui.blueprintListHeader')}</div></div>
       <div style="font-size:10px;color:var(--dim);margin-bottom:8px;line-height:1.5">${I18N.t('ui.acquiredBpHighlighted')}<br>${I18N.t('ui.hoverForMaterials')}</div>
 
       <div style="font-size:10px;color:#d4af37;margin:2px 0 4px;font-weight:bold;letter-spacing:.5px">${I18N.t('ui.legendPartsBadge')}</div>
@@ -11718,7 +11720,7 @@ function openMysteryBox(tier){
     if(result.type==='bp'){
       const _r=result.rec;
       const _bpNm=(_r.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_r.id))||_r.nm):(partDisplayNm(PARTS.find(p=>p.id===_r.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_r.id)||{})||_r.nm));
-      _rwInfo={type:'bp',nm:_bpNm,id:_r.id,tier:_r.tier||'legend',boxTier:tier,img:'img/ui/BP01.png',ic:'📜'};
+      _rwInfo={type:'bp',nm:_bpNm,id:_r.id,tier:_r.tier||'legend',boxTier:tier,img:'img/ui/BP02.png',ic:'📜'};
     } else if(result.type==='part'){
       _rwInfo={type:'part',nm:partDisplayNm(result.p)||result.p.nm,id:result.p.id,rarity:result.p.rarity||'N',boxTier:tier,img:(typeof partImgSrc==='function')?partImgSrc(result.p.id):('img/parts/'+result.p.id+'.png'),ic:'⚙️'};
     } else if(result.type==='ship'){
@@ -12532,7 +12534,7 @@ function showCodexCommanderModal(){
     ${row('📖',I18N.t('ui.background'),`<span style="line-height:1.7">${_story}</span>`)}
     ${_rankStory?row('🎖️',I18N.t('ui.currentRank'),`<span style="color:${_stageCol};font-style:italic">${_rankStory}</span>`):''}
     ${row('🎯',I18N.t('ui.progressStage'),`<span style="color:${_stageCol};font-weight:bold">${_stageLb}</span> ${I18N.t('ui.stageProgress',{stage:_stage}).split(') ')[1]}`)}
-    ${row('⭐',I18N.t('ui.fame'),`${_rep.toLocaleString()}`)}
+    ${row(`<img src="img/ui/HN01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="HN" style="width:18px;height:18px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='⭐'">`,I18N.t('ui.fame'),`${_rep.toLocaleString()}`)}
     ${row('⚔️',I18N.t('ui.combatPower'),`${_plv}`)}
     ${row('🌌',I18N.t('ui.actProgress'),I18N.t('ui.actLabel',{act:_act})+' '+(G._earthLiberated?I18N.t('ui.earthLib'):'')+(G._falconDefeated?I18N.t('ui.falconDefeat'):''))}
     ${row('⚔',I18N.t('ui.legendHeroesShort'),I18N.t('ui.heroesJoinedN',{n:_heroes}))}
@@ -12824,7 +12826,7 @@ function renderCodexTab(body){
     const totalChars=1+heroList.length+_specials.length;
     const totalUnlocked=1+recruited+_specials.filter(c=>c.id==='NPC_BAEKGU'||(c.id==='NPC_URSA'&&G._earthLiberated)||(c.id==='NPC_BLACKFALCON'&&G._falconDefeated)).length;
     content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
-      <div style="font-size:29px">⭐</div>
+      <img src="img/ui/HN01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="HN" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,215,0,.6))" onerror="this.outerHTML='<div style=\\'font-size:29px\\'>⭐</div>'">
       <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.heroCodex')}</div>
       <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.discoveredHero',{n:`<span style="color:var(--cyan)">${totalUnlocked}</span>`,total:totalChars})}</div></div>
       <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
@@ -12839,7 +12841,7 @@ function renderCodexTab(body){
         </div>
         <div style="font-size:12px;font-weight:bold;color:${_cmdStageCol};line-height:1.2">${_cmdName}</div>
         <div style="font-size:10px;color:${_cmdStageCol};margin-top:2px;opacity:.8">${_cmdStageLb}</div>
-        <div style="font-size:10px;color:var(--dim);margin-top:2px">⭐${_cmdRep} · ⚔${_cmdPlv}</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px"><img src="img/ui/HN01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="HN" style="width:12px;height:12px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='⭐'">${_cmdRep} · ⚔${_cmdPlv}</div>
       </div>
     </div>
     <!-- 전설 영웅 8인 -->
@@ -15266,10 +15268,10 @@ function travelTo(){
     }
   }
   checkDeliveryQuests(pid);  // ← 배달 퀘스트 완료 체크
-  // Phase 시나리오 퀘스트 자동 spawn (인트로 컷씬 포함)
+  // Phase 시나리오 퀘스트 자동 spawn (인트로 컷씬 포함) — 일반 퀘 시드보다 우선.
+  // 사용자 보고 2026-06-08: 일반 퀘 6개 한도가 시나리오 퀘를 차단해 컷씬·퀘가 안 뜨던 문제.
   if(typeof spawnPhasedQuests==='function'){try{spawnPhasedQuests(pid);}catch(e){console.warn('[phase] spawn fail',e);}}
   // 일반 퀘스트 시드 — 행성 도착 시 즉시 (퀘스트 탭 열기 전에도 보장)
-  // 사용자 보고 2026-06-07: 행성 도착 후 퀘스트가 안 보이는 문제
   if(typeof generateQuests==='function'){try{generateQuests(pid);}catch(e){console.warn('[quest] gen fail',e);}}
   // 영웅 자동 영입 제거 — H01~H08은 해당 행성의 퀘스트 완료 시 5% 확률로만 등장
   // 제작소 관련 백구 힌트 (행성 첫 방문 또는 20% 확률 재방문)
@@ -17903,8 +17905,8 @@ function _finishCombat(){
       const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
       // 크레딧 — credit.png 아이콘
       items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('report.creditsNm'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡${earned.toLocaleString()}`,desc:I18N.t('ui.combatRewardDesc',{mul:getDiffMult().toFixed(2)})});
-      // 명성 — reputation.png 아이콘 (사용자가 추가할 파일, 없으면 ⭐ 폴백)
-      if(_repGained>0)items.push({ic:'⭐',img:'img/ui/reputation.png'+_ver,nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
+      // 명성 — HN01.png 메달 아이콘 (사용자 요청 2026-06-08)
+      if(_repGained>0)items.push({ic:'⭐',img:'img/ui/HN01.png'+_ver,nm:I18N.t('report.repNm'),type:I18N.t('report.repType'),color:'var(--cyan)',stats:I18N.t('ui.repGained',{gained:_repGained,cur:G.reputation}),desc:I18N.t('report.repDesc')});
       const enemyCount=_enemyCountSnap;
       // 격파 적함 — 첫 번째 적 함선의 실제 이미지를 우선 사용 (배저스카우트·치크스·잔해해적 등)
       // 사용자 요청 2026-06-07: 좌측 이미지는 반드시 함선 실제 이미지로 (아이콘 금지)
