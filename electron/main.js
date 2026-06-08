@@ -429,3 +429,6 @@ ipcMain.handle('set-lang-pref', async (_e, lang) => {
 
 // 렌더러에서 호출되는 수동 업데이트 확인
 ipcMain.handle('check-update', async () => { checkForUpdatesManual(); return { ok: true }; });
+
+// 타이틀 화면 종료 버튼 — 앱 정상 종료
+ipcMain.handle('quit-app', () => { app.quit(); });

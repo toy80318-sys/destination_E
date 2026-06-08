@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld('desktopAPI', {
   setLangPref: (lang) => ipcRenderer.invoke('set-lang-pref', lang),
   // 수동 업데이트 확인
   checkUpdate: () => ipcRenderer.invoke('check-update'),
+  // 앱 종료 (타이틀 화면 종료 버튼)
+  quit: () => ipcRenderer.invoke('quit-app'),
   // 자동 업데이트 상태 수신 (메인 → 렌더러 push)
   // status: {stage: 'available'|'downloading'|'downloaded'|'error', percent, version, message}
   onUpdateStatus: (cb) => {

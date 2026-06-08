@@ -1571,7 +1571,43 @@ function showExitModal(){
   );
 }
 function showTitle(){show('s-title');try{AudioMgr.playBgm('Title');}catch(e){}}
-function goAgeGate(){show('s-agegate');}
+// 타이틀 화면 종료 — Electron 은 앱 종료, 웹은 창 닫기 시도 후 안내
+function exitFromTitle(){
+  const isEn=(window.I18N&&window.I18N.getLang&&window.I18N.getLang()==='en');
+  const _t=isEn?{
+    title:'Exit Game',
+    msg:'Exit Destination Earth?',
+    confirm:'Exit',
+    cancel:'Cancel',
+    closeHint:'You can safely close this browser tab.'
+  }:{
+    title:'게임 종료',
+    msg:'데스티네이션 어스를 종료하시겠습니까?',
+    confirm:'종료',
+    cancel:'취소',
+    closeHint:'브라우저 탭을 직접 닫아 주세요.'
+  };
+  openModal(_t.title,
+    `<div style="text-align:center;padding:14px 4px;font-size:15px;color:var(--txt);line-height:1.7">${_t.msg}</div>`,
+    [
+      {txt:_t.confirm,cls:'btn-red',fn:()=>{
+        closeModal();
+        // Electron PC 빌드 — 앱 종료
+        if(window.desktopAPI&&typeof window.desktopAPI.quit==='function'){
+          try{window.desktopAPI.quit();return;}catch(e){}
+        }
+        // 일반 브라우저 — window.close 시도 (script로 열린 창만 닫힘)
+        try{window.close();}catch(e){}
+        // 닫히지 않으면 안내
+        setTimeout(()=>{
+          if(!window.closed){
+            try{notify(_t.closeHint,'warn');}catch(e){}
+          }
+        },200);
+      }},
+      {txt:_t.cancel,cls:'btn-sm',fn:closeModal}
+    ]);
+}
 function checkAge(){
   const y=parseInt(document.getElementById('ag-y').value),m=parseInt(document.getElementById('ag-m').value),d=parseInt(document.getElementById('ag-d').value);
   const err=document.getElementById('ag-err');
