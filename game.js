@@ -16464,11 +16464,12 @@ function showAcquisitionReport(opts){
   // 효과음 (지정 안 하면 notify)
   try{AudioMgr.playSfx(opts.sfx||'notify',{cooldown:80});}catch(e){}
   const escapeHtml=s=>String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
-  // 항목 수에 따른 컴팩트 모드: 5개 이상이면 더 빽빽하게, 2열 그리드 사용
-  // 사용자 요청 2026-06-08: 이미지 추가 2배 확대 (80/96 → 160/192) — 퀘스트·전투 보상 모두 적용
+  // 사용자 요청 2026-06-08: 보상 팝업이 화면을 넘어가는 문제 — 이미지 70% 축소 + 항상 2열 그리드
+  //   · 항목 수 무관 항상 2열 (1행당 카드 2개)
+  //   · 이미지 160→112, 192→134 (70% 축소)
   const _many=items.length>=5;
-  const _icSz=_many?160:192;
-  const _icFont=_many?88:112;
+  const _icSz=_many?112:134;
+  const _icFont=_many?62:78;
   const _padRow=_many?'5px 8px':'7px 9px';
   const _gapRow=_many?'8px':'10px';
   const _nmFs=_many?12:13;
@@ -16493,8 +16494,8 @@ function showAcquisitionReport(opts){
       </div>
     </div>`;
   }).join('');
-  // 사용자 요청: 영문판 카드/글자 잘림 방지 — 그리드 폭 100% + 단어 단위 줄바꿈
-  const _gridStyle=(_many?'display:grid;grid-template-columns:1fr 1fr;gap:8px':'display:flex;flex-direction:column;gap:8px')+';width:100%;margin:0 auto';
+  // 사용자 요청 2026-06-08: 항목 수 무관 항상 2열 그리드 (1행당 카드 2개) — 팝업 화면 넘침 방지
+  const _gridStyle='display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin:0 auto';
   const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
   const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
   const html=`<div style="padding:2px 2px">
