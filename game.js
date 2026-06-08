@@ -2713,6 +2713,22 @@ function renderMain(body){
         <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
+        ${(()=>{
+          // 사용자 보고 2026-06-08: 컷씬·시나리오 퀘스트 미출현 — 항상 표시되는 강제 재생 버튼
+          const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
+          let _sceneId=null;
+          for(let i=0;i<_introMaps.length;i++){
+            if(_introMaps[i] && _introMaps[i][G.currentPlanet]){_sceneId=_introMaps[i][G.currentPlanet];break;}
+          }
+          if(!_sceneId)return'';  // 이 행성에 등록된 인트로 없음
+          const _seen=!!(G._phasedIntroSeen&&G._phasedIntroSeen['intro_'+G.currentPlanet]);
+          const _label=_seen?'🎬 컷씬 재생':'🎬 컷씬 보기';
+          const _col=_seen?'#88ccff':'#ffd700';
+          const _bg=_seen?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)';
+          const _pulse=_seen?'':'animation:cutscenePulse 1.6s ease-in-out infinite;';
+          return`<button onclick="(window.forceReplayPlanetIntro?window.forceReplayPlanetIntro(G.currentPlanet):notify('STORY_SCENES_PC 미로드','err'))" style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse}" title="이 행성의 인트로 컷씬을 재생합니다">${_label}</button>
+            <style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 ${_col}66}50%{box-shadow:0 0 0 8px ${_col}00}}</style>`;
+        })()}
         ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('ui.ursaRetryTitle')}">${I18N.t('ui.ursaRetryBtn')}</button>`:''}
         ${(()=>{
           if(!pd?.hostile)return'';
