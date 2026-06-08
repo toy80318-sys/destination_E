@@ -60,10 +60,10 @@ body.combat-mode #notif{top:138px;max-width:260px}
 .modal.modal-wide{max-width:624px}
 /* 보스 인트로/엔딩 + 보스전 최종 보상 — 사용자 요청 (2026-06-06): 1100→1210 (+10%) */
 .modal.modal-bossfight{max-width:1210px}
-/* 사용자 요청: 일반 전투 승리 보고 가로폭 30% 축소 (900→630). 카드 단어 줄바꿈은 유지 */
-.modal.modal-report{max-width:630px;padding:14px 16px;max-height:88vh}
-/* 사용자 요청 (2026-06-06): 크루 영입 시 전설 크루 등장 팝업 추가 30% 축소 (630→441) */
-.modal.modal-report.modal-crew-reveal{max-width:441px;padding:12px 14px}
+/* 사용자 요청 (2026-06-08): 보상 이미지 2배 확대(160/192px)에 맞춰 모달 폭 확장 (630→820) */
+.modal.modal-report{max-width:820px;padding:14px 16px;max-height:88vh}
+/* 사용자 요청 (2026-06-08): 전설 크루 등장 카드 이미지 2배 확대 (160/192px) — 모달 폭 확장 (441→900) */
+.modal.modal-report.modal-crew-reveal{max-width:900px;padding:16px 18px}
 /* 영문판 보상 카드 텍스트 잘림 방지 — 한글 어절 단위 + 영문 단어 단위만 줄바꿈 (단어 중간 강제 끊김 금지)
    사용자 보고 (2026-06-06): 우르사 인트로에서 단어 중간 비정상 줄바꿈 → overflow-wrap을 anywhere→break-word로 유지(이미 안전) */
 .modal.modal-bossfight div, .modal.modal-report div{word-break:keep-all;overflow-wrap:break-word;hyphens:none}
