@@ -646,12 +646,17 @@
       console.log('[STORY_SCENES_PC] already-seen scene for', hid, '— playing again anyway (testing-friendly)');
       // 변경: 이전엔 스킵했지만, 사용자 테스트 편의로 항상 재생 (단, "본 적 있음" 플래그는 유지)
     }
-    window.G._scenesSeen[key] = true;
-    if(typeof window.saveGame === 'function'){
-      try{ window.saveGame(true); }catch(e){}
-    }
+    // 버그 수정 2026-06-08: _scenesSeen 마킹을 컷씬 실제 완료 후로 지연
+    //   · 이전: showCharDialog 호출 전 즉시 true → 사용자가 중간에 닫으면 "본 적 있음" 오류
+    //   · 수정: onDone 콜백에서 마킹 → 끝까지 본 경우에만 기록
     console.log('[STORY_SCENES_PC] opening cutscene for', hid, '— scene count:', scenes.length);
-    showCharDialog({ scenes: scenes, onDone: onDone });
+    showCharDialog({ scenes: scenes, onDone: function(){
+      window.G._scenesSeen[key] = true;
+      if(typeof window.saveGame === 'function'){
+        try{ window.saveGame(true); }catch(e){}
+      }
+      if(typeof onDone === 'function') onDone();
+    }});
   }
 
   // 사용자 편의: 강제 재생 (이미 본 플래그 무시)
@@ -703,12 +708,18 @@
       return;
     }
     _lastTriggeredAt[sceneId] = now;
-    window.G._scenesSeen['scene_' + sceneId] = true;
-    if(typeof window.saveGame === 'function'){
-      try{ window.saveGame(true); }catch(e){}
-    }
+    // 버그 수정 2026-06-08: _scenesSeen 마킹을 onDone 으로 지연
+    //   · 이전: 트리거 직후 즉시 true → 중간에 닫으면 spawnPhasedQuests 마이그레이션이
+    //           "본 적 있음"으로 오판해 영구히 재생 안 됨
+    //   · 수정: 사용자가 끝까지 본 시점에만 마킹
     console.log('[STORY_SCENES_PC] opening scene:', sceneId, '— lines:', scenes.length);
-    showCharDialog({ scenes: scenes, onDone: onDone });
+    showCharDialog({ scenes: scenes, onDone: function(){
+      window.G._scenesSeen['scene_' + sceneId] = true;
+      if(typeof window.saveGame === 'function'){
+        try{ window.saveGame(true); }catch(e){}
+      }
+      if(typeof onDone === 'function') onDone();
+    }});
   }
 
   // 강제 재생 (씬 ID)

@@ -33,14 +33,14 @@ function spawnPhasedQuests(pid){
     return false;
   }
   const G=window.G;
-  // 사용자 보고 2026-06-08: 이전 버그로 인트로가 seen 마킹만 되고 실제 재생 안 된 경우
-  // 다시 못 봄. v2 마이그레이션 — _phasedIntroSeen 안의 항목 중 G._scenesSeen 에 대응
-  // 'scene_*' 가 없는 것(=실제로 본 적 없음)은 마킹 해제.
-  if(G._phasedIntroSeen && !G._phasedIntroSeenV2){
+  // 사용자 보고 2026-06-08: 이전 버그로 인트로가 seen 마킹만 되고 실제 재생 안 된 경우 다시 못 봄.
+  // 매 spawn 마다 자동 복구 — _phasedIntroSeen 안의 항목 중 G._scenesSeen 에 대응
+  // 'scene_*' 가 없는 것(=실제로 본 적 없음)은 마킹 해제. (V2 일회성 게이트 제거 — 항상 자동 복구)
+  if(G._phasedIntroSeen){
     var _scenesSeen=G._scenesSeen||{};
     var _intros=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
+    var _restored=0;
     Object.keys(G._phasedIntroSeen).forEach(function(key){
-      // key = 'intro_<planetId>' 형태
       if(!key.startsWith('intro_'))return;
       var planetId=key.substring(6);
       var sceneId=null;
@@ -48,13 +48,13 @@ function spawnPhasedQuests(pid){
         if(_intros[i] && _intros[i][planetId]){sceneId=_intros[i][planetId];break;}
       }
       if(sceneId && !_scenesSeen['scene_'+sceneId]){
-        // 실제로 컷씬을 본 적이 없음 → seen 마킹 해제 (재생 보장)
         delete G._phasedIntroSeen[key];
-        console.log('[story-quest-engine] v2 migration — restored unseen intro:', key);
+        _restored++;
+        console.log('[story-quest-engine] auto-restored unseen intro:', key);
       }
     });
-    G._phasedIntroSeenV2=true;
-    try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+    if(_restored>0){try{if(typeof saveGame==='function')saveGame(true);}catch(e){}}
+    G._phasedIntroSeenV2=true;  // 호환성 유지 — 옛 코드 분기 차단
   }
   const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
   const _lang=_isEn?'en':'ko';
