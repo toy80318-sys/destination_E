@@ -10181,14 +10181,17 @@ function doGatherSearch(){
       TEC:eTEC,HP:_dbrpHP(i),LOY:0,parts:[],crewIds:[]
     }));
     const raidDef={id:'DEBRIS_PIRATE',nm:I18N.t('debris.raidName'),ring,f:'PIRATE',hostile:true,tax:0,_enemies:enemies,_questPid:pid,_questId:gatherQ?gatherQ.id:null,_isDebris:true};
-    // 사용자 요청 2026-06-07: 잔해 해적 출현 팝업 — 우리 기함 VS 해적 함선 이미지 표시
-    // 해적 함선: 링 7+ DBRP_L, 5-6 DBRP_M, 그 외 DBRP_S
+    // 사용자 요청 2026-06-08: 잔해 해적 출현 팝업 — 적 이미지를 현재 행성 문명권의 전투계열 인물로 교체
+    //   · 기존 img/ships/DBRP_*.png (함선 이미지) → img/quests/combat_F0X.png (인물 이미지)
+    //   · 항로 해적·적대 행성 진입과 동일한 폴백 패턴 적용
     const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
     const _flagship=G.fleet[0];
     const _ourShipSrc=_flagship?shipImgSrc(_flagship):('img/ships/Default.png'+_ver);
     const _ourShipName=_flagship?(shipDisplayNm(_flagship)||_flagship.nm||I18N.t('ui.flagship')):I18N.t('ui.flagship');
-    const _dbrpSize=ring>=7?'L':(ring>=5?'M':'S');
-    const _enemyShipSrc='img/ships/DBRP_'+_dbrpSize+'.png'+_ver;
+    // 현재 행성 팩션 기반 — F01~F07 매칭, 비-F0X면 F01 폴백
+    const _curPd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
+    const _pFac=(/^F0[1-7]$/.test(_curPd?.f||''))?_curPd.f:'F01';
+    const _enemyShipSrc='img/quests/combat_'+_pFac+'.png'+_ver;
     openModal(I18N.t('modal.debrisPiratesAppear'),
       _hostileVsHeader({enemyImg:_enemyShipSrc,enemyName:I18N.t('debris.raidName'),enemyFallback:'☠️'})
       +`<div style="text-align:center;padding:0 6px 8px">
