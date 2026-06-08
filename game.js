@@ -15457,72 +15457,9 @@ function showHostilePlanetBriefing(planetDef){
   );
 }
 
-// 전투 직전 적 두목 시비/통행료 요구 (보스전 제외 · 랜덤). 지불 시 전투 회피, 거부 시 전투 시작.
-const _SHAKEDOWN_NPCS=[
-  {get nm(){return I18N.t('toll.boss.hook');},ic:'🏴‍☠️',col:'#ff8844',get line(){return I18N.t('toll.boss.hookLine');}},
-  {get nm(){return I18N.t('toll.boss.karim');},ic:'🦂',col:'#ffaa44',get line(){return I18N.t('toll.boss.karimLine');}},
-  {get nm(){return I18N.t('toll.boss.krash');},ic:'👾',col:'#cc66ff',get line(){return I18N.t('toll.boss.krashLine');}},
-  {get nm(){return I18N.t('toll.boss.veil');},ic:'🎯',col:'#ff6688',get line(){return I18N.t('toll.boss.veilLine');}},
-  {get nm(){return I18N.t('toll.boss.dorga');},ic:'💀',col:'#ff5555',get line(){return I18N.t('toll.boss.dorgaLine');}}
-];
-function _showShakedownPopup(planetDef,proceed){
-  const npc=_SHAKEDOWN_NPCS[Math.floor(Math.random()*_SHAKEDOWN_NPCS.length)];
-  const _cr=G.credits||0;
-  // 사용자 요청 2026-06-08: 통행료 = 기본(링 기반) + 아군 함대 자산 1%
-  //   · 기본: ring×4000+3000 (ring2=11000, ring5=23000)
-  //   · 함대 자산: getShipSellPrice 합산 × 0.01
-  const _baseCr=(planetDef.ring||2)*4000+3000;
-  const _fleetAsset=(G.fleet||[]).reduce(function(sum,s){
-    try{return sum+((typeof getShipSellPrice==='function'?(getShipSellPrice(s).total||0):0));}catch(e){return sum;}
-  },0);
-  const demand=_baseCr+Math.floor(_fleetAsset*0.01);
-  const canPay=_cr>=demand;
-  // 행성 팩션 기반 랜덤 해적 이미지 (사용자 요청)
-  //   1차: img/pirates/<faction>_<1~3>.png  (사용자가 추후 추가)
-  //   2차: img/pirates/<faction>.png        (사용자가 추후 추가)
-  //   3차: img/quests/combat_<faction>.png  (기존 자산 폴백 — 해당 문명권 군인/제독)
-  //   4차: 이모지 폴백
-  //   해적/적대 raidDef.f='PIRATE' 같은 비-F0X 키는 현재 행성 팩션을 사용 (사용자 요청)
-  let _pf=(/^F0[1-7]$/.test(planetDef?.f||''))?planetDef.f:'';
-  if(!_pf){
-    try{const _cp=PLANET_DEF.find(p=>p.id===G.currentPlanet);if(_cp&&/^F0[1-7]$/.test(_cp.f||''))_pf=_cp.f;}catch(e){}
-  }
-  if(!_pf)_pf='F0'+(1+Math.floor(Math.random()*7));
-  const _pIdx=1+Math.floor(Math.random()*3);
-  const _gv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
-  const _pSrc1='img/pirates/'+_pf+'_'+_pIdx+'.png'+_gv;
-  const _pSrc2='img/pirates/'+_pf+'.png'+_gv;
-  const _pSrc3='img/quests/combat_'+_pf+'.png'+_gv;
-  // 사용자 요청 2026-06-07: 해적 두목 인물 이미지 2배 확대 (120→240px)
-  const portrait=`<div style="width:240px;height:240px;border-radius:50%;background:rgba(0,0,0,.5);border:3px solid ${npc.col};box-shadow:0 0 32px ${npc.col}aa;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-    <img src="${_pSrc1}" data-fb2="${_pSrc2}" data-fb3="${_pSrc3}" alt="${npc.nm}" style="width:100%;height:100%;object-fit:cover" onerror="var f2=this.dataset.fb2,f3=this.dataset.fb3;if(f2&&!this.src.endsWith(f2)){this.src=f2}else if(f3&&!this.src.endsWith(f3)){this.src=f3}else{this.outerHTML='<span style=&quot;font-size:128px&quot;>${npc.ic}</span>'}">
-  </div>`;
-  const line=npc.line.replace('{X}','<b style="color:var(--gold)">'+demand.toLocaleString()+'</b>');
-  const btns=[];
-  if(canPay){
-    btns.push({txt:I18N.t('ui.payToAvoid',{p:demand.toLocaleString()}),cls:'btn-gold',fn:()=>{
-      closeModal();
-      G.credits=Math.max(0,(G.credits||0)-demand);
-      try{updateHUD();}catch(e){}
-      notify(I18N.t('notify.tollPaidAvoid',{cost:demand.toLocaleString()}),'gold');
-      try{baekgu(I18N.t('baekgu.tollPaidPrideHit'));}catch(e){}
-      try{saveGame(true);}catch(e){}
-    }});
-  }
-  btns.push({txt:I18N.t('toll.refuseBtn'),cls:'btn-red',fn:()=>{closeModal();if(typeof proceed==='function')proceed();}});
-  openModal(`${npc.ic} ${npc.nm}`,
-    `<div style="padding:12px">
-      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;padding:14px;background:linear-gradient(135deg,${npc.col}22,rgba(10,10,20,.85));border:1px solid ${npc.col}88;border-radius:12px">
-        ${portrait}
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:13px;color:${npc.col};font-weight:bold;margin-bottom:6px;letter-spacing:1px">${npc.nm}</div>
-          <div style="font-size:16px;color:var(--yellow);line-height:1.8;word-break:keep-all">"${line}"</div>
-          ${!canPay?`<div style="font-size:12px;color:#ff9999;margin-top:8px">${I18N.t('toll.cannotPay')}</div>`:''}
-        </div>
-      </div>
-    </div>`,
-    btns,{wide:true});
-}
+// 전투 직전 적 두목 시비/통행료 요구 — js/modules/shakedown-popup.js 로 분할됨 (2026-06-08)
+//   · 통행료 = (ring×4000+3000) + (아군 함대 자산 합계 × 1%)
+//   · window._showShakedownPopup, window._SHAKEDOWN_NPCS 노출
 // 일반 구매가능 함선 풀 (S/M/H, 가격>0, 전설/보스 제외)
 function _normalShipPool(){
   return (typeof SHIP_CATALOG!=='undefined'?SHIP_CATALOG:[]).filter(s=>
@@ -16449,64 +16386,11 @@ function _planetBgmName(pid){
 function sfxAlert(){AudioMgr.playSfx('notify',{cooldown:300});}
 
 // ══════════════════════════════════════════════════════════════════
-// 획득 보고 팝업 헬퍼 — 전투/가챠/퀘스트 공용
-//   showAcquisitionReport({title, subtitle, items, color, sfx, congrats})
-//   items: [{ic, nm, type, rarity, desc, color, badge}]
+// 획득 보고 팝업 — js/modules/report-popup.js 로 분할됨 (2026-06-08)
+//   · 모듈에서 window.showAcquisitionReport 와 window.RARITY_COLOR 노출
+//   · 여기서는 호환성용 로컬 별칭만 유지 (다른 함수가 RARITY_COLOR 직접 참조)
 // ══════════════════════════════════════════════════════════════════
-const RARITY_COLOR={N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7',legend:'var(--gold)',mythic:'#ff88ff',set:'#c080ff',hero:'var(--purple)'};
-function showAcquisitionReport(opts){
-  opts=opts||{};
-  const title=opts.title||I18N.t('report.title');
-  const subtitle=opts.subtitle||'';
-  const items=opts.items||[];
-  const headerColor=opts.color||'var(--gold)';
-  const congrats=opts.congrats||'';
-  // 효과음 (지정 안 하면 notify)
-  try{AudioMgr.playSfx(opts.sfx||'notify',{cooldown:80});}catch(e){}
-  const escapeHtml=s=>String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
-  // 사용자 요청 2026-06-08: 보상 팝업이 화면을 넘어가는 문제 — 이미지 70% 축소 + 항상 2열 그리드
-  //   · 항목 수 무관 항상 2열 (1행당 카드 2개)
-  //   · 이미지 160→112, 192→134 (70% 축소)
-  const _many=items.length>=5;
-  const _icSz=_many?112:134;
-  const _icFont=_many?62:78;
-  const _padRow=_many?'5px 8px':'7px 9px';
-  const _gapRow=_many?'8px':'10px';
-  const _nmFs=_many?12:13;
-  const _typeFs=_many?10:11;
-  const _statsFs=_many?11:12;
-  const _descFs=_many?10:11;
-  const itemRows=items.map(it=>{
-    const rc=it.color||RARITY_COLOR[it.rarity]||'var(--txt)';
-    const rl=I18N.rarity(it.rarity)||'';
-    const badge=it.badge||(rl?`<span style="font-size:9px;color:${rc};border:1px solid ${rc};border-radius:3px;padding:0 5px;margin-left:5px">${rl}</span>`:'');
-    const ic=it.ic||'📦';
-    const imgHtml=it.img
-      ? `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${imgOrEmoji(it.img,ic,_icSz-4,_icSz-4,'object-fit:cover')}</div>`
-      : `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
-    return `<div style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
-      ${imgHtml}
-      <div style="flex:1;min-width:0">
-        <div style="font-size:${_nmFs}px;font-weight:bold;color:${rc};line-height:1.3;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.nm)}${badge}</div>
-        ${it.type?`<div style="font-size:${_typeFs}px;color:var(--dim);margin-top:2px;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.type)}</div>`:''}
-        ${it.stats?`<div style="font-size:${_statsFs}px;color:var(--cyan);margin-top:3px;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.stats)}</div>`:''}
-        ${it.desc?`<div style="font-size:${_descFs}px;color:var(--muted);margin-top:3px;line-height:1.45;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.desc)}</div>`:''}
-      </div>
-    </div>`;
-  }).join('');
-  // 사용자 요청 2026-06-08: 항목 수 무관 항상 2열 그리드 (1행당 카드 2개) — 팝업 화면 넘침 방지
-  const _gridStyle='display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin:0 auto';
-  const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
-  const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
-  const html=`<div style="padding:2px 2px">
-    ${congratsHtml}
-    ${subtitleHtml}
-    ${itemRows?`<div style="${_gridStyle}">${itemRows}</div>`:`<div style="text-align:center;color:var(--dim);padding:18px">${I18N.t('ui.noAcquired')}</div>`}
-  </div>`;
-  const _onClose=opts.onClose;
-  // 보스 승리 보고서 등 폭 1.1× 옵션 (opts.bossfight 전파)
-  openModal(title,html,[{txt:I18N.t('btn.confirm'),fn:()=>{closeModal();if(typeof _onClose==='function')_onClose();},cls:'btn-gold'}],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight,crewReveal:!!opts.crewReveal});
-}
+const RARITY_COLOR=window.RARITY_COLOR||{N:'#888',R:'var(--blue)',H:'var(--purple)',L:'var(--gold)',S:'#ff6ec7',legend:'var(--gold)',mythic:'#ff88ff',set:'#c080ff',hero:'var(--purple)'};
 // 퀘스트 보상 수령
 function sfxCoin(){AudioMgr.playSfx('coin');}
 
