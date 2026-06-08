@@ -27,7 +27,11 @@ function _relaxQty(qty, objType){
 
 // ─── 시나리오 퀘 spawn ──────────────────────────────────────────
 function spawnPhasedQuests(pid){
-  if(!pid||!window.G||!window.G.quests)return false;
+  console.log('[story-quest-engine] spawnPhasedQuests("'+pid+'") 시작');
+  if(!pid||!window.G||!window.G.quests){
+    console.warn('[story-quest-engine] 종료: pid='+pid+' window.G='+!!window.G+' G.quests='+!!(window.G&&window.G.quests));
+    return false;
+  }
   const G=window.G;
   // 사용자 보고 2026-06-08: 이전 버그로 인트로가 seen 마킹만 되고 실제 재생 안 된 경우
   // 다시 못 봄. v2 마이그레이션 — _phasedIntroSeen 안의 항목 중 G._scenesSeen 에 대응
@@ -215,5 +219,51 @@ window.spawnPhasedQuests=spawnPhasedQuests;
 window._storyQuestCurrentProgress=_storyQuestCurrentProgress;
 window.tickStoryQuests=tickStoryQuests;
 
+// ─── 진단·복구 유틸 (사용자가 console 에서 호출 가능) ─────────
+// debugStoryState() — 현재 시나리오 상태 출력
+// resetStoryProgress() — 모든 인트로/씬 마킹 해제 (다시 처음부터)
+// forceReplayPlanetIntro(pid) — 특정 행성 인트로 강제 재생
+window.debugStoryState=function(){
+  var G=window.G||{};
+  console.group('=== STORY STATE DEBUG ===');
+  console.log('현재 행성:', G.currentPlanet);
+  console.log('G.quests:', JSON.parse(JSON.stringify(G.quests||{})));
+  console.log('G._phasedIntroSeen:', JSON.parse(JSON.stringify(G._phasedIntroSeen||{})));
+  console.log('G._phasedIntroSeenV2:', G._phasedIntroSeenV2);
+  console.log('G._scenesSeen:', JSON.parse(JSON.stringify(G._scenesSeen||{})));
+  console.log('window.PHASE1_QUESTS 로드?', !!window.PHASE1_QUESTS);
+  console.log('window.PHASE1_PLANET_INTROS 로드?', !!window.PHASE1_PLANET_INTROS);
+  console.log('window.PHASE1_CUTSCENES_KO 로드?', !!window.PHASE1_CUTSCENES_KO);
+  console.log('window.STORY_SCENES_PC 로드?', !!window.STORY_SCENES_PC);
+  console.log('window.STORY_SCENES_PC.triggerScene?', typeof (window.STORY_SCENES_PC||{}).triggerScene);
+  console.groupEnd();
+};
+window.resetStoryProgress=function(){
+  var G=window.G||{};
+  G._phasedIntroSeen={};
+  G._scenesSeen={};
+  G._phasedIntroSeenV2=false;
+  try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+  console.log('[story] 모든 인트로/씬 마킹 해제 완료 — 행성 재방문 시 컷씬이 다시 재생됩니다.');
+  console.log('[story] 현재 행성으로 다시 도착 처리하려면: spawnPhasedQuests(G.currentPlanet)');
+};
+window.forceReplayPlanetIntro=function(pid){
+  var G=window.G||{};
+  pid=pid||G.currentPlanet;
+  if(!pid){console.warn('[story] 행성 ID 필요. forceReplayPlanetIntro("P01")');return;}
+  var _intros=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
+  var sceneId=null;
+  for(var i=0;i<_intros.length;i++){
+    if(_intros[i] && _intros[i][pid]){sceneId=_intros[i][pid];break;}
+  }
+  if(!sceneId){console.warn('[story] '+pid+' 행성에 등록된 인트로 컷씬이 없습니다.');return;}
+  if(!window.STORY_SCENES_PC || typeof window.STORY_SCENES_PC.forceReplayScene !== 'function'){
+    console.warn('[story] STORY_SCENES_PC 가 로드되지 않았습니다.');return;
+  }
+  console.log('[story] '+pid+' 인트로 강제 재생:', sceneId);
+  window.STORY_SCENES_PC.forceReplayScene(sceneId);
+};
+
 console.log('[story-quest-engine] Loaded — spawnPhasedQuests + tickStoryQuests + _storyQuestCurrentProgress');
+console.log('[story-quest-engine] 디버그 명령어: debugStoryState() / resetStoryProgress() / forceReplayPlanetIntro("P01")');
 })();
