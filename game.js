@@ -16458,10 +16458,10 @@ function showAcquisitionReport(opts){
   try{AudioMgr.playSfx(opts.sfx||'notify',{cooldown:80});}catch(e){}
   const escapeHtml=s=>String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
   // 항목 수에 따른 컴팩트 모드: 5개 이상이면 더 빽빽하게, 2열 그리드 사용
-  // 사용자 요청 2026-06-07: 이미지 2배 확대 (40/48 → 80/96)
+  // 사용자 요청 2026-06-08: 이미지 추가 2배 확대 (80/96 → 160/192) — 퀘스트·전투 보상 모두 적용
   const _many=items.length>=5;
-  const _icSz=_many?80:96;
-  const _icFont=_many?44:56;
+  const _icSz=_many?160:192;
+  const _icFont=_many?88:112;
   const _padRow=_many?'5px 8px':'7px 9px';
   const _gapRow=_many?'8px':'10px';
   const _nmFs=_many?12:13;
