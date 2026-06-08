@@ -15468,7 +15468,14 @@ const _SHAKEDOWN_NPCS=[
 function _showShakedownPopup(planetDef,proceed){
   const npc=_SHAKEDOWN_NPCS[Math.floor(Math.random()*_SHAKEDOWN_NPCS.length)];
   const _cr=G.credits||0;
-  const demand=Math.max(2000,Math.min(Math.floor(_cr*0.18),(planetDef.ring||2)*4000+3000));
+  // 사용자 요청 2026-06-08: 통행료 = 기본(링 기반) + 아군 함대 자산 1%
+  //   · 기본: ring×4000+3000 (ring2=11000, ring5=23000)
+  //   · 함대 자산: getShipSellPrice 합산 × 0.01
+  const _baseCr=(planetDef.ring||2)*4000+3000;
+  const _fleetAsset=(G.fleet||[]).reduce(function(sum,s){
+    try{return sum+((typeof getShipSellPrice==='function'?(getShipSellPrice(s).total||0):0));}catch(e){return sum;}
+  },0);
+  const demand=_baseCr+Math.floor(_fleetAsset*0.01);
   const canPay=_cr>=demand;
   // 행성 팩션 기반 랜덤 해적 이미지 (사용자 요청)
   //   1차: img/pirates/<faction>_<1~3>.png  (사용자가 추후 추가)
