@@ -2553,12 +2553,18 @@ function showHub(){
           rerenderTab(renderQuestTab);
         }
       }catch(e){}
+      // 사용자 보고 2026-06-09: 시나리오 퀘 안 나옴 — 진단 로그
+      try{
+        var _q=(G.quests&&G.quests[_pid])||[];
+        var _story=_q.filter(function(x){return x&&x.type==='story_quest';}).length;
+        console.log('[showHub spawn] '+_pid+' · 총 '+_q.length+'개 (시나리오 '+_story+'개)');
+      }catch(e){}
     }
-    // 즉시 발화 — DOM 한 번 그려진 직후 (이 함수가 showHub 끝부분이라 sync 흐름 마지막)
+    // 즉시 동기 호출 — RAF 의존 없이 바로 spawn (이전 RAF 의존성에서 fail 케이스 발견)
+    _doSpawn();
+    // RAF 보조 — DOM 한 번 그려진 직후 한 번 더 (이중 안전망)
     if(typeof requestAnimationFrame==='function'){
       requestAnimationFrame(_doSpawn);
-    } else {
-      _doSpawn();
     }
     // 안전망: STORY_SCENES_PC 늦은 로드·일부 실패 대비 1초 후 단일 재시도
     setTimeout(function(){
@@ -2909,8 +2915,12 @@ function renderMain(body){
           }
           if(!_introId)return'';
           // 챕터 prefix 추출 — p1_ch01a → p1_ch01 / p2_ch03 → p2_ch03
+          // 사용자 요청 2026-06-09: 컷씬 1~9 순차 해금 (이전 최대 5 → 9 확장)
+          //   · 챕터 prefix 동일 시: 같은 챕터 시퀀스로 묶음
+          //   · 페이즈 prefix 동일 시: 페이즈 전체 컷씬으로 폴백 (행성당 9개 채움)
           const _chapterMatch=_introId.match(/^(p\d_ch\d+|p\d_[a-z]+)/);
           const _prefix=_chapterMatch?_chapterMatch[1]:_introId;
+          const _phasePrefix=_introId.match(/^(p\d)/)?.[1]||'';
           // 같은 챕터 컷씬 수집 (해당 페이즈만)
           const _sceneIds=[_introId];
           const _phaseCuts=_cutMaps[_introMapIdx]||{};
@@ -2918,7 +2928,15 @@ function renderMain(body){
             if(id===_introId)return;
             if(id.startsWith(_prefix))_sceneIds.push(id);
           });
-          const _scenes=_sceneIds.slice(0,5);  // 최대 5개
+          // 챕터 컷씬이 9개 미만이면 같은 페이즈의 다른 챕터 컷씬으로 보충 (1~9 채우기)
+          if(_sceneIds.length<9 && _phasePrefix){
+            Object.keys(_phaseCuts).sort().forEach(id=>{
+              if(_sceneIds.length>=9)return;
+              if(_sceneIds.includes(id))return;
+              if(id.startsWith(_phasePrefix))_sceneIds.push(id);
+            });
+          }
+          const _scenes=_sceneIds.slice(0,9);  // 최대 9개 (사용자 요청)
           return _scenes.map((sid,idx)=>{
             const _seenScene=!!(G._scenesSeen&&G._scenesSeen['scene_'+sid]);
             // 순차 해금 규칙:
