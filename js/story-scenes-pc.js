@@ -400,7 +400,7 @@
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'예상했다고요?'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.'},
-    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, P27 균열의 간섭을 받는 P01 프록시마 b. {사령관}의 각성 지점이었습니다.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, 글리제 581g 균열 균열의 간섭을 받는 프록시마 b 프록시마 b. {사령관}의 각성 지점이었습니다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.'}
@@ -507,7 +507,7 @@
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Predicted?'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'I calculated this moment a hundred years ago. That you would arrive at these coordinates — at this exact hour. Margin of error: 0.3 percent.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'And Baekgu — Dr. Lee Hwi-so and I designed him. Through a reverse-time transmission equation.'},
-    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'A location even the Cheeks could not find — Proxima b, perturbed by the P27 Rift. {사령관}\'s awakening point.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'A location even the Cheeks could not find — Proxima b, perturbed by the 글리제 581g 균열 Rift. {사령관}\'s awakening point.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Commander… now I understand. I am a program designed to wait a hundred years — for you.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Because you are the only one who carries both at once. Wrath, and mercy.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Wrath to bring down the Cheeks. Mercy to understand them. Wrath alone only builds another Ursa Major.'}

@@ -42,7 +42,7 @@ const PHASE2_QUESTS={
       desc:{ko:'마르코: "전투 잔해 구역에 치크스 화물이 남아있어. G17 파편을 모아두면 나중에 써먹을 수 있어."\nG17 ×1 소비(탐색 시동) → 잔해 탐색 → G17 ×2 + R02 ×1 회수.',
             en:'Marco: "Cygnus cargo in the wreck zone." G17 ×1 → search → G17 ×2 + R02 ×1.'},
       objectives:[
-        {type:'gather', item:'G17', qty:1, label:{ko:'G17 ×1 탐색 시동', en:'Spend G17 ×1'}},
+        {type:'gather', item:'G17', qty:1, label:{ko:'치크스 결정 파편 ×1 탐색 시동', en:'Spend 치크스 결정 파편 ×1'}},
       ],
       rewardCr:8000, rewardVe:30,
       rewardItems:[{id:'G17', qty:2},{id:'R02', qty:1}],
@@ -57,7 +57,7 @@ const PHASE2_QUESTS={
       desc:{ko:'행상: "마르코라는 밀수꾼이 어딘가 숨어있어. 정거장 지하 격납고 쪽일 거야."\nG17 ×1 지불(정보비) → 마르코 폴로 은신처 좌표 확인.',
             en:'Trader: "Marco hides in the lower hangar." G17 ×1 → coordinates.'},
       objectives:[
-        {type:'gather', item:'G17', qty:1, label:{ko:'G17 ×1 정보비', en:'Pay G17 ×1'}},
+        {type:'gather', item:'G17', qty:1, label:{ko:'치크스 결정 파편 ×1 정보비', en:'Pay 치크스 결정 파편 ×1'}},
       ],
       rewardCr:5000, rewardVe:30,
       rewardItems:[],
@@ -99,10 +99,10 @@ const PHASE2_QUESTS={
       id:'p2_q06m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'마르코의 칩 해독', en:'Marco\'s Chip Decode'},
-      desc:{ko:'페이즈 1 P03에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 G24 아우레우스 정보 칩 해독 — G17 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 로스 128-b 수퍼비아 집하장 —32구역 경유."',
-            en:'Marco (already joined Phase 1) deepens trust. G17 ×2 → decode G24 chip → Krieg spy route to P04 zone-32.'},
+      desc:{ko:'페이즈 1 바나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 로스 128-b 수퍼비아 집하장 —32구역 경유."',
+            en:'Marco (already joined Phase 1) deepens trust. 치크스 결정 파편 ×2 → decode 아우레우스 정보 칩 chip → Krieg spy route to 로스 128-b zone-32.'},
       objectives:[
-        {type:'gather', item:'G17', qty:2, label:{ko:'G17 ×2 암호 해석 매체', en:'G17 ×2 cipher media'}},
+        {type:'gather', item:'G17', qty:2, label:{ko:'치크스 결정 파편 ×2 암호 해석 매체', en:'치크스 결정 파편 ×2 cipher media'}},
       ],
       rewardCr:30000, rewardVe:100,
       rewardItems:[],
@@ -124,7 +124,7 @@ const PHASE2_QUESTS={
       desc:{ko:'코르비누스: "이 구역 진입은 거래자만 가능해. G01 고철 프레임 ×2 납품부터."\nG01 ×2 소비 → —32구역 접근 허가.',
             en:'Corvinus: "Traders only. G01 ×2 first." Submit → zone-32 access.'},
       objectives:[
-        {type:'gather', item:'G01', qty:2, label:{ko:'G01 ×2 납품', en:'Submit G01 ×2'}},
+        {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2 납품', en:'Submit 고철 프레임 ×2'}},
       ],
       rewardCr:10000, rewardVe:30,
       rewardItems:[],
@@ -136,10 +136,10 @@ const PHASE2_QUESTS={
       id:'p2_q0702', type:'story_quest', category:'main', phase:2,
       ic:'🔬', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'스파이의 흔적', en:'Spy Traces'},
-      desc:{ko:'—32구역 G01 고철 프레임 더미 해체 → 크리그 암호 메모 수색.\nG01 ×1 소비(해체 작업) → 크리그 암호 메모 발견 + 구형 캡슐 감지.',
-            en:'Dismantle G01 pile in zone-32. G01 ×1 → find Krieg cipher memo + capsule trace.'},
+      desc:{ko:'—32구역 고철 프레임 고철 프레임 더미 해체 → 크리그 암호 메모 수색.\nG01 ×1 소비(해체 작업) → 크리그 암호 메모 발견 + 구형 캡슐 감지.',
+            en:'Dismantle 고철 프레임 pile in zone-32. 고철 프레임 ×1 → find Krieg cipher memo + capsule trace.'},
       objectives:[
-        {type:'gather', item:'G01', qty:1, label:{ko:'G01 ×1 해체 작업', en:'Dismantle G01 ×1'}},
+        {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 해체 작업', en:'Dismantle 고철 프레임 ×1'}},
       ],
       rewardCr:15000, rewardVe:40,
       rewardItems:[],
@@ -154,7 +154,7 @@ const PHASE2_QUESTS={
       desc:{ko:'오스카르: "G05 중력수정이 오정렬됐어. 집하장 컨베이어 전체가 멈출 것 같아."\nG05 ×2 제공 → 시스템 복구.',
             en:'Oscar: "G05 misaligned, conveyor failing." Provide G05 ×2 → restore.'},
       objectives:[
-        {type:'gather', item:'G05', qty:2, label:{ko:'G05 ×2 제공', en:'Provide G05 ×2'}},
+        {type:'gather', item:'G05', qty:2, label:{ko:'수퍼비아 중력수정 ×2 제공', en:'Provide 수퍼비아 중력수정 ×2'}},
       ],
       rewardCr:10000, rewardVe:40,
       rewardItems:[{id:'G02', qty:3}],
@@ -167,9 +167,9 @@ const PHASE2_QUESTS={
       ic:'🍺', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'주점 정보 수집', en:'Tavern Intel'},
       desc:{ko:'집하장 주점 방문 — 주점 크루 영입 기능 활용.\nG03 ×1 소비(분위기 조성) → 소문: "—32구역 폐기 구역에 이상한 구형 캡슐이 있어. 수퍼비아가 고철 취급한다더라."',
-            en:'Visit dockyard tavern. G03 ×1 → rumor about an unknown capsule in zone-32.'},
+            en:'Visit dockyard tavern. 오리온 위스키 ×1 → rumor about an unknown capsule in zone-32.'},
       objectives:[
-        {type:'gather', item:'G03', qty:1, label:{ko:'G03 ×1 소비', en:'Consume G03 ×1'}},
+        {type:'gather', item:'G03', qty:1, label:{ko:'오리온 위스키 ×1 소비', en:'Consume 오리온 위스키 ×1'}},
       ],
       rewardCr:5000, rewardVe:25,
       rewardItems:[],
@@ -184,8 +184,8 @@ const PHASE2_QUESTS={
       desc:{ko:'폐기 구역 구형 캡슐 인양. 표면에 키릴 문자: "VOSTOK".\nG02 ×1 소비(중장비 가동) + G22 ×1 소비(코르비누스 추가 허가 뇌물) → 캡슐 인양 성공.',
             en:'Recover the spherical capsule marked "VOSTOK". G02 ×1 (heavy machinery) + G22 ×1 (bribe).'},
       objectives:[
-        {type:'gather', item:'G02', qty:1, label:{ko:'G02 ×1 중장비 가동', en:'Spend G02 ×1'}},
-        {type:'gather', item:'G22', qty:1, label:{ko:'G22 ×1 뇌물', en:'Spend G22 ×1'}},
+        {type:'gather', item:'G02', qty:1, label:{ko:'에너지 코어 ×1 중장비 가동', en:'Spend 에너지 코어 ×1'}},
+        {type:'gather', item:'G22', qty:1, label:{ko:'수퍼비아 귀족 향수 ×1 뇌물', en:'Spend 수퍼비아 귀족 향수 ×1'}},
       ],
       rewardCr:15000, rewardVe:50,
       rewardItems:[],
@@ -197,11 +197,11 @@ const PHASE2_QUESTS={
       id:'p2_q07m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린의 비밀 항로', en:'Gagarin\'s Secret Route'},
-      desc:{ko:'페이즈 1 P05에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — G02 ×2 + R07 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
-            en:'Gagarin (already joined Phase 1) recovers old memories from VOSTOK. G02 ×2 + R07 ×1 → "Soviet covert route to Omicron Persei."'},
+      desc:{ko:'페이즈 1 티가든 금융 b에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
+            en:'Gagarin (already joined Phase 1) recovers old memories from VOSTOK. 에너지 코어 ×2 + 수퍼비아 중력자 ×1 → "Soviet covert route to Omicron Persei."'},
       objectives:[
-        {type:'gather', item:'G02', qty:2, label:{ko:'G02 ×2 항법 재가동', en:'G02 ×2 reactivation'}},
-        {type:'gather', item:'R07', qty:1, label:{ko:'R07 ×1 중력자', en:'R07 ×1 graviton'}},
+        {type:'gather', item:'G02', qty:2, label:{ko:'에너지 코어 ×2 항법 재가동', en:'에너지 코어 ×2 reactivation'}},
+        {type:'gather', item:'R07', qty:1, label:{ko:'수퍼비아 중력자 ×1 중력자', en:'수퍼비아 중력자 ×1 graviton'}},
       ],
       rewardCr:30000, rewardVe:100,
       rewardItems:[],
@@ -214,11 +214,11 @@ const PHASE2_QUESTS={
       ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'보스토크-1 정찰 모듈', en:'Vostok-1 Scout Module'},
       desc:{ko:'가가린: "캡슐 안에 소련 설계 도면이 있어. 수퍼비아 조선소 제작 베이를 쓰면 정찰 모듈을 만들 수 있어."\nG01 ×2 + G07 ×1 + R07 ×1 소비 → 보스토크-1 제작.\n효과: 잔해 탐색 쿨다운 -2초 · 탐지 범위 +15%.',
-            en:'G01 ×2 + G07 ×1 + R07 ×1 → Vostok-1 scout module. Wreck search cooldown -2s, range +15%.'},
+            en:'고철 프레임 ×2 + 분열 배터리 ×1 + 수퍼비아 중력자 ×1 → Vostok-1 scout module. Wreck search cooldown -2s, range +15%.'},
       objectives:[
-        {type:'gather', item:'G01', qty:2, label:{ko:'G01 ×2', en:'G01 ×2'}},
-        {type:'gather', item:'G07', qty:1, label:{ko:'G07 ×1', en:'G07 ×1'}},
-        {type:'gather', item:'R07', qty:1, label:{ko:'R07 ×1', en:'R07 ×1'}},
+        {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2', en:'고철 프레임 ×2'}},
+        {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1', en:'분열 배터리 ×1'}},
+        {type:'gather', item:'R07', qty:1, label:{ko:'수퍼비아 중력자 ×1', en:'수퍼비아 중력자 ×1'}},
       ],
       rewardCr:12000, rewardVe:50,
       rewardItems:[{id:'vostok1', qty:1}],
@@ -240,7 +240,7 @@ const PHASE2_QUESTS={
       desc:{ko:'마르코: "G16 치크스 변이 포자 ×3을 거래 화물인 척 들고 들어가야 해."\nG16 ×3 소비(위장 화물) → 교역소 내부 잠입 성공.',
             en:'Marco: "Bring G16 ×3 as cover cargo." G16 ×3 → inside infiltration.'},
       objectives:[
-        {type:'gather', item:'G16', qty:3, label:{ko:'G16 ×3 위장 화물', en:'G16 ×3 cover cargo'}},
+        {type:'gather', item:'G16', qty:3, label:{ko:'치크스 변이 포자 ×3 위장 화물', en:'치크스 변이 포자 ×3 cover cargo'}},
       ],
       rewardCr:10000, rewardVe:30,
       rewardItems:[],
@@ -252,10 +252,10 @@ const PHASE2_QUESTS={
       id:'p2_q0802', type:'story_quest', category:'main', phase:2,
       ic:'💾', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'밀수 증거 확보', en:'Secure Smuggling Evidence'},
-      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\nG07 분열 배터리 ×1 소비(해킹 장비 가동) → G25 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 G25 ×1 회수.',
-            en:'Hack the trade server. G07 ×1 → route data + G25 ×1 evidence.'},
+      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\nG07 분열 배터리 ×1 소비(해킹 장비 가동) → 메카니카 자동화 부품 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 메카니카 자동화 부품 ×1 회수.',
+            en:'Hack the trade server. 분열 배터리 ×1 → route data + 메카니카 자동화 부품 ×1 evidence.'},
       objectives:[
-        {type:'gather', item:'G07', qty:1, label:{ko:'G07 ×1 해킹 장비', en:'G07 ×1 hacker'}},
+        {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 해킹 장비', en:'분열 배터리 ×1 hacker'}},
       ],
       rewardCr:15000, rewardVe:45,
       rewardItems:[{id:'G25', qty:1}],
@@ -267,10 +267,10 @@ const PHASE2_QUESTS={
       id:'p2_q0803', type:'story_quest', category:'main', phase:2,
       ic:'⚔️', npc:'시스템', npcIc:'📡', npcKey:'system',
       nm:{ko:'치크스 감시선 격퇴', en:'Cygnus Surveillance Combat'},
-      desc:{ko:'잠입 사실이 치크스 감시선에 포착됨. G08 ×1 소비(조준 시스템 임시 강화) → 감시선 2기 격퇴. 잔해 구역 개방.',
-            en:'Cover blown. G08 ×1 (aim boost) → defeat 2 surveillance ships.'},
+      desc:{ko:'잠입 사실이 치크스 감시선에 포착됨. 메카니카 광학 렌즈 ×1 소비(조준 시스템 임시 강화) → 감시선 2기 격퇴. 잔해 구역 개방.',
+            en:'Cover blown. 메카니카 광학 렌즈 ×1 (aim boost) → defeat 2 surveillance ships.'},
       objectives:[
-        {type:'gather', item:'G08', qty:1, label:{ko:'G08 ×1 조준 강화', en:'G08 ×1 aim boost'}},
+        {type:'gather', item:'G08', qty:1, label:{ko:'메카니카 광학 렌즈 ×1 조준 강화', en:'메카니카 광학 렌즈 ×1 aim boost'}},
         {type:'combat', target:'cygnus_surveillance', qty:2, label:{ko:'감시선 ×2 격퇴', en:'Defeat surveillance ×2'}},
       ],
       rewardCr:25000, rewardVe:60,
@@ -283,8 +283,8 @@ const PHASE2_QUESTS={
       id:'p2_q0804', type:'story_quest', category:'sub', phase:2,
       ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'잔해 구역 탐색', en:'Wreck Zone Search'},
-      desc:{ko:'격퇴한 치크스 감시선 잔해 탐색. 접경지라 R02와 메카니카 부품이 섞여 있음. 잔해 탐색 1~3회.',
-            en:'Search Cygnus wreckage. Mixed R02 + Mechanica parts.'},
+      desc:{ko:'격퇴한 치크스 감시선 잔해 탐색. 접경지라 치크스 결정석와 메카니카 부품이 섞여 있음. 잔해 탐색 1~3회.',
+            en:'Search Cygnus wreckage. Mixed 치크스 결정석 + Mechanica parts.'},
       objectives:[
         {type:'explore', target:'p20_wreck', qty:2, label:{ko:'잔해 탐색 ×2', en:'Wreck search ×2'}},
       ],
@@ -298,10 +298,10 @@ const PHASE2_QUESTS={
       id:'p2_q0805', type:'story_quest', category:'main', phase:2,
       ic:'🎯', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'에이전트 오르크 추적', en:'Hunt Agent Ork'},
-      desc:{ko:'오르크를 격리 구역에서 포위. 협상 시도 — G09 ×2 제시 → 오르크 배신 → 전투 → 체포.\n심문: "크리그가 LHS1140-b 지하에 생체 병기 제조창을 운영 중이야. 테슬라가 잡혀 있어."',
-            en:'Corner Ork. G09 ×2 offer → betrayal → combat → capture. Interrogation: "Krieg bioweapon lab at LHS1140-b. Tesla captive."'},
+      desc:{ko:'오르크를 격리 구역에서 포위. 협상 시도 — 중수소 배터리 ×2 제시 → 오르크 배신 → 전투 → 체포.\n심문: "크리그가 LHS1140-b 지하에 생체 병기 제조창을 운영 중이야. 테슬라가 잡혀 있어."',
+            en:'Corner Ork. 중수소 배터리 ×2 offer → betrayal → combat → capture. Interrogation: "Krieg bioweapon lab at LHS1140-b. Tesla captive."'},
       objectives:[
-        {type:'gather', item:'G09', qty:2, label:{ko:'G09 ×2 매수 시도', en:'G09 ×2 bribe attempt'}},
+        {type:'gather', item:'G09', qty:2, label:{ko:'중수소 배터리 ×2 매수 시도', en:'중수소 배터리 ×2 bribe attempt'}},
         {type:'combat', target:'agent_ork', qty:1, label:{ko:'오르크 체포', en:'Capture Ork'}},
       ],
       rewardCr:40000, rewardVe:80,
@@ -321,10 +321,10 @@ const PHASE2_QUESTS={
       id:'p2_q0901', type:'story_quest', category:'main', phase:2,
       ic:'⛓️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'지하 진입로 확보', en:'Underground Route'},
-      desc:{ko:'광산 노동자에게 G06 ×2 제공(정보비) → 지하 제조창 비밀 진입로 확인.\n노동자: "17층에... 낯선 사람들이 있어요. 우리도 무서워요."',
-            en:'G06 ×2 to miners → underground route revealed. Worker: "Strangers on level 17..."'},
+      desc:{ko:'광산 노동자에게 LHS 크리스탈 ×2 제공(정보비) → 지하 제조창 비밀 진입로 확인.\n노동자: "17층에... 낯선 사람들이 있어요. 우리도 무서워요."',
+            en:'LHS 크리스탈 ×2 to miners → underground route revealed. Worker: "Strangers on level 17..."'},
       objectives:[
-        {type:'gather', item:'G06', qty:2, label:{ko:'G06 ×2 정보비', en:'G06 ×2 intel'}},
+        {type:'gather', item:'G06', qty:2, label:{ko:'LHS 크리스탈 ×2 정보비', en:'LHS 크리스탈 ×2 intel'}},
       ],
       rewardCr:10000, rewardVe:30,
       rewardItems:[],
@@ -337,9 +337,9 @@ const PHASE2_QUESTS={
       ic:'⚔️', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'지하 경비대 격퇴', en:'Underground Guard Combat'},
       desc:{ko:'지하 17층 진입 → 크리그 경비대 3개 조 교전.\nG27 ×1 소비(치크스 화학 성분이 크리그 생체 경비 장비를 교란) → 경비대 마비 후 격퇴.',
-            en:'Level 17 → 3 Krieg squads. G27 ×1 (chemical disruption) → paralyze + defeat.'},
+            en:'Level 17 → 3 Krieg squads. 치크스 뇌수액 ×1 (chemical disruption) → paralyze + defeat.'},
       objectives:[
-        {type:'gather', item:'G27', qty:1, label:{ko:'G27 ×1 화학 교란', en:'G27 ×1 disruption'}},
+        {type:'gather', item:'G27', qty:1, label:{ko:'치크스 뇌수액 ×1 화학 교란', en:'치크스 뇌수액 ×1 disruption'}},
         {type:'combat', target:'krieg_guard', qty:3, label:{ko:'크리그 경비대 ×3', en:'Krieg guards ×3'}},
       ],
       rewardCr:25000, rewardVe:60,
@@ -352,10 +352,10 @@ const PHASE2_QUESTS={
       id:'p2_q0903', type:'story_quest', category:'main', phase:2,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'테슬라 구출', en:'Rescue Tesla'},
-      desc:{ko:'격리 구역 잠금 해제: G25 ×1 소비(격리 도어 바이패스) → 테슬라 구출.\n테슬라: "크리그 최종 요새는 Kepler-22b야. 지하 감옥에 이순신 장군 캡슐이 수백 년째 봉인돼 있어. 크리그가 방패막이로 쓰고 있는 거야."',
-            en:'G25 ×1 → bypass quarantine. Tesla rescued. "Final fortress at Kepler-22b. Yi Sun-sin sealed for centuries — Krieg uses him as shield."'},
+      desc:{ko:'격리 구역 잠금 해제: 메카니카 자동화 부품 ×1 소비(격리 도어 바이패스) → 테슬라 구출.\n테슬라: "크리그 최종 요새는 Kepler-22b야. 지하 감옥에 이순신 장군 캡슐이 수백 년째 봉인돼 있어. 크리그가 방패막이로 쓰고 있는 거야."',
+            en:'메카니카 자동화 부품 ×1 → bypass quarantine. Tesla rescued. "Final fortress at Kepler-22b. Yi Sun-sin sealed for centuries — Krieg uses him as shield."'},
       objectives:[
-        {type:'gather', item:'G25', qty:1, label:{ko:'G25 ×1 도어 바이패스', en:'G25 ×1 door bypass'}},
+        {type:'gather', item:'G25', qty:1, label:{ko:'메카니카 자동화 부품 ×1 도어 바이패스', en:'메카니카 자동화 부품 ×1 door bypass'}},
       ],
       rewardCr:30000, rewardVe:80,
       rewardItems:[],
@@ -370,7 +370,7 @@ const PHASE2_QUESTS={
       desc:{ko:'테슬라: "R03 코어 재료를 에너지 주노드에 삽입하면 연쇄 과부하가 일어나."\nR03 ×1 소비(과부하 유도) → 60초 탈출. 탈출 경로에서 G07 ×2 회수 가능.',
             en:'Tesla: "R03 in the main node triggers overload." R03 ×1 → 60s escape. G07 ×2 along route.'},
       objectives:[
-        {type:'gather', item:'R03', qty:1, label:{ko:'R03 ×1 과부하 유도', en:'R03 ×1 overload'}},
+        {type:'gather', item:'R03', qty:1, label:{ko:'아우레우스 태양핵 ×1 과부하 유도', en:'아우레우스 태양핵 ×1 overload'}},
       ],
       rewardCr:35000, rewardVe:90,
       rewardItems:[{id:'G07', qty:2},{id:'R04', qty:2}],
@@ -382,8 +382,8 @@ const PHASE2_QUESTS={
       id:'p2_q0905', type:'story_quest', category:'sub', phase:2,
       ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'기지 폐허 잔해 탐색', en:'Base Ruin Search'},
-      desc:{ko:'제조창 폭파 후 폐허 구역 탐색. 크리그 비축 재료와 R03·R04·G10 수집 가능. 탐색 1~3회.',
-            en:'Search ruins after blast. R03/R04/G10 possible.'},
+      desc:{ko:'제조창 폭파 후 폐허 구역 탐색. 크리그 비축 재료와 아우레우스 태양핵·크리그 마그마 코어·크리그 무기 원석 수집 가능. 탐색 1~3회.',
+            en:'Search ruins after blast. 아우레우스 태양핵/크리그 마그마 코어/크리그 무기 원석 possible.'},
       objectives:[
         {type:'explore', target:'p07_ruin', qty:2, label:{ko:'잔해 탐색 ×2', en:'Ruin search ×2'}},
       ],
@@ -405,8 +405,8 @@ const PHASE2_QUESTS={
       id:'p2_q1001', type:'story_quest', category:'main', phase:2,
       ic:'🛰️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'외곽 포대 무력화', en:'Disable Outer Turrets'},
-      desc:{ko:'균열대 진입로를 막는 G10 무기 원석 포대 3기 파괴 → 셔틀 진입로 확보. 잔해 구역 개방.',
-            en:'Destroy 3 G10 turrets blocking the rift entrance.'},
+      desc:{ko:'균열대 진입로를 막는 크리그 무기 원석 무기 원석 포대 3기 파괴 → 셔틀 진입로 확보. 잔해 구역 개방.',
+            en:'Destroy 3 크리그 무기 원석 turrets blocking the rift entrance.'},
       objectives:[
         {type:'combat', target:'krieg_turret', qty:3, label:{ko:'크리그 포대 ×3 파괴', en:'Destroy turrets ×3'}},
       ],
@@ -420,11 +420,11 @@ const PHASE2_QUESTS={
       id:'p2_q1002', type:'story_quest', category:'main', phase:2,
       ic:'🔓', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'지하 감옥 진입', en:'Reach Prison Level'},
-      desc:{ko:'G26 ×1 소비(크리그 위장 약물) → 감옥 층 접근.\nG11 ×1 소비(경비 반장 매수 시도) → 거절 → 전투 → 격퇴.\n지하 아카이브에서 거북선 LGD01 설계도 조각 5% 드롭.',
-            en:'G26 ×1 disguise + G11 ×1 bribe attempt → refused → fight. LGD01 fragment 5% drop in archive.'},
+      desc:{ko:'크리그 전투 자극제 ×1 소비(크리그 위장 약물) → 감옥 층 접근.\nG11 ×1 소비(경비 반장 매수 시도) → 거절 → 전투 → 격퇴.\n지하 아카이브에서 거북선 거북선 설계도 조각 5% 드롭.',
+            en:'크리그 전투 자극제 ×1 disguise + 크리그 혈철석 ×1 bribe attempt → refused → fight. 거북선 fragment 5% drop in archive.'},
       objectives:[
-        {type:'gather', item:'G26', qty:1, label:{ko:'G26 ×1 위장 약물', en:'G26 ×1 disguise'}},
-        {type:'gather', item:'G11', qty:1, label:{ko:'G11 ×1 매수 시도', en:'G11 ×1 bribe'}},
+        {type:'gather', item:'G26', qty:1, label:{ko:'크리그 전투 자극제 ×1 위장 약물', en:'크리그 전투 자극제 ×1 disguise'}},
+        {type:'gather', item:'G11', qty:1, label:{ko:'크리그 혈철석 ×1 매수 시도', en:'크리그 혈철석 ×1 bribe'}},
       ],
       rewardCr:30000, rewardVe:70,
       rewardItems:[{id:'G12', qty:2}],
@@ -436,17 +436,17 @@ const PHASE2_QUESTS={
       id:'p2_q1003', type:'story_quest', category:'main', phase:2,
       ic:'📜', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'이순신 캡슐 봉인 해제', en:'Unseal Yi Sun-sin Capsule'},
-      desc:{ko:'이순신 캡슐 인식 코드: G18 난중일기 영인본 필요.\nG18 소비(캡슐 인식 장치 활성화) → 봉인 해제.\n이순신: "이곳이... 얼마나 흘렀느냐. 나를 깨운 자가 {사령관}인가. 빚을 졌구나."',
-            en:'Capsule code: G18 Nanjung Diary. G18 ×1 → unseal. Yi Sun-sin: "How long has it been... I owe you a debt."'},
+      desc:{ko:'이순신 캡슐 인식 코드: 난중일기 영인본 난중일기 영인본 필요.\nG18 소비(캡슐 인식 장치 활성화) → 봉인 해제.\n이순신: "이곳이... 얼마나 흘렀느냐. 나를 깨운 자가 {사령관}인가. 빚을 졌구나."',
+            en:'Capsule code: 난중일기 영인본 Nanjung Diary. 난중일기 영인본 ×1 → unseal. Yi Sun-sin: "How long has it been... I owe you a debt."'},
       objectives:[
-        {type:'gather', item:'G18', qty:1, label:{ko:'G18 난중일기 영인본 ×1', en:'G18 Nanjung Diary ×1'}},
+        {type:'gather', item:'G18', qty:1, label:{ko:'난중일기 영인본 난중일기 영인본 ×1', en:'난중일기 영인본 Nanjung Diary ×1'}},
       ],
       rewardCr:30000, rewardVe:80,
       rewardItems:[],
       rewardFlags:['turtle_captain_freed'],
       locked:true,
-      lockReason:{ko:'페이즈 3 저항군 기지(F06 P22)에서 G18 난중일기 영인본을 먼저 입수하라.',
-                  en:'Acquire G18 Nanjung Diary at Resistance base (F06 P22) in Phase 3 first.'},
+      lockReason:{ko:'페이즈 3 저항군 기지(저항군 지하 방공호)에서 난중일기 영인본 난중일기 영인본을 먼저 입수하라.',
+                  en:'Acquire 난중일기 영인본 Nanjung Diary at Resistance base (저항군 지하 방공호) in Phase 3 first.'},
       cutscene_pre:null, cutscene_post:null
     },
     // ── Q10-M 이순신(H01) 합류 (영웅 퀘스트 + 세트 보상) ──
@@ -473,7 +473,7 @@ const PHASE2_QUESTS={
       desc:{ko:'크리그 지휘관 아이젠클로 등장: "그 캡슐은 우리 방어 코어야. 내놔라."\n전면전 불가. 이순신: "지금은 물러서는 것이 전략이다. 철수."\nG11 ×1 소비(연막 폭발물 즉석 제조) → 탈출 성공. 페이즈 2 완료.',
             en:'Eisenklaue appears. Yi Sun-sin: "Retreat is strategy now." G11 ×1 (smoke bomb) → escape. Phase 2 done.'},
       objectives:[
-        {type:'gather', item:'G11', qty:1, label:{ko:'G11 ×1 연막 폭발물', en:'G11 ×1 smoke bomb'}},
+        {type:'gather', item:'G11', qty:1, label:{ko:'크리그 혈철석 ×1 연막 폭발물', en:'크리그 혈철석 ×1 smoke bomb'}},
       ],
       rewardCr:50000, rewardVe:100,
       rewardItems:[],
@@ -493,7 +493,7 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03 "칩 해독의 열쇠" (P19 도착) ───
   p2_ch03:[
-    {char:'system', name:'항법 AI', color:'#38bdf8', text:'G24 아우레우스 정보 칩 해독 시도 중 — 암호화 확인. 치크스 변조 주파수 적용. 현재 장비로는 해독 불가.'},
+    {char:'system', name:'항법 AI', color:'#38bdf8', text:'아우레우스 정보 칩 아우레우스 정보 칩 해독 시도 중 — 암호화 확인. 치크스 변조 주파수 적용. 현재 장비로는 해독 불가.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.'},
     {char:'combat_F05', name:'치크스 전위대', color:'#ef4444', text:'이곳은 치크스 관할 공역이다. 통행 허가 없이 접근은 적대 행위로 간주한다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'여긴 은하 공용 항로야. 비켜.'},
@@ -502,9 +502,9 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03-A "마르코의 첫 정보" (Q06-M 완료) ───
   p2_ch03a:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 로스 128-b 수퍼비아 집하장 — 32구역. 크리그 스파이가 G01 고철 프레임 속에 정보를 숨겨 운반했어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 로스 128-b 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 고철 프레임 속에 정보를 숨겨 운반했어.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그리고... 이상한 게 하나 더. 그 구역 폐기물 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'P04 로스 128-b로 항로 계산. 수퍼비아 우호 행성이라 입항은 무리 없습니다.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'로스 128-b 로스 128-b로 항로 계산. 수퍼비아 우호 행성이라 입항은 무리 없습니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'간다.'}
   ],
 
@@ -527,15 +527,15 @@ const PHASE2_CUTSCENES_KO={
   p2_ch04:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 \'오르크\'가 여기 담당이야.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'치크스 감시선 순찰 중이야. 잠입은 거래자 위장이 최선이야.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'G16 포자 ×3 있지. 이 구역 화물이야. 써먹자.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'치크스 변이 포자 포자 ×3 있지. 이 구역 화물이야. 써먹자.'}
   ],
 
   // ─── CH04-A "다음 목적지" (Q08-05 완료) ───
   p2_ch04a:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'테슬라가 납치됐어. 메카니카 최고 설계자야. 크리그가 억지로 생체 병기를 설계하게 만들고 있어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'LHS1140-b 표면은 G06 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 이야기는 들어봤어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'LHS1140-b 표면은 LHS 크리스탈 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 이야기는 들어봤어.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'병기 설계도를 없애야 해. 테슬라도 구해야 하고.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'P07 좌표 입력 완료. 출항 준비.'}
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'LHS 1140-b 좌표 입력 완료. 출항 준비.'}
   ],
 
   // ─── CH04-B "표면 아래" (P07 도착) ───
@@ -552,7 +552,7 @@ const PHASE2_CUTSCENES_KO={
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'정확해. 그래서 크리그는 절대 놓지 않으려는 거야.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'...당연하지.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'⚠ 봉인 해제 코드 — G18 난중일기 영인본 필요. 페이즈 3 저항군 기지(F06 P22)에서 입수 가능.'}
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'⚠ 봉인 해제 코드 — 난중일기 영인본 난중일기 영인본 필요. 페이즈 3 저항군 기지(저항군 지하 방공호)에서 입수 가능.'}
   ],
 
   // ─── CH04-D "요새 앞에서" (P13 도착) ───
