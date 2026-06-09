@@ -278,17 +278,23 @@ function renderQuestTab(body){
   myQ.sort((a,b)=>(_stOrder[a.status]||9)-(_stOrder[b.status]||9));
   // 타입별 정렬: 제독 먼저. EN/KO 양쪽 라벨 매칭 (i18n 적용된 라벨 또는 한국어 원본)
   const _adminN=I18N.t('quest.npc.admiral'),_brokerN=I18N.t('quest.npc.broker');
-  // 사용자 보고 2026-06-07: 시나리오 퀘스트(story_quest)·영웅 퀘(hero_quest)가
-  //   npc='백구' 등으로 제독·브로커 어디에도 안 잡혀 화면에 표시 안 됨 → 제독 섹션에 합류
-  //   (보라색 카드 스타일로 시각 구분되므로 혼동 없음)
-  const _isAdm=q=>q.npc===_adminN||q.npc==='제독'||q.type==='void_boss'||q.type==='story_quest'||q.type==='hero_quest';
+  // 사용자 보고 2026-06-09: 백구 퀘 안 보임 — 안전망 강화
+  //   1. npc='백구' 명시 추가 (시나리오 퀘 외 모든 백구 NPC 퀘 → 제독 섹션)
+  //   2. 영웅 NPC (이순신·가가린·마르코폴로 등) 도 제독 섹션 (시나리오 퀘 NPC)
+  //   3. 미분류 폴백 — 브로커가 아닌 모든 퀘는 무조건 제독 섹션 (절대 사라지지 않게)
   const _isBrk=q=>q.npc===_brokerN||q.npc==='브로커';
+  const _isAdm=q=>!_isBrk(q);  // 단순 명확: broker 가 아니면 모두 admin
   availQ.sort((a,b)=>((_isAdm(a)?0:1)-(_isAdm(b)?0:1)));
-  // 히든 보스(void_boss)는 npc='???'라 제독/브로커 어디에도 안 잡힘 → 제독 섹션에 합쳐서 노출
   const myAdmiralQ=myQ.filter(_isAdm);
   const myBrokerQ=myQ.filter(_isBrk);
   const availAdmiralQ=availQ.filter(_isAdm);
   const availBrokerQ=availQ.filter(_isBrk);
+  // 진단 로그 — 사용자가 콘솔로 확인 가능
+  try{
+    console.log('[quest-ui] '+pid+' · 총 '+qlist.length+'개 (제독:'+(myAdmiralQ.length+availAdmiralQ.length)+', 브로커:'+(myBrokerQ.length+availBrokerQ.length)+')');
+    var _baekguN=qlist.filter(function(q){return q.npc==='백구';}).length;
+    if(_baekguN>0)console.log('[quest-ui] '+pid+' · 백구 NPC 퀘 '+_baekguN+'개 → 제독 섹션 분류 확인');
+  }catch(e){}
   function _section(title,icon,color,bg,bdr,list,emptyMsg){
     if(!list.length)return`<div style="background:${bg};border:1px solid ${bdr};border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:22px">${icon}</span><div style="color:${color};font-size:14px;font-weight:bold">${title}</div></div><div style="color:var(--dim);font-size:12px;text-align:center;padding:10px">${emptyMsg}</div></div>`;
     return`<div style="background:${bg};border:1px solid ${bdr};border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:22px">${icon}</span><div><div style="color:${color};font-size:14px;font-weight:bold">${title}</div><div style="color:var(--dim);font-size:11px">${I18N.t('quest.countN',{n:list.length})}</div></div></div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">${list.map(qCard).join('')}</div></div>`;
@@ -321,6 +327,48 @@ function renderQuestTab(body){
   </div>`;
 }
 
+
+// ─── 진단 명령어 (사용자가 console 에서 호출 가능) ─────────────
+// debugQuestState() — 현재 행성의 퀘스트 분포 + npc/type 별 카운트
+window.debugQuestState=function(pid){
+  var G=window.G||{};
+  pid=pid||G.currentPlanet||'P01';
+  var qlist=(G.quests&&G.quests[pid])||[];
+  console.group('=== QUEST STATE: '+pid+' ('+qlist.length+'개) ===');
+  if(!qlist.length){
+    console.warn('퀘스트 없음! spawnPhasedQuests('+pid+') 직접 호출 권장');
+    if(typeof window.spawnPhasedQuests==='function'){
+      console.log('자동 spawn 시도...');
+      window.spawnPhasedQuests(pid);
+      qlist=(G.quests&&G.quests[pid])||[];
+      console.log('spawn 후 개수:', qlist.length);
+    }
+  }
+  var byNpc={},byType={},byStatus={};
+  qlist.forEach(function(q){
+    byNpc[q.npc||'(none)']=(byNpc[q.npc||'(none)']||0)+1;
+    byType[q.type||'(none)']=(byType[q.type||'(none)']||0)+1;
+    byStatus[q.status||'(none)']=(byStatus[q.status||'(none)']||0)+1;
+  });
+  console.log('NPC별:', byNpc);
+  console.log('Type별:', byType);
+  console.log('Status별:', byStatus);
+  console.log('백구 NPC 퀘:', qlist.filter(function(q){return q.npc==='백구';}).length+'개');
+  console.log('전체 데이터:', qlist);
+  console.groupEnd();
+  return qlist;
+};
+// forceSpawnQuests(pid) — 현재 행성에 시나리오 + 일반 퀘 강제 spawn
+window.forceSpawnQuests=function(pid){
+  pid=pid||(window.G&&window.G.currentPlanet)||'P01';
+  console.log('[forceSpawn] '+pid+' 시작');
+  if(typeof window.spawnPhasedQuests==='function')window.spawnPhasedQuests(pid);
+  if(typeof window.generateQuests==='function')window.generateQuests(pid);
+  if(typeof window.rerenderTab==='function'&&typeof window.renderQuestTab==='function'){
+    window.rerenderTab(window.renderQuestTab);
+  }
+  console.log('[forceSpawn] 완료 — 퀘 탭 새로고침');
+};
 
 // 글로벌 노출 (game.js 기존 호출처 호환)
 window._QUEST_TYPE_IMG_ALIAS=_QUEST_TYPE_IMG_ALIAS;
