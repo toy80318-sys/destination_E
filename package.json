@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.108",
+  "version": "1.0.0-beta.109",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -9,6 +9,8 @@
     "electron": "electron .",
     "electron:dev": "electron . --enable-logging",
     "icons": "node scripts/gen-app-icons.js",
+    "icons:pwa": "node scripts/resize-icon.js",
+    "icons:all": "node scripts/resize-icon.js && node scripts/gen-app-icons.js",
     "bump": "node scripts/bump-version.js",
     "release": "node scripts/bump-version.js",
     "release:local": "node scripts/bump-version.js --no-push",
@@ -30,7 +32,8 @@
   "devDependencies": {
     "electron": "^33.4.11",
     "electron-builder": "^25.1.8",
-    "png2icons": "^2.0.1"
+    "png2icons": "^2.0.1",
+    "pngjs": "^7.0.0"
   },
   "build": {
     "appId": "kr.cgtation.destinationearth",
