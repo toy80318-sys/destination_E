@@ -2388,14 +2388,30 @@ function showHub(){
   // 기존 온보딩 튜토리얼 자동 실행 제거됨 (2026-06-07)
   // → Phase 1 시나리오 퀘스트가 동일 역할 수행
   // 새 게임·이어하기 시작 시 일반 퀘스트 + 시나리오 퀘 + 인트로 컷씬 보장
-  if(G && G.currentPlanet){
-    setTimeout(()=>{
-      // 사용자 보고 2026-06-08: 일반 퀘가 6개 한도를 먼저 채워 시나리오 퀘·인트로 컷씬이 차단되던 문제.
-      // → spawnPhasedQuests 를 먼저 호출해 시나리오 퀘·컷씬을 보장한 뒤 일반 퀘 시드.
-      try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(G.currentPlanet); }catch(e){console.warn('[phase] spawn fail (hub)',e);}
-      try{ if(typeof generateQuests==='function')generateQuests(G.currentPlanet); }catch(e){console.warn('[quest] gen fail (hub)',e);}
-    }, 600);
-  }
+  // 사용자 보고 2026-06-09: 컷씬·시나리오 퀘가 안 나타나는 문제 — currentPlanet 없을 때도 P01로 폴백 + 다중 재시도
+  (function _ensureQuestsAndCutscene(){
+    var _pid=(G&&G.currentPlanet)||'P01';
+    if(G&&!G.currentPlanet)G.currentPlanet=_pid;
+    // 1차: 600ms 후 시도
+    setTimeout(function(){
+      try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(_pid); }catch(e){console.warn('[phase] spawn fail (hub-1)',e);}
+      try{ if(typeof generateQuests==='function')generateQuests(_pid); }catch(e){console.warn('[quest] gen fail (hub-1)',e);}
+    },600);
+    // 2차: 1800ms 후 재시도 (1차 실패·STORY_SCENES_PC 늦은 로드 대비)
+    setTimeout(function(){
+      try{
+        var _list=(G.quests&&G.quests[_pid])||[];
+        var _hasStory=_list.some(function(q){return q&&q.type==='story_quest';});
+        if(!_hasStory && typeof spawnPhasedQuests==='function'){
+          console.log('[hub-retry] story quests missing — re-spawning');
+          spawnPhasedQuests(_pid);
+        }
+        if(_list.length<3 && typeof generateQuests==='function'){
+          generateQuests(_pid);
+        }
+      }catch(e){console.warn('[hub-2 retry fail]',e);}
+    },1800);
+  })();
 }
 
 // ═══ 온보딩 튜토리얼 ════════════════════════════════════════════════
@@ -3480,7 +3496,13 @@ function triggerPirateRaid(pd){
     </div>
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="font-size:12px;color:var(--cyan);text-align:center">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('baekgu.pirateWarn')}"</div>`,
-    [{txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
+    [{txt:I18N.t('ui.startBattle'),fn:()=>{
+        closeModal();
+        // 사용자 보고 2026-06-09: 전투 진입 안 됨 — 컷씬 오버레이 잔존 시 강제 정리 + 함수 존재 가드
+        try{ var _ov=document.getElementById('story-scene-overlay'); if(_ov)_ov.remove(); }catch(e){}
+        if(typeof startPirateRaid!=='function'){console.error('[combat] startPirateRaid 미정의');notify(I18N.t('err.combatInitFail')||'전투 시스템 로드 실패','err');return;}
+        try{ startPirateRaid(raidDef); }catch(e){console.error('[combat] startPirateRaid threw',e);notify('전투 진입 오류: '+e.message,'err');}
+     },cls:'btn-red'},
      {txt:I18N.t('ui.flee'),fn:()=>{closeModal();escapePirateRaid();},cls:'btn-sm'}]
   );
   saveGame(true);
@@ -15168,6 +15190,12 @@ function showHallOfFame(){
   _hofTab='global';
   setTimeout(()=>_renderHofTab('global'),50);
 }
+// 사용자 보고 2026-06-09: 타이틀 화면 명예의 전당 버튼 미작동 — 명시적 window 노출 + 폴백
+try{if(typeof window!=='undefined'){
+  window.showHallOfFame=showHallOfFame;
+  window.exitFromTitle=typeof exitFromTitle==='function'?exitFromTitle:window.exitFromTitle;
+  window.showExitModal=typeof showExitModal==='function'?showExitModal:window.showExitModal;
+}}catch(e){}
 
 // ── 피드백 ──────────────────────────────────────────────────────
 function showFeedback(){

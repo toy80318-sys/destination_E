@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Claude Cowork · Antigravity 이전 가이드 — Destination Earth</title>
+<style>
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, sans-serif;
+    background: #0d1a2a;
+    color: #e8e8f0;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 24px 80px;
+    line-height: 1.75;
+  }
+  h1 {
+    color: #00f3ff;
+    border-bottom: 2px solid #00f3ff;
+    padding-bottom: 8px;
+    font-size: 26px;
+    letter-spacing: 1px;
+  }
+  h2 {
+    color: #ffd700;
+    margin-top: 40px;
+    padding-left: 12px;
+    border-left: 4px solid #ffd700;
+    font-size: 20px;
+  }
+  h3 {
+    color: #cc88ff;
+    margin-top: 28px;
+    font-size: 16px;
+  }
+  h4 {
+    color: #66ddff;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+  }
+  .info {
+    background: rgba(0, 243, 255, 0.05);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .warn {
+    background: rgba(255, 200, 0, 0.07);
+    border: 1px solid rgba(255, 200, 0, 0.4);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .danger {
+    background: rgba(255, 80, 80, 0.06);
+    border: 1px solid rgba(255, 80, 80, 0.4);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .ok {
+    background: rgba(46, 204, 113, 0.07);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 22px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: rgba(0, 243, 255, 0.08);
+    color: #66ddff;
+    font-weight: bold;
+  }
+  td code { color: #ffaa66; }
+  ol, ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .cmd-box {
+    position: relative;
+    background: #0a0f1a;
+    border: 1px solid #2a4060;
+    border-radius: 8px;
+    padding: 14px 18px 14px 18px;
+    margin: 10px 0 24px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13.5px;
+    overflow-x: auto;
+    line-height: 1.65;
+  }
+  .cmd-box code {
+    color: #99ffcc;
+    white-space: pre;
+    display: block;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #00f3ff 0%, #0088cc 100%);
+    color: #0d1a2a;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    background: linear-gradient(135deg, #66ddff 0%, #00f3ff 100%);
+    transform: translateY(-1px);
+  }
+  .copy-btn.copied {
+    background: #33dd66;
+    color: #0d1a2a;
+  }
+  .pill {
+    display: inline-block;
+    background: rgba(204, 136, 255, 0.18);
+    color: #cc88ff;
+    border: 1px solid #cc88ff;
+    border-radius: 12px;
+    padding: 1px 9px;
+    font-size: 11.5px;
+    font-weight: bold;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .toc {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 8px;
+    padding: 14px 22px;
+    margin: 18px 0 30px;
+  }
+  .toc a { color: #66ddff; text-decoration: none; }
+  .toc a:hover { color: #00f3ff; text-decoration: underline; }
+  .chip {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.12);
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 4px;
+    padding: 0 6px;
+    font-size: 12px;
+    margin: 0 3px;
+    font-family: 'Consolas', monospace;
+  }
+  .step-num {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    background: linear-gradient(135deg, #00f3ff, #0088cc);
+    color: #0d1a2a;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 13px;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 36px 0;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #66778a;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🚀 Claude Cowork · Antigravity 이전 가이드</h1>
+<div class="info">
+  <strong>대상 프로젝트:</strong> Destination Earth (<code>destination_E</code>)<br>
+  <strong>GitHub 원격:</strong> <code>https://github.com/toy80318-sys/destination_E.git</code><br>
+  <strong>총 크기:</strong> 3.6 GB (제외 가능 폴더 정리 후 약 220 MB)<br>
+  <strong>현재 버전:</strong> <code>v1.0.0-beta.96</code>
+</div>
+
+<div class="toc">
+  <strong style="color:#ffd700">📑 목차</strong>
+  <ul style="margin:8px 0 0 0">
+    <li><a href="#prep">0. 공통 사전 작업</a></li>
+    <li><a href="#cowork">1. Claude Cowork 이전 (Claude.ai Projects)</a></li>
+    <li><a href="#antigravity">2. Antigravity 이전 (Google AI IDE)</a></li>
+    <li><a href="#compare">3. 두 도구 비교 & 선택 가이드</a></li>
+    <li><a href="#troubleshoot">4. 문제 해결 (Troubleshooting)</a></li>
+  </ul>
+</div>
+
+<hr>
+
+<h2 id="prep">0. 공통 사전 작업</h2>
+<p>두 도구 모두 GitHub 리포지토리를 그대로 활용 가능하지만, 무거운 폴더와 민감 정보를 먼저 정리하면 컨텍스트 효율이 크게 향상됩니다.</p>
+
+<h3>📁 무거운 폴더 제외 (Critical)</h3>
+<table>
+  <tr><th>폴더</th><th>크기</th><th>처리</th></tr>
+  <tr><td><code>node_modules/</code></td><td>593 MB</td><td>이미 <code>.gitignore</code> 처리됨 — 그대로 둠</td></tr>
+  <tr><td><code>dist/</code></td><td>1.6 GB</td><td>Electron 빌드 출력 — 제외</td></tr>
+  <tr><td><code>build/</code></td><td>3.6 MB</td><td>제외</td></tr>
+  <tr><td><code>img_backup/</code></td><td>264 MB</td><td>백업본 — 제외</td></tr>
+  <tr><td><code>02_Assets/</code></td><td>102 MB</td><td>원본 에셋 — 선택적 제외</td></tr>
+  <tr><td><code>img/</code></td><td>112 MB</td><td>게임 이미지 — 코드 분석엔 불필요, 선택적 제외</td></tr>
+</table>
+
+<h4>① .gitignore 보강</h4>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step1">COPY</button>
+  <code id="step1"># 프로젝트 루트에서 실행
+cd /home/user/destinatione
+
+# 무거운 폴더가 추적 중이면 제거
+git rm -r --cached dist build img_backup 2>/dev/null || true
+
+# .gitignore 에 추가
+cat >> .gitignore <<'EOF'
+
+# AI 도구 컨텍스트 폭주 방지
+dist/
+build/
+img_backup/
+*.log
+.DS_Store
+EOF
+
+git add .gitignore
+git commit -m "chore: ignore heavy folders for AI tooling"
+git push</code>
+</div>
+
+<h4>② AI 전용 ignore 파일 추가</h4>
+<p>코드 분석엔 이미지/에셋이 필요 없습니다. 도구별 ignore 파일로 명시:</p>
+
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step2">COPY</button>
+  <code id="step2"># Claude 용
+cat > .claudeignore <<'EOF'
+node_modules/
+dist/
+build/
+img/
+img_backup/
+02_Assets/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp3
+*.wav
+*.ogg
+*.zip
+.git/
+EOF
+
+# Antigravity / Cursor 등 일반 AI IDE 용
+cat > .aiignore <<'EOF'
+node_modules/
+dist/
+build/
+img/
+img_backup/
+02_Assets/
+EOF</code>
+</div>
+
+<h4>③ 민감 정보 사전 점검</h4>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step3">COPY</button>
+  <code id="step3">grep -rE "apiKey|api_key|secret|password|TOKEN|BEARER" \
+  --include="*.js" --include="*.json" --include="*.html" \
+  --exclude-dir=node_modules --exclude-dir=dist .</code>
+</div>
+
+<div class="warn">
+  <strong>⚠️ Firebase 클라이언트 키:</strong> <code>cloudsave.js</code> 에 노출된 Firebase config는 공개해도 안전한 클라이언트 키이지만, Firestore 보안 규칙(<code>firestore.rules</code>)이 올바른지 한 번 더 확인하세요.
+</div>
+
+<hr>
+
+<h2 id="cowork">1. Claude Cowork 이전 <span class="pill">권장</span></h2>
+<p>Claude Cowork은 <strong>claude.ai의 Projects 기능</strong>에서 협업 워크스페이스로 운영되며, GitHub 직접 연동을 지원합니다.</p>
+
+<h3><span class="step-num">1</span>Project 생성 + GitHub 연결</h3>
+<ol>
+  <li><a href="https://claude.ai" target="_blank" style="color:#66ddff">claude.ai</a> 로그인 → 좌측 사이드바 <chip class="chip">Projects</chip> → <chip class="chip">+ Create Project</chip></li>
+  <li>이름: <code>Destination Earth</code></li>
+  <li><chip class="chip">Add Knowledge</chip> → <chip class="chip">Connect GitHub</chip> 클릭</li>
+  <li>GitHub OAuth 인증 → 리포지토리 <code>toy80318-sys/destination_E</code> 선택 → <chip class="chip">Add</chip></li>
+  <li>브랜치: <code>main</code></li>
+</ol>
+
+<h3><span class="step-num">2</span>Project Instructions 설정</h3>
+<p>현재 <code>CLAUDE.md</code> 내용을 그대로 Custom Instructions에 복사:</p>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step4">COPY</button>
+  <code id="step4">이 폴더는 데스티네이션 어스 웹게임 폴더입니다.
+글로벌 스탠다드 기준으로 게임 완성도가 높아지도록
+검증·코딩 작업을 진행하며 주기적으로 버그를 수정합니다.
+기존의 유사한 웹게임을 참고해 UI 개선 및 게임 밸런스를 조정합니다.
+
+## 핵심 디렉토리
+- game.js (16,609줄) — 메인 게임 로직
+- js/data/ — 행성·영웅·퀘스트·아이템 데이터
+- js/modules/ — 항성지도·경매·코덱스·바·도감
+- js/story-quest-engine.js — 시나리오 퀘스트 엔진
+- js/story-scenes-pc.js — 컷씬·대화 시스템
+- index.html — 진입점
+
+## 작업 원칙
+- 한국어로 응답
+- 200줄 넘는 파일은 신중하게 분할 (의존성 깨질 위험)
+- 새 기능 추가보다 기존 버그 수정 우선
+- 변경 시 _GAME_VER · package.json · service-worker.js 동기화
+
+## 출시 채널
+- 웹: GitHub Pages (https://toy80318-sys.github.io/destination_E/)
+- PC: Electron 빌드 (dist/)</code>
+</div>
+
+<h3><span class="step-num">3</span>Knowledge 파일 추가 (선택)</h3>
+<p>GitHub 연동만으로 충분하지 않을 때, 핵심 설계 문서를 직접 업로드:</p>
+<ul>
+  <li><code>Doc/DE_시나리오_정리본.md</code> — 시나리오 설계</li>
+  <li><code>01_GDD/</code> — Game Design Document</li>
+  <li><code>blueprint.md</code> — 아키텍처 설계</li>
+  <li><code>README.md</code> — 프로젝트 개요</li>
+</ul>
+
+<h3><span class="step-num">4</span>동기화 정책 확인</h3>
+<div class="ok">
+  <strong>✓ 자동 동기화:</strong> GitHub에 push 하면 Claude Projects가 24시간 안에 자동 갱신.<br>
+  <strong>✓ 즉시 동기화:</strong> Project 설정 → Knowledge → <chip class="chip">Sync now</chip> 클릭으로 수동 강제 갱신.
+</div>
+
+<div class="warn">
+  <strong>⚠️ 한도:</strong>
+  <ul>
+    <li>Project 1개당 Knowledge 파일 한도 약 <strong>200,000 토큰</strong> (대형 파일 자동 청크)</li>
+    <li>이미지·바이너리는 분석 안 됨 → <code>.claudeignore</code> 로 미리 제외</li>
+    <li>game.js (1MB)는 단일 파일 한도(~32MB)에 여유 있음</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2 id="antigravity">2. Antigravity 이전</h2>
+<p>Antigravity는 Google의 AI 에이전트 IDE로, 워크스페이스 단위로 코드를 클론하여 멀티 에이전트가 동시 작업할 수 있습니다.</p>
+
+<h3><span class="step-num">1</span>Antigravity 설치 & 가입</h3>
+<ol>
+  <li><a href="https://antigravity.google" target="_blank" style="color:#66ddff">antigravity.google</a> 접속 → Google 계정으로 로그인</li>
+  <li>데스크톱 클라이언트(Windows/Mac/Linux) 또는 웹 클라이언트 선택</li>
+  <li>워크스페이스 생성 시 GitHub 계정 연동 권장</li>
+</ol>
+
+<h3><span class="step-num">2</span>방법 A — GitHub 클론 (권장)</h3>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step5">COPY</button>
+  <code id="step5"># Antigravity 메뉴: File → Clone Repository
+# URL 입력란에 붙여넣기
+https://github.com/toy80318-sys/destination_E.git
+
+# 또는 Antigravity 터미널에서 직접 클론
+git clone https://github.com/toy80318-sys/destination_E.git
+cd destination_E
+npm install</code>
+</div>
+
+<h3><span class="step-num">2</span>방법 B — 로컬 폴더 직접 열기</h3>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step6">COPY</button>
+  <code id="step6"># Antigravity 메뉴: File → Open Folder
+# 경로 선택: /home/user/destinatione
+
+# 또는 CLI 에서
+antigravity open /home/user/destinatione</code>
+</div>
+
+<h3><span class="step-num">3</span>Agent 컨텍스트 설정</h3>
+<p>Antigravity는 <code>.aiignore</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code> 등 표준 컨텍스트 파일을 자동 인식합니다.</p>
+
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step7">COPY</button>
+  <code id="step7"># AGENTS.md 생성 — Antigravity 에이전트에게 프로젝트 안내
+cat > AGENTS.md <<'EOF'
+# Destination Earth — Agent 안내
+
+## 프로젝트 개요
+한국어 + 영문 지원 우주 무역 RPG 웹게임.
+- 웹 빌드: index.html + game.js + js/**
+- PC 빌드: Electron (electron/main.js)
+
+## 빌드 & 실행
+- 개발 서버: `python3 -m http.server 8000` 또는 VSCode Live Server
+- Electron: `npm run electron`
+- PC 배포 빌드: `npm run dist`
+
+## 테스트
+- 통합 테스트 없음 (수동 시뮬레이션)
+- Node 파서 검증: `node -e "new Function(require('fs').readFileSync('game.js','utf8'))"`
+
+## 코드 스타일
+- 한국어 주석 적극 사용
+- 함수당 200줄 이하 권장
+- 글로벌 함수 + window.* 노출 패턴
+EOF</code>
+</div>
+
+<h3><span class="step-num">4</span>의존성 설치 & 첫 실행</h3>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step8">COPY</button>
+  <code id="step8"># Antigravity 워크스페이스 터미널에서
+npm install
+
+# 웹 빌드 로컬 테스트
+python3 -m http.server 8000
+# → http://localhost:8000 에서 게임 실행
+
+# Electron PC 빌드 테스트
+npm run electron</code>
+</div>
+
+<h3><span class="step-num">5</span>멀티 에이전트 활용</h3>
+<div class="info">
+  Antigravity 의 강점 — 여러 에이전트를 병렬로 작업시킬 수 있습니다.
+  <ul>
+    <li><strong>Builder Agent</strong>: game.js 분할 / 모듈화 작업</li>
+    <li><strong>Tester Agent</strong>: 시나리오 테스트 자동화 작성</li>
+    <li><strong>Localizer Agent</strong>: i18n_dict.js 영문 번역 보강</li>
+    <li><strong>Designer Agent</strong>: UI 카드 디자인 개선</li>
+  </ul>
+  각 에이전트는 독립 브랜치에서 작업 → PR 자동 생성.
+</div>
+
+<hr>
+
+<h2 id="compare">3. 두 도구 비교 & 선택 가이드</h2>
+<table>
+  <tr>
+    <th>항목</th>
+    <th>Claude Cowork (Projects)</th>
+    <th>Antigravity</th>
+  </tr>
+  <tr>
+    <td>실행 환경</td>
+    <td>웹 (claude.ai)</td>
+    <td>데스크톱 IDE + 웹</td>
+  </tr>
+  <tr>
+    <td>코드 실행</td>
+    <td>제한적 (스크립트 분석 위주)</td>
+    <td>풀 IDE — 빌드/실행/디버그 지원</td>
+  </tr>
+  <tr>
+    <td>GitHub 연동</td>
+    <td>✓ 자동 sync</td>
+    <td>✓ 클론 후 수동 push/pull</td>
+  </tr>
+  <tr>
+    <td>멀티 에이전트</td>
+    <td>X (단일 대화)</td>
+    <td>✓ 병렬 작업</td>
+  </tr>
+  <tr>
+    <td>이미지 분석</td>
+    <td>✓ 업로드 시</td>
+    <td>✓ 직접 보기</td>
+  </tr>
+  <tr>
+    <td>비용</td>
+    <td>Pro/Team 플랜 ($20+/월)</td>
+    <td>무료 미리보기 (변동 가능)</td>
+  </tr>
+  <tr>
+    <td>최적 용도</td>
+    <td>설계 토론·코드 리뷰·문서화</td>
+    <td>실제 개발 작업·빌드·테스트</td>
+  </tr>
+  <tr>
+    <td>저장소 push 필요?</td>
+    <td>매번 push 필요</td>
+    <td>로컬 작업 후 push</td>
+  </tr>
+</table>
+
+<div class="ok">
+  <strong>💡 권장 조합 — 둘 다 쓰기:</strong>
+  <ol>
+    <li><strong>Antigravity</strong> 에서 일상 개발 (코드 작성/빌드/테스트)</li>
+    <li><strong>Claude Cowork</strong> 에서 시나리오 설계·리뷰·번역 검토</li>
+    <li>GitHub 가 둘의 동기화 허브 — push 만 하면 양쪽 자동 반영</li>
+  </ol>
+</div>
+
+<hr>
+
+<h2 id="troubleshoot">4. 문제 해결 (Troubleshooting)</h2>
+
+<h3>Q1. Claude Cowork에 GitHub 연결이 실패</h3>
+<div class="warn">
+  <ul>
+    <li>Pro/Team 플랜이 아닌 경우 GitHub 연동 미지원 → 파일 직접 업로드로 대체</li>
+    <li>리포지토리가 private인 경우 OAuth scope 재인증</li>
+    <li>대체: <code>game.js</code>, <code>js/**.js</code> 만 ZIP 으로 묶어 업로드</li>
+  </ul>
+</div>
+
+<h3>Q2. 토큰 한도 초과로 컨텍스트 잘림</h3>
+<div class="warn">
+  <ul>
+    <li><code>.claudeignore</code> 에 이미지 폴더 모두 추가</li>
+    <li><code>i18n_dict.js</code> (712 KB) 가 가장 무거움 — 필요 없으면 제외</li>
+    <li>game.js 를 향후 분할하면 부분 로딩 가능</li>
+  </ul>
+</div>
+
+<h3>Q3. Antigravity 에서 npm install 실패</h3>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step9">COPY</button>
+  <code id="step9"># Node 버전 확인 (16 이상 필요)
+node -v
+
+# 캐시 정리 후 재시도
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install</code>
+</div>
+
+<h3>Q4. Electron 빌드가 안 됨</h3>
+<div class="cmd-box">
+  <button class="copy-btn" data-copy="step10">COPY</button>
+  <code id="step10"># electron-builder 종속성 별도 설치
+npm install --save-dev electron electron-builder
+
+# Mac/Linux 빌드
+npm run dist
+
+# Windows 빌드 (Mac에서 cross-compile)
+npm run dist:win</code>
+</div>
+
+<h3>Q5. 컷씬·시나리오 컨텍스트가 너무 커서 도구가 느려짐</h3>
+<div class="info">
+  컷씬 데이터(<code>phase1~6_quests.js</code>)는 총 200KB 이상입니다. 분석할 페이즈만 골라서 Knowledge 에 추가하거나, <code>Doc/DE_시나리오_정리본.md</code> 요약본만 활용하세요.
+</div>
+
+<hr>
+
+<h2>✅ 이전 체크리스트</h2>
+<table>
+  <tr><th>단계</th><th>완료 조건</th></tr>
+  <tr><td>0-1. .gitignore 정리</td><td><code>dist/</code>, <code>build/</code>, <code>img_backup/</code> 제외 push</td></tr>
+  <tr><td>0-2. AI ignore 추가</td><td><code>.claudeignore</code>, <code>.aiignore</code> 생성·push</td></tr>
+  <tr><td>0-3. 민감정보 점검</td><td>API 키 / secret 누출 없음 확인</td></tr>
+  <tr><td>0-4. AGENTS.md 작성</td><td>Antigravity 용 에이전트 안내 추가</td></tr>
+  <tr><td>1. Claude Cowork</td><td>Project 생성 + GitHub 연결 + Instructions 입력</td></tr>
+  <tr><td>2. Antigravity</td><td>워크스페이스 클론 + npm install + 로컬 실행 확인</td></tr>
+  <tr><td>3. 양쪽 sync 확인</td><td>1줄 수정 → push → 양쪽 도구가 갱신 감지</td></tr>
+</table>
+
+<div class="footer">
+  Destination Earth · 빅 픽처 스페이스 · 2026<br>
+  생성: 2026-06-09 · 작성: Claude Code
+</div>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.dataset.copy;
+    const codeEl = document.getElementById(targetId);
+    if (!codeEl) return;
+    const txt = codeEl.textContent;
+    navigator.clipboard.writeText(txt).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ COPIED';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 1500);
+    }).catch(err => {
+      btn.textContent = '⚠ FAIL';
+      setTimeout(() => { btn.textContent = 'COPY'; }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>

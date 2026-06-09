@@ -138,24 +138,22 @@
     }
 
     // ── 캐릭터 패널 ──
-    // 사용자 요청 2026-06-07:
-    //   주인공(commander) + 백구(baekgu*) → 2배 사이즈 (66.67% 패널)
-    //   그 외 NPC (영웅·바텐더·NPC) → 원래 사이즈 (33.33% 패널)
-    // 렌더링 시점에 _charKey 따라 동적으로 적용 (renderScene 안에서 처리)
+    // 사용자 요청 2026-06-09: 좌측 30% / 우측 70% 고정 비율
+    //   · 모든 컷씬에서 동일한 비율 — 동적 리사이즈 제거
+    //   · 이미지는 패널 100% 채움 (1024×1024 원본을 패널 폭에 맞춰 표시)
     var charPanel = document.createElement('div');
     charPanel.style.cssText = [
-      'flex:0 0 33.33%','display:flex','align-items:center','justify-content:center',
+      'flex:0 0 30%','display:flex','align-items:center','justify-content:center',
       'background:linear-gradient(135deg,rgba(20,40,80,0.45),rgba(0,0,0,0.7))',
       'border-right:1px solid rgba(0,243,255,0.25)',
-      'padding:20px','box-sizing:border-box','overflow:hidden',
-      'transition:flex 0.35s ease, padding 0.35s ease'
+      'padding:16px','box-sizing:border-box','overflow:hidden'
     ].join(';');
 
     var charImg = document.createElement('img');
     charImg.className = 'ssc-img';
     charImg.style.cssText = [
-      'max-width:100%','max-height:96vh','width:auto','height:auto',
-      'object-fit:contain','image-rendering:auto',
+      'width:100%','height:auto','max-width:100%','max-height:96vh',
+      'object-fit:contain','image-rendering:high-quality',
       'filter:drop-shadow(0 0 32px rgba(0,243,255,0.5))'
     ].join(';');
     // 실패 시 fallback 체인:
@@ -255,23 +253,15 @@
       if(_charKey === 'commander'){ _charKey = _resolveCommanderImg(); }
       charImg.dataset.charKey = _charKey;
       charImg.src = _charImgPath(s.char || 'system');
-      // 사용자 요청 2026-06-08: 전설영웅 합류 컷씬 1024×1024 큰 이미지 활용
-      //   · hero01~08 / 빌런(ursa·void_hiden) → 패널 55%, 이미지 최대 1024px (HD 풀해상도)
-      //   · 그 외 (commander·baekgu·NPC) → 기존 37% 컴팩트 레이아웃
-      var _isHeroOrBoss = /^(hero0[1-8]|ursa|void_hiden)$/.test(_charKey);
-      if(_isHeroOrBoss){
-        charPanel.style.flex = '0 0 55%';
-        charPanel.style.padding = '24px';
-        charImg.style.maxWidth = '1024px';
-        charImg.style.maxHeight = '96vh';
-      } else {
-        charPanel.style.flex = '0 0 37%';
-        charPanel.style.padding = '18px';
-        charImg.style.maxWidth = '100%';
-        charImg.style.maxHeight = '88vh';
-      }
-      charImg.style.width = 'auto';
+      // 사용자 요청 2026-06-09: 모든 컷씬 30%/70% 고정 — 동적 리사이즈 제거
+      //   · 이미지는 패널 폭을 100% 채움 (1024×1024 원본을 패널에 맞춰 등비축소)
+      //   · img/chars/H/ 원본을 우선 사용 (HD 풀해상도)
+      charPanel.style.flex = '0 0 30%';
+      charPanel.style.padding = '16px';
+      charImg.style.width = '100%';
       charImg.style.height = 'auto';
+      charImg.style.maxWidth = '100%';
+      charImg.style.maxHeight = '96vh';
       charImg.style.objectFit = 'contain';
       charImg.style.imageRendering = 'high-quality';
       charImg.style.filter = 'drop-shadow(0 0 32px rgba(0,243,255,0.5))';
@@ -294,7 +284,10 @@
       }
     }
 
+    var _closed = false;
     function closeOverlay(){
+      if(_closed)return;
+      _closed = true;
       document.removeEventListener('keydown', onKey);
       ov.style.transition = 'opacity 0.3s';
       ov.style.opacity = '0';
@@ -313,6 +306,22 @@
 
     ov.addEventListener('click', next);
     document.addEventListener('keydown', onKey);
+
+    // 안전망: 60초 동안 사용자 응답 없으면 자동 닫힘 (게임 영구 잠금 방지)
+    // 사용자가 클릭/엔터 하면 onKey/next 가 발화 → 활동 감지로 타임아웃 리셋
+    var _idleTimer = null;
+    function _resetIdle(){
+      if(_idleTimer)clearTimeout(_idleTimer);
+      _idleTimer = setTimeout(function(){
+        if(!_closed){
+          console.warn('[STORY_SCENES_PC] 60s idle — auto-closing overlay to unblock game');
+          closeOverlay();
+        }
+      }, 60000);
+    }
+    _resetIdle();
+    ov.addEventListener('click', _resetIdle);
+    document.addEventListener('keydown', _resetIdle);
 
     renderScene();
   }

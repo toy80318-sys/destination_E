@@ -398,6 +398,7 @@ I18N.register({
   'title.btnCredits':  { ko: '🎬<br>크레딧',       en: '🎬<br>Credits' },
   'title.btnHallOfFame':{ ko: '🏆<br>명예전당',    en: '🏆<br>Hall of Fame' },
   'title.btnFeedback': { ko: '📬<br>피드백',       en: '📬<br>Feedback' },
+  'title.btnExit':     { ko: '🚪<br>종료',         en: '🚪<br>Exit' },
   'title.disclaimer':  { ko: '※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.',
                          en: '※ All persons, organizations, and events in this game are fictional creations by the author. Any resemblance to real people or organizations is purely coincidental.' },
   'title.ratingLine':  { ko: '이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%',
