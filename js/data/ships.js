@@ -66,9 +66,10 @@ const SHIP_CATALOG=[
   {id:'CHIX_M_BUY',civ:'F05',nm:I18N.t('ship.CHIX_M_BUY.nm'),tier:'중형',price:290000,maxHP:6700,maxSH:2800,ATT:70,INT:56,TEC:54,LOY:88,ic:'🚀',catalogId:'CHIX_M',cargoStart:16,desc:I18N.t('ship.CHIX_M_BUY.desc')},
   {id:'CHIX_L_BUY',civ:'F05',nm:I18N.t('ship.CHIX_L_BUY.nm'),tier:'대형',price:1080000,maxHP:22500,maxSH:9500,ATT:106,INT:100,TEC:82,LOY:90,ic:'🌟',catalogId:'CHIX_L',cargoStart:24,desc:I18N.t('ship.CHIX_L_BUY.desc')},
   // ── F06 지구저항군 (회복·내구 — HP 최강) ──
-  {id:'F06_S',civ:'F06',nm:I18N.t('ship.F06_S.nm'),tier:'소형',price:58000,maxHP:620,maxSH:440,ATT:38,INT:28,TEC:36,LOY:96,ic:'🛸',cargoStart:8,desc:I18N.t('ship.F06_S.desc')},
-  {id:'F06_M',civ:'F06',nm:I18N.t('ship.F06_M.nm'),tier:'중형',price:275000,maxHP:7500,maxSH:2800,ATT:64,INT:56,TEC:56,LOY:95,ic:'🚀',cargoStart:16,desc:I18N.t('ship.F06_M.desc')},
-  {id:'F06_L',civ:'F06',nm:I18N.t('ship.F06_L.nm'),tier:'대형',price:1020000,maxHP:25000,maxSH:9300,ATT:108,INT:100,TEC:86,LOY:98,ic:'🌟',cargoStart:24,desc:I18N.t('ship.F06_L.desc')},
+  // 사용자 요청 2026-06-09: F06 함선 S/M/L 성능 1.2배 강화 (maxHP/maxSH/ATT/INT/TEC)
+  {id:'F06_S',civ:'F06',nm:I18N.t('ship.F06_S.nm'),tier:'소형',price:58000,maxHP:744,maxSH:528,ATT:46,INT:34,TEC:43,LOY:96,ic:'🛸',cargoStart:8,desc:I18N.t('ship.F06_S.desc')},
+  {id:'F06_M',civ:'F06',nm:I18N.t('ship.F06_M.nm'),tier:'중형',price:275000,maxHP:9000,maxSH:3360,ATT:77,INT:67,TEC:67,LOY:95,ic:'🚀',cargoStart:16,desc:I18N.t('ship.F06_M.desc')},
+  {id:'F06_L',civ:'F06',nm:I18N.t('ship.F06_L.nm'),tier:'대형',price:1020000,maxHP:30000,maxSH:11160,ATT:130,INT:120,TEC:103,LOY:98,ic:'🌟',cargoStart:24,desc:I18N.t('ship.F06_L.desc')},
   // ── F07 보이드 (균열 — 모든 클래스 최강 / 사용자 명세 ★) ──
   {id:'F07_S',civ:'F07',nm:I18N.t('ship.F07_S.nm'),tier:'소형',price:95000,maxHP:960,maxSH:840,ATT:84,INT:72,TEC:78,LOY:98,ic:'🛸',cargoStart:8,desc:I18N.t('ship.F07_S.desc')},
   {id:'F07_M',civ:'F07',nm:I18N.t('ship.F07_M.nm'),tier:'중형',price:450000,maxHP:11700,maxSH:5250,ATT:123,INT:117,TEC:102,LOY:98,ic:'🚀',cargoStart:16,desc:I18N.t('ship.F07_M.desc')},
