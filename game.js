@@ -2542,7 +2542,32 @@ function showHub(){
   (function _ensureQuestsAndCutscene(){
     var _pid=(G&&G.currentPlanet)||'P01';
     if(G&&!G.currentPlanet)G.currentPlanet=_pid;
+    // 사용자 요청 2026-06-09: 모든 행성에 시나리오 퀘 미리 spawn — 어느 행성 방문해도 즉시 노출
+    //   세션당 1회만 실행 (G._allPlanetsSeeded 플래그)
+    function _seedAllPlanetQuests(){
+      if(G._allPlanetsSeeded)return;
+      try{
+        var _maps=[window.PHASE1_PLANET_INTROS,window.PHASE2_PLANET_INTROS,window.PHASE3_PLANET_INTROS,window.PHASE4_PLANET_INTROS,window.PHASE5_PLANET_INTROS,window.PHASE6_PLANET_INTROS];
+        var _all=new Set();
+        _maps.forEach(function(m){if(m)Object.keys(m).forEach(function(p){_all.add(p);});});
+        var seeded=0,baekguTotal=0;
+        _all.forEach(function(p){
+          if(typeof spawnPhasedQuests==='function'){
+            try{
+              spawnPhasedQuests(p);
+              seeded++;
+              var _list=(G.quests&&G.quests[p])||[];
+              baekguTotal+=_list.filter(function(q){return q.npc==='백구';}).length;
+            }catch(e){console.warn('[seed]',p,'fail:',e.message);}
+          }
+        });
+        G._allPlanetsSeeded=true;
+        console.log('[seed all] '+seeded+'개 행성 spawn 완료 · 백구 퀘 '+baekguTotal+'개');
+      }catch(e){console.warn('[seed all] fail:',e);}
+    }
     function _doSpawn(){
+      // 전 행성 미리 spawn (세션당 1회) — 사용자가 어느 행성 가도 즉시 백구·시나리오 퀘 노출
+      _seedAllPlanetQuests();
       try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(_pid); }catch(e){console.warn('[phase] spawn fail',e);}
       try{ if(typeof generateQuests==='function')generateQuests(_pid); }catch(e){console.warn('[quest] gen fail',e);}
       // 메인 허브 탭 재렌더 — 새로 추가된 시나리오 퀘·일반 퀘가 즉시 보이도록
@@ -2901,6 +2926,15 @@ function renderMain(body){
         <span style="color:var(--dim);font-size:12px">📋</span>
         <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
+        ${(()=>{
+          // 사용자 요청 2026-06-09: 현재 행성의 시나리오·백구 퀘 카운트 배지 (눈에 띄게)
+          const _ql=(G.quests&&G.quests[G.currentPlanet])||[];
+          const _story=_ql.filter(q=>q.type==='story_quest').length;
+          const _baekgu=_ql.filter(q=>q.npc==='백구').length;
+          if(_story===0)return '';
+          const _avail=_ql.filter(q=>q.type==='story_quest'&&q.status==='available').length;
+          return `<span onclick="hubTab('quest')" style="color:#ffd700;font-size:13px;white-space:nowrap;background:rgba(255,215,0,.12);border:1px solid #ffd70066;border-radius:5px;padding:1px 8px;cursor:pointer;font-weight:bold" title="제독·백구 퀘스트 ${_story}개 (수락 가능 ${_avail}개) — 클릭하여 이동">📜 시나리오 ${_story}${_avail>0?' · 🆕 '+_avail:''}${_baekgu>0?' · 🐕 '+_baekgu:''}</span>`;
+        })()}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
         ${(()=>{
           // 사용자 요청 2026-06-09 (재설계): 컷씬 버튼 순차 해금 + 첫 버튼 항상 활성
