@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.102",
+  "version": "1.0.0-beta.104",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -9,6 +9,9 @@
     "electron": "electron .",
     "electron:dev": "electron . --enable-logging",
     "icons": "node scripts/gen-app-icons.js",
+    "bump": "node scripts/bump-version.js",
+    "release": "node scripts/bump-version.js",
+    "release:local": "node scripts/bump-version.js --no-push",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --publish=never",
     "dist:win": "electron-builder --win --publish=never",

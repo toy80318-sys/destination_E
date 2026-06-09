@@ -2009,6 +2009,23 @@ function partImgSrc(partId){
   const _src=`img/parts/${partId||'generic'}.png`+_ver;
   return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_src):_src;
 }
+// 사용자 요청 2026-06-09: 해적 전투 이벤트 시 combat_FF01~FF08 이미지 추가 활용
+//   · 기존 행성 팩션별(combat_F01~F07) 이미지 외에 해적 전용 변주 7종(FF06 누락)
+//   · 50% 확률로 해적 전용 이미지 사용 → 시각적 다양성 + "해적" 식별성 강화
+const _PIRATE_FF_POOL=['FF01','FF02','FF03','FF04','FF05','FF07','FF08'];
+function pirateCombatImg(pd){
+  const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  // 50% 확률로 해적 전용 풀에서 랜덤 선택
+  if(Math.random()<0.5){
+    const _ff=_PIRATE_FF_POOL[Math.floor(Math.random()*_PIRATE_FF_POOL.length)];
+    return 'img/quests/combat_'+_ff+'.png'+_ver;
+  }
+  // 그 외 50% — 행성 팩션 기반 (기존 동작)
+  const _pf=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
+  return 'img/quests/combat_'+_pf+'.png'+_ver;
+}
+try{if(typeof window!=='undefined')window.pirateCombatImg=pirateCombatImg;}catch(e){}
+
 // 사용자 요청 2026-06-09: 설계도 보상 이미지 표준화
 //   · 함선 설계도 (LGD01~LGD03 등) → img/ui/BP01.png
 //   · 그 외(파츠 설계도: RB10, MW01, ML06, SW01 등) → img/ui/BP02.png
@@ -3388,9 +3405,8 @@ function triggerEarlyPirate(pd){
   };
   openModal(I18N.t('modal.pirateAppear'),
     (function(){
-      const _ver2=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
-      const _pf2=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
-      const _pImg='img/quests/combat_'+_pf2+'.png'+_ver2;
+      // 사용자 요청 2026-06-09: 해적 전용 이미지 풀(FF01~FF08) 추가 활용
+      const _pImg=pirateCombatImg(pd);
       return _hostileVsHeader({enemyImg:_pImg,enemyName:I18N.t('pirate.earlyAppear',{nm:pd?.nm||''}),enemyFallback:'☠️'});
     })()
     +`<div style="text-align:center;padding:0 6px 6px">
@@ -3517,9 +3533,8 @@ function triggerPirateRaid(pd){
   // 모달로 경고 먼저
   openModal(I18N.t('modal.pirateRaid'),
     (function(){
-      const _verPR=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
-      const _pfPR=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
-      const _prImg='img/quests/combat_'+_pfPR+'.png'+_verPR;
+      // 사용자 요청 2026-06-09: 해적 전용 이미지 풀(FF01~FF08) 추가 활용
+      const _prImg=pirateCombatImg(pd);
       return _hostileVsHeader({enemyImg:_prImg,enemyName:I18N.t('pirate.raidName'),enemyFallback:'☠️'});
     })()
     +`<div style="text-align:center;padding:0 6px 6px">
