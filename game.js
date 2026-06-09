@@ -2281,6 +2281,20 @@ function startGame(){
       spawnPhasedQuests(G.currentPlanet||'P01');
     }
   }catch(e){console.warn('[startGame] direct spawn fail:',e);}
+  // 사용자 보고 2026-06-09: 자동 컷씬이 안 나옴 — 추가 안전망 (200ms~5000ms 3번 재시도)
+  //   STORY_SCENES_PC 가 늦게 로드되거나 첫 트리거가 실패한 경우 다시 시도.
+  //   _phasedIntroSeen 이미 마킹돼 있으면 spawnPhasedQuests 내부에서 skip 됨.
+  [400,1500,3000].forEach(function(delay){
+    setTimeout(function(){
+      try{
+        if(window.G && !window.G._phasedIntroSeen?.['intro_'+(G.currentPlanet||'P01')]
+           && typeof spawnPhasedQuests==='function'){
+          console.log('[startGame] retry spawnPhasedQuests at',delay,'ms');
+          spawnPhasedQuests(G.currentPlanet||'P01');
+        }
+      }catch(e){console.warn('[startGame] retry fail:',e);}
+    },delay);
+  });
 }
 
 // 타이틀 → 📧 이메일로 게임 불러오기 모달
@@ -2848,10 +2862,10 @@ function renderMain(body){
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
         ${(()=>{
-          // 사용자 요청 2026-06-09: 행성별 챕터 컷씬 1~N 버튼 + 자동 재생 후 활성화
-          //   · 인트로 매핑(p1_ch01a 등)으로 챕터 prefix 추출 (p1_ch01)
-          //   · 해당 prefix 로 시작하는 모든 컷씬 ID 수집 → 1~N 번호 버튼
-          //   · 자동 인트로 미시청 시 버튼 disabled
+          // 사용자 요청 2026-06-09 (재설계): 컷씬 버튼 순차 해금 + 첫 버튼 항상 활성
+          //   · 컷씬 #1 (인트로): 항상 활성 (자동 인트로 안 떠도 수동 재생 가능)
+          //   · 컷씬 #2~N: 직전 컷씬을 본 후에만 활성화 (순차 해금)
+          //   · 자동 인트로는 백그라운드에서 시도 — 실패해도 #1 버튼으로 사용자 복구 가능
           const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
           const _cutMaps=[window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO, window.PHASE4_CUTSCENES_KO, window.PHASE5_CUTSCENES_KO, window.PHASE6_CUTSCENES_KO];
           let _introId=null,_introMapIdx=-1;
@@ -2859,34 +2873,39 @@ function renderMain(body){
             if(_introMaps[i] && _introMaps[i][G.currentPlanet]){_introId=_introMaps[i][G.currentPlanet];_introMapIdx=i;break;}
           }
           if(!_introId)return'';
-          // 챕터 prefix 추출: p1_ch01a → p1_ch01, p2_ch03 → p2_ch03
+          // 챕터 prefix 추출 — p1_ch01a → p1_ch01 / p2_ch03 → p2_ch03
           const _chapterMatch=_introId.match(/^(p\d_ch\d+|p\d_[a-z]+)/);
           const _prefix=_chapterMatch?_chapterMatch[1]:_introId;
-          // 같은 챕터의 모든 컷씬 수집 (해당 페이즈만 — 페이즈 cross 방지)
-          const _sceneIds=[];
+          // 같은 챕터 컷씬 수집 (해당 페이즈만)
+          const _sceneIds=[_introId];
           const _phaseCuts=_cutMaps[_introMapIdx]||{};
-          // intro 를 항상 #1로
-          _sceneIds.push(_introId);
-          Object.keys(_phaseCuts).forEach(id=>{
+          Object.keys(_phaseCuts).sort().forEach(id=>{
             if(id===_introId)return;
             if(id.startsWith(_prefix))_sceneIds.push(id);
           });
-          // 최대 5개로 제한 (사용자 명세)
-          const _scenes=_sceneIds.slice(0,5);
-          const _seen=!!(G._phasedIntroSeen&&G._phasedIntroSeen['intro_'+G.currentPlanet]);
-          // 자동 인트로 미시청 시 모든 버튼 disabled (자동 재생 후 활성화)
-          const _disabled=!_seen;
+          const _scenes=_sceneIds.slice(0,5);  // 최대 5개
           return _scenes.map((sid,idx)=>{
             const _seenScene=!!(G._scenesSeen&&G._scenesSeen['scene_'+sid]);
-            const _col=_disabled?'#666':(_seenScene?'#88ccff':'#ffd700');
-            const _bg=_disabled?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');
-            const _pulse=(idx===0&&!_seen)?'animation:cutscenePulse 1.6s ease-in-out infinite;':'';
+            // 순차 해금 규칙:
+            //   idx===0 → 항상 활성 (첫 인트로 = 즉시 클릭 가능)
+            //   idx>=1  → 직전 컷씬을 시청 완료한 경우만 활성
+            let _unlocked=true;
+            if(idx>0){
+              const _prevSid=_scenes[idx-1];
+              _unlocked=!!(G._scenesSeen&&G._scenesSeen['scene_'+_prevSid]);
+            }
+            const _col=!_unlocked?'#666':(_seenScene?'#88ccff':'#ffd700');
+            const _bg=!_unlocked?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');
+            const _pulse=(idx===0&&!_seenScene)?'animation:cutscenePulse 1.6s ease-in-out infinite;':(_unlocked&&!_seenScene?'animation:cutscenePulse 2.2s ease-in-out infinite;':'');
             const _label='🎬 컷씬 '+(idx+1);
-            const _onclick=_disabled
-              ? ''
-              : `onclick="(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.forceReplayScene)?window.STORY_SCENES_PC.forceReplayScene('${sid}'):notify('STORY_SCENES_PC 미로드','err')"`;
-            return `<button ${_onclick} ${_disabled?'disabled':''} style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:${_disabled?'not-allowed':'pointer'};font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse};opacity:${_disabled?'.6':'1'}" title="${_disabled?'자동 인트로 시청 후 활성화':'컷씬 '+sid+(_seenScene?' (시청 완료)':'')}">${_label}</button>`;
-          }).join('') + `<style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 #ffd70066}50%{box-shadow:0 0 0 8px #ffd70000}}</style>`;
+            const _onclick=_unlocked
+              ? `onclick="(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.forceReplayScene)?window.STORY_SCENES_PC.forceReplayScene('${sid}'):notify('STORY_SCENES_PC 미로드','err')"`
+              : '';
+            const _title=!_unlocked
+              ? '이전 컷씬을 먼저 시청해야 활성화됩니다'
+              : (_seenScene ? '컷씬 '+sid+' (시청 완료)' : '컷씬 '+sid+' — 클릭하여 재생');
+            return `<button ${_onclick} ${!_unlocked?'disabled':''} style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:${!_unlocked?'not-allowed':'pointer'};font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse};opacity:${!_unlocked?'.55':'1'}" title="${_title}">${_label}</button>`;
+          }).join('') + `<style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 8px transparent}}</style>`;
         })()}
         ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('ui.ursaRetryTitle')}">${I18N.t('ui.ursaRetryBtn')}</button>`:''}
         ${(()=>{

@@ -727,11 +727,18 @@
       if(typeof window.saveGame === 'function'){
         try{ window.saveGame(true); }catch(e){}
       }
+      // 사용자 요청 2026-06-09: 컷씬 종료 후 메인 탭 재렌더 — 다음 컷씬 버튼 자동 활성화
+      try{
+        var G=window.G||{};
+        if(G._currentHubTab==='main' && typeof window.rerenderTab==='function' && typeof window.renderMain==='function'){
+          window.rerenderTab(window.renderMain);
+        }
+      }catch(e){}
       if(typeof onDone === 'function') onDone();
     }});
   }
 
-  // 강제 재생 (씬 ID)
+  // 강제 재생 (씬 ID) — 사용자 수동 클릭 시 _scenesSeen 마킹 일시 해제로 dedup 우회
   function forceReplayScene(sceneId){
     if(window.G && window.G._scenesSeen) delete window.G._scenesSeen['scene_' + sceneId];
     delete _lastTriggeredAt[sceneId];
