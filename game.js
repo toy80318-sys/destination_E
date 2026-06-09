@@ -9853,40 +9853,52 @@ function completeQuest(pid,idx){
     return;
   }
   // ─── 영웅 퀘스트 처리 (보상받기 = 영웅 영입 + 컷씬 트리거 + 세트 아이템) ───
+  // 사용자 보고 2026-06-09: 전설영웅 획득 이후 제독에서 보상 미지급 버그
+  //   · 이전: includes 체크 if(!G.heroes.includes) 블록 안에 보상·아이템·플래그·컷씬
+  //     모두 들어있어서, 이미 영입된 영웅이면 SKIP → 크레딧·VE·아이템 영구 손실
+  //   · 수정: 영웅 영입(push)만 조건 안, 나머지 보상은 항상 지급
   if(q.type==='hero_quest'&&q.heroId){
     q.status='claimed';
-    if(!G.heroes.includes(q.heroId)){
+    const _newHero=!G.heroes.includes(q.heroId);
+    if(_newHero){
       G.heroes.push(q.heroId);
-      // 보상 (영웅 퀘스트는 정상 보상 + 추가)
-      G.credits=(G.credits||0)+(q.rewardCr||0);
-      G.voidEssence=(G.voidEssence||0)+(q.rewardVe||0);
-      try{sfxCoin();}catch(e){}
-      const _hKey='hero.'+q.heroId+'.nm';
-      const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[q.heroId]?.nm||q.heroId);
+      // 장영실 효과 (영입 시점 1회만)
+      if(q.heroId==='H02'&&typeof applyJangYeongsilEffect==='function')applyJangYeongsilEffect();
+    }
+    // 보상 — 새 영입이든 재수령이든 항상 지급
+    G.credits=(G.credits||0)+(q.rewardCr||0);
+    G.voidEssence=(G.voidEssence||0)+(q.rewardVe||0);
+    try{sfxCoin();}catch(e){}
+    const _hKey='hero.'+q.heroId+'.nm';
+    const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[q.heroId]?.nm||q.heroId);
+    if(_newHero){
       notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[q.heroId]?.ic,nm:_hNm}),'pur');
       baekgu(I18N.t('baekgu.heroJoined',{nm:_hNm}));
-      // 장영실 효과
-      if(q.heroId==='H02'&&typeof applyJangYeongsilEffect==='function')applyJangYeongsilEffect();
-      // 영웅 세트 아이템 보상 (예: 이순신 SW01 + SA01) — 인벤토리 자동 추가
-      // (사용자 요청 2026-06-07 페이즈 2 v4.0: Q10-M 이순신 합류 시 자동 장착 세트)
-      (q.rewardItems||[]).forEach(it=>{
-        if(!it||!it.id)return;
-        if(/^R0[0-9]/.test(it.id)){
-          if(!G.materials)G.materials={};
-          G.materials[it.id]=(G.materials[it.id]||0)+(it.qty||1);
-        } else {
-          if(!G.inventory)G.inventory=[];
-          const _inv=G.inventory.find(i=>i.id===it.id);
-          if(_inv)_inv.qty+=(it.qty||1);
-          else G.inventory.push({id:it.id,qty:it.qty||1});
-        }
-      });
-      // 스토리 플래그
-      if(!G._storyFlags)G._storyFlags={};
-      (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
-      saveGame(true);
-      updateHUD();
-      // 시나리오 컷씬 자동 재생 (PC/웹 공통) — Phase NPC scene 우선
+    } else {
+      // 이미 영입된 영웅의 보상만 수령 — 명확한 알림
+      const _isEn2=(I18N.getLang&&I18N.getLang()==='en');
+      notify((_isEn2?'✓ Reward claimed: ':'✓ 보상 수령: ')+_hNm+' (+'+(q.rewardCr||0).toLocaleString()+'₡)','gold');
+    }
+    // 영웅 세트 아이템 보상 (예: 이순신 SW01 + SA01) — 인벤토리 자동 추가
+    (q.rewardItems||[]).forEach(it=>{
+      if(!it||!it.id)return;
+      if(/^R0[0-9]/.test(it.id)){
+        if(!G.materials)G.materials={};
+        G.materials[it.id]=(G.materials[it.id]||0)+(it.qty||1);
+      } else {
+        if(!G.inventory)G.inventory=[];
+        const _inv=G.inventory.find(i=>i.id===it.id);
+        if(_inv)_inv.qty+=(it.qty||1);
+        else G.inventory.push({id:it.id,qty:it.qty||1});
+      }
+    });
+    // 스토리 플래그
+    if(!G._storyFlags)G._storyFlags={};
+    (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
+    saveGame(true);
+    updateHUD();
+    // 시나리오 컷씬 자동 재생 — 새 영입일 때만 (재수령 시는 컷씬 안 봐도 됨)
+    if(_newHero){
       if(q.cutscene_post && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
         setTimeout(()=>window.STORY_SCENES_PC.triggerScene(q.cutscene_post), 400);
       } else if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){
@@ -15433,9 +15445,7 @@ function showSettingsModal(){
     <div style="margin-bottom:16px">
       <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.dataManage')}</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
-      <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#ffd700;color:#ffd700" onclick="closeModal();replayTutorial()">${I18N.t('settings.replayTutorial')}</button>
       ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>
-      <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#bbddff;color:#bbddff" onclick="window.desktopAPI.checkUpdate()">${I18N.t('settings.checkUpdate')}</button>
       <div id="pc-ver-line" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${I18N.t('settings.pcVersionLoading')}</div>
       <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>`:''}
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm(I18N.t('confirm.deleteSave'))){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
@@ -15443,10 +15453,8 @@ function showSettingsModal(){
     <div style="margin-bottom:16px;background:rgba(102,255,153,.05);border:1px solid rgba(102,255,153,.3);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px;color:#66ff99">${I18N.t('settings.offlineBackup')}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
-        <button class="btn btn-sm" style="border-color:#66ff99;color:#66ff99" onclick="exportSaveFile(1)">${I18N.t('settings.dlSlot1')}</button>
         <button class="btn btn-sm" style="border-color:#66ff99;color:#66ff99" onclick="exportAllSavesFile()">${I18N.t('settings.dlAllSlots')}</button>
         <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="document.getElementById('save-import-input').click()">${I18N.t('settings.uploadFromFile')}</button>
-        <button class="btn btn-sm" style="border-color:#ffaa66;color:#ffaa66" onclick="copySaveToClipboard(1)">${I18N.t('settings.copySlot1')}</button>
       </div>
       <input type="file" id="save-import-input" accept=".json,.txt" style="display:none" onchange="importSaveFile(event)">
       <div style="font-size:10px;color:var(--muted);text-align:center;line-height:1.5">${I18N.t('settings.fileSaveHelp')}</div>
