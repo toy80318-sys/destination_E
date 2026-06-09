@@ -5624,6 +5624,27 @@ function _promoteReserveIfRoom(){
 // 함선 신규 획득 통합 처리: 선발 16척까지 채우고, 초과분은 임시창에 보관.
 // 임시창이 8척을 넘으면 최하위 함선 매각 여부를 물어본다.
 // 반환: {added:'fleet'|'reserve', overflowPrompted:bool}
+// 사용자 요청 2026-06-09: 같은 함선은 최대 8대까지만 보유 가능
+//   · catalogId 기준 (소형 S01, 신화 LGD01 등 카탈로그 단위)
+//   · BOSS_URSA 같은 특수 함선은 catalogId 가 다르거나 일회성이라 자연스럽게 무관
+//   · 선발(fleet) + 임시창(reserveFleet) 통합 카운트
+const SAME_SHIP_CAP = 8;
+function _countSameShip(catalogId){
+  if(!catalogId)return 0;
+  const _cid=String(catalogId).toUpperCase();
+  const _match=s=>{
+    const _sc=String(s.catalogId||s.catId||s.id||'').toUpperCase();
+    if(_sc===_cid)return true;
+    // 제작 함선 'LGD01_craft_xxx' 같은 패턴도 catalogId 매치로 카운트
+    return _sc.startsWith(_cid+'_');
+  };
+  let n=0;
+  (G.fleet||[]).forEach(s=>{if(_match(s))n++;});
+  (G.reserveFleet||[]).forEach(s=>{if(_match(s))n++;});
+  return n;
+}
+try{if(typeof window!=='undefined'){window._countSameShip=_countSameShip;window.SAME_SHIP_CAP=SAME_SHIP_CAP;}}catch(e){}
+
 function addShipToFleet(ship){
   if(!ship)return{added:null};
   if(!G.fleet)G.fleet=[];
@@ -8268,6 +8289,14 @@ function pickCargoExtForSlot(shipIdx){
 }
 function buyShip(shipId){
   const def=SHIP_CATALOG.find(s=>s.id===shipId);if(!def)return;
+  // 사용자 요청 2026-06-09: 같은 함선 최대 8대 — 함대 다양성 강제 + 백구 안내
+  const _sameCnt=_countSameShip(def.catalogId||def.id);
+  if(_sameCnt>=SAME_SHIP_CAP){
+    const _nm=shipDisplayNm(def)||def.nm;
+    notify(I18N.t('notify.sameShipMax',{nm:_nm,max:SAME_SHIP_CAP}),'err');
+    baekgu(I18N.t('baekgu.sameShipMax',{nm:_nm,max:SAME_SHIP_CAP}));
+    return;
+  }
   const stock=G.shopStock[G.currentPlanet];
   if(!stock||!stock['ship_'+shipId]||stock['ship_'+shipId]<=0){notify(I18N.t('notify.outOfStock'),'err');return;}
   // 함선 등급별 전투력 구매 잠금
@@ -10631,6 +10660,21 @@ function doCraft(recipeId){
     } else {
       const def=SHIP_CATALOG.find(s=>s.id===rec.id);
       if(!def){notify(I18N.t('notify.shipDataError'),'err');return;}
+      // 사용자 요청 2026-06-09: 함선 제작도 같은 함선 8대 캡 적용
+      const _sameCntC=_countSameShip(rec.id);
+      if(_sameCntC>=SAME_SHIP_CAP){
+        const _nmC=shipDisplayNm(def)||def.nm;
+        notify(I18N.t('notify.sameShipMax',{nm:_nmC,max:SAME_SHIP_CAP}),'err');
+        baekgu(I18N.t('baekgu.sameShipMax',{nm:_nmC,max:SAME_SHIP_CAP}));
+        // 제작 재료 환불 — 이미 차감된 재료 복원
+        for(const m of rec.mats){
+          const refund=_tierDiscount?Math.max(1,Math.floor(m.qty/2)):m.qty;
+          G.materials[m.id]=(G.materials[m.id]||0)+refund;
+        }
+        const btn2=document.getElementById('craftBtn');
+        if(btn2){btn2.disabled=false;btn2.innerHTML=I18N.t('craft.craftRec',{nm:_nmC});}
+        return;
+      }
       const newShip={
         id:rec.id+'_craft_'+Date.now(),
         catalogId:rec.id,
