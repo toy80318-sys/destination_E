@@ -435,74 +435,71 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH08-A "용골을 세운다" (P15 도착) ───
   p4_ch08a:[
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'타르타로스 메카니카 기어월드 — 거북선 제작 베이가 여기 있어. 은하 혼돈 결정 메카니카 합금이 용골 재료야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 만에 다시 용골이 서는군.'},
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'장군. 이번에는 우주에서 떠도는 거북선이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'은하 혼돈 결정 ×15. 모아오겠다.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'타르타로스 메카니카 R 재료 시장 데이터 입력 완료.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 제조 중이야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'Kepler-22b에서 도망쳤던 그 놈이 여기 있군.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'잠깐. 크리그 내부 정보망이 잡혔어. 공장 노동자 중에 반란 움직임이 있다고.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'반란군... 이용할 수 있어. 공장 설비를 가동하면 크리그 마그마 코어도 얻을 수 있고.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'둘 다 잡자. 아이젠클로 추격 + 크리그 마그마 코어 확보.'}
   ],
 
-  // ─── CH08-B "용골 완성" (Q16-01 완료) ───
+    // ─── CH08-B "용골 완성" (Q16-01 완료) ───
   p4_ch08b:[
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'(용골 주조 완료) ...됐어. 골격은 섰어. 이제 코어와 외피를 입혀야 해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'(거대한 용골을 올려다보며) 이걸로 크리그 함대를 뚫는다.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'아이젠클로가 들으면 잠을 못 자겠는데.'},
-    {char:'baekgu2_smile2', name:'백구', color:'#66ddff', text:'거북선 제작 단계 1/3 완료. 진행률: 33%.'}
+    {char:'system', name:'반란군 리더 \'볼칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸우는 {회사}야. 우리 스파크는 크리그 공장 노동자들의 자유 민병대야. 요새에 우리 동료들이 감금돼 있어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래 가능하겠네. 우리가 케플러-452b에 가면 당신 동료를 돕고, 당신들은 크리그 내부 항로 정보를 준다.'},
+    {char:'system', name:'볼칸', color:'#9ee7ff', text:'그것뿐만 아니라 — 마그마 코어 비축고. 당신들이 뭘 만들려는지 모르지만, 필요하면 가져가.'}
   ],
 
-  // ─── CH08-C "광개토와 재회" (Q16-05) ───
+    // ─── CH08-C "광개토와 재회" (Q16-05) ───
   p4_ch08c:[
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'{사령관}. 글리제 667Cc에서 한 약속을 지키러 왔소.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'광개토... 정말 오는군.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'거북선 외피 도면 — 고구려 갑주 양식을 응용한 강화 도면이오. 치크스 뇌수액 세 장.'},
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'(도면을 살피며) 충분해. 이거 적용하면 외피 강도 두 배는 나와.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'거북선이 완성되면 — 나는 정식으로 그대 깃발 아래 선다. 그때까지는 자유 상인이다.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'기다리겠다.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'공개 공격은 안 돼. 반란군 채널로 내부로 들어가야 해.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'볼칸이 내부 노선 알려줬어. 비축고는 3층 심층부야.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 3개만 더 있으면... 거북선 용골 재료가 완성돼.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'그리고 동료들을 구출한다. 동시에.'}
   ],
 
-  // ─── CH09-A "코어를 잇는다" (P10 도착) ───
+    // ─── CH09-A "코어를 잇는다" (P10 도착) ───
   p4_ch09a:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'TRAPPIST-1f 콜드웰 광산 — 수퍼비아 크리그 마그마 코어 양자합금 주산지. 외피 코팅에 필수예요.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'크리그 마그마 코어 ×8 + 수퍼비아 중력자 ×10이면 거북선 코어가 점화 단계까지 갈 수 있어. 추진력은 아이젠클로 친위대의 두 배가 나올 거야.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'콜드웰은 광부 노조가 강해. 채굴권부터 정리해야 해.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'오리온 위스키 ×4 — 그 정도면 충분하지?'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 통치해. 귀족 향수 하나면 회의실 입장도 가능하지.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'우리가 원하는 건 수퍼비아 중력자야. 중력자 채굴 독점 허가가 필요해.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그건 내 분야야. 수퍼비아 상인 의회랑은 전에도 일한 적 있어. 귀족 향수 한 병이면 회의실 문은 열려.'}
   ],
 
-  // ─── CH09-B "잠복" (P12 도착) ───
+    // ─── CH09-B "잠복" (P12 도착) ───
   p4_ch09b:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'기가-넷 허브 협곡. 좁고 깊다. 임진왜란 명량 해전과 똑같은 지형이야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'6턴마다 아이젠클로 보급선이 통과해. 매복 한 번에 자원 + 통신 로그를 동시에 얻을 수 있어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진. 거북선이 중앙. 호위는 좌우.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'전술 입력 완료. 학익진 ×2.25 데미지 배율 적용 가능.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'은하 혼돈 결정. 보이드 균열에서만 얻을 수 있는 자원이야.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'보이드 공간은 물리 법칙이 달라. 시간이 느려지고, 공간이 접힌다. 함선 항법이 제대로 작동 안 할 수 있어.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'은하 혼돈 결정 15개. 그것 없이는 거북선 제작이 불가능해.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'거기다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 그 분을 찾아야 해.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'두 마리 토끼. 가자.'}
   ],
 
-  // ─── CH09-C "보급선 격파" (Q18-01 완료) ───
+    // ─── CH09-C "보급선 격파" (Q18-01 완료) ───
   p4_ch09c:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'... 깨끗하다.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'통신 로그 회수. Kepler-442b 요새 배치 정보가 통째로 들어있어.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'해독은 내가 하지. 수퍼비아 중력자 세 개면 충분해.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로가 깜짝 놀라겠군.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'항법 보조가 안 돼. 균열 지도 원석으로 경로를 수동 입력해야 해.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'균열 지도 원석... 이건 보이드 행성에서만 구하는 건데. 운 좋게 외곽에서 좀 샀어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'들어간다.'}
   ],
 
-  // ─── CH09-D "광개토 합류" (Q18-05 완료) ───
+    // ─── CH09-D "광개토 합류" (Q18-05 완료) ───
   p4_ch09d:[
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'거북선이 완성됐다. 약속대로 — 나는 이제 그대 깃발 아래 있다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'환영하오, 정복자.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'Kepler-442b — 아이젠클로의 요새. 정복해야 할 땅이다.'},
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 거북선 — 호위 함선 ATT·INT +30% 패시브 활성화.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 광개토대왕(H03). 함대 전투력 대폭 상승.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저 배... 수퍼비아 주점에서 들은 그 연구선이야.'},
+    {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'누구시오? 이 좌표를 아는 사람이 있다니.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'...방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'거북선에 그 에너지를 실을 수 있소? 도면이 있다면...'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'나한테 있어요.'}
   ],
 
-  // ─── CH10-A "위조의 기술" (P16 도착) ───
+    // ─── CH10-A "위조의 기술" (P16 도착) ───
   p4_ch10a:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'아레스-III 케플러 442b 외곽. 아우레우스 데이터 위조의 본거지지.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'Kepler-442b 요새 진입 코드 — 아우레우스 정보 칩 정보 칩과 메카니카 자동화 부품 데이터 매트릭스로 위조할 수 있어. 내 전공이야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'정면 돌파 대신 — 코드로 들어간다.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'트로이의 목마인 셈인가.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(웃으며) 거북선의 목마지.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 × 8. 저항군 반물질 × 25. 수퍼비아 중력자 × 10. 은하 혼돈 결정 × 15. 모두 확보됐어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'...드디어.'},
+    {char:'system', name:'레인저', color:'#9ee7ff', text:'제작 베이 준비 완료. 장영실 씨, 시작하시죠.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저건 개가 흥분한 거야, 확실히.'}
   ],
 
-  // ─── CH10-A2 "트라팔가르의 메아리" (Q19-05 시작 · 넬슨 만남) ───
+    // ─── CH10-A2 "트라팔가르의 메아리" (Q19-05 시작 · 넬슨 만남) ───
   p4_ch10a2:[
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'케플러 442b 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 영국 해군 식별 코드 \'HMS Victory\'.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'빅토리... 트라팔가르의 기함.'},
@@ -522,16 +519,12 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
   p4_ch10b:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'Kepler-442b — 크리그 아이젠클로의 요새. 외곽 친위대 7기 + 본진 모선.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'전면 돌파. 거북선을 앞세우고 친위대를 갈라낸다.'},
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르 진형 — 적 전열을 둘로 가르는 정공법. 학익진의 양 날개와 결합 가능하오.'},
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 화력 시뮬레이션 — 친위대 방어막 1.5초 안에 무력화 가능.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'중앙 코어가 무너지면 요새 전체가 자폭한다. 수퍼비아 중력자 다섯, 크리그 마그마 코어 셋 — 충분해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진 — 거북선 중앙. 광개토 우익. 가가린 좌익. 넬슨 후위 진형 분단. 마르코 정보 차단.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'시작한다.'}
+    {char:'system', name:'레인저', color:'#9ee7ff', text:'거북선 초도 비행 테스트. 준비됐습니까?'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 아이젠클로의 본거지 아레스-III을 부수러 가는 거야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 5 — 행성 21~25. 아이젠클로 최후. 거북선으로 결전이야.'}
   ],
 
-  // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
+    // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
   p4_ch10c:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로는 — 도망쳤어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'어디로?'},

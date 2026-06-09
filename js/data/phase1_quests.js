@@ -469,28 +469,27 @@ const PHASE1_CUTSCENES_KO={
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7%. 지금 일어나지 않으면 다음은 없습니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...얼마나 됐어?'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'100년 3개월 12일입니다. 지구는 아직 봉쇄 중이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구가...'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'감상은 나중에 하세요. 일단 살아야 합니다. 격납고 곳곳에 고철 프레임 고철 프레임이 있어요. 수거하면 수리비랑 연료값은 나와요.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구가... 크리그가 아직도?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'떠날 때와 달라진 게 없어요. 오히려 더 조여졌습니다.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'감상은 나중에 하세요. 일단 살아야 합니다. 격납고 곳곳에 고철 프레임이 있어요. 수거하면 수리비랑 연료값은 나와요.'}
   ],
 
-  // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
+    // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'바나드 프라임 볼프 교역소. 수퍼비아 Ring 1 무역 정거장이에요. 아직 운영 중이에요.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'볼프 교역소. 수퍼비아 Ring 1 무역 정거장이에요. 아직 운영 중이에요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'사람들이 있어?'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'있습니다. 수퍼비아 중력수정 수퍼비아 중력수정 — 여기선 시세가 낮아요. 아우레우스 쪽에선 40% 비싸게 팔 수 있어요. 첫 자금 만들기에 좋아요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'(작업 장갑을 집어 든다) 가자.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'있습니다. 수퍼비아 중력수정 — 여기선 시세가 낮아요. 아우레우스 쪽에선 40% 비싸게 팔 수 있어요. 첫 자금 만들기에 좋아요.'}
   ],
 
-  // ─── CH01-C "첫 교역소" (P03 도착) ───
+    // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
     {char:'delivery_F01', name:'아오리', color:'#d4a574', text:'프록시마 b에서 왔소? 거기 사람이 아직 있었어?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'좀 오래 잠들어 있었습니다.'},
     {char:'delivery_F01', name:'아오리', color:'#d4a574', text:'허. 뭘 팔 거요?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요.'},
-    {char:'delivery_F01', name:'아오리', color:'#d4a574', text:'(고철 프레임을 들어 보며) 상태 나쁘지 않군. 개당 800₡ 줄게. 수퍼비아 중력수정 중력수정은 재고 있어 — 에리다니 가면 싹 팔릴 거야.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요.'}
   ],
 
-  // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
+    // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
   p1_turtle1:[
     {char:'gather_F01', name:'볼프 노인', color:'#a8b3c0', text:'(낡은 데이터 칩을 건네며) 이것도 가져가요. 100년 전 어떤 조선인이 두고 갔는데, "거북선"이라고 했어요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'거북선...?'},
@@ -507,13 +506,12 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 Ring 1. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(한숨) 첫 아우레우스 방문인데 일이 커지네.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 Ring 1. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'}
   ],
 
-  // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
+    // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
   p1_gagarin_join:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'넥서스 프라임 LHS 광산 방향에서 아주 오래된 통신 패턴이 잡혀. 100년 전 것 같아. 이순신이라는 이름이랑 연결돼 있어.'},
@@ -524,33 +522,32 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── CH02-B "크리그의 그림자" (P06 도착) ───
   p1_ch02b:[
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'크리그 소형 3기, 중형 지휘선 1기 확인됩니다. 광부 민간인 7명 억류 중이에요.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'크리그 소형 3기, 중형 지휘선 1기 확인됩니다. 광부 민간인 7명 억류 중이에요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'크리그를 여기서 만날 줄은...'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'지구 봉쇄만 하는 게 아니야. 이 구역도 건드리고 있어.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'먼저 사람부터.'}
   ],
 
-  // ─── CH02-C "신호의 근원" (P09 도착) ───
+    // ─── CH02-C "신호의 근원" (P09 도착) ───
   p1_ch02c:[
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'해적 소형 2기, 지휘선 1기 감지됩니다. 기지 외곽 배치.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
   ],
 
-  // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
+    // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'안테나 데이터 — 좌표 외에 도면 한 장 더. 격자 외장에 활성 코어가 들어가는 구조야.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'거북선 설계도 단편 3/3 확보. 골격·외피·코어 모두 모였습니다. 복원도 산출 — 완전체 거북선 제작 가능.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 이순신이 두고 간 거야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우르사-알파 치크스 Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'47 우르사이 마요리스 b (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},
-    {char:'baekgu2_sad', name:'백구', color:'#66ddff', text:'(잠시 침묵) ...알겠습니다. 우르사-알파 항로 계산 시작하겠습니다.'},
-    {char:'baekgu2_smile1', name:'백구', color:'#66ddff', text:'...그냥이에요.'}
-  ]
-};
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'...그냥이에요.'}
+  ],
+
+  };
 
 // 영문 컷씬 — 폴백: EN 미존재 시 KO 사용
 const PHASE1_CUTSCENES_EN={};

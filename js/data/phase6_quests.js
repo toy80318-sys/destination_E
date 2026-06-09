@@ -300,12 +300,13 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH15-A "명예의 전당" (Q24-05 완료 · 엔딩) ───
   p6_ch15a:[
-    {char:'baekgu2_smile1', name:'백구', color:'#66ddff', text:'사령관. 우리, 해냈어요.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'명예의 전당 등재 — 완료. 다음 회차 +20% 보너스 보상 잠금 해제.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 6 완료 — 모든 시나리오 종결.\n자유 항해 모드 활성화. 새로운 모험을 시작할 수 있어요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 다음 이야기를 위해.'}
-  ]
-};
+    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마 b부터 글리제 581g 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 b 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.'},
+    {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.'}
+  ],
+
+  };
 
 const PHASE6_CUTSCENES_EN={};
 
