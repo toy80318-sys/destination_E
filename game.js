@@ -1792,13 +1792,25 @@ function imgOrEmoji(src,fallback,w,h,style,loreKey){
     src=src+'?v='+encodeURIComponent(window._GAME_VER);
   }
   var tipAttr=loreKey?(' onmouseover="showLoreTip(\''+loreKey+'\',event)" onmouseout="hideLoreTip()"'):'';
+  // 사용자 요청 2026-06-09: img/ships/H/ 폴더 우선 라우팅 시 onerror 폴백 추가.
+  //   src 가 'img/ships/H/X.png' 형태면 onerror 시 'img/ships/X.png' 로 자동 폴백.
+  var _fbSrc='';
+  if(src && typeof src==='string'){
+    var _hdMatch=src.match(/^img\/ships\/H\/([^/?]+\.png)(\?.*)?$/);
+    if(_hdMatch){
+      _fbSrc='img/ships/'+_hdMatch[1]+(_hdMatch[2]||'');
+    }
+  }
+  var _onerror=_fbSrc
+    ? "if(!this.dataset.fb){this.dataset.fb='1';this.src='"+_fbSrc.replace(/'/g,"\\'")+"';}else{this.style.display='none';}"
+    : "this.style.display='none'";
   // 이미지가 로드되면 폴백 이모지(.fb)를 즉시 감추고, 로드 실패 시 이미지를 숨겨 폴백을 노출
   // (투명 PNG여도 이모지가 비치지 않도록 onload에서 fb를 display:none 처리)
   return `<div style="width:${w}px;height:${h}px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;${style||''}"${tipAttr}>
     <div class="fb" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:${Math.round(h*0.5)}px;pointer-events:none">${fallback}</div>
     <img src="${src}" alt="" style="position:relative;width:100%;height:100%;object-fit:contain;z-index:1"
       onload="var fb=this.parentNode.querySelector('.fb');if(fb)fb.style.display='none';"
-      onerror="this.style.display='none'">
+      onerror="${_onerror}">
   </div>`;
 }
 // 함선 → 도감 로어 키 (LORE_TEXT의 ship_<카탈로그id>).
@@ -1914,7 +1926,30 @@ function _resolveShipImgBase(raw,tier){
 function shipImgSrc(ship){
   // 모바일 LOD 자동 적용 — 마지막에 _mobileLod() 거쳐 반환
   const _wrap=(s)=>(typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(s):s;
-  const _r=_shipImgSrcRaw(ship);return _wrap(_r);
+  const _r=_shipImgSrcRaw(ship);
+  // 사용자 요청 2026-06-09: HD 폴더(img/ships/H/) 우선 활용
+  //   · 데스크탑/PC: HD 시도 (5~8MB 고해상도 신규 자산)
+  //   · 모바일: 기존 m/ LOD 사용 (HD 미적용 — 대역폭/메모리 보호)
+  //   · onerror 시 자동 폴백을 위해 raw 경로를 dataset 으로 보존
+  if(typeof window!=='undefined' && window.IS_MOBILE){
+    // 모바일은 기존 경로 그대로 (m/ 자동 폴백)
+    return _wrap(_r);
+  }
+  // HD 우선 시도 — _r 이 'img/ships/X.png?v=Y' 형태일 때 'img/ships/H/X.png?v=Y' 로 변환
+  if(_r && typeof _r==='string'){
+    const _hd=_r.replace(/^img\/ships\/([^/?]+\.png)(\?|$)/, 'img/ships/H/$1$2');
+    if(_hd!==_r){
+      // HD 경로 + onerror 폴백은 호출 측 imgOrEmoji onerror 체인에서 처리되므로,
+      // 여기서는 HD 경로만 반환. 만약 HD 파일이 없다면 imgOrEmoji 의 onerror 가
+      // 원본 _r 경로로 폴백하도록 별도 dataset 도움이 필요. → window._SHIPS_H_FB 등록.
+      try{
+        if(!window._SHIPS_H_FB)window._SHIPS_H_FB={};
+        window._SHIPS_H_FB[_hd]=_r;  // HD → 원본 매핑
+      }catch(e){}
+      return _wrap(_hd);
+    }
+  }
+  return _wrap(_r);
 }
 function _shipImgSrcRaw(ship){
   const sid=ship.id||'';
