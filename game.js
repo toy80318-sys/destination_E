@@ -6015,9 +6015,9 @@ function renderCargoOnlyTab(body){
     if(slots<80){const cp=getCargoUpgradePrice(s);btn='';}
     else btn='<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxAlt')+'</span>';
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
-      <div style="width:248px;flex-shrink:0;text-align:center">
-        ${imgOrEmoji(shipImgSrc(s),tierIc,248,248,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain',shipLoreKey(s))}
-        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:4px">${I18N.tier(s.tier)}</div>
+      <div style="width:273px;flex-shrink:0;text-align:center">
+        ${imgOrEmoji(shipImgSrc(s),tierIc,273,273,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain;max-width:100%',shipLoreKey(s))}
+        <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:4px;word-break:keep-all">${I18N.tier(s.tier)}</div>
       </div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
@@ -6120,11 +6120,11 @@ function renderShipSkinTab(body){
     const sel2=i===_selectedSkinShipIdx;
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
-    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;margin-bottom:6px">
-      <div style="width:248px;height:248px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%')}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
-        <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
+    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:273px">
+      <div style="width:273px;height:273px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+      <div style="width:100%;text-align:center">
+        <div style="font-size:13px;color:${sel2?'var(--cyan)':fc};font-weight:bold;word-break:keep-all;line-height:1.3">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:2px;word-break:keep-all">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
       </div>
     </div>`;
   }).join('');
@@ -6263,11 +6263,11 @@ function renderShipEnhanceTab(body){
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const lv=s._enhanceLv||0;
-    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;margin-bottom:6px">
-      <div style="width:248px;height:248px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%')}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
-        <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
+    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:273px">
+      <div style="width:273px;height:273px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+      <div style="width:100%;text-align:center">
+        <div style="font-size:13px;color:${sel2?'var(--cyan)':fc};font-weight:bold;word-break:keep-all;line-height:1.3">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:2px;word-break:keep-all">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
       </div>
     </div>`;
   }).join('');
@@ -6601,18 +6601,18 @@ function renderFleetFormationTab(body){
     const isFlagship=i===0;
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
     const bdrCol=sel?'var(--gold)':typeof slot==='number'?'var(--cyan)':'var(--bdr)';
-    return`<div onclick="onFormationShipClick('${s.id}')" style="background:${bgCol};border:1px solid ${bdrCol};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:all .15s" onmouseover="this.style.transform='translateX(3px)'" onmouseout="this.style.transform=''">
-      <div style="width:248px;height:248px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:bold;color:${isFlagship?'var(--cyan)':'var(--txt)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlagship?'⭐ ':''}${shipDisplayName(s)}</div>
+    return`<div onclick="onFormationShipClick('${s.id}')" style="background:${bgCol};border:1px solid ${bdrCol};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;width:273px;transition:all .15s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="width:273px;height:273px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
+      <div style="width:100%;text-align:center">
+        <div style="font-size:13px;font-weight:bold;color:${isFlagship?'var(--cyan)':'var(--txt)'};word-break:keep-all;line-height:1.3">${isFlagship?'⭐ ':''}${shipDisplayName(s)}</div>
         ${(()=>{
           const st=getShipStats(s);
           const dHp=st.HP-(s.maxHP||0),dDef=st.DEF-(s.DEF||0);
           const hpDelta=dHp>0?`<span style="color:var(--green)">+${dHp}</span>`:'';
           const defDelta=dDef>0?`<span style="color:var(--green)">+${dDef}</span>`:'';
-          return `<div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)} · HP <span style="color:var(--txt);font-weight:bold">${st.HP}</span>${hpDelta} · DEF <span style="color:var(--txt);font-weight:bold">${st.DEF}</span>${defDelta}</div>`;
+          return `<div style="font-size:11px;color:var(--dim);margin-top:2px;word-break:keep-all">${I18N.tier(s.tier)} · HP <span style="color:var(--txt);font-weight:bold">${st.HP}</span>${hpDelta} · DEF <span style="color:var(--txt);font-weight:bold">${st.DEF}</span>${defDelta}</div>`;
         })()}
-        <div style="font-size:10px;color:${typeof slot==='number'?'var(--cyan)':'var(--dim)'};margin-top:2px">📍 ${slotLbl}</div>
+        <div style="font-size:11px;color:${typeof slot==='number'?'var(--cyan)':'var(--dim)'};margin-top:2px">📍 ${slotLbl}</div>
       </div>
     </div>`;
   }).join('');
