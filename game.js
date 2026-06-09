@@ -977,6 +977,26 @@ function notify(msg,type='info'){
   while(container.children.length>10)container.removeChild(container.firstChild);
   setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),400);},2800);
 }
+// 사용자 요청 2026-06-09: 설계도 보상 알림에 BP01/BP02 이미지 표시
+// 사용: notifyBlueprint('LGD01','LGD01 거북선') → 함선 설계도 (BP01)
+//       notifyBlueprint('RB10','RB10 영혼 흡수 매트릭스') → 파츠 설계도 (BP02)
+function notifyBlueprint(bpId,bpName,type='gold'){
+  const container=document.getElementById('notif');
+  if(!container){try{notify('📜 '+(bpName||bpId),type);}catch(e){}return;}
+  const el=document.createElement('div');
+  el.className=`ni${type==='ok'?' ok':type==='err'?' err':type==='gold'?' gold':type==='pur'?' pur':''}`;
+  el.style.cssText='display:flex;align-items:center;gap:10px;padding:8px 12px';
+  const _img=bpImgSrc(bpId);
+  const _isShip=typeof bpId==='string'&&/^LGD\d/.test(bpId);
+  const _label=(_isShip?'📜 함선 설계도':'📜 파츠 설계도');
+  el.innerHTML='<img src="'+_img+'" alt="BP" style="width:36px;height:36px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(0,243,255,.6))" onerror="this.style.display=\'none\'">'
+    +'<div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:11px;color:rgba(255,255,255,.7)">'+_label+'</div>'
+    +'<div style="font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(bpName||bpId||'')+'</div></div>';
+  container.appendChild(el);
+  while(container.children.length>10)container.removeChild(container.firstChild);
+  setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),400);},3600);
+}
+try{if(typeof window!=='undefined')window.notifyBlueprint=notifyBlueprint;}catch(e){}
 // ─── 캐릭터 초상 매핑 (대사 인트로/팝업 공통) ──────────────────
 // 화자 이름 → 이미지 경로. 새 인물 추가 시 img/chars/<file>.png 넣고 여기에 한 줄 추가.
 const CHAR_PORTRAITS={
@@ -1989,6 +2009,20 @@ function partImgSrc(partId){
   const _src=`img/parts/${partId||'generic'}.png`+_ver;
   return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_src):_src;
 }
+// 사용자 요청 2026-06-09: 설계도 보상 이미지 표준화
+//   · 함선 설계도 (LGD01~LGD03 등) → img/ui/BP01.png
+//   · 그 외(파츠 설계도: RB10, MW01, ML06, SW01 등) → img/ui/BP02.png
+function bpImgSrc(bpId,explicitType){
+  const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  // explicitType 우선 ('ship' / 'part')
+  if(explicitType==='ship')return 'img/ui/BP01.png'+_ver;
+  if(explicitType==='part')return 'img/ui/BP02.png'+_ver;
+  // bpId prefix 로 자동 분류 — LGD = 신화 함선
+  if(typeof bpId==='string'&&/^LGD\d/.test(bpId))return 'img/ui/BP01.png'+_ver;
+  // 그 외 모두 파츠 설계도
+  return 'img/ui/BP02.png'+_ver;
+}
+try{if(typeof window!=='undefined')window.bpImgSrc=bpImgSrc;}catch(e){}
 function crewImgSrc(c){
   const _gameVer=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
   if(!c)return`img/quests/explore_F01.png`+_gameVer;
@@ -3144,8 +3178,9 @@ function doNextTurn(){
       if(Math.random()<rate){
         G.blueprints[bpId]=true;
         const rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===bpId):null;
-        notify(I18N.t('notify.bpAcquired',{nm:(rec?partDisplayNm(rec):'')||rec?.nm||bpId}),'gold');
-        baekgu(I18N.t('baekgu.blueprintDrop',{nm:(rec?partDisplayNm(rec):'')||rec?.nm||bpId}));
+        const _bpNm=(rec?partDisplayNm(rec):'')||rec?.nm||bpId;
+        try{notifyBlueprint(bpId,_bpNm,'gold');}catch(e){notify(I18N.t('notify.bpAcquired',{nm:_bpNm}),'gold');}
+        baekgu(I18N.t('baekgu.blueprintDrop',{nm:_bpNm}));
       }
     });
   }catch(e){console.warn('[tax-bp drop]',e);}
@@ -9279,16 +9314,16 @@ function _grantVoidBossRewards(){
         stats:`HP ${_capHP.toLocaleString()} · SH ${_capSH.toLocaleString()} · ATT ${_capATT}`,
         desc:I18N.t('reward.voidScoutDesc'),rarity:'mythic'});
     });
-    // 설계도 — 해당 함선/파츠 이미지
-    const _bpImgMap={
-      [I18N.t('reward.bpName.LGD03')]:shipImgSrc({id:'LGD03',catId:'LGD03',tier:'신화'}),
-      [I18N.t('reward.bpName.RB10')]:partImgSrc('RB10'),
-      [I18N.t('reward.bpName.LGD01')]:shipImgSrc({id:'LGD01',catId:'LGD01',tier:'신화'}),
-      [I18N.t('reward.bpName.LGD02')]:shipImgSrc({id:'LGD02',catId:'LGD02',tier:'신화'})
+    // 설계도 — 사용자 요청 2026-06-09: 표준 설계도 아이콘 사용 (함선=BP01 / 파츠=BP02)
+    const _bpIdByName={
+      [I18N.t('reward.bpName.LGD03')]:'LGD03',
+      [I18N.t('reward.bpName.RB10')]:'RB10',
+      [I18N.t('reward.bpName.LGD01')]:'LGD01',
+      [I18N.t('reward.bpName.LGD02')]:'LGD02'
     };
     bpGranted.forEach(nm=>{
-      // 사용자 요청 2026-06-07: 설계도 이미지 폴백 → BP01.png (해당 함선/파츠 이미지가 있으면 그대로 사용)
-      items.push({ic:'📜',img:_bpImgMap[nm]||'img/ui/BP02.png',nm,type:I18N.t('reward.mythicBp'),color:'#ff66cc',stats:I18N.t('reward.craftable'),desc:I18N.t('reward.mythicBpDesc'),rarity:'mythic'});
+      const _bpId=_bpIdByName[nm]||'';
+      items.push({ic:'📜',img:bpImgSrc(_bpId),nm,type:I18N.t('reward.mythicBp'),color:'#ff66cc',stats:I18N.t('reward.craftable'),desc:I18N.t('reward.mythicBpDesc'),rarity:'mythic'});
     });
     // 신화 파츠 — 각 파츠 이미지 (mythicParts와 partsGranted는 같은 순서)
     partsGranted.forEach((nm,idx)=>{
@@ -9536,7 +9571,8 @@ function showGeobukseonBlueprintModal(latestPart){
        '</div>'):'';
     const _modalHtml =
       '<div style="text-align:center;margin-bottom:14px">'+
-        '<img src="img/ui/BP02.png'+_ver+'" alt="BP" style="width:64px;height:64px;object-fit:contain;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7))" onerror="this.style.display=\'none\'">'+
+        // 거북선(LGD01) = 함선 설계도 → BP01.png
+        '<img src="img/ui/BP01.png'+_ver+'" alt="BP" style="width:64px;height:64px;object-fit:contain;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7))" onerror="this.style.display=\'none\'">'+
         '<div style="font-size:18px;color:#00f3ff;font-weight:bold;margin-bottom:4px">'+_title+'</div>'+
         '<div style="font-size:12px;color:#a8b3c0">'+_subtitle+'</div>'+
       '</div>'+
@@ -9823,13 +9859,17 @@ function completeQuest(pid,idx){
     G.blueprints[_bpId]=true;
     const _bpRec=_bpRecCheck;
     const _bpTierCol=_bpRec?.tier==='mythic'?'#cc66ff':_bpRec?.tier==='flagship'?'#ff8800':'#d4af37';
+    // 설계도 보상 박스 — 사용자 요청 2026-06-09: BP01(함선) / BP02(파츠) 이미지 표시
+    const _bpNm=(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId;
+    const _bpImg=bpImgSrc(_bpId);
     bonusMsg+=`<div style="margin-top:12px;background:rgba(212,175,55,.08);border:1px solid ${_bpTierCol};border-radius:8px;padding:10px;text-align:center">
-      <div style="font-size:26px">${I18N.t('ui.bpAcquired')}</div>
-      <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}</div>
+      <img src="${_bpImg}" alt="BP" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 0 14px ${_bpTierCol})" onerror="this.outerHTML='<div style=&quot;font-size:48px&quot;>📜</div>'">
+      <div style="font-size:14px;color:var(--dim);margin-top:6px">${I18N.t('ui.bpAcquired')}</div>
+      <div style="font-size:17px;font-weight:bold;color:${_bpTierCol};margin-top:4px">${_bpNm}</div>
       <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftHere')}</div>
     </div>`;
-    notify(I18N.t('notify.bpAcquired',{nm:(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}),'gold');
-    baekgu(I18N.t('baekgu.blueprintDrop',{nm:(_bpRec?partDisplayNm(_bpRec):'')||_bpRec?.nm||_bpId}));
+    try{notifyBlueprint(_bpId,_bpNm,'gold');}catch(e){notify(I18N.t('notify.bpAcquired',{nm:_bpNm}),'gold');}
+    baekgu(I18N.t('baekgu.blueprintDrop',{nm:_bpNm}));
   }
   // ── 전설 창고 확장 설계도 드롭 (링4+ 행성에서 3% 확률, 명성 100+) ──
   const _pd4=PLANET_DEF.find(p=>p.id===pid);
@@ -9840,12 +9880,16 @@ function completeQuest(pid,idx){
       if(!G.blueprints[_cb.id]&&Math.random()<_cb.prob){
         G.blueprints[_cb.id]=true;
         const _cbRec=CRAFT_RECIPES.find(r=>r.id===_cb.id);
+        const _cbNm=(_cbRec?partDisplayNm(_cbRec):'')||_cbRec?.nm||_cb.id;
+        // 사용자 요청 2026-06-09: 화물 설계도 = 파츠 분류 → BP02
+        const _cbBpImg=bpImgSrc(_cb.id);
         bonusMsg+=`<div style="margin-top:12px;background:rgba(212,175,55,.08);border:1px solid #d4af37;border-radius:8px;padding:10px;text-align:center">
-          <div style="font-size:26px">${I18N.t('ui.cargoBpAcquired')}</div>
-          <div style="font-size:17px;font-weight:bold;color:#d4af37;margin-top:4px">${(_cbRec?partDisplayNm(_cbRec):'')||_cbRec?.nm||_cb.id}</div>
+          <img src="${_cbBpImg}" alt="BP" style="width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 0 12px #d4af37)" onerror="this.outerHTML='<div style=&quot;font-size:42px&quot;>📜</div>'">
+          <div style="font-size:14px;color:var(--dim);margin-top:6px">${I18N.t('ui.cargoBpAcquired')}</div>
+          <div style="font-size:17px;font-weight:bold;color:#d4af37;margin-top:4px">${_cbNm}</div>
           <div style="font-size:12px;color:var(--dim);margin-top:3px">${I18N.t('ui.canCraftLegendaryHold')}</div>
         </div>`;
-        notify(I18N.t('notify.cargoBpAcquired',{nm:(_cbRec?partDisplayNm(_cbRec):'')||_cbRec?.nm||_cb.id}),'gold');
+        try{notifyBlueprint(_cb.id,_cbNm,'gold');}catch(e){notify(I18N.t('notify.cargoBpAcquired',{nm:_cbNm}),'gold');}
         break;
       }
     }
@@ -10711,7 +10755,7 @@ function renderCraftTab(body){
       onmouseover="showBpTip(this)" onmouseout="hideBpTip()"
     >
       ${hasBp
-        ? `<img src="img/ui/BP02.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.outerHTML='<span style=&quot;font-size:19px&quot;>📜</span>'">`
+        ? `<img src="${rec.type==='ship'?'img/ui/BP01.png':'img/ui/BP02.png'}${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="BP" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(0,243,255,.5))" onerror="this.outerHTML='<span style=&quot;font-size:19px&quot;>📜</span>'">`
         : `<span style="font-size:19px">🔒</span>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:bold;color:${hasBp?tierCol:'var(--muted)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(rec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===rec.id))||rec.nm):(partDisplayNm(PARTS.find(p=>p.id===rec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===rec.id)||{})||rec.nm))}</div>
@@ -13999,6 +14043,11 @@ function _finishCombat(){
           return r?r.nm:bp;
         }).join('·');
         addCombatLog(I18N.t('combat.mythicBp',{n:_grantedBp.length,names:_bpNames}),'gold');
+        // 사용자 요청 2026-06-09: 보스 보상 설계도도 BP01/BP02 이미지 알림
+        _grantedBp.forEach(bp=>{
+          const r=(typeof CRAFT_RECIPES!=='undefined')&&CRAFT_RECIPES.find(x=>x.id===bp);
+          try{notifyBlueprint(bp,r?r.nm:bp,'gold');}catch(e){}
+        });
       }
     }
     else{notify(I18N.t('notify.battleWin'),'ok');}
