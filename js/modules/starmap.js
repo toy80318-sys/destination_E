@@ -1993,6 +1993,14 @@
   }
   function travelTo(){
     const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
+    // 사용자 요청 2026-06-09: 전투 중 행성 이동 차단
+    //   · combatState 가 있고 done 이 false 면 진행 중 — 이동 거부
+    //   · 도주는 escapePirateRaid / 항복 / 보스 패배 처리 경로 사용
+    if(typeof window!=='undefined'&&window.combatState&&!window.combatState.done){
+      try{notify(I18N.t('notify.combatTravelBlocked')||'⚔️ 전투 중에는 다른 행성으로 이동할 수 없습니다.','err');}catch(e){}
+      try{if(typeof baekgu==='function')baekgu(I18N.t('baekgu.combatTravelBlocked')||'먼저 이 전투부터 끝내야 합니다.');}catch(e){}
+      return;
+    }
     // P31 (지구) 진입 게이트 — ACT/봉쇄 상태 검증
     // ※ ACT<3 무조건 차단 (defense-in-depth) — _isUrsaDefeated()가 손상 상태에서 true 잘못 보고되어도 지구 차단
     if(pid==='P31'){

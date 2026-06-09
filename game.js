@@ -15680,6 +15680,11 @@ function forceUrsaBoss(){
 }
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
 function tryBossEntry(){
+  // 사용자 요청 2026-06-09: 전투 중 보스전 진입도 차단 (이중 안전망)
+  if(window.combatState&&!window.combatState.done){
+    try{notify(I18N.t('notify.combatTravelBlocked')||'⚔️ 전투 중에는 보스전에 진입할 수 없습니다.','err');}catch(e){}
+    return;
+  }
   // 첫 도전 판정 — 실제 격파 흔적(BOSS_URSA 나포함 OR 엔딩 시청)이 없으면 "첫 도전"으로 간주.
   //   _earthLiberated 만 켜져 있고 격파 흔적이 없는 손상 상태(B2 후속)에서도 보스가 정상 트리거되도록 보장.
   const _isFirst=!_isUrsaDefeated();
