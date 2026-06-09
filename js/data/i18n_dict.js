@@ -1499,8 +1499,8 @@ I18N.register({
                                  en: '🌌 Black-hole fleet defeated — final trial passed!' },
 
   // ── G55: 전투 결과/전술 notify 15키 ────────────────────────────────
-  'notify.lootCount':          { ko: '📦 전리품 {n}종 획득 (Lv{lv})',
-                                 en: '📦 {n} loot types acquired (Lv{lv})' },
+  'notify.lootCount':          { ko: '📦 전리품 {n}종 획득 (명성 {rep})',
+                                 en: '📦 {n} loot types acquired (Rep {rep})' },
   'notify.battleWin':          { ko: '⚔️ 전투 승리!',
                                  en: '⚔️ Battle Victory!' },
   'notify.shipsCapturedShort': { ko: '🏴 적함 {n}척 나포!',

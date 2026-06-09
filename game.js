@@ -14109,19 +14109,21 @@ function _finishCombat(){
       addHubProgress(pid);
       _kindLbl=combatState._isChixFleet?I18N.t('cb.kindChix'):combatState.isPirate?I18N.t('cb.kindPirate'):I18N.t('cb.kindEnemy');
       addCombatLog(I18N.t('combat.hubProgress',{kind:_kindLbl,now:getPlanetHubProgress(pid),max:getPlanetHubThreshold(pid)}),'gold');
-      // ── 전리품 특산물 드롭 (사용자 명세: 1~5종 × 5~100개, 레벨 비례) ──
-      //   · 레벨 1   → 종 1~2 / 개 5~15
-      //   · 레벨 500 → 종 3~5 / 개 40~100
+      // ── 전리품 특산물 드롭 — 사용자 요청 2026-06-09: 명성(1~1000) 기반 비례 ──
+      //   · 명성 1     → 종 1 / 개 10~15  (저명성 신참 사령관)
+      //   · 명성 500   → 종 3 / 개 45~58
+      //   · 명성 1000+ → 종 5 / 개 80~100 (전설급 사령관)
       //   · 화물칸이 가득 차면 가능한 만큼만 적재 후 알림
       try{
-        const _plv=(typeof calcPlayerLevel==='function')?calcPlayerLevel():1;
-        const _plvN=Math.max(1,Math.min(1000,_plv));
-        const _t=Math.min(1,(_plvN-1)/499);  // 0(레벨1) ~ 1(레벨500+)
+        const _rep=Math.max(1,Math.min(1000,G.reputation||1));
+        const _t=(_rep-1)/999;  // 0(명성1) ~ 1(명성1000)
         // 잔해 합류 시 전리품 수량도 3배 (사용자 명세 — 보상 3배)
         const _lootMul=(combatState._debrisJoinCount||0)>0?3:1;
         const _kinds=Math.max(1,Math.min(5,Math.round(1+_t*4)));
-        const _qtyMin=Math.round((5+_t*35)*_lootMul);
+        // 명성 1 → 10~15개 / 명성 1000 → 80~100개 (선형 보간)
+        const _qtyMin=Math.round((10+_t*70)*_lootMul);
         const _qtyMax=Math.round((15+_t*85)*_lootMul);
+        const _plv=(typeof calcPlayerLevel==='function')?calcPlayerLevel():1;  // notify 용 라벨 유지
         const _facId=pd&&pd.f;
         // 보상 풀: 행성 팩션 특산물 우선 + 일반 풀 — 재료(material)는 제외 (일반 G* 만)
         const _pool=(typeof COMMODITIES!=='undefined'?COMMODITIES:[]).filter(c=>c&&!c.material);
@@ -14150,7 +14152,7 @@ function _finishCombat(){
           });
           if(_gotten.length>0){
             addCombatLog(I18N.t('combat.loot',{items:_gotten.join(' · ')}),'gold');
-            notify(I18N.t('notify.lootCount',{n:_gotten.length,lv:_plv}),'ok');
+            notify(I18N.t('notify.lootCount',{n:_gotten.length,rep:_rep,lv:_plv}),'ok');
           } else if(_picks.length>0){
             addCombatLog(I18N.t('combat.lootFullCargo'),'warn');
           }
