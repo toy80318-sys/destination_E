@@ -324,13 +324,15 @@
       _bodyHtml=`<div style="padding:18px;text-align:center;color:var(--dim);font-size:13px">${I18N.t('ui.boxWasEmpty')}</div>`;
     } else if(result.type==='bp'){
       const _col=result.rec.tier==='mythic'?'#cc66ff':result.rec.tier==='flagship'?'#ff8800':'#d4af37';
-      // 설계도는 대상 아이템 이미지 (파츠/함선/창고) 활용
-      let _bpImgSrc='';
-      if(result.rec.type==='part'&&typeof partImgSrc==='function')_bpImgSrc=partImgSrc(result.rec.id);
-      else if(result.rec.type==='ship'&&typeof shipImgSrc==='function')_bpImgSrc=shipImgSrc({id:result.rec.id,catalogId:result.rec.id,tier:result.rec.tier});
-      else if(result.rec.type==='cargo')_bpImgSrc='img/parts/'+result.rec.id+'.png'+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
+      // 사용자 요청 2026-06-09: 미스테리박스 설계도 보상 팝업 이미지를 설계도 자체(BP01/BP02)로 교체
+      //   · 함선 설계도 (LGD*) → img/ui/BP01.png
+      //   · 파츠/창고 설계도 → img/ui/BP02.png
+      //   · bpImgSrc 헬퍼 사용 (game.js 정의, 자동 분류)
+      const _bpImgSrc=(typeof window.bpImgSrc==='function')
+        ? window.bpImgSrc(result.rec.id, result.rec.type==='ship'?'ship':'part')
+        : (result.rec.type==='ship'?'img/ui/BP01.png':'img/ui/BP02.png')+((typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
       const _bpRecDispNm=(result.rec.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===result.rec.id))||result.rec.nm):(partDisplayNm(PARTS.find(p=>p.id===result.rec.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===result.rec.id)||{})||result.rec.nm));
-      const _bpImgHtml=_bpImgSrc?`<img src="${_bpImgSrc}" alt="${_bpRecDispNm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_col};box-shadow:0 0 22px ${_col}88;filter:drop-shadow(0 0 8px ${_col})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>📜</div>'">`:`<div style="font-size:64px">📜</div>`;
+      const _bpImgHtml=`<img src="${_bpImgSrc}" alt="${_bpRecDispNm}" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(0,0,0,.45);border:2px solid ${_col};box-shadow:0 0 22px ${_col}88;filter:drop-shadow(0 0 8px ${_col})" onerror="this.outerHTML='<div style=\\'font-size:64px\\'>📜</div>'">`;
       _bodyHtml=`<div style="padding:18px;text-align:center">
         <div style="margin-bottom:10px;display:flex;justify-content:center">${_bpImgHtml}</div>
         <div style="font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:2px">📜 BLUEPRINT</div>
@@ -366,12 +368,16 @@
       notify(I18N.t('notify.shipAcquiredFromBox',{nm:shipDisplayNm(result.s)||result.s.nm}),'gold');
     }
     // 최근 박스 보상 저장 — 우측 상단 카드용 (단일 + 최근 5장 목록)
+    // 사용자 요청 2026-06-09: 박스 보상 카드 아이콘도 실제 이미지로 (설계도=BP01/BP02 자동 분류)
     if(result){
       let _rwInfo=null;
       if(result.type==='bp'){
         const _r=result.rec;
         const _bpNm=(_r.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_r.id))||_r.nm):(partDisplayNm(PARTS.find(p=>p.id===_r.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_r.id)||{})||_r.nm));
-        _rwInfo={type:'bp',nm:_bpNm,id:_r.id,tier:_r.tier||'legend',boxTier:tier,img:'img/ui/BP02.png',ic:'📜'};
+        const _bpCardImg=(typeof window.bpImgSrc==='function')
+          ? window.bpImgSrc(_r.id, _r.type==='ship'?'ship':'part')
+          : (_r.type==='ship'?'img/ui/BP01.png':'img/ui/BP02.png');
+        _rwInfo={type:'bp',nm:_bpNm,id:_r.id,tier:_r.tier||'legend',boxTier:tier,img:_bpCardImg,ic:'📜'};
       } else if(result.type==='part'){
         _rwInfo={type:'part',nm:partDisplayNm(result.p)||result.p.nm,id:result.p.id,rarity:result.p.rarity||'N',boxTier:tier,img:(typeof partImgSrc==='function')?partImgSrc(result.p.id):('img/parts/'+result.p.id+'.png'),ic:'⚙️'};
       } else if(result.type==='ship'){
