@@ -23,12 +23,27 @@
     const G=window.G;
     const npc=_SHAKEDOWN_NPCS[Math.floor(Math.random()*_SHAKEDOWN_NPCS.length)];
     const _cr=G.credits||0;
-    // 통행료 = 기본(링 기반) + 아군 함대 자산 1%
+    // 통행료 = 기본(링 기반) + 아군 함대 자산 0.1% (캡 적용)
+    // 사용자 보고 2026-06-09: 신화·전설 함선 보유 시 함대 자산 1% 가 수십~수백만 까지 폭증해
+    //   "크레딧 있음에도 부족" 메시지. 다음 안전망 3중 적용:
+    //   1) 함대 자산 multiplier 1% → 0.1% (10배 완화)
+    //   2) 함대 자산 합산 5,000,000 캡 (그 이상은 통행료 계산에 미반영)
+    //   3) 최종 demand 를 (a) 100,000 하드캡, (b) max(baseCr, credits×0.7) 중 작은 값 — 항상 지불 가능
     const _baseCr=(planetDef.ring||2)*4000+3000;
-    const _fleetAsset=(G.fleet||[]).reduce(function(sum,s){
+    const _fleetAssetRaw=(G.fleet||[]).reduce(function(sum,s){
       try{return sum+((typeof window.getShipSellPrice==='function'?(window.getShipSellPrice(s).total||0):0));}catch(e){return sum;}
     },0);
-    const demand=_baseCr+Math.floor(_fleetAsset*0.01);
+    const _fleetAssetCapped=Math.min(_fleetAssetRaw,5000000);
+    const _fleetExtra=Math.floor(_fleetAssetCapped*0.001);
+    // 1차 raw demand
+    let demand=_baseCr+_fleetExtra;
+    // 2차: 100k 하드캡
+    demand=Math.min(demand,100000);
+    // 3차: 사용자가 어떤 신뢰성 임계 (credits×0.7) 를 못 넘게. 단 baseCr 보다는 작아지지 않게
+    //      → 거의 모든 케이스에서 지불 가능 + baseCr 는 보장
+    if(_cr>0){
+      demand=Math.min(demand,Math.max(_baseCr,Math.floor(_cr*0.7)));
+    }
     const canPay=_cr>=demand;
     // 행성 팩션 기반 해적 이미지 폴백 체인
     let _pf=(/^F0[1-7]$/.test(planetDef?.f||''))?planetDef.f:'';
