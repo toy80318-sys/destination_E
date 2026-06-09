@@ -439,6 +439,36 @@
         <div style="margin-left:auto;text-align:right"><div style="font-size:13px;color:var(--dim)">${I18N.t('ui.completion')}</div>
         <div style="font-size:17px;color:var(--gold);font-weight:bold">${Math.round(totalHave/PARTS.length*100)}%</div></div>
       </div>
+      <!-- 사용자 요청 2026-06-09: 파츠 도감 상단에 6종 카테고리 실제 게임 기능 설명 패널 -->
+      <div style="background:linear-gradient(135deg,rgba(0,243,255,.05),rgba(204,102,255,.05));border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:12px;margin-bottom:14px">
+        <div style="font-size:13px;color:var(--cyan);font-weight:bold;margin-bottom:10px;letter-spacing:1px">📖 파츠 기능 가이드 — 함선 슬롯에 장착 시 효과</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;font-size:12px;color:var(--txt);line-height:1.55">
+          <div style="background:rgba(255,59,59,.06);border-left:3px solid var(--red);padding:8px 10px;border-radius:4px">
+            <div style="color:var(--red);font-weight:bold;margin-bottom:3px">⚔️ 레이저 (Laser)</div>
+            <div><span style="color:var(--red)">ATT</span>(공격력) +5~320 부여. <b>매 턴 자동 발사</b>해 적 함선의 실드를 먼저 깎고 그 다음 HP에 직격. 명중률 100% 보장, 사거리 무제한. 일부 신화 레이저(MW01·RB10)는 가하는 피해의 일정 비율을 자기 HP/실드로 흡수.</div>
+          </div>
+          <div style="background:rgba(255,136,68,.06);border-left:3px solid #ff8844;padding:8px 10px;border-radius:4px">
+            <div style="color:#ff8844;font-weight:bold;margin-bottom:3px">🚀 미사일 (Missile)</div>
+            <div><span style="color:#ff8844">ATT</span>(공격력) 부여 + <b>실드 관통</b> 피해. 실드를 통과해 HP 직격하므로 실드형 함선(치크스·아우레우스 기함)에 효과적. 매 턴 1발 발사, 명중률 100%. 신화급(MMB01 이휘소 미사일)은 추가 보이드 데미지.</div>
+          </div>
+          <div style="background:rgba(0,150,255,.06);border-left:3px solid var(--blue);padding:8px 10px;border-radius:4px">
+            <div style="color:var(--blue);font-weight:bold;margin-bottom:3px">🛡️ 실드 (Shield)</div>
+            <div><span style="color:var(--blue)">INT</span>(실드 강도) 부여 + <b>maxSH</b>(실드 최대량) 증가. 매 턴 자동으로 (INT × 1.5%) 만큼 실드 자가 복구. 미사일은 통과하지만 레이저 피해를 1차로 흡수. 신화급(MS01)은 격침 시 1회 부활.</div>
+          </div>
+          <div style="background:rgba(212,175,55,.06);border-left:3px solid var(--gold);padding:8px 10px;border-radius:4px">
+            <div style="color:var(--gold);font-weight:bold;margin-bottom:3px">🛡 장갑 (Armor)</div>
+            <div><b>maxHP</b>(체력 최대량) 증가 + <span style="color:var(--gold)">DEF</span>(방어력) 부여. DEF는 받는 피해를 평탄화. 일부 장갑(RB 시리즈)은 <b>repairRate</b> 보유 → 매 턴 HP 일정% 자동 수리. 신화급(MA01·RB10)은 격침 시 부활 또는 흡혈 능력.</div>
+          </div>
+          <div style="background:rgba(0,243,255,.06);border-left:3px solid var(--cyan);padding:8px 10px;border-radius:4px">
+            <div style="color:var(--cyan);font-weight:bold;margin-bottom:3px">⚡ 엔진 (Engine)</div>
+            <div><span style="color:var(--cyan)">TEC</span>(기술력) 부여 + <b>이동 능력</b> 결정. 일반 엔진은 1홉 이동, <b>전설 엔진</b>(EN08~)은 2홉 이동, <b>블링크 엔진</b>(EN10·EN11)은 무제한 점프(블랙홀·고리 무시). 전 함선 워프 엔진 장착 시 함대 항속 +20%.</div>
+          </div>
+          <div style="background:rgba(102,255,153,.06);border-left:3px solid #66ff99;padding:8px 10px;border-radius:4px">
+            <div style="color:#66ff99;font-weight:bold;margin-bottom:3px">📦 특수창고 (Special Cargo, SC)</div>
+            <div><b>cargoBonus</b>(화물칸 추가) 부여. 정비소 「창고 확장 전용 슬롯」(함선당 최대 8칸)에 장착. SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 전설·제작) → SC05(+48 신화). 슬롯 1개 = 전용 슬롯 1칸 점유. 화물칸 합산 최대 80칸.</div>
+          </div>
+        </div>
+      </div>
       ${sections.map(sec=>{
         const ps=PARTS.filter(sec.filter);const hv=ps.filter(p=>haveSet.has(p.id)).length;
         if(!ps.length)return'';
