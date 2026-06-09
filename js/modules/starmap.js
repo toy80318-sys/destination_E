@@ -1548,21 +1548,30 @@
         ctx.setLineDash([]);
       }
       if(isCur){ctx.strokeStyle='rgba(222,255,154,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(sp.x,sp.y,r+11,0,Math.PI*2);ctx.stroke();}
-      // 기함 이미지 표시 (현재 위치 행성 우측)
+      // 기함 이미지 표시 — 사용자 요청 2026-06-09: 행성 위쪽에 배치
+      //   · 이전: 우측 (sp.x+r+5, sp.y)
+      //   · 변경: 위쪽 중앙 정렬 — 행성 라벨과 겹치지 않게 위로 충분히 띄움
       if(isCur&&G.fleet&&G.fleet.length>0){
         var _fsz=Math.max(18,r*3.2);
+        var _fx=sp.x;  // 행성 중심과 수평 정렬
+        var _fy=sp.y-r-_fsz/2-6;  // 행성 위쪽 + 6px 여백
         var _fImgSrc=shipImgSrc(G.fleet[0]);
         var _fImg=_loadMapImg(_fImgSrc,function(){renderMap();});
         if(_fImg&&_fImg.complete&&_fImg.naturalWidth>0){
-          ctx.save();ctx.globalAlpha=0.9;
-          ctx.beginPath();ctx.arc(sp.x+r+_fsz/2+5,sp.y,_fsz/2,0,Math.PI*2);ctx.clip();
-          ctx.drawImage(_fImg,sp.x+r+5,sp.y-_fsz/2,_fsz,_fsz);
-          ctx.restore();ctx.globalAlpha=1;
+          ctx.save();ctx.globalAlpha=0.95;
+          ctx.beginPath();ctx.arc(_fx,_fy,_fsz/2,0,Math.PI*2);ctx.clip();
+          ctx.drawImage(_fImg,_fx-_fsz/2,_fy-_fsz/2,_fsz,_fsz);
+          ctx.restore();
+          // 행성과 함선 사이 미세 연결선 (위치 표시 강조)
+          ctx.globalAlpha=0.6;ctx.strokeStyle='rgba(222,255,154,.5)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(sp.x,sp.y-r-1);ctx.lineTo(_fx,_fy+_fsz/2+1);ctx.stroke();
+          ctx.globalAlpha=1;
         } else {
           ctx.globalAlpha=1;ctx.fillStyle='#deff9a';
           ctx.font=Math.max(10,r*2)+'px serif';
-          ctx.textAlign='left';
-          ctx.fillText('🛸',sp.x+r+6,sp.y+4);
+          ctx.textAlign='center';
+          ctx.fillText('🛸',_fx,_fy+r*0.6);
+          ctx.textAlign='left';  // 다른 텍스트에 영향 안 가도록 복원
         }
       }
       if(st?.owned){ctx.fillStyle='#deff9a';ctx.font=`${Math.max(7,9*G.mapZoom)}px serif`;ctx.textAlign='center';ctx.globalAlpha=1;ctx.fillText('🏠',sp.x,sp.y-r-4);}
