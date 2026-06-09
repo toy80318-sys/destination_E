@@ -2089,10 +2089,18 @@
     }
     checkDeliveryQuests(pid);  // ← 배달 퀘스트 완료 체크
     // Phase 시나리오 퀘스트 자동 spawn (인트로 컷씬 포함) — 일반 퀘 시드보다 우선.
-    // 사용자 보고 2026-06-08: 일반 퀘 6개 한도가 시나리오 퀘를 차단해 컷씬·퀘가 안 뜨던 문제.
+    // 사용자 요청 2026-06-09: 행성 도착 즉시 컷씬·시나리오 퀘 노출 (지연 없음)
     if(typeof spawnPhasedQuests==='function'){try{spawnPhasedQuests(pid);}catch(e){console.warn('[phase] spawn fail',e);}}
     // 일반 퀘스트 시드 — 행성 도착 시 즉시 (퀘스트 탭 열기 전에도 보장)
     if(typeof generateQuests==='function'){try{generateQuests(pid);}catch(e){console.warn('[quest] gen fail',e);}}
+    // 사용자 요청 2026-06-09: spawn 직후 메인 탭 강제 재렌더 — 새 시나리오·일반 퀘 즉시 노출
+    try{
+      if(G._currentHubTab==='main' && typeof window.rerenderTab==='function' && typeof window.renderMain==='function'){
+        window.rerenderTab(window.renderMain);
+      } else if(G._currentHubTab==='quest' && typeof window.rerenderTab==='function' && typeof window.renderQuestTab==='function'){
+        window.rerenderTab(window.renderQuestTab);
+      }
+    }catch(e){}
     // 영웅 자동 영입 제거 — H01~H08은 해당 행성의 퀘스트 완료 시 5% 확률로만 등장
     // 제작소 관련 백구 힌트 (행성 첫 방문 또는 20% 확률 재방문)
     if(Math.random()<0.20||!G.planets[pid]._craftHinted){

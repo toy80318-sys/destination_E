@@ -133,19 +133,18 @@ function spawnPhasedQuests(pid){
       if(_introMaps[i] && _introMaps[i][pid]){ _introSceneId=_introMaps[i][pid]; break; }
     }
     if(_introSceneId){
-      console.log('[story-quest-engine] intro scene queued:', _introSceneId, 'for', pid);
+      console.log('[story-quest-engine] intro scene triggered immediately:', _introSceneId, 'for', pid);
+      // 사용자 요청 2026-06-09: 800ms 지연 제거 — 게임 시작/행성 도착 즉시 컷씬 노출
       if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
-        setTimeout(()=>{
-          try{
-            window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
-              // 실제로 컷씬이 끝났을 때만 seen 마킹 (사용자가 봤음을 확실히 보장)
-              G._phasedIntroSeen[_introKey]=true;
-              try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
-            });
-          }catch(e){
-            console.error('[story-quest-engine] intro trigger failed:', _introSceneId, e);
-          }
-        }, 800);
+        try{
+          window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
+            // 실제로 컷씬이 끝났을 때만 seen 마킹 (사용자가 봤음을 확실히 보장)
+            G._phasedIntroSeen[_introKey]=true;
+            try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+          });
+        }catch(e){
+          console.error('[story-quest-engine] intro trigger failed:', _introSceneId, e);
+        }
       } else {
         // STORY_SCENES_PC 가 아직 로드되지 않은 경우 — 폴링 재시도 (최대 5초)
         var _retries=0;

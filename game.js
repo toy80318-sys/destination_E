@@ -2456,16 +2456,32 @@ function showHub(){
   // 기존 온보딩 튜토리얼 자동 실행 제거됨 (2026-06-07)
   // → Phase 1 시나리오 퀘스트가 동일 역할 수행
   // 새 게임·이어하기 시작 시 일반 퀘스트 + 시나리오 퀘 + 인트로 컷씬 보장
-  // 사용자 보고 2026-06-09: 컷씬·시나리오 퀘가 안 나타나는 문제 — currentPlanet 없을 때도 P01로 폴백 + 다중 재시도
+  // 사용자 요청 2026-06-09: 즉시 노출 — DOM 렌더 직후 한 프레임 안에 spawn + 컷씬
+  //   · 이전 600ms / 1800ms 지연 제거
+  //   · requestAnimationFrame 으로 hub UI 한 번 그려진 직후 발화
+  //   · spawn 후 즉시 hub 메인 탭 재렌더 → 시나리오 퀘 카드 노출 보장
   (function _ensureQuestsAndCutscene(){
     var _pid=(G&&G.currentPlanet)||'P01';
     if(G&&!G.currentPlanet)G.currentPlanet=_pid;
-    // 1차: 600ms 후 시도
-    setTimeout(function(){
-      try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(_pid); }catch(e){console.warn('[phase] spawn fail (hub-1)',e);}
-      try{ if(typeof generateQuests==='function')generateQuests(_pid); }catch(e){console.warn('[quest] gen fail (hub-1)',e);}
-    },600);
-    // 2차: 1800ms 후 재시도 (1차 실패·STORY_SCENES_PC 늦은 로드 대비)
+    function _doSpawn(){
+      try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(_pid); }catch(e){console.warn('[phase] spawn fail',e);}
+      try{ if(typeof generateQuests==='function')generateQuests(_pid); }catch(e){console.warn('[quest] gen fail',e);}
+      // 메인 허브 탭 재렌더 — 새로 추가된 시나리오 퀘·일반 퀘가 즉시 보이도록
+      try{
+        if(G._currentHubTab==='main' && typeof rerenderTab==='function' && typeof renderMain==='function'){
+          rerenderTab(renderMain);
+        } else if(G._currentHubTab==='quest' && typeof rerenderTab==='function' && typeof renderQuestTab==='function'){
+          rerenderTab(renderQuestTab);
+        }
+      }catch(e){}
+    }
+    // 즉시 발화 — DOM 한 번 그려진 직후 (이 함수가 showHub 끝부분이라 sync 흐름 마지막)
+    if(typeof requestAnimationFrame==='function'){
+      requestAnimationFrame(_doSpawn);
+    } else {
+      _doSpawn();
+    }
+    // 안전망: STORY_SCENES_PC 늦은 로드·일부 실패 대비 1초 후 단일 재시도
     setTimeout(function(){
       try{
         var _list=(G.quests&&G.quests[_pid])||[];
@@ -2477,8 +2493,12 @@ function showHub(){
         if(_list.length<3 && typeof generateQuests==='function'){
           generateQuests(_pid);
         }
-      }catch(e){console.warn('[hub-2 retry fail]',e);}
-    },1800);
+        // 재시도 후에도 메인 탭 재렌더
+        if(G._currentHubTab==='main' && typeof rerenderTab==='function' && typeof renderMain==='function'){
+          rerenderTab(renderMain);
+        }
+      }catch(e){console.warn('[hub retry fail]',e);}
+    },1000);
   })();
 }
 
