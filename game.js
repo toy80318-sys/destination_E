@@ -491,6 +491,13 @@ function initGame(){
   PLANET_DEF.forEach(p=>{G.planets[p.id]={fog:p.unlock?(p.start?'A':'S'):'L',owned:false,commerce:0};});
   G.fleet=[{id:'S01_main',nm:G.profile.ship||'머스탱',tier:'소형',maxHP:100,hp:100,maxSH:50,sh:50,ATT:20,INT:15,TEC:18,HP:100,LOY:80,parts:[],crewIds:[],cargoSlots:4}];
   G.crew=[];G.heroes=[];G.cargo=[];G.inventory=[];G.materials={};G.blueprints={};G.combatHistory=[];G.quests={};G.loan=0;G.reputation=0;G.pirateKills=0;G.pirateAppearances=0;G.lastPirateTurn=-999;G.auctionBids=0;G.auctionBidTurn=-1;G.chixWaves=0;G.lastChixTurn=-999;G.hallOfFame=G.hallOfFame||[];
+  // 사용자 보고 2026-06-09: 새 게임 시작해도 컷씬 안 나오는 결정적 원인 —
+  //   이전 플레이에서 G._phasedIntroSeen 마킹된 상태가 메모리에 잔존.
+  //   initGame 은 새 게임이므로 컷씬/씬 마킹을 명시적으로 초기화해야 함.
+  G._phasedIntroSeen={};
+  G._scenesSeen={};
+  G._phasedIntroSeenV2=false;
+  G._gameStartedAt=Date.now();
   G.turn=0;G.act=1;G.currentPlanet='P01';G.gachaPity=0;G.stayTurns=0;
   G.credits=50000;G.voidEssence=0;G.voidCrystal=3;
   G.shopStock={};
@@ -2266,6 +2273,14 @@ function startGame(){
   // 사용자 요청 2026-06-07: 게임 시작 백구 멘트 프롤로그 제거
   // → FTUE 직후 바로 허브 진입. showHub()의 spawnPhasedQuests가 p1_ch01a("100년의 잠") 컷씬을 자동 재생함
   showHub();
+  // 사용자 요청 2026-06-09: 게임 시작 즉시 컷씬 — RAF 의존 없이 직접 호출
+  //   showHub 내부 RAF spawn 이 어떤 이유로 실패해도 여기서 한 번 더 보장.
+  //   spawnPhasedQuests 내부 dedup 으로 중복 트리거 안전.
+  try{
+    if(typeof spawnPhasedQuests==='function'){
+      spawnPhasedQuests(G.currentPlanet||'P01');
+    }
+  }catch(e){console.warn('[startGame] direct spawn fail:',e);}
 }
 
 // 타이틀 → 📧 이메일로 게임 불러오기 모달
