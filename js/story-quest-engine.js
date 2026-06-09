@@ -141,6 +141,12 @@ function spawnPhasedQuests(pid){
             // 실제로 컷씬이 끝났을 때만 seen 마킹 (사용자가 봤음을 확실히 보장)
             G._phasedIntroSeen[_introKey]=true;
             try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+            // 사용자 요청 2026-06-09: 자동 컷씬 종료 후 메인 탭 재렌더 → 컷씬 1~N 버튼 활성화
+            try{
+              if(G._currentHubTab==='main' && typeof rerenderTab==='function' && typeof renderMain==='function'){
+                rerenderTab(renderMain);
+              }
+            }catch(e){}
           });
         }catch(e){
           console.error('[story-quest-engine] intro trigger failed:', _introSceneId, e);
@@ -157,6 +163,12 @@ function spawnPhasedQuests(pid){
               window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
                 G._phasedIntroSeen[_introKey]=true;
                 try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
+                // 자동 컷씬 종료 → 메인 탭 재렌더 (컷씬 1~N 버튼 활성화)
+                try{
+                  if(G._currentHubTab==='main' && typeof rerenderTab==='function' && typeof renderMain==='function'){
+                    rerenderTab(renderMain);
+                  }
+                }catch(e){}
               });
             }catch(e){
               console.error('[story-quest-engine] retry trigger failed:', e);

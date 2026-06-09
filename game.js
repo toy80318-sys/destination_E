@@ -2833,20 +2833,45 @@ function renderMain(body){
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
         ${(()=>{
-          // 사용자 보고 2026-06-08: 컷씬·시나리오 퀘스트 미출현 — 항상 표시되는 강제 재생 버튼
+          // 사용자 요청 2026-06-09: 행성별 챕터 컷씬 1~N 버튼 + 자동 재생 후 활성화
+          //   · 인트로 매핑(p1_ch01a 등)으로 챕터 prefix 추출 (p1_ch01)
+          //   · 해당 prefix 로 시작하는 모든 컷씬 ID 수집 → 1~N 번호 버튼
+          //   · 자동 인트로 미시청 시 버튼 disabled
           const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
-          let _sceneId=null;
+          const _cutMaps=[window.PHASE1_CUTSCENES_KO, window.PHASE2_CUTSCENES_KO, window.PHASE3_CUTSCENES_KO, window.PHASE4_CUTSCENES_KO, window.PHASE5_CUTSCENES_KO, window.PHASE6_CUTSCENES_KO];
+          let _introId=null,_introMapIdx=-1;
           for(let i=0;i<_introMaps.length;i++){
-            if(_introMaps[i] && _introMaps[i][G.currentPlanet]){_sceneId=_introMaps[i][G.currentPlanet];break;}
+            if(_introMaps[i] && _introMaps[i][G.currentPlanet]){_introId=_introMaps[i][G.currentPlanet];_introMapIdx=i;break;}
           }
-          if(!_sceneId)return'';  // 이 행성에 등록된 인트로 없음
+          if(!_introId)return'';
+          // 챕터 prefix 추출: p1_ch01a → p1_ch01, p2_ch03 → p2_ch03
+          const _chapterMatch=_introId.match(/^(p\d_ch\d+|p\d_[a-z]+)/);
+          const _prefix=_chapterMatch?_chapterMatch[1]:_introId;
+          // 같은 챕터의 모든 컷씬 수집 (해당 페이즈만 — 페이즈 cross 방지)
+          const _sceneIds=[];
+          const _phaseCuts=_cutMaps[_introMapIdx]||{};
+          // intro 를 항상 #1로
+          _sceneIds.push(_introId);
+          Object.keys(_phaseCuts).forEach(id=>{
+            if(id===_introId)return;
+            if(id.startsWith(_prefix))_sceneIds.push(id);
+          });
+          // 최대 5개로 제한 (사용자 명세)
+          const _scenes=_sceneIds.slice(0,5);
           const _seen=!!(G._phasedIntroSeen&&G._phasedIntroSeen['intro_'+G.currentPlanet]);
-          const _label=_seen?'🎬 컷씬 재생':'🎬 컷씬 보기';
-          const _col=_seen?'#88ccff':'#ffd700';
-          const _bg=_seen?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)';
-          const _pulse=_seen?'':'animation:cutscenePulse 1.6s ease-in-out infinite;';
-          return`<button onclick="(window.forceReplayPlanetIntro?window.forceReplayPlanetIntro(G.currentPlanet):notify('STORY_SCENES_PC 미로드','err'))" style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse}" title="이 행성의 인트로 컷씬을 재생합니다">${_label}</button>
-            <style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 ${_col}66}50%{box-shadow:0 0 0 8px ${_col}00}}</style>`;
+          // 자동 인트로 미시청 시 모든 버튼 disabled (자동 재생 후 활성화)
+          const _disabled=!_seen;
+          return _scenes.map((sid,idx)=>{
+            const _seenScene=!!(G._scenesSeen&&G._scenesSeen['scene_'+sid]);
+            const _col=_disabled?'#666':(_seenScene?'#88ccff':'#ffd700');
+            const _bg=_disabled?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');
+            const _pulse=(idx===0&&!_seen)?'animation:cutscenePulse 1.6s ease-in-out infinite;':'';
+            const _label='🎬 컷씬 '+(idx+1);
+            const _onclick=_disabled
+              ? ''
+              : `onclick="(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.forceReplayScene)?window.STORY_SCENES_PC.forceReplayScene('${sid}'):notify('STORY_SCENES_PC 미로드','err')"`;
+            return `<button ${_onclick} ${_disabled?'disabled':''} style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:${_disabled?'not-allowed':'pointer'};font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse};opacity:${_disabled?'.6':'1'}" title="${_disabled?'자동 인트로 시청 후 활성화':'컷씬 '+sid+(_seenScene?' (시청 완료)':'')}">${_label}</button>`;
+          }).join('') + `<style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 #ffd70066}50%{box-shadow:0 0 0 8px #ffd70000}}</style>`;
         })()}
         ${(G.act>=4)?`<button onclick="forceUrsaBoss()" style="padding:3px 10px;border:1px solid #ff5555;border-radius:5px;background:rgba(255,60,60,.12);color:#ff7777;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('ui.ursaRetryTitle')}">${I18N.t('ui.ursaRetryBtn')}</button>`:''}
         ${(()=>{
@@ -11511,7 +11536,11 @@ function _renderQuestCard(q,pid,qlist){
 
 function renderQuestTab(body){
   if(!body)return;
-  var pid=G.currentPlanet;generateQuests(pid);
+  var pid=G.currentPlanet;
+  // 사용자 보고 2026-06-09: 시나리오·백구 퀘 안 보임 — renderQuestTab 진입 시
+  //   spawnPhasedQuests 도 함께 호출해 시나리오 퀘 누락 방지
+  try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(pid); }catch(e){console.warn('[questTab] spawnPhasedQuests fail:',e);}
+  generateQuests(pid);
   // 사용자 보고 2026-06-07: 메인 퀘스트가 완료 안 되는 문제 — 카드 렌더 시점에 라이브 평가
   try{if(typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
   var qlist=G.quests[pid]||[];
