@@ -3225,6 +3225,20 @@ I18N.register({
   'part.RB10.desc': { ko: '신화 영혼 흡수 매트릭스. 매 턴 maxHP 18% 회복 + 레이저 발사 시 피해의 20%만큼 HP / 18%만큼 실드 흡수. 격침 시 1회 부활(HP 50%). 상점 미판매 (설계도 제작)',
                      en: 'Mythic soul-absorption matrix. Restores 18% maxHP per turn + on laser fire: drains 20% HP / 18% shield of damage. Revives once on destruction (HP 50%). Not sold in shops (blueprint craft).' },
 
+  // ── 함선 역할(특성화) 라벨 — 사용자 요청 2026-06-09 ──────────────────
+  'ship.role.defense':       { ko: '방어형',  en: 'Defender' },
+  'ship.role.defenseDesc':   { ko: '쉴드·INT 강화 (방어력 ↑40% · INT ↑25%)',
+                               en: 'Shield/INT focused (+40% SH · +25% INT)' },
+  'ship.role.attack':        { ko: '공격형',  en: 'Striker' },
+  'ship.role.attackDesc':    { ko: 'ATT·엔진 강화 (ATT ↑40% · TEC ↑25%)',
+                               en: 'ATT/Engine focused (+40% ATT · +25% TEC)' },
+  'ship.role.transport':     { ko: '수송형',  en: 'Hauler' },
+  'ship.role.transportDesc': { ko: 'HP·화물·크루 강화 (HP ↑30% · 화물 ↑50% · 크루 ↑30%)',
+                               en: 'HP/Cargo/Crew focused (+30% HP · +50% cargo · +30% crew)' },
+  'ship.role.versatile':     { ko: '만능형',  en: 'Versatile' },
+  'ship.role.versatileDesc': { ko: '전 능력치 균형 +10%',
+                               en: 'Balanced +10% across all stats' },
+
   // ── 함선 (ships.js: SHIP_CATALOG) — 56 엔트리 ─────────────────────
   // 소형 S01~S08
   'ship.S01.nm':   { ko: '머스탱',         en: 'Mustang' },

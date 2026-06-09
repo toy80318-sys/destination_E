@@ -595,7 +595,22 @@ function showShipDetailModal(idx){
       ${imgOrEmoji(shipImgSrc(s),tierIc,144,144,'border-radius:10px;background:rgba(0,0,0,.6);flex-shrink:0;border:1px solid '+fc+'66',shipLoreKey(s))}
       <div style="flex:1;min-width:0">
         <div style="font-size:19px;font-weight:bold;color:${fc};margin-bottom:2px">${isFlagship?I18N.t('ui.flagshipPrefix'):''}${(typeof shipDisplayNm==="function"?shipDisplayNm(s):s.nm)}</div>
-        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">${I18N.tier(s.tier)}</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:6px;display:flex;gap:8px;align-items:center">
+          <span>${I18N.tier(s.tier)}</span>
+          ${(()=>{
+            // 사용자 요청 2026-06-09: 함선 특성화(역할) 배지
+            const _role=_getShipRole(s);
+            if(_role==='mythic')return '';
+            const _roleStyle={
+              defense:   {ic:'🛡️', col:'#66b3ff', lbl:I18N.t('ship.role.defense')||'방어형',  desc:I18N.t('ship.role.defenseDesc')||'쉴드·INT 강화'},
+              attack:    {ic:'⚔️', col:'#ff7777', lbl:I18N.t('ship.role.attack')||'공격형',   desc:I18N.t('ship.role.attackDesc')||'ATT·엔진 강화'},
+              transport: {ic:'📦', col:'#ffd166', lbl:I18N.t('ship.role.transport')||'수송형', desc:I18N.t('ship.role.transportDesc')||'HP·화물·크루 강화'},
+              versatile: {ic:'⚖️', col:'#88ddaa', lbl:I18N.t('ship.role.versatile')||'만능형', desc:I18N.t('ship.role.versatileDesc')||'전 능력치 균형 +10%'}
+            }[_role];
+            if(!_roleStyle)return '';
+            return `<span style="display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border:1px solid ${_roleStyle.col}88;border-radius:10px;background:${_roleStyle.col}15;color:${_roleStyle.col};font-weight:bold;font-size:11px" title="${_roleStyle.desc}">${_roleStyle.ic} ${_roleStyle.lbl}</span>`;
+          })()}
+        </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:10px">
           <span style="color:var(--red)">⚔️ ATT ${ATT}</span>
           <span style="color:var(--blue)">🔮 INT ${INT2}</span>
@@ -9430,7 +9445,8 @@ function _grantVoidBossRewards(){
   const _vcGrant=200;  // 사용자 요청 ×2 — 100→200 (신화 가챠 200회 가능)
   G.voidCrystal=(G.voidCrystal||0)+_vcGrant;
   // VE도 추가 (보이드 에센스 — 보이드 행성 투자/뽑기 보조 자원)
-  const _veGrant=10000;  // 사용자 요청 ×2 — 5000→10000
+  // 사용자 요청 2026-06-09: 전투 VE 절반으로 조정 (10000 → 5000)
+  const _veGrant=5000;
   G.voidEssence=(G.voidEssence||0)+_veGrant;
   // ─── 알림 + 백구 대사 ───
   const _luckMsg=_lucky?I18N.t('reward.luckyTwo'):'';
@@ -9829,7 +9845,8 @@ function completeQuest(pid,idx){
   const _hubUnlockedQ=isPlanetHubUnlocked(pid);
   const _rewardRate=_hubUnlockedQ?1.0:0.5;
   const _actualCr=Math.round(q.rewardCr*_rm*_rewardRate*_repMult);
-  const _actualVe=q.rewardVe*_repMult*2;  // 사용자 요청 ×2 (퀘스트 VE 보상 2배)
+  // 사용자 요청 2026-06-09: 전투/퀘스트 VE 절반 — ×2 multiplier 제거 (원본 ×1)
+  const _actualVe=q.rewardVe*_repMult;
   G.credits+=_actualCr;G.voidEssence+=_actualVe;
   // ── 보이드 크리스탈(VC) 드롭 — 보이드 행성(P27~P30) 퀘스트 완료 시 48% 확률 ──
   // (이전 45% → 48%로 +3%p 추가 인상, 사용자 요청)
@@ -11817,6 +11834,64 @@ function shipDisplayName(s){
   return nm;
 }
 try{if(typeof window!=='undefined')window.shipDisplayName=shipDisplayName;}catch(e){}
+
+// ═══ 함선 역할(특성화) 시스템 — 사용자 요청 2026-06-09 ════════════════════════════
+// 신화/우르사/블랙팔콘 제외, 모든 비신화 함선에 역할 부여.
+//   · 방어형(defense):   maxSH ×1.40, INT ×1.25, HP ×0.95, ATT ×0.90
+//   · 공격형(attack):    ATT ×1.40, TEC ×1.25, HP ×0.90, maxSH ×0.85
+//   · 수송형(transport): HP ×1.30, cargo ×1.50, crewMax ×1.30, ATT ×0.85, maxSH ×0.90
+//   · 만능형(versatile): 모든 능력치 ×1.10 (균형 보너스)
+//   · 신화/특수 — multiplier 1.0 (원본 그대로)
+const SHIP_ROLE_DEF={
+  // ── 소형 (S01~S08) ──
+  S01:'versatile', S02:'transport', S03:'attack',  S04:'transport',
+  S05:'defense',   S06:'attack',    S07:'attack',  S08:'versatile',
+  // ── 중형 (M01~M10) ──
+  M01:'versatile', M02:'attack',    M03:'defense', M04:'attack',
+  M05:'transport', M06:'versatile', M07:'attack',  M08:'transport',
+  M09:'defense',   M10:'versatile',
+  // ── 대형 (H01~H12) ──
+  H01:'versatile', H02:'defense',   H03:'transport',H04:'versatile',
+  H05:'attack',    H06:'defense',   H07:'versatile',H08:'attack',
+  H09:'versatile', H10:'versatile', H11:'defense',  H12:'attack',
+  // ── 문명권 함선 ──
+  F01_S:'versatile', F01_M:'versatile', F01_L:'versatile',   // 수퍼비아(귀족·외교) — 균형
+  F02_S:'transport', F02_M:'transport', F02_L:'transport',   // 아우레우스(금융·화물) — 수송
+  F03_S:'attack',    F03_M:'attack',    F03_L:'attack',      // 메카니카(기계·엔진) — 공격
+  F04_S:'attack',    F04_M:'attack',    F04_L:'attack',      // 크리그(전사·무력) — 공격
+  F05_S:'defense',   F05_M:'defense',   F05_L:'defense',     // 티리온(평화·실드) — 방어
+  F06_S:'versatile', F06_M:'versatile', F06_L:'versatile',   // 저항군 — 균형
+  F07_S:'defense',   F07_M:'defense',   F07_L:'defense'      // 보이드(혼돈·차원) — 방어
+};
+const SHIP_ROLE_MUL={
+  defense:   {HP:0.95, ATT:0.90, INT:1.25, TEC:0.95, SH:1.40, cargo:0.85, crew:1.00},
+  attack:    {HP:0.90, ATT:1.40, INT:0.95, TEC:1.25, SH:0.85, cargo:0.85, crew:1.00},
+  transport: {HP:1.30, ATT:0.85, INT:0.95, TEC:0.90, SH:0.90, cargo:1.50, crew:1.30},
+  versatile: {HP:1.10, ATT:1.10, INT:1.10, TEC:1.10, SH:1.10, cargo:1.10, crew:1.10},
+  // 신화·특수 — multiplier 없음 (원본 능력치 그대로)
+  mythic:    {HP:1.00, ATT:1.00, INT:1.00, TEC:1.00, SH:1.00, cargo:1.00, crew:1.00}
+};
+// 함선 역할 조회 — catalogId 우선, 신화 tier 는 항상 mythic 반환
+function _getShipRole(s){
+  if(!s)return 'versatile';
+  // 신화 tier(LGD01~03, URSA, BLACKFALCON) + 전설기함은 mythic (원본 능력치 그대로)
+  if(s.tier==='신화' || s.tier==='전설기함') return 'mythic';
+  // catalogId 또는 catId 또는 id prefix 로 역할 조회
+  const _cid=String(s.catalogId||s.catId||(s.id||'').replace(/(?:_\d+|_main|_craft.*)$/,'')).toUpperCase();
+  return SHIP_ROLE_DEF[_cid] || 'versatile';
+}
+function _shipRoleMul(s, statName){
+  const role=_getShipRole(s);
+  const m=SHIP_ROLE_MUL[role]||SHIP_ROLE_MUL.versatile;
+  return m[statName]||1.0;
+}
+try{if(typeof window!=='undefined'){
+  window._getShipRole=_getShipRole;
+  window._shipRoleMul=_shipRoleMul;
+  window.SHIP_ROLE_DEF=SHIP_ROLE_DEF;
+  window.SHIP_ROLE_MUL=SHIP_ROLE_MUL;
+}}catch(e){}
+
 function getShipStats(s){
   const b=getPartBonus(s);const cb=getCrewBonus(s);
   // 탑승 크루 최고 등급으로 함선 성능 배율 결정 (영웅H→1.1배, 전설L/스토리S→1.2배)
@@ -11841,13 +11916,19 @@ function getShipStats(s){
   const _hp=getHeroPassiveBonus();
   // 함선 강화 — _enhanceLv (0~10) × 5% 모든 능력치 추가 보너스 (사용자 명세)
   const _enhMul=1+Math.max(0,Math.min(10,s._enhanceLv||0))*0.05;
+  // 사용자 요청 2026-06-09: 함선 역할(특성화) multiplier 적용 (신화 제외)
+  const _rmATT=_shipRoleMul(s,'ATT');
+  const _rmINT=_shipRoleMul(s,'INT');
+  const _rmTEC=_shipRoleMul(s,'TEC');
+  const _rmHP =_shipRoleMul(s,'HP');
+  const _rmSH =_shipRoleMul(s,'SH');
   return{
-    ATT:Math.round(((+s.ATT||0)+b.att+cb.att)*hm*_hp.attMul*_geobukMul*_enhMul),
-    INT:Math.round(((+s.INT||0)+b.int2+cb.int2)*hm*_hp.intMul*_geobukMul*_enhMul),
-    TEC:Math.round(((+s.TEC||0)+b.tec+cb.tec)*hm*_hp.tecMul*_enhMul),
+    ATT:Math.round(((+s.ATT||0)+b.att+cb.att)*hm*_hp.attMul*_geobukMul*_enhMul*_rmATT),
+    INT:Math.round(((+s.INT||0)+b.int2+cb.int2)*hm*_hp.intMul*_geobukMul*_enhMul*_rmINT),
+    TEC:Math.round(((+s.TEC||0)+b.tec+cb.tec)*hm*_hp.tecMul*_enhMul*_rmTEC),
     DEF:Math.round(((+s.DEF||0)+b.def+cb.def)*hm*_enhMul),
-    HP:Math.round(((+s.maxHP||100)+b.hp+cb.hp)*hm*_hp.hpMul*_enhMul),
-    maxSH:Math.round(((+s.maxSH||0)+b.sh+cb.sh)*hm*armadaMult*_hp.shMul*_enhMul)
+    HP:Math.round(((+s.maxHP||100)+b.hp+cb.hp)*hm*_hp.hpMul*_enhMul*_rmHP),
+    maxSH:Math.round(((+s.maxSH||0)+b.sh+cb.sh)*hm*armadaMult*_hp.shMul*_enhMul*_rmSH)
   };
 }
 // 적대 행성 적 함대 생성 (startCombat과 브리핑에서 공용)
