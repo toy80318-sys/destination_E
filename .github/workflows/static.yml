@@ -1,4 +1,3 @@
-
 name: Deploy static content to Pages
 
 on:
@@ -24,12 +23,55 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # 사용자 보고 2026-06-09: GitHub Pages 배포 실패 — 1GB 한도 초과 가능성 차단
+      # 핵심 게임 파일만 _site/ 에 복사해 업로드 (불필요 폴더·문서·스크립트 제외)
+      - name: Prepare deploy directory
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          # 정적 자산 — 게임 실행에 필요한 최소 셋
+          rsync -a --info=stats2 \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='dist' \
+            --exclude='build' \
+            --exclude='img_backup' \
+            --exclude='02_Assets/audio/raw' \
+            --exclude='02_Assets/**/*.psd' \
+            --exclude='02_Assets/**/*.xcf' \
+            --exclude='02_Assets/**/*.ai' \
+            --exclude='02_Assets/**/*.sketch' \
+            --exclude='Doc' \
+            --exclude='01_GDD' \
+            --exclude='07_Tools' \
+            --exclude='claude-code-best-practice-main' \
+            --exclude='scripts' \
+            --exclude='electron' \
+            --exclude='migration-antigravity' \
+            --exclude='_site' \
+            --exclude='.firebase' \
+            --exclude='.screens' \
+            --exclude='*.md' \
+            --exclude='*.log' \
+            --exclude='package*.json' \
+            --exclude='firebase.json' \
+            --exclude='firestore.rules' \
+            ./ _site/
+          # README 는 GitHub Pages 진입점에 영향 안 줘 무시 가능 — 위 *.md 로 일괄 제외됨
+          # 산출 크기 확인
+          du -sh _site || true
+          find _site -maxdepth 1 -type d -exec du -sh {} \; | sort -h
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
