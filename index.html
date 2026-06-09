@@ -15,7 +15,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="img/icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="img/icons/icon-512.png">
 <link rel="apple-touch-icon" href="img/icons/icon-192.png">
-<link rel="stylesheet" href="game.css?v=20260609003">
+<link rel="stylesheet" href="game.css?v=20260609004">
 </head>
 <body>
 <!-- ═══ 언어 토글 버튼 (floating 우상단, 모든 화면 공통) ═══ -->
@@ -88,7 +88,7 @@ window.addEventListener('desktop-save-restored',function(e){
     <span style="color:var(--dim);font-size:13px" id="h-pl">| P01</span>
   </div>
   <div id="h-resource-bar" style="display:flex;gap:16px;font-size:14px">
-    <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px"><img src="img/ui/credit.png?v=20260609003" alt="₡" style="width:18px;height:18px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='₡'"><span id="h-cr">50,000</span></span>
+    <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px"><img src="img/ui/credit.png?v=20260609004" alt="₡" style="width:18px;height:18px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='₡'"><span id="h-cr">50,000</span></span>
     <span style="color:var(--cyan)">VE <span id="h-ve">0</span></span>
     <span style="color:var(--purple)">VC <span id="h-vc">3</span></span>
     <span style="color:var(--gold);font-weight:bold">⭐ <span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle" data-i18n="ui.rankAnonymous">무명</span></span>
@@ -347,51 +347,51 @@ window.addEventListener('desktop-save-restored',function(e){
 </div><!-- /#game-stage -->
 
 <!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
-<script>window._GAME_VER='20260609.web_v1.0.0-beta.105';</script>
+<script>window._GAME_VER='20260609.web_v1.0.0-beta.106';</script>
 <!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
-<script src="js/i18n.js?v=20260609003"></script>
-<script src="js/data/i18n_dict.js?v=20260609003"></script>
-<script src="js/data/factions.js?v=20260609003"></script>
-<script src="js/data/planets.js?v=20260609003"></script>
-<script src="js/data/heroes.js?v=20260609003"></script>
-<script src="js/data/commodities.js?v=20260609003"></script>
-<script src="js/data/parts.js?v=20260609003"></script>
-<script src="js/data/quests.js?v=20260609003"></script>
-<script src="js/data/cargo.js?v=20260609003"></script>
-<script src="js/data/crafting.js?v=20260609003"></script>
-<script src="js/data/ships.js?v=20260609003"></script>
+<script src="js/i18n.js?v=20260609004"></script>
+<script src="js/data/i18n_dict.js?v=20260609004"></script>
+<script src="js/data/factions.js?v=20260609004"></script>
+<script src="js/data/planets.js?v=20260609004"></script>
+<script src="js/data/heroes.js?v=20260609004"></script>
+<script src="js/data/commodities.js?v=20260609004"></script>
+<script src="js/data/parts.js?v=20260609004"></script>
+<script src="js/data/quests.js?v=20260609004"></script>
+<script src="js/data/cargo.js?v=20260609004"></script>
+<script src="js/data/crafting.js?v=20260609004"></script>
+<script src="js/data/ships.js?v=20260609004"></script>
 <!-- ═══ PHASE 시나리오 퀘스트 데이터 (Phase 1·2·3·4·5·6) ═══ -->
-<script src="js/data/phase1_quests.js?v=20260609003"></script>
-<script src="js/data/phase2_quests.js?v=20260609003"></script>
-<script src="js/data/phase3_quests.js?v=20260609003"></script>
-<script src="js/data/phase4_quests.js?v=20260609003"></script>
-<script src="js/data/phase5_quests.js?v=20260609003"></script>
-<script src="js/data/phase6_quests.js?v=20260609003"></script>
+<script src="js/data/phase1_quests.js?v=20260609004"></script>
+<script src="js/data/phase2_quests.js?v=20260609004"></script>
+<script src="js/data/phase3_quests.js?v=20260609004"></script>
+<script src="js/data/phase4_quests.js?v=20260609004"></script>
+<script src="js/data/phase5_quests.js?v=20260609004"></script>
+<script src="js/data/phase6_quests.js?v=20260609004"></script>
 <!-- ═══ PHASE 시나리오 퀘스트 엔진 (spawnPhasedQuests + tickStoryQuests) ═══ -->
-<script src="js/story-quest-engine.js?v=20260609003"></script>
+<script src="js/story-quest-engine.js?v=20260609004"></script>
 <!-- ═══ 치트 메뉴 (디버그 자원 지급) ═══ -->
-<script src="js/cheat-menu.js?v=20260609003"></script>
+<script src="js/cheat-menu.js?v=20260609004"></script>
 <!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260609003"></script>
+<script defer src="js/cloudsave.js?v=20260609004"></script>
 <!-- ═══ DESKTOP (Electron) BRIDGE — 데스크탑일 때만 동작 ═══ -->
-<script src="js/desktop-bridge.js?v=20260609003"></script>
+<script src="js/desktop-bridge.js?v=20260609004"></script>
 <!-- ═══ UI MODULES — game.js에서 분할된 자립 모듈 (2026-06-08) ═══ -->
-<script src="js/modules/report-popup.js?v=20260609003"></script>
-<script src="js/modules/shakedown-popup.js?v=20260609003"></script>
-<script src="js/modules/starmap.js?v=20260609003"></script>
-<script src="js/modules/auction.js?v=20260609003"></script>
-<script src="js/modules/codex.js?v=20260609003"></script>
-<script src="js/modules/tavern.js?v=20260609003"></script>
+<script src="js/modules/report-popup.js?v=20260609004"></script>
+<script src="js/modules/shakedown-popup.js?v=20260609004"></script>
+<script src="js/modules/starmap.js?v=20260609004"></script>
+<script src="js/modules/auction.js?v=20260609004"></script>
+<script src="js/modules/codex.js?v=20260609004"></script>
+<script src="js/modules/tavern.js?v=20260609004"></script>
 <!-- ═══ GAME LOGIC ═══ -->
-<script src="game.js?v=20260609003"></script>
+<script src="game.js?v=20260609004"></script>
 <!-- ═══ 시나리오 컷씬·대화 시스템 ═══
      · 8영웅 첫만남 대화 + 캐릭터 풀스크린 팝업 + 시나리오 영입 순서
      · HD 캐릭터 이미지(img/chars-hd/**)는 여전히 웹 배포 제외 (PC 전용)
      · 향후 19챕터·소설판 데이터 대량 추가 시 다시 PC 전용으로 격리 -->
-<script src="js/story-scenes-pc.js?v=20260609003"></script>
+<script src="js/story-scenes-pc.js?v=20260609004"></script>
 <!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
 if ('serviceWorker' in navigator && !window.desktopAPI) {

@@ -1572,6 +1572,23 @@ function runLoading(){
 }
 
 // ═══ TITLE / AGE / FTUE ═══════════════════════════════════════
+// 사용자 보고 2026-06-09: 새 게임 버튼 안 됨 — goAgeGate 함수가 정의되지 않아
+// onclick="goAgeGate()" 가 무반응. 함수 복구.
+function goAgeGate(){
+  try{
+    // 연령 게이트 화면으로 이동 (s-agegate). checkAge 가 통과 시 s-ftue 로 진행.
+    if(typeof show==='function')show('s-agegate');
+    else if(typeof document!=='undefined'){
+      // 폴백: show() 가 아직 정의 안 된 극한 상황 — 직접 클래스 조작
+      document.querySelectorAll('.scr.on').forEach(function(el){el.classList.remove('on');});
+      var t=document.getElementById('s-agegate'); if(t)t.classList.add('on');
+    }
+  }catch(e){
+    console.error('[goAgeGate] failed:',e);
+    try{notify('연령 확인 화면 진입 실패: '+e.message,'err');}catch(_){}
+  }
+}
+try{if(typeof window!=='undefined')window.goAgeGate=goAgeGate;}catch(e){}
 function showExitModal(){
   openModal(I18N.t('modal.exitGame'),
     `<div style="text-align:center;padding:12px">
