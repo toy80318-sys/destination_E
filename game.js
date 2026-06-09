@@ -3380,7 +3380,7 @@ function triggerTravelPirate(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('pirate.winLoot')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('pirate.baekguRoute')}"</div>`,
-    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
+    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();_safeCombatEntry(function(){startPirateRaid(raidDef);},"startPirateRaid");},cls:'btn-red'},
      {txt:I18N.t('ui.flee'),fn:()=>{closeModal();escapeTravelPirate();},cls:'btn-sm'}]
   );
 }
@@ -3436,7 +3436,7 @@ function triggerEarlyPirate(pd){
     ${_formatEnemyPreview(raidDef._enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('pirate.winCredits')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${G.pirateAppearances>=5?I18N.t('pirate.bk5'):G.pirateAppearances>=3?I18N.t('pirate.bk3'):I18N.t('pirate.bk0')}"</div>`,
-    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startPirateRaid(raidDef);},cls:'btn-red'},
+    [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();_safeCombatEntry(function(){startPirateRaid(raidDef);},"startPirateRaid");},cls:'btn-red'},
      {txt:I18N.t('ui.flee'),fn:()=>{closeModal();const p=Math.floor(G.credits*0.03);G.credits=Math.max(100,G.credits-p);changeReputation(-2);updateHUD();notify(I18N.t('notify.fleeWithCr',{cr:p.toLocaleString()}),'err');saveGame(true);hubTab('main');},cls:'btn-sm'}]
   );
   saveGame(true);
@@ -3574,28 +3574,81 @@ function triggerPirateRaid(pd){
   );
   saveGame(true);
 }
+// 사용자 보고 2026-06-09: 전투 진입 실패 공통 처리
+//   · 모달 클릭 핸들러에서 사용 — 함수 미정의/throw 시 명확한 에러 + 다음 시도 차단
+//   · 컷씬 오버레이 잔존 시 강제 정리
+function _safeCombatEntry(fn,name){
+  try{
+    if(typeof window!=='undefined'){
+      var _ov=document.getElementById('story-scene-overlay');
+      if(_ov)_ov.remove();
+    }
+    if(typeof fn!=='function'){
+      console.error('[combat] '+(name||'entry')+' 미정의');
+      notify('전투 시스템 함수 미로드: '+(name||'entry')+' — 페이지 새로고침 후 재시도','err');
+      return;
+    }
+    fn();
+  }catch(e){
+    console.error('[combat] '+(name||'entry')+' threw:',e);
+    notify('전투 진입 오류 ('+(name||'entry')+'): '+e.message,'err');
+  }
+}
+try{if(typeof window!=='undefined')window._safeCombatEntry=_safeCombatEntry;}catch(e){}
+
 function startPirateRaid(raidDef){
   // 해적/적대 만남 시 통행료 시비 팝업 (사용자 요청) — raidDef 세션당 1회만
+  // 사용자 보고 2026-06-09: 전투 메세지 뜬 이후 전투가 안 시작되는 경우
+  //   · 원인: _showShakedownPopup 이 throw 하거나 undefined 면 _shakedownDone 만
+  //     true 로 마킹되고 콜백 미발화 → 전투 영구 미진입
+  //   · 수정: 팝업 호출을 try/catch 로 보호 + 실패 시 즉시 전투로 진행
   if(raidDef&&!raidDef._shakedownDone){
     raidDef._shakedownDone=true;
-    _showShakedownPopup(raidDef,()=>startPirateRaid(raidDef));
-    return;
-  }
-  const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:Math.max(1,s.hp||st.HP),maxHP:st.HP,sh:(s.sh!=null?s.sh:st.maxSH),maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wpn?(_wpn.wtype||'laser'):'laser',wpnTier:_wpn?(_wpn.tier||1):1,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier,tier:s.tier||'소형'};});
-  combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_planetId:G.currentPlanet};
-  renderCombatView(document.getElementById('hub-body'));
-  setHubNav('combat');updateHUD();sfxAlert();try{AudioMgr.playBgm('combat');}catch(e){}
-  const _plv=calcPlayerLevel(),_plm=getLevelMult();
-  requestAnimationFrame(()=>{
-    initCombatCanvas();
-    const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.pirateRaid');
-    setTimeout(function(){
-      if(combatState&&!combatState.done){
-        addCombatLog(I18N.t('combat.pirateRaidStat',{plv:_plv,mult:_plm.toFixed(2)}),'');
-        runCombatTurn();
+    if(typeof _showShakedownPopup==='function'){
+      try{
+        _showShakedownPopup(raidDef,()=>startPirateRaid(raidDef));
+        return;
+      }catch(e){
+        console.warn('[combat] shakedown popup failed — proceeding to combat:',e);
+        // fall through to actual combat
       }
-    },800);
-  });
+    } else {
+      console.warn('[combat] _showShakedownPopup 미정의 — 시비 단계 스킵');
+    }
+  }
+  // 사용자 보고 2026-06-09: 전투 진입 단계 전체를 try/catch 로 보호
+  try{
+    const players=G.fleet.map(s=>{const st=getShipStats(s);const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));const _wrar=_wpn?(_wpn.rarity||''):'';const _shp=PARTS.find(p=>p.cat==='shield'&&(s.parts||[]).includes(p.id));const _shTier=_shp?(_shp.tier||0):0;const _arp=PARTS.find(p=>p.cat==='armor'&&(s.parts||[]).includes(p.id));const _arTier=_arp?(_arp.tier||0):0;return{...s,isEnemy:false,hp:Math.max(1,s.hp||st.HP),maxHP:st.HP,sh:(s.sh!=null?s.sh:st.maxSH),maxSH:st.maxSH,ATT:st.ATT,INT:st.INT,TEC:st.TEC,DEF:st.DEF||0,wtype:_wpn?(_wpn.wtype||'laser'):'laser',wpnTier:_wpn?(_wpn.tier||1):1,wpnRarity:_wrar,shieldTier:_shTier,armorTier:_arTier,tier:s.tier||'소형'};});
+    combatState={players,enemies:raidDef._enemies,turn:0,done:false,log:[],planetDef:raidDef,isBoss:false,isPirate:true,_planetId:G.currentPlanet};
+    renderCombatView(document.getElementById('hub-body'));
+    setHubNav('combat');updateHUD();sfxAlert();try{AudioMgr.playBgm('combat');}catch(e){}
+    const _plv=calcPlayerLevel(),_plm=getLevelMult();
+    requestAnimationFrame(()=>{
+      try{
+        initCombatCanvas();
+        const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.title.pirateRaid');
+        setTimeout(function(){
+          if(combatState&&!combatState.done){
+            try{
+              addCombatLog(I18N.t('combat.pirateRaidStat',{plv:_plv,mult:_plm.toFixed(2)}),'');
+              runCombatTurn();
+            }catch(e){
+              console.error('[combat] first turn failed:',e);
+              notify('전투 첫 턴 오류: '+e.message,'err');
+            }
+          }
+        },800);
+      }catch(e){
+        console.error('[combat] canvas init failed:',e);
+        notify('전투 화면 초기화 오류: '+e.message,'err');
+      }
+    });
+  }catch(e){
+    console.error('[combat] startPirateRaid fatal:',e);
+    notify('전투 진입 실패: '+e.message+' (페이지 새로고침 후 재시도)','err');
+    // 실패 시 raidDef._shakedownDone 리셋하지 않음 — 재시도 시 같은 경로 반복 방지
+    combatState=null;
+  }
 }
 function escapePirateRaid(){
   const penalty=Math.floor(G.credits*0.03);
@@ -10322,7 +10375,7 @@ function doGatherSearch(){
         })()
         +`<div style="text-align:center;padding:0 6px 8px"><div style="color:var(--purple);font-size:16px;font-weight:bold;margin-bottom:6px">${I18N.t('ui.encounterChixScan')}</div>
          <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 치크스 정찰기 2척<br>${I18N.t('ui.repelCompletesQuest')}</div></div>`,
-        [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startChixPatrolCombat(raidDef);},cls:'btn-red'},
+        [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();_safeCombatEntry(function(){startChixPatrolCombat(raidDef);},"startChixPatrolCombat");},cls:'btn-red'},
          {txt:I18N.t('btn.fleeShort'),fn:()=>{closeModal();notify(I18N.t('notify.chixScoutFled'),'warn');},cls:'btn-sm'}]);
     } else {
       notify(I18N.t('notify.scanNoScouts'),'warn');
@@ -11841,7 +11894,7 @@ function showHostilePlanetBriefing(planetDef){
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('ui.winConquerLoseCr')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('advisor.bkPreCombat')}${advisor.lvl==='win'?I18N.t('advisor.bkPush'):advisor.lvl==='mid'?I18N.t('advisor.bkCareful'):I18N.t('advisor.bkComeLater')}"</div>`,
     [
-      {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startCombat(planetDef);},cls:'btn-red'},
+      {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();_safeCombatEntry(function(){startCombat(planetDef);},"startCombat");},cls:'btn-red'},
       {txt:I18N.t('btn.retreatOther'),fn:()=>{closeModal();notify(I18N.t('notify.retreatOther'),'warn');baekgu(I18N.t('baekgu.retreatedStep'));},cls:'btn-sm'}
     ],{wide:true}
   );
@@ -11878,10 +11931,19 @@ function _mixInNormalShips(enemies){
 function startCombat(planetDef){
   const isBoss=planetDef.id==='BOSS';
   // 전투 직전 통행료 시비 이벤트 (보스 제외, 항상 노출, 세션당 1회) — 사용자 요청
+  // 사용자 보고 2026-06-09: 팝업 실패 시 전투 영구 미진입 — 안전망 추가
   if(!isBoss && planetDef && !planetDef._shakedownDone){
     planetDef._shakedownDone=true;
-    _showShakedownPopup(planetDef,()=>startCombat(planetDef));
-    return;
+    if(typeof _showShakedownPopup==='function'){
+      try{
+        _showShakedownPopup(planetDef,()=>startCombat(planetDef));
+        return;
+      }catch(e){
+        console.warn('[combat] shakedown(startCombat) failed — proceeding:',e);
+      }
+    } else {
+      console.warn('[combat] _showShakedownPopup 미정의 — startCombat 시비 단계 스킵');
+    }
   }
   let enemies;
   if(isBoss){
@@ -15830,7 +15892,7 @@ function showUrsaMajorIntro(){
       [
         _idx<lines.length-1
           ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-red'}
-          : {txt:I18N.t('ursa.startFinalBattle'),fn:()=>{closeModal();startCombat({id:'BOSS',nm:I18N.t('ursa.bossName'),ring:5});},cls:'btn-red'},
+          : {txt:I18N.t('ursa.startFinalBattle'),fn:()=>{closeModal();_safeCombatEntry(function(){startCombat({id:"BOSS",nm:I18N.t("ursa.bossName"),ring:5});},"startCombat(BOSS)");},cls:'btn-red'},
         {txt:I18N.t('ursa.later'),fn:()=>{closeModal();G.voidCrystal++;notify(I18N.t('notify.voidCrystalRefund'),'warn');},cls:'btn-sm'}
       ],
       {bossfight:true}
