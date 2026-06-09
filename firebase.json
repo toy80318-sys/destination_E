@@ -24,7 +24,21 @@
       "screen.png",
       "20260523_162049.png",
       "img/chars-hd/**",
-      "img/chars/H/**"
+      "img/chars/H/**",
+      "dist/**",
+      "build/**",
+      "img_backup/**",
+      "Doc/**",
+      "electron/**",
+      "scripts/**",
+      "claude-code-best-practice-main/**",
+      "migration-antigravity/**",
+      "**/*.exe",
+      "**/*.AppImage",
+      "**/*.dmg",
+      "**/*.zip",
+      "**/*.psd",
+      "**/*.ai"
     ],
     "rewrites": [
       {
