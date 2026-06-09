@@ -99,7 +99,7 @@ const PHASE2_QUESTS={
       id:'p2_q06m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'마르코의 칩 해독', en:'Marco\'s Chip Decode'},
-      desc:{ko:'페이즈 1 바나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 로스 128-b 수퍼비아 집하장 —32구역 경유."',
+      desc:{ko:'페이즈 1 바나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 로스 128-b 수퍼비아 집하장 —32구역 경유."',
             en:'Marco (already joined Phase 1) deepens trust. 치크스 결정 파편 ×2 → decode 아우레우스 정보 칩 chip → Krieg spy route to 로스 128-b zone-32.'},
       objectives:[
         {type:'gather', item:'G17', qty:2, label:{ko:'치크스 결정 파편 ×2 암호 해석 매체', en:'치크스 결정 파편 ×2 cipher media'}},
@@ -136,7 +136,7 @@ const PHASE2_QUESTS={
       id:'p2_q0702', type:'story_quest', category:'main', phase:2,
       ic:'🔬', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'스파이의 흔적', en:'Spy Traces'},
-      desc:{ko:'—32구역 고철 프레임 고철 프레임 더미 해체 → 크리그 암호 메모 수색.\nG01 ×1 소비(해체 작업) → 크리그 암호 메모 발견 + 구형 캡슐 감지.',
+      desc:{ko:'—32구역 고철 프레임 더미 해체 → 크리그 암호 메모 수색.\nG01 ×1 소비(해체 작업) → 크리그 암호 메모 발견 + 구형 캡슐 감지.',
             en:'Dismantle 고철 프레임 pile in zone-32. 고철 프레임 ×1 → find Krieg cipher memo + capsule trace.'},
       objectives:[
         {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 해체 작업', en:'Dismantle 고철 프레임 ×1'}},
@@ -252,7 +252,7 @@ const PHASE2_QUESTS={
       id:'p2_q0802', type:'story_quest', category:'main', phase:2,
       ic:'💾', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'밀수 증거 확보', en:'Secure Smuggling Evidence'},
-      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\nG07 분열 배터리 ×1 소비(해킹 장비 가동) → 메카니카 자동화 부품 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 메카니카 자동화 부품 ×1 회수.',
+      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\nG07 분열 배터리 ×1 소비(해킹 장비 가동) → 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 메카니카 자동화 부품 ×1 회수.',
             en:'Hack the trade server. 분열 배터리 ×1 → route data + 메카니카 자동화 부품 ×1 evidence.'},
       objectives:[
         {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 해킹 장비', en:'분열 배터리 ×1 hacker'}},
@@ -420,7 +420,7 @@ const PHASE2_QUESTS={
       id:'p2_q1002', type:'story_quest', category:'main', phase:2,
       ic:'🔓', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'지하 감옥 진입', en:'Reach Prison Level'},
-      desc:{ko:'크리그 전투 자극제 ×1 소비(크리그 위장 약물) → 감옥 층 접근.\nG11 ×1 소비(경비 반장 매수 시도) → 거절 → 전투 → 격퇴.\n지하 아카이브에서 거북선 거북선 설계도 조각 5% 드롭.',
+      desc:{ko:'크리그 전투 자극제 ×1 소비(크리그 위장 약물) → 감옥 층 접근.\nG11 ×1 소비(경비 반장 매수 시도) → 거절 → 전투 → 격퇴.\n지하 아카이브에서 거북선 설계도 조각 5% 드롭.',
             en:'크리그 전투 자극제 ×1 disguise + 크리그 혈철석 ×1 bribe attempt → refused → fight. 거북선 fragment 5% drop in archive.'},
       objectives:[
         {type:'gather', item:'G26', qty:1, label:{ko:'크리그 전투 자극제 ×1 위장 약물', en:'크리그 전투 자극제 ×1 disguise'}},
@@ -436,16 +436,16 @@ const PHASE2_QUESTS={
       id:'p2_q1003', type:'story_quest', category:'main', phase:2,
       ic:'📜', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'이순신 캡슐 봉인 해제', en:'Unseal Yi Sun-sin Capsule'},
-      desc:{ko:'이순신 캡슐 인식 코드: 난중일기 영인본 난중일기 영인본 필요.\nG18 소비(캡슐 인식 장치 활성화) → 봉인 해제.\n이순신: "이곳이... 얼마나 흘렀느냐. 나를 깨운 자가 {사령관}인가. 빚을 졌구나."',
+      desc:{ko:'이순신 캡슐 인식 코드: 난중일기 영인본 필요.\nG18 소비(캡슐 인식 장치 활성화) → 봉인 해제.\n이순신: "이곳이... 얼마나 흘렀느냐. 나를 깨운 자가 {사령관}인가. 빚을 졌구나."',
             en:'Capsule code: 난중일기 영인본 Nanjung Diary. 난중일기 영인본 ×1 → unseal. Yi Sun-sin: "How long has it been... I owe you a debt."'},
       objectives:[
-        {type:'gather', item:'G18', qty:1, label:{ko:'난중일기 영인본 난중일기 영인본 ×1', en:'난중일기 영인본 Nanjung Diary ×1'}},
+        {type:'gather', item:'G18', qty:1, label:{ko:'난중일기 영인본 ×1', en:'난중일기 영인본 Nanjung Diary ×1'}},
       ],
       rewardCr:30000, rewardVe:80,
       rewardItems:[],
       rewardFlags:['turtle_captain_freed'],
       locked:true,
-      lockReason:{ko:'페이즈 3 저항군 기지(저항군 지하 방공호)에서 난중일기 영인본 난중일기 영인본을 먼저 입수하라.',
+      lockReason:{ko:'페이즈 3 저항군 기지(저항군 지하 방공호)에서 난중일기 영인본을 먼저 입수하라.',
                   en:'Acquire 난중일기 영인본 Nanjung Diary at Resistance base (저항군 지하 방공호) in Phase 3 first.'},
       cutscene_pre:null, cutscene_post:null
     },
@@ -493,7 +493,7 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03 "칩 해독의 열쇠" (P19 도착) ───
   p2_ch03:[
-    {char:'system', name:'항법 AI', color:'#38bdf8', text:'아우레우스 정보 칩 아우레우스 정보 칩 해독 시도 중 — 암호화 확인. 치크스 변조 주파수 적용. 현재 장비로는 해독 불가.'},
+    {char:'system', name:'항법 AI', color:'#38bdf8', text:'아우레우스 정보 칩 해독 시도 중 — 암호화 확인. 치크스 변조 주파수 적용. 현재 장비로는 해독 불가.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.'},
     {char:'combat_F05', name:'치크스 전위대', color:'#ef4444', text:'이곳은 치크스 관할 공역이다. 통행 허가 없이 접근은 적대 행위로 간주한다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'여긴 은하 공용 항로야. 비켜.'},

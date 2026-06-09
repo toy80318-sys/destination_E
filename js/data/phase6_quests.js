@@ -20,7 +20,7 @@ const PHASE6_QUESTS={
       id:'p6_q2301', type:'story_quest', category:'main', phase:6,
       ic:'🌌', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'우르사 메이저 진입', en:'Approach Ursa Major'},
-      desc:{ko:'제타 레티쿨리 제타 레티쿨리 — 우르사 메이저 본거지. 진입 전 함대 점검: 거북선 거북선 + 보이드 방어막 해석 장비 + 아우레우스 태양핵 안정화 ×5 사전 소비.\n전 영웅 8/8 참전 필수.',
+      desc:{ko:'제타 레티쿨리 — 우르사 메이저 본거지. 진입 전 함대 점검: 거북선 + 보이드 방어막 해석 장비 + 아우레우스 태양핵 안정화 ×5 사전 소비.\n전 영웅 8/8 참전 필수.',
             en:'Final approach. Need turtle ship + void decryptor + 아우레우스 태양핵 ×5. All 8 heroes required.'},
       objectives:[
         {type:'gather', item:'R03', qty:5, label:{ko:'아우레우스 태양핵 안정화 ×5', en:'아우레우스 태양핵 ×5'}},
@@ -127,7 +127,7 @@ const PHASE6_QUESTS={
       desc:{ko:'100년 만의 지구 착륙. 봉쇄가 풀린 지구 — 새로운 시작.\n자유 항해 모드 활성화 (프록시마 b~지구 자유 이동 + 모든 행성 경매 가능).',
             en:'First landing in 100 years. Free roam mode unlocked.'},
       objectives:[
-        {type:'delivery', target:'P31', qty:1, label:{ko:'지구 지구 도착', en:'Arrive at 지구'}},
+        {type:'delivery', target:'P31', qty:1, label:{ko:'지구 도착', en:'Arrive at 지구'}},
       ],
       rewardCr:500000, rewardVe:300,
       rewardItems:[],
@@ -141,7 +141,7 @@ const PHASE6_QUESTS={
       desc:{ko:'아이젠클로 항복서 + 난중일기 영인본 난중일기 ×3 + 지구 철광석 ×5 → 지구 의회 공식 재개. {사령관} 명예 의장 직위.',
             en:'Eisenklau surrender + 난중일기 영인본 ×3 + 지구 철광석 ×5 → Council restored. {commander} Honorary Chair.'},
       objectives:[
-        {type:'gather', item:'G15', qty:5, label:{ko:'지구 철광석 지구 철광석 ×5', en:'지구 철광석 ×5'}},
+        {type:'gather', item:'G15', qty:5, label:{ko:'지구 철광석 ×5', en:'지구 철광석 ×5'}},
       ],
       rewardCr:800000, rewardVe:400,
       rewardItems:[],
@@ -203,7 +203,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH13-A "마지막 항로" (P30 도착) ───
   p6_ch13a:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'제타 레티쿨리 제타 레티쿨리. 우르사 메이저 본거지에 도착했어요. 적함 신호 — 총 30기 식별.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'제타 레티쿨리. 우르사 메이저 본거지에 도착했어요. 적함 신호 — 총 30기 식별.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 전 임진왜란. 100년 전 봉인. 그리고 오늘 — 마지막 일전이다.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르 — 영국이 누른 마지막 전투. 오늘은 우리가 누른다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.'},
@@ -275,12 +275,12 @@ const PHASE6_CUTSCENES_KO={
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(이순신을 향해) 그대의 거북선 — 트라팔가르의 빅토리 함과 어깨를 나란히 하오.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 백구.'},
     {char:'baekgu2_smile2', name:'백구', color:'#66ddff', text:'사령관. 100년 3개월 12일 동안 — 당신을 기다린 보람이 있었어요.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'좌표 — 지구 지구. 항법 입력 완료. 가시죠.'}
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'좌표 — 지구. 항법 입력 완료. 가시죠.'}
   ],
 
   // ─── CH14-B "지구 착륙" (P31 도착) ───
   p6_ch14b:[
-    {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
+    {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
     {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 임진왜란 때 보았던 그 하늘이다. 변하지 않았어.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.'},

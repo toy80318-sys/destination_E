@@ -91,7 +91,7 @@ const PHASE5_QUESTS={
       id:'p5_q2106', type:'story_quest', category:'sub', phase:5,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'균열 주민의 정보', en:'Rift Dweller\'s Tale'},
-      desc:{ko:'균열 안 — 100년간 갇혀 살아온 작은 정착촌 발견. 지구 철광석 지구 철광석 ×2 제공.\n정착민 장로: "우르사 메이저 본거지에는 친위대 15척 + 치크스 정찰대 14척이 호위 중이오."',
+      desc:{ko:'균열 안 — 100년간 갇혀 살아온 작은 정착촌 발견. 지구 철광석 ×2 제공.\n정착민 장로: "우르사 메이저 본거지에는 친위대 15척 + 치크스 정찰대 14척이 호위 중이오."',
             en:'지구 철광석 ×2 → "Ursa Major lair: 15 guards + 14 chiks scouts."'},
       objectives:[
         {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 의례', en:'지구 철광석 ×2'}},
@@ -248,10 +248,10 @@ const PHASE5_CUTSCENES_KO={
 
     // ─── CH12-C "거북선 최종 강화" (Q22-05 완료) ───
   p5_ch12c:[
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.'},
+    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.'},
-    {char:'baekgu2_smile2', name:'백구', color:'#66ddff', text:'거북선 거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.'}
+    {char:'baekgu2_smile2', name:'백구', color:'#66ddff', text:'거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.'}
   ],
 
   // ─── CH12-D "마지막 좌표" (Q22-06 완료 · 페이즈 5 종료) ───
@@ -260,7 +260,7 @@ const PHASE5_CUTSCENES_KO={
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'에너지 만충. 거북선 추진 코어 100%.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'좌표 — 제타 레티쿨리 제타 레티쿨리. 우르사 메이저 본거지.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'좌표 — 제타 레티쿨리. 우르사 메이저 본거지.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 진입한다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 5 완료. 페이즈 6 — 최종전 제타 레티쿨리·지구. 우르사 메이저 격파 · 지구 해방.'}
   ]

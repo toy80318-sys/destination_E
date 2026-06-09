@@ -2984,13 +2984,13 @@ function renderMain(body){
             const _col=!_unlocked?'#666':(_seenScene?'#88ccff':'#ffd700');
             const _bg=!_unlocked?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');
             const _pulse=(idx===0&&!_seenScene)?'animation:cutscenePulse 1.6s ease-in-out infinite;':(_unlocked&&!_seenScene?'animation:cutscenePulse 2.2s ease-in-out infinite;':'');
-            const _label='🎬 컷씬 '+(idx+1);
+            const _label='💬 대화기록 '+(idx+1);
             const _onclick=_unlocked
               ? `onclick="(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.forceReplayScene)?window.STORY_SCENES_PC.forceReplayScene('${sid}'):notify('STORY_SCENES_PC 미로드','err')"`
               : '';
             const _title=!_unlocked
-              ? '이전 컷씬을 먼저 시청해야 활성화됩니다'
-              : (_seenScene ? '컷씬 '+sid+' (시청 완료)' : '컷씬 '+sid+' — 클릭하여 재생');
+              ? '이전 대화기록을 먼저 시청해야 활성화됩니다'
+              : (_seenScene ? '대화기록 '+sid+' (시청 완료)' : '대화기록 '+sid+' — 클릭하여 재생');
             return `<button ${_onclick} ${!_unlocked?'disabled':''} style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:${!_unlocked?'not-allowed':'pointer'};font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse};opacity:${!_unlocked?'.55':'1'}" title="${_title}">${_label}</button>`;
           }).join('') + `<style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 8px transparent}}</style>`;
         })()}

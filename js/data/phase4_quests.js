@@ -49,7 +49,7 @@ const PHASE4_QUESTS={
       id:'p4_q1603', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'기어월드 변두리 주점', en:'Gearworld Outskirt Tavern'},
-      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 크리그 무기 원석 ×2 소비 → 정보: "P12 아이젠클로 보급선이 매 6턴마다 통과해." (P12 잠복 가능).',
+      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 ×2 소비 → 정보: "P12 아이젠클로 보급선이 매 6턴마다 통과해." (P12 잠복 가능).',
             en:'크리그 무기 원석 ×2 → "Eisenklau supply ship passes P12 every 6 turns."'},
       objectives:[
         {type:'gather', item:'G10', qty:2, label:{ko:'크리그 무기 원석 ×2 정보료', en:'크리그 무기 원석 ×2 fee'}},
@@ -357,7 +357,7 @@ const PHASE4_QUESTS={
       id:'p4_q2001', type:'story_quest', category:'main', phase:4,
       ic:'⚔️', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'아이젠클로 친위대 격파', en:'Eisenklau Guard Down'},
-      desc:{ko:'Kepler-442b 요새 외곽 친위대 7기 격파. 거북선 거북선 첫 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
+      desc:{ko:'Kepler-442b 요새 외곽 친위대 7기 격파. 거북선 첫 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
             en:'Destroy 7 guards. Geobukseon\'s first sortie.'},
       objectives:[
         {type:'combat', target:'p14_guards', qty:1, label:{ko:'친위대 7기 격파', en:'7 guards down'}},
@@ -413,7 +413,7 @@ const PHASE4_QUESTS={
       id:'p4_q2005', type:'story_quest', category:'hidden', phase:4,
       ic:'🏆', npc:'광개토대왕', npcIc:'🛡️', npcKey:'hero03',
       nm:{ko:'정복자의 깃발', en:'Conqueror\'s Banner'},
-      desc:{ko:'Kepler-442b 요새 점령 후 광개토가 깃발을 꽂는다. 강습 스파이크 강습 스파이크 ×3 → 정복 의례.\n광개토: "이 요새는 이제 우리 것이다."',
+      desc:{ko:'Kepler-442b 요새 점령 후 광개토가 깃발을 꽂는다. 강습 스파이크 ×3 → 정복 의례.\n광개토: "이 요새는 이제 우리 것이다."',
             en:'강습 스파이크 ×3 → Conquest banner. Gwanggaeto: "This fort is ours now."'},
       objectives:[
         {type:'gather', item:'G12', qty:3, label:{ko:'강습 스파이크 ×3 의례', en:'강습 스파이크 ×3 rite'}},
@@ -528,7 +528,7 @@ const PHASE4_CUTSCENES_KO={
   p4_ch10c:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로는 — 도망쳤어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'어디로?'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'제타 레티쿨리 제타 레티쿨리. 우르사 메이저 본거지.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'제타 레티쿨리. 우르사 메이저 본거지.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우르사가 아이젠클로를 비호 중이라는 거잖아. 마지막 일전이 다가왔어.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 보스다. 직접 잡아야 끝난다.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 b 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},

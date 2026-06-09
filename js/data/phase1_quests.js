@@ -23,10 +23,10 @@ const PHASE1_QUESTS={
       id:'p1_q0101', type:'story_quest', category:'main', phase:1,
       ic:'🚀', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'첫 발걸음', en:'First Steps'},
-      desc:{ko:'100년 만에 깨어났다. 에너지 잔량 7%. 격납고 곳곳 고철 프레임 고철 프레임을 수거해 {함선} 시스템을 재부팅하라.\n백구: "G01 3개면 연료전지 교체하고도 크레딧 남아요."',
+      desc:{ko:'100년 만에 깨어났다. 에너지 잔량 7%. 격납고 곳곳 고철 프레임을 수거해 {함선} 시스템을 재부팅하라.\n백구: "G01 3개면 연료전지 교체하고도 크레딧 남아요."',
             en:'Awakened after 100 years. Energy at 7%. Collect 고철 프레임 Scrap Frames around the hangar to reboot {ship} systems.'},
       objectives:[
-        {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 고철 프레임 ×3 수거', en:'Collect Scrap Frame ×3'}},
+        {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 수거', en:'Collect Scrap Frame ×3'}},
       ],
       rewardCr:3000, rewardVe:30,
       rewardItems:[{id:'G02', qty:1}],
@@ -56,7 +56,7 @@ const PHASE1_QUESTS={
       desc:{ko:'100년 방치로 {함선} 외장 손상. 격납고 자가 정비 구역에서 고철 프레임 ×1 소비 → HP 30% 임시 수리.\n백구: "P03 교역소에 공인 정비소가 있어요. 거기서 제대로 수리하세요."',
             en:'{ship} hull damaged from 100 years of neglect. Use 고철 프레임 ×1 for self-repair → HP +30%.'},
       objectives:[
-        {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 고철 프레임 ×1 소비', en:'Consume Scrap Frame ×1'}},
+        {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 소비', en:'Consume Scrap Frame ×1'}},
       ],
       rewardCr:1000, rewardVe:20,
       rewardItems:[],
@@ -68,7 +68,7 @@ const PHASE1_QUESTS={
       id:'p1_q01m', type:'story_quest', category:'hidden', phase:1,
       ic:'🎁', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_think',
       nm:{ko:'백구의 기억', en:'Baekgu\'s Memory'},
-      desc:{ko:'격납고 깊숙한 구석, 먼지 쌓인 화물 상자. 백구가 100년 전부터 보관하고 있었다. 안에는 {사령관}의 유품 — 수퍼비아 귀족 향수 수퍼비아 귀족 향수 한 병.',
+      desc:{ko:'격납고 깊숙한 구석, 먼지 쌓인 화물 상자. 백구가 100년 전부터 보관하고 있었다. 안에는 {사령관}의 유품 — 수퍼비아 귀족 향수 한 병.',
             en:'A dusty crate deep in the hangar. Baekgu kept it for 100 years. Inside: {사령관}\'s memento — a 수퍼비아 귀족 향수 Superbia Noble Perfume.'},
       objectives:[
         {type:'explore', target:'hangar_box', qty:1, label:{ko:'격납고 유품 상자 발견', en:'Find the memorial crate'}},
@@ -90,10 +90,10 @@ const PHASE1_QUESTS={
       id:'p1_q0201', type:'story_quest', category:'main', phase:1,
       ic:'💰', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'첫 거래', en:'First Trade'},
-      desc:{ko:'아오리에게 고철 프레임 고철 프레임 ×3 판매(+2,400₡) → 자금 확보. 수퍼비아 중력수정 수퍼비아 중력수정 ×3 매입(개당 1,800₡) — 아우레우스에서 40% 더 비싸게 판매 예정.',
+      desc:{ko:'아오리에게 고철 프레임 ×3 판매(+2,400₡) → 자금 확보. 수퍼비아 중력수정 ×3 매입(개당 1,800₡) — 아우레우스에서 40% 더 비싸게 판매 예정.',
             en:'Sell 고철 프레임 ×3 to Aori (+2,400₡), then buy 수퍼비아 중력수정 ×3 (1,800₡ each) — will sell 40% higher at Aureus.'},
       objectives:[
-        {type:'gather', item:'G05', qty:3, label:{ko:'수퍼비아 중력수정 수퍼비아 중력수정 ×3 확보', en:'Secure Gravity Crystal ×3'}},
+        {type:'gather', item:'G05', qty:3, label:{ko:'수퍼비아 중력수정 ×3 확보', en:'Secure Gravity Crystal ×3'}},
       ],
       rewardCr:5000, rewardVe:40,
       rewardItems:[{id:'G05', qty:3}],
@@ -108,7 +108,7 @@ const PHASE1_QUESTS={
       desc:{ko:'볼프 주점 "오리온" 방문. G03 오리온 위스키 ×2 소비(주점 사교 비용) → 정보 브로커 마르코 폴로 발견. 정예 모집 1,500₡ 필요.',
             en:'Visit Wolf Tavern "Orion". Consume G03 Orion Whisky ×2 for socializing. Marco Polo recruitment costs 1,500₡.'},
       objectives:[
-        {type:'gather', item:'G03', qty:2, label:{ko:'오리온 위스키 오리온 위스키 ×2 소비', en:'Consume Orion Whisky ×2'}},
+        {type:'gather', item:'G03', qty:2, label:{ko:'오리온 위스키 ×2 소비', en:'Consume Orion Whisky ×2'}},
       ],
       rewardCr:3000, rewardVe:30,
       rewardItems:[],
@@ -235,7 +235,7 @@ const PHASE1_QUESTS={
       desc:{ko:'마르코: "P05 파츠샵에 좋은 게 있어. G06 LHS 크리스탈이 있으면 보조 결제 돼서 싸게 살 수 있어."\nG06 ×1 + 15,000₡ → 아우레우스 방어 파츠 장착 → 방어력 +15%.',
             en:'Marco: "Pay with G06 for a discount." G06 ×1 + 15,000₡ → defense part (+15% defense).'},
       objectives:[
-        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 LHS 크리스탈 ×1 보조 결제', en:'Use LHS 크리스탈 ×1 as payment'}},
+        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 보조 결제', en:'Use LHS 크리스탈 ×1 as payment'}},
       ],
       rewardCr:2500, rewardVe:30,
       rewardItems:[],
@@ -284,10 +284,10 @@ const PHASE1_QUESTS={
       id:'p1_q0401', type:'story_quest', category:'main', phase:1,
       ic:'🛬', npc:'광부 대표 린다', npcIc:'⛏️', npcKey:'explore_F02',
       nm:{ko:'LHS 광산 착지 허가', en:'LHS Mine Landing Permit'},
-      desc:{ko:'광산 관리소: 입장 채굴세 아우레우스 금괴 아우레우스 금괴 ×1 납부 → 착지 허가.\n린다: "크리그 해적단이 3주째예요. 뭔가 파고 있어요."\nG06 LHS 크리스탈 ×2 지급(관리소 보답).',
+      desc:{ko:'광산 관리소: 입장 채굴세 아우레우스 금괴 ×1 납부 → 착지 허가.\n린다: "크리그 해적단이 3주째예요. 뭔가 파고 있어요."\nG06 LHS 크리스탈 ×2 지급(관리소 보답).',
             en:'Pay 아우레우스 금괴 ×1 as landing tax. Linda: "Kriegs been here 3 weeks. They\'re digging for something."'},
       objectives:[
-        {type:'gather', item:'G04', qty:1, label:{ko:'아우레우스 금괴 아우레우스 금괴 ×1 납부', en:'Pay 아우레우스 금괴 Aureus Gold ×1'}},
+        {type:'gather', item:'G04', qty:1, label:{ko:'아우레우스 금괴 ×1 납부', en:'Pay 아우레우스 금괴 Aureus Gold ×1'}},
       ],
       rewardCr:2000, rewardVe:25,
       rewardItems:[{id:'G06', qty:2}],
@@ -360,7 +360,7 @@ const PHASE1_QUESTS={
       id:'p1_q04m', type:'story_quest', category:'hidden', phase:1,
       ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 신호 중계기 발견', en:'Yi Sun-sin Relay Found'},
-      desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
+      desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
             en:'Found an old signal relay. Consume 아우레우스 태양 화폐 ×2 to restore → signal points to TRAPPIST-1e Galileo outpost.'},
       objectives:[
         {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 해독 장비 대여비', en:'Spend 아우레우스 태양 화폐 ×2 for decoder'}},
