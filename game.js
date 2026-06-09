@@ -5059,9 +5059,9 @@ function renderShipTab(body){
           </div>`;
           // 정비 서브탭일 때만 파츠+크루 표시 (화물칸은 별도 탭으로 분리하여 DOM 부하 절감)
           const _subRight=`<div style="display:flex;gap:0;flex:1;min-width:0;align-items:stretch">${_partsCol}${_crewCol}</div>`;
-          return `<div style="display:flex;gap:0;min-height:160px">
-            <div style="width:160px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px">
-              <div style="width:130px;height:110px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,108,108,'border-radius:6px;object-fit:contain',shipLoreKey(s))}</div>
+          return `<div style="display:flex;gap:0;min-height:200px">
+            <div style="width:208px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px">
+              <div style="width:184px;height:160px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,160,160,'border-radius:6px;object-fit:contain',shipLoreKey(s))}</div>
               <span style="font-size:10px;color:${tierCol};font-weight:bold">${I18N.tier(s.tier)}${I18N.t('tier.classSuffix')}${(s._enhanceLv||0)>0?`<span style="color:#ffd700">+${s._enhanceLv} (+${s._enhanceLv*5}%)</span> · `:''}LOY:${s.LOY||80}</span>
               <div style="width:100%;padding:0 2px">
                 <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px"><span style="font-size:9px;color:var(--dim);width:14px">HP</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${hpP}%;background:${hpC};height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${hpP}%</span></div>
@@ -5076,10 +5076,10 @@ function renderShipTab(body){
             </div>
             <div style="flex:1;padding:10px 12px;overflow:visible">${_subRight}</div>
           </div>`;
-        })():`<div style="display:flex;gap:0;min-height:180px;overflow:visible">
-          <!-- Col 1: 함선 이미지 + 정보 -->
-          <div style="width:165px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px" title="${(s.desc||'').replace(/"/g,'&quot;')}&#10;HP:${s.maxHP} SH:${s.maxSH}&#10;ATT:${s.ATT} SHD:${s.INT} ENG:${s.TEC}">
-            <div style="width:140px;height:120px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,120,120,'border-radius:8px;object-fit:contain',shipLoreKey(s))}</div>
+        })():`<div style="display:flex;gap:0;min-height:230px;overflow:visible">
+          <!-- Col 1: 함선 이미지 + 정보 — 사용자 요청 2026-06-09: 좌측 폭 +30% (165→215) -->
+          <div style="width:215px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-right:1px solid var(--bdr);background:rgba(5,10,26,.6);gap:5px" title="${(s.desc||'').replace(/"/g,'&quot;')}&#10;HP:${s.maxHP} SH:${s.maxSH}&#10;ATT:${s.ATT} SHD:${s.INT} ENG:${s.TEC}">
+            <div style="width:190px;height:170px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.12)">${imgOrEmoji(imgSrc,tierEmoji,170,170,'border-radius:8px;object-fit:contain',shipLoreKey(s))}</div>
             <span style="font-size:10px;color:${tierCol};font-weight:bold">${I18N.tier(s.tier)}${I18N.t('tier.classSuffix')}${(s._enhanceLv||0)>0?`<span style="color:#ffd700">+${s._enhanceLv} (+${s._enhanceLv*5}%)</span> · `:''}${(s.LOY||80)<=10?'⚠️':(s.LOY||80)>=100?'✨':''}LOY:${s.LOY||80}</span>
             <div style="width:100%;padding:0 2px">
               <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px"><span style="font-size:9px;color:var(--dim);width:14px">HP</span><div class="bar-bg" style="flex:1;height:4px"><div class="bar-fi" style="width:${hpP}%;background:${hpC};height:4px"></div></div><span style="font-size:9px;color:var(--dim)">${hpP}%</span></div>
@@ -5996,8 +5996,8 @@ function renderCargoOnlyTab(body){
     if(slots<80){const cp=getCargoUpgradePrice(s);btn='';}
     else btn='<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxAlt')+'</span>';
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
-      <div style="width:495px;flex-shrink:0;text-align:center">
-        ${imgOrEmoji(shipImgSrc(s),tierIc,495,495,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain',shipLoreKey(s))}
+      <div style="width:248px;flex-shrink:0;text-align:center">
+        ${imgOrEmoji(shipImgSrc(s),tierIc,248,248,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain',shipLoreKey(s))}
         <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:4px">${I18N.tier(s.tier)}</div>
       </div>
       <div style="flex:1;min-width:0">
@@ -6102,7 +6102,7 @@ function renderShipSkinTab(body){
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;margin-bottom:6px">
-      <div style="width:495px;height:495px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',495,495,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+      <div style="width:248px;height:248px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
@@ -6245,7 +6245,7 @@ function renderShipEnhanceTab(body){
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const lv=s._enhanceLv||0;
     return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;margin-bottom:6px">
-      <div style="width:495px;height:495px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',495,495,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+      <div style="width:248px;height:248px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%')}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;color:${sel2?'var(--cyan)':fc};font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:10px;color:var(--dim)">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
@@ -6583,7 +6583,7 @@ function renderFleetFormationTab(body){
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
     const bdrCol=sel?'var(--gold)':typeof slot==='number'?'var(--cyan)':'var(--bdr)';
     return`<div onclick="onFormationShipClick('${s.id}')" style="background:${bgCol};border:1px solid ${bdrCol};border-radius:8px;padding:8px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:all .15s" onmouseover="this.style.transform='translateX(3px)'" onmouseout="this.style.transform=''">
-      <div style="width:495px;height:495px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',495,495,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
+      <div style="width:248px;height:248px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',248,248,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:bold;color:${isFlagship?'var(--cyan)':'var(--txt)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isFlagship?'⭐ ':''}${shipDisplayName(s)}</div>
         ${(()=>{
