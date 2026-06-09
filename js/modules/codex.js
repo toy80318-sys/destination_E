@@ -461,7 +461,14 @@
           </div>
           <div style="background:rgba(0,243,255,.06);border-left:3px solid var(--cyan);padding:8px 10px;border-radius:4px">
             <div style="color:var(--cyan);font-weight:bold;margin-bottom:3px">⚡ 엔진 (Engine)</div>
-            <div><span style="color:var(--cyan)">TEC</span>(기술력) 부여 + <b>이동 능력</b> 결정. 일반 엔진은 1홉 이동, <b>전설 엔진</b>(EN08~)은 2홉 이동, <b>블링크 엔진</b>(EN10·EN11)은 무제한 점프(블랙홀·고리 무시). 전 함선 워프 엔진 장착 시 함대 항속 +20%.</div>
+            <div><span style="color:var(--cyan)">TEC</span>(기술력) 부여 — <b>전투 시 공격속도 증가</b>:
+              <span style="color:#cce">매 턴 먼저 발사 + 선제공격 ATT +20% + 회피율 상승</span></div>
+            <div style="margin-top:6px;font-size:11px;line-height:1.5">
+              <b style="color:#fff">행성 이동 거리 3단계</b>:<br>
+              <span style="color:var(--cyan)">1단계</span> 일반 엔진 (E01~E12) — <b>인접 1홉</b> 이동 (기본)<br>
+              <span style="color:var(--gold)">2단계</span> 전설 엔진 (E15·ME01·SE01 — 함대 중 1척만 보유해도) — <b>2홉</b> 이동<br>
+              <span style="color:var(--purple)">3단계</span> 블링크 엔진 (전 함선 워프 장착) — <b>무제한 점프</b> (블랙홀·고리 무시 + 함대 항속 +20%)
+            </div>
           </div>
           <div style="background:rgba(102,255,153,.06);border-left:3px solid #66ff99;padding:8px 10px;border-radius:4px">
             <div style="color:#66ff99;font-weight:bold;margin-bottom:3px">📦 특수창고 (Special Cargo, SC)</div>
