@@ -3851,8 +3851,11 @@ function getMaxCrewCount(){
 // Phase B1 (2026-06-10): render-ship-tab.js 모듈에서도 참조 — `let` → window 속성으로 변환
 //   비엄격 모드에서 bare `_shipTab` 참조는 window._shipTab 으로 자동 해석됨
 if(typeof window._shipTab==='undefined')window._shipTab='buy'; // buy | parts | fleet
-let _shopShipSort='price'; let _shopShipSortDir='asc'; // price | tier × asc | desc
-let _myShipSort='price';   let _myShipSortDir='asc';
+// Phase B1 수정 (2026-06-10): 정렬 상태 변수도 render-ship-tab.js 모듈에서 참조 — window 속성 변환
+if(typeof window._shopShipSort==='undefined')window._shopShipSort='price'; // price | tier × asc | desc
+if(typeof window._shopShipSortDir==='undefined')window._shopShipSortDir='asc';
+if(typeof window._myShipSort==='undefined')window._myShipSort='price';
+if(typeof window._myShipSortDir==='undefined')window._myShipSortDir='asc';
 try{if(typeof window!=='undefined'){
   // 같은 키 재클릭 시 방향 토글, 다른 키 클릭 시 방향은 asc 로 초기화
   window._setShopShipSort=function(k){
