@@ -2895,6 +2895,11 @@ function hubBanner(tabId,emoji,label,factionId){
     +'</div>';
 }
 
+// ─── 메인 허브 시나리오 퀘 스트립 ──────────────────────────────────
+// _buildStoryQuestStripHTML / _openStoryQuestDetail → js/modules/main-hub-story-strip.js 로 분할
+//   · 사용자 요청 2026-06-10: 긴 파일 분할
+//   · window 전역에 노출되어 renderMain template literal 에서 그대로 호출 가능
+
 // ═══ MAIN HUB VIEW ═══════════════════════════════════════════
 function renderMain(body){
   updateHubLockButtons();
@@ -2920,11 +2925,12 @@ function renderMain(body){
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">${imgOrEmoji('img/chars/baekgu1.png','🐕',28,28,'border-radius:50%;background:var(--panel)')}<span style="color:var(--cyan);font-size:12px">${I18N.t('speaker.baekgu')}</span></div>
         <div style="color:var(--yellow);font-size:14px;line-height:1.6">${getBaekguLine()}</div>
       </div>
+      ${_buildStoryQuestStripHTML(G.currentPlanet)}
     </div>
     <div style="background:rgba(13,26,42,.97);border-top:1px solid var(--bdr);flex-shrink:0">
       <div style="display:flex;align-items:center;gap:14px;padding:4px 16px;overflow-x:auto;height:36px;border-bottom:1px solid rgba(0,243,255,.1)">
         <span style="color:var(--dim);font-size:12px">📋</span>
-        <span style="color:var(--txt);font-size:13px;white-space:nowrap">${G.turn===0?'게임 시작 — 왼쪽 패널에서 메뉴를 선택하세요':I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
+        <span style="color:var(--txt);font-size:13px;white-space:nowrap">${I18N.t('hud.dockedAt',{turn:G.turn,nm:pd?.nm||''})}</span>
         ${G.heroes.length>0?`<span style="color:var(--gold);font-size:13px;white-space:nowrap">${I18N.t('hud.heroesPrefix')}${G.heroes.map(h=>HEROES[h]?.ic||'').join(' ')}</span>`:''}
         ${(()=>{
           // 사용자 요청 2026-06-09: 현재 행성의 시나리오·백구 퀘 카운트 배지 (눈에 띄게)
@@ -14156,14 +14162,14 @@ function _finishCombat(){
     }
     else{notify(I18N.t('notify.battleWin'),'ok');}
     // ── 🏴 적함 나포 처리 (보스 제외) ──────────────────────────────
-    // 기본 28% (= 기존 23% + 5% 사용자 요청 보너스) + 크리그 행성 보너스
+    // 사용자 요청 2026-06-09: 나포 확률 50% 감소 (기존 28%→14%, 팩션 보너스 ÷100→÷200, 상한 55%→27.5%)
     // 편대편성 "나포 거절" 토글이 켜져 있으면 나포 대신 즉시 매각하여 크레딧 획득
     const _capturedShips=[];
     let _autoSoldRevenue=0,_autoSoldCount=0;
     if(!combatState.isBoss){
-      const _capBase=0.28;
-      const _facBonus=(getFactionPassive().captureBns||0)/100;
-      const _capRate=Math.min(0.55,_capBase+_facBonus);
+      const _capBase=0.14;
+      const _facBonus=(getFactionPassive().captureBns||0)/200;
+      const _capRate=Math.min(0.275,_capBase+_facBonus);
       const _decline=!!G.declineCapture;
       combatState.enemies.forEach(e=>{
         if(e.hp>0)return;  // 살아남은 적은 못 나포
