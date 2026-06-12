@@ -277,6 +277,44 @@ function bumpStoryQuestProgress(action, n, pid){
   return bumped;
 }
 
+// ─── 컷씬 스토리 해금 판정 (사용자 요청 2026-06-12) ─────────────────
+//   메인 허브 대화기록 버튼·운항기록 탭 공용: 컷씬이 "스토리 이벤트로 열렸는가"
+//   · 이미 시청(scene_*) → 해금
+//   · 행성 인트로: 해당 행성 방문(현재 행성/인트로 재생됨/탐사 완료) → 해금
+//   · 퀘스트 사전(pre) 컷씬: 퀘스트 수락(active) 이상 → 해금
+//   · 퀘스트 사후(post) 컷씬: 퀘스트 완료(done/claimed) → 해금
+function isSceneStoryUnlocked(sid){
+  const G=window.G; if(!G||!sid)return false;
+  if(G._scenesSeen&&G._scenesSeen['scene_'+sid])return true;
+  for(let ph=1;ph<=6;ph++){
+    const INTRO=window['PHASE'+ph+'_PLANET_INTROS']||{};
+    for(const pid in INTRO){
+      if(INTRO[pid]===sid){
+        if(G._phasedIntroSeen&&G._phasedIntroSeen['intro_'+pid])return true;
+        if(G.currentPlanet===pid)return true;
+        if(G.planets&&G.planets[pid]&&G.planets[pid].fog==='A')return true;
+        return false;
+      }
+    }
+    const Q=window['PHASE'+ph+'_QUESTS'];
+    if(!Q)continue;
+    for(const pid in Q){
+      const arr=Q[pid]||[];
+      for(let i=0;i<arr.length;i++){
+        const tq=arr[i];
+        if(tq.cutscene_pre===sid||tq.cutscene_post===sid){
+          const liveQ=((G.quests||{})[pid]||[]).find(function(x){return x.id===tq.id;});
+          if(!liveQ)return false;
+          if(tq.cutscene_pre===sid)return liveQ.status==='active'||liveQ.status==='done'||liveQ.status==='claimed';
+          return liveQ.status==='done'||liveQ.status==='claimed';
+        }
+      }
+    }
+  }
+  return false;
+}
+window.isSceneStoryUnlocked=isSceneStoryUnlocked;
+
 // 글로벌 노출 (기존 game.js 호출처 호환)
 window.spawnPhasedQuests=spawnPhasedQuests;
 window._storyQuestCurrentProgress=_storyQuestCurrentProgress;

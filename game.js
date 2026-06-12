@@ -2699,13 +2699,15 @@ function renderMain(body){
           const _scenes=_sceneIds.slice(0,9);  // 최대 9개 (사용자 요청)
           return _scenes.map((sid,idx)=>{
             const _seenScene=!!(G._scenesSeen&&G._scenesSeen['scene_'+sid]);
-            // 순차 해금 규칙:
+            // 해금 규칙 (사용자 요청 2026-06-12: 이벤트 기반으로 변경):
             //   idx===0 → 항상 활성 (첫 인트로 = 즉시 클릭 가능)
-            //   idx>=1  → 직전 컷씬을 시청 완료한 경우만 활성
+            //   idx>=1  → 직전 컷씬 시청 완료 "또는" 스토리 이벤트 발생
+            //             (행성 방문/퀘스트 수락·완료로 해당 컷씬이 열린 경우 — isSceneStoryUnlocked)
             let _unlocked=true;
             if(idx>0){
               const _prevSid=_scenes[idx-1];
-              _unlocked=!!(G._scenesSeen&&G._scenesSeen['scene_'+_prevSid]);
+              _unlocked=!!(G._scenesSeen&&G._scenesSeen['scene_'+_prevSid])
+                ||(typeof isSceneStoryUnlocked==='function'&&isSceneStoryUnlocked(sid));
             }
             const _col=!_unlocked?'#666':(_seenScene?'#88ccff':'#ffd700');
             const _bg=!_unlocked?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');

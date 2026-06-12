@@ -353,9 +353,75 @@
     openModal('🛸 '+(shipDisplayNm(s)||s.nm),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
   }
   function switchCodexTab(t){_codexTab=t;rerenderTab(renderCodexTab);}
+
+  // ─── 운항기록 (Voyage Log) — 사용자 요청 2026-06-12 ─────────────────
+  //   스토리 진행(퀘스트 완료·대화기록 시청)에 따라 점진적으로 해금되는 이야기 연대기.
+  //   해금 조건: 컷씬 = G._scenesSeen['scene_'+id] / 퀘스트 = status done|claimed
+  function _voyCutCard(sid,title,CUT,seen,counter){
+    counter.total++;
+    const unlocked=!!seen['scene_'+sid];
+    if(!unlocked)return `<div style="background:rgba(80,80,80,.08);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:12px;color:#777">${I18N.t('voyage.locked')}</div>`;
+    counter.unlocked++;
+    const lines=(CUT&&CUT[sid])||[];
+    const preview=lines.slice(0,2).map(l=>`<div style="font-size:12px;color:var(--txt);line-height:1.6;word-break:keep-all"><span style="color:${l.color||'var(--cyan)'};font-weight:bold">${l.name||''}</span> "${String(l.text||'').slice(0,80)}${String(l.text||'').length>80?'…':''}"</div>`).join('');
+    const replayBtn=(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.forceReplayScene==='function')
+      ?`<button onclick="window.STORY_SCENES_PC.forceReplayScene('${sid}')" style="margin-top:5px;padding:3px 12px;border:1px solid var(--gold);border-radius:5px;background:rgba(255,215,0,.1);color:var(--gold);cursor:pointer;font-size:11px;font-family:inherit">${I18N.t('voyage.replay')}</button>`:'';
+    return `<div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 12px;margin-bottom:6px">
+      <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:5px">💬 ${title}</div>
+      ${preview}
+      ${replayBtn}
+    </div>`;
+  }
+  function _buildVoyageLogHTML(){
+    const seen=(G&&G._scenesSeen)||{};
+    const lang=(typeof I18N!=='undefined'&&I18N.getLang)?I18N.getLang():'ko';
+    let html=`<div style="background:var(--card);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center">
+      <div style="font-size:28px">🧭</div>
+      <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('voyage.header')}</div>
+      <div style="font-size:12px;color:var(--dim)">${I18N.t('voyage.headerDesc')}</div></div>
+    </div>`;
+    for(let ph=1;ph<=6;ph++){
+      const Q=window['PHASE'+ph+'_QUESTS'];
+      const INTRO=window['PHASE'+ph+'_PLANET_INTROS']||{};
+      const CUT=window['PHASE'+ph+'_CUTSCENES_KO']||{};
+      if(!Q)continue;
+      const counter={unlocked:0,total:0};
+      let body='';
+      Object.keys(Q).forEach(pid=>{
+        const pdef=(typeof PLANET_DEF!=='undefined')&&PLANET_DEF.find(p=>p.id===pid);
+        const pnm=pdef?pdef.nm:pid;
+        if(INTRO[pid])body+=_voyCutCard(INTRO[pid],I18N.t('voyage.introEntry',{planet:pnm}),CUT,seen,counter);
+        (Q[pid]||[]).forEach(tq=>{
+          const qnm=(tq.nm&&(tq.nm[lang]||tq.nm.ko))||tq.id;
+          // 퀘스트 완료 항목
+          counter.total++;
+          const liveQ=((G.quests||{})[pid]||[]).find(x=>x.id===tq.id);
+          const qDone=!!(liveQ&&(liveQ.status==='done'||liveQ.status==='claimed'));
+          if(qDone){
+            counter.unlocked++;
+            const qd=(tq.desc&&(tq.desc[lang]||tq.desc.ko))||'';
+            body+=`<div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:10px 12px;margin-bottom:6px">
+              <div style="font-size:13px;font-weight:bold;color:var(--gold)">✦ ${qnm} <span style="font-size:10px;color:var(--green);font-weight:normal">${I18N.t('voyage.questDone')}</span></div>
+              ${qd?`<div style="font-size:12px;color:var(--dim);line-height:1.6;margin-top:4px;word-break:keep-all">${String(qd).split('\n')[0].slice(0,120)}</div>`:''}
+            </div>`;
+          } else {
+            body+=`<div style="background:rgba(80,80,80,.08);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:12px;color:#777">${I18N.t('voyage.locked')}</div>`;
+          }
+          if(tq.cutscene_pre)body+=_voyCutCard(tq.cutscene_pre,I18N.t('voyage.preEntry',{quest:qnm}),CUT,seen,counter);
+          if(tq.cutscene_post)body+=_voyCutCard(tq.cutscene_post,I18N.t('voyage.postEntry',{quest:qnm}),CUT,seen,counter);
+        });
+      });
+      const phCol=['#88ccff','#66ffcc','#ffd700','#ff8844','#cc66ff','#ff66aa'][ph-1]||'var(--cyan)';
+      html+=`<details ${counter.unlocked>0?'open':''} style="margin-bottom:12px;background:rgba(5,10,26,.4);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px">
+        <summary style="cursor:pointer;font-size:14px;font-weight:bold;color:${phCol};letter-spacing:1px">${I18N.t('voyage.phaseLabel',{n:ph})} <span style="font-size:11px;color:var(--dim);font-weight:normal">${I18N.t('voyage.progress',{n:counter.unlocked,total:counter.total})}</span></summary>
+        <div style="margin-top:10px">${body||`<div style="font-size:12px;color:var(--dim)">${I18N.t('voyage.emptyPhase')}</div>`}</div>
+      </details>`;
+    }
+    return html;
+  }
   function renderCodexTab(body){
     if(!body)return;
-    const tabs=[['ship',I18N.t('codex.tab.ship')],['parts',I18N.t('codex.tab.parts')],['heroes',I18N.t('codex.tab.heroes')],['planets',I18N.t('codex.tab.planets')],['comms',I18N.t('codex.tab.comms')],['civ',I18N.t('codex.tab.civ')],['sys',I18N.t('codex.tab.sys')]];
+    const tabs=[['ship',I18N.t('codex.tab.ship')],['parts',I18N.t('codex.tab.parts')],['heroes',I18N.t('codex.tab.heroes')],['planets',I18N.t('codex.tab.planets')],['comms',I18N.t('codex.tab.comms')],['civ',I18N.t('codex.tab.civ')],['sys',I18N.t('codex.tab.sys')],['voyage',I18N.t('codex.tab.voyage')]];
     const subNav=`<div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
       ${tabs.map(([t,lbl])=>`<button onclick="switchCodexTab('${t}')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid ${_codexTab===t?'var(--cyan)':'var(--bdr)'};background:${_codexTab===t?'rgba(0,243,255,.12)':'transparent'};color:${_codexTab===t?'var(--cyan)':'var(--dim)'};cursor:pointer;font-family:inherit">${lbl}</button>`).join('')}
     </div>`;
@@ -764,7 +830,10 @@
         </div>${cards}`;
       }
     }
-  
+    else if(_codexTab==='voyage'){
+      content=_buildVoyageLogHTML();
+    }
+
     body.innerHTML=`<div class="hub-scroll">
       ${hubBanner('codex','📖',I18N.t('codex.tabLabel'))}
       <div class="hub-t">${I18N.t('hub.exploreCodex')}</div>

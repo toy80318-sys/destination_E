@@ -2425,6 +2425,19 @@ I18N.register({
   'codex.tab.comms':    { ko: '💎 특산물',     en: '💎 Specialties' },
   'codex.tab.civ':      { ko: '🌌 문명',       en: '🌌 Civilizations' },
   'codex.tab.sys':      { ko: '📚 생존 지식',  en: '📚 Survival Guide' },
+  // 추가 2026-06-12 (사용자 요청): 운항기록 탭 — 스토리 진행에 따라 점진 해금되는 이야기 연대기
+  'codex.tab.voyage':   { ko: '🧭 운항기록',  en: '🧭 Voyage Log' },
+  'voyage.header':      { ko: '함대 운항기록 — 지금까지의 여정', en: 'Fleet Voyage Log — The Journey So Far' },
+  'voyage.headerDesc':  { ko: '퀘스트를 완료하고 대화기록을 시청할수록 이야기가 채워집니다.', en: 'Complete quests and watch dialogue records to fill in the story.' },
+  'voyage.phaseLabel':  { ko: '페이즈 {n}', en: 'Phase {n}' },
+  'voyage.progress':    { ko: '해금 {n}/{total}', en: 'Unlocked {n}/{total}' },
+  'voyage.introEntry':  { ko: '{planet} 도착 기록', en: 'Arrival Log — {planet}' },
+  'voyage.preEntry':    { ko: '{quest} — 사전 기록', en: '{quest} — Prologue Log' },
+  'voyage.postEntry':   { ko: '{quest} — 사후 기록', en: '{quest} — Epilogue Log' },
+  'voyage.questDone':   { ko: '퀘스트 완료', en: 'Quest Complete' },
+  'voyage.locked':      { ko: '🔒 ??? — 아직 기록되지 않은 항해', en: '🔒 ??? — An unrecorded voyage' },
+  'voyage.replay':      { ko: '▶ 다시보기', en: '▶ Replay' },
+  'voyage.emptyPhase':  { ko: '이 페이즈의 기록이 아직 없습니다.', en: 'No records for this phase yet.' },
 
   // ── G12-LORE: LORE_TEXT 164 도감 묘사 엔트리 ────────────────────────────
   'lore.part_W01': { ko: '🔨 정약용이 공구상에서 산 부품으로 하룻밤 만에 조립. "쏘면 되지 않냐"고 했다. 실제로 쐈다.\n📜 이름 유래: 개척 시대 표준 레이저포. 단순해서 오히려 우주 어디서든 현지 수리가 가능하다.\n⚔️ 강점: 저렴하고 범용. 단점: 화력이 빈약해 적을 화나게만 할 수 있다.\n💬 첫 무기로 이걸 선택했다면 당신은 효율주의자다. 또는 크레딧이 없는 것이다.', en: '🔨 Maker — Jeong Yak-yong assembled it overnight from parts he picked up at a hardware shop. "Just shoot it, right?" he said. And shoot it did.\n📜 Origin: A pioneer-era standard laser cannon. So simple that it can be repaired anywhere in the galaxy with local parts.\n⚔️ Strength: cheap and universally compatible. Weakness: firepower so weak it tends to merely annoy the enemy.\n💬 If you picked this as your first weapon, you\'re an efficiency-minded type. Or just broke.' },
