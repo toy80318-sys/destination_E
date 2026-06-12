@@ -81,7 +81,9 @@ function doCraft(recipeId){
   const _tierDiscount=['legend','mythic','flagship'].includes(rec.tier);
   for(const m of rec.mats){
     const consume=_tierDiscount?Math.max(1,Math.floor(m.qty/2)):m.qty;
-    G.materials[m.id]=Math.max(0,(G.materials[m.id]||0)-consume);
+    // bugfix 2026-06-12: 재료 소비 시 화물 슬롯도 동시 차감 (한쪽만 차감하면 정합성 보정이 유령 수량 부활)
+    if(typeof consumeMaterialQty==='function')consumeMaterialQty(m.id,consume);
+    else G.materials[m.id]=Math.max(0,(G.materials[m.id]||0)-consume);
   }
 
   const grid=document.getElementById('craftMatGrid');

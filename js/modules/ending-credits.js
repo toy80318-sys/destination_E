@@ -158,6 +158,9 @@ function showFinalEndingCredits(){
 // ─── ACT 4 엔딩 시퀀스 (우르사 메이저 격파 후) ────────────────────
 // onDone: 엔딩 종료 후 콜백 (보이드 페이즈 진입)
 function showEndingCredits(onDone){
+  // bugfix 2026-06-12: 재진입 가드 — 보상 확인 버튼 연타 시 오버레이가 중복 생성되며
+  //   TypeError(onclick of null)로 체인이 죽던 문제. 이미 떠 있으면 무시.
+  if(document.getElementById('_ending-overlay'))return;
   const G=window.G;
   const I18N=window.I18N;
   const HEROES=window.HEROES;

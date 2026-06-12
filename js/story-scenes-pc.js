@@ -641,10 +641,14 @@
       return;
     }
     // 짧은 시간 내 중복 호출 차단 (recruitHero + showHeroRecruit 양쪽 트리거 충돌 방지)
+    // bugfix 2026-06-11: 억제 시 onDone 호출 제거 — triggerScene과 동일한 무한루프 위험 차단
     var now = Date.now();
     if(_lastTriggeredAt[hid] && (now - _lastTriggeredAt[hid]) < 1500){
       console.log('[STORY_SCENES_PC] duplicate trigger suppressed for', hid);
-      if(typeof onDone === 'function') onDone();
+      return;
+    }
+    if(document.getElementById('story-scene-overlay')){
+      console.log('[STORY_SCENES_PC] hero scene trigger ignored — dialog already open:', hid);
       return;
     }
     _lastTriggeredAt[hid] = now;
@@ -709,11 +713,20 @@
     }
     if(!window.G) window.G = {};
     if(!window.G._scenesSeen) window.G._scenesSeen = {};
+    // bugfix 2026-06-11: 컷씬 오버레이가 이미 열려 있으면 재트리거 무시 (onDone 호출 금지)
+    //   — spawn 재시도 안전망이 시청 중에 발화해도 대화창이 중복 생성되지 않게
+    if(document.getElementById('story-scene-overlay')){
+      console.log('[STORY_SCENES_PC] scene trigger ignored — dialog already open:', sceneId);
+      return;
+    }
     // 짧은 시간 중복 트리거 차단
     var now = Date.now();
     if(_lastTriggeredAt[sceneId] && (now - _lastTriggeredAt[sceneId]) < 1500){
       console.log('[STORY_SCENES_PC] duplicate scene trigger suppressed:', sceneId);
-      if(typeof onDone === 'function') onDone();
+      // bugfix 2026-06-11: 여기서 onDone()을 호출하면 "끝까지 시청"으로 오판 마킹 →
+      //   spawnPhasedQuests의 자동복구(미시청 인트로 마킹 해제)와 맞물려
+      //   spawn→트리거→억제→onDone→재렌더→spawn… 무한 동기 루프로 렌더러가 크래시.
+      //   (새 게임/불러오기 직후 게임이 죽던 원인) 중복 억제는 "완료"가 아니므로 그냥 return.
       return;
     }
     _lastTriggeredAt[sceneId] = now;

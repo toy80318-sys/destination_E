@@ -30,7 +30,8 @@ function doGacha(n,useCr,crCost,minRarity,veCost){
   // 사용자 요청 2026-06-07: VE 기반 모집 지원 (5번째 파라미터)
   //   veCost 가 지정되면 VE 차감, useCr 과 무관
   if(veCost){
-    if((G.voidEssence||0)<veCost){notify(I18N.t('notify.notEnoughVoidEssence')||'VE 부족','err');return;}
+    // 버그수정 2026-06-11: 미등록 키 notify.notEnoughVoidEssence → 기존 키 needVoidEssence 사용 (키 문자열 그대로 노출되던 문제)
+    if((G.voidEssence||0)<veCost){notify(I18N.t('notify.needVoidEssence',{n:veCost}),'err');return;}
     G.voidEssence-=veCost;
   } else if(useCr){
     if(G.credits<_crCost){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}

@@ -39,10 +39,11 @@
     let demand=_baseCr+_fleetExtra;
     // 2차: 100k 하드캡
     demand=Math.min(demand,100000);
-    // 3차: 사용자가 어떤 신뢰성 임계 (credits×0.7) 를 못 넘게. 단 baseCr 보다는 작아지지 않게
-    //      → 거의 모든 케이스에서 지불 가능 + baseCr 는 보장
+    // 3차: 항상 지불 가능 보장 — demand ≤ max(100, credits×0.7)
+    //   bugfix 2026-06-11: 기존 Math.max(_baseCr, …) 하한 때문에 크레딧 < 기본요금이면
+    //   지불 버튼이 사라지고 강제 전투만 남던 문제 수정 (설계 의도 "항상 지불 가능" 위반)
     if(_cr>0){
-      demand=Math.min(demand,Math.max(_baseCr,Math.floor(_cr*0.7)));
+      demand=Math.min(demand,Math.max(100,Math.floor(_cr*0.7)));
     }
     const canPay=_cr>=demand;
     // 행성 팩션 기반 해적 이미지 폴백 체인

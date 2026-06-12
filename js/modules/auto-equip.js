@@ -1290,5 +1290,10 @@ window._forcePushRemainingParts=_forcePushRemainingParts;
 window._finalizeUniqueParts=_finalizeUniqueParts;
 window._redistributeLeastFilledByValue=_redistributeLeastFilledByValue;
 window._redistribute2x2Fair=_redistribute2x2Fair;
-console.log('[auto-equip] Loaded — 13 functions exposed');
+// bugfix 2026-06-11: 크루 자동배치 헬퍼 3종 미노출 — game.js의 autoAssignCrewEven/Flagship(정비소 크루 균등분배·기함중심 버튼)이
+//   ReferenceError(_collectAllCrewToPool is not defined)로 항상 실패하던 문제 수정
+window._collectAllCrewToPool=_collectAllCrewToPool;
+window._sortedCrewByPower=_sortedCrewByPower;
+window._shipCrewCap=_shipCrewCap;
+console.log('[auto-equip] Loaded — 16 functions exposed');
 })();

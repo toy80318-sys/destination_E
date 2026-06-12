@@ -2697,6 +2697,9 @@ I18N.register({
                                    en: 'Nothing special this time. Try again.' },
   'baekgu.searchCompleteQuest':  { ko: '잔해 탐색 완료. 퀘스트 보상 받아.',
                                    en: 'Debris search complete. Claim your quest reward.' },
+  // 추가 2026-06-11 (사용자 요청): 전설 영웅 소재 행성 힌트
+  'baekgu.heroLocationHint':     { ko: '소문 하나 — 전설의 영웅 {hero}이(가) {planet}(링 {ring})에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!',
+                                   en: 'Rumor has it — legendary hero {hero} was spotted at {planet} (Ring {ring}). Run that planet\'s quests and you might recruit them!' },
   'baekgu.searchPartial':        { ko: '잔해 일부 발견. 계속 탐색해야 해.',
                                    en: 'Found partial debris. Keep searching.' },
   'baekgu.deliveryArrived':      { ko: '목적지 도착. 퀘스트 탭에서 보상 받아.',
@@ -4112,6 +4115,8 @@ I18N.register({
   'err.errorPrefix':        { ko: '오류: ',           en: 'Error: ' },
   'err.networkPrefix':      { ko: '네트워크 오류: ',   en: 'Network error: ' },
   'err.renderError':        { ko: '렌더링 오류: ',     en: 'Render error: ' },
+  // 버그수정 2026-06-11: game.js에서 사용하나 미등록 → 키 문자열이 그대로 노출되던 문제
+  'err.combatInitFail':     { ko: '전투 시스템 로드 실패 — 게임을 새로고침해 주세요', en: 'Combat system failed to load — please reload the game' },
   // 허브 백구 인사말
   'hubGreet.0':             { ko: '허브 접속 완료. 무역하든 전투하든 네 마음대로.',
                               en: 'Hub access complete. Trade or fight — your call.' },

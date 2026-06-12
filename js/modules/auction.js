@@ -242,6 +242,8 @@
     const _ownedCnt=Object.values(G.planets).filter(p=>p.owned).length;
     const _maxPlanets=_maxOwnedPlanets();
     if(_ownedCnt>=_maxPlanets){notify(I18N.t('notify.planetLimitOver',{now:_ownedCnt,max:_maxPlanets,rep:_maxPlanets*20}),'err');return;}
+    // 시나리오 탐사 퀘 연동 2026-06-11: 경매 입찰 참여(auction 태그) 진행 — 낙찰/유찰 무관 참여로 인정
+    try{if(typeof window.bumpStoryQuestProgress==='function')window.bumpStoryQuestProgress('auction',1,G.currentPlanet);}catch(e){}
     if(!instant){
       // 직접입찰 (사용자 요청 2026-06): 0~2명의 경쟁 입찰자가 [minBid, instPrice] 범위에서 무작위 입찰.
       //   • 경쟁자 0명 → 무조건 낙찰 (최저가 구매 가능)

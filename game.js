@@ -71,6 +71,11 @@ const G={
   mapZoom:0.85,mapSelected:null,
   shopStock:{},  // {planetId: {commId: qty, ...}}
 };
+// bugfix 2026-06-11: G가 const(전역 렉시컬)라 window.G가 undefined —
+//   window.G를 참조하는 분할 모듈들(story-quest-engine: 스토리/백구 퀘스트 spawn,
+//   shakedown-popup: 통행료 지불 팝업 등)이 전부 무력화되던 문제 수정.
+//   G는 const로 객체 자체가 재할당되지 않고 내부만 변이되므로 참조 1회 노출로 충분.
+try{if(typeof window!=='undefined')window.G=G;}catch(e){}
 
 // ═══ PRNG & MAP ══════════════════════════════════════════════════
 function mulberry32(seed){return function(){seed|=0;seed=(seed+0x6d2b79f5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
@@ -2734,6 +2739,18 @@ function getBaekguLine(){
     `${G.heroes.length>0?I18N.t('ui.heroesJoining',{nms:G.heroes.map(h=>HEROES[h]?.nm||'').join(', ')}):I18N.t('ui.noHeroesYet')}`,
     I18N.t('chatbot.crewCount',{n:G.crew.length,tail:G.crew.length<5?I18N.t('chatbot.crewMore'):I18N.t('chatbot.crewEnough')}),
     I18N.t('hubTip.8')];
+  // 추가 2026-06-11 (사용자 요청): 미영입 전설 영웅 소재 행성 힌트 — 턴마다 다른 영웅 순환
+  try{
+    const _unrec=(PLANET_DEF||[]).filter(p=>p.hero&&!(G.heroes||[]).includes(p.hero));
+    if(_unrec.length){
+      const _hp=_unrec[G.turn%_unrec.length];
+      const _hnm=I18N.t('hero.'+_hp.hero+'.nm');
+      lines.push(I18N.t('baekgu.heroLocationHint',{hero:_hnm,planet:_hp.nm,ring:_hp.ring}));
+      // 힌트 노출 빈도를 높이기 위해 한 슬롯 더 (5→7개 중 2개가 영웅 힌트)
+      const _hp2=_unrec[(G.turn+1)%_unrec.length];
+      if(_hp2&&_hp2!==_hp)lines.push(I18N.t('baekgu.heroLocationHint',{hero:I18N.t('hero.'+_hp2.hero+'.nm'),planet:_hp2.nm,ring:_hp2.ring}));
+    }
+  }catch(e){}
   return lines[G.turn%lines.length];
 }
 function buildSceneSVG(pd,fac){
@@ -3642,6 +3659,20 @@ function _validateCargoIntegrity(){
   }
 }
 try{if(typeof window!=='undefined')window._validateCargoIntegrity=_validateCargoIntegrity;}catch(e){}
+// bugfix 2026-06-12: 재료 소비 단일 진입점 — G.materials 카운터와 G.cargo 슬롯을 함께 차감.
+//   한쪽만 차감하면 _validateCargoIntegrity 의 max() 보정이 "유령 수량"을 부활시켜
+//   표시 보유량과 실제 사용 가능량이 어긋나던 문제(사용자 보고: 함선 판매/교체 후 재료 숫자 불일치) 해결.
+function consumeMaterialQty(id,n){
+  n=n||1;
+  if(!G.materials)G.materials={};
+  G.materials[id]=Math.max(0,(G.materials[id]||0)-n);
+  const _slot=(G.cargo||[]).find(s=>s.id===id&&s.material);
+  if(_slot){
+    _slot.qty=Math.max(0,_slot.qty-n);
+    if(_slot.qty===0)G.cargo.splice(G.cargo.indexOf(_slot),1);
+  }
+}
+try{if(typeof window!=='undefined')window.consumeMaterialQty=consumeMaterialQty;}catch(e){}
 function calcSellPrice(cargoItem,sellPlanetId){
   const comm=COMMODITIES.find(c=>c.id===cargoItem.id);
   const marcoMult=(G&&G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
@@ -3760,6 +3791,7 @@ const CREW_BONUS_TABLE={
   Commander:{att:5,int2:5,tec:5,def:5,hp:0,sh:100}
 };
 const RARITY_MULT={N:1.0,R:2.0,H:4.0,L:8.0,S:16.0};
+try{if(typeof window!=='undefined')window.RARITY_MULT=RARITY_MULT;}catch(e){}  // bugfix 2026-06-11: 모듈 호환 노출
 // 등급별 슬롯 점유 칸 수: N=1칸 R=1칸 H=2칸 L=4칸 S(스토리영웅)=4칸
 const CREW_SLOT_COST={N:1,R:1,H:2,L:4,S:4};
 function getCrewSlotCost(c){return CREW_SLOT_COST[(c&&c.rarity)||'N']||1;}
@@ -4529,8 +4561,8 @@ function renderShipSkinTab(body){
     const sel2=i===_selectedSkinShipIdx;
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
-    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:273px">
-      <div style="width:273px;height:273px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+    return `<div onclick="_selectedSkinShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:100%">
+      <div style="width:100%;aspect-ratio:1/1;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;overflow:hidden">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
       <div style="width:100%;text-align:center">
         <div style="font-size:13px;color:${sel2?'var(--cyan)':fc};font-weight:bold;word-break:keep-all;line-height:1.3">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:11px;color:var(--dim);margin-top:2px;word-break:keep-all">${I18N.tier(s.tier)}${s._skinCatId?` · ✨ ${s._skinCatId}`:''}</div>
@@ -4573,7 +4605,7 @@ function renderShipSkinTab(body){
       🐕 <b style="color:#cc88ff">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.skinExplain',{shield:I18N.t('ui.hologramShield')})}
     </div>
     ${removeBtn}
-    <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
+    <div style="display:grid;grid-template-columns:308px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="skin-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
@@ -4672,8 +4704,8 @@ function renderShipEnhanceTab(body){
     const isFlag=i===0;
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const lv=s._enhanceLv||0;
-    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:273px">
-      <div style="width:273px;height:273px;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
+    return `<div onclick="_selectedEnhanceShipIdx=${i};rerenderTab(renderGarageTab)" style="background:${sel2?'rgba(0,243,255,.14)':'var(--card)'};border:1.5px solid ${sel2?'var(--cyan)':fc+'55'};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:6px;width:100%">
+      <div style="width:100%;aspect-ratio:1/1;border-radius:12px;flex-shrink:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;overflow:hidden">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%')}</div>
       <div style="width:100%;text-align:center">
         <div style="font-size:13px;color:${sel2?'var(--cyan)':fc};font-weight:bold;word-break:keep-all;line-height:1.3">${isFlag?'⭐ ':''}${shipDisplayName(s)}</div>
         <div style="font-size:11px;color:var(--dim);margin-top:2px;word-break:keep-all">${I18N.tier(s.tier)}${lv>0?` · <span style="color:#ffd700">+${lv} (+${lv*5}%)</span>`:''}</div>
@@ -4749,7 +4781,7 @@ function renderShipEnhanceTab(body){
     <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
       🐕 <b style="color:#ffd700">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.enhanceExplain')}
     </div>
-    <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;padding-bottom:240px">
+    <div style="display:grid;grid-template-columns:308px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="enh-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
@@ -4775,7 +4807,7 @@ function doShipEnhance(shipIdx){
   }
   // 자원 소모
   G.credits-=cost;
-  mats.forEach(m=>{G.materials[m]=Math.max(0,(G.materials[m]||0)-1);});
+  mats.forEach(m=>consumeMaterialQty(m,1));  // bugfix 2026-06-12: 화물 슬롯 동시 차감 (유령 수량 방지)
   // 성공 판정
   const succRate=_enhanceSuccessRate(curLv);
   const success=Math.random()<succRate;
@@ -5079,6 +5111,8 @@ function repairAllShips(){
     const b=getPartBonus(s);const eH=s.maxHP+(b.hp||0),eS=s.maxSH+(b.sh||0);
     if(s.hp<eH||s.sh<eS){s.hp=eH;s.sh=eS;repaired++;}
   });
+  // 시나리오 탐사 퀘 연동 2026-06-11: 수리 완료(repair 태그) 진행
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('repair',1,G.currentPlanet);}catch(e){}
   updateHUD();notify(I18N.t('notify.fleetRepaired',{n:repaired,cr:totalCost.toLocaleString()}),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
@@ -5091,6 +5125,8 @@ function repairShip(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
+  // 시나리오 탐사 퀘 연동 2026-06-11: 수리 완료(repair 태그) 진행
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('repair',1,G.currentPlanet);}catch(e){}
   updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'ok');rerenderShipOrGarage();saveGame(true);
 }
 // 모달 내 수리 — 수리 후 상세 팝업 재오픈
@@ -5103,6 +5139,7 @@ function repairShipModal(idx,type){
   G.credits-=cost;
   if(type==='hp')s.hp=s.maxHP+(b.hp||0);
   else s.sh=s.maxSH+(b.sh||0);
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('repair',1,G.currentPlanet);}catch(e){}  // 시나리오 repair 퀘 연동
   updateHUD();notify(I18N.t('notify.shipRepairDone',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'ok');
   saveGame(true);showShipDetailModal(idx);
 }
@@ -5114,6 +5151,7 @@ function repairShipFullModal(idx){
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');showShipDetailModal(idx);return;}
   G.credits-=cost;
   s.hp=s.maxHP+(b.hp||0);if(s.maxSH>0||(b.sh||0)>0)s.sh=s.maxSH+(b.sh||0);
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('repair',1,G.currentPlanet);}catch(e){}  // 시나리오 repair 퀘 연동
   updateHUD();notify(I18N.t('notify.shipFullRepair',{nm:shipDisplayNm(s),cr:cost.toLocaleString()}),'gold');
   saveGame(true);showShipDetailModal(idx);
 }
@@ -5628,6 +5666,8 @@ function buyPart(partId){
 function attachPart(shipIdx,partId){
   const s=G.fleet[shipIdx];if(!s)return;
   const inv=G.inventory.find(i=>i.id===partId);if(!inv||inv.qty<=0){notify(I18N.t('notify.noOwnedParts'),'err');return;}
+  // 시나리오 탐사 퀘 연동 2026-06-11: 파츠 장착 성공 시(검증 통과 후) install/tuning 태그 진행
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('install',1,G.currentPlanet);}catch(e){}
   const _stBef=getShipStats(s);
   if(!s.parts)s.parts=[];
   if(!s._partsQuality)s._partsQuality=[];
@@ -6038,6 +6078,8 @@ function investPlanet(pid){
   const cost=Math.floor(_planetBaseTax(pd)*7.2*Math.pow(1.548,lv)*(1+G.act/2)*0.56);
   if(G.credits<cost){notify(I18N.t('notify.investCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;st.commerce=lv+1;
+  // 시나리오 탐사 퀘 연동 2026-06-11: 행성 투자(commerce 태그) 진행 — 투자한 행성 기준
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('commerce',1,pid);}catch(e){}
   updateHUD();notify(I18N.t('notify.planetUpgrade',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}),'gold');
   baekgu(I18N.t('baekgu.commerceLevel',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}));
   saveGame(true);
@@ -6870,8 +6912,9 @@ function completeQuest(pid,idx){
   // 사용자 요청 (2026-06-06): 거북선(LGD01) 획득 확률 낮음 보고
   //   · 직접 드롭 확률 5% → 10% (×2)
   //   · 게이트 rep>=120 → 60 (중반부터 가능, 별도 게이트 _turtleShipUnlocked)
+  // 사용자 요청 (2026-06-12): 획득 확률 50% 감소 — 10% → 5%
   const _turtleShipUnlocked=rep>=60;
-  const turtleShipRate=_turtleShipUnlocked?0.10:0;
+  const turtleShipRate=_turtleShipUnlocked?0.05:0;
 
   let bonusMsg='';
   if(roll<legendRate){
@@ -7367,6 +7410,8 @@ function doGatherSearch(){
   updateGatherBtn();
   // 잔해 탐색 횟수도 행성 허브 해금 진행도에 포함
   try{addHubProgress(G.currentPlanet);}catch(e){}
+  // bugfix 2026-06-11 v2: 잔해 탐색 → '탐색 계열' explore 퀘만 진행 (경매/수리/장착 태그는 제외)
+  try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('gather',1,G.currentPlanet);}catch(e){}
   // 배경 이미지 숨김 (글자 가독성)
   const _bg=document.getElementById('hub-planet-bg');
   if(_bg)_bg.style.opacity='0';
@@ -8411,7 +8456,22 @@ function _cbCacheClear(){_cbImgCacheMap.clear();}
 // case-insensitive 탐지 + 이름 기반 보강으로 catalogId 누락/대소문자 다양성에도 견고.
 function _combatShipImgSrc(u){
   const _r=_combatShipImgSrcRaw(u);
-  return (typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_r):_r;
+  const _lod=(typeof window!=='undefined'&&window._mobileLod)?window._mobileLod(_r):_r;
+  // bugfix 2026-06-11: 전투 화면에도 신규 HD 함선 이미지 적용 —
+  //   허브(shipImgSrc)는 img/ships/H/ HD를 쓰지만 전투는 구버전 img/combat/ships/ 만 사용하던 문제.
+  //   데스크탑: img/combat/ships/X.png → img/ships/H/X.png 우선, 실패 시 _COMBAT_H_FB 매핑으로
+  //   _drawShipUnit 에서 원본 경로 폴백. 모바일은 기존 LOD(m/) 유지.
+  if(typeof window!=='undefined'&&!window.IS_MOBILE&&typeof _r==='string'){
+    const _hd=_r.replace(/^img\/combat\/ships\/([^/?]+\.png)(\?|$)/,'img/ships/H/$1$2');
+    if(_hd!==_r){
+      try{
+        if(!window._COMBAT_H_FB)window._COMBAT_H_FB={};
+        window._COMBAT_H_FB[_hd]=_lod;
+      }catch(e){}
+      return _hd;
+    }
+  }
+  return _lod;
 }
 function _combatShipImgSrcRaw(u){
   const _TIER={'소형':'S','중형':'M','대형':'L','전설기함':'L','신화':'L'};
@@ -8558,6 +8618,13 @@ function _enemySize(u){
   //   (P19 우르사-알파 행성의 일반 함선이 우르사 보스 크기로 그려지던 문제 차단)
   if(u.id==='BOSS_MAIN'||u._ursaBoss||nm.includes('우르사 메이저')||nm.includes('ursa major'))
     return{w:756,h:459,bar:300,label:18,gap:1200};
+  // 블랙팔콘(히든 보스) — 사용자 요청 2026-06-12: 보스전에서 2배 크게 (신화 224×138 → 448×276)
+  {
+    const _idUp=String(u.catalogId||u.catId||u.id||'').toUpperCase();
+    if(/BLACKFALCON|VOID_?FALCON|HIDDEN_FALCON/.test(_idUp)||u.voidBoss||u._isHiddenFalcon
+       ||nm.includes('블랙팔콘')||nm.includes('블랙 팔콘')||nm.includes('black falcon')||nm.includes('blackfalcon'))
+      return{w:448,h:276,bar:300,label:17,gap:900};
+  }
   // 일반 해적 모선
   if(nm.includes('모선')||nm.includes('mothership')||nm.includes('carrier')) return{w:252,h:153,bar:324,label:16,gap:700};
   if(tier==='신화') return{w:224,h:138,bar:264,label:15,gap:640};
@@ -8612,10 +8679,15 @@ function _drawShipVector(ctx,x,y,sz,isEnemy,col,alpha){
 function _drawShipUnit(ctx,u,x,y,sz){
   const alpha=u.hp>0?1:.22;
   const isEnemy=u.isEnemy;
-  const imgSrc=_combatShipImgSrc(u);
+  let imgSrc=_combatShipImgSrc(u);
   const dsz=isEnemy?_enemySize(u):_shipDrawSize(u);
   const col=isEnemy?'#cc44ff':'#00ccff';
-  const cached=_cbImgCache[imgSrc];
+  let cached=_cbImgCache[imgSrc];
+  // bugfix 2026-06-11: HD 경로 로드 실패(ERR) 시 원본 combat 경로로 폴백
+  if(cached==='ERR'&&typeof window!=='undefined'&&window._COMBAT_H_FB&&window._COMBAT_H_FB[imgSrc]){
+    imgSrc=window._COMBAT_H_FB[imgSrc];
+    cached=_cbImgCache[imgSrc];
+  }
   // ── 함선 방향: 가장 가까운 적/아군(공격 대상) 방향을 바라보도록 회전 ──
   //  · 아군 → 가장 가까운 적 좌표 / 적 → 가장 가까운 아군 좌표
   //  · 부드러운 회전 보간(turnSpeed=0.02) → 사용자 요청 "회전 5배 느림"
@@ -10260,6 +10332,15 @@ function _finishCombat(){
   let earned=0;
   if(win){
     addCombatLog(I18N.t('combat.victory'),'ok');
+    // bugfix 2026-06-11 v2: 시나리오 전투 퀘 정밀 연동 — 전투 종류(우르사 보스/치크스/일반)별 매칭
+    try{
+      if(typeof bumpStoryQuestProgress==='function'){
+        const _sqKills=(combatState.enemies||[]).filter(u=>u&&u.hp<=0).length||1;
+        const _isUrsa=!!combatState.isBoss||(combatState.enemies||[]).some(u=>u&&(String(u.id||'').indexOf('BOSS')===0||/우르사 메이저|ursa major/i.test(String(u.nm||''))));
+        const _isChix=(combatState.enemies||[]).some(u=>u&&(/^(CHIX|E\d)/.test(String(u.catalogId||u.catId||u.id||''))||/치크스|chix|cygnus/i.test(String(u.nm||''))));
+        bumpStoryQuestProgress(_isUrsa?'combat_ursa':_isChix?'combat_chix':'combat_generic',_sqKills,pid);
+      }
+    }catch(e){}
     if(pd.hostile&&!combatState.isBoss){G.planets[pid]=G.planets[pid]||{};G.planets[pid].hostile_cleared=true;}
     // 호레이쇼 넬슨(H05) 보유 시 전투 보상 +20%
     const _nelsonBonus=(G.heroes||[]).includes('H05')?1.2:1.0;
@@ -10445,6 +10526,13 @@ function _finishCombat(){
     // 로컬 캡쳐 (setTimeout 내에서도 안전하게) — combatState는 1800ms 후 null이 되므로 미리 스냅샷
     const _isBossWin=!!combatState.isBoss;
     const _enemyCountSnap=(combatState.enemies||[]).length;
+    // bugfix 2026-06-12 (사용자 보고: 우르사 격파 후 전투 화면 멈춤):
+    //   _buildReport()가 에필로그·축하 팝업 클릭 "이후"에 호출되는데, 그 시점엔 1800ms 정리
+    //   타이머가 combatState=null 로 비운 뒤라 _debrisJoinCount 접근에서 TypeError →
+    //   보상 보고·엔딩 크레딧 체인 전체가 죽고 전투 화면에 영구 멈춤. → 필요한 값 전부 스냅샷.
+    const _debrisCombatSnap=(combatState._debrisJoinCount||0)>0||combatState.planetDef?.id==='DEBRIS_PIRATE'||!!combatState.planetDef?._isDebris;
+    const _chixFleetSnap=!!combatState._isChixFleet;
+    const _firstEnemySnap=(combatState.enemies||[])[0]||null;
     // 보고 팝업 구성 (보스/일반 공통)
     const _buildReport=()=>{
       const items=[];
@@ -10460,12 +10548,13 @@ function _finishCombat(){
       const enemyCount=_enemyCountSnap;
       // 격파 적함 — 첫 번째 적 함선의 실제 이미지를 우선 사용 (배저스카우트·치크스·잔해해적 등)
       // 사용자 요청 2026-06-07: 좌측 이미지는 반드시 함선 실제 이미지로 (아이콘 금지)
-      const _isDebrisCombat=(combatState._debrisJoinCount||0)>0||combatState.planetDef?.id==='DEBRIS_PIRATE'||combatState.planetDef?._isDebris;
-      const _firstEnemy=(combatState.enemies||[])[0];
+      // bugfix 2026-06-12: combatState 직접 참조 금지 — null 시점에 호출되므로 스냅샷 사용
+      const _isDebrisCombat=_debrisCombatSnap;
+      const _firstEnemy=_firstEnemySnap;
       const _enemyImg=(_firstEnemy && typeof shipImgSrc==='function')
         ? shipImgSrc(_firstEnemy)
         : (_isDebrisCombat?('img/combat/enemies/DBRP_M.png'+_ver)
-            :combatState._isChixFleet?('img/combat/enemies/CHIX_M.png'+_ver)
+            :_chixFleetSnap?('img/combat/enemies/CHIX_M.png'+_ver)
             :('img/combat/enemies/PIRATE_M.png'+_ver));
       items.push({ic:'☠️',img:_enemyImg,nm:I18N.t('report.enemyKilled'),type:_kindLbl,color:'var(--red)',stats:I18N.t('report.enemyDestN',{n:enemyCount}),desc:I18N.t('report.enemyDesc')});
       // 나포 함선 — 각 함선의 실제 이미지 (shipImgSrc로 팩션·등급 자동 라우팅)
@@ -11764,12 +11853,14 @@ function showSettingsModal(){
       </div>
       <div style="font-size:10px;color:var(--dim);margin-top:6px;text-align:center">${I18N.t('settings.diffDesc')}</div>
     </div>
-    <div style="margin-bottom:16px">
+    ${window.desktopAPI?`<div style="margin-bottom:16px">
+      <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>
+      <div id="pc-ver-line" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${I18N.t('settings.pcVersionLoading')}</div>
+      <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>
+    </div>`:`<div style="margin-bottom:16px">
       <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.dataManage')}</div>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
-      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>
-      <div id="pc-ver-line" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${I18N.t('settings.pcVersionLoading')}</div>
-      <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>`:''}
       <button class="btn btn-sm btn-red" style="width:100%" onclick="if(confirm(I18N.t('confirm.deleteSave'))){localStorage.removeItem('de_save');notify(I18N.t('notify.saveDeleted'),'ok');closeModal();}">${I18N.t('settings.deleteSave')}</button>
     </div>
     <div style="margin-bottom:16px;background:rgba(102,255,153,.05);border:1px solid rgba(102,255,153,.3);border-radius:8px;padding:12px">
@@ -11780,10 +11871,11 @@ function showSettingsModal(){
       </div>
       <input type="file" id="save-import-input" accept=".json,.txt" style="display:none" onchange="importSaveFile(event)">
       <div style="font-size:10px;color:var(--muted);text-align:center;line-height:1.5">${I18N.t('settings.fileSaveHelp')}</div>
-    </div>
+    </div>`}
+    <!-- 사용자 요청 2026-06-12: PC버전 — 데이터 관리·오프라인 백업 섹션 삭제(슬롯 세이브·메뉴로 대체), 치트 최소화(크레딧 1버튼만) -->
     <div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('cheat.pwOnceHint')}</span></div>
-      <!-- 사용자 요청 2026-06-07: 자원당 1버튼(최대 수치)만 유지, 일괄 지급(메가/맥스) 삭제 -->
+      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>`:`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>
         <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',200)">${I18N.t('cheat.giveRep200')}</button>
@@ -11791,7 +11883,7 @@ function showSettingsModal(){
         <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',1000)">${I18N.t('cheat.giveVe1k')}</button>
       </div>
       <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
-      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>
+      <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>`}
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">${I18N.t('cheat.debugWarn')}</div>
     </div>`:''}
   </div>`;
@@ -12360,27 +12452,28 @@ function startBlackHoleFleetCombat(){
     }
   }catch(e){}
   const pd={id:'P-BLACKHOLE',nm:I18N.t('bh.planetName'),ring:7,void:true,f:'F07'};
-  // ── 사용자 명세: 16척 보이드 심연 함대 (사용자 요청 — 함대 풀 구성)
-  //    거북선×3 / 워덴클리프×3 / 렐러티비티×3 / 우르사메이저×2 / 블랙팔콘×2 / 대형 H10·H11·H12 각 1
+  // ── 사용자 명세 2026-06-12: 24척 보이드 심연 함대 (재구성)
+  //    우르사 메이저×4 / 블랙팔콘×4 / 렐러티비티(LGD03)×4 / 거북선(LGD01)×4 / 타 문명권 대형함선×8
   //    능력치는 카탈로그와 동일, HP만 "우리 함대 총 HP의 2배"가 되도록 비례 스케일
+  const _hNm=id=>{const c=(typeof SHIP_CATALOG!=='undefined')&&SHIP_CATALOG.find(s=>s.id===id);return (c&&(typeof shipDisplayNm==='function'?shipDisplayNm(c):c.nm))||id;};
+  const _mkN=(n,fn)=>Array.from({length:n},(_,k)=>fn(k+1));
   const _fleetSpec=[
-    {catId:'LGD01',nm:I18N.t('enemy.lgd01'),         baseHP:260000,  SH:65000,  ATT:245,  INT:235,  TEC:210, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'LGD01',nm:I18N.t('enemy.lgd01_2'),      baseHP:260000,  SH:65000,  ATT:245,  INT:235,  TEC:210, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'LGD01',nm:I18N.t('enemy.lgd01_3'),     baseHP:260000,  SH:65000,  ATT:245,  INT:235,  TEC:210, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'LGD02',nm:I18N.t('enemy.lgd02'),     baseHP:175000,  SH:160000, ATT:323,  INT:265,  TEC:230, DEF:80, armorTier:40, shieldTier:50},
-    {catId:'LGD02',nm:I18N.t('enemy.lgd02_2'),  baseHP:175000,  SH:160000, ATT:323,  INT:265,  TEC:230, DEF:80, armorTier:40, shieldTier:50},
-    {catId:'LGD02',nm:I18N.t('enemy.lgd02_3'), baseHP:175000,  SH:160000, ATT:323,  INT:265,  TEC:230, DEF:80, armorTier:40, shieldTier:50},
-    {catId:'LGD03',nm:I18N.t('enemy.lgd03'),     baseHP:245000,  SH:90000,  ATT:306,  INT:295,  TEC:255, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'LGD03',nm:I18N.t('enemy.lgd03_2'),  baseHP:245000,  SH:90000,  ATT:306,  INT:295,  TEC:255, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'LGD03',nm:I18N.t('enemy.lgd03_3'), baseHP:245000,  SH:90000,  ATT:306,  INT:295,  TEC:255, DEF:80, armorTier:40, shieldTier:40},
-    {catId:'URSA', nm:I18N.t('enemy.ursaMythic'),  baseHP:1000000, SH:120000, ATT:580,  INT:340,  TEC:220, DEF:120,armorTier:60, shieldTier:50},
-    {catId:'URSA', nm:I18N.t('enemy.ursaMythic2'),baseHP:1000000,SH:120000, ATT:580,  INT:340,  TEC:220, DEF:120,armorTier:60, shieldTier:50},
-    {catId:'BLACKFALCON',nm:I18N.t('enemy.blackfalconMythic'),  baseHP:9700000,SH:300000,ATT:32000,INT:1200,TEC:560,DEF:200,armorTier:80,shieldTier:60},
-    {catId:'BLACKFALCON',nm:I18N.t('enemy.blackfalconMythic2'),baseHP:9700000,SH:300000,ATT:32000,INT:1200,TEC:560,DEF:200,armorTier:80,shieldTier:60},
-    // 기타 대형 — 레비아탄·아르마다·우르사 파쇄기 (적이 노획한 인류 전설함)
-    {catId:'H10', nm:I18N.t('enemy.leviathan'),         baseHP:45000,   SH:18000,  ATT:110,  INT:105,  TEC:95,  DEF:50, armorTier:30, shieldTier:30},
-    {catId:'H11', nm:I18N.t('enemy.armada'),         baseHP:38000,   SH:22000,  ATT:90,   INT:120,  TEC:88,  DEF:50, armorTier:30, shieldTier:35},
-    {catId:'H12', nm:I18N.t('enemy.ursaCrusher'),    baseHP:75000,   SH:25000,  ATT:120,  INT:115,  TEC:100, DEF:60, armorTier:35, shieldTier:35}
+    // 우르사 메이저 ×4
+    ..._mkN(4,k=>({catId:'URSA',nm:(k===1?I18N.t('enemy.ursaMythic'):I18N.t('enemy.ursaMythic2')+' '+k),baseHP:1000000,SH:120000,ATT:580,INT:340,TEC:220,DEF:120,armorTier:60,shieldTier:50})),
+    // 블랙팔콘 ×4 (기함/보스 — voidBoss 플래그)
+    ..._mkN(4,k=>({catId:'BLACKFALCON',nm:(k===1?I18N.t('enemy.blackfalconMythic'):I18N.t('enemy.blackfalconMythic2')+' '+k),baseHP:9700000,SH:300000,ATT:32000,INT:1200,TEC:560,DEF:200,armorTier:80,shieldTier:60})),
+    // 렐러티비티(LGD03) ×4
+    ..._mkN(4,k=>({catId:'LGD03',nm:I18N.t('enemy.lgd03')+(k>1?' '+k:''),baseHP:245000,SH:90000,ATT:306,INT:295,TEC:255,DEF:80,armorTier:40,shieldTier:40})),
+    // 거북선(LGD01) ×4
+    ..._mkN(4,k=>({catId:'LGD01',nm:I18N.t('enemy.lgd01')+(k>1?' '+k:''),baseHP:260000,SH:65000,ATT:245,INT:235,TEC:210,DEF:80,armorTier:40,shieldTier:40})),
+    // 타 문명권 대형함선 ×8 — 노획된 각 문명권 대형함 (H01~H12 중 8종)
+    ...['H01','H03','H05','H07','H09','H10','H11','H12'].map(hid=>({
+      catId:hid,tier:'대형',
+      nm:(hid==='H10'?I18N.t('enemy.leviathan'):hid==='H11'?I18N.t('enemy.armada'):hid==='H12'?I18N.t('enemy.ursaCrusher'):_hNm(hid)),
+      baseHP:hid==='H12'?75000:hid==='H10'?45000:40000,
+      SH:hid==='H12'?25000:20000,
+      ATT:hid==='H12'?120:100,INT:110,TEC:95,DEF:50,armorTier:30,shieldTier:32
+    }))
   ];
   // 우리 함대 총 HP의 2배 = 적 총 HP 목표치. 5척 카탈로그 비율대로 분배
   const _fp=(typeof calcFleetTotalPower==='function')?calcFleetTotalPower():{hp:0,atk:0,sh:0};
@@ -12396,7 +12489,7 @@ function startBlackHoleFleetCombat(){
       catalogId:sp.catId,
       catId:sp.catId,
       nm:sp.nm,
-      tier:'신화',
+      tier:sp.tier||'신화',  // 2026-06-12: 타 문명권 함선은 '대형' 티어 유지
       isEnemy:true,
       voidBoss:isFlagship,
       hp:_hp,maxHP:_hp,HP:_hp,

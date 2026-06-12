@@ -787,5 +787,6 @@ window.buyComm5=buyComm5;
 window.buyCommN=buyCommN;
 window.buyCommMax=buyCommMax;
 window.sellComm=sellComm;
-console.log('[render-trade-tab] Loaded — 9 functions exposed');
+window.buyAllComm=buyAllComm;  // bugfix 2026-06-11: onclick="buyAllComm()" referenced but not exposed (ReferenceError, dead button)
+console.log('[render-trade-tab] Loaded — 10 functions exposed');
 })();

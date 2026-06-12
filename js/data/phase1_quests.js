@@ -469,7 +469,7 @@ const PHASE1_CUTSCENES_KO={
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7%. 지금 일어나지 않으면 다음은 없습니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...얼마나 됐어?'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'100년 3개월 12일입니다. 지구는 아직 봉쇄 중이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구가... 크리그가 아직도?'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구가... 우르사 메이저가 아직도 봉쇄 중이야?'},  // 수정 2026-06-11: 지구 봉쇄 주체는 치크스(우르사 메이저) — GDD PHASE1_QUEST_CARDS 원문
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'떠날 때와 달라진 게 없어요. 오히려 더 조여졌습니다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'감상은 나중에 하세요. 일단 살아야 합니다. 격납고 곳곳에 고철 프레임이 있어요. 수거하면 수리비랑 연료값은 나와요.'}
   ],

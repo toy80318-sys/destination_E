@@ -213,8 +213,8 @@ function tickStoryQuests(){
       const _need=q.required||((q.objectives&&q.objectives[0]&&q.objectives[0].qty)||1);
       const _newProg=Math.min(_need,_cur);
       if(_newProg!==q.progress) q.progress=_newProg;
-      // 사용자 요청 2026-06-08: 80% 진행 시에도 done 처리 (반올림 누락·수량 미세 차이 안전망)
-      const _completionThreshold=Math.max(1, Math.ceil(_need * 0.8));
+      // 수정 2026-06-11 (사용자 요청): 80% 조기완료 제거 — 요구 수량을 전부 채워야 완료
+      const _completionThreshold=_need;
       if(q.progress>=_completionThreshold&&q.status==='active'){
         q.status='done';
         q.progress=_need;  // UI에서 100% 표시
@@ -225,10 +225,63 @@ function tickStoryQuests(){
   });
 }
 
+// ─── 시나리오 퀘 진행 카운터 증가 (bugfix 2026-06-11) ─────────────
+//   문제: _storyCombatKills / _storyExploreCount 를 읽기만 하고 어디서도 증가시키지 않아
+//         combat/explore 목표 시나리오 퀘스트가 영구히 완료 불가.
+//   해결: 게임 액션 지점(전투 승리·잔해 탐색)에서 이 함수를 호출해 카운터 증가.
+//   kind: 'combat' | 'explore' · n: 증가량 · pid: 행성(기본 현재 행성)
+//   v2 (2026-06-11, 사용자 요청 "실제 요건 충족 시에만 보상"): 액션-타겟 정밀 매칭
+//   action: 'gather'(잔해 탐색) | 'auction'(경매 입찰) | 'repair'(수리) | 'install'(파츠 장착)
+//         | 'commerce'(행성 투자) | 'combat_ursa'(우르사 보스전 승리) | 'combat_chix'(치크스전 승리)
+//         | 'combat_generic'(일반 전투 승리)
+//   (구버전 호환: 'explore'→gather, 'combat'→combat_generic)
+var _EXPLORE_ROUTE={
+  auction:['auction'], repair:['repair'], install:['install','tuning','amp'], commerce:['commerce'],
+  gather:['wreck','box','ruin','canyon','shaft','ejecta','crystal','core','capsule','archive','arrival','deep']
+};
+function _exploreActionMatches(action, target){
+  var t=String(target||'').toLowerCase();
+  for(var act in _EXPLORE_ROUTE){
+    if(_EXPLORE_ROUTE[act].some(function(k){return t.indexOf(k)>=0;})) return act===action;
+  }
+  // 키워드 미등록(서사형: yi_join, meet_gwanggaeto 등) 태그는 탐색으로 진행 허용 (완료 불가 방지)
+  return action==='gather';
+}
+function _combatActionMatches(action, target){
+  var t=String(target||'').toLowerCase();
+  if(t.indexOf('ursa')>=0) return action==='combat_ursa';                       // 우르사 퀘는 보스전 승리만
+  if(t.indexOf('cygnus')>=0||t.indexOf('chix')>=0) return action==='combat_chix'||action==='combat_ursa';
+  return action==='combat_generic'||action==='combat_chix'||action==='combat_ursa'; // 일반 태그는 모든 승리 인정
+}
+function bumpStoryQuestProgress(action, n, pid){
+  const G=window.G; if(!G||!G.quests)return 0;
+  n=n||1; pid=pid||G.currentPlanet;
+  if(action==='explore')action='gather';
+  if(action==='combat')action='combat_generic';
+  const isCombat=action.indexOf('combat_')===0;
+  let bumped=0;
+  (G.quests[pid]||[]).forEach(function(q){
+    if(q.type!=='story_quest'||q.status!=='active')return;
+    const obj=(q.objectives||[])[0]; if(!obj)return;
+    if(isCombat){
+      if(obj.type!=='combat'||!_combatActionMatches(action,obj.target))return;
+      if(!G._storyCombatKills)G._storyCombatKills={};
+      G._storyCombatKills[q.id]=(G._storyCombatKills[q.id]||0)+n;bumped++;
+    } else {
+      if(obj.type!=='explore'||!_exploreActionMatches(action,obj.target))return;
+      if(!G._storyExploreCount)G._storyExploreCount={};
+      G._storyExploreCount[obj.target]=(G._storyExploreCount[obj.target]||0)+n;bumped++;
+    }
+  });
+  if(bumped){try{tickStoryQuests();}catch(e){}}
+  return bumped;
+}
+
 // 글로벌 노출 (기존 game.js 호출처 호환)
 window.spawnPhasedQuests=spawnPhasedQuests;
 window._storyQuestCurrentProgress=_storyQuestCurrentProgress;
 window.tickStoryQuests=tickStoryQuests;
+window.bumpStoryQuestProgress=bumpStoryQuestProgress;
 
 // ─── 진단·복구 유틸 (사용자가 console 에서 호출 가능) ─────────
 // debugStoryState() — 현재 시나리오 상태 출력

@@ -643,7 +643,8 @@ function renderShipTab(body){
         var tierLabel={'소형':'소형','중형':'중형','대형':'대형','전설기함':'전설기함','신화':'신화'};
         var tierCol={'신화':'var(--purple)','전설기함':'#d4af37','대형':'var(--gold)','중형':'var(--blue)','소형':'var(--dim)'};
 
-        return '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px">'+
+        // bugfix 2026-06-11: minmax(0,1fr) — 내용(긴 금액 등)과 무관하게 모든 카드 동일 폭 강제
+        return '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px">'+
           allSorted.map(function(s){
             var tc=tierCol[s.tier]||'var(--dim)';
             var actualPrice=iSunsin?Math.floor(s.price*0.85):s.price;
@@ -684,14 +685,15 @@ function renderShipTab(body){
                   '</div>'+
                   '<div style="font-size:10px;color:var(--dim)">'+I18N.t('ui.crewMaxN',{n:maxCrew})+'</div>')+
                 // 가격 + 버튼
-                '<div style="margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;align-items:center;justify-content:space-between;gap:4px">'+
-                  '<div>'+
-                    (iSunsin?'<div style="color:var(--dim);font-size:9px;text-decoration:line-through">₡'+s.price.toLocaleString()+'</div>':'')+
-                    '<div style="color:var(--gold);font-size:12px;font-weight:bold">₡'+actualPrice.toLocaleString()+'</div>'+
+                // bugfix 2026-06-11: 금액이 길어도 버튼이 세로로 길어지지 않게 — 가격은 축소(ellipsis), 버튼은 nowrap+축소금지
+                '<div style="margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0">'+
+                  '<div style="min-width:0;overflow:hidden">'+
+                    (iSunsin?'<div style="color:var(--dim);font-size:9px;text-decoration:line-through;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">₡'+s.price.toLocaleString()+'</div>':'')+
+                    '<div style="color:var(--gold);font-size:12px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="₡'+actualPrice.toLocaleString()+'">₡'+actualPrice.toLocaleString()+'</div>'+
                   '</div>'+
                   (lvLock
                     ?'<span style="font-size:10px;color:var(--purple)">🔒</span>'
-                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?I18N.t('ui.outOfStock'):G.credits<actualPrice?I18N.t('ui.noCreditsShort'):I18N.t('ui.buy'))+'</button>')+
+                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;white-space:nowrap;flex-shrink:0;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?I18N.t('ui.outOfStock'):G.credits<actualPrice?I18N.t('ui.noCreditsShort'):I18N.t('ui.buy'))+'</button>')+
                 '</div>'+
               '</div>'+
               // ── 오른쪽: 이미지 ──
