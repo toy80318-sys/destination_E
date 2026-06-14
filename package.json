@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.155",
+  "version": "1.0.0-beta.167",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -92,7 +92,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Destination Earth",
-      "language": "1042"
+      "language": "1042",
+      "installerSidebar": "build/installerSidebar_v2.bmp",
+      "uninstallerSidebar": "build/installerSidebar_v2.bmp"
     },
     "mac": {
       "target": [

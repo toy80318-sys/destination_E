@@ -291,6 +291,11 @@ function _distributeCargoExtParts(){
     s.cargoSlots=Math.min(80,(s.cargoSlots||4)+(sc?sc.cargoBonus:0));
     return true;
   }
+  // ⓪ 기존 장착 창고 파츠 전량 회수 → 인벤토리 풀링 (균등 재분배 위해)
+  //    (회수하지 않으면 이미 불균등하게 장착된 창고 파츠가 재분배되지 않음)
+  if(typeof _detachAllCargoExt==='function'){
+    for(const s of G.fleet){try{_detachAllCargoExt(s);}catch(_e){}}
+  }
   let added=0;
   // ① 1차: 함선마다 1개씩 (인덱스 0=기함부터)
   for(const s of G.fleet){if(_attachOne(s))added++;}

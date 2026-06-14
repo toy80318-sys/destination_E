@@ -46,6 +46,10 @@ const CRAFT_RECIPES=[
   {id:'SC04',type:'cargo',tier:'legend',nm:I18N.t('craft.SC04.nm'),cat:'cargo_ext',
    desc:I18N.t('craft.SC04.desc'),
    mats:[{id:'R07',qty:20},{id:'R05',qty:15},{id:'R03',qty:10}]},
+  // ─ 신화 창고 확장 파츠 (제작소 제작 가능) ─
+  {id:'SC05',type:'cargo',tier:'mythic',nm:I18N.t('craft.SC05.nm'),cat:'cargo_ext',
+   desc:I18N.t('craft.SC05.desc'),
+   mats:[{id:'R08',qty:25},{id:'R07',qty:20},{id:'R06',qty:15},{id:'R04',qty:12}]},
   // ─ 신화 함선 (최고등급, 제한 없음) ─
   {id:'LGD01',type:'ship',tier:'mythic',nm:I18N.t('craft.LGD01.nm'),cat:'large',
    desc:I18N.t('craft.LGD01.desc'),

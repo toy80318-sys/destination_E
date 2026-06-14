@@ -27,10 +27,13 @@
     const headerColor=opts.color||'var(--gold)';
     const congrats=opts.congrats||'';
     try{window.AudioMgr&&window.AudioMgr.playSfx(opts.sfx||'notify',{cooldown:80});}catch(e){}
-    // 사용자 요청 2026-06-08: 보상 팝업 70% 축소 + 항상 2열 그리드 (화면 넘침 방지)
+    // 사용자 요청 2026-06-13: 보상 팝업 아이템/설계도 이미지 2배 확대 + 그리드 자동조정
+    //   · 기존 112/134 → 2배(224/268). 이미지가 커지므로 grid는 auto-fit으로 1~2열 자동 전환
+    // 사용자 요청 2026-06-14: opts.imgScale 지원 — 전투 승리 보고는 0.5로 호출(현재의 50%)
+    const _scale=opts.imgScale||1;
     const _many=items.length>=5;
-    const _icSz=_many?112:134;
-    const _icFont=_many?62:78;
+    const _icSz=Math.round((_many?224:268)*_scale);
+    const _icFont=Math.round((_many?120:150)*_scale);
     const _padRow=_many?'5px 8px':'7px 9px';
     const _gapRow=_many?'8px':'10px';
     const _nmFs=_many?12:13;
@@ -42,9 +45,12 @@
       const rl=I18N.rarity(it.rarity)||'';
       const badge=it.badge||(rl?`<span style="font-size:9px;color:${rc};border:1px solid ${rc};border-radius:3px;padding:0 5px;margin-left:5px">${rl}</span>`:'');
       const ic=it.ic||'📦';
+      // UI 튜너 토큰: --ui-reward-img(-many) (기본값=계산된 _icSz)
+      //   imgScale 지정(전투 보고 등) 시에는 고정 px 사용 — 전역 튜너 토큰에 영향받지 않음
+      const _imgVar=(_scale!==1)?`${_icSz}px`:`var(--ui-reward-img${_many?'-many':''}, ${_icSz}px)`;
       const imgHtml=it.img
-        ? `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(it.img,ic,_icSz-4,_icSz-4,'object-fit:cover')}</div>`
-        : `<div style="width:${_icSz}px;height:${_icSz}px;border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
+        ? `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(it.img,ic,_imgVar,_imgVar,'object-fit:cover')}</div>`
+        : `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
       return `<div style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
         ${imgHtml}
         <div style="flex:1;min-width:0">
@@ -55,7 +61,8 @@
         </div>
       </div>`;
     }).join('');
-    const _gridStyle='display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin:0 auto';
+    // 이미지 2배 확대에 맞춰 그리드 자동조정: 카드 최소폭 확보 → 화면 폭에 따라 1~2열 자동 전환
+    const _gridStyle='display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px;width:100%;margin:0 auto';
     const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
     const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
     const html=`<div style="padding:2px 2px">

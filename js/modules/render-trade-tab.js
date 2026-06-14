@@ -553,17 +553,17 @@ function buyComm(id,_silent=false){
     if(comm.material){
       if(!G.materials)G.materials={};
       G.materials[id]=(G.materials[id]||0)+1;
-      // 화물칸에도 선적 (화물 용량 체크)
-      const _mTotalQty=G.cargo.reduce((s,c)=>s+c.qty,0);
-      const _mCargoMax=getCargoMax();
-      if(_mTotalQty<_mCargoMax){
-        const _mEx=G.cargo.find(s=>s.id===id);
-        if(_mEx){
-          _mEx.buyPrice=Math.round((_mEx.buyPrice*_mEx.qty+comm.buy)/(_mEx.qty+1));
-          _mEx.buyPlanetId=_mEx.buyPlanetId===G.currentPlanet?G.currentPlanet:'mixed';
-          _mEx.qty++;
-        } else G.cargo.push({id,nm:comm.nm,qty:1,buyPrice:comm.buy,buyPlanetId:G.currentPlanet,buyFaction:PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f,material:true});
-      }
+      // bugfix 2026-06-14: 재료창(G.materials)을 단일 진실로 — 화물 슬롯 수량을 항상 G.materials[id]와 일치.
+      //   (기존: 화물칸이 가득 차면 G.materials만 증가하고 cargo 슬롯 미증가 → 제작탭(G.materials)과
+      //    거래탭(cargo 슬롯) 표시 갯수 불일치 버그. _validateCargoIntegrity 와 동일하게 슬롯 동기화.)
+      const _mEx=G.cargo.find(s=>s.id===id&&s.material);
+      if(_mEx){
+        _mEx.buyPrice=Math.round((_mEx.buyPrice*_mEx.qty+comm.buy)/(_mEx.qty+1));
+        _mEx.buyPlanetId=_mEx.buyPlanetId===G.currentPlanet?G.currentPlanet:'mixed';
+        _mEx.qty=G.materials[id];
+        if(!_mEx.nm)_mEx.nm=comm.nm;
+        if(!_mEx.material)_mEx.material=true;
+      } else G.cargo.push({id,nm:comm.nm,qty:G.materials[id],buyPrice:comm.buy,buyPlanetId:G.currentPlanet,buyFaction:PLANET_DEF.find(p=>p.id===G.currentPlanet)?.f,material:true});
       updateHUD();if(!_silent){notify(I18N.t('notify.gotMaterial',{ic:comm.ic||'💎',nm:commDisplayNm(comm),qty:G.materials[id]}),'gold');rerenderTab(renderTradeTab);}
     } else {
       if(!G.inventory)G.inventory=[];

@@ -21,9 +21,9 @@ const PHASE6_QUESTS={
       ic:'🌌', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'우르사 메이저 진입', en:'Approach Ursa Major'},
       desc:{ko:'제타 레티쿨리 — 우르사 메이저 본거지. 진입 전 함대 점검: 거북선 + 보이드 방어막 해석 장비 + 아우레우스 태양핵 안정화 ×5 사전 소비.\n전 영웅 8/8 참전 필수.',
-            en:'Final approach. Need turtle ship + void decryptor + 아우레우스 태양핵 ×5. All 8 heroes required.'},
+            en:'Final approach. Need turtle ship + void decryptor + Aureus Solar Core ×5. All 8 heroes required.'},
       objectives:[
-        {type:'gather', item:'R03', qty:5, label:{ko:'아우레우스 태양핵 안정화 ×5', en:'아우레우스 태양핵 ×5'}},
+        {type:'gather', item:'R03', qty:5, label:{ko:'아우레우스 태양핵 안정화 ×5', en:'Aureus Solar Core ×5'}},
       ],
       rewardCr:300000, rewardVe:200,
       rewardItems:[],
@@ -91,7 +91,7 @@ const PHASE6_QUESTS={
       ic:'💀', npc:'사령관', npcIc:'⚓', npcKey:'commander',
       nm:{ko:'우르사 메이저 격파', en:'Defeat Ursa Major'},
       desc:{ko:'방어막 무력화된 우르사 메이저 본체 격파. 8영웅 전 화력 집중. 승리 시 _earthLiberated 플래그 + 자동 지구 진입.\n아이젠클로 사령관 함선도 동시 격파.',
-            en:'Final kill. All 8 heroes focus fire. Win → Earth liberated + auto 지구.'},
+            en:'Final kill. All 8 heroes focus fire. Win → Earth liberated + auto Earth.'},
       objectives:[
         {type:'combat', target:'ursa_main', qty:1, label:{ko:'우르사 메이저 격파', en:'Ursa Major down'}},
       ],
@@ -127,7 +127,7 @@ const PHASE6_QUESTS={
       desc:{ko:'100년 만의 지구 착륙. 봉쇄가 풀린 지구 — 새로운 시작.\n자유 항해 모드 활성화 (프록시마 b~지구 자유 이동 + 모든 행성 경매 가능).',
             en:'First landing in 100 years. Free roam mode unlocked.'},
       objectives:[
-        {type:'delivery', target:'P31', qty:1, label:{ko:'지구 도착', en:'Arrive at 지구'}},
+        {type:'delivery', target:'P31', qty:1, label:{ko:'지구 도착', en:'Arrive at Earth'}},
       ],
       rewardCr:500000, rewardVe:300,
       rewardItems:[],
@@ -139,9 +139,9 @@ const PHASE6_QUESTS={
       ic:'🏛️', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'지구 의회 복원', en:'Restore Earth Council'},
       desc:{ko:'아이젠클로 항복서 + 난중일기 영인본 난중일기 ×3 + 지구 철광석 ×5 → 지구 의회 공식 재개. {사령관} 명예 의장 직위.',
-            en:'Eisenklau surrender + 난중일기 영인본 ×3 + 지구 철광석 ×5 → Council restored. {commander} Honorary Chair.'},
+            en:'Eisenklau surrender + "Nanjung Ilgi" Facsimile ×3 + Earth Iron Ore ×5 → Council restored. {commander} Honorary Chair.'},
       objectives:[
-        {type:'gather', item:'G15', qty:5, label:{ko:'지구 철광석 ×5', en:'지구 철광석 ×5'}},
+        {type:'gather', item:'G15', qty:5, label:{ko:'지구 철광석 ×5', en:'Earth Iron Ore ×5'}},
       ],
       rewardCr:800000, rewardVe:400,
       rewardItems:[],
@@ -152,10 +152,10 @@ const PHASE6_QUESTS={
       id:'p6_q2403', type:'story_quest', category:'sub', phase:6,
       ic:'🎓', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 제작소 설립', en:'Geobukseon Foundry'},
-      desc:{ko:'장영실: "지구에 거북선 제작소를 세울게. R08 ×30 + R04 ×20 자금."\n설립 후 거북선 LGD01 제작이 P31에서도 가능.',
-            en:'은하 혼돈 결정 ×30 + 크리그 마그마 코어 ×20 → Earth-based Geobukseon foundry.'},
+      desc:{ko:'장영실: "지구에 거북선 제작소를 세울게. 은하 혼돈 결정 ×30 + 크리그 마그마 코어 ×20 자금."\n설립 후 거북선 거북선 제작이 P31에서도 가능.',
+            en:'Galactic Chaos Crystal ×30 + Krieg Magma Core ×20 → Earth-based Geobukseon foundry.'},
       objectives:[
-        {type:'gather', item:'R08', qty:30, label:{ko:'은하 혼돈 결정 ×30 출자', en:'은하 혼돈 결정 ×30 funding'}},
+        {type:'gather', item:'R08', qty:30, label:{ko:'은하 혼돈 결정 ×30 출자', en:'Galactic Chaos Crystal ×30 funding'}},
       ],
       rewardCr:600000, rewardVe:350,
       rewardItems:[],
@@ -166,10 +166,10 @@ const PHASE6_QUESTS={
       id:'p6_q2404', type:'story_quest', category:'sub', phase:6,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'무선 전력망 재건', en:'Wireless Grid'},
-      desc:{ko:'테슬라: "지구 봉쇄 100년간 끊긴 무선 전력망을 다시 깐다. R07 ×15 + R05 ×10."',
-            en:'수퍼비아 중력자 ×15 + 메카니카 양자칩 ×10 → Earth wireless grid restored.'},
+      desc:{ko:'테슬라: "지구 봉쇄 100년간 끊긴 무선 전력망을 다시 깐다. 수퍼비아 중력자 ×15 + 메카니카 양자칩 ×10."',
+            en:'Superbia Graviton ×15 + Mechanica Quantum Chip ×10 → Earth wireless grid restored.'},
       objectives:[
-        {type:'gather', item:'R07', qty:15, label:{ko:'수퍼비아 중력자 ×15 코어', en:'수퍼비아 중력자 ×15'}},
+        {type:'gather', item:'R07', qty:15, label:{ko:'수퍼비아 중력자 ×15 코어', en:'Superbia Graviton ×15'}},
       ],
       rewardCr:500000, rewardVe:300,
       rewardItems:[],
@@ -222,10 +222,10 @@ const PHASE6_CUTSCENES_KO={
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.'},
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.'},
-    {char:'void_hiden', name:'아이젠클로', color:'#ff6644', text:'우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.'},
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.'},
-    {char:'void_hiden', name:'아이젠클로', color:'#ff6644', text:'(이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'(이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진. 펼친다.'}
   ],
 
@@ -270,7 +270,7 @@ const PHASE6_CUTSCENES_KO={
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'(조용히) 시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'(웃으며) 다음엔 무선 전력으로 지구 전체를 깔자.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(눈물을 닦으며) ...우리가 진짜 해냈어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(눈물을 닦으며)...우리가 진짜 해냈어.'},
     {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선이 — 끝까지 버텼어. 임진왜란의 거북선이, 우주에서도.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(이순신을 향해) 그대의 거북선 — 트라팔가르의 빅토리 함과 어깨를 나란히 하오.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 백구.'},
@@ -281,7 +281,7 @@ const PHASE6_CUTSCENES_KO={
   // ─── CH14-B "지구 착륙" (P31 도착) ───
   p6_ch14b:[
     {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
-    {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 임진왜란 때 보았던 그 하늘이다. 변하지 않았어.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'(미소) 우주는 상대적이지만 — 고향은 절대적이군.'},
@@ -290,7 +290,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH14-C "재건의 시작" (Q24-02 완료) ───
   p6_ch14c:[
-    {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#88d65b', text:'아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.'},
     {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'무선 전력망 재건. 100년 만에 다시 깔 거야.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'정복은 끝. 이제는 — 함께 일구는 시간이다.'},
@@ -300,7 +300,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH15-A "명예의 전당" (Q24-05 완료 · 엔딩) ───
   p6_ch15a:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마 b부터 글리제 581g 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마 b부터 글리제 581g 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 b 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.'},
     {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.'}
@@ -323,3 +323,4 @@ window.PHASE6_PLANET_INTROS=PHASE6_PLANET_INTROS;
 
 console.log('[PHASE6_QUESTS v1.0] Loaded — 12 quests across 2 planets (P30·P31), 8 cutscenes (FINAL ENDING)');
 })();
+               

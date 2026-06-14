@@ -37,6 +37,8 @@ const SHIP_CATALOG=[
   {id:'H12',nm:I18N.t('ship.H12.nm'),tier:'대형',price:2000000,maxHP:75000,maxSH:25000,ATT:120,INT:115,TEC:100,LOY:90,ic:'🌟',desc:I18N.t('ship.H12.desc')},
   // ── 신화 함선 LGD01~LGD03 (최고등급 신화함, 제한 없음) ───────────
   {id:'LGD01',nm:I18N.t('ship.LGD01.nm'),tier:'신화',price:25000000,maxHP:260000,maxSH:65000,ATT:245,INT:235,TEC:210,LOY:80,ic:'✦',desc:I18N.t('ship.LGD01.desc')},
+  // 특수 거북선 (설계도 3단편 완성 보상) — 신화 거북선 LGD01의 5배 성능 / 전투 시 2배 크기 / 별도 이미지(img/ships/LGD01_SP.png)
+  {id:'LGD01_SP',catalogId:'LGD01_SP',nm:I18N.t('ship.LGD01_SP.nm'),tier:'신화',price:0,maxHP:1300000,maxSH:325000,ATT:1225,INT:1175,TEC:1050,LOY:100,ic:'✦',desc:I18N.t('ship.LGD01_SP.desc'),_turtleSpecial:true},
   {id:'LGD02',nm:I18N.t('ship.LGD02.nm'),tier:'신화',price:22500000,maxHP:175000,maxSH:160000,ATT:323,INT:265,TEC:230,LOY:80,ic:'✦',desc:I18N.t('ship.LGD02.desc')},
   {id:'LGD03',nm:I18N.t('ship.LGD03.nm'),tier:'신화',price:30000000,maxHP:245000,maxSH:90000,ATT:306,INT:295,TEC:255,LOY:80,ic:'✦',desc:I18N.t('ship.LGD03.desc')},
   // ── 우르사 메이저 — 격파 후 나포 시 등장하는 최종 보스 함선 ────────────

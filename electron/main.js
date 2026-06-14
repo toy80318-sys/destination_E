@@ -224,8 +224,20 @@ function showAboutDialog() {
 }
 
 // ── 자동 업데이트 (무음 자동 다운로드 + 종료 시 자동 설치) ─────────────
+// Steam 빌드 감지 (2026-06-13, 스팀 정책 대응): 스팀은 자체 업데이트가 금지(업데이트는 Steam 담당).
+//   감지 방법 ①: 실행 파일 옆에 steam_build.flag 파일 존재 (스팀 depot에만 포함)
+//   감지 방법 ②: 환경변수 STEAM_BUILD=1  ③: SteamAppId env (Steam 클라이언트로 실행 시 자동 설정)
+function _isSteamBuild() {
+  try {
+    if (process.env.STEAM_BUILD === '1' || process.env.SteamAppId || process.env.SteamGameId) return true;
+    const flag = path.join(path.dirname(app.getPath('exe')), 'steam_build.flag');
+    if (fs.existsSync(flag)) return true;
+  } catch (_) {}
+  return false;
+}
 function setupAutoUpdater() {
   if (!autoUpdater || isDev) return;
+  if (_isSteamBuild()) { console.log('[updater] Steam build detected — auto-update disabled (Steam manages updates)'); return; }
   // 사용자 개입 최소화: 즉시 자동 다운로드 + 종료 시 자동 설치
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;

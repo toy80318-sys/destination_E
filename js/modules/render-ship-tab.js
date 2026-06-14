@@ -852,11 +852,13 @@ function renderShipTab(body){
   let invPartsSection='';
   if(_shipTab==='parts'&&!G._garageMode){
     const hasMarcoInv=G.heroes&&G.heroes.includes('H08');
-    let invParts=G.inventory.filter(i=>i.qty>0&&PARTS.find(p=>p.id===i.id));
+    // 특수창고(SC) 파츠도 일반 파츠처럼 나의 파츠에 표시. 사용자 요청 2026-06-14
+    const _findInvP=id=>PARTS.find(p=>p.id===id)||(typeof SPECIAL_CARGO_PARTS!=='undefined'?SPECIAL_CARGO_PARTS.find(c=>c.id===id):null);
+    let invParts=G.inventory.filter(i=>i.qty>0&&_findInvP(i.id));
     // 보유 파츠 정렬 (사용자 선택)
     const _rarPri={mythic:0,set:1,legend:2,L:2,hero:3,H:3,R:4,N:5};
     invParts=[...invParts].sort((a,b)=>{
-      const pa=PARTS.find(x=>x.id===a.id)||{},pb=PARTS.find(x=>x.id===b.id)||{};
+      const pa=_findInvP(a.id)||{},pb=_findInvP(b.id)||{};
       if(_invPartSort==='priceAsc')return (pa.price||0)-(pb.price||0);
       if(_invPartSort==='priceDesc')return (pb.price||0)-(pa.price||0);
       if(_invPartSort==='nm')return (pa.nm||'').localeCompare(pb.nm||'');
@@ -873,16 +875,16 @@ function renderShipTab(body){
       const marcoNote=hasMarcoInv?'<span style="color:var(--gold);font-size:11px;margin-left:6px">🧭+10%</span>':'';
       const rarityLabel=p2=>{if(p2.rarity==='mythic')return'<span style="color:#ff88ff;font-size:11px;border:1px solid #ff88ff;border-radius:3px;padding:1px 4px;margin-left:4px">'+I18N.t('ui.mythicBadge')+'</span>';if(p2.rarity==='set')return'<span style="color:var(--gold);font-size:11px;border:1px solid var(--gold);border-radius:3px;padding:1px 4px;margin-left:4px">'+I18N.t('ui.setBadge')+'</span>';return'';};
       const rows=invParts.map(i=>{
-        const p2=PARTS.find(x=>x.id===i.id);if(!p2)return'';
+        const p2=_findInvP(i.id);if(!p2)return'';
         const marcoM=hasMarcoInv?1.10:1.0;
         const baseP=p2.price>0?p2.price:200000;
         const sv=Math.floor(Math.floor(baseP*0.5)*marcoM);
-        const catEmoji={weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡'}[p2.cat]||'⚙️';
-        const catCol={weapon:'var(--red)',shield:'var(--blue)',armor:'var(--gold)',engine:'var(--cyan)'}[p2.cat]||'var(--dim)';
+        const catEmoji={weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡',cargo_ext:'📦'}[p2.cat]||'⚙️';
+        const catCol={weapon:'var(--red)',shield:'var(--blue)',armor:'var(--gold)',engine:'var(--cyan)',cargo_ext:'#66ff99'}[p2.cat]||'var(--dim)';
         const nmCol=p2.rarity==='mythic'?'#ff88ff':p2.rarity==='set'?'#c080ff':p2.tier>=15?'var(--gold)':p2.tier>=11?'#ffa040':p2.tier>=6?'var(--cyan)':'var(--txt)';
         const bdrCol=p2.rarity==='mythic'?'rgba(255,136,255,.5)':p2.rarity==='set'?'rgba(192,128,255,.5)':'var(--bdr)';
         const rarBadge=p2.rarity==='mythic'?`<span style="font-size:10px;color:#ff88ff;border:1px solid #ff88ff;border-radius:3px;padding:0 4px">${I18N.t('ui.mythicBadge')}</span>`:p2.rarity==='set'?`<span style="font-size:10px;color:#c080ff;border:1px solid #c080ff;border-radius:3px;padding:0 4px">${I18N.t('ui.setBadge')}</span>`:'';
-        const statLine=p2.cat==='weapon'?`⚔ ATT +${p2.ATT}${p2.wtype?' ['+p2.wtype+']':''}`:p2.cat==='shield'?`🛡 SHD +${p2.INT} SH+${p2.maxSH}`:p2.cat==='armor'?`❤ HP +${p2.HP}${p2.DEF?' DEF+'+p2.DEF:''}`:p2.cat==='engine'?`⚙ ENG +${p2.TEC}`:'';
+        const statLine=p2.cat==='weapon'?`⚔ ATT +${p2.ATT}${p2.wtype?' ['+p2.wtype+']':''}`:p2.cat==='shield'?`🛡 SHD +${p2.INT} SH+${p2.maxSH}`:p2.cat==='armor'?`❤ HP +${p2.HP}${p2.DEF?' DEF+'+p2.DEF:''}`:p2.cat==='engine'?`⚙ ENG +${p2.TEC}`:p2.cat==='cargo_ext'?`📦 +${p2.cargoBonus} ${I18N.t('ui.cargoSlotUnit')||'화물칸'}`:'';
         const btnId='sell-inv-'+i.id;
         return `<div style="background:var(--card);border:1px solid ${bdrCol};border-radius:10px;padding:10px;display:flex;flex-direction:row;gap:8px;align-items:stretch">
           <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">

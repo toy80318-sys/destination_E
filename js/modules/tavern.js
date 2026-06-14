@@ -479,9 +479,10 @@
     // 행성 팩션 NPC 이미지 — 각 버튼 좌측 배치 (퀘스트 인물 사용)
     // 사용자 요청 2026-06-07: 44→132 (3배). 주점·블랙마켓 양쪽에 동시 적용됨.
     const _npcFac=(/^F0[1-7]$/.test(pd?.f||''))?pd.f:'F01';
-    function _npcImg(type,col){
+    function _npcImg(type,col,size){
+      size=size||132;
       const _src='img/quests/'+type+'_'+_npcFac+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
-      return `<div style="width:132px;height:132px;border-radius:10px;background:rgba(0,0,0,.45);border:2px solid ${col}99;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 0 16px ${col}33">
+      return `<div style="width:${size}px;height:${size}px;border-radius:10px;background:rgba(0,0,0,.45);border:2px solid ${col}99;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 0 16px ${col}33">
         <img src="${_src}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
       </div>`;
     }
@@ -491,8 +492,8 @@
       const aff=opts.cost>0?(cr>=opts.cost)
                :opts.veCost>0?((G.voidEssence||0)>=opts.veCost)
                :((G.voidCrystal||0)>=opts.vcCost);
-      return `<div style="background:${opts.bg};border:1.5px solid ${aff?opts.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;${aff?'':'opacity:.6'}">
-        ${_npcImg(opts.npcType||'delivery',opts.col)}
+      return `<div style="background:${opts.bg};border:1.5px solid ${aff?opts.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;min-width:0;overflow:hidden;${aff?'':'opacity:.6'}">
+        ${_npcImg(opts.npcType||'delivery',opts.col,104)}
         <div style="flex:1;min-width:0">
           <div style="color:${opts.col};font-size:12px;font-weight:bold;line-height:1.45">${opts.icon} ${opts.label}</div>
           ${opts.sub?`<div style="color:var(--dim);font-size:9px;line-height:1.3;margin-top:2px">${opts.sub}</div>`:''}
@@ -576,8 +577,8 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
               ${_gachaBtn({icon:'💰',label:I18N.t('gacha.btnRecruit500'),sub:I18N.t('gacha.btnRecruit500Sub'),cost:500,onClick:"doGacha(1,true,500,'N')",bg:'rgba(0,243,255,.08)',bdr:'var(--cyan)',col:'var(--cyan)',npcType:'delivery'})}
               ${_gachaBtn({icon:'💎',label:I18N.t('gacha.btnRecruit2k'),sub:I18N.t('gacha.btnRecruit2kSub'),cost:2000,onClick:"doGacha(1,true,2000,'R')",bg:'rgba(30,100,255,.12)',bdr:'#4499ff',col:'#88ccff',npcType:'explore'})}
-              ${_gachaBtn({icon:'💜',label:'VE 5<br>희귀~전설<br>×5',sub:'',veCost:5,onClick:"doGacha(5,false,0,'R',5)",bg:'rgba(102,255,200,.10)',bdr:'#66ddaa',col:'#99ffcc',npcType:'gather'})}
-              ${_gachaBtn({icon:'✨',label:'VE 20<br>영웅~전설<br>×5',sub:'',veCost:20,onClick:"doGacha(5,false,0,'H',20)",bg:'rgba(255,200,80,.12)',bdr:'#ffcc66',col:'#ffd700',npcType:'combat'})}
+              ${_gachaBtn({icon:'💜',label:I18N.t('gacha.btnRecruitVE5'),sub:'',veCost:5,onClick:"doGacha(5,false,0,'R',5)",bg:'rgba(102,255,200,.10)',bdr:'#66ddaa',col:'#99ffcc',npcType:'gather'})}
+              ${_gachaBtn({icon:'✨',label:I18N.t('gacha.btnRecruitVE20'),sub:'',veCost:20,onClick:"doGacha(5,false,0,'H',20)",bg:'rgba(255,200,80,.12)',bdr:'#ffcc66',col:'#ffd700',npcType:'combat'})}
             </div>
             <div style="flex:1;min-height:14px"></div>
           </div>

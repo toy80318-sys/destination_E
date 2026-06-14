@@ -270,6 +270,9 @@ function renderCraftTab(body){
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   if(!G.materials)G.materials={};
   if(!G.blueprints)G.blueprints={};
+  // 창고 확장(전설 SC04·신화 SC05) 설계도는 산업 도면으로 기본 보유 처리 →
+  // 제작 잠금은 희귀 재료(R0x) 보유량으로만 게이트 (행성 설계도 드롭 불필요)
+  ['SC04','SC05'].forEach(id=>{if(!G.blueprints[id])G.blueprints[id]=true;});
 
   const MAT_INFO=COMMODITIES.filter(c=>c.material);
   const ALL_RECS=CRAFT_RECIPES;

@@ -1,18 +1,18 @@
-[BUILD START] 2026-06-12  2:13:43.88 
+[BUILD START] 2026-06-14 10:11:44.23 
 [1/4] checking dependencies... 
 C:\Program Files\nodejs\npm
 C:\Program Files\nodejs\npm.cmd
 [2/4] bumping version (patch +1, cache buster)... 
-[bump] 현재 → 다음: 1.0.0-beta.152 → 1.0.0-beta.153
-[bump] 캐시 버스터: 20260611006 → 20260611007
-[bump] _GAME_VER  : 20260611.web_v1.0.0-beta.153
+[bump] 현재 → 다음: 1.0.0-beta.165 → 1.0.0-beta.166
+[bump] 캐시 버스터: 20260614001 → 20260614002
+[bump] _GAME_VER  : 20260614.web_v1.0.0-beta.166
 [bump] ✓ package.json
-[bump] ✓ index.html (20260611.web_v1.0.0-beta.153)
+[bump] ✓ index.html (20260614.web_v1.0.0-beta.166)
 [bump] ✓ service-worker.js
 [bump] --no-commit → git 작업 스킵, 종료
 [3/4] building Windows targets (NSIS + portable + win-unpacked)... 
 
-> destination-earth@1.0.0-beta.153 dist:win
+> destination-earth@1.0.0-beta.166 dist:win
 > electron-builder --win --publish=never
 
   • electron-builder  version=25.1.8 os=10.0.26200
@@ -24,16 +24,16 @@ C:\Program Files\nodejs\npm.cmd
   • updating asar integrity executable resource  executablePath=dist\win-unpacked\Destination Earth.exe
   • signing with signtool.exe  path=dist\win-unpacked\Destination Earth.exe
   • no signing info identified, signing is skipped  signHook=false cscInfo=null
-  • building        target=nsis file=dist\Destination Earth Setup 1.0.0-beta.153.exe archs=x64 oneClick=false perMachine=false
+  • building        target=nsis file=dist\Destination Earth Setup 1.0.0-beta.166.exe archs=x64 oneClick=false perMachine=false
   • signing with signtool.exe  path=dist\win-unpacked\resources\elevate.exe
   • no signing info identified, signing is skipped  signHook=false cscInfo=null
   • signing with signtool.exe  path=dist\__uninstaller-nsis-destination-earth.exe
   • no signing info identified, signing is skipped  signHook=false cscInfo=null
-  • signing with signtool.exe  path=dist\Destination Earth Setup 1.0.0-beta.153.exe
+  • signing with signtool.exe  path=dist\Destination Earth Setup 1.0.0-beta.166.exe
   • no signing info identified, signing is skipped  signHook=false cscInfo=null
-  • building block map  blockMapFile=dist\Destination Earth Setup 1.0.0-beta.153.exe.blockmap
-  • building        target=portable file=dist\Destination Earth 1.0.0-beta.153.exe archs=x64
-  • signing with signtool.exe  path=dist\Destination Earth 1.0.0-beta.153.exe
+  • building block map  blockMapFile=dist\Destination Earth Setup 1.0.0-beta.166.exe.blockmap
+  • building        target=portable file=dist\Destination Earth 1.0.0-beta.166.exe archs=x64
+  • signing with signtool.exe  path=dist\Destination Earth 1.0.0-beta.166.exe
   • no signing info identified, signing is skipped  signHook=false cscInfo=null
-[4/4] DONE 2026-06-12  2:14:28.56 
+[4/4] DONE 2026-06-14 10:12:34.97 
 [OUTPUT] D:\work\2026\0519_DESTINATION_EARTH\destination_E-main\dist 

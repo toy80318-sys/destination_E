@@ -355,7 +355,7 @@ I18N.register({
   'menu.galaxyMap':     { ko: '은하 지도',     en: 'Galaxy Map' },
   'menu.codex':         { ko: '탐색 도감',     en: 'Explorer Codex' },
   'menu.crewRoster':    { ko: '크루 명단',     en: 'Crew Roster' },
-  'menu.combatLog':     { ko: '전투 기록',     en: 'Combat Log' },
+  'menu.combatLog':     { ko: '함선 기록',     en: 'Ship Log' },
   'menu.admiral':       { ko: '행성 제독',     en: 'Admiral' },
   'menu.tavern':        { ko: '행성 주점',     en: 'Tavern' },
   'menu.shop':          { ko: '행성 상점',     en: 'Shop' },
@@ -428,8 +428,8 @@ I18N.register({
                             en: 'example@email.com (blank = anonymous save)' },
   'ftue.emailHelp':       { ko: '이메일 등록 시 같은 이메일로 어디서든 진행 상황 불러오기 가능. 안 적어도 게임 진행 가능.',
                             en: 'Registering an email lets you load progress with the same address anywhere. You can also play without entering one.' },
-  'ftue.genderMale':      { ko: '👨 남성',  en: '👨 Male' },
-  'ftue.genderFemale':    { ko: '👩 여성',  en: '👩 Female' },
+  'ftue.genderMale':      { ko: '남성',  en: 'Male' },
+  'ftue.genderFemale':    { ko: '여성',  en: 'Female' },
   'ftue.commanderNameLabel':{ ko: '사령관명 *', en: 'Commander Name *' },
   'ftue.companyNameLabel':{ ko: '무역 상단명 *', en: 'Trade Company *' },
   'ftue.namePlaceholder': { ko: '이름을 입력하세요', en: 'Enter a name' },
@@ -519,7 +519,7 @@ I18N.register({
   'ui.shipCodex':          { ko: '함선 도감',                    en: 'Ship Codex' },
 
   // ── 허브 섹션 헤더 (hub-t) ─────────────────────────────────────────
-  'hub.combatLog':         { ko: '⚔️ 전투 기록',                  en: '⚔️ Combat Log' },
+  'hub.combatLog':         { ko: '⚔️ 함선 기록',                  en: '⚔️ Ship Log' },
   'hub.exploredPlanets':   { ko: '🌍 탐험한 행성',                en: '🌍 Explored Planets' },
   'hub.exploreCodex':      { ko: '📖 탐색 도감',                  en: '📖 Explorer Codex' },
   'hub.shipGarageT':       { ko: '🔧 함선 정비소',                en: '🔧 Ship Garage' },
@@ -531,7 +531,7 @@ I18N.register({
   'hub.planetAuctionT':    { ko: '🏛️ 행성 경매',                  en: '🏛️ Planet Auction' },
   'hub.recruitedHeroes':   { ko: '⚡ 영입된 전설 영웅',           en: '⚡ Recruited Legendary Heroes' },
   'hub.bannerGalaxyRoute': { ko: '은하계 경로',                   en: 'Galaxy Route' },
-  'hub.bannerCombatRecord':{ ko: '전투 기록',                     en: 'Combat Record' },
+  'hub.bannerCombatRecord':{ ko: '함선 기록',                     en: 'Ship Log' },
   'hub.bannerShipTrade':   { ko: '함선 거래소',                   en: 'Ship Trade' },
 
   // ── G15: Save/Load 슬롯 라벨 ───────────────────────────────────────
@@ -2180,6 +2180,7 @@ I18N.register({
   'falcon.bossNameStory':               { ko: '블랙팔콘',     en: 'Black Falcon' },
   'ui.regionCheeksMerger':              { ko: '💀 치크스 전략 합병', en: '💀 Cheeks Strategic Merger' },
   'ui.cargoBonus':                      { ko: '📦 장착 함선 화물칸 +{n}칸 (최대 80)', en: '📦 Equipped ship cargo +{n} slots (max 80)' },
+  'ui.cargoSlotUnit':                   { ko: '화물칸', en: 'slots' },
   'ui.cargoBonusHint':                  { ko: '정비소 → 파츠창 우측 창고 슬롯에 장착해 사용', en: 'Equip in Garage → Parts → right-side cargo slot' },
   'ui.crewAboardWarn':                  { ko: '⚠️ 함선 탑승 중 {n}명 포함 — 강제 하선 후 방출됩니다', en: '⚠️ {n} aboard ship — forced disembark then released' },
   'ui.crewAutoDisem':                   { ko: '👥 탑승 크루 {n}명 → 자동 하선', en: '👥 {n} aboard crew → auto disembark' },
@@ -2367,6 +2368,9 @@ I18N.register({
   'ui.heroRequired':                     { ko: '❌ 영웅 필요: {nm}', en: '❌ Hero required: {nm}' },
   'chatbot.heroTip':                     { ko: '영웅 {hc}/8명 보유. 퀘스트 완료 시 10% 확률로 이순신·장영실·광개토·가가린·넬슨·아인슈타인·테슬라·마르코 중 미보유 영웅 영입 이벤트 발생. 영웅마다 고유 스킬 있어.',
                                           en: 'Heroes owned {hc}/8. Quest completion gives 10% chance of recruiting an unowned hero among Yi Sun-sin · Jang Yeong-sil · Gwanggaeto · Gagarin · Nelson · Einstein · Tesla · Marco. Each has a unique skill.' },
+  'chatbot.heroLocHeader':               { ko: '📍 아직 못 만난 영웅 {n}명의 소재지예요:', en: '📍 Locations of the {n} heroes you haven\'t met yet:' },
+  'chatbot.heroLocItem':                 { ko: '  • {hero} — {planet} (링 {ring}) 행성 퀘스트 진행', en: '  • {hero} — {planet} (Ring {ring}) — do that planet\'s quests' },
+  'chatbot.heroLocAllDone':              { ko: '🎉 8명의 전설 영웅을 모두 영입했어요! 더 찾을 영웅이 없네요.', en: '🎉 You\'ve recruited all 8 legendary heroes! None left to find.' },
   'ui.tutorialIntro':                    { ko: '{nm}, 왼쪽 메뉴에서 원하는 거 골라.', en: '{nm}, pick something from the left menu.' },
   'ui.materialOwned':                    { ko: '보유: {n}개', en: 'Owned: {n}' },
   'ui.heroesJoining':                    { ko: '영웅 {nms} 합류 중.', en: 'Heroes {nms} aboard.' },
@@ -2427,6 +2431,7 @@ I18N.register({
   'codex.tab.sys':      { ko: '📚 생존 지식',  en: '📚 Survival Guide' },
   // 추가 2026-06-12 (사용자 요청): 운항기록 탭 — 스토리 진행에 따라 점진 해금되는 이야기 연대기
   'codex.tab.voyage':   { ko: '🧭 운항기록',  en: '🧭 Voyage Log' },
+  'codex.tab.clog':     { ko: '📋 함선 기록',  en: '📋 Ship Log' },
   'voyage.header':      { ko: '함대 운항기록 — 지금까지의 여정', en: 'Fleet Voyage Log — The Journey So Far' },
   'voyage.headerDesc':  { ko: '퀘스트를 완료하고 대화기록을 시청할수록 이야기가 채워집니다.', en: 'Complete quests and watch dialogue records to fill in the story.' },
   'voyage.phaseLabel':  { ko: '페이즈 {n}', en: 'Phase {n}' },
@@ -2438,6 +2443,10 @@ I18N.register({
   'voyage.locked':      { ko: '🔒 ??? — 아직 기록되지 않은 항해', en: '🔒 ??? — An unrecorded voyage' },
   'voyage.replay':      { ko: '▶ 다시보기', en: '▶ Replay' },
   'voyage.emptyPhase':  { ko: '이 페이즈의 기록이 아직 없습니다.', en: 'No records for this phase yet.' },
+  // 백구의 항해 일지 (추가 2026-06-13)
+  'voyage.diaryTitle':  { ko: '백구의 항해 일지', en: "Baekgu's Voyage Log" },
+  'voyage.diaryReady':  { ko: '일지 해금됨', en: 'Log unlocked' },
+  'voyage.diaryLocked': { ko: '이 페이즈의 모든 대화기록을 해금하면 ({n}/{total}) 백구의 항해 일지가 공개됩니다.', en: "Unlock all dialogue records of this phase ({n}/{total}) to reveal Baekgu's voyage log." },
 
   // ── G12-LORE: LORE_TEXT 164 도감 묘사 엔트리 ────────────────────────────
   'lore.part_W01': { ko: '🔨 정약용이 공구상에서 산 부품으로 하룻밤 만에 조립. "쏘면 되지 않냐"고 했다. 실제로 쐈다.\n📜 이름 유래: 개척 시대 표준 레이저포. 단순해서 오히려 우주 어디서든 현지 수리가 가능하다.\n⚔️ 강점: 저렴하고 범용. 단점: 화력이 빈약해 적을 화나게만 할 수 있다.\n💬 첫 무기로 이걸 선택했다면 당신은 효율주의자다. 또는 크레딧이 없는 것이다.', en: '🔨 Maker — Jeong Yak-yong assembled it overnight from parts he picked up at a hardware shop. "Just shoot it, right?" he said. And shoot it did.\n📜 Origin: A pioneer-era standard laser cannon. So simple that it can be repaired anywhere in the galaxy with local parts.\n⚔️ Strength: cheap and universally compatible. Weakness: firepower so weak it tends to merely annoy the enemy.\n💬 If you picked this as your first weapon, you\'re an efficiency-minded type. Or just broke.' },
@@ -2888,6 +2897,10 @@ I18N.register({
   'craft.SC04.nm':   { ko: '[전설] 초공간 화물 매트릭스 ⚡', en: '[Legend] Hyperspace Cargo Matrix ⚡' },
   'craft.SC04.desc': { ko: '전설급 초공간 연속 접힘 화물 매트릭스. 장착 함선 화물 +16칸.',
                       en: 'Legendary continuously-folded hyperspace cargo matrix. Equipped ship: +16 cargo slots.' },
+  // 신화 창고 (제작소 버전)
+  'craft.SC05.nm':   { ko: '[신화] 차원 격납 특이점 🔭', en: '[Mythic] Dimensional Containment Singularity 🔭' },
+  'craft.SC05.desc': { ko: '신화급 차원 격납 특이점. 무한에 가까운 화물 적재 공간을 압축 보관. 장착 함선 화물 +48칸.',
+                      en: 'Mythic dimensional containment singularity. Compresses near-infinite cargo space. Equipped ship: +48 cargo slots.' },
   // 신화 함선 (대형)
   'craft.LGD01.nm':   { ko: '거북선 ✦신화',         en: 'Geobukseon ✦Mythic' },
   'craft.LGD01.desc': { ko: '신화급 전투함. HP 200,000 / SH 65,000. 호위함 능력치+30%.',
@@ -3350,6 +3363,9 @@ I18N.register({
   'ship.LGD01.nm':   { ko: '거북선',       en: 'Geobukseon' },
   'ship.LGD01.desc': { ko: '신화급 전투함. 호위함 ATT/INT +30% · 압도적 내구도',
                       en: 'Mythic battleship. Escort ATT/INT +30% · overwhelming durability.' },
+  'ship.LGD01_SP.nm':   { ko: '불멸의 거북선 ❖특수', en: 'Immortal Geobukseon ❖Special' },
+  'ship.LGD01_SP.desc': { ko: '설계도 3단편을 완성해 복원한 전설의 거북선. 신화 거북선의 5배 성능 · 전투 시 2배 크기. 지구 해방의 상징.',
+                      en: 'The legendary Geobukseon restored from all 3 blueprint fragments. 5× the mythic Geobukseon · 2× size in battle. Symbol of Earth\'s liberation.' },
   'ship.LGD02.nm':   { ko: '워덴클리프',   en: 'Wardenclyffe' },
   'ship.LGD02.desc': { ko: '신화급 전투함. 매 턴 적 모듈 1개 랜덤 비활성화 · 강화된 실드/화력',
                       en: 'Mythic battleship. Disables one random enemy module per turn · enhanced shield/firepower.' },
@@ -4666,6 +4682,8 @@ I18N.register({
   'gacha.btnRecruit2kSub':  { ko: '희귀~전설 (희귀 70%)', en: 'Rare~Legend (Rare 70%)' },
   'gacha.btnRecruitVC5':    { ko: '영입 VC×5',     en: 'Recruit VC×5' },
   'gacha.btnRecruitVC5Sub': { ko: '영웅 집중 (전설 {rate})', en: 'Hero focus (Legend {rate})' },
+  'gacha.btnRecruitVE5':    { ko: 'VE 5<br>희귀~전설<br>×5',  en: 'VE 5<br>Rare~Legend<br>×5' },
+  'gacha.btnRecruitVE20':   { ko: 'VE 20<br>영웅~전설<br>×5', en: 'VE 20<br>Hero~Legend<br>×5' },
   // 자와 표시
   'plaza.zawaHere':         { ko: '자와 등장 — {nm}', en: 'Zawa Appeared — {nm}' },
   'plaza.zawaActive':       { ko: '자와 등장 중',   en: 'Zawa active' },
@@ -4696,6 +4714,7 @@ I18N.register({
   'part.kindEngine':        { ko: '엔진',           en: 'Engine' },
   'part.rowEffects':        { ko: '파츠 효과',      en: 'Part Effects' },
   'part.rowDesc':           { ko: '설명',           en: 'Description' },
+  'part.rowCraftMats':      { ko: '제작 재료',      en: 'Crafting Materials' },
   'part.rowMakerLore':      { ko: '제작 일화',      en: 'Maker Lore' },
   'part.rowCombatPerf':     { ko: '전투 성능',      en: 'Combat Performance' },
   'part.rowOneLine':        { ko: '한마디',         en: 'One-liner' },
@@ -4708,6 +4727,7 @@ I18N.register({
   'part.filterArmor':       { ko: '🛡 장갑',          en: '🛡 Armor' },
   'part.filterDrone':       { ko: '🤖 수리 드론',     en: '🤖 Repair Drone' },
   'part.filterEngine':      { ko: '⚡ 엔진',          en: '⚡ Engine' },
+  'part.filterCargo':       { ko: '📦 특수창고',      en: '📦 Special Cargo' },
   'part.badgeMythic':       { ko: '<div style="font-size:10px;color:#ff88ff;margin-top:1px">✦ 신화</div>',
                               en: '<div style="font-size:10px;color:#ff88ff;margin-top:1px">✦ Mythic</div>' },
   'part.badgeSet':          { ko: '<div style="font-size:10px;color:#c080ff;margin-top:1px">◈ 세트</div>',
@@ -5202,6 +5222,10 @@ I18N.register({
                               en: '✦ Turtle Ship (LGD01 Mythic) acquired — joined the fleet' },
   'baekgu.turtleShipGained':{ ko: '거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!',
                               en: 'A Turtle Ship! Yi Sun-sin\'s legendary ship! Earth Liberation boss-fight entry requirement met!' },
+  'notify.turtleSpecialGained':{ ko: '✦ 불멸의 거북선 복원 완료 — 신화 5배 성능 함대 합류!',
+                              en: '✦ Immortal Geobukseon restored — 5× mythic power joined the fleet!' },
+  'baekgu.turtleSpecialGained':{ ko: '세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.',
+                              en: 'Three fragments made one! This isn\'t just any Geobukseon — it\'s the Immortal one! Even Ursa Major would tremble.' },
   // 부팅/로딩 화면
   'boot.preparing':         { ko: '우주를 준비하는 중...',  en: 'Preparing the cosmos...' },
   'boot.saveRestored':      { ko: '세이브 복원 완료 ({n}개)', en: 'Save restored ({n})' },

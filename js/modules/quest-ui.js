@@ -37,6 +37,29 @@ function _questTypeImgGeneric(q){
 //   buy 타입은 행성 팩션 미일치 시에도 delivery_F01.png(수퍼비아 거래상인)로 최종 폴백.
 function _questThumbHtml(q,size){
   size=size||44;
+  // 퀘스트 전용 커스텀 썸네일(q.img) 우선 — 예: 이순신 합류(영웅 초상+행성 배경 합성). 사용자 요청 2026-06-13
+  if(q&&q.img){
+    const _cv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+    const _cfb=q.ic||'⚔️';
+    return `<div style="width:${size}px;height:${size}px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border-radius:6px">
+      <div class="fb" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.5)}px;pointer-events:none">${_cfb}</div>
+      <img src="${q.img}${_cv}" alt="" loading="lazy" decoding="async" style="position:relative;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:6px"
+        onload="var fb=this.parentNode.querySelector('.fb');if(fb)fb.style.display='none';"
+        onerror="this.style.display='none';var fb=this.parentNode.querySelector('.fb');if(fb)fb.style.display='flex';">
+    </div>`;
+  }
+  // 영웅 영입 퀘스트(8영웅): 해당 영웅 초상(hero01~08)을 썸네일로 표시. 사용자 요청 2026-06-14
+  if(q&&q.heroId){
+    const _hv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+    const _hsrc=(typeof HERO_PORTRAITS_BY_ID!=='undefined'&&HERO_PORTRAITS_BY_ID[q.heroId])||('img/chars/hero'+String(q.heroId).slice(1)+'.png');
+    const _hfb=q.ic||(typeof HEROES!=='undefined'&&HEROES[q.heroId]&&HEROES[q.heroId].ic)||'⭐';
+    return `<div style="width:${size}px;height:${size}px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1.5px solid var(--gold);overflow:hidden">
+      <div class="fb" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.5)}px;pointer-events:none">${_hfb}</div>
+      <img src="${_hsrc}${_hv}" alt="" loading="lazy" decoding="async" style="position:relative;width:100%;height:100%;object-fit:cover;z-index:1"
+        onload="var fb=this.parentNode.querySelector('.fb');if(fb)fb.style.display='none';"
+        onerror="this.style.display='none';var fb=this.parentNode.querySelector('.fb');if(fb)fb.style.display='flex';">
+    </div>`;
+  }
   const facSrc=_questTypeImg(q);
   const genSrc=_questTypeImgGeneric(q);
   const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
@@ -193,14 +216,19 @@ function _renderQuestCard(q,pid,qlist){
   // 시나리오 퀘스트(story_quest) — 행성 배경 + 행성 이미지 + 인물 이미지 합성 히어로 썸네일
   // 사용자 요청 2026-06-07: "이미지는 행성이미지, 행성 배경이미지, 인물이미지로 넣어줘. 백구이미지활용해줘."
   let thumb;
-  if(isStoryQuest && q.npcKey){
+  // 영웅 영입 퀘스트(heroId)도 시나리오 퀘스트처럼 행성배경+행성+영웅초상 합성 썸네일로 표시. 사용자 보고 2026-06-14
+  //   · 단, q.img(이순신 yi_join 등 전용 합성)는 _questThumbHtml 경로 유지
+  if(((isStoryQuest && q.npcKey) || (isHeroQuest && q.heroId)) && !q.img){
     const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
     const _pid=q.planetId||pid;
     const _bgSrc=(typeof planetBgSrc==='function')?planetBgSrc(_pid):('img/bg/'+_pid+'.jpg'+_ver);
     const _planetSrc=(typeof planetImgSrc==='function')?planetImgSrc(_pid):('img/planets/'+_pid+'.png'+_ver);
     // 인물 이미지 경로 — NPC 영웅(hero01~08)·백구·사령관·Phase NPC 라우팅
     let _charSrc;
-    if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(q.npcKey)){
+    if(q.heroId && !q.npcKey){
+      // 영웅 영입 퀘스트 — 해당 영웅 초상(hero01~09)
+      _charSrc='img/chars/hero'+String(q.heroId).slice(1)+'.png'+_ver;
+    } else if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(q.npcKey)){
       _charSrc='img/quests/'+q.npcKey+'.png'+_ver;
     } else if(q.npcKey==='commander'){
       // 성별·외형 자동 (commander_m1 기본)

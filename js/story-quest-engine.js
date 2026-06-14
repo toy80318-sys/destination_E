@@ -26,6 +26,24 @@ function _relaxQty(qty, objType){
 }
 
 // ─── 시나리오 퀘 spawn ──────────────────────────────────────────
+// ─── 페이즈 게이팅 (사용자 요청 2026-06-14) ──────────────────────────────
+//   페이즈 N 퀘스트는 직전 페이즈(N-1)가 50% 이상 "완료(claimed)"되어야 해금된다.
+//   → 한 번에 모든 페이즈가 열려 보스전 없이 엔딩까지 도달하던 문제 차단.
+function _phaseClaimedFrac(p){
+  const G=window.G; if(!G||!G.quests)return 0;
+  const src=window['PHASE'+p+'_QUESTS']; let total=0;
+  if(src){ for(const k in src){ if(Array.isArray(src[k]))total+=src[k].length; } }
+  if(total<=0)return 1;  // 데이터 없으면 통과
+  let claimed=0;
+  for(const pid in G.quests){ (G.quests[pid]||[]).forEach(function(q){ if(q&&q.phase===p&&q.status==='claimed')claimed++; }); }
+  return claimed/total;
+}
+function _isPhaseUnlocked(n){
+  if(n<=1)return true;
+  return _phaseClaimedFrac(n-1)>=0.5;
+}
+try{ if(typeof window!=='undefined'){ window._phaseClaimedFrac=_phaseClaimedFrac; window._isPhaseUnlocked=_isPhaseUnlocked; } }catch(e){}
+
 function spawnPhasedQuests(pid){
   console.log('[story-quest-engine] spawnPhasedQuests("'+pid+'") 시작');
   if(!pid||!window.G||!window.G.quests){
@@ -64,6 +82,12 @@ function spawnPhasedQuests(pid){
   ['PHASE1_QUESTS','PHASE2_QUESTS','PHASE3_QUESTS','PHASE4_QUESTS','PHASE5_QUESTS','PHASE6_QUESTS'].forEach(srcName=>{
     const src=window[srcName];
     if(!src||!src[pid])return;
+    // 페이즈 게이팅 — 직전 페이즈 50% 미완료면 이 페이즈 퀘스트는 아직 스폰하지 않음
+    const _phNum=parseInt(srcName.replace(/\D/g,''))||1;
+    if(_phNum>1 && !_isPhaseUnlocked(_phNum)){
+      console.log('[story-quest-engine] phase '+_phNum+' 잠금 — 직전 페이즈 50% 미완료, 스폰 보류');
+      return;
+    }
     if(!G.quests[pid])G.quests[pid]=[];
     src[pid].forEach(template=>{
       if(G.quests[pid].some(q=>q&&q.id===template.id))return;
