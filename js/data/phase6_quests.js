@@ -308,7 +308,114 @@ const PHASE6_CUTSCENES_KO={
 
   };
 
-const PHASE6_CUTSCENES_EN={};
+const PHASE6_CUTSCENES_EN={
+
+  // ─── CH13-A "The Final Course" (P30 arrival) ───
+  p6_ch13a:[
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Zeta Reticuli. We\'ve reached the Ursa Major stronghold. Enemy signatures — thirty hostiles identified.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago, the Imjin War. A hundred years ago, the sealing. And today — the final battle.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'Trafalgar — Britain\'s last great victory. Today, the victory is ours.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Spacetime stable. The Void barrier analysis array — ready for activation.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'It is time to conquer.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Earth is — just beyond. {commander}, make the call.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'All ships. Crane Wing Formation. Geobukseon at center. We\'re going in.'}
+  ],
+
+  // ─── CH13-B "Encounter with Ursa Major" (Q23-01 complete · replaces ursa.intro) ───
+  p6_ch13b:[
+    {char:'system', name:'Alert', color:'#ef4444', text:'⚠ Warp signatures confirmed. Ursa Major core + 15 praetorian ships + 14 Chiks scouts. Thirty hostiles total.'},
+    {char:'baekgu1_surprise', name:'Baekgu', color:'#66ddff', text:'Combat ratings in the tens of millions! But — with the Geobukseon and the eight heroes together, there\'s nothing we can\'t do.'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'... So humanity\'s little fleet has finally come this far. Breaking a century of silence.'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'A hundred years ago, I sealed your star. I believed your species\' silence would be eternal. And yet — one capsule has awoken again.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That capsule — was me. The one you sealed has come today to bring you your end.'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Yi Sun-sin. Your tactical data was the heart of my defensive algorithm. I sealed you — to strip away the strongest weapon.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'That algorithm — General Yi\'s tactics now point straight back at your blind spots. Once the seal breaks — the shield becomes the sword.'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Einstein, too... The old scholar I cast into the rift a century ago, still alive. How intriguing.'},
+    {char:'void_hiden', name:'Eisenklaue', color:'#ff6644', text:'Lord Ursa. The humans have built something they call the Geobukseon. A reinforced warship — running Yi Sun-sin\'s tactical data.'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Eisenklaue. Your duty was the blockade. And you failed the blockade. Excuses — I do not accept.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Eisenklaue. The crime of caging humanity for a hundred years — ends today.'},
+    {char:'void_hiden', name:'Eisenklaue', color:'#ff6644', text:'(grinding his teeth) Mere humans... Praetorians, Alpha through Epsilon! Form ranks! Concentrate all fire — on the Geobukseon!'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Crane Wing. Deploy.'}
+  ],
+
+  // ─── CH13-C "The Praetorians Broken" (Q23-04 complete) ───
+  p6_ch13c:[
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Right flank — cleared. Escort praetorians remaining: zero.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Left flank is clean too. Crane Wing — complete.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Ursa Major core — exposed. The Void barrier is still active.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'4.7GHz resonance wave — charge at 100%. Awaiting the order to fire.'},
+    {char:'system', name:'Ursa Major', color:'#ff3366', text:'... My escort has fallen. But my core barrier cannot be pierced by any weapon. What is it — that you possess?'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) The old scholar you threw into the rift a hundred years ago — it\'s his theory.'}
+  ],
+
+  // ─── CH13-D "Moments Before the Barrier Falls" (Q23-05 start) ───
+  p6_ch13d:[
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Spacetime crystal calibration — applied. Void barrier resonance frequency locked on.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'Geobukseon ballistae — full firepower charged to 100%. Crane Wing focus-fire formation aligned.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Enemy rear comms — fully jammed. Reinforcement warps are cut off.'},
+    {char:'system', name:'Ursa Major', color:'#ff3366', text:'(shaken for the first time) That is... spacetime resonance? Impossible. With natural crystals, you cannot...'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'It was possible. For a hundred years inside the rift — I cultivated the crystals without you ever knowing.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago — I held off 133 ships with twelve. Today, nine will be enough.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Fire.'}
+  ],
+
+  // ─── CH13-E "The Barrier Falls" (Q23-05 complete) ───
+  p6_ch13e:[
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'4.7GHz resonance wave — firing!'},
+    {char:'system', name:'Alert', color:'#38bdf8', text:'⚠ Ursa Major Void barrier — 0.3-second window confirmed. Focus-fire viable.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Geobukseon ballistae, every round — focus fire!'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Tesla Hyperspace — ATT ×5 engaged!'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'All escort firepower — Geobukseon passive +30% applied!'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Banner of conquest — the final strike!'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Everyone. Fire.'}
+  ],
+
+  // ─── CH14-A "The End of Four Hundred Years" (Q23-06 complete · Ursa defeated) ───
+  p6_ch14a:[
+    {char:'system', name:'System', color:'#38bdf8', text:'Ursa Major destruction confirmed. Commander Eisenklaue\'s ship destroyed simultaneously. Enemy fleet — zero remaining. Void rift — closing.'},
+    {char:'system', name:'Ursa Major', color:'#ff3366', text:'(signal fading) Humanity... you... have risen... again... The blockade... could never... have been... eternal...'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'... It\'s over. The end of a century-long seal.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'(gazing out the window) Earth. It\'s really Earth.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'(quietly) Spacetime has come undone. The rift is closing. Returning — to its natural state.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'We have opened a new land. Not through conquest — but through liberation.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) Next, let\'s blanket the whole Earth in wireless power.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'(wiping away tears) ...We really did it.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'The Geobukseon — held to the very end. The turtle ship of the Imjin War, even out here in space.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(to Yi Sun-sin) Your Geobukseon — stands shoulder to shoulder with the Victory of Trafalgar.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Baekgu.'},
+    {char:'baekgu2_smile2', name:'Baekgu', color:'#66ddff', text:'Commander. For 100 years, 3 months, and 12 days — waiting for you was worth it.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Coordinates — Earth. Navigation entry complete. Let\'s go.'}
+  ],
+
+  // ─── CH14-B "Landing on Earth" (P31 arrival) ───
+  p6_ch14b:[
+    {char:'system', name:'Navigation AI', color:'#38bdf8', text:'Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.'},
+    {char:'delivery_F06', name:'Ranger Maximoff', color:'#88d65b', text:'Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(gazing at Earth) That\'s the same sky I saw during the Imjin War. It hasn\'t changed.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'April 12th, 1961. The Earth I first saw. Exactly as it was.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'(smiling) The universe is relative — but home is absolute.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... We\'re going down.'}
+  ],
+
+  // ─── CH14-C "The Reconstruction Begins" (Q24-02 complete) ───
+  p6_ch14c:[
+    {char:'delivery_F06', name:'Ranger Maximoff', color:'#88d65b', text:'Eisenklaue\'s hand-written surrender — dedicated to the Council. The end of the century-long blockade — officially declared.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'I\'ll build a Geobukseon shipyard right here. Together with Earth\'s engineers.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Rebuilding the wireless power grid. We\'ll lay it down again after a hundred years.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Conquest is over. Now — it is time to build, together.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'And the next adventure — where to?'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Anywhere. We go together.'}
+  ],
+
+  // ─── CH15-A "Hall of Fame" (Q24-05 complete · ending) ───
+  p6_ch15a:[
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima b to the Gliese 581g Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn b Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Only once the governorship auctions are won and the defense fleets deployed will the galaxy be stable.'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'The Void planets are... going to be different somehow. They were the worlds that lay beneath Ursa Major, after all.'}
+  ],
+
+  };
 
 // 행성별 인트로 컷씬 — 행성 첫 도착 시 자동 재생
 const PHASE6_PLANET_INTROS={

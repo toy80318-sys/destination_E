@@ -537,7 +537,111 @@ const PHASE4_CUTSCENES_KO={
   ]
 };
 
-const PHASE4_CUTSCENES_EN={};
+const PHASE4_CUTSCENES_EN={
+
+  // ─── CH08-A "Lay the Keel" (P15 arrival) ───
+  p4_ch08a:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'I decrypted the logs with the data decoder — Eisenklaue is personally directing this planet\'s factory. They\'re manufacturing the core for their bio-weapon right here.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So the one who fled from Kepler-22b is here.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Wait. I\'ve tapped into Krieg\'s internal network. They say there\'s a rebellion stirring among the factory workers.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Rebels... we can use that. If we get the factory running, we can secure the Krieg Magma Core too.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We take both. Hunt down Eisenklaue, and secure the Krieg Magma Core.'}
+  ],
+
+    // ─── CH08-B "Keel Complete" (Q16-01 done) ───
+  p4_ch08b:[
+    {char:'volcan', name:'Rebel Leader \'Volcan\'', color:'#9ee7ff', text:'So you\'re the {company} fighting alongside the resistance. Our Spark is the free militia of the Krieg factory workers. Our comrades are locked up inside the fortress.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. When we reach Kepler-452b, we\'ll help free your comrades — and you give us Krieg\'s internal route data.'},
+    {char:'volcan', name:'Volcan', color:'#9ee7ff', text:'And more than that — a magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
+  ],
+
+    // ─── CH08-C "Reunion with Gwanggaeto" (Q16-05) ───
+  p4_ch08c:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'No open assault. We have to go in through the rebels\' channel.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Volcan gave us the internal route. The stockpile is deep on level three.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Just three more Krieg Magma Cores... and the Geobukseon\'s keel material is complete.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And we rescue the comrades. At the same time.'}
+  ],
+
+    // ─── CH09-A "Link the Cores" (P10 arrival) ───
+  p4_ch09a:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'On Superbia, diplomacy is everything. A merchants\' council rules this planet. One bottle of noble perfume gets you into the council chamber.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'What we want is the Superbia Graviton. We need an exclusive license to mine it.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s my field. I\'ve worked with the Superbia merchants\' council before. One bottle of noble perfume and the chamber doors swing open.'}
+  ],
+
+    // ─── CH09-B "Infiltration" (P12 arrival) ───
+  p4_ch09b:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Galactic Chaos Crystals. A resource found only in the Void rifts.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'The Kapteyn-b rift. The most accessible of the Void planets. But—'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Void space follows different physical laws. Time slows, space folds. A ship\'s navigation can stop working properly.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Fifteen Galactic Chaos Crystals. Without them, building the Geobukseon is impossible.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And on top of that — you said Dr. Lee Hwi-so is somewhere near there. We have to find him.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Two birds, one stone. Let\'s move.'}
+  ],
+
+    // ─── CH09-C "Crush the Supply Line" (Q18-01 done) ───
+  p4_ch09c:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Navigation assist is down. We\'ll have to enter the route manually using a rift map shard.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'A rift map shard... those only come from the Void planets. Lucky for us, I picked some up out on the frontier.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We\'re going in.'}
+  ],
+
+    // ─── CH09-D "Gwanggaeto Joins" (Q18-05 done) ───
+  p4_ch09d:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That ship... it\'s the research vessel I heard about in the Superbia tavern.'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'Who are you? I can\'t believe anyone knows these coordinates.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We fight Eisenklaue alongside the resistance. Are you Dr. Lee Hwi-so?'},
+    {char:'hero09', name:'Lee Hwi-so', color:'#9ee7ff', text:'...The equation is complete. Combine Void energy with antimatter and you get a weapon energy this universe has never seen.'},
+    {char:'hero09', name:'Lee Hwi-so', color:'#9ee7ff', text:'Can the Geobukseon carry that energy? If you have the blueprints...'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'I have them.'}
+  ],
+
+    // ─── CH10-A "The Art of Forgery" (P16 arrival) ───
+  p4_ch10a:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Krieg Magma Core ×8. Resistance Antimatter ×25. Superbia Graviton ×10. Galactic Chaos Crystal ×15. All secured.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...At last.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'The construction bay is ready. Jang Yeong-sil, whenever you\'re ready to begin.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s the dog getting excited, no doubt about it.'}
+  ],
+
+    // ─── CH10-A2 "Echo of Trafalgar" (Q19-05 start · meet Nelson) ───
+  p4_ch10a2:[
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'On the frontier of Kepler-442b — wreckage signal detected at coordinates roughly 200 years old. Royal Navy identification code \'HMS Victory\'.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Victory... the flagship of Trafalgar.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Admiral Nelson of Britain — fell at the Battle of Trafalgar in 1805. But the Victory, out in space? This — this is a deep-space preservation capsule.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Analyzing the coordinates with the Aureus Information Chip. We\'re going in.'}
+  ],
+
+  // ─── CH10-A3 "Nelson Joins" (Q19-05 done) ───
+  p4_ch10a3:[
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(waking from the capsule) ...It was Britain. The last thing I saw was the mist of Trafalgar.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(auto-translated from English) Admiral Nelson. I am Yi Sun-sin.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'The turtle-ship admiral of the East... I have heard the name. To meet a hero of the same sea, here among the stars.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'I never thought I would feel the winds of Trafalgar again. I will stand with your fleet — wherever this last battle may be.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Crane Wing and the Trafalgar line — bind the tactics of two seas into one, and not even Ursa can stop us.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Horatio Nelson (H05). Royal Navy formation data acquired → Crane Wing accuracy +15%.'}
+  ],
+
+  // ─── CH10-B "Break the Fortress" (P14 arrival) ───
+  p4_ch10b:[
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'The Geobukseon\'s maiden flight test. Are you ready?'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'With this, we go to smash Eisenklaue\'s stronghold, Ares-III.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 5 — planets 21 through 25. The end of Eisenklaue. The final battle, aboard the Geobukseon.'}
+  ],
+
+    // ─── CH10-C "Escape Coordinates" (Q20-03 done · Phase 4 end) ───
+  p4_ch10c:[
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Command-room data recovered. Eisenklaue has — fled.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Where to?'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Zeta Reticuli. Ursa Major\'s home base.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That means Ursa is sheltering Eisenklaue. The final battle is upon us.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the boss. It ends only when we take them down ourselves.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before we can reach Zeta Reticuli — we have to pass through the Kapteyn-b rift. Einstein is there. He\'s the authority on Void stabilization theory. He can neutralize Ursa\'s Void shield.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Recruit Einstein → cross the Void → destroy Ursa → liberate Earth. The order is set.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 4 complete. Phase 5 — planets Kapteyn-b rift to Earth · Einstein joins · cross the Void rift · destroy Ursa Major · liberate Earth.'}
+  ]
+};
 
 // 행성별 인트로 컷씬 — 행성 첫 도착 시 자동 재생
 const PHASE4_PLANET_INTROS={

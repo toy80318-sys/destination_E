@@ -576,7 +576,92 @@ const PHASE2_CUTSCENES_KO={
   ]
 };
 
-const PHASE2_CUTSCENES_EN={};
+const PHASE2_CUTSCENES_EN={
+
+  // ─── CH03 "The Key to Decrypting the Chip" (P19 arrival) ───
+  p2_ch03:[
+    {char:'nav_ai', name:'Nav AI', color:'#38bdf8', text:'Attempting to decrypt the Aureus data chip — encryption confirmed. Chiks scrambling frequency detected. Decryption impossible with current equipment.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Marco Polo. They say he\'s an independent broker in this sector. A smuggler who slips past Chiks eyes — he\'ll have the comms gear we need.'},
+    {char:'chiks_vanguard', name:'Chiks Vanguard', color:'#ef4444', text:'This is Chiks-controlled airspace. Approaching without clearance will be treated as a hostile act.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'This is a galactic public lane. Move.'},
+    {char:'baekgu2_anger1', name:'Baekgu', color:'#66ddff', text:'Switching to combat mode. Three enemy units detected.'}
+  ],
+
+  // ─── CH03-A "Marco\'s First Intel" (Q06-M complete) ───
+  p2_ch03a:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'{commander}, I\'ve got it. Ross 128-b, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'And... one more odd thing. An old capsule that isn\'t on that sector\'s disposal manifest. The design is centuries old.'}
+  ],
+
+    // ─── CH03-B "Secret in the Scrap Heap" (P04 arrival) ───
+  p2_ch03b:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'There, at the edge of the disposal zone... an old object that\'s not on any manifest. The design is nothing like ours. I\'m picking up a faint life sign.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We dig it out.'}
+  ],
+
+    // ─── CH03-C "Gagarin\'s Nav Data" (Q07-M complete) ───
+  p2_ch03c:[
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This route — the Soviet space agency classified it back in the sixties. Krieg uses it now. Mechanica parts pass to Krieg at the Gliese 436 basin trading post. The agent\'s codename is \'Ork\'.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Ork... that name\'s come up among the border smugglers. It\'s the Chiks-Mechanica frontier, so jurisdiction is murky there.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Catch Ork and the next route opens up. We move out.'}
+  ],
+
+    // ─── CH04 "Double Dealing at the Frontier" (P20 arrival) ───
+  p2_ch04:[
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'That trading post — cargo keeps arriving that\'s on no official manifest. The agent \'Ork\' runs things here.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Chiks surveillance ships are on patrol. Our best bet for infiltration is to pose as traders.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We\'ve got three Chiks mutant spores. That\'s cargo from this sector. Let\'s put it to use.'}
+  ],
+
+  // ─── CH04-A "The Next Destination" (Q08-05 complete) ───
+  p2_ch04a:[
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Tesla has been abducted. Mechanica\'s greatest engineer. Krieg is forcing him to design a bio-weapon.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The surface of LHS 1140-b is an LHS crystal mine. I\'ve heard they\'ve dug down as far as seventeen levels underground.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We have to destroy that weapon\'s blueprints. And we have to save Tesla too.'}
+  ],
+
+    // ─── CH04-B "Beneath the Surface" (P07 arrival) ───
+  p2_ch04b:[
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'That conveyor line is strange. Some of the crystal is being sent underground. The route runs far too deep for a mine warehouse.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The workers are terrified. Krieg is keeping them in line through fear.'}
+  ],
+
+    // ─── CH04-C "The Name Yi Sun-sin" (Q09-03, after rescuing Tesla) ───
+  p2_ch04c:[
+    {char:'hero07', name:'Tesla', color:'#66ffff', text:'Do you know why Krieg sealed away General Yi Sun-sin\'s capsule? Centuries ago — when the Chiks and Ursa Major blockaded Earth and Krieg\'s Eisenklaue seized the space lanes — he was the only one who resisted to the very end. Eisenklaue forcibly extracted his tactical data and folded it into the Krieg defense algorithm. He\'s a living shield. If General Yi Sun-sin wakes and moves, the Krieg defense algorithm could collapse on its own.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'So if we get him out... we hold the weakness of the Krieg defense algorithm?'},
+    {char:'hero07', name:'Tesla', color:'#66ffff', text:'Exactly. That\'s why Krieg will never let him go.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'The route into the underground prison — Marco, can you pull up a map of the sector?'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'...Of course I can.'}
+  ],
+
+    // ─── CH04-D "Before the Fortress" (P13 arrival) ───
+  p2_ch04d:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'A frontal assault is suicide. The outer batteries alone outnumber us three to one.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'There\'s a route into the underground prison. A natural fissure — wide enough for a single shuttle to slip through.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'General Yi Sun-sin has been locked in there for centuries. We\'re the ones who end it.'}
+  ],
+
+    // ─── Yi Sun-sin joins (Q10-M) ───
+  p2_yi_join:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'[in Joseon tongue] This place... how much time has passed?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Activating automatic translation to the common galactic tongue.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So it is {commander} who woke me. I am in your debt.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'... My weapons and armor were sealed away with me. Take them. My hands have already become your hands.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'General. Let us go together.'},
+    {char:'baekgu2_smile1', name:'Baekgu', color:'#66ddff', text:'SW01 weapon set + SA01 armor set auto-equipped. Firepower greatly increased.'}
+  ],
+
+  // ─── CH05 "The Gathering" (Phase 2 finale · Q10-04 complete) ───
+  p2_ch05:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue... so that is the one behind my sealing. To use my tactical data as a shield. In Phase 3, there is a debt I must settle, without fail.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Now we know the weakness of the Krieg defense algorithm. General Yi Sun-sin\'s tactics point straight back at their blind spot.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'I\'ll chart the next route. Krieg\'s supply outposts — I know every one of them.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'I destroyed the bio-weapon blueprints at LHS. But there\'s sure to be a backup somewhere.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Let us lay the next plan. {commander}.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 2 complete. Phase 3 — planets 11 through 15 · alliance with the resistance.'}
+  ]
+};
 
 // 행성별 인트로 컷씬 — 행성 첫 도착 시 자동 재생
 const PHASE2_PLANET_INTROS={

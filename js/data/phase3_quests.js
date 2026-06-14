@@ -591,7 +591,97 @@ const PHASE3_CUTSCENES_KO={
 
   };
 
-const PHASE3_CUTSCENES_EN={};
+const PHASE3_CUTSCENES_EN={
+
+  // ─── CH05-A "First Contact" (P22 arrival) ───
+  p3_ch05a:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eastern shipping-lane frequency... beneath Kepler-62e. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away are running that base.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Resistance? Do you know how dangerous that place is? It\'s a lone outpost surrounded by the Chiks.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That only makes them stronger.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...If we bring the supplies we pulled out of Krieg, they\'ll trust us.'}
+  ],
+
+    // ─── CH05-B "Roots of Solidarity" (Q11-M complete) ───
+  p3_ch05b:[
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. Four hundred years ago they dug out this shelter, and here we were born.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So you survived." *(quietly)* "You must have waited a long time.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Survival alone wasn\'t enough. Right now Krieg has planted spies in our supply network and is shaking us from within. We desperately need comrades we can trust.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Mars Resistance... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Let\'s deal with it together.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'A token of solidarity first. Earth Iron Ore — it\'s our tradition to swear our oath on something that came from Earth\'s own soil.'}
+  ],
+
+    // ─── CH05-C "The Enemy Within" (P23 arrival) ───
+  p3_ch05c:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Those cargo-classification codes... they\'re Resistance freight, all right, but the flight pattern is a Krieg distribution routine.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'They\'ve infiltrated. They\'ve seized the supply network and are siphoning off the goods.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'We need to go in first and confirm it. Quietly.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s my specialty.'}
+  ],
+
+    // ─── CH06-A "The Corporation\'s Betrayal" (Q12-03 complete) ───
+  p3_ch06a:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Cornelius. If the Aureus corporation is selling technical blueprints to Krieg... this is more than the pursuit of profit. Bio-weapon schematics have flowed into their hands.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Gliese 667Cc. The Cornelius headquarters is there.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The whistleblower Ogren mentioned — \'Doctor Eva\'. She\'s on Gliese 667Cc. She said if we make contact, she can give us hard evidence.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We can\'t make an enemy of Aureus without proof. We have to confirm it first.'}
+  ],
+
+    // ─── CH06-B "Gwanggaeto\'s Shadow" (Q13-05 complete) ───
+  p3_ch06b:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That ship... I\'ve seen it before. A free merchant who always outbids everyone at the galactic auction market.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'So you\'re {commander}. I hear you\'re fighting Krieg.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...Gwanggaeto. The name isn\'t unfamiliar to me." *(low)* "I knew your merchant fleet held the auction-market records.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'The rumors are accurate. I belong to no faction in this galaxy. I am a free merchant. But I do not trade alongside Krieg.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'Take this planet into my hands — and I\'ll deal with you. But you must place the highest bid at the auction. I\'m judging whether you\'re worth joining.'}
+  ],
+
+    // ─── CH06-C "The Master Engineer" (Q13-H complete) ───
+  p3_ch06c:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Geobukseon — the warship I built during the Imjin War. Reproduced with modern materials, it could punch straight through a Krieg fortress.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Who\'s going to design it? None of us is a naval engineer.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Mechanica Gearworld. There\'s an engineer there named Jang Yeong-sil. A cloned engineer who inherited the technical DNA of the Joseon-era Jang Yeong-sil.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'They call him \'Jang Yeong-sil 2.0\'. He\'s a legend in Gearworld.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We have to bring him in. The Geobukseon can\'t be completed without him.'}
+  ],
+
+    // ─── CH06-D "Two Names" (P11 arrival) ───
+  p3_ch06d:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'You want to build a Geobukseon?'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'I\'ve brought my blueprints.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'I\'ll get you whatever you need.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'...Three Deuterium Batteries. Fuel for my simulator. Bring them and I\'ll do it.'}
+  ],
+
+    // ─── CH07-A "The Return" (Q14-M complete) ───
+  p3_ch07a:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Completing the Geobukseon needs 25 units of Resistance Antimatter. What we have right now is...'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Eight to ten at most.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The Resistance headquarters at Titan Base should have a stockpile. We need to get it from the Ranger.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan Base... and then. Earth.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Earth." *(a moment\'s silence)* "I\'ve dreamed of it for so long.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our heading is Titan Base. Let\'s formalize the alliance and secure the R06.'}
+  ],
+
+    // ─── CH07-B "Headquarters" (P26 arrival) ───
+  p3_ch07b:[
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'So you came in person. The Cornelius affair — we heard about it too. If Eisenklau personally bought that technology, the threat is graver than we thought.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'That\'s why we came. We\'re going to build the Geobukseon. We need 25 units of Resistance Antimatter and the support of a Resistance fabrication bay.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'...We must sign a formal alliance pact first. In Earth\'s way.'}
+  ],
+
+    // ─── CH07-C "The War Begins" (Q15-M complete · end of Phase 3) ───
+  p3_ch07c:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The materials list for the Resistance Antimatter is complete. We can begin building the Geobukseon.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Resistance Antimatter ×25, Galactic Chaos Crystal ×15, Superbia Graviton ×10, Krieg Magma Core ×8. Secure them all and the Geobukseon is complete.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Krieg is building a new stronghold on a planet. Eisenklau is commanding it in person.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches the intel the data decoder cracked. Kepler-442b is the next target.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklau... he\'ll try to stop us with my own tactical data. But I know his weaknesses too.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Once the Geobukseon is complete, even Eisenklau\'s fortress can be breached.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 4 — planets 16~20. Hunt Eisenklau. Complete the Geobukseon.'}
+  ],
+
+  };
 
 // 행성별 인트로 컷씬 — 행성 첫 도착 시 자동 재생
 const PHASE3_PLANET_INTROS={

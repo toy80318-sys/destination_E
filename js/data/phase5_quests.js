@@ -266,7 +266,70 @@ const PHASE5_CUTSCENES_KO={
   ]
 };
 
-const PHASE5_CUTSCENES_EN={};
+const PHASE5_CUTSCENES_EN={
+
+  // ─── CH11-A "Edge of the Rift" (P28 arrival) ───
+  p5_ch11a:[
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Captain b a rift, Captain b a rift. Spacetime is warped here. Without an Aureus Solar Core stabilizer, the fleet will be torn apart.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Dr. Einstein is in there. He went in alone to prove his Void stabilization theory.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Alone? That\'s insane.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'That\'s his way. Proving a theory with his own body.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We\'re going in. Three Aureus Solar Cores, three Mechanica quantum chips — that\'s enough.'}
+  ],
+
+  // ─── CH11-B "Breath of Spacetime" (Q21-01 complete) ───
+  p5_ch11b:[
+    {char:'baekgu1_surprise', name:'Baekgu', color:'#66ddff', text:'(spacetime distortion) ⚠ Lateral spacetime axis fluctuating ±0.3. Correcting fleet attitude.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'This is — like a storm at sea. Read the currents and we can pass through.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'The Turtle Ship is holding against the rift. The hull is taking it well.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'(pointing ahead) There — light is leaking through.'}
+  ],
+
+  // ─── CH11-C "Einstein Joins" (Q21-02 complete) ───
+  p5_ch11c:[
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Well met. I have waited a hundred years inside this rift. But spacetime is relative — to me it was not so long.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Doctor. We are going to take down Ursa Major. We need your theory.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Ursa\'s Void shield — strike it at the right frequency and it resonates loose in 0.3 seconds. I will run the calculations for you.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) Doctor — working together again after a hundred years.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Tesla. Your wireless power was right all along. Time has proven it.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: A. Einstein (H06). All eight heroes complete — fleet at maximum reinforcement.'}
+  ],
+
+  // ─── CH12-A "Navigation of Orion" (P29 arrival) ───
+  p5_ch12a:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'All ships — follow the Turtle Ship.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff8844', text:'The day has come to tear down that fortress with my own eyes.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Ranger\'s signal is in. The entire resistance fleet — ready for battle.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Turtle Ship output at 120%. Electric shield — activated.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Send word to Eisenklau. — Tell him this is the end.'}
+  ],
+
+    // ─── CH12-B "Decoding the Shield" (Q22-02 complete) ───
+  p5_ch12b:[
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'It\'s over, Eisenklau.'},
+    {char:'system', name:'Eisenklau', color:'#9ee7ff', text:'...No. The will of the Void Lord — it is not me alone. Ursa Major is merely one of his hands and feet.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Void Lord. So that was the one behind Krieg.'}
+  ],
+
+    // ─── CH12-C "Turtle Ship Final Upgrade" (Q22-05 complete) ───
+  p5_ch12c:[
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'Turtle Ship — final upgrade complete. Void-shield decoding gear integrated. ATT and INT passives raised to +50%.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago the Turtle Ship — broke 133 ships with twelve. Today\'s Turtle Ship — with eight heroes, can do far greater things.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Conquest — must stop when the hand begins to tremble. Right now our hands — do not tremble.'},
+    {char:'baekgu2_smile2', name:'Baekgu', color:'#66ddff', text:'Turtle Ship + 8 heroes + Void-shield decoding gear + spacetime-correction algorithm — all preparations complete.'}
+  ],
+
+  // ─── CH12-D "The Final Coordinates" (Q22-06 complete · Phase 5 end) ───
+  p5_ch12d:[
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Spacetime-correction algorithm — applied across the whole fleet. Accuracy +20%. We can even predict Ursa\'s evasion patterns.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'I\'ve gathered all the intel. Nothing left to scout. Now — it\'s the fight.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Energy fully charged. Turtle Ship propulsion core at 100%.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Earth is — just beyond. When we finish this — people will look at the sky again.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Coordinates — Zeta Reticuli. Ursa Major\'s stronghold.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'... We\'re going in.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 5 complete. Phase 6 — final battle at Zeta Reticuli and Earth. Defeat Ursa Major and liberate Earth.'}
+  ]
+};
 
 // 행성별 인트로 컷씬 — 행성 첫 도착 시 자동 재생
 const PHASE5_PLANET_INTROS={

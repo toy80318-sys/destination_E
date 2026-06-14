@@ -550,7 +550,92 @@ const PHASE1_CUTSCENES_KO={
   };
 
 // 영문 컷씬 — 폴백: EN 미존재 시 KO 사용
-const PHASE1_CUTSCENES_EN={};
+const PHASE1_CUTSCENES_EN={
+
+  // ─── CH01-A "100년의 잠" (P01 시작) ───
+  p1_ch01a:[
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'{commander}. Wake up. Energy reserves at 7%. If you don\'t rise now, there won\'t be a next time.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'...How long has it been?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'One hundred years, three months, twelve days. Earth is still under blockade.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Earth... Ursa Major still has it blockaded?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Nothing\'s changed since we left. If anything, the noose has tightened.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Save the sentiment for later. First, we survive. There are Scrap Frames scattered all over the hangar. Salvage them and we\'ll cover the repairs and fuel.'}
+  ],
+
+    // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
+  p1_ch01b:[
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The Wolf Trading Post. A trade station on Superbia Ring 1. It\'s still operational.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'There are people there?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'There are. Superbia gravity crystals — they go cheap here. You can sell them on Aureus for 40% more. A good way to raise your first funds.'}
+  ],
+
+    // ─── CH01-C "첫 교역소" (P03 도착) ───
+  p1_ch01c:[
+    {char:'aori', name:'Aori', color:'#d4a574', text:'You came from Proxima b? There\'s still anybody left out there?'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'I was asleep for quite a while.'},
+    {char:'aori', name:'Aori', color:'#d4a574', text:'Huh. So what are you selling?'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap.'}
+  ],
+
+    // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
+  p1_turtle1:[
+    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'(handing over a worn data chip) Take this too. Some Korean left it here a hundred years ago — called it the "Turtle Ship."'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Turtle Ship...?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Data analysis — ship blueprint fragment, 1 of 3. The skeletal frame schematic. Find the other two and it can be restored.'}
+  ],
+
+  // ─── 마르코 폴로 영입 ───
+  p1_marco_join:[
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Yi Sun-sin? Haven\'t heard that name in ages. The old-timers out by Eridani said they caught that signal.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Let\'s team up. I\'ll handle the intel.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Marco Polo — registered as information broker. Beginning trust tracking.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Glad to have you.'}
+  ],
+
+  // ─── CH02-A "황금의 항구" (P05 도착) ───
+  p1_ch02a:[
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Aureus Ring 1. Taxes are steep and the regulations are strict. Superbia gravity crystals are rare here, so they fetch a high price.'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'Hold on, look over there — that survey ship is getting hit by pirates, isn\'t it?'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We move to rescue.'}
+  ],
+
+    // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
+  p1_gagarin_join:[
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Thanks for getting my data chip back. I\'ll come along to repay the favor.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'There\'s a very old comms pattern coming from the direction of the Nexus Prime LHS mines. Looks a hundred years old. It\'s tied to a name — Yi Sun-sin.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'And — the data holds a ship hull schematic too. A spiked-ridge structure. It pairs perfectly with that frame fragment you\'re carrying.'},
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Turtle Ship blueprint fragment 2 of 3 secured. The hull spiked-ridge schematic. With just one more core fragment, restoration is possible.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Let\'s go.'}
+  ],
+
+  // ─── CH02-B "크리그의 그림자" (P06 도착) ───
+  p1_ch02b:[
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'The signal leads deeper in from here. But... I can see Krieg pirate markings.'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'Krieg\'s been occupying the place for three weeks now, using mine-tax collection as their excuse. The miners are being exploited.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Confirming three Krieg light craft and one medium command ship. Seven civilian miners held captive.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'To think I\'d run into Krieg here...'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'They\'re not just blockading Earth. They\'re reaching into this sector too.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'People first.'}
+  ],
+
+    // ─── CH02-C "신호의 근원" (P09 도착) ───
+  p1_ch02c:[
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This is it. This antenna has been relaying the Yi Sun-sin signal.'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'But an outlaw pirate band has seized the base. We\'ll have to deal with them before we can reach the antenna.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Detecting two pirate light craft and one command ship. Deployed around the base perimeter.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Hurry. Once we get the Yi Sun-sin coordinates, our next move is set.'}
+  ],
+
+    // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
+  p1_ch02d:[
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'47 Ursae Majoris b (Chiks) Ring 1... The moment we enter, we go hostile. We need to be ready.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'But Yi Sun-sin is there. And so is the way to stop Krieg.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Probability calculation... survival odds 62%. Odds of obtaining Krieg strategic intel upon rescuing Yi Sun-sin: 89%.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Baekgu, 62% is enough.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'...If you say so.'}
+  ],
+
+  };
 
 // 행성별 인트로 컷씬 매핑 — 행성 첫 도착 시 자동 재생
 const PHASE1_PLANET_INTROS={
