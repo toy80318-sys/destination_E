@@ -265,7 +265,7 @@ function _renderQuestCard(q,pid,qlist){
       +thumb
       +'<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">'
         +'<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap"><span style="font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'+(isVoidQuest?';color:'+_voidNmCol+';text-shadow:0 0 8px rgba(204,102,255,.6)':'')+'">'+q.nm+'</span><span style="font-size:10px;color:'+sc.col+';border:1px solid '+sc.bd+';border-radius:4px;padding:1px 5px;flex-shrink:0'+(isVoidQuest?';background:rgba(204,102,255,.15)':'')+'">'+sc.lbl+'</span></div>'
-        +'<div style="font-size:11px;color:'+(isVoidQuest?'#d0a8e8':'var(--dim)')+';line-height:1.4">'+q.desc+'</div>'
+        +'<div style="font-size:11px;color:'+(isVoidQuest?'#d0a8e8':'var(--dim)')+';line-height:1.4">'+(window._subTokens?window._subTokens(q.desc):q.desc)+'</div>'
         +progHTML
       +'</div>'
     +'</div>'

@@ -1480,6 +1480,23 @@ function rerenderTab(renderFn){
 // ── PNG 이미지 경로 시스템 (함선/행성/크루/파츠 이미지 헬퍼) → js/modules/png-image.js 로 분할 (2026-06-12, 사용자 요청: 긴 코드 분할)
 
 // ═══ HUB ════════════════════════════════════════════════════
+// 스토리/퀘스트 텍스트 토큰 치환 ({사령관}/{commander}·{함선}/{ship}·{기함}/{flagship}·{회사}/{company})
+//   → 프로필의 실제 이름·함선명으로 교체 + 중괄호 제거. story-scenes-pc.js 의 rep() 과 동일 규칙.
+//   퀘스트 설명·시나리오 카드·도감 일기 등 컷씬 외 텍스트에서 공용으로 사용.
+function _subTokens(s){
+  if(typeof s!=='string') return s;
+  var p=(window.G&&G.profile)||{};
+  var isEn=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
+  var defCmd=isEn?'Commander':'사령관', defShip=isEn?'Mustang':'머스탱',
+      defFlag=isEn?'Great Hwarang':'위대한 화랑', defCompany=isEn?'Big Picture Space':'빅 픽처 스페이스',
+      flagSfx=isEn?' (Geobukseon-class)':'(거북선급)';
+  return s.replace(/\{사령관\}/g,p.name||defCmd).replace(/\{commander\}/gi,p.name||defCmd)
+    .replace(/\{함선\}/g,p.ship||defShip).replace(/\{ship\}/gi,p.ship||defShip)
+    .replace(/\{기함\}/g,p.ship?(p.ship+flagSfx):defFlag).replace(/\{flagship\}/gi,p.ship?(p.ship+flagSfx):defFlag)
+    .replace(/\{회사\}/g,p.company||defCompany).replace(/\{company\}/gi,p.company||defCompany);
+}
+window._subTokens=_subTokens;
+
 function showHub(){
   show('s-hub');
   // 언어 전환(reload) 후, 한국어로 스폰돼 저장된 시나리오 퀘스트를 현재 언어로 재지역화.
@@ -1998,7 +2015,9 @@ function renderMain(body){
           const _baekgu=_ql.filter(q=>q.npc==='백구').length;
           if(_story===0)return '';
           const _avail=_ql.filter(q=>q.type==='story_quest'&&q.status==='available').length;
-          return `<span onclick="hubTab('quest')" style="color:#ffd700;font-size:13px;white-space:nowrap;background:rgba(255,215,0,.12);border:1px solid #ffd70066;border-radius:5px;padding:1px 8px;cursor:pointer;font-weight:bold" title="제독·백구 퀘스트 ${_story}개 (수락 가능 ${_avail}개) — 클릭하여 이동">📜 시나리오 ${_story}${_avail>0?' · 🆕 '+_avail:''}${_baekgu>0?' · 🐕 '+_baekgu:''}</span>`;
+          const _enSB=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
+          const _sbTitle=_enSB?`Admiral/Baekgu quests: ${_story} (${_avail} available) — click to open`:`제독·백구 퀘스트 ${_story}개 (수락 가능 ${_avail}개) — 클릭하여 이동`;
+          return `<span onclick="hubTab('quest')" style="color:#ffd700;font-size:13px;white-space:nowrap;background:rgba(255,215,0,.12);border:1px solid #ffd70066;border-radius:5px;padding:1px 8px;cursor:pointer;font-weight:bold" title="${_sbTitle}">📜 ${_enSB?'Scenario':'시나리오'} ${_story}${_avail>0?' · 🆕 '+_avail:''}${_baekgu>0?' · 🐕 '+_baekgu:''}</span>`;
         })()}
         ${G._earthLiberated?`<button onclick="replayEnding()" style="padding:3px 10px;border:1px solid #cc66ff;border-radius:5px;background:rgba(204,102,255,.12);color:#cc66ff;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap" title="${I18N.t('title.replayUrsaEnding')}">${I18N.t('ui.replayEnding')}</button>`:''}
         ${(()=>{
@@ -2050,13 +2069,15 @@ function renderMain(body){
             const _col=!_unlocked?'#666':(_seenScene?'#88ccff':'#ffd700');
             const _bg=!_unlocked?'rgba(80,80,80,.10)':(_seenScene?'rgba(0,243,255,.08)':'rgba(255,215,0,.18)');
             const _pulse=(idx===0&&!_seenScene)?'animation:cutscenePulse 1.6s ease-in-out infinite;':(_unlocked&&!_seenScene?'animation:cutscenePulse 2.2s ease-in-out infinite;':'');
-            const _label='💬 대화기록 '+(idx+1);
+            const _enDL=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
+            const _dlName=_enDL?'Dialogue Log':'대화기록';
+            const _label='💬 '+_dlName+' '+(idx+1);
             const _onclick=_unlocked
               ? `onclick="(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.forceReplayScene)?window.STORY_SCENES_PC.forceReplayScene('${sid}'):notify('STORY_SCENES_PC 미로드','err')"`
               : '';
             const _title=!_unlocked
-              ? '이전 대화기록을 먼저 시청해야 활성화됩니다'
-              : (_seenScene ? '대화기록 '+sid+' (시청 완료)' : '대화기록 '+sid+' — 클릭하여 재생');
+              ? (_enDL?'Watch the previous dialogue log first to unlock':'이전 대화기록을 먼저 시청해야 활성화됩니다')
+              : (_seenScene ? _dlName+' '+sid+(_enDL?' (watched)':' (시청 완료)') : _dlName+' '+sid+(_enDL?' — click to play':' — 클릭하여 재생'));
             return `<button ${_onclick} ${!_unlocked?'disabled':''} style="padding:3px 10px;border:1px solid ${_col};border-radius:5px;background:${_bg};color:${_col};cursor:${!_unlocked?'not-allowed':'pointer'};font-size:12px;font-family:inherit;white-space:nowrap;font-weight:bold;${_pulse};opacity:${!_unlocked?'.55':'1'}" title="${_title}">${_label}</button>`;
           }).join('') + `<style>@keyframes cutscenePulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 8px transparent}}</style>`;
         })()}

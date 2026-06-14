@@ -368,7 +368,8 @@
     if(!unlocked)return `<div style="background:rgba(80,80,80,.08);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:12px;color:#777">${I18N.t('voyage.locked')}</div>`;
     counter.unlocked++;
     const lines=(CUT&&CUT[sid])||[];
-    const preview=lines.slice(0,2).map(l=>`<div style="font-size:12px;color:var(--txt);line-height:1.6;word-break:keep-all"><span style="color:${l.color||'var(--cyan)'};font-weight:bold">${l.name||''}</span> "${String(l.text||'').slice(0,80)}${String(l.text||'').length>80?'…':''}"</div>`).join('');
+    const _sub=window._subTokens||function(s){return s;};
+    const preview=lines.slice(0,2).map(l=>{const _tx=_sub(String(l.text||''));return `<div style="font-size:12px;color:var(--txt);line-height:1.6;word-break:keep-all"><span style="color:${l.color||'var(--cyan)'};font-weight:bold">${_sub(l.name||'')}</span> "${_tx.slice(0,80)}${_tx.length>80?'…':''}"</div>`;}).join('');
     const replayBtn=(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.forceReplayScene==='function')
       ?`<button onclick="window.STORY_SCENES_PC.forceReplayScene('${sid}')" style="margin-top:5px;padding:3px 12px;border:1px solid var(--gold);border-radius:5px;background:rgba(255,215,0,.1);color:var(--gold);cursor:pointer;font-size:11px;font-family:inherit">${I18N.t('voyage.replay')}</button>`:'';
     return `<div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 12px;margin-bottom:6px">
@@ -392,7 +393,10 @@
     for(let ph=1;ph<=6;ph++){
       const Q=window['PHASE'+ph+'_QUESTS'];
       const INTRO=window['PHASE'+ph+'_PLANET_INTROS']||{};
-      const CUT=window['PHASE'+ph+'_CUTSCENES_KO']||{};
+      const _cutKo=window['PHASE'+ph+'_CUTSCENES_KO']||{};
+      const _cutEn=window['PHASE'+ph+'_CUTSCENES_EN']||{};
+      // 영문판: EN 컷씬 우선 + KO 폴백 (도감 연대기 대화기록을 현재 언어로 표시)
+      const CUT=(lang==='en')?Object.assign({},_cutKo,_cutEn):_cutKo;
       if(!Q)continue;
       const counter={unlocked:0,total:0};
       let body='';
@@ -433,8 +437,7 @@
         const _dt=(_diary.title&&(_diary.title[lang]||_diary.title.ko))||'';
         const _shipNm=(G.profile&&G.profile.ship)||I18N.t('ui.shipDefault');
         const _coNm=(G.profile&&G.profile.company)||I18N.t('ui.companyDefault');
-        const _dx=(_diary[lang]||_diary.ko||'').split('{함선}').join(_shipNm).split('{ship}').join(_shipNm)
-                  .split('{회사}').join(_coNm).split('{company}').join(_coNm);
+        const _dx=(window._subTokens?window._subTokens(_diary[lang]||_diary.ko||''):((_diary[lang]||_diary.ko||'').split('{함선}').join(_shipNm).split('{ship}').join(_shipNm).split('{회사}').join(_coNm).split('{company}').join(_coNm)));
         if(_allUnlocked){
           diaryPanel=`<div style="background:linear-gradient(160deg,rgba(255,215,0,.06),rgba(0,243,255,.04));border:1px solid ${phCol}66;border-radius:10px;padding:14px 16px">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${_baekguMini()}<div style="font-size:13px;font-weight:bold;color:${phCol}">🐕 ${I18N.t('voyage.diaryTitle')} — ${_dt}</div></div>
