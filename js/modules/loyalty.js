@@ -377,7 +377,7 @@ function doNextTurn(){
         const _fmId=FACTION_MATS[_fac2];
         _st[_fmId]=Math.floor(Math.random()*8)+4;
       }
-      const _seed2=_pid.split('').reduce((a,c)=>a+c.charCodeAt(0),0)+G.turn;
+      const _seed2=stringToSeed(_pid)+G.turn;
       _mats.forEach((mat,i)=>{if((_st[mat.id]||0)===0&&((_seed2+i*3)%3)===0)_st[mat.id]=Math.floor(Math.random()*10)+4;});
       notify(I18N.t('notify.matsFullRestock'),'ok');
     } else {

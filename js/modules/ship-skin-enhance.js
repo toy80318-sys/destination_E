@@ -143,7 +143,7 @@ function _enhanceMatsFor(ship,curLv){
   // ship.id 시드로 결정론적 4종 선택 — 사용자가 미리 준비 가능
   const allMats=(typeof COMMODITIES!=='undefined'?COMMODITIES:[]).filter(c=>c.material).map(c=>c.id);
   if(allMats.length<4)return allMats.slice();
-  const baseSeed=(ship.id||'').split('').reduce((s,c)=>s+c.charCodeAt(0),0)+(curLv+1)*13;
+  const baseSeed=stringToSeed(ship.id)+(curLv+1)*13;
   const picks=[];const used=new Set();
   for(let i=0;i<4;i++){
     let idx=((baseSeed+i*7)%allMats.length+allMats.length)%allMats.length;

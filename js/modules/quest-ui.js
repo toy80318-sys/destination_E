@@ -79,7 +79,7 @@ function _questThumbHtml(q,size){
 function submitBuyQuest(pid,idx){
   const q=G.quests[pid]&&G.quests[pid][idx];
   if(!q||q.status!=='active'||q.type!=='buy')return;
-  const have=(G.cargo||[]).filter(c=>c.id===q.targetCommId).reduce((s,c)=>s+(c.qty||0),0);
+  const have=sumQtyById(G.cargo,q.targetCommId);
   if(have<q.required){notify(I18N.t('notify.qtyShort',{have,need:q.required}),'err');return;}
   // 화물에서 N개 차감 (여러 슬롯 합산)
   let toRemove=q.required;
@@ -180,7 +180,7 @@ function _renderQuestCard(q,pid,qlist){
     progHTML='<div style="font-size:11px;color:var(--cyan);margin:3px 0">'+I18N.t('qcard.travelComplete',{nm:tnm})+'</div>';
   }
   if(q.type==='buy'&&q.status==='active'){
-    const _have=(G.cargo||[]).filter(c=>c.id===q.targetCommId).reduce((s,c)=>s+(c.qty||0),0);
+    const _have=sumQtyById(G.cargo,q.targetCommId);
     const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;
     const _pct=Math.min(100,Math.round(_have/q.required*100));
     progHTML='<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:2px"><span>'+I18N.t('qcard.buyHoldingLabel',{nm:_cn})+'</span><span>'+_have+'/'+q.required+'</span></div><div style="height:4px;background:var(--panel);border-radius:3px;overflow:hidden"><div style="width:'+_pct+'%;height:100%;background:#ff8844;border-radius:3px;transition:width .3s"></div></div></div>';
@@ -189,7 +189,7 @@ function _renderQuestCard(q,pid,qlist){
   // 공통 스타일 (font-size:18px, padding:8px 18px → 기존 대비 약 2배)
   const _BTN_STYLE='font-size:14px;padding:6px 14px;font-weight:bold;line-height:1.15;min-width:70px;border-radius:6px;letter-spacing:.4px';
   const buySubmitBtn=(q.type==='buy'&&q.status==='active')?(()=>{
-    const _have=(G.cargo||[]).filter(c=>c.id===q.targetCommId).reduce((s,c)=>s+(c.qty||0),0);
+    const _have=sumQtyById(G.cargo,q.targetCommId);
     const _ok=_have>=q.required;
     return '<button class="btn" style="'+_BTN_STYLE+';background:rgba(255,136,68,'+(_ok?'.2':'.05')+');border:1px solid #ff8844;color:#ffaa66'+(_ok?';animation:pulse 1.5s infinite':';opacity:.5')+'" '+(_ok?'':'disabled')+' onclick="submitBuyQuest(\''+pid+'\','+realIdx+')">'+I18N.t('qcard.reportBtn')+'</button>';
   })():'';

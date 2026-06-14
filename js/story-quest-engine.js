@@ -224,8 +224,8 @@ function _storyQuestCurrentProgress(q){
   // gather/buy — cargo + inventory + materials 전부 합산 (보상 수령 위치 무관)
   if((obj.type==='gather'||obj.type==='buy')&&obj.item){
     const item=obj.item;
-    const cargoQty=(G.cargo||[]).filter(c=>c.id===item).reduce((s,c)=>s+(c.qty||0),0);
-    const invQty=(G.inventory||[]).filter(i=>i.id===item).reduce((s,i)=>s+(i.qty||0),0);
+    const cargoQty=sumQtyById(G.cargo,item);
+    const invQty=sumQtyById(G.inventory,item);
     const matQty=(G.materials&&G.materials[item])||0;
     return cargoQty+invQty+matQty;
   }

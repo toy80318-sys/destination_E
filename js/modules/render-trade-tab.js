@@ -40,7 +40,7 @@ function generateShopStock(planetId){
           if(!_st[_fmId])_st[_fmId]=Math.floor(Math.random()*8)+4;
           if(_fac2==='F07'&&!_st['R08'])_st['R08']=Math.floor(Math.random()*4)+2;
         }
-        const _seed=planetId.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+        const _seed=stringToSeed(planetId);
         _allMats.forEach((mat,i)=>{if(!_st[mat.id]&&((_seed+i)%3)===0)_st[mat.id]=Math.floor(Math.random()*10)+4;});
       }
       // 신규 추가 파츠(예: RB06~RB08 수리 로봇 등)는 즉시 보충 (4턴 대기 없이)
@@ -95,7 +95,7 @@ function generateShopStock(planetId){
     // 3종 선정: 팩션 재료 + 인접 재료 2종
     const allMats=COMMODITIES.filter(c=>c.material);
     // 재료 풀 시드: planetId 해시
-    const seed=planetId.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+    const seed=stringToSeed(planetId);
     function seededPick(arr,n,offset){
       const res=[];const used=new Set();
       for(let i=0;i<n&&res.length<arr.length;i++){
@@ -302,7 +302,7 @@ function renderTradeTab(body){
   const fac=pd?FACTION[pd.f]:null;
   generateShopStock(G.currentPlanet);
   const stock=G.shopStock[G.currentPlanet]||{};
-  const totalQty=G.cargo.reduce((s,c)=>s+c.qty,0),MAX=getCargoMax();
+  const totalQty=getTotalCargoQty(),MAX=getCargoMax();
 
   // 인벤토리 특수 아이템 판매 패널 — 사용자 명세: 난중일기 영인본(G18) 한정, qty>=2 일 때만 노출
   const _invSellList=(G.inventory||[]).filter(i=>i.id==='G18'&&i.qty>=2);
@@ -575,7 +575,7 @@ function buyComm(id,_silent=false){
     try{if(typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
     saveGame(true);return;
   }
-  const totalQty=G.cargo.reduce((s,c)=>s+c.qty,0);
+  const totalQty=getTotalCargoQty();
   const cargoMax=getCargoMax();
   if(totalQty>=cargoMax){notify(I18N.t('notify.cargoFullN',{n:totalQty,max:cargoMax}),'err');return;}
   // 구매 취소(undo)용 스냅샷 — cargo + stock + 차감된 크레딧 (사용자 요청: 구매 취소 시 이전 상태로)
@@ -629,13 +629,13 @@ function buyCargoItem(id){
   if(G._currentHubTab==='ship'||G._currentHubTab==='garage')rerenderShipOrGarage();
   saveGame(true);
 }
-function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=G.cargo.reduce((s,c)=>s+c.qty,0);if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:(comm?commDisplayNm(comm):'')||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}}
+function buyComm5(id){let bought=0;for(let i=0;i<5;i++){const total=getTotalCargoQty();if(total>=getCargoMax()||!G.shopStock[G.currentPlanet]?.[id]||G.shopStock[G.currentPlanet][id]<=0||G.credits<(COMMODITIES.find(c=>c.id===id)?.buy||0))break;buyComm(id,true);bought++;}if(bought>0){const comm=COMMODITIES.find(c=>c.id===id);notify(I18N.t('notify.commBulk',{nm:(comm?commDisplayNm(comm):'')||id,n:bought}),'ok');rerenderTab(renderTradeTab);saveGame(true);}}
 function buyCommN(id){
   const inp=document.getElementById('qty_'+id);
   const n=Math.max(1,parseInt(inp?.value)||1);
   let bought=0;
   for(let i=0;i<n;i++){
-    const total=G.cargo.reduce((s,c)=>s+c.qty,0);
+    const total=getTotalCargoQty();
     const stock=G.shopStock[G.currentPlanet];
     const comm=COMMODITIES.find(c=>c.id===id);
     if(!comm)break;
@@ -655,7 +655,7 @@ function buyCommMax(id){
   while(true){
     if(!stock[id]||stock[id]<=0){blockedReason=blockedReason||I18N.t('shop.outOfStock');break;}
     if(G.credits<comm.buy){blockedReason=blockedReason||I18N.t('shop.shortCredits');break;}
-    const total=G.cargo.reduce((s,c)=>s+c.qty,0);
+    const total=getTotalCargoQty();
     if(!comm.material&&total>=getCargoMax()){blockedReason=blockedReason||I18N.t('shop.cargoFullReason');break;}
     buyComm(id,true);bought++;
     if(bought>=1000)break;  // 안전장치 (무한루프 방지)
@@ -677,7 +677,7 @@ function buyAllComm(){
     let bought=0;
     let prevStock=stock[c.id]||0,prevCredits=G.credits;
     while(bought<1000){  // 안전 카운터 (잠금 상품/예상치 못한 케이스 대비 무한루프 방지)
-      const cur=G.cargo.reduce((s,x)=>s+x.qty,0);
+      const cur=getTotalCargoQty();
       if(!c.material&&cur>=getCargoMax())break;
       if(!stock[c.id]||stock[c.id]<=0)break;
       if(G.credits<c.buy)break;
@@ -747,8 +747,8 @@ function sellComm(idx,qty){
     // 사용자 요청: 영입 재료(난중일기 영인본 G18 등 special, !material) — 1개 보존 후 판매 허용
     //  · cargo + inventory 합산 보유량이 1 초과일 때만, 초과분만큼 매각
     //  · 가격: comm.maxSell × 마르코폴로 보너스
-    const _invQty=(G.inventory||[]).filter(x=>x.id===slot.id).reduce((s,x)=>s+(x.qty||0),0);
-    const _cargoQty=(G.cargo||[]).filter(x=>x.id===slot.id).reduce((s,x)=>s+(x.qty||0),0);
+    const _invQty=sumQtyById(G.inventory,slot.id);
+    const _cargoQty=sumQtyById(G.cargo,slot.id);
     const _total=_invQty+_cargoQty;
     if(_total<=1){notify(I18N.t('notify.keepLastMaterial'),'warn');return;}
     const _sellable=Math.min(qty||1,_total-1,slot.qty);

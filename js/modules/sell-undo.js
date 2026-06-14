@@ -457,7 +457,7 @@ function upgradeAllCargo(){
   const total=targets.reduce((s,x)=>s+getCargoUpgradePrice(x.s),0);
   if((G.credits||0)<total){notify(I18N.t('notify.needCreditsTotal',{cost:total.toLocaleString()}),'err');return;}
   G.credits-=total;
-  targets.forEach(x=>{x.s.cargoSlots=Math.min(100,(x.s.cargoSlots||4)+2);});
+  targets.forEach(x=>{x.s.cargoSlots=clampCargoSlots(x.s.cargoSlots,2);});
   notify(I18N.t('notify.holdExpandedN',{n:targets.length,cr:total.toLocaleString()}),'gold');
   updateHUD();saveGame(true);
   try{rerenderTab(renderGarageTab);}catch(e){}
