@@ -41,9 +41,14 @@ function loadWindowState() {
   try {
     const raw = fs.readFileSync(getWindowStatePath(), 'utf-8');
     const s = JSON.parse(raw);
-    if (typeof s.width === 'number' && typeof s.height === 'number') return s;
+    if (typeof s.width === 'number' && typeof s.height === 'number') {
+      // 기본 전체화면 정책(2026-06-14): 기존 세이브에도 최초 1회만 강제 적용 (fsDefaultV2 플래그)
+      //   이후 사용자가 게임 내 설정에서 창/전체화면을 바꾸면 그 선택을 존중.
+      if (!s.fsDefaultV2) { s.fullscreen = true; s.fsDefaultV2 = true; }
+      return s;
+    }
   } catch (_) {}
-  return { width: 1600, height: 900, fullscreen: false };
+  return { width: 1600, height: 900, fullscreen: true, fsDefaultV2: true };
 }
 function saveWindowState(win) {
   try {
@@ -51,7 +56,8 @@ function saveWindowState(win) {
     const state = {
       ...bounds,
       fullscreen: win.isFullScreen(),
-      maximized: win.isMaximized()
+      maximized: win.isMaximized(),
+      fsDefaultV2: true
     };
     fs.writeFileSync(getWindowStatePath(), JSON.stringify(state));
   } catch (_) {}
@@ -90,7 +96,7 @@ function createWindow() {
     backgroundColor: '#050a1a',
     title: 'DESTINATION EARTH',
     icon: path.join(__dirname, '..', 'img', 'icons', 'icon-512.png'),
-    autoHideMenuBar: false,
+    autoHideMenuBar: true,  // 상단 메뉴 숨김 (Alt 키로 일시 표시). 창/전체화면은 게임 내 설정에서 제어
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -104,6 +110,8 @@ function createWindow() {
 
   if (state.fullscreen) mainWindow.setFullScreen(true);
   else if (state.maximized) mainWindow.maximize();
+  // 상단 메뉴바 숨김 (autoHideMenuBar 보강 — Alt 로만 일시 표시)
+  try { mainWindow.setMenuBarVisibility(false); } catch (_) {}
 
   // 언어 prefs를 ?lang=ko|en 쿼리로 게임에 전달 — 사용자 보고(2026-06-06): Windows 한글 전환 실패
   //   원인: ko일 때 쿼리 미포함 → localStorage 잔존값(en)이 우선 적용되어 영문 유지.
@@ -434,6 +442,13 @@ ipcMain.handle('show-save-dir', async () => {
 });
 
 ipcMain.handle('get-app-version', () => app.getVersion());
+
+// 게임 내 설정의 창/전체화면 버튼 — 렌더러에서 호출
+ipcMain.handle('set-fullscreen', (_e, on) => {
+  try { if (mainWindow) { mainWindow.setFullScreen(!!on); saveWindowState(mainWindow); } } catch (_) {}
+  return { ok: true, fullscreen: mainWindow ? mainWindow.isFullScreen() : false };
+});
+ipcMain.handle('get-fullscreen', () => { try { return mainWindow ? mainWindow.isFullScreen() : false; } catch (_) { return false; } });
 
 // 렌더러(preload)에서 Steam 빌드 여부를 동기로 1회 조회 — 치트 패널 노출 제어
 ipcMain.on('get-steam-build-sync', (e) => { try { e.returnValue = _isSteamBuild(); } catch (_) { e.returnValue = false; } });

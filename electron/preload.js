@@ -19,6 +19,9 @@ contextBridge.exposeInMainWorld('desktopAPI', {
   deleteSlot: (key) => ipcRenderer.invoke('delete-slot', key),
   showSaveDir: () => ipcRenderer.invoke('show-save-dir'),
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  // 창/전체화면 제어 (게임 내 설정 화면)
+  setFullscreen: (on) => ipcRenderer.invoke('set-fullscreen', on),
+  getFullscreen: () => ipcRenderer.invoke('get-fullscreen'),
   // 언어 동기화 (메뉴 라벨 즉시 갱신)
   setLangPref: (lang) => ipcRenderer.invoke('set-lang-pref', lang),
   // 수동 업데이트 확인

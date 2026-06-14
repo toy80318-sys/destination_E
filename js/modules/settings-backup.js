@@ -102,6 +102,12 @@ function showSettingsModal(){
     ${window.desktopAPI?`<div style="margin-bottom:16px">
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="saveGame(false)">${I18N.t('settings.saveNow')}</button>
       <button class="btn btn-sm" style="width:100%;margin-bottom:8px;border-color:#87c8ff;color:#87c8ff" onclick="window.desktopAPI.showSaveDir()">${I18N.t('settings.openSaveDir')}</button>
+      <div style="margin-bottom:6px;font-size:12px;color:var(--dim)">${I18N.t('settings.screenMode')}</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <button id="pc-mode-window" class="btn btn-sm" style="flex:1" onclick="window.desktopAPI.setFullscreen(false).then(()=>{if(typeof showSettingsModal==='function')showSettingsModal();})">${I18N.t('settings.windowed')}</button>
+        <button id="pc-mode-fs" class="btn btn-sm" style="flex:1" onclick="window.desktopAPI.setFullscreen(true).then(()=>{if(typeof showSettingsModal==='function')showSettingsModal();})">${I18N.t('settings.fullscreen')}</button>
+      </div>
+      <script>(async()=>{try{const _fs=await window.desktopAPI.getFullscreen();const _on=';border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold';const _w=document.getElementById('pc-mode-window'),_f=document.getElementById('pc-mode-fs');if(_fs){if(_f)_f.style.cssText+=_on;}else{if(_w)_w.style.cssText+=_on;}}catch(e){}})();<\/script>
       <div id="pc-ver-line" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px">${I18N.t('settings.pcVersionLoading')}</div>
       <script>(async()=>{try{const v=await window.desktopAPI.getAppVersion();const el=document.getElementById('pc-ver-line');if(el)el.textContent=window.I18N.t('settings.pcVersionLine',{v:v});}catch(e){}})();<\/script>
     </div>`:`<div style="margin-bottom:16px">
