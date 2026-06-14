@@ -24,7 +24,7 @@ const PHASE1_QUESTS={
       ic:'🚀', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'첫 발걸음', en:'First Steps'},
       desc:{ko:'100년 만에 깨어났다. 에너지 잔량 7%. 격납고 곳곳 고철 프레임을 수거해 {함선} 시스템을 재부팅하라.\n백구: "G01 3개면 연료전지 교체하고도 크레딧 남아요."',
-            en:'Awakened after 100 years. Energy at 7%. Collect 고철 프레임 Scrap Frames around the hangar to reboot {ship} systems.'},
+            en:'Awakened after 100 years. Energy at 7%. Collect Scrap Frames around the hangar to reboot {ship} systems.'},
       objectives:[
         {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 수거', en:'Collect Scrap Frame ×3'}},
       ],
@@ -54,7 +54,7 @@ const PHASE1_QUESTS={
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'함선 긴급 수리', en:'Emergency Repairs'},
       desc:{ko:'100년 방치로 {함선} 외장 손상. 격납고 자가 정비 구역에서 고철 프레임 ×1 소비 → HP 30% 임시 수리.\n백구: "P03 교역소에 공인 정비소가 있어요. 거기서 제대로 수리하세요."',
-            en:'{ship} hull damaged from 100 years of neglect. Use 고철 프레임 ×1 for self-repair → HP +30%.'},
+            en:'{ship} hull damaged from 100 years of neglect. Use Scrap Frame ×1 for self-repair → HP +30%.'},
       objectives:[
         {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 소비', en:'Consume Scrap Frame ×1'}},
       ],
@@ -69,7 +69,7 @@ const PHASE1_QUESTS={
       ic:'🎁', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_think',
       nm:{ko:'백구의 기억', en:'Baekgu\'s Memory'},
       desc:{ko:'격납고 깊숙한 구석, 먼지 쌓인 화물 상자. 백구가 100년 전부터 보관하고 있었다. 안에는 {사령관}의 유품 — 수퍼비아 귀족 향수 한 병.',
-            en:'A dusty crate deep in the hangar. Baekgu kept it for 100 years. Inside: {사령관}\'s memento — a 수퍼비아 귀족 향수 Superbia Noble Perfume.'},
+            en:'A dusty crate deep in the hangar. Baekgu kept it for 100 years. Inside: {commander}\'s memento — a Superbia Noble Perfume.'},
       objectives:[
         {type:'explore', target:'hangar_box', qty:1, label:{ko:'격납고 유품 상자 발견', en:'Find the memorial crate'}},
       ],
@@ -91,7 +91,7 @@ const PHASE1_QUESTS={
       ic:'💰', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'첫 거래', en:'First Trade'},
       desc:{ko:'아오리에게 고철 프레임 ×3 판매(+2,400₡) → 자금 확보. 수퍼비아 중력수정 ×3 매입(개당 1,800₡) — 아우레우스에서 40% 더 비싸게 판매 예정.',
-            en:'Sell 고철 프레임 ×3 to Aori (+2,400₡), then buy 수퍼비아 중력수정 ×3 (1,800₡ each) — will sell 40% higher at Aureus.'},
+            en:'Sell Scrap Frame ×3 to Aori (+2,400₡), then buy Superbia Gravity Crystal ×3 (1,800₡ each) — will sell 40% higher at Aureus.'},
       objectives:[
         {type:'gather', item:'G05', qty:3, label:{ko:'수퍼비아 중력수정 ×3 확보', en:'Secure Gravity Crystal ×3'}},
       ],
@@ -149,11 +149,11 @@ const PHASE1_QUESTS={
     {
       id:'p1_q0205', type:'story_quest', category:'sub', phase:1,
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
-      nm:{ko:'바나드 프라임 공인 정비소 수리', en:'바나드 프라임 Repair Shop'},
+      nm:{ko:'바나드 프라임 공인 정비소 수리', en:'Barnard Prime Repair Shop'},
       desc:{ko:'해적 소탕 후 {함선} 외장 파손. 바나드 프라임 공인 정비소 수리. 고철 프레임 ×1 함께 제출 → 수리비 10% 할인.',
-            en:'Repair {ship} at the 바나드 프라임 certified shop. Submit 고철 프레임 ×1 for 10% discount.'},
+            en:'Repair {ship} at the Barnard Prime certified shop. Submit Scrap Frame ×1 for 10% discount.'},
       objectives:[
-        {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 정비소 제출', en:'Submit 고철 프레임 ×1'}},
+        {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 정비소 제출', en:'Submit Scrap Frame ×1'}},
       ],
       rewardCr:1500, rewardVe:20,
       rewardItems:[],
@@ -190,7 +190,7 @@ const PHASE1_QUESTS={
       desc:{ko:'세관: "수퍼비아 출신이면 G05 중력수정 세관 신고 필수. 미신고 시 전량 몰수."\nG05 ×2 자진 신고 → 아우레우스 시세(개당 2,520₡)로 자진 판매 → 입항 허가.',
             en:'Customs: "Declare G05 Gravity Crystal or lose all." Declare G05 ×2 → auto-sell at 2,520₡ each.'},
       objectives:[
-        {type:'gather', item:'G05', qty:2, label:{ko:'수퍼비아 중력수정 ×2 자진 신고', en:'Declare 수퍼비아 중력수정 ×2'}},
+        {type:'gather', item:'G05', qty:2, label:{ko:'수퍼비아 중력수정 ×2 자진 신고', en:'Declare Superbia Gravity Crystal ×2'}},
       ],
       rewardCr:5040, rewardVe:35,
       rewardItems:[{id:'G23', qty:1}],
@@ -203,7 +203,7 @@ const PHASE1_QUESTS={
       ic:'🆘', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'가가린 구출', en:'Rescue Gagarin'},
       desc:{ko:'항구 외곽 해적선 3기 격파 → 탐사선 "VOSTOK" 구출. 노획: G01 ×1 · G24 아우레우스 정보 칩 ×1 (가가린의 데이터 칩).',
-            en:'Defeat 3 pirates outside the harbor → rescue VOSTOK. Loot: 고철 프레임 ×1, 아우레우스 정보 칩 ×1.'},
+            en:'Defeat 3 pirates outside the harbor → rescue VOSTOK. Loot: Scrap Frame ×1, Aureus Information Chip ×1.'},
       objectives:[
         {type:'combat', target:'pirate_small', qty:3, label:{ko:'해적선 ×3 격파', en:'Defeat pirates ×3'}},
       ],
@@ -216,9 +216,9 @@ const PHASE1_QUESTS={
     {
       id:'p1_q0303', type:'story_quest', category:'sub', phase:1,
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
-      nm:{ko:'티가든 금융 b 공인 정비소', en:'티가든 금융 b Repair Shop'},
+      nm:{ko:'티가든 금융 b 공인 정비소', en:'Teegarden Financial b Repair Shop'},
       desc:{ko:'해적 3기 격파로 {함선} 외장 손상. 티가든 금융 b 공인 정비소 수리.\n가가린: "내 배도 망가졌으니까 같이 가도 돼? 데이터 칩 분석도 도와줄게."',
-            en:'Repair {ship} at 티가든 금융 b. Gagarin: "Mine\'s wrecked too — can I come along?"'},
+            en:'Repair {ship} at Teegarden Financial b. Gagarin: "Mine\'s wrecked too — can I come along?"'},
       objectives:[
         {type:'explore', target:'p05_repair', qty:1, label:{ko:'정비소 수리 완료', en:'Complete repair'}},
       ],
@@ -235,7 +235,7 @@ const PHASE1_QUESTS={
       desc:{ko:'마르코: "P05 파츠샵에 좋은 게 있어. G06 LHS 크리스탈이 있으면 보조 결제 돼서 싸게 살 수 있어."\nG06 ×1 + 15,000₡ → 아우레우스 방어 파츠 장착 → 방어력 +15%.',
             en:'Marco: "Pay with G06 for a discount." G06 ×1 + 15,000₡ → defense part (+15% defense).'},
       objectives:[
-        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 보조 결제', en:'Use LHS 크리스탈 ×1 as payment'}},
+        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 보조 결제', en:'Use LHS Crystal ×1 as payment'}},
       ],
       rewardCr:2500, rewardVe:30,
       rewardItems:[],
@@ -263,9 +263,9 @@ const PHASE1_QUESTS={
       ic:'⭐', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린 합류 & 거북선 외피', en:'Gagarin Joins · Geobukseon Hull'},
       desc:{ko:'가가린: "내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게."\nG24 아우레우스 정보 칩 ×1 소비 → 분석 결과: P06 LHS 광산 방향에서 이순신 신호 패턴 탐지.\n해독 데이터 안에 거북선 설계도 두 번째 단편이 들어 있다 — 외피 가시 돌기 구조도 2/3.',
-            en:'Gagarin joins your crew. Consume 아우레우스 정보 칩 ×1 → 넥서스 프라임 LHS Mine signal detected. Decoded data includes Geobukseon hull plate fragment 2/3.'},
+            en:'Gagarin joins your crew. Consume Aureus Information Chip ×1 → Nexus Prime LHS Mine signal detected. Decoded data includes Geobukseon hull plate fragment 2/3.'},
       objectives:[
-        {type:'gather', item:'G24', qty:1, label:{ko:'아우레우스 정보 칩 ×1 데이터 해독', en:'Decode 아우레우스 정보 칩 ×1'}},
+        {type:'gather', item:'G24', qty:1, label:{ko:'아우레우스 정보 칩 ×1 데이터 해독', en:'Decode Aureus Information Chip ×1'}},
       ],
       rewardCr:5000, rewardVe:40,
       rewardItems:[{id:'turtleBP2', qty:1}],
@@ -285,9 +285,9 @@ const PHASE1_QUESTS={
       ic:'🛬', npc:'광부 대표 린다', npcIc:'⛏️', npcKey:'explore_F02',
       nm:{ko:'LHS 광산 착지 허가', en:'LHS Mine Landing Permit'},
       desc:{ko:'광산 관리소: 입장 채굴세 아우레우스 금괴 ×1 납부 → 착지 허가.\n린다: "크리그 해적단이 3주째예요. 뭔가 파고 있어요."\nG06 LHS 크리스탈 ×2 지급(관리소 보답).',
-            en:'Pay 아우레우스 금괴 ×1 as landing tax. Linda: "Kriegs been here 3 weeks. They\'re digging for something."'},
+            en:'Pay Aureus Gold Ingot ×1 as landing tax. Linda: "Kriegs been here 3 weeks. They\'re digging for something."'},
       objectives:[
-        {type:'gather', item:'G04', qty:1, label:{ko:'아우레우스 금괴 ×1 납부', en:'Pay 아우레우스 금괴 Aureus Gold ×1'}},
+        {type:'gather', item:'G04', qty:1, label:{ko:'아우레우스 금괴 ×1 납부', en:'Pay Aureus Gold Ingot ×1'}},
       ],
       rewardCr:2000, rewardVe:25,
       rewardItems:[{id:'G06', qty:2}],
@@ -315,10 +315,10 @@ const PHASE1_QUESTS={
       ic:'🛒', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'강화 선체 코팅 제작', en:'Craft Hull Coating'},
       desc:{ko:'가가린: "제작소 장비 써봐. G01 ×2 + G06 ×1 조합하면 선체 코팅 만들 수 있어."\n강화 선체 코팅 제작 → 장착 시 방어력 +8%.',
-            en:'Craft Reinforced Hull Coating: 고철 프레임 ×2 + LHS 크리스탈 ×1 → +8% defense.'},
+            en:'Craft Reinforced Hull Coating: Scrap Frame ×2 + LHS Crystal ×1 → +8% defense.'},
       objectives:[
-        {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2 소비', en:'Consume 고철 프레임 ×2'}},
-        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 소비', en:'Consume LHS 크리스탈 ×1'}},
+        {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2 소비', en:'Consume Scrap Frame ×2'}},
+        {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 소비', en:'Consume LHS Crystal ×1'}},
       ],
       rewardCr:3500, rewardVe:30,
       rewardItems:[{id:'armorCoating1', qty:1}],
@@ -361,9 +361,9 @@ const PHASE1_QUESTS={
       ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 신호 중계기 발견', en:'Yi Sun-sin Relay Found'},
       desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
-            en:'Found an old signal relay. Consume 아우레우스 태양 화폐 ×2 to restore → signal points to TRAPPIST-1e Galileo outpost.'},
+            en:'Found an old signal relay. Consume Aureus Solar Coin ×2 to restore → signal points to TRAPPIST-1e Galileo outpost.'},
       objectives:[
-        {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 해독 장비 대여비', en:'Spend 아우레우스 태양 화폐 ×2 for decoder'}},
+        {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 해독 장비 대여비', en:'Spend Aureus Solar Coin ×2 for decoder'}},
       ],
       rewardCr:5000, rewardVe:40,
       rewardItems:[],
@@ -383,9 +383,9 @@ const PHASE1_QUESTS={
       ic:'🛬', npc:'기지 정비원', npcIc:'🔧', npcKey:'explore_F03',
       nm:{ko:'갈릴레오 기지 착지', en:'Galileo Base Landing'},
       desc:{ko:'메카니카 기지 통행세: 수퍼비아 중력수정 ×1 소비(수퍼비아 무역품 — 메카니카에서 희귀) → 착지 허가.\n정비원: "무법자 해적단이 2주째야. 안테나 접근 못 하고 있어요."\nG07 분열 배터리 ×2 지급(기지 사례).',
-            en:'Pay 수퍼비아 중력수정 ×1 as transit. Mechanic: "Outlaws blocked the antenna for 2 weeks." G07 ×2 reward.'},
+            en:'Pay Superbia Gravity Crystal ×1 as transit. Mechanic: "Outlaws blocked the antenna for 2 weeks." G07 ×2 reward.'},
       objectives:[
-        {type:'gather', item:'G05', qty:1, label:{ko:'수퍼비아 중력수정 ×1 통행세 납부', en:'Pay 수퍼비아 중력수정 ×1 transit'}},
+        {type:'gather', item:'G05', qty:1, label:{ko:'수퍼비아 중력수정 ×1 통행세 납부', en:'Pay Superbia Gravity Crystal ×1 transit'}},
       ],
       rewardCr:2000, rewardVe:20,
       rewardItems:[{id:'G07', qty:2}],
@@ -415,8 +415,8 @@ const PHASE1_QUESTS={
       desc:{ko:'가가린: "P19 치크스 영역은 적대야. 정찰 드론이 있으면 유리해."\nG01 ×3 + G07 ×1 소비 → 소형 정찰 드론 모듈 제작.\n효과: 잔해 탐색 탐지 범위 +10% · 적 선제 감지 +1턴.',
             en:'Gagarin: "Cygnus is hostile. A drone helps." G01 ×3 + G07 ×1 → +10% detection, +1 turn pre-emption.'},
       objectives:[
-        {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 소비', en:'Consume 고철 프레임 ×3'}},
-        {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 소비', en:'Consume 분열 배터리 ×1'}},
+        {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 소비', en:'Consume Scrap Frame ×3'}},
+        {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 소비', en:'Consume Fission Battery ×1'}},
       ],
       rewardCr:3000, rewardVe:35,
       rewardItems:[{id:'scoutDrone1', qty:1}],

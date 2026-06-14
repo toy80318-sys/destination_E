@@ -410,7 +410,9 @@ function relocalizeStoryQuests(){
   try{
     if(!window.G||!G.quests) return 0;
     const _lang=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en')?'en':'ko';
-    if(G._questLocLang===_lang) return 0; // 이미 현재 언어로 지역화됨 — 스킵
+    // 버전 태그(.v2): 영문 데이터 한글 잔존 정리 반영 — 구 세이브(태그 없음/구버전)는 1회 강제 재지역화
+    const _tag=_lang+'.v2';
+    if(G._questLocLang===_tag) return 0; // 이미 현재 언어·버전으로 지역화됨 — 스킵
     // id → 원본 템플릿 맵 구성
     const byId=Object.create(null);
     ['PHASE1_QUESTS','PHASE2_QUESTS','PHASE3_QUESTS','PHASE4_QUESTS','PHASE5_QUESTS','PHASE6_QUESTS'].forEach(s=>{
@@ -471,7 +473,7 @@ function relocalizeStoryQuests(){
         if(t.lockReason&&typeof t.lockReason==='object'){ const lr=t.lockReason[_lang]||t.lockReason.ko; if(lr&&lr!==q.lockReason){ q.lockReason=lr; changed++; } }
       });
     });
-    G._questLocLang=_lang;
+    G._questLocLang=_tag;
     if(changed>0){ try{ if(typeof saveGame==='function') saveGame(true); }catch(e){} }
     return changed;
   }catch(e){ console.warn('[relocalizeStoryQuests]',e); return 0; }

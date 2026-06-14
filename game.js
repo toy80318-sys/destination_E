@@ -1497,6 +1497,28 @@ function _subTokens(s){
 }
 window._subTokens=_subTokens;
 
+// NPC 표시명 현지화 — npc 필드는 데이터/로직 매칭용으로 한글 유지하므로, 표시 시점에만 번역.
+//   ({토큰} 치환 후, 영문판이면 한글 NPC명 → 영문 매핑. 미등록명은 원문 유지.)
+const _NPC_EN = {
+  '백구':'Baekgu','시스템':'System','아오리':'Aori',
+  '가가린':'Gagarin','유리 가가린':'Yuri Gagarin','이순신':'Yi Sun-sin','장영실':'Jang Yeong-sil',
+  '광개토대왕':'Gwanggaeto the Great','넬슨':'Nelson','호레이쇼 넬슨':'Horatio Nelson',
+  '아인슈타인':'Einstein','A. 아인슈타인':'A. Einstein','테슬라':'Tesla','니콜라 테슬라':'Nikola Tesla',
+  '마르코':'Marco','마르코 폴로':'Marco Polo','이휘소':'Lee Hwi-so','이휘소 박사':'Dr. Lee Hwi-so',
+  '광부 대표 린다':'Miner Rep Linda','기지 정비원':'Base Mechanic','닥터 에바':'Dr. Eva',
+  '레인저 맥시모프':'Ranger Maximoff','맥시모프':'Maximoff','볼프 노인':'Wolf Elder','볼프 자경단':'Wolf Vigilante',
+  '아우레우스 세관':'Aureus Customs','오스카르':'Oscar','정거장 행상':'Station Peddler','코르비누스':'Corvinus'
+};
+function _npcName(nm){
+  if(typeof nm!=='string'||!nm) return nm;
+  nm=(window._subTokens?window._subTokens(nm):nm);
+  var isEn=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
+  if(!isEn) return nm;
+  if(nm==='사령관') return (window.G&&G.profile&&G.profile.name)||'Commander';
+  return _NPC_EN[nm]||nm;
+}
+window._npcName=_npcName;
+
 function showHub(){
   show('s-hub');
   // 언어 전환(reload) 후, 한국어로 스폰돼 저장된 시나리오 퀘스트를 현재 언어로 재지역화.
@@ -4343,7 +4365,7 @@ function doGatherSearch(){
       _hostileVsHeader({enemyImg:_enemyShipSrc,enemyName:I18N.t('debris.raidName'),enemyFallback:'☠️'})
       +`<div style="text-align:center;padding:0 6px 8px">
         <div style="color:var(--red);font-size:16px;font-weight:bold;margin-bottom:6px">${I18N.t('ui.encounterPirateScan')}</div>
-        <div style="font-size:13px;color:var(--dim);line-height:1.8">적군: 잔해 해적 ${pirateCount}척<br>${I18N.t('ui.scanContinues')}</div>
+        <div style="font-size:13px;color:var(--dim);line-height:1.8">${I18N.t('ui.enemyCount',{nm:I18N.t('debris.raidName'),n:pirateCount})}<br>${I18N.t('ui.scanContinues')}</div>
       </div>`,
       [{txt:I18N.t('ui.fight'),fn:()=>{closeModal();startDebrisPirateCombat(raidDef);},cls:'btn-red'},
        {txt:I18N.t('btn.fleeAbortSearch'),fn:()=>{closeModal();notify(I18N.t('notify.searchAborted'),'warn');},cls:'btn-sm'}]);

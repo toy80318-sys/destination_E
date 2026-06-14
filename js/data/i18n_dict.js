@@ -496,6 +496,7 @@ I18N.register({
   'ui.creditShortTitle': { ko: '⚠️ 크레딧 부족 — 이동 불가', en: '⚠️ Insufficient Credits — Cannot Move' },
   'ui.creditShortDesc':  { ko: '퀘스트 완료 또는 백구 긴급 대출 요청 (한도 20,000, 무이자) · 현재 대출: ', en: 'Complete quests or request a Baekgu emergency loan (limit 20,000, interest-free) · Current loan: ' },
   'ui.loanBtn':          { ko: '백구 긴급 대출 5,000 요청', en: 'Request Baekgu Emergency Loan 5,000' },
+  'ui.enemyCount':       { ko: '적군: {nm} {n}척', en: 'Enemy: {nm} ×{n}' },
   'partsGuide.scT':     { ko: '📦 특수창고 (Special Cargo, SC)', en: '📦 Special Cargo (SC)' },
   'partsGuide.scD':     { ko: '<b>cargoBonus</b>(화물칸 추가) 부여. 정비소 「창고 확장 전용 슬롯」(함선당 최대 8칸)에 장착. SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 전설·제작) → SC05(+48 신화). 슬롯 1개 = 전용 슬롯 1칸 점유. 화물칸 합산 최대 80칸.', en: '<b>cargoBonus</b> (extra cargo slots). Equipped in the Garage "Cargo Expansion" dedicated slots (up to 8 per ship). SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 Legendary/Craft) → SC05(+48 Mythic). Each occupies one dedicated slot. Total cargo up to 80 slots.' },
   'settings.deleteSave':    { ko: '🗑️ 저장 데이터 삭제', en: '🗑️ Delete Save Data' },
