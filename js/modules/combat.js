@@ -21,7 +21,7 @@ function _enemyTierBoost(base){
 function _buildHostilePlanetEnemies(planetDef){
   const dm=getDiffMult(),danger=planetDef.ring||2,egm=getEarlyGameMult();
   const plv=calcPlayerLevel();
-  const baseEC=Math.max(2,Math.min(G.fleet.length,6));
+  const baseEC=clamp(G.fleet.length,2,6);
   const eCount=planetDef.hostile?Math.min(12,Math.round(baseEC*1.2*getDiffCountMult())):Math.min(8,Math.round(baseEC*getDiffCountMult()));
   const fp=calcFleetAvgPower();
   // 사용자 요청: 적대 행성 적함을 우리 함대 평균 대비 ring1=20% ~ ring6=40% 수준으로 (이전 34~50%).
@@ -283,7 +283,7 @@ function initCombatCanvas(){
   cbCtx=cbCV.getContext('2d');
   cbZoom=1.0;cbOffX=0;cbOffY=0;
   // 마우스 휠: 줌
-  cbCV.onwheel=e=>{e.preventDefault();cbZoom=Math.max(0.3,Math.min(4,cbZoom+(e.deltaY<0?.12:-.12)));drawCombatFrame();};
+  cbCV.onwheel=e=>{e.preventDefault();cbZoom=clamp(cbZoom+(e.deltaY<0?.12:-.12),0.3,4);drawCombatFrame();};
   // 좌클릭 드래그: 이동
   cbCV.onmousedown=e=>{if(e.button===0){cbPan=true;cbPanLx=e.clientX;cbPanLy=e.clientY;}};
   cbCV.onmousemove=e=>{if(!cbPan)return;cbOffX+=e.clientX-cbPanLx;cbOffY+=e.clientY-cbPanLy;cbPanLx=e.clientX;cbPanLy=e.clientY;drawCombatFrame();};
@@ -306,7 +306,7 @@ function initCombatCanvas(){
     } else if(e.touches.length===2&&cbTouches.length>=2){
       const d0=Math.hypot(cbTouches[0].clientX-cbTouches[1].clientX,cbTouches[0].clientY-cbTouches[1].clientY);
       const d1=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-      if(d0>0)cbZoom=Math.max(0.3,Math.min(4,cbZoom*(d1/d0)));drawCombatFrame();
+      if(d0>0)cbZoom=clamp(cbZoom*(d1/d0),0.3,4);drawCombatFrame();
     }
     cbTouches=[...e.touches];
   },{passive:false});
@@ -673,7 +673,7 @@ function _drawShipUnit(ctx,u,x,y,sz){
   // 쉴드 오라: SH>0이고 살아있는 함선만. SH%에 따라 강도 조절 + 미세 펄스.
   // 사용자 요청: 투명도 20% 낮춤(곱 0.8) + 입체감 — 3중 그라데이션(외곽 글로우 → 본체 → 빛반사 하이라이트)
   if(u.hp>0&&(u.sh||0)>0&&(u.maxSH||0)>0){
-    const shR=Math.max(0.1,Math.min(1,(u.sh||0)/(u.maxSH||1)));
+    const shR=clamp((u.sh||0)/(u.maxSH||1),0.1,1);
     const pulse=0.85+0.15*Math.sin(Date.now()*0.005);
     const rx=dsz.w*1.12, ry=dsz.h*1.07;
     const A=0.8;  // 전체 알파 곱 (사용자 요청 ×0.8 — 투명도 20% 더 낮춤)
@@ -842,7 +842,7 @@ function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
 // count: 1~13, 자동으로 클램프됨
 function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,sizeMul){
   // 사용자 명세: 기본 1발, 전설·신화 미사일은 최대 4발까지 다양한 곡선으로 발사
-  count=Math.max(1,Math.min(4,count|0));
+  count=clamp(count|0,1,4);
   baseDelay=baseDelay||0;
   sizeMul=Math.max(1,sizeMul||1);
   // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
@@ -999,9 +999,9 @@ window.AudioMgr=(function(){
     _activeSfx.forEach(a=>{try{a.pause();a.src='';}catch(e){}});
     _activeSfx.clear();
   }
-  function setMaster(v){masterVol=Math.max(0,Math.min(1,+v||0));if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
-  function setBgmVol(v){bgmVol=Math.max(0,Math.min(1,+v||0));if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
-  function setSfxVol(v){sfxVol=Math.max(0,Math.min(1,+v||0));save();}
+  function setMaster(v){masterVol=clamp(+v||0,0,1);if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
+  function setBgmVol(v){bgmVol=clamp(+v||0,0,1);if(curBgmAudio)curBgmAudio.volume=_bgmTargetVol();save();}
+  function setSfxVol(v){sfxVol=clamp(+v||0,0,1);save();}
   function setBgmOff(off){
     bgmOff=!!off;save();
     if(bgmOff){
@@ -1149,7 +1149,7 @@ function drawCombatFrame(){
     if(isEnemy&&units.some(u=>typeof u._formationCol==='number')){
       const COLS=4;
       const byCol=[[],[],[],[]];
-      units.forEach((u,i)=>{const c=Math.max(0,Math.min(3,u._formationCol||0));byCol[c].push(i);});
+      units.forEach((u,i)=>{const c=clamp(u._formationCol||0,0,3);byCol[c].push(i);});
       const cw=maxW*1.5, ch=maxH*1.55;
       const xA=W*0.18;
       const out=new Array(n);
@@ -1177,14 +1177,14 @@ function drawCombatFrame(){
     if(hasManual){cols=4;rows=4;}
     else if(_isWideFleet){
       // 가로 펼침: 최대 4열, 행은 필요한 만큼 (5척 → 4열 2행)
-      cols=Math.max(1,Math.min(4,n));
+      cols=clamp(n,1,4);
       rows=Math.ceil(n/cols);
     }
     else{
       // 1열·2열을 먼저 가득 채우도록 컬럼당 최대 5행을 기본값으로 사용
       // n ≤5: 1열 / n 6-10: 2열 / n 11-15: 3열 / n 16-20: 4열
       const _maxRowsPerCol=5;
-      cols=Math.max(1,Math.min(4,Math.ceil(n/_maxRowsPerCol)));
+      cols=clamp(Math.ceil(n/_maxRowsPerCol),1,4);
       rows=Math.ceil(n/cols);
     }
     // 함선 간격: 겹침 방지를 위해 충분한 여유 확보 (이전 적군 cellW 1.12는 jitter와 결합 시 겹침 유발)
@@ -1599,7 +1599,7 @@ function _drawHealthBar(ctx,u,x,y,sz,isEnemy){
     const _total=u._voidSpearTotal||10000;
     // 잔여 시간 → 진행률
     const _rem=Math.max(0,(_r-_now));
-    const _prog=Math.max(0,Math.min(1,1-(_rem/_total)));
+    const _prog=clamp(1-(_rem/_total),0,1);
     const gby=by-10;
     ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(bx,gby,bw,4);
     // 그라데이션 보라/핑크 + 충전 완료 시 깜빡임
@@ -1615,13 +1615,13 @@ function _drawHealthBar(ctx,u,x,y,sz,isEnemy){
   }
   // HP 바
   ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(bx,by,bw,bh);
-  const hpR=Math.max(0,Math.min(1,u.hp/Math.max(1,u.maxHP)));
+  const hpR=clamp(u.hp/Math.max(1,u.maxHP),0,1);
   ctx.fillStyle=hpR>0.5?'#51cf66':hpR>0.25?'#ffd43b':'#ff6b6b';
   ctx.fillRect(bx,by,bw*hpR,bh);
   ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=0.5;ctx.strokeRect(bx,by,bw,bh);
   // SH 바
   if((u.maxSH||0)>0){
-    const shy=by+bh+2;const shR=Math.max(0,Math.min(1,(u.sh||0)/Math.max(1,u.maxSH)));
+    const shy=by+bh+2;const shR=clamp((u.sh||0)/Math.max(1,u.maxSH),0,1);
     ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(bx,shy,bw,4);
     ctx.fillStyle='#339af0';ctx.fillRect(bx,shy,bw*shR,4);
     ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=0.5;ctx.strokeRect(bx,shy,bw,4);
@@ -2313,11 +2313,11 @@ function _finishCombat(){
       //   · 명성 1000+ → 종 5 / 개 80~100 (전설급 사령관)
       //   · 화물칸이 가득 차면 가능한 만큼만 적재 후 알림
       try{
-        const _rep=Math.max(1,Math.min(1000,G.reputation||1));
+        const _rep=clamp(G.reputation||1,1,1000);
         const _t=(_rep-1)/999;  // 0(명성1) ~ 1(명성1000)
         // 잔해 합류 시 전리품 수량도 3배 (사용자 명세 — 보상 3배)
         const _lootMul=(combatState._debrisJoinCount||0)>0?3:1;
-        const _kinds=Math.max(1,Math.min(5,Math.round(1+_t*4)));
+        const _kinds=clamp(Math.round(1+_t*4),1,5);
         // 명성 1 → 10~15개 / 명성 1000 → 80~100개 (선형 보간)
         const _qtyMin=Math.round((10+_t*70)*_lootMul);
         const _qtyMax=Math.round((15+_t*85)*_lootMul);

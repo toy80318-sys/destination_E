@@ -50,8 +50,8 @@ function _posLoreTip(evt){
     var left=sx+16, top=sy+16;
     if(left+tw>stageW-8)left=sx-tw-12;  // 우측 넘침 → 커서 왼쪽으로
     if(top+th>stageH-8)top=sy-th-12;    // 하단 넘침 → 커서 위쪽으로
-    left=Math.max(8,Math.min(left,stageW-tw-8));  // 좌/우 경계 클램프
-    top=Math.max(8,Math.min(top,stageH-th-8));    // 상/하 경계 클램프
+    left=clamp(left,8,stageW-tw-8);  // 좌/우 경계 클램프
+    top=clamp(top,8,stageH-th-8);    // 상/하 경계 클램프
     tip.style.left=left+'px';
     tip.style.top=top+'px';
   });
@@ -462,7 +462,7 @@ function calcPlayerLevel(){
   const planetScore =Math.min(200,Object.values(G.planets).filter(p=>p.owned).length*40); // 5개→200
   const heroScore   =Math.min(100,G.heroes.length*12.5);                // 8명→100
   const crewScore   =Math.min(50, Math.floor(G.crew.length/3)*10);      // 15명→50
-  return Math.max(1,Math.min(1000,Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore)));
+  return clamp(Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore),1,1000);
 }
 // 레벨 기반 적 강화 배율: 플레이어 전투력 상승에 비례해 적 ATK·HP 증가.
 // sqrt 곡선(체감 감소): 초반은 선형과 유사, 후반에 폭주 방지

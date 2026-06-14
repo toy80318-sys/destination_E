@@ -140,7 +140,7 @@
       }
     };
     mapCV.onmouseleave=()=>{panDrag=false;rotateDrag=false;mapCV.style.cursor='crosshair';_hideMapHover();};
-    mapCV.onwheel=e=>{e.preventDefault();G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom+(e.deltaY>0?-.12:.12)));renderMap();};
+    mapCV.onwheel=e=>{e.preventDefault();G.mapZoom=clamp(G.mapZoom+(e.deltaY>0?-.12:.12),.25,4);renderMap();};
     // touch events — mapCV는 동일 DOM 인스턴스 재사용이므로 1회만 부착 (반복 진입 누수 차단)
     if(!mapCV.dataset.touchInit){
       let touches=[],touchStartT=0;
@@ -156,7 +156,7 @@
         } else if(e.touches.length===2&&touches.length>=2){
           const d0=Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
           const d1=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-          if(d0>0)G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom*(d1/d0)));renderMap();
+          if(d0>0)G.mapZoom=clamp(G.mapZoom*(d1/d0),.25,4);renderMap();
         }
         touches=[...e.touches];
       },{passive:false});
@@ -169,7 +169,7 @@
       mapCV.dataset.touchInit='1';
     }
   }
-  function mapZoom(d){G.mapZoom=Math.max(.25,Math.min(4,G.mapZoom+d));renderMap();}
+  function mapZoom(d){G.mapZoom=clamp(G.mapZoom+d,.25,4);renderMap();}
   function resetMapView(){mapOffX=0;mapOffY=0;G.mapZoom=1.0;map3dRotX=0.35;map3dRotY=0.0;renderMap();}
   function getTx(){const s=G.mapZoom,tx=(mapCV?mapCV.width/2:400)+(mapOffX||0),ty=(mapCV?mapCV.height/2:300)+(mapOffY||0);return{s,tx,ty};}
   
@@ -1001,13 +1001,13 @@
         state.ship.x+=vx*dt;state.ship.y+=vy*dt;
       } else if(state._inputMode==='mouse'&&state.mouseX!=null){
         // 마우스 모드에서만 lerp — 배율 함께 적용 (0.04~0.50 클램프)
-        const _lerp=Math.max(0.04,Math.min(0.50,0.18*_shipSpdMul));
+        const _lerp=clamp(0.18*_shipSpdMul,0.04,0.50);
         state.ship.x+=(state.mouseX-state.ship.w/2-state.ship.x)*_lerp;
         state.ship.y+=(state.mouseY-state.ship.y)*_lerp;
       }
       // (둘 다 아니면 현재 위치 그대로 유지 — 초기 위치로 안 돌아감)
       // 클램프 (캔버스 영역)
-      state.ship.x=Math.max(0,Math.min(W-state.ship.w-4,state.ship.x));
+      state.ship.x=clamp(state.ship.x,0,W-state.ship.w-4);
       state.ship.y=Math.max(state.ship.h/2,Math.min(H-state.ship.h/2,state.ship.y));
   
       // 발사 입력
@@ -1284,7 +1284,7 @@
   
       // 쉴드 시각화 — 매우 옅게(약 10% 투명도) 기함 둘레에 청록 오라
       if(state.ship.sh>0){
-        const shRatio=Math.max(0,Math.min(1,state.ship.sh/Math.max(1,state.ship.maxSH)));
+        const shRatio=clamp(state.ship.sh/Math.max(1,state.ship.maxSH),0,1);
         const shAlpha=0.10*shRatio;  // 최대 10%
         cx.save();
         cx.globalAlpha=shAlpha;
@@ -1508,7 +1508,7 @@
       const st=G.planets[p.id],fog=st?.fog||'L',fac=FACTION[p.f];
       const sp={x:proj.sx,y:proj.sy};
       const baseR=Math.max(3,4*G.mapZoom);
-      const r=baseR*Math.max(0.5,Math.min(1.8,proj.scale/G.mapZoom));
+      const r=baseR*clamp(proj.scale/G.mapZoom,0.5,1.8);
       const isCur=p.id===G.currentPlanet,isSel=p.id===G.mapSelected;
       const alpha=fog==='L'?.1:fog==='S'?.5:1.0;
       const _mh=hasLegendaryEngineOnAny()?2:1;const isReach=fog!=='L'&&!isCur&&(hasBlinkOnAll()||isWithinHops(G.currentPlanet,p.id,_mh));

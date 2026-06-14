@@ -267,8 +267,8 @@ function updateFleetBar(){
   if(!G||!G.fleet||!G.fleet.length){el.innerHTML=`<span style="color:var(--dim);font-size:12px">${I18N.t('ui.shipNoneSpan')}</span>`;return;}
   const cards=G.fleet.map((s,i)=>{
     const st=getShipStats(s);
-    const hpPct=Math.max(0,Math.min(100,Math.round(s.hp/Math.max(1,st.HP)*100)));
-    const shPct=Math.max(0,Math.min(100,Math.round((s.sh||0)/Math.max(1,st.maxSH)*100)));
+    const hpPct=clamp(Math.round(s.hp/Math.max(1,st.HP)*100),0,100);
+    const shPct=clamp(Math.round((s.sh||0)/Math.max(1,st.maxSH)*100),0,100);
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const tierIc=s.tier==='신화'?'✦':s.tier==='대형'?'🌟':s.tier==='중형'?'🚀':'🛸';
     const isFlagship=(i===0);
@@ -2592,7 +2592,7 @@ function escapePirateRaid(){
   try{saveGame(true);}catch(e){}  // 페널티 상태 영속화 (이전 누락: 새로고침 시 차감 분실)
   hubTab('main');
 }
-function changeReputation(delta){if(!G.reputation)G.reputation=0;G.reputation=Math.max(0,Math.min(9999,G.reputation+delta));updateHUD();}
+function changeReputation(delta){if(!G.reputation)G.reputation=0;G.reputation=clamp(G.reputation+delta,0,9999);updateHUD();}
 // 기존 세이브 데이터: 동일 ID 화물 슬롯 통합 (평균 구매가)
 function mergeCargoById(){
   if(!G.cargo||G.cargo.length===0)return;
@@ -4516,7 +4516,7 @@ function rollCraftQuality(superiorBonus){
   // 사용자 요청 (2026-06-06): 함선 제작 시 "상급 이상(상급작+마스터작)" 확률에
   //   100회 제작당 +1%p 누적 보너스. 보너스는 superiorBonus(0~1) 인자로 받음.
   //   상급작/마스터작 영역을 확장하고 보통(이하) 영역을 그만큼 축소.
-  const _bonus=Math.max(0,Math.min(0.30,+superiorBonus||0));  // 최대 30%p 안전 캡
+  const _bonus=clamp(+superiorBonus||0,0,0.30);  // 최대 30%p 안전 캡
   const r=Math.random();
   if(r<0.065+_bonus*0.36)return{mult:1.30,label:I18N.t('craft.masterpiece'),col:'#ff8800'};  // 마스터작도 비율 따라 소폭 상승
   if(r<0.18+_bonus)       return{mult:1.15,label:I18N.t('craft.superior'),col:'#d4af37'};
@@ -4962,7 +4962,7 @@ function getShipStats(s){
   // 영웅 전역 패시브
   const _hp=getHeroPassiveBonus();
   // 함선 강화 — _enhanceLv (0~10) × 5% 모든 능력치 추가 보너스 (사용자 명세)
-  const _enhMul=1+Math.max(0,Math.min(10,s._enhanceLv||0))*0.05;
+  const _enhMul=1+clamp(s._enhanceLv||0,0,10)*0.05;
   // 사용자 요청 2026-06-09: 함선 역할(특성화) multiplier 적용 (신화 제외)
   const _rmATT=_shipRoleMul(s,'ATT');
   const _rmINT=_shipRoleMul(s,'INT');

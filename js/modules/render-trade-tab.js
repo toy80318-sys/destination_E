@@ -74,7 +74,7 @@ function generateShopStock(planetId){
       const repScale=clamp(_stockRep/500,0.04,1.0);  // 0.04~1.0
       const priceRatio=c.buy/15000;  // 0~1 (가격 비율)
       const priceAdjust=1-priceRatio*0.55;  // 저가 1.0, 고가 0.45
-      const maxQty=Math.max(20,Math.min(500,Math.floor(500*repScale*priceAdjust)));
+      const maxQty=clamp(Math.floor(500*repScale*priceAdjust),20,500);
       const minQty=Math.max(20,Math.floor(maxQty*0.45));
       stock[c.id]=minQty+Math.floor(Math.random()*(maxQty-minQty+1));
     }
@@ -107,9 +107,9 @@ function generateShopStock(planetId){
     }
     const picks=seededPick(allMats,3,0);
     // 수량: score 기반, 4~60개 범위 (기존 2배)
-    const baseQty=Math.max(4,Math.min(60,4+Math.floor(score/4)));
+    const baseQty=clamp(4+Math.floor(score/4),4,60);
     picks.forEach((mat,i)=>{
-      const q=Math.max(4,Math.min(60,baseQty-i*6+Math.floor(Math.random()*10)));
+      const q=clamp(baseQty-i*6+Math.floor(Math.random()*10),4,60);
       if(!stock[mat.id]||stock[mat.id]<q)stock[mat.id]=q;
     });
   }
@@ -276,7 +276,7 @@ function _restockCommodities(stock,planetId){
     const repScale=clamp(_rep/500,0.04,1.0);
     const priceRatio=c.buy/15000;
     const priceAdjust=1-priceRatio*0.55;
-    const maxQty=Math.max(20,Math.min(500,Math.floor(500*repScale*priceAdjust)));
+    const maxQty=clamp(Math.floor(500*repScale*priceAdjust),20,500);
     const minQty=Math.max(20,Math.floor(maxQty*0.45));
     const refill=minQty+Math.floor(Math.random()*(maxQty-minQty+1));
     // 기존 재고가 보충량보다 적은 경우만 보충 (더 많으면 유지)

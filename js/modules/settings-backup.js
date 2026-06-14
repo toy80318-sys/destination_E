@@ -214,7 +214,7 @@ function importSaveFile(ev){
         // 단일 슬롯 — 슬롯 번호 입력
         const slotStr=prompt(I18N.t('backup.slotPrompt'),'1');
         if(slotStr===null)return;
-        const n=Math.max(1,Math.min(8,parseInt(slotStr)||1));
+        const n=clamp(parseInt(slotStr)||1,1,8);
         const sk='de_save_s'+n;
         if(localStorage.getItem(sk)&&!confirm(I18N.t('ui.slotHasDataOverwrite',{n})))return;
         localStorage.setItem(sk,JSON.stringify(obj));
