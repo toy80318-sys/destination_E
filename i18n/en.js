@@ -257,6 +257,7 @@ I18N.registerLocale("en", {
   "notify.feedbackSent": "✅ Feedback sent to the developer. Thank you!",
   "notify.hofRegistered": "🌐 Registered to global Hall of Fame",
   "notify.voidAbyssChixOnly": "🌑 The Void Abyss is reachable only near Chiks planets",
+  "notify.voidBossQuestPosted": "🌑 The Black Falcon hidden quest has appeared in the Void Sector (P30). Challenge it from that planet's quests.",
   "notify.finalBossCleared": "🏆 Final boss defeated! Game cleared!",
   "notify.piratesStoleReward": "💀 Pirates stole the reward!",
   "notify.matsPartialRestock": "🛒 Crafting materials partially restocked!",

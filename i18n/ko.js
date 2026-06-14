@@ -257,6 +257,7 @@ I18N.registerLocale("ko", {
   "notify.feedbackSent": "✅ 피드백이 개발자에게 전송됐습니다. 감사합니다!",
   "notify.hofRegistered": "🌐 명예의 전당 글로벌 등록 완료",
   "notify.voidAbyssChixOnly": "🌑 보이드의 심연은 치크스 행성 근처에서만 접근 가능",
+  "notify.voidBossQuestPosted": "🌑 블랙팔콘 히든 퀘스트가 보이드 구역(P30)에 등장했습니다. 해당 행성 퀘스트에서 도전하세요.",
   "notify.finalBossCleared": "🏆 최종 보스 격파! 게임 클리어!",
   "notify.piratesStoleReward": "💀 해적에게 보상을 빼앗겼다!",
   "notify.matsPartialRestock": "🛒 제작 재료 일부 재입고!",

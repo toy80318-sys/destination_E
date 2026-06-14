@@ -443,6 +443,8 @@ function _grantVoidBossRewards(){
       title:I18N.t('reward.hiddenBossTitle'),
       subtitle:I18N.t('ui.falconCaptureSummary',{cap:_capCount,luck:_lucky?I18N.t('ui.luckySuffix'):'',bp:bpGranted.length,vc:_vcGrant}),
       items,color:'#cc66ff',sfx:null,
+      imgScale:0.7,   // 사용자 요청 2026-06-15: 보상 이미지 70% 크기
+      rewardWide:true, // 가로 +50% · 세로 -30% 모달 (버튼 노출 보장)
       congrats:I18N.t('reward.voidApproval')
     });
   }

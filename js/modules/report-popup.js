@@ -75,7 +75,7 @@
       txt:I18N.t('btn.confirm'),
       fn:()=>{window.closeModal();if(typeof _onClose==='function')_onClose();},
       cls:'btn-gold'
-    }],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight,crewReveal:!!opts.crewReveal});
+    }],{wide:true,report:!opts.bossfight,bossfight:!!opts.bossfight,crewReveal:!!opts.crewReveal,rewardWide:!!opts.rewardWide});
   }
 
   window.showAcquisitionReport=showAcquisitionReport;

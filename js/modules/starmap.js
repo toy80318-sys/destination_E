@@ -1783,11 +1783,15 @@
                 <div style="color:#e0c0ff;font-size:13px;line-height:1.8">${I18N.t('ui.voidCoreTrialLine')}</div>
               </div>`,
               [{txt:I18N.t('falcon.challengeBtn'),fn:()=>{closeModal();
+                // 사용자 요청 2026-06-15: 블랙팔콘은 즉시 전투가 아닌 P30 히든 퀘스트로만 도전.
+                //   여기서는 퀘스트를 'available'로 등장시키고, 실제 전투는 P30 퀘스트 수락(acceptQuest)에서 시작.
                 if(!G.quests['P30'])G.quests['P30']=[];
                 let _q=G.quests['P30'].find(q=>q&&q.id==='q_void_boss');
-                if(!_q){_q={id:'q_void_boss',type:'void_boss',ic:'🌑',npc:'???',npcIc:'🌑',nm:I18N.t('quest.darkShipHidden'),desc:I18N.t('falcon.duelLore'),rewardCr:200000000,rewardVe:999,status:'active',targetId:null,progress:0,required:1,planetId:'P30'};G.quests['P30'].unshift(_q);}
-                _q.status='active';
-                if(typeof showVoidBossIntro==='function')showVoidBossIntro(_q);
+                if(!_q){_q={id:'q_void_boss',type:'void_boss',ic:'🌑',npc:'???',npcIc:'🌑',nm:I18N.t('quest.darkShipHidden'),desc:I18N.t('falcon.duelLore'),rewardCr:200000000,rewardVe:999,status:'available',targetId:null,progress:0,required:1,planetId:'P30'};G.quests['P30'].unshift(_q);}
+                if(_q.status!=='claimed')_q.status='available';
+                try{saveGame(true);}catch(e){}
+                notify(I18N.t('notify.voidBossQuestPosted'),'pur');
+                try{baekgu(I18N.t('notify.voidBossQuestPosted'));}catch(e){}
               },cls:'btn-red'},{txt:I18N.t('falcon.notReady'),fn:closeModal,cls:'btn-sm'}]);
           }
         } else if(G._finalTestComplete){

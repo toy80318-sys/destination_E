@@ -1321,6 +1321,8 @@ function openModal(title,bodyHTML,buttons=[],opts={}){
     mbox.classList.toggle('modal-crew-reveal',!!opts.crewReveal);
     // 사용자 요청 2026-06-14: 게임 저장/불러오기 메뉴 — 가로 10%·세로 20% 축소
     mbox.classList.toggle('modal-save-compact',!!opts.compactSave);
+    // 사용자 요청 2026-06-15: 보이드 보상 등 — 가로 +50%·세로 -30% (버튼 노출 보장)
+    mbox.classList.toggle('modal-reward-wide',!!opts.rewardWide);
   }
   const mbg=document.getElementById('modal-bg');
   const wasOpen=mbg.classList.contains('on');
