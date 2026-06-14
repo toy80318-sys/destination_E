@@ -2506,8 +2506,9 @@ function _finishCombat(){
       }
       // 보스 전용: 신화 파츠 4종 + 보너스 크레딧 + 우르사 함선 (이미지 추가 — 보상 시각화)
       if(_isBossWin){
-        items.push({ic:'💰',nm:I18N.t('report.bossBonus'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡10,000,000`,desc:I18N.t('report.bossBonusDesc')});
-        items.push({ic:'🏴',img:'img/combat/ships/Boss.png',nm:I18N.t('ship.URSA.nm'),type:I18N.t('report.ursaType'),color:'#ff66cc',stats:I18N.t('ui.ursaSpec'),desc:I18N.t('report.ursaDesc')});
+        items.push({ic:'💰',img:'img/ui/credit.png'+_ver,nm:I18N.t('report.bossBonus'),type:I18N.t('report.creditsType'),color:'var(--gold)',stats:`+₡10,000,000`,desc:I18N.t('report.bossBonusDesc')});
+        // 우르사 메이저 보상 카드 — 실제 격파한 보스와 동일 이미지(enemies/Boss.png)로 통일 (사용자 보고 2026-06-15)
+        items.push({ic:'🏴',img:'img/combat/enemies/Boss.png'+_ver,nm:I18N.t('ship.URSA.nm'),type:I18N.t('report.ursaType'),color:'#ff66cc',stats:I18N.t('ui.ursaSpec'),desc:I18N.t('report.ursaDesc')});
         items.push({ic:'⚔️',img:partImgSrc('MW01'),nm:I18N.t('reward.hermeticGunNm'),type:I18N.t('reward.partWeaponType'),color:'#ff66cc',stats:'ATT +320',desc:I18N.t('reward.hermeticDesc'),rarity:'mythic'});
         items.push({ic:'🛡️',img:partImgSrc('MS01'),nm:I18N.t('reward.kronosShieldNm'),type:I18N.t('reward.partShieldType'),color:'#ff66cc',stats:'INT +280 · '+I18N.t('ui.shieldShort')+' +8000',desc:I18N.t('reward.kronosDesc'),rarity:'mythic'});
         items.push({ic:'🪖',img:partImgSrc('MA01'),nm:I18N.t('reward.adamanArmorNm'),type:I18N.t('reward.partArmorType'),color:'#ff66cc',stats:'HP +12000 · DEF +120',desc:I18N.t('reward.adamanDesc'),rarity:'mythic'});
@@ -2517,7 +2518,7 @@ function _finishCombat(){
           items.push({ic:'📜',img:partImgSrc('RB10'),nm:I18N.t('reward.soulMatrixBp'),type:I18N.t('reward.soulMatrixBpType'),color:'#cc66ff',stats:I18N.t('reward.armorShort'),desc:I18N.t('reward.soulMatrixBpDesc'),rarity:'mythic'});
         }
         if(G.blueprints&&G.blueprints.LGD03){
-          items.push({ic:'📜',nm:I18N.t('reward.relativityBp'),type:I18N.t('reward.relativityBpType'),color:'#cc66ff',stats:I18N.t('reward.largeMythicFs'),desc:I18N.t('reward.relativityBpDesc'),rarity:'mythic'});
+          items.push({ic:'📜',img:'img/ships/LGD03.png'+_ver,nm:I18N.t('reward.relativityBp'),type:I18N.t('reward.relativityBpType'),color:'#cc66ff',stats:I18N.t('reward.largeMythicFs'),desc:I18N.t('reward.relativityBpDesc'),rarity:'mythic'});
         }
       }
       return items;
@@ -2549,6 +2550,7 @@ function _finishCombat(){
             color:'#ffd700',
             sfx:null,
             bossfight:true,
+            imgScale:0.5,  // 사용자 요청 2026-06-15: 보상 이미지 절반 크기 (일반 전투 보고와 동일)
             congrats:I18N.t('ending.finalCongrats'),
             // 보상 확인 후 — 어두운 화면 + 영웅/주인공 대사 + 엔딩 크레딧 → 보이드 페이즈
             onClose:()=>{

@@ -57,8 +57,8 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
         하단 버튼이 잘리거나 가려지는 문제. 본문만 스크롤되도록 분리. */
 .modal{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:24px;max-width:520px;width:96%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
 .modal.modal-wide{max-width:624px}
-/* 보스 인트로/엔딩 + 보스전 최종 보상 — 사용자 요청 (2026-06-06): 1100→1210 (+10%) */
-.modal.modal-bossfight{max-width:1210px}
+/* 보스 인트로/엔딩 + 보스전 최종 보상 — 1100→1210(2026-06-06) → 847(2026-06-15, 사용자 요청 -30%) */
+.modal.modal-bossfight{max-width:847px}
 /* 사용자 요청 (2026-06-08): 보상 카드 항상 2열 + 이미지 70% 축소(112/134px) + 버튼 보장
    max-height 82vh (이전 88vh) — 작은 화면에서도 하단 확인/수락 버튼 보이도록 */
 .modal.modal-report{max-width:820px;padding:14px 16px;max-height:82vh}
