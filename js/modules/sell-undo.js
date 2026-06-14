@@ -382,7 +382,7 @@ function renderCargoOnlyTab(body){
   const totalValue=G.cargo.reduce((s,c)=>s+((c.buyPrice||0)*(c.qty||0)),0);
   // 각 함선 화물칸 카드 (간소화)
   const shipCards=G.fleet.map((s,idx)=>{
-    const slots=Math.min(s.cargoSlots||4,80);
+    const slots=Math.min(s.cargoSlots||4,100);
     let cargoOffset=0;
     for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}
     const cargoFlat=[];
@@ -394,13 +394,13 @@ function renderCargoOnlyTab(body){
     const _inner=_cgCell-4;
     for(let i=0;i<slots;i++){
       if(i<myCargo.length){const ci=myCargo[i];grid+='<div style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden" title="'+ci.nm+'"><img src="'+ci.img+'" style="width:'+_inner+'px;height:'+_inner+'px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:'+(_cgCell>=36?16:13)+'px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}
-      else{const isMax=(slots>=80);grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
+      else{const isMax=(slots>=100);grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
     }
     grid+='</div>';
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';
     const tierIc={신화:'✦',전설기함:'⚑',대형:'🌟',중형:'🚀',소형:'🛸'}[s.tier]||'🛸';
     let btn;
-    if(slots<80){const cp=getCargoUpgradePrice(s);btn='';}
+    if(slots<100){const cp=getCargoUpgradePrice(s);btn='';}
     else btn='<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxAlt')+'</span>';
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
       <div style="width:273px;flex-shrink:0;text-align:center">
@@ -410,7 +410,7 @@ function renderCargoOnlyTab(body){
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
           <span style="font-size:14px;font-weight:bold;color:var(--txt)">${idx===0?'⭐ ':''}${shipDisplayName(s)}</span>
-          <span style="font-size:11px;color:var(--cyan)">📦 ${s.cargoSlots||4} / 80${I18N.t('unit.slot')}</span>
+          <span style="font-size:11px;color:var(--cyan)">📦 ${s.cargoSlots||4} / 100${I18N.t('unit.slot')}</span>
           ${btn}
         </div>
         ${grid}
@@ -418,8 +418,8 @@ function renderCargoOnlyTab(body){
     </div>`;
   }).join('');
   // 전체 함대 창고 확장 비용 합계 + 가능 여부 (사용자 요청: 상단 일괄 버튼)
-  const _allUpgradeCost=G.fleet.reduce((s,sh)=>s+((sh.cargoSlots||4)<80?getCargoUpgradePrice(sh):0),0);
-  const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<80);
+  const _allUpgradeCost=G.fleet.reduce((s,sh)=>s+((sh.cargoSlots||4)<100?getCargoUpgradePrice(sh):0),0);
+  const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<100);
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
@@ -449,15 +449,15 @@ function renderCargoOnlyTab(body){
   </div>`;
   G._garageMode=false;
 }
-// 전체 함대 화물칸 일괄 +2 확장 (모든 함선 < 80칸 대상)
+// 전체 함대 화물칸 일괄 +2 확장 (모든 함선 < 100칸 대상)
 function upgradeAllCargo(){
   if(!Array.isArray(G.fleet))return;
-  const targets=G.fleet.map((s,i)=>({s,i})).filter(x=>(x.s.cargoSlots||4)<80);
+  const targets=G.fleet.map((s,i)=>({s,i})).filter(x=>(x.s.cargoSlots||4)<100);
   if(targets.length===0){notify(I18N.t('notify.allShipsHoldsMax'),'warn');return;}
   const total=targets.reduce((s,x)=>s+getCargoUpgradePrice(x.s),0);
   if((G.credits||0)<total){notify(I18N.t('notify.needCreditsTotal',{cost:total.toLocaleString()}),'err');return;}
   G.credits-=total;
-  targets.forEach(x=>{x.s.cargoSlots=Math.min(80,(x.s.cargoSlots||4)+2);});
+  targets.forEach(x=>{x.s.cargoSlots=Math.min(100,(x.s.cargoSlots||4)+2);});
   notify(I18N.t('notify.holdExpandedN',{n:targets.length,cr:total.toLocaleString()}),'gold');
   updateHUD();saveGame(true);
   try{rerenderTab(renderGarageTab);}catch(e){}
