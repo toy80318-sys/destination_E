@@ -3345,13 +3345,12 @@ function showBossCelebration(onDone){
 // 보이드의 창 (MMV01) 인벤토리 지급 + (기함 빈 슬롯 있으면) 즉시 장착
 function _grantVoidSpear(){
   if(!G.inventory)G.inventory=[];
-  // 이미 보유 또는 장착돼 있으면 중복 지급 방지
-  const _invHas=(G.inventory||[]).find(i=>i.id==='MMV01'&&i.qty>0);
-  const _equipped=(G.fleet||[]).some(s=>(s.parts||[]).includes('MMV01'));
-  if(!_invHas&&!_equipped){
-    G.inventory.push({id:'MMV01',qty:1});
-  }
-  // 기함(0번) 에 빈 무기 슬롯이 있고 아직 미장착이면 자동 장착
+  // 사용자 보고 2026-06-15: 보스 보상에서 보이드의 창(MMV01)을 이미 받은 경우
+  //   기존 "중복 방지" 가드가 보이드의 심연 보상 지급을 막아 실제로 못 받던 문제.
+  //   → 이 보상은 1회성(!_voidSpearObtained 게이트)이므로 항상 1개 지급한다.
+  const inv=G.inventory.find(i=>i.id==='MMV01');
+  if(inv)inv.qty=(inv.qty||0)+1; else G.inventory.push({id:'MMV01',qty:1});
+  // 기함(0번)에 빈 무기 슬롯이 있고 아직 미장착이면 자동 장착, 아니면 인벤토리 보관
   const flag=G.fleet&&G.fleet[0];
   if(flag&&!(flag.parts||[]).includes('MMV01')){
     flag.parts=flag.parts||[];
@@ -3367,7 +3366,8 @@ function _grantVoidSpear(){
     }else{
       notify(I18N.t('notify.voidSpearInvFlagshipFull'),'gold');
     }
-  }else if(!_equipped){
+  }else{
+    // 기함에 이미 장착돼 있어도 인벤토리에 1개 지급됨
     notify(I18N.t('notify.voidSpearInv'),'gold');
   }
   G._voidSpearObtained=true;
