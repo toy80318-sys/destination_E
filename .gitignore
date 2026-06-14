@@ -35,3 +35,5 @@ scripts/i18n_unique.json
 release_itchio/
 download-log.txt
 build-linux-log.txt
+# 3-OS 패키징 산출물 (build-3os.bat 출력 — Windows 빌드 + mac/linux 다운로드 모음, git 추적 금지)
+release/
