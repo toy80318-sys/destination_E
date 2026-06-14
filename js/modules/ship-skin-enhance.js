@@ -477,7 +477,7 @@ function renderFleetFormationTab(body){
       let content;
       if(ship){
         const st=getShipStats(ship);
-        const hpP=Math.max(0,Math.min(100,Math.round(ship.hp/Math.max(1,st.HP||ship.maxHP)*100)));
+        const hpP=clamp(Math.round(ship.hp/Math.max(1,st.HP||ship.maxHP)*100),0,100);
         const hpCol=hpP>60?'var(--green)':hpP>30?'var(--yellow)':'var(--red)';
         content=`
           <div style="width:100%;display:flex;justify-content:center;flex-shrink:0">${imgOrEmoji(shipImgSrc(ship),'🛸',104,104,'border-radius:6px',shipLoreKey(ship))}</div>
@@ -906,7 +906,7 @@ function getShipSellPrice(ship){
   // 마르코 폴로 영웅 보유 시 판매가 +10%
   const marcoMult=(G&&G.heroes&&G.heroes.includes('H08'))?1.20:1.0;
   // 함선 강화 레벨 보너스 — 레벨당 +10% (사용자 요청, 0~10 단계 × 5% 능력치 보너스 기반 ×2)
-  const enhanceLv=Math.max(0,Math.min(10,ship._enhanceLv||0));
+  const enhanceLv=clamp(ship._enhanceLv||0,0,10);
   const enhanceMult=1+enhanceLv*0.10;
   const baseTotal=Math.floor(basePrice*sellRatio*marcoMult*enhanceMult)+cargoRefund;
   return {total:baseTotal, base:Math.floor(basePrice*sellRatio*marcoMult*enhanceMult), cargoRefund, ratio:Math.round(sellRatio*100), marco:marcoMult>1, enhanceLv, enhanceMult};

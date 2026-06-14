@@ -310,7 +310,7 @@ function discardReserveShip(reserveIdx){
   const basePrice=def?.price||({소형:5000,중형:35000,대형:260000,전설기함:1200000,신화:25000000})[ship.tier]||10000;
   const qualityMul=ship.quality||1.0;
   // 강화 레벨 — 레벨당 +10% 매각가 보너스 (0~10)
-  const _enhLv=Math.max(0,Math.min(10,ship._enhanceLv||0));
+  const _enhLv=clamp(ship._enhanceLv||0,0,10);
   const _enhMul=1+_enhLv*0.10;
   const sellPrice=Math.round(basePrice*0.8*qualityMul*_enhMul);
   // 장착 파츠 → 인벤토리 회수

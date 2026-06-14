@@ -190,7 +190,7 @@ function renderShipTab(body){
     content = sortBar + sortedFleet.map(s=>{
       const idx=s._origIdx; // 실제 fleet 인덱스 (버튼 onclick용)
       const _stP=getShipStats(s);const _eHpP=Math.max(1,_stP.HP||s.maxHP),_eSPp=Math.max(1,_stP.maxSH||s.maxSH);
-      const hpP=Math.max(0,Math.min(100,Math.round(s.hp/_eHpP*100))),shP=(_stP.maxSH||s.maxSH)>0?Math.max(0,Math.min(100,Math.round(s.sh/_eSPp*100))):0;
+      const hpP=clamp(Math.round(s.hp/_eHpP*100),0,100),shP=(_stP.maxSH||s.maxSH)>0?clamp(Math.round(s.sh/_eSPp*100),0,100):0;
       const rc=repairCost(s),sc=shRepairCost(s),bonus=getPartBonus(s),crewBonus=getCrewBonus(s);
       const hpC=hpP>60?'var(--green)':hpP>30?'#f39c12':'var(--red)';
       const totalATT=(s.ATT||0)+bonus.att+crewBonus.att,totalINT=(s.INT||0)+bonus.int2+crewBonus.int2,totalTEC=(s.TEC||0)+bonus.tec+crewBonus.tec;
@@ -544,8 +544,8 @@ function renderShipTab(body){
       const tc=_tierColMy[s.tier]||'var(--dim)';
       const _stC=getShipStats(s);
       const _eMxH=Math.max(1,_stC.HP||s.maxHP),_eMxS=Math.max(1,_stC.maxSH||s.maxSH);
-      const hpP=Math.max(0,Math.min(100,Math.round(s.hp/_eMxH*100)));
-      const shP=(_stC.maxSH||s.maxSH)>0?Math.max(0,Math.min(100,Math.round(s.sh/_eMxS*100))):0;
+      const hpP=clamp(Math.round(s.hp/_eMxH*100),0,100);
+      const shP=(_stC.maxSH||s.maxSH)>0?clamp(Math.round(s.sh/_eMxS*100),0,100):0;
       const st=getShipStats(s);
       const isFlagship=i===0;
       const canSell=G.fleet.length>1;

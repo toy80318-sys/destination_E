@@ -40,11 +40,12 @@ window.addEventListener('unhandledrejection',function(e){
 //   여러 모듈에 흩어져 있던 동일 인라인 로직을 한 곳에 모은다.
 //   ⚠️ 동작은 기존 인라인 구현과 100% 동일(순수 리팩터링 — 밸런스/로직 변경 아님).
 //   game.js가 일부 모듈보다 늦게 로드돼도 호출은 전부 런타임이라 안전.
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}                                       // 범위 제한 [min,max]
 function sumQtyById(arr,id){return (arr||[]).filter(x=>x&&x.id===id).reduce((s,x)=>s+(x.qty||0),0);} // id 일치 항목 qty 합산
 function stringToSeed(str){return String(str||'').split('').reduce((a,c)=>a+c.charCodeAt(0),0);}      // 문자열→결정론적 시드
 function clampCargoSlots(slots,bonus){return Math.min(100,(slots||4)+(bonus||0));}                    // 화물칸 100 상한 클램프
 function getTotalCargoQty(){return (G.cargo||[]).reduce((s,c)=>s+(c.qty||0),0);}                      // 현재 적재 화물 총량
-try{if(typeof window!=='undefined'){window.sumQtyById=sumQtyById;window.stringToSeed=stringToSeed;window.clampCargoSlots=clampCargoSlots;window.getTotalCargoQty=getTotalCargoQty;}}catch(e){}
+try{if(typeof window!=='undefined'){window.clamp=clamp;window.sumQtyById=sumQtyById;window.stringToSeed=stringToSeed;window.clampCargoSlots=clampCargoSlots;window.getTotalCargoQty=getTotalCargoQty;}}catch(e){}
 // ═══ DATA ═══════════════════════════════════════════════════════
 // 데이터 정의는 도메인별로 분리되어 js/data/ 폴더에 있습니다.
 // index.html이 game.js보다 먼저 다음 파일들을 로드하므로

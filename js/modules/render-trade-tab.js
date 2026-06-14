@@ -71,7 +71,7 @@ function generateShopStock(planetId){
       // 특산물 재고: 명성에 비례하여 최소 20개 ~ 최대 500개
       // 명성 0 → ~20개, 명성 500+ → ~500개. 가격 비싼 물품은 약간 감소
       const _stockRep=G.reputation||0;
-      const repScale=Math.max(0.04,Math.min(1.0,_stockRep/500));  // 0.04~1.0
+      const repScale=clamp(_stockRep/500,0.04,1.0);  // 0.04~1.0
       const priceRatio=c.buy/15000;  // 0~1 (가격 비율)
       const priceAdjust=1-priceRatio*0.55;  // 저가 1.0, 고가 0.45
       const maxQty=Math.max(20,Math.min(500,Math.floor(500*repScale*priceAdjust)));
@@ -273,7 +273,7 @@ function _restockCommodities(stock,planetId){
       return;
     }
     const _rep=G.reputation||0;
-    const repScale=Math.max(0.04,Math.min(1.0,_rep/500));
+    const repScale=clamp(_rep/500,0.04,1.0);
     const priceRatio=c.buy/15000;
     const priceAdjust=1-priceRatio*0.55;
     const maxQty=Math.max(20,Math.min(500,Math.floor(500*repScale*priceAdjust)));
