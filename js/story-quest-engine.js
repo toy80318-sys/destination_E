@@ -398,6 +398,48 @@ window.forceReplayPlanetIntro=function(pid){
   window.STORY_SCENES_PC.forceReplayScene(sceneId);
 };
 
+// ═══════════════════════════════════════════════════════════════════
+// 저장된 시나리오 퀘스트 재현지화 (relocalize)
+//   버그(2026-06-14): 퀘스트는 spawn 시점 언어로 nm/desc/objective.label 을 "문자열"로
+//     확정 저장한다(story-quest-engine 96~110행). 언어 전환은 페이지 reload 를 하지만
+//     spawnPhasedQuests 는 이미 존재하는 퀘스트(같은 id)를 skip 하므로(93행) 한 번 한국어로
+//     스폰된 퀘스트는 영어로 바꿔도 한글 문자열이 그대로 남는다.
+//   수정: 게임 로드/허브 진입 시 G.quests 전체를 원본 템플릿(PHASE1~6_QUESTS)에서 현재
+//     언어로 재해석. 현재 언어로 이미 맞춰져 있으면(G._questLocLang) 비용 없이 즉시 반환.
+function relocalizeStoryQuests(){
+  try{
+    if(!window.G||!G.quests) return 0;
+    const _lang=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en')?'en':'ko';
+    if(G._questLocLang===_lang) return 0; // 이미 현재 언어로 지역화됨 — 스킵
+    // id → 원본 템플릿 맵 구성
+    const byId=Object.create(null);
+    ['PHASE1_QUESTS','PHASE2_QUESTS','PHASE3_QUESTS','PHASE4_QUESTS','PHASE5_QUESTS','PHASE6_QUESTS'].forEach(s=>{
+      const src=window[s]; if(!src) return;
+      Object.keys(src).forEach(pid=>{ (src[pid]||[]).forEach(t=>{ if(t&&t.id) byId[t.id]=t; }); });
+    });
+    let changed=0;
+    Object.keys(G.quests).forEach(pid=>{
+      (G.quests[pid]||[]).forEach(q=>{
+        if(!q||!q.id) return;
+        const t=byId[q.id]; if(!t) return; // 절차 생성 퀘(quest-gen)는 템플릿 없음 → 건너뜀
+        if(t.nm&&typeof t.nm==='object'){ const v=t.nm[_lang]||t.nm.ko; if(v&&v!==q.nm){ q.nm=v; changed++; } }
+        if(t.desc&&typeof t.desc==='object'){ const v=t.desc[_lang]||t.desc.ko; if(v&&v!==q.desc){ q.desc=v; changed++; } }
+        if(Array.isArray(q.objectives)&&Array.isArray(t.objectives)){
+          q.objectives.forEach((o,i)=>{
+            const to=t.objectives[i];
+            if(o&&to&&typeof to.label==='object'){ const l=to.label[_lang]||to.label.ko; if(l&&l!==o.label){ o.label=l; changed++; } }
+          });
+        }
+        if(t.lockReason&&typeof t.lockReason==='object'){ const lr=t.lockReason[_lang]||t.lockReason.ko; if(lr&&lr!==q.lockReason){ q.lockReason=lr; changed++; } }
+      });
+    });
+    G._questLocLang=_lang;
+    if(changed>0){ try{ if(typeof saveGame==='function') saveGame(true); }catch(e){} }
+    return changed;
+  }catch(e){ console.warn('[relocalizeStoryQuests]',e); return 0; }
+}
+window.relocalizeStoryQuests=relocalizeStoryQuests;
+
 console.log('[story-quest-engine] Loaded — spawnPhasedQuests + tickStoryQuests + _storyQuestCurrentProgress');
 console.log('[story-quest-engine] 디버그 명령어: debugStoryState() / resetStoryProgress() / forceReplayPlanetIntro("P01")');
 })();

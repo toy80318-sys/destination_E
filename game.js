@@ -1482,6 +1482,9 @@ function rerenderTab(renderFn){
 // ═══ HUB ════════════════════════════════════════════════════
 function showHub(){
   show('s-hub');
+  // 언어 전환(reload) 후, 한국어로 스폰돼 저장된 시나리오 퀘스트를 현재 언어로 재지역화.
+  //   (메인 허브 스토리 스트립·퀘스트 탭이 렌더되기 전에 1회 — 현재 언어면 즉시 반환)
+  try{if(typeof relocalizeStoryQuests==='function')relocalizeStoryQuests();}catch(e){}
   // 옛 세이브 자동 복구 — turn 이 ACT 마일스톤을 이미 지났는데 act 가 못 따라잡힌 경우 1회 보정
   try{if(typeof _checkActAdvance==='function')_checkActAdvance();}catch(e){}
   // 보스 격파 후 지구(P31) 행성 데이터 마이그레이션 — 옛 세이브에도 항상 P31이 접근 가능하도록.
