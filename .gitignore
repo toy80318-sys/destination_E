@@ -31,3 +31,7 @@ git01.png
 # i18n 추출 산출물 (scripts/extract-i18n.js 의 출력 — 재생성 가능)
 scripts/i18n_extracted.json
 scripts/i18n_unique.json
+# itch.io 업로드용 다운로드 산출물 (download-3os.bat 출력 — GitHub Releases에서 재다운로드 가능, git 추적 금지)
+release_itchio/
+download-log.txt
+build-linux-log.txt
