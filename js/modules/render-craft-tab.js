@@ -319,6 +319,7 @@ function renderCraftTab(body){
   const mythicShips=ALL_RECS.filter(r=>r.type==='ship'&&r.tier==='mythic');
   const flagships  =ALL_RECS.filter(r=>r.type==='ship'&&r.tier==='flagship');
   const legendCargo=ALL_RECS.filter(r=>r.type==='cargo'&&r.tier==='legend');
+  const mythicCargo=ALL_RECS.filter(r=>r.type==='cargo'&&r.tier==='mythic');
 
   // ── 재료 격자 (4행×3열 = 12슬롯) ─────────────────────────────────────
   // 보유 재료 목록 (수량 > 0)
@@ -435,6 +436,9 @@ function renderCraftTab(body){
 
       ${legendCargo.length>0?`<div style="font-size:10px;color:#d4af37;margin:8px 0 4px;font-weight:bold;letter-spacing:.5px">${I18N.t('ui.legendCargoBadge')}</div>
       ${legendCargo.map(bpCard).join('')}`:''}
+
+      ${mythicCargo.length>0?`<div style="font-size:10px;color:#cc66ff;margin:8px 0 4px;font-weight:bold;letter-spacing:.5px">${I18N.t('ui.mythicCargoBadge')}</div>
+      ${mythicCargo.map(bpCard).join('')}`:''}
 
       <div style="margin-top:auto;padding-top:12px;font-size:11px;color:var(--dim);line-height:1.6">
         ${I18N.t('ui.bpDropHint1')}<br>${I18N.t('ui.bpDropHint2')}<br>

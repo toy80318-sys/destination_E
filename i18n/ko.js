@@ -3814,6 +3814,7 @@ I18N.registerLocale("ko", {
   "ui.legendShipsBadge": "🌟 전설 함선",
   "ui.mythicShipsBadge": "✦ 신화 함선",
   "ui.legendCargoBadge": "📦 전설 창고 확장",
+  "ui.mythicCargoBadge": "✦ 신화 창고 확장",
   "ui.bpDropHint1": "💡 퀘스트 클리어 시",
   "ui.bpDropHint2": "5% 확률로 설계도 드랍",
   "ui.bpDropHint3": "📦 링 4+ 행성 퀘스트: 전설 창고 설계도 드랍",

@@ -730,9 +730,9 @@ function notify(msg,type='info'){
   const container=document.getElementById('notif');
   if(!container)return;
   container.appendChild(el);
-  // DOM 캡 — 빠른 다발 알림으로 DOM 풍선 방지 (가장 오래된 것부터 제거)
-  while(container.children.length>10)container.removeChild(container.firstChild);
-  setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),400);},2800);
+  // 최대 5개만 표시 — 초과 시 가장 오래된 것 즉시 제거(빠르게 사라짐). (사용자 요청 2026-06-15)
+  while(container.children.length>5)container.removeChild(container.firstChild);
+  setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),300);},2000);
 }
 // 사용자 요청 2026-06-09: 설계도 보상 알림에 BP01/BP02 이미지 표시
 // 사용: notifyBlueprint('LGD01','LGD01 거북선') → 함선 설계도 (BP01)

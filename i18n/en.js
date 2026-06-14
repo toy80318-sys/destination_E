@@ -3814,6 +3814,7 @@ I18N.registerLocale("en", {
   "ui.legendShipsBadge": "🌟 Legendary Ships",
   "ui.mythicShipsBadge": "✦ Mythic Ships",
   "ui.legendCargoBadge": "📦 Legendary Hold Exp.",
+  "ui.mythicCargoBadge": "✦ Mythic Hold Exp.",
   "ui.bpDropHint1": "💡 On quest clear",
   "ui.bpDropHint2": "5% blueprint drop chance",
   "ui.bpDropHint3": "📦 Ring 4+ planet quests: drop Legendary Hold blueprints",
