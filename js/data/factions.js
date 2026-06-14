@@ -49,6 +49,18 @@ const SPECIAL_CHARS=[
   }
 ];
 
+// ═══ STORY NPCs — 컷씬에서 대화한 조연 인물 (도감 인물 탭) ═══════════════
+//   컷씬에서 한 번이라도 등장(시청)하면 도감 인물 탭에 해금. id = 컷씬 char 키.
+const STORY_NPCS=[
+  {id:'aori',           nm:I18N.t('npc.aori'),          ic:'🍺', img:'img/chars/aori.png',           color:'#d4a574', role:I18N.t('npcLore.aori.role'),           desc:I18N.t('npcLore.aori.desc')},
+  {id:'wolf_elder',     nm:I18N.t('npc.wolfElder'),     ic:'👴', img:'img/chars/wolf_elder.png',     color:'#a8b3c0', role:I18N.t('npcLore.wolf_elder.role'),     desc:I18N.t('npcLore.wolf_elder.desc')},
+  {id:'nav_ai',         nm:I18N.t('npc.navAi'),         ic:'🛰️', img:'img/chars/nav_ai.png',         color:'#9ee7ff', role:I18N.t('npcLore.nav_ai.role'),         desc:I18N.t('npcLore.nav_ai.desc')},
+  {id:'volcan',         nm:I18N.t('npc.volcan'),        ic:'🔥', img:'img/chars/volcan.png',         color:'#ff8844', role:I18N.t('npcLore.volcan.role'),         desc:I18N.t('npcLore.volcan.desc')},
+  {id:'chiks_vanguard', nm:I18N.t('npc.chiksVanguard'), ic:'👾', img:'img/chars/chiks_vanguard.png', color:'#cc66ff', role:I18N.t('npcLore.chiks_vanguard.role'), desc:I18N.t('npcLore.chiks_vanguard.desc')},
+  {id:'maximov',        nm:I18N.t('npc.maximoff'),      ic:'🎖️', img:'img/chars/maximov.png',        color:'#ffd700', role:I18N.t('npcLore.maximov.role'),        desc:I18N.t('npcLore.maximov.desc')}
+];
+try{if(typeof window!=='undefined')window.STORY_NPCS=STORY_NPCS;}catch(e){}
+
 // ═══ SYSTEM GUIDE — 은하계 시스템 생존 필수지식 ═══════════════════════
 // 각 시스템별 위치·역할·담당자·해금조건·특징·주의사항·위트 의견
 const SYSTEM_GUIDE=[

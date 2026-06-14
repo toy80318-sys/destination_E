@@ -158,7 +158,27 @@
     openModal(c.ic+' '+c.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
   }
   try{if(typeof window!=='undefined')window.showCodexSpecialCharModal=showCodexSpecialCharModal;}catch(e){}
-  
+
+  // 도감 — 스토리 NPC(컷씬 조연) 상세 모달
+  function showCodexStoryNpcModal(id){
+    const c=(typeof STORY_NPCS!=='undefined')?STORY_NPCS.find(x=>x.id===id):null;
+    if(!c)return;
+    const col=c.color||'var(--cyan)';
+    function row(ic,label,val){return`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:16px;flex-shrink:0">${ic}</span><div><div style="font-size:11px;color:var(--dim);margin-bottom:2px">${label}</div><div style="font-size:13px;color:var(--txt);line-height:1.6;word-break:keep-all">${val}</div></div></div>`;}
+    const _cImg=c.img?(c.img+((window._GAME_VER&&c.img.indexOf('?v=')<0)?('?v='+encodeURIComponent(window._GAME_VER)):'')):null;
+    const imgHtml=_cImg?`<img src="${_cImg}" alt="${c.nm}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66;flex-shrink:0" onerror="this.outerHTML='<div style=\\'width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0\\'>${c.ic}</div>'">`:`<div style="width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid ${col};flex-shrink:0">${c.ic}</div>`;
+    const html=`<div style="padding:4px 0">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid ${col}44">
+        ${imgHtml}
+        <div><div style="font-size:17px;font-weight:bold;color:${col}">${c.ic} ${c.nm}</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:3px">${c.role||''}</div></div>
+      </div>
+      ${row('📖',I18N.t('part.rowDesc'),c.desc||'-')}
+    </div>`;
+    openModal(c.ic+' '+c.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  }
+  try{if(typeof window!=='undefined')window.showCodexStoryNpcModal=showCodexStoryNpcModal;}catch(e){}
+
   // 사령관(주인공) 상세 모달 — 단계별 이미지 + 명성·전투력·진행 통계
   function showCodexCommanderModal(){
     const _stage=(typeof _commanderStage==='function')?_commanderStage():0;
@@ -428,9 +448,9 @@
         });
       });
       const phCol=['#88ccff','#66ffcc','#ffd700','#ff8844','#cc66ff','#ff66aa'][ph-1]||'var(--cyan)';
-      // ── 백구의 항해 일지 (우측 패널) — 해당 페이즈 모든 대화기록 해금 시에만 전체 공개 ──
-      // 사용자 요청 2026-06-13: 대사 우측에 페이즈별 스토리 정리, 전체 해금 시 표시
-      const _allUnlocked=(counter.total>0 && counter.unlocked>=counter.total);
+      // ── 백구의 항해 일지 (우측 패널) ──
+      // 사용자 요청 2026-06-15: 페이즈1은 기본 해금, 그 외 페이즈는 대화씬 30% 이상 해금 시 일지 공개
+      const _diaryReady=(ph===1) || (counter.total>0 && (counter.unlocked/counter.total)>=0.30);
       const _diary=(window.BAEKGU_DIARY&&window.BAEKGU_DIARY[ph])||null;
       let diaryPanel='';
       if(_diary){
@@ -438,7 +458,7 @@
         const _shipNm=(G.profile&&G.profile.ship)||I18N.t('ui.shipDefault');
         const _coNm=(G.profile&&G.profile.company)||I18N.t('ui.companyDefault');
         const _dx=(window._subTokens?window._subTokens(_diary[lang]||_diary.ko||''):((_diary[lang]||_diary.ko||'').split('{함선}').join(_shipNm).split('{ship}').join(_shipNm).split('{회사}').join(_coNm).split('{company}').join(_coNm)));
-        if(_allUnlocked){
+        if(_diaryReady){
           diaryPanel=`<div style="background:linear-gradient(160deg,rgba(255,215,0,.06),rgba(0,243,255,.04));border:1px solid ${phCol}66;border-radius:10px;padding:14px 16px">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${_baekguMini()}<div style="font-size:13px;font-weight:bold;color:${phCol}">🐕 ${I18N.t('voyage.diaryTitle')} — ${_dt}</div></div>
             <div style="font-size:13px;line-height:1.95;color:#e8eef5;white-space:pre-wrap;word-break:keep-all;font-style:italic">${_dx.replace(/</g,'&lt;')}</div>
@@ -451,7 +471,7 @@
         }
       }
       html+=`<details open style="margin-bottom:12px;background:rgba(5,10,26,.4);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px">
-        <summary style="cursor:pointer;font-size:14px;font-weight:bold;color:${phCol};letter-spacing:1px">${I18N.t('voyage.phaseLabel',{n:ph})} <span style="font-size:11px;color:var(--dim);font-weight:normal">${I18N.t('voyage.progress',{n:counter.unlocked,total:counter.total})}</span>${_allUnlocked?` <span style="font-size:10px;color:var(--gold)">📖 ${I18N.t('voyage.diaryReady')}</span>`:''}</summary>
+        <summary style="cursor:pointer;font-size:14px;font-weight:bold;color:${phCol};letter-spacing:1px">${I18N.t('voyage.phaseLabel',{n:ph})} <span style="font-size:11px;color:var(--dim);font-weight:normal">${I18N.t('voyage.progress',{n:counter.unlocked,total:counter.total})}</span>${_diaryReady?` <span style="font-size:10px;color:var(--gold)">📖 ${I18N.t('voyage.diaryReady')}</span>`:''}</summary>
         <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
           <div>${body||`<div style="font-size:12px;color:var(--dim)">${I18N.t('voyage.emptyPhase')}</div>`}</div>
           <div>${diaryPanel}</div>
@@ -615,6 +635,28 @@
       const heroList=Object.entries(HEROES);
       const recruited=heroList.filter(([id])=>G.heroes.includes(id)).length;
       const _specials=(typeof SPECIAL_CHARS!=='undefined')?SPECIAL_CHARS:[];
+      // 스토리 NPC(컷씬 조연) — 시청한 컷씬에 등장한 char 를 모아 해금 판정
+      const _storyNpcs=(typeof STORY_NPCS!=='undefined')?STORY_NPCS:[];
+      const _seenSc=(G&&G._scenesSeen)||{};
+      const _metChars=new Set();
+      for(let _ph=1;_ph<=6;_ph++){
+        const _CUTm=window['PHASE'+_ph+'_CUTSCENES_KO']||{};
+        Object.keys(_CUTm).forEach(sid=>{ if(_seenSc['scene_'+sid]){ (_CUTm[sid]||[]).forEach(l=>{ if(l&&l.char)_metChars.add(l.char); }); } });
+      }
+      const _metNpcCount=_storyNpcs.filter(c=>_metChars.has(c.id)).length;
+      const _storyNpcCard=(c)=>{
+        const met=_metChars.has(c.id);
+        const col=c.color||'#88ddff';
+        const oc=met?`onclick="showCodexStoryNpcModal('${c.id}')"`:'';
+        const hover=met?'onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'"':'';
+        const _cImg=(met&&c.img)?(c.img+((window._GAME_VER&&c.img.indexOf('?v=')<0)?('?v='+encodeURIComponent(window._GAME_VER)):'')):null;
+        const imgHtml=_cImg?`<img src="${_cImg}" alt="${c.nm}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid ${col};background:rgba(0,0,0,.3);box-shadow:0 0 12px ${col}66" onerror="this.outerHTML='<div style=\\'width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid ${col}\\'>${c.ic}</div>'">`:`<div style="width:78px;height:78px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--bdr)">❔</div>`;
+        return `<div ${oc} ${hover} style="background:var(--card);border:1px solid ${met?col:'var(--bdr)'};border-radius:8px;padding:8px;text-align:center;opacity:${met?1:.4};min-height:148px;${met?'cursor:pointer':''}">
+          <div style="margin:0 auto 6px;display:flex;justify-content:center">${imgHtml}</div>
+          <div style="font-size:12px;font-weight:bold;color:${met?col:'var(--dim)'};line-height:1.2">${met?c.nm:'???'}</div>
+          <div style="font-size:10px;color:${col};margin-top:2px;opacity:.8">${met?c.role:I18N.t('ui.statusUndiscovered')}</div>
+        </div>`;
+      };
       // 특수 인물 카드 (백구·우르사·블랙팔콘) — 영웅 카드와 같은 폼팩터, 보스 격파 여부에 따라 표시
       const _specialCard=(c)=>{
         const isBaekgu=c.id==='NPC_BAEKGU';
@@ -642,8 +684,8 @@
       const _cmdShip=G.fleet&&G.fleet[0]?(shipDisplayNm(G.fleet[0])||G.fleet[0].nm):I18N.t('ui.shipDefault');
       const _cmdRep=G.reputation||0;
       const _cmdPlv=(typeof calcPlayerLevel==='function')?calcPlayerLevel():1;
-      const totalChars=1+heroList.length+_specials.length;
-      const totalUnlocked=1+recruited+_specials.filter(c=>c.id==='NPC_BAEKGU'||(c.id==='NPC_URSA'&&G._earthLiberated)||(c.id==='NPC_BLACKFALCON'&&G._falconDefeated)).length;
+      const totalChars=1+heroList.length+_specials.length+_storyNpcs.length;
+      const totalUnlocked=1+recruited+_specials.filter(c=>c.id==='NPC_BAEKGU'||(c.id==='NPC_URSA'&&G._earthLiberated)||(c.id==='NPC_BLACKFALCON'&&G._falconDefeated)).length+_metNpcCount;
       content=`<div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
         <img src="img/ui/HN01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="HN" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,215,0,.6))" onerror="this.outerHTML='<div style=\\'font-size:29px\\'>⭐</div>'">
         <div><div style="font-size:14px;color:var(--txt);font-weight:bold">${I18N.t('ui.heroCodex')}</div>
@@ -682,9 +724,14 @@
       <div style="font-size:13px;color:#cc66ff;font-weight:bold;margin-bottom:8px;letter-spacing:1px">${I18N.t('ui.specialCharsLabel')} <span style="color:var(--dim);font-size:11px">${I18N.t('ui.specialCharsSub')}</span></div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
         ${_specials.map(_specialCard).join('')}
-      </div>`;
+      </div>
+      <!-- 스토리 인물 (컷씬 조연) -->
+      ${_storyNpcs.length?`<div style="font-size:13px;color:#88ddff;font-weight:bold;margin:16px 0 8px;letter-spacing:1px">${I18N.t('codex.storyNpcLabel')} <span style="color:var(--dim);font-size:11px">${_metNpcCount}/${_storyNpcs.length}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
+        ${_storyNpcs.map(_storyNpcCard).join('')}
+      </div>`:''}`;
     }
-  
+
     else if(_codexTab==='planets'){
       // 버그픽스: G.planets 는 게임 시작 시 모든 행성으로 초기화되므로 Object.keys 로 "방문" 판정 불가.
       //  → fog!=='L' (실제 탐험·인접 노출) 인 행성만 visited 로 처리. 모든 행성이 공개되던 문제 해결.
