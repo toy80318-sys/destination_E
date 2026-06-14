@@ -3451,25 +3451,14 @@ function investPlanet(pid){
 
 // ── 퀘스트 생성 시스템 → js/modules/quest-gen.js 로 분할 (2026-06-13, 사용자 요청: 긴 코드 분할)
 
-// ─── 영웅 퀘스트 시스템 (사용자 요청 2026-06-07) ──────────────────────
-// · 일반 퀘스트 8회 완료마다 1개씩 보라색 특별 퀘스트 자동 등장
-// · 영웅의 캐논 행성에서 등장 (시나리오 순서 보존)
-// · 클릭 → 컷씬 재생 → 영웅 자동 영입
+// ─── 영웅 퀘스트 시스템 (사용자 요청 2026-06-07 · 도착기반 전환 2026-06-15) ──────────────────────
+// · 8인 전설 영웅은 각자의 캐논 행성에 배정 (아래 MAP)
+// · 해당 행성에 도착하면 즉시 영웅 퀘스트(status:done) 등장 → 클릭 → 컷씬 재생 → 영입
+// · 스폰 트리거: spawnPhasedQuests → _spawnHeroQuestForPlanet(pid)
 const _HERO_QUEST_PLANET_MAP={
   H08:'P19', H04:'P04', H01:'P13', H05:'P14',
   H02:'P06', H03:'P08', H06:'P28', H07:'P09'
 };
-const _HERO_SCENARIO_ORDER=['H08','H04','H01','H05','H02','H03','H06','H07'];
-const _HERO_QUEST_THRESHOLD=8;  // 일반 퀘스트 N회마다 등장
-
-function _nextScenarioHero(){
-  // 시나리오 순서대로 미영입 첫 영웅
-  for(let i=0;i<_HERO_SCENARIO_ORDER.length;i++){
-    const hid=_HERO_SCENARIO_ORDER[i];
-    if(!(G.heroes||[]).includes(hid)) return hid;
-  }
-  return null;
-}
 
 function _spawnHeroQuest(heroId){
   // 의존성 가드 — 데이터 파일 미로드 시 NPE 방지
@@ -3514,6 +3503,22 @@ function _spawnHeroQuest(heroId){
   if(typeof baekgu==='function')baekgu(_isEn?(heroNm+' detected at '+planetNm+'. Set course, Commander.'):(planetNm+'에서 '+heroNm+'의 위치 단서를 포착했습니다.'));
   return true;
 }
+
+// 행성 도착 시 그 행성에 배정된 영웅 퀘스트를 즉시 스폰 (사용자 요청 2026-06-15)
+//   · _HERO_QUEST_PLANET_MAP 역방향 조회 — 이 행성의 영웅이 아직 미영입이면 바로 퀘스트(status:done) 등장
+//   · spawnPhasedQuests(=행성 도착 훅)에서 호출 → 도착 즉시 영입 가능
+//   · _spawnHeroQuest 자체 dedup + 영입여부 가드로 중복/재스폰/알림 스팸 없음
+function _spawnHeroQuestForPlanet(pid){
+  if(!pid||typeof _HERO_QUEST_PLANET_MAP==='undefined')return false;
+  let spawned=false;
+  for(const hid in _HERO_QUEST_PLANET_MAP){
+    if(_HERO_QUEST_PLANET_MAP[hid]!==pid)continue;
+    if((G.heroes||[]).includes(hid))continue;  // 이미 영입한 영웅은 스킵
+    if(_spawnHeroQuest(hid))spawned=true;
+  }
+  return spawned;
+}
+try{if(typeof window!=='undefined')window._spawnHeroQuestForPlanet=_spawnHeroQuestForPlanet;}catch(e){}
 
 // ═══════════════════════════════════════════════════════════════════
 // Phase 시나리오 퀘스트 자동 spawn (PHASE1/2/3+_QUESTS 데이터 사용)
@@ -4055,24 +4060,10 @@ function completeQuest(pid,idx){
     // 일반 퀘스트 완료 시 — 작은 확인 팝업 (보상은 이미 지급됨, 확인용)
     _showQuestRewardToast(_actualCr,_actualVe,_rm,_repMult);
   }
-  // ─── 영웅 퀘스트 자동 등장 카운터 (일반 퀘스트만 집계) ───
-  // void_boss, hero_quest, story_quest 는 카운트 제외 (특수 퀘스트는 페이싱 기준 아님)
-  if(q.type!=='hero_quest'&&q.type!=='void_boss'&&q.type!=='story_quest'){
-    G._normalQuestCount=(G._normalQuestCount||0)+1;
-    if(G._normalQuestCount>=_HERO_QUEST_THRESHOLD){
-      const _nextHero=_nextScenarioHero();
-      if(_nextHero){
-        const _spawned=_spawnHeroQuest(_nextHero);
-        if(_spawned){
-          G._normalQuestCount=0;  // 카운터 리셋
-          try{saveGame(true);}catch(e){}
-        }
-      } else {
-        // 8영웅 전원 영입 완료 — 카운터 영구 동결
-        G._normalQuestCount=0;
-      }
-    }
-  }
+  // ─── 영웅 퀘스트는 행성 도착 시 자동 스폰으로 전환 (사용자 보고/요청 2026-06-15) ───
+  //   이전: 일반 퀘 8회 완료 임계 + 시나리오 고정순서 게이팅 → 영웅을 영영 못 받는 문제.
+  //   변경: 임계 제거. 해당 영웅의 캐논 행성에 도착하면 즉시 퀘스트(status:done)로 영입 가능.
+  //         → spawnPhasedQuests → _spawnHeroQuestForPlanet(pid) 에서 처리.
 }
 // 퀘스트 완료 시 작은 보상 안내 팝업 (보너스 없는 일반 완료용)
 // 화면 우상단에 자동 사라지는 카드 형태 — 모달이 아니라 클릭으로 닫을 수 있는 작은 패널

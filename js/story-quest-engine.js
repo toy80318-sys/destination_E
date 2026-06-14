@@ -213,6 +213,9 @@ function spawnPhasedQuests(pid){
       }
     }
   }
+  // 행성 도착 시 해당 행성의 영웅 퀘스트 자동 스폰 (사용자 요청 2026-06-15)
+  //   game.js 정의 함수 — 런타임에 window 로 노출됨. 미영입 영웅이면 즉시 퀘스트(status:done) 등장.
+  try{ if(typeof window._spawnHeroQuestForPlanet==='function')window._spawnHeroQuestForPlanet(pid); }catch(e){console.warn('[story-quest-engine] hero quest spawn fail:',e);}
   return added>0;
 }
 
