@@ -118,7 +118,7 @@ function showSettingsModal(){
       <input type="file" id="save-import-input" accept=".json,.txt" style="display:none" onchange="importSaveFile(event)">
       <div style="font-size:10px;color:var(--muted);text-align:center;line-height:1.5">${I18N.t('settings.fileSaveHelp')}</div>
     </div>`}
-    <div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
+    ${(window.desktopAPI&&window.desktopAPI.isSteamBuild)?'':`<div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
       <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('cheat.pwOnceHint')}</span></div>
       ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>`:`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
@@ -130,7 +130,7 @@ function showSettingsModal(){
       <button class="btn btn-sm" style="width:100%;margin-top:6px;border-color:#cc66ff;color:#cc66ff;font-weight:bold;background:rgba(204,102,255,.08)" onclick="cheatUnlockVoid()">${I18N.t('ui.voidPhaseInstant')}</button>
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>`}
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">${I18N.t('cheat.debugWarn')}</div>
-    </div>`:''}
+    </div>`}`:''}
   </div>`;
   openModal(I18N.t('modal.settings'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }

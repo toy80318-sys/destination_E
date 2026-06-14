@@ -2,8 +2,15 @@
 // 렌더러(게임)에서 안전하게 호출 가능한 데스크탑 전용 API.
 const { contextBridge, ipcRenderer } = require('electron');
 
+// Steam depot 빌드 여부 — 메인 프로세스의 _isSteamBuild() 결과를 동기로 1회 조회.
+//   렌더러(설정 치트 패널 등)에서 동기 분기할 수 있도록 정적 boolean으로 노출.
+const _isSteamBuild = (() => {
+  try { return ipcRenderer.sendSync('get-steam-build-sync') === true; } catch (_) { return false; }
+})();
+
 contextBridge.exposeInMainWorld('desktopAPI', {
   isDesktop: true,
+  isSteamBuild: _isSteamBuild,
   platform: process.platform,
   // 슬롯 기반 세이브 API
   saveSlot: (key, payload) => ipcRenderer.invoke('save-slot', key, payload),

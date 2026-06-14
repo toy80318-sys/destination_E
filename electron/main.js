@@ -137,6 +137,11 @@ function createWindow() {
   mainWindow.on('close', () => saveWindowState(mainWindow));
   mainWindow.on('closed', () => { mainWindow = null; });
 
+  // Steam 빌드: DevTools가 어떤 경로로든 열리면 즉시 닫음 (메뉴 제거의 안전망 — 콘솔 치트 차단)
+  mainWindow.webContents.on('devtools-opened', () => {
+    if (_isSteamBuild()) { try { mainWindow.webContents.closeDevTools(); } catch (_) {} }
+  });
+
   if (isDev) mainWindow.webContents.openDevTools({ mode: 'detach' });
 }
 
@@ -162,7 +167,8 @@ function buildMenu() {
       submenu: [
         { label: L.reload, role: 'reload', accelerator: 'CmdOrCtrl+R' },
         { label: L.forceReload, role: 'forceReload', accelerator: 'CmdOrCtrl+Shift+R' },
-        { label: L.devtools, role: 'toggleDevTools', accelerator: 'F12' },
+        // Steam 빌드에서는 DevTools(F12) 메뉴 항목 제외 — 일반 사용자의 콘솔 치트 차단 (2026-06-14)
+        ...(_isSteamBuild() ? [] : [{ label: L.devtools, role: 'toggleDevTools', accelerator: 'F12' }]),
         { type: 'separator' },
         { label: L.fullscreen, role: 'togglefullscreen', accelerator: 'F11' }
       ]
@@ -428,6 +434,9 @@ ipcMain.handle('show-save-dir', async () => {
 });
 
 ipcMain.handle('get-app-version', () => app.getVersion());
+
+// 렌더러(preload)에서 Steam 빌드 여부를 동기로 1회 조회 — 치트 패널 노출 제어
+ipcMain.on('get-steam-build-sync', (e) => { try { e.returnValue = _isSteamBuild(); } catch (_) { e.returnValue = false; } });
 
 // 렌더러에서 호출되는 언어 변경(메뉴 라벨 동기화)
 ipcMain.handle('set-lang-pref', async (_e, lang) => {
