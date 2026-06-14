@@ -2837,6 +2837,8 @@ I18N.registerLocale("ko", {
   "npcLore.maximov.role": "은하 레인저",
   "npcLore.maximov.desc": "행성 경매와 치안을 관장하는 레인저. 최종장에서 은하 통치 결의를 선언한다.",
   "codex.storyNpcLabel": "🎬 스토리 인물",
+  "notify.allHeroesReward": "🏆 전설 영웅 8인 전원 집결! 완료 보상 — ₡{cr} · 보이드크리스탈 {vc} · 에센스 {ve} · 명성 +{rep}",
+  "baekgu.allHeroesReward": "8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.",
   "bk.headerToggleTitle": "클릭하여 펼치기/접기",
   "bk.title": "백구 AI",
   "bk.statusOnline": "● 온라인",

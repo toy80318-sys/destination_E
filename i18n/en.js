@@ -2837,6 +2837,8 @@ I18N.registerLocale("en", {
   "npcLore.maximov.role": "Galactic Ranger",
   "npcLore.maximov.desc": "A ranger overseeing planetary auctions and order, who proclaims the galactic governance resolution in the finale.",
   "codex.storyNpcLabel": "🎬 Story Characters",
+  "notify.allHeroesReward": "🏆 All 8 Legend Heroes assembled! Completion reward — ₡{cr} · Void Crystal {vc} · Essence {ve} · Rep +{rep}",
+  "baekgu.allHeroesReward": "All eight legends have gathered, Commander! Now we're ready to set course for Earth.",
   "bk.headerToggleTitle": "Click to expand / collapse",
   "bk.title": "Baekgu AI",
   "bk.statusOnline": "● Online",

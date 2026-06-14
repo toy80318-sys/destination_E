@@ -3721,6 +3721,7 @@ function completeQuest(pid,idx){
     (q.rewardFlags||[]).forEach(fl=>{ if(fl)G._storyFlags[fl]=true; });
     saveGame(true);
     updateHUD();
+    if(_newHero){try{_grantAllHeroesReward();}catch(e){}}
     // 시나리오 컷씬 자동 재생 — 새 영입일 때만 (재수령 시는 컷씬 안 봐도 됨)
     if(_newHero){
       if(q.cutscene_post && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
@@ -4789,6 +4790,27 @@ function unassignHero(hid){
   });
   rerenderShipOrGarage();saveGame(true);
 }
+// 전설 영웅 8인 전원 수집 완료 — 1회성 마일스톤 보상 (사용자 요청 2026-06-15)
+//   지급액은 후반 마일스톤 기준 기본값 — 밸런스 조정 시 이 상수만 변경.
+function _grantAllHeroesReward(){
+  try{
+    if(!G||!Array.isArray(G.heroes)||G.heroes.length<8)return;
+    if(G._allHeroesRewarded)return;
+    G._allHeroesRewarded=true;
+    const _cr=1000000,_vc=5,_ve=1000,_rep=10;
+    G.credits=(G.credits||0)+_cr;
+    G.voidCrystal=(G.voidCrystal||0)+_vc;
+    G.voidEssence=(G.voidEssence||0)+_ve;
+    if(typeof changeReputation==='function')changeReputation(_rep); else G.reputation=(G.reputation||0)+_rep;
+    try{updateHUD();}catch(e){}
+    try{if(typeof sfxCoin==='function')sfxCoin();}catch(e){}
+    try{notify(I18N.t('notify.allHeroesReward',{cr:_cr.toLocaleString(),vc:_vc,ve:_ve,rep:_rep}),'gold');}catch(e){}
+    try{baekgu(I18N.t('baekgu.allHeroesReward'));}catch(e){}
+    try{saveGame(true);}catch(e){}
+  }catch(e){console.warn('[allHeroesReward]',e);}
+}
+window._grantAllHeroesReward=_grantAllHeroesReward;
+
 function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
   // H01 이순신: 난중일기 영인본(G18) 인벤토리 확인
   if(heroId==='H01'){
@@ -4804,6 +4826,7 @@ function recruitHero(heroId){if(G.heroes.includes(heroId)){closeModal();return;}
   G.heroes.push(heroId);closeModal();{const _hKey='hero.'+heroId+'.nm';const _hNm=(I18N&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):(HEROES[heroId]?.nm||'');notify(I18N.t('notify.heroRecruitedIc',{ic:HEROES[heroId]?.ic,nm:_hNm}),'pur');baekgu(I18N.t('baekgu.heroJoined',{nm:_hNm}));}
   // 장영실: 모든 행성 안개 제거
   if(heroId==='H02'){applyJangYeongsilEffect();notify(I18N.t('notify.jangYeongsilEffect'),'gold');}
+  try{_grantAllHeroesReward();}catch(e){}
   saveGame(true);
   // PC 전용: 영입 직후 시나리오 첫만남 컷씬 재생 (이미 본 장면은 자동 스킵)
   if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerHeroRecruitScene==='function'){

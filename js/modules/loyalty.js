@@ -227,9 +227,9 @@ function _periodicMemoryHygiene(){
     if(typeof combatState!=='undefined'&&combatState&&!combatState.done)return;
     if(G.turn-_lastHygieneTurn<10)return;
     _lastHygieneTurn=G.turn;
-    // 전투 기록 강제 트림 (push 시점에 100 캡이 있지만 안전망)
-    if(Array.isArray(G.combatHistory)&&G.combatHistory.length>100){
-      G.combatHistory.splice(0,G.combatHistory.length-100);
+    // 함선 기록 최신 20건만 유지 (안전망 — 저장 경로 트림과 동일 기준)
+    if(Array.isArray(G.combatHistory)&&G.combatHistory.length>20){
+      G.combatHistory.splice(0,G.combatHistory.length-20);
     }
     // 명예의 전당 기록은 ACT당 최신 50개만 유지
     if(Array.isArray(G.hallOfFame)&&G.hallOfFame.length>50){

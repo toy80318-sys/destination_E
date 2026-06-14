@@ -69,9 +69,9 @@ function _saveGameImmediate(silent,slotN){
     return;
   }
   try{
-    // 1) 사이즈 폭증 방지: 전투 기록 마지막 100건만 유지 (이전: 무제한)
-    if(G.combatHistory&&G.combatHistory.length>100){
-      G.combatHistory=G.combatHistory.slice(-100);
+    // 1) 함선 기록은 최신 20건만 유지 — 20개 초과 시 오래된 기록 자동 삭제 (사용자 요청 2026-06-15)
+    if(G.combatHistory&&G.combatHistory.length>20){
+      G.combatHistory=G.combatHistory.slice(-20);
     }
     // 2) 스냅샷 직렬화 (순환참조 방지)
     const snap=JSON.parse(JSON.stringify(G));
