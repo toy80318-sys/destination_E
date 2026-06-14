@@ -486,6 +486,16 @@ I18N.register({
   'partsGuide.engineT': { ko: '⚡ 엔진 (Engine)', en: '⚡ Engine' },
   'partsGuide.engineD': { ko: '<span style="color:var(--cyan)">TEC</span>(기술력) 부여 — <b>전투 시 공격속도 증가</b>: <span style="color:#cce">매 턴 먼저 발사 + 선제공격 ATT +20% + 회피율 상승</span>', en: '<span style="color:var(--cyan)">TEC</span> (tech) — <b>increases attack speed in combat</b>: <span style="color:#cce">fires first each turn + first-strike ATT +20% + higher evasion</span>' },
   'partsGuide.engineMove': { ko: '<b style="color:#fff">행성 이동 거리 3단계</b>:<br><span style="color:var(--cyan)">1단계</span> 일반 엔진 (E01~E12) — <b>인접 1홉</b> 이동 (기본)<br><span style="color:var(--gold)">2단계</span> 전설 엔진 (E15·ME01·SE01 — 함대 중 1척만 보유해도) — <b>2홉</b> 이동<br><span style="color:var(--purple)">3단계</span> 블링크 엔진 (전 함선 워프 장착) — <b>무제한 점프</b> (블랙홀·고리 무시 + 함대 항속 +20%)', en: '<b style="color:#fff">Planet Travel Range — 3 Tiers</b>:<br><span style="color:var(--cyan)">Tier 1</span> Standard engines (E01–E12) — move <b>1 adjacent hop</b> (base)<br><span style="color:var(--gold)">Tier 2</span> Legendary engines (E15·ME01·SE01 — even just one in the fleet) — <b>2-hop</b> move<br><span style="color:var(--purple)">Tier 3</span> Blink engines (warp on all ships) — <b>unlimited jump</b> (ignores black holes/rings + fleet speed +20%)' },
+  // ── 행성 도감 라벨 ──
+  'codex.loc':     { ko: '은하계상 위치', en: 'Galactic Location' },
+  'codex.civ':     { ko: '문명권', en: 'Civilization' },
+  'codex.feat':    { ko: '행성 특징', en: 'Planet Features' },
+  'codex.warn':    { ko: '주의사항', en: 'Cautions' },
+  'codex.benefit': { ko: '혜택', en: 'Benefits' },
+  // ── 크레딧 부족 / 백구 긴급 대출 (퀘스트 탭) ──
+  'ui.creditShortTitle': { ko: '⚠️ 크레딧 부족 — 이동 불가', en: '⚠️ Insufficient Credits — Cannot Move' },
+  'ui.creditShortDesc':  { ko: '퀘스트 완료 또는 백구 긴급 대출 요청 (한도 20,000, 무이자) · 현재 대출: ', en: 'Complete quests or request a Baekgu emergency loan (limit 20,000, interest-free) · Current loan: ' },
+  'ui.loanBtn':          { ko: '백구 긴급 대출 5,000 요청', en: 'Request Baekgu Emergency Loan 5,000' },
   'partsGuide.scT':     { ko: '📦 특수창고 (Special Cargo, SC)', en: '📦 Special Cargo (SC)' },
   'partsGuide.scD':     { ko: '<b>cargoBonus</b>(화물칸 추가) 부여. 정비소 「창고 확장 전용 슬롯」(함선당 최대 8칸)에 장착. SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 전설·제작) → SC05(+48 신화). 슬롯 1개 = 전용 슬롯 1칸 점유. 화물칸 합산 최대 80칸.', en: '<b>cargoBonus</b> (extra cargo slots). Equipped in the Garage "Cargo Expansion" dedicated slots (up to 8 per ship). SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 Legendary/Craft) → SC05(+48 Mythic). Each occupies one dedicated slot. Total cargo up to 80 slots.' },
   'settings.deleteSave':    { ko: '🗑️ 저장 데이터 삭제', en: '🗑️ Delete Save Data' },

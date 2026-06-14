@@ -85,11 +85,11 @@
           </div>
         </div>
       </div>
-      ${row('🌌','은하계상 위치',l.loc||I18N.t('ui.noInfo'))}
-      ${row('🏛️','문명권',l.civ||I18N.t('ui.noInfo'))}
-      ${row('🌍','행성 특징',l.feat||I18N.t('ui.noInfo'))}
-      ${row('⚠️','주의사항',`<span style="color:#ffaa44">${l.warn||I18N.t('hud.noSpecialRisk')}</span>`)}
-      ${row('💰','혜택',`<span style="color:var(--gold)">${l.benefit||I18N.t('ui.noInfo')}</span>`)}
+      ${row('🌌',I18N.t('codex.loc'),l.loc||I18N.t('ui.noInfo'))}
+      ${row('🏛️',I18N.t('codex.civ'),l.civ||I18N.t('ui.noInfo'))}
+      ${row('🌍',I18N.t('codex.feat'),l.feat||I18N.t('ui.noInfo'))}
+      ${row('⚠️',I18N.t('codex.warn'),`<span style="color:#ffaa44">${l.warn||I18N.t('hud.noSpecialRisk')}</span>`)}
+      ${row('💰',I18N.t('codex.benefit'),`<span style="color:var(--gold)">${l.benefit||I18N.t('ui.noInfo')}</span>`)}
       ${row('💬',I18N.t('ui.opinion'),`<span style="color:var(--cyan);font-style:italic">${l.op||'...'}</span>`)}
     </div>`;
     openModal('🪐 '+p.nm,html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});

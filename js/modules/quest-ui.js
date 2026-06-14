@@ -295,7 +295,7 @@ function renderQuestTab(body){
   var qlist=G.quests[pid]||[];
   var pd=PLANET_DEF.find(function(p){return p.id===pid;});
   var canLoan=(G.credits||0)<300,alreadyMax=(G.loan||0)>=20000;
-  var loanSection=canLoan?'<div style="background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="color:var(--red);font-size:14px;font-weight:bold;margin-bottom:4px">⚠️ 크레딧 부족 — 이동 불가</div><div style="color:var(--dim);font-size:12px;line-height:1.6;margin-bottom:6px">퀘스트 완료 또는 백구 긴급 대출 요청 (한도 20,000, 무이자) · 현재 대출: '+(G.loan||0).toLocaleString()+'</div>'+(alreadyMax?`<div style="color:var(--red);font-size:12px">${I18N.t('ui.loanLimitExceeded')}</div>`:'<button class="btn btn-sm btn-red" onclick="takeLoan()">백구 긴급 대출 5,000 요청</button>')+'</div>':'';
+  var loanSection=canLoan?'<div style="background:rgba(255,59,59,.1);border:1px solid var(--red);border-radius:8px;padding:10px 12px;margin-bottom:10px"><div style="color:var(--red);font-size:14px;font-weight:bold;margin-bottom:4px">'+I18N.t('ui.creditShortTitle')+'</div><div style="color:var(--dim);font-size:12px;line-height:1.6;margin-bottom:6px">'+I18N.t('ui.creditShortDesc')+(G.loan||0).toLocaleString()+'</div>'+(alreadyMax?`<div style="color:var(--red);font-size:12px">${I18N.t('ui.loanLimitExceeded')}</div>`:'<button class="btn btn-sm btn-red" onclick="takeLoan()">'+I18N.t('ui.loanBtn')+'</button>')+'</div>':'';
   function qCard(q){return _renderQuestCard(q,pid,qlist);}
   // 좌측: 내 퀘스트 (active/done/claimed) — 제독+브로커 모두
   // 우측: 행성 퀘스트 (available) — 제독+브로커 모두
