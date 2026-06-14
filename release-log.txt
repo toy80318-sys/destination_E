@@ -1,1 +1,429 @@
 [RELEASE START] 2026-06-14 10:59:46.98 
+[bump] 현재 → 다음: 1.0.0-beta.166 → 1.0.0-beta.167
+[bump] 캐시 버스터: 20260614002 → 20260614003
+[bump] _GAME_VER  : 20260614.web_v1.0.0-beta.167
+[bump] ✓ package.json
+[bump] ✓ index.html (20260614.web_v1.0.0-beta.167)
+[bump] ✓ service-worker.js
+[bump] $ git add -A
+warning: in the working copy of '.firebaserc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.github/workflows/build-pc.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.github/workflows/static.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.idx/dev.nix', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.idx/mcp.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.vscode/settings.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/DESTINATION_EARTH_GDD_MASTER_v5.3.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/DESTINATION_EARTH_GDD_v1.0.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/DESTINATION_EARTH_GDD_v6.0.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/MASTER_CHECKLIST_AND_ROADMAP.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE1_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE2_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE3_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE4_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE5_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '01_GDD/PHASE6_QUEST_CARDS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/baekgu/baekgu_01_idle_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/dr_hwiso/dr_hwiso_portrait_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/heroes/H01_Yi_Sunsin/hero_H01_01_idle_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/heroes/H06_Einstein/hero_H06_01_idle_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/protagonist/commander_male_01_idle_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/characters/villains/V01_Ursa_Rex/villain_V01_01_idle_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/environment/planets/ring2_superbia/P01_proxima_b_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '02_Assets/images/vehicles/ships/small_fighters/S01_mustang_PLACEHOLDER.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/SETUP_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/functions/src/auctionCloser.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/public/data/crews_heroes.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/public/data/factions_planets.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/app/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/components/AgeGate.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/components/FTUECustomize.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/components/HubUI.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/firebase/config.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/firebase/firestore.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/firebase/realtimeDB.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/scenes/CombatScene.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/scenes/StarMapScene.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/store/gameStore.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/utils/combatEngine.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/utils/economyEngine.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '03_Source/src/utils/galaxyGenerator.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '07_Tools/audio_prompts/AUDIO_CREATION_GUIDE_v2.0.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '07_Tools/audio_prompts/SUNO_AI_AUDIO_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '07_Tools/image_prompts/CHARACTER_IMAGE_PROMPTS_v2.0.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '07_Tools/image_prompts/ENVIRONMENT_ITEMS_UI_PROMPTS_v2.0.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '07_Tools/image_prompts/IMAGE_CREATION_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '404.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'CLAUDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'CNAME', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'GEMINI.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'PC_RELEASE_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'STEAM_BUILD_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'blueprint.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'build-log.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'build-steam-win.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/claude-jumping.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/claude-speaking.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/codex-jumping.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/codex-speaking.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/gemini-jumping.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/gemini-speaking.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/root/github-trending-day.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/a.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/anthropic-academy.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/best-practice.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/beta.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/billion-dollar-questions.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/boris-cherny.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/c.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/cat-wu.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/claude-certified-architect.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/claude-community-ambassador.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/claude-for-oss.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/claude.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/click-badges.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community-davila7.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community-dex.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community-karpathy.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community-matt.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community-shayan.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/community.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/developed-by.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/how-to-implement.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/how-to-use-hd.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/how-to-use.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/implemented-hd.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/implemented.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/lydia.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/official.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/orchestration-workflow-hd.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/orchestration-workflow.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/polar.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/s.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/sponsor-heart.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/thariq.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/video.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/tags/whatsapp-claude-pakistan.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/thumbnail/50k-stars.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/thumbnail/daily-workflows.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/video-presentation-transcript/1-video-workflow.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/!/video-presentation-transcript/1-video-workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agent-memory/weather-agent/MEMORY.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agent-memory/weather-agent/readings.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/development-workflows-research-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/presentation-claude-code.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/presentation-claude-gemini.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/presentation-vibe-coding.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/time-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/weather-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/workflows/best-practice/workflow-claude-commands-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/workflows/best-practice/workflow-claude-settings-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/workflows/best-practice/workflow-claude-skills-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/workflows/best-practice/workflow-claude-subagents-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/agents/workflows/best-practice/workflow-concepts-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/time-command.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/weather-orchestrator.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/agent-collections.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/best-practice/workflow-claude-commands.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/best-practice/workflow-claude-settings.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/best-practice/workflow-claude-skills.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/best-practice/workflow-claude-subagents.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/best-practice/workflow-concepts.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/development-workflows.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/commands/workflows/skill-collections.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/hooks/HOOKS-README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/hooks/config/hooks-config.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/hooks/scripts/hooks.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/rules/markdown-docs.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/rules/presentation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/settings.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/agent-browser/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/presentation/presentation-structure/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/presentation/presentation-styling/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/presentation/vibe-to-agentic-framework/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/time-skill/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/weather-fetcher/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/weather-svg-creator/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/weather-svg-creator/examples.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.claude/skills/weather-svg-creator/reference.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.codex/config.toml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.codex/hooks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.codex/hooks/HOOKS-README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.codex/hooks/config/hooks-config.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.codex/hooks/scripts/hooks.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.github/FUNDING.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/.mcp.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/CLAUDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/LICENSE', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/agents/time-agent.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/commands/time-orchestrator.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/skills/time-fetcher/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/skills/time-svg-creator/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/skills/time-svg-creator/examples.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/.claude/skills/time-svg-creator/reference.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/agent-teams-prompt.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/output/dubai-time.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/agent-teams/output/output.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-cli-startup-flags.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-commands.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-mcp.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-memory.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-power-ups.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-settings.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-skills.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/best-practice/claude-subagents.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/agent-collections/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-commands/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-settings/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-settings/verification-checklist.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-skills/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-subagents/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/claude-subagents/verification-checklist.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/concepts/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/best-practice/concepts/verification-checklist.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/cross-model-workflows/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/development-workflows/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/changelog/skill-collections/changelog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/cross-model-workflow/cross-model-workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/code-reviewer.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/constitutional-validator.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/documentation-analyst-writer.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/product-manager.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/requirement-parser.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/senior-software-engineer.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/technical-cto-advisor.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/agents/ux-designer.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/commands/rpi/implement.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/commands/rpi/plan.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/.claude/commands/rpi/research.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/rpi-workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/development-workflows/rpi/rpi-workflow.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-agent-teams-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-commands-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-goal-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-scheduled-tasks-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-skills-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/implementation/claude-subagents-implementation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/orchestration-workflow/orchestration-workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/orchestration-workflow/orchestration-workflow.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/orchestration-workflow/output.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/orchestration-workflow/weather.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/2026-04-25-gdg-kolachi-cli-claude-code-gemini/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/concepts/workflow/gemini-orchestration-workflow.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/introduction/Shayan/disrupt.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/llm/llm-advanced.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/llm/llm-animation-tokenids.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/llm/llm-basic.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/logo/gemini.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/assets/logo/github.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/claude-code-best-practice/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/presentation/vibe-coding-to-agentic-engineering/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/assets/programmatic-tool-calling-diagram.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/assets/sdk-vs-cli-diagram.svg', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-advanced-tool-use.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-agent-command-skill.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-agent-memory.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-agent-sdk-vs-cli-system-prompts.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-global-vs-project-settings.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-in-chrome-v-chrome-devtools-mcp.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-skills-for-larger-mono-repos.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-spinner-verbs-and-tips.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/claude-usage-and-rate-limits.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/learning-journey-weather-reporter-redesign.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/llm-day-to-day-degradation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/reports/why-harness-is-important.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-10-tips-01-feb-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-12-tips-12-feb-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-13-tips-03-jan-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-15-tips-30-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-2-tips-10-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-2-tips-25-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-boris-6-tips-16-apr-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-thariq-tips-16-apr-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tips/claude-thariq-tips-17-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tutorial/day0/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tutorial/day0/linux.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tutorial/day0/mac.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tutorial/day0/windows.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/tutorial/day1/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-boris-lennys-podcast-19-feb-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-boris-pragmatic-engineer-04-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-boris-ryan-peterman-15-dec-25.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-boris-y-combinator-17-feb-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-cat-every-29-oct-25.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-dex-mlops-community-24-mar-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-karpathy-ai-engineer-02-may-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'claude-code-best-practice-main/videos/claude-matt-pocock-24-apr-26.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'electron/main.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'electron/preload.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'firebase.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'firestore.rules', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'galaxy_navigator.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'game.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'game.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'github-deploy-guide.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'i18n-style.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'img/IMAGE_GUIDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'img/chars-hd/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'img/combat/enemies/README.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'img/combat/ships/README.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/cheat-menu.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/cloudsave.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/cargo.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/commodities.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/crafting.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/expose-globals.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/factions.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/heroes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/i18n_dict.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/parts.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/phase2_quests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/phase3_quests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/phase4_quests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/phase5_quests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/planets.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/quests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/ships.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/desktop-bridge.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/i18n.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/auction.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/auto-equip.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/codex.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/ending-credits.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/gacha.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/main-hub-story-strip.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/quest-ui.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/render-craft-tab.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/render-ship-tab.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/render-trade-tab.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/report-popup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/shakedown-popup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/starmap.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/tavern.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/story-quest-engine.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/story-scenes-pc.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/CHECKLIST.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/memory/MEMORY.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/memory/feedback_story_consistency.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/memory/project_electron_workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/memory/project_image_workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/memory/project_pwa_workflow.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/scripts/restore.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/scripts/verify.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/settings/global-settings.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/settings/project-settings.local.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-antigravity/settings/project-settings.sanitized.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'migration-guide.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'release-3os.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'resize-log.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'resize-ships.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'run-debug.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/bump-version.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/convert_bg_png_to_jpg.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/dedupe-cargo-names.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/extract-i18n.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/firebase-cleanup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/gen-app-icons.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/gen_mobile_lod.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/mobile-audit.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/mobile-hub.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/mobile-measure.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/mobile-screenshot.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/replace-cutscene-codes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/resize-icon.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/resize-ships-400.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/resize_bg_jpg.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/resize_images.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/ships-h-normalize.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/ships-h-propagate.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/sync-quest-docs.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/verify-i18n-live.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'service-worker.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'download-3os.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/data/baekgu-diary.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/dev-menu.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/feedback.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/hall-of-fame.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/loyalty.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/png-image.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/quest-gen.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/save-slots.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/sell-undo.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/settings-backup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/ship-skin-enhance.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'js/modules/ui-tuner.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/make-steam-capsules.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'steam/STEAM_RELEASE_CHECKLIST.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'steam/STORE_TEXT_KO_EN.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'steam/steam_build.flag', LF will be replaced by CRLF the next time Git touches it
+[bump] $ git commit -m "release: itch.io 3-OS build"
+[main 3a4e27e] release: itch.io 3-OS build
+ 76 files changed, 6102 insertions(+), 4844 deletions(-)
+ create mode 100644 build/_installer_preview.png
+ create mode 100644 build/installer-art.png
+ create mode 100644 build/installerSidebar_v2.bmp
+ create mode 100644 download-3os.bat
+ create mode 100644 download-log.txt
+ create mode 100644 img/chars/H/eisenklau.png
+ create mode 100644 img/chars/H/hero09.png
+ create mode 100644 img/chars/H/maximov.png
+ create mode 100644 img/chars/eisenklau.png
+ create mode 100644 img/chars/hero09.png
+ create mode 100644 img/chars/maximov.png
+ create mode 100644 img/parts/SC01.png
+ create mode 100644 img/parts/SC02.png
+ create mode 100644 img/parts/SC03.png
+ create mode 100644 img/parts/SC04.png
+ create mode 100644 img/parts/SC05.png
+ create mode 100644 img/quests/yi_join.png
+ create mode 100644 img/ui/title-banner.png
+ create mode 100644 img/ui/title-bg.png
+ create mode 100644 js/data/baekgu-diary.js
+ create mode 100644 js/modules/dev-menu.js
+ create mode 100644 js/modules/feedback.js
+ create mode 100644 js/modules/hall-of-fame.js
+ create mode 100644 js/modules/loyalty.js
+ create mode 100644 js/modules/png-image.js
+ create mode 100644 js/modules/quest-gen.js
+ create mode 100644 js/modules/save-slots.js
+ create mode 100644 js/modules/sell-undo.js
+ create mode 100644 js/modules/settings-backup.js
+ create mode 100644 js/modules/ship-skin-enhance.js
+ create mode 100644 js/modules/ui-tuner.js
+ create mode 100644 release_itchio/v1.0.0-beta.155/Destination Earth 1.0.0-beta.155-arm64.dmg
+ create mode 100644 release_itchio/v1.0.0-beta.155/Destination Earth 1.0.0-beta.155.AppImage
+ create mode 100644 release_itchio/v1.0.0-beta.155/Destination Earth 1.0.0-beta.155.dmg
+ create mode 100644 release_itchio/v1.0.0-beta.155/Destination Earth Setup 1.0.0-beta.155.exe
+ create mode 100644 scripts/make-steam-capsules.js
+ create mode 100644 steam/STEAM_RELEASE_CHECKLIST.md
+ create mode 100644 steam/STORE_TEXT_KO_EN.md
+ create mode 100644 steam/steam_build.flag
+ create mode 100644 steam/store_assets/community_icon_184.png
+ create mode 100644 steam/store_assets/community_icon_32.png
+ create mode 100644 steam/store_assets/header_capsule_920x430.png
+ create mode 100644 steam/store_assets/library_capsule_600x900.png
+ create mode 100644 steam/store_assets/library_header_920x430.png
+ create mode 100644 steam/store_assets/library_hero_1920x620.png
+ create mode 100644 steam/store_assets/logo_transparent.png
+ create mode 100644 steam/store_assets/main_capsule_1232x706.png
+ create mode 100644 steam/store_assets/small_capsule_462x174.png
+ create mode 100644 steam/store_assets/vertical_capsule_748x896.png
+[bump] $ git tag -a v1.0.0-beta.167 -m "Release v1.0.0-beta.167"
+[bump] ✓ 태그 생성: v1.0.0-beta.167
+[bump] $ git push origin main
+error: RPC failed; HTTP 500 curl 22 The requested URL returned error: 500
+send-pack: unexpected disconnect while reading sideband packet
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+[bump] ERROR: git push 실패: Command failed: git push origin main
+[FAIL] bump/commit/push failed  

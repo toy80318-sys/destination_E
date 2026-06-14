@@ -21,10 +21,10 @@ const PHASE4_QUESTS={
       id:'p4_q1601', type:'story_quest', category:'main', phase:4,
       ic:'🛠️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 용골 주조', en:'Geobukseon Keel Cast'},
-      desc:{ko:'장영실: "거북선 용골은 은하 혼돈 결정 메카니카 합금 ×15가 필요해. 메카니카 본거지 P15에서 직접 만들어야 정밀도가 나와."\nR08 ×15 확보 후 제작 베이에서 용골 주조.',
-            en:'Yi: "Need Galactic Chaos Crystal ×15 for Geobukseon keel. Cast at Tartarus mecha-bay."'},
+      desc:{ko:'장영실: "거북선 용골은 R08 메카니카 합금 ×15가 필요해. 메카니카 본거지 P15에서 직접 만들어야 정밀도가 나와."\nR08 ×15 확보 후 제작 베이에서 용골 주조.',
+            en:'Yi: "Need R08 ×15 for Geobukseon keel. Cast at P15 mecha-bay."'},
       objectives:[
-        {type:'gather', item:'R08', qty:15, label:{ko:'은하 혼돈 결정 메카니카 합금 ×15 확보', en:'Secure Galactic Chaos Crystal ×15'}},
+        {type:'gather', item:'R08', qty:15, label:{ko:'은하 혼돈 결정 메카니카 합금 ×15 확보', en:'Secure 은하 혼돈 결정 ×15'}},
       ],
       rewardCr:120000, rewardVe:90,
       rewardItems:[{id:'G09', qty:2}],
@@ -35,10 +35,10 @@ const PHASE4_QUESTS={
       id:'p4_q1602', type:'story_quest', category:'main', phase:4,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'코어 점화 시스템', en:'Core Ignition System'},
-      desc:{ko:'테슬라: "거북선 추진코어는 내가 손볼게. 수퍼비아 중력자 합성 코어 ×10 + 크리그 마그마 코어 ×8이 필요해."',
-            en:'Tesla: "I\'ll handle the core. Superbia Graviton ×10 + Krieg Magma Core ×8."'},
+      desc:{ko:'테슬라: "거북선 추진코어는 내가 손볼게. R07 합성 코어 ×10 + R04 ×8이 필요해."',
+            en:'Tesla: "I\'ll handle the core. R07 ×10 + R04 ×8."'},
       objectives:[
-        {type:'gather', item:'R07', qty:10, label:{ko:'수퍼비아 중력자 합성 코어 ×10', en:'Superbia Graviton ×10'}},
+        {type:'gather', item:'R07', qty:10, label:{ko:'수퍼비아 중력자 합성 코어 ×10', en:'수퍼비아 중력자 ×10'}},
       ],
       rewardCr:100000, rewardVe:80,
       rewardItems:[{id:'R04', qty:2}],
@@ -49,10 +49,10 @@ const PHASE4_QUESTS={
       id:'p4_q1603', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'기어월드 변두리 주점', en:'Gearworld Outskirt Tavern'},
-      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 ×2 소비 → 정보: "기가-넷 허브 아이젠클로 보급선이 매 6턴마다 통과해." (기가-넷 허브 잠복 가능).',
-            en:'Krieg Weapon Ore ×2 → "Eisenklau supply ship passes Giganet Hub every 6 turns."'},
+      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 ×2 소비 → 정보: "P12 아이젠클로 보급선이 매 6턴마다 통과해." (P12 잠복 가능).',
+            en:'크리그 무기 원석 ×2 → "Eisenklau supply ship passes P12 every 6 turns."'},
       objectives:[
-        {type:'gather', item:'G10', qty:2, label:{ko:'크리그 무기 원석 ×2 정보료', en:'Krieg Weapon Ore ×2 fee'}},
+        {type:'gather', item:'G10', qty:2, label:{ko:'크리그 무기 원석 ×2 정보료', en:'크리그 무기 원석 ×2 fee'}},
       ],
       rewardCr:35000, rewardVe:45,
       rewardItems:[],
@@ -64,7 +64,7 @@ const PHASE4_QUESTS={
       ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'기어월드 구역 잔해 탐색', en:'Gearworld Scrap Search'},
       desc:{ko:'타르타로스 외곽 — 메카니카 폐기 구역. 잔해 탐색 3회.\n70% 은하 혼돈 결정·중수소 배터리·크리그 무기 원석 부산물 / 30% 잔해 해적.',
-            en:'Search 3× outside Tartarus. 70% Galactic Chaos Crystal/Deuterium Battery/Krieg Weapon Ore / 30% wreck pirates.'},
+            en:'Search 3× outside 타르타로스. 70% 은하 혼돈 결정/중수소 배터리/크리그 무기 원석 / 30% wreck pirates.'},
       objectives:[
         {type:'explore', target:'p15_wreck', qty:3, label:{ko:'잔해 탐색 ×3', en:'Wreck ×3'}},
       ],
@@ -78,9 +78,9 @@ const PHASE4_QUESTS={
       ic:'⚔️', npc:'광개토대왕', npcIc:'🛡️', npcKey:'hero03',
       nm:{ko:'광개토의 약속', en:'Gwanggaeto\'s Pledge'},
       desc:{ko:'타르타로스 거대 격납고에서 자유 상인 광개토와 재회. 그가 보유한 거북선 외피 보강 도면 치크스 뇌수액 ×3 양도 거래.\n광개토: "거북선이 완성되면 — 나는 당신 깃발 아래 선다."',
-            en:'Meet Gwanggaeto. Chiks Brain Fluid ×3 → He pledges to join your fleet once turtle ship is complete.'},
+            en:'Meet Gwanggaeto. 치크스 뇌수액 ×3 → He pledges to join your fleet once turtle ship is complete.'},
       objectives:[
-        {type:'gather', item:'G27', qty:3, label:{ko:'치크스 뇌수액 ×3 거래', en:'Chiks Brain Fluid ×3 trade'}},
+        {type:'gather', item:'G27', qty:3, label:{ko:'치크스 뇌수액 ×3 거래', en:'치크스 뇌수액 ×3 trade'}},
       ],
       rewardCr:150000, rewardVe:100,
       rewardItems:[],
@@ -90,9 +90,9 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1606', type:'story_quest', category:'sub', phase:4,
       ic:'🏛️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'타르타로스 행성 경매', en:'Tartarus Auction'},
+      nm:{ko:'타르타로스 행성 경매', en:'타르타로스 Auction'},
       desc:{ko:'타르타로스 메카니카 행성 경매. 즉구 ~88,000₡ / 최저 ~26,400₡.\n낙찰 시 매 턴 5,500₡ 세금 + 메카니카 R 재료 상시 구매 가능.',
-            en:'Bid on Tartarus. Buyout ~88,000₡. Owner → 5,500₡/turn + R-mat shop.'},
+            en:'Bid on 타르타로스. Buyout ~88,000₡. Owner → 5,500₡/turn + R-mat shop.'},
       objectives:[
         {type:'explore', target:'p15_auction', qty:1, label:{ko:'타르타로스 경매 참여', en:'Auction'}},
       ],
@@ -111,11 +111,11 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1701', type:'story_quest', category:'main', phase:4,
       ic:'⛏️', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_advice',
-      nm:{ko:'콜드웰 광산 크리그 마그마 코어 채굴', en:'Coldwell Krieg Magma Core Mining'},
-      desc:{ko:'백구: "거북선 외피 코팅에 크리그 마그마 코어 양자합금 ×8이 필요해요. TRAPPIST-1f 콜드웰 광산이 크리그 마그마 코어 주산지예요. 오리온 위스키 ×4 채굴권 비용 지불."',
-            en:'Krieg Magma Core ×8 needed for hull. Orion Whisky ×4 mining fee.'},
+      nm:{ko:'콜드웰 광산 크리그 마그마 코어 채굴', en:'Coldwell 크리그 마그마 코어 Mining'},
+      desc:{ko:'백구: "거북선 외피 코팅에 R04 양자합금 ×8이 필요해요. P10 콜드웰 광산이 R04 주산지예요. G03 ×4 채굴권 비용 지불."',
+            en:'크리그 마그마 코어 ×8 needed for hull. 오리온 위스키 ×4 mining fee.'},
       objectives:[
-        {type:'gather', item:'R04', qty:8, label:{ko:'크리그 마그마 코어 양자합금 ×8 확보', en:'Secure Krieg Magma Core ×8'}},
+        {type:'gather', item:'R04', qty:8, label:{ko:'크리그 마그마 코어 양자합금 ×8 확보', en:'Secure 크리그 마그마 코어 ×8'}},
       ],
       rewardCr:90000, rewardVe:70,
       rewardItems:[{id:'G04', qty:2}],
@@ -126,10 +126,10 @@ const PHASE4_QUESTS={
       id:'p4_q1702', type:'story_quest', category:'sub', phase:4,
       ic:'🔧', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'정밀 부품 가공', en:'Precision Parts'},
-      desc:{ko:'장영실: "콜드웰의 아우레우스 금괴 정밀 합금이 거북선 노포 발사구에 좋아. 아우레우스 금괴 ×5 확보해 타르타로스 베이에 보내줘."',
-            en:'Aureus Gold Ingot ×5 for turtle cannon ports.'},
+      desc:{ko:'장영실: "콜드웰의 G04 정밀 합금이 거북선 노포 발사구에 좋아. G04 ×5 확보해 P15 베이에 보내줘."',
+            en:'아우레우스 금괴 ×5 for turtle cannon ports.'},
       objectives:[
-        {type:'gather', item:'G04', qty:5, label:{ko:'아우레우스 금괴 ×5 확보', en:'Aureus Gold Ingot ×5'}},
+        {type:'gather', item:'G04', qty:5, label:{ko:'아우레우스 금괴 ×5 확보', en:'아우레우스 금괴 ×5'}},
       ],
       rewardCr:55000, rewardVe:50,
       rewardItems:[{id:'R04', qty:1}],
@@ -141,7 +141,7 @@ const PHASE4_QUESTS={
       ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'광산 폐갱 탐사', en:'Old Shaft Survey'},
       desc:{ko:'콜드웰 광산 폐갱 — 잔해 탐색 3회.\n70% 크리그 마그마 코어·오리온 위스키·수퍼비아 중력수정 / 30% 잔해 해적.',
-            en:'Search 3×. 70% Krieg Magma Core/Orion Whisky/Superbia Gravity Crystal / 30% wreck pirates.'},
+            en:'Search 3×. 70% 크리그 마그마 코어/오리온 위스키/수퍼비아 중력수정 / 30% wreck pirates.'},
       objectives:[
         {type:'explore', target:'p10_shaft', qty:3, label:{ko:'폐갱 탐색 ×3', en:'Shaft ×3'}},
       ],
@@ -155,9 +155,9 @@ const PHASE4_QUESTS={
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'콜드웰 광부 술집', en:'Coldwell Miner\'s Pub'},
       desc:{ko:'수퍼비아 귀족 향수 수퍼비아 향수 ×2 소비 → 광부 노조 정보: "아이젠클로가 R04를 매 분기 대량 구매해. 가격 부풀린 책임자가 콜드웰 시장이야."',
-            en:'Superbia Noble Perfume ×2 → "Eisenklau buys Krieg Magma Core in bulk; mayor inflates price."'},
+            en:'수퍼비아 귀족 향수 ×2 → "Eisenklau buys R04 in bulk; mayor inflates price."'},
       objectives:[
-        {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'Superbia Noble Perfume ×2'}},
+        {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'수퍼비아 귀족 향수 ×2'}},
       ],
       rewardCr:30000, rewardVe:40,
       rewardItems:[],
@@ -168,8 +168,8 @@ const PHASE4_QUESTS={
       id:'p4_q1705', type:'story_quest', category:'hidden', phase:4,
       ic:'🌑', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_think',
       nm:{ko:'폐갱 깊은 곳의 신호', en:'Deep Shaft Signal'},
-      desc:{ko:'폐갱 최심부 — 100년 전 봉인된 캡슐 한 점 발견. 안에는 작은 데이터 칩 + 수퍼비아 중력수정 ×3.\n백구: "오래된 좌표예요. 캅테인b 균열 입구."',
-            en:'Old capsule found — chip + Superbia Gravity Crystal ×3. Coords for Kapteyn b Rift Kapteyn-b void rift.'},
+      desc:{ko:'폐갱 최심부 — 100년 전 봉인된 캡슐 한 점 발견. 안에는 작은 데이터 칩 + 수퍼비아 중력수정 ×3.\n백구: "오래된 좌표예요. P28 캅테인b 균열 입구."',
+            en:'Old capsule found — chip + 수퍼비아 중력수정 ×3. Coords for 캅테인 b 균열 Kapteyn-b void rift.'},
       objectives:[
         {type:'explore', target:'p10_deep_capsule', qty:1, label:{ko:'폐갱 최심부 캡슐 회수', en:'Recover capsule'}},
       ],
@@ -189,8 +189,8 @@ const PHASE4_QUESTS={
       id:'p4_q1801', type:'story_quest', category:'main', phase:4,
       ic:'🎯', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'보급선 잠복', en:'Supply Line Ambush'},
-      desc:{ko:'이순신: "기가-넷 허브 항로의 좁은 협곡 — 매 6턴 아이젠클로 보급선이 통과해. 매복 격파 후 중수소 배터리 강화 부품 ×6 노획."\n전투 1회 승리 후 보상 회수.',
-            en:'Ambush Eisenklau supply ship at Giganet Hub narrow pass. Win combat, loot Deuterium Battery ×6.'},
+      desc:{ko:'이순신: "P12 항로의 좁은 협곡 — 매 6턴 아이젠클로 보급선이 통과해. 매복 격파 후 G09 강화 부품 ×6 노획."\n전투 1회 승리 후 보상 회수.',
+            en:'Ambush Eisenklau supply ship at 기가-넷 허브 narrow pass. Win combat, loot 중수소 배터리 ×6.'},
       objectives:[
         {type:'combat', target:'p12_supply_ship', qty:1, label:{ko:'보급선 격파', en:'Destroy supply'}},
       ],
@@ -203,10 +203,10 @@ const PHASE4_QUESTS={
       id:'p4_q1802', type:'story_quest', category:'main', phase:4,
       ic:'📡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'보급선 통신 로그 해독', en:'Decrypt Comm Log'},
-      desc:{ko:'노획한 통신 로그 해독 — 수퍼비아 중력자 ×3 소비.\n결과: "Kepler-442b 요새 — 아이젠클로 친위대 7기 + 모선급 1기 배치."',
-            en:'Superbia Graviton ×3 → "Kepler-442b fort — 7 guards + 1 mothership."'},
+      desc:{ko:'노획한 통신 로그 해독 — 수퍼비아 중력자 ×3 소비.\n결과: "P14 요새 — 아이젠클로 친위대 7기 + 모선급 1기 배치."',
+            en:'수퍼비아 중력자 ×3 → "P14 fort — 7 guards + 1 mothership."'},
       objectives:[
-        {type:'gather', item:'R07', qty:3, label:{ko:'수퍼비아 중력자 ×3 해독 비용', en:'Superbia Graviton ×3 decrypt'}},
+        {type:'gather', item:'R07', qty:3, label:{ko:'수퍼비아 중력자 ×3 해독 비용', en:'수퍼비아 중력자 ×3 decrypt'}},
       ],
       rewardCr:80000, rewardVe:70,
       rewardItems:[],
@@ -218,9 +218,9 @@ const PHASE4_QUESTS={
       ic:'🔧', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'노획 부품 재활용', en:'Salvage Reuse'},
       desc:{ko:'중수소 배터리 강화 부품을 거북선 보조 장갑에 통합. 중수소 배터리 ×3 소비.',
-            en:'Deuterium Battery ×3 → integrate into turtle aux armor.'},
+            en:'중수소 배터리 ×3 → integrate into turtle aux armor.'},
       objectives:[
-        {type:'gather', item:'G09', qty:3, label:{ko:'중수소 배터리 ×3 통합', en:'Integrate Deuterium Battery ×3'}},
+        {type:'gather', item:'G09', qty:3, label:{ko:'중수소 배터리 ×3 통합', en:'Integrate 중수소 배터리 ×3'}},
       ],
       rewardCr:40000, rewardVe:50,
       rewardItems:[],
@@ -230,7 +230,7 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1804', type:'story_quest', category:'sub', phase:4,
       ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'기가-넷 허브 협곡 잔해 탐색', en:'Giganet Hub Canyon Wreck'},
+      nm:{ko:'기가-넷 허브 협곡 잔해 탐색', en:'기가-넷 허브 Canyon Wreck'},
       desc:{ko:'잠복 협곡 잔해 — 과거 메카니카-크리그 충돌. 잔해 탐색 3회.',
             en:'Search 3× in canyon.'},
       objectives:[
@@ -246,9 +246,9 @@ const PHASE4_QUESTS={
       ic:'🤝', npc:'광개토대왕', npcIc:'🛡️', npcKey:'hero03',
       nm:{ko:'광개토 정식 합류', en:'Gwanggaeto Joins'},
       desc:{ko:'거북선 용골·코어·외피 모두 완성된 후 광개토가 정식 합류. 저항군 군수품 저항군 의례 ×2 소비.\n광개토: "이제 내 검을 그대 깃발 아래 둔다."',
-            en:'After all turtle parts done → Gwanggaeto formally joins. Resistance Military Supplies ×2 ceremony.'},
+            en:'After all turtle parts done → Gwanggaeto formally joins. 저항군 군수품 ×2 ceremony.'},
       objectives:[
-        {type:'gather', item:'G13', qty:2, label:{ko:'저항군 군수품 ×2 합류 의례', en:'Resistance Military Supplies ×2 ceremony'}},
+        {type:'gather', item:'G13', qty:2, label:{ko:'저항군 군수품 ×2 합류 의례', en:'저항군 군수품 ×2 ceremony'}},
       ],
       rewardCr:0, rewardVe:120,
       rewardItems:[],
@@ -267,9 +267,9 @@ const PHASE4_QUESTS={
       ic:'🔓', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'요새 코드 위조', en:'Forge Fort Code'},
       desc:{ko:'Kepler-442b 요새 진입 코드 위조 — 아우레우스 정보 칩 정보 칩 ×3 + 메카니카 자동화 부품 ×2 소비. 마르코 폴로의 위조 기술.',
-            en:'Forge Kepler-442b entry code: Aureus Information Chip ×3 + Mechanica Automation Part ×2.'},
+            en:'Forge Kepler-442b entry code: 아우레우스 정보 칩 ×3 + 메카니카 자동화 부품 ×2.'},
       objectives:[
-        {type:'gather', item:'G24', qty:3, label:{ko:'아우레우스 정보 칩 ×3 위조 재료', en:'Aureus Information Chip ×3 forge'}},
+        {type:'gather', item:'G24', qty:3, label:{ko:'아우레우스 정보 칩 ×3 위조 재료', en:'아우레우스 정보 칩 ×3 forge'}},
       ],
       rewardCr:140000, rewardVe:90,
       rewardItems:[],
@@ -281,9 +281,9 @@ const PHASE4_QUESTS={
       ic:'💎', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'외피 강화 도면', en:'Hull Reinforce Schematic'},
       desc:{ko:'치크스 뇌수액 외피 강화 도면 ×2 거래 — 아우레우스 시장. 거북선 외피 +20% 내구도.',
-            en:'Chiks Brain Fluid ×2 → turtle hull +20% durability.'},
+            en:'치크스 뇌수액 ×2 → turtle hull +20% durability.'},
       objectives:[
-        {type:'gather', item:'G27', qty:2, label:{ko:'치크스 뇌수액 ×2', en:'Chiks Brain Fluid ×2'}},
+        {type:'gather', item:'G27', qty:2, label:{ko:'치크스 뇌수액 ×2', en:'치크스 뇌수액 ×2'}},
       ],
       rewardCr:75000, rewardVe:60,
       rewardItems:[],
@@ -294,10 +294,10 @@ const PHASE4_QUESTS={
       id:'p4_q1903', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'케플러 외곽 주점', en:'Kepler Outskirt Pub'},
-      desc:{ko:'수퍼비아 귀족 향수 향수 ×2 → 정보: " 캅테인b 균열에 아인슈타인이 잠수 중. 양자물리학자 — 보이드 안정화 이론의 권위자."',
-            en:'Superbia Noble Perfume ×2 → "Einstein hiding in Kapteyn b Rift rift. Quantum physicist."'},
+      desc:{ko:'수퍼비아 귀족 향수 향수 ×2 → 정보: "P28 캅테인b 균열에 아인슈타인이 잠수 중. 양자물리학자 — 보이드 안정화 이론의 권위자."',
+            en:'수퍼비아 귀족 향수 ×2 → "Einstein hiding in P28 rift. Quantum physicist."'},
       objectives:[
-        {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'Superbia Noble Perfume ×2'}},
+        {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'수퍼비아 귀족 향수 ×2'}},
       ],
       rewardCr:30000, rewardVe:40,
       rewardItems:[],
@@ -307,9 +307,9 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1904', type:'story_quest', category:'sub', phase:4,
       ic:'🏛️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'아레스-III 행성 경매', en:'Ares-III Auction'},
+      nm:{ko:'아레스-III 행성 경매', en:'아레스-III Auction'},
       desc:{ko:'아레스-III 경매. 즉구 ~95,000₡ / 최저 ~28,500₡.\n낙찰 시 매 턴 6,000₡ 세금 + 아우레우스 아우레우스 정보 칩 메카니카 자동화 부품 상시 구매.',
-            en:'Ares-III auction. Buyout ~95,000₡. Owner → 6,000/turn + Aureus Information Chip/Mechanica Automation Part shop.'},
+            en:'아레스-III auction. Buyout ~95,000₡. Owner → 6,000/turn + 아우레우스 정보 칩/메카니카 자동화 부품 shop.'},
       objectives:[
         {type:'explore', target:'p16_auction', qty:1, label:{ko:'아레스-III 경매', en:'Auction'}},
       ],
@@ -323,9 +323,9 @@ const PHASE4_QUESTS={
       ic:'⚓', npc:'호레이쇼 넬슨', npcIc:'⚓', npcKey:'hero05',
       nm:{ko:'넬슨 제독과의 조우', en:'Encounter Admiral Nelson'},
       desc:{ko:'케플러 442b 외곽 — 영국 해군 제독 호레이쇼 넬슨의 옛 함선 \'빅토리\' 잔해 좌표 입수. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1 소비하여 잔해 깊이 진입.\n넬슨: "트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다."',
-            en:'Find Nelson\'s old flagship Victory wreckage. Aureus Information Chip ×2 + Chiks Brain Fluid ×1. Nelson: "I never thought I\'d catch the wind of Trafalgar again. I join your fleet."'},
+            en:'Find Nelson\'s old flagship Victory wreckage. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1. Nelson: "I never thought I\'d catch the wind of Trafalgar again. I join your fleet."'},
       objectives:[
-        {type:'gather', item:'G24', qty:2, label:{ko:'아우레우스 정보 칩 정보 칩 ×2 좌표 분석', en:'Aureus Information Chip ×2 coord'}},
+        {type:'gather', item:'G24', qty:2, label:{ko:'아우레우스 정보 칩 정보 칩 ×2 좌표 분석', en:'아우레우스 정보 칩 ×2 coord'}},
       ],
       rewardCr:180000, rewardVe:120,
       rewardItems:[],
@@ -337,9 +337,9 @@ const PHASE4_QUESTS={
       ic:'📜', npc:'호레이쇼 넬슨', npcIc:'⚓', npcKey:'hero05',
       nm:{ko:'빅토리 함의 기록', en:'Victory\'s Log'},
       desc:{ko:'넬슨의 빅토리 함 항해일지 복원 — 메카니카 자동화 부품 ×3 소비. 영국 해군 진형 데이터 — 학익진과 결합 시 +15% 명중률.\n넬슨: "트라팔가르에서 적의 전열을 가르던 그 진형이오."',
-            en:'Mechanica Automation Part ×3 → Victory\'s log → +15% accuracy bonus when combined with crane formation.'},
+            en:'메카니카 자동화 부품 ×3 → Victory\'s log → +15% accuracy bonus when combined with crane formation.'},
       objectives:[
-        {type:'gather', item:'G25', qty:3, label:{ko:'메카니카 자동화 부품 ×3 일지 복원', en:'Mechanica Automation Part ×3 log restore'}},
+        {type:'gather', item:'G25', qty:3, label:{ko:'메카니카 자동화 부품 ×3 일지 복원', en:'메카니카 자동화 부품 ×3 log restore'}},
       ],
       rewardCr:70000, rewardVe:60,
       rewardItems:[],
@@ -372,9 +372,9 @@ const PHASE4_QUESTS={
       ic:'💥', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'요새 코어 폭파', en:'Fort Core Breach'},
       desc:{ko:'요새 중앙 에너지 코어에 수퍼비아 중력자 ×5 + 크리그 마그마 코어 ×3 삽입 → 폭파 유도. 60초 탈출 후 강습 스파이크 ×8 회수.',
-            en:'Superbia Graviton ×5 + Krieg Magma Core ×3 → core breach. Escape 60s, loot Assault Spike ×8.'},
+            en:'수퍼비아 중력자 ×5 + 크리그 마그마 코어 ×3 → core breach. Escape 60s, loot 강습 스파이크 ×8.'},
       objectives:[
-        {type:'gather', item:'R07', qty:5, label:{ko:'수퍼비아 중력자 ×5 폭파 장약', en:'Superbia Graviton ×5 charges'}},
+        {type:'gather', item:'R07', qty:5, label:{ko:'수퍼비아 중력자 ×5 폭파 장약', en:'수퍼비아 중력자 ×5 charges'}},
       ],
       rewardCr:180000, rewardVe:110,
       rewardItems:[{id:'G12', qty:8}],
@@ -386,9 +386,9 @@ const PHASE4_QUESTS={
       ic:'📜', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'아이젠클로의 비밀 — 도주 좌표', en:'Eisenklau\'s Escape Coord'},
       desc:{ko:'요새 사령실 데이터 회수. 수퍼비아 중력자 ×2 해독.\n결과: "아이젠클로는 P30 제타 레티쿨리 우르사 메이저 본거지로 도주. 우르사가 그를 비호 중."',
-            en:'Superbia Graviton ×2 → "Eisenklau escaped to P30 Ursa Major lair."'},
+            en:'수퍼비아 중력자 ×2 → "Eisenklau escaped to P30 Ursa Major lair."'},
       objectives:[
-        {type:'gather', item:'R07', qty:2, label:{ko:'수퍼비아 중력자 ×2 해독', en:'Superbia Graviton ×2'}},
+        {type:'gather', item:'R07', qty:2, label:{ko:'수퍼비아 중력자 ×2 해독', en:'수퍼비아 중력자 ×2'}},
       ],
       rewardCr:120000, rewardVe:100,
       rewardItems:[],
@@ -400,7 +400,7 @@ const PHASE4_QUESTS={
       ic:'🔍', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_advice',
       nm:{ko:'요새 외곽 데이터 코어 회수', en:'Outer Data Core'},
       desc:{ko:'요새 외곽 폐기된 데이터 코어 탐색 3회 — 은하 혼돈 결정 ×3 + 강습 스파이크 ×3 회수 가능.',
-            en:'Search outer cores 3× — Galactic Chaos Crystal ×3 + Assault Spike ×3.'},
+            en:'Search outer cores 3× — 은하 혼돈 결정 ×3 + 강습 스파이크 ×3.'},
       objectives:[
         {type:'explore', target:'p14_outer_core', qty:3, label:{ko:'외곽 코어 탐색 ×3', en:'Outer core ×3'}},
       ],
@@ -414,9 +414,9 @@ const PHASE4_QUESTS={
       ic:'🏆', npc:'광개토대왕', npcIc:'🛡️', npcKey:'hero03',
       nm:{ko:'정복자의 깃발', en:'Conqueror\'s Banner'},
       desc:{ko:'Kepler-442b 요새 점령 후 광개토가 깃발을 꽂는다. 강습 스파이크 ×3 → 정복 의례.\n광개토: "이 요새는 이제 우리 것이다."',
-            en:'Assault Spike ×3 → Conquest banner. Gwanggaeto: "This fort is ours now."'},
+            en:'강습 스파이크 ×3 → Conquest banner. Gwanggaeto: "This fort is ours now."'},
       objectives:[
-        {type:'gather', item:'G12', qty:3, label:{ko:'강습 스파이크 ×3 의례', en:'Assault Spike ×3 rite'}},
+        {type:'gather', item:'G12', qty:3, label:{ko:'강습 스파이크 ×3 의례', en:'강습 스파이크 ×3 rite'}},
       ],
       rewardCr:80000, rewardVe:70,
       rewardItems:[],
@@ -509,19 +509,19 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH10-A3 "넬슨 합류" (Q19-05 완료) ───
   p4_ch10a3:[
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(캡슐에서 깨어나며)...영국이었어. 마지막 본 것은 트라팔가르의 안개였소.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(캡슐에서 깨어나며) ...영국이었어. 마지막 본 것은 트라팔가르의 안개였소.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(영어 자동 번역) 넬슨 제독. 나는 이순신이오.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'동방의 거북선 제독... 이름은 들었소. 같은 바다의 영웅을 우주에서 만나다니.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다 — 마지막 일전이 어디든.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진과 트라팔가르 진형 — 두 바다의 전술을 하나로 묶으면 우르사도 막을 수 없을 거요.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨. 영국 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨(H05). 영국 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
   ],
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
   p4_ch10b:[
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'거북선 초도 비행 테스트. 준비됐습니까?'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 치크스 봉쇄 집행관 아이젠클로의 거점 아레스-III을 부수러 가는 거야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 5 — 행성 21~25. 아이젠클로를 치우고, 그 주인 우르사 메이저로 가는 길을 연다. 거북선이 선두다.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 아이젠클로의 본거지 아레스-III을 부수러 가는 거야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 5 — 행성 21~25. 아이젠클로 최후. 거북선으로 결전이야.'}
   ],
 
     // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
@@ -529,8 +529,8 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로는 — 도망쳤어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'어디로?'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'제타 레티쿨리. 우르사 메이저 본거지.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'제 주인 품으로 기어든 거지. 우르사가 제 봉쇄 집행관을 비호하고 있어 — 결국 우르사를 잡아야 끝나는 거야.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 치크스의 우두머리이자 진짜 보스다. 직접 잡아야 끝난다.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우르사가 아이젠클로를 비호 중이라는 거잖아. 마지막 일전이 다가왔어.'},
+    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 보스다. 직접 잡아야 끝난다.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 b 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아인슈타인 영입 → 보이드 횡단 → 우르사 격파 → 지구 해방. 순서가 정해졌다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 페이즈 5 — 행성 캅테인 b 균열~지구 · 아인슈타인 합류 · 보이드 균열 횡단 · 우르사 메이저 격파 · 지구 해방.'}
@@ -551,3 +551,7 @@ const PHASE4_PLANET_INTROS={
 window.PHASE4_QUESTS=PHASE4_QUESTS;
 window.PHASE4_CUTSCENES_KO=PHASE4_CUTSCENES_KO;
 window.PHASE4_CUTSCENES_EN=PHASE4_CUTSCENES_EN;
+window.PHASE4_PLANET_INTROS=PHASE4_PLANET_INTROS;
+
+console.log('[PHASE4_QUESTS v1.0] Loaded — 25 quests across 5 planets (P15·P10·P12·P16·P14), 9 cutscenes');
+})();

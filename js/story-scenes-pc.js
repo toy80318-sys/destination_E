@@ -143,7 +143,7 @@
     //   · 이미지는 패널 100% 채움 (1024×1024 원본을 패널 폭에 맞춰 표시)
     var charPanel = document.createElement('div');
     charPanel.style.cssText = [
-      'flex:0 0 var(--ui-char-panel,30%)','display:flex','align-items:center','justify-content:center',
+      'flex:0 0 30%','display:flex','align-items:center','justify-content:center',
       'background:linear-gradient(135deg,rgba(20,40,80,0.45),rgba(0,0,0,0.7))',
       'border-right:1px solid rgba(0,243,255,0.25)',
       'padding:16px','box-sizing:border-box','overflow:hidden'
@@ -368,7 +368,7 @@
     var lines = [
       {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'허허. 100년을 기다렸소. 이런 통쾌한 광경을.'},
       {char:'commander', name:'{사령관}', color:'#00f3ff', text:'당신은…?'},
-      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'마르코 폴로요. 제네시스 프로토콜.'},
+      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'마르코 폴로요. 제네시스 프로토콜 H08.'},
       {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.'}
     ];
     if(hasYi){
@@ -475,7 +475,7 @@
     var lines = [
       {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Ha. A hundred years I waited — for a sight as satisfying as this.'},
       {char:'commander', name:'{사령관}', color:'#00f3ff', text:'And you are…?'},
-      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Marco Polo. Genesis Protocol.'},
+      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Marco Polo. Genesis Protocol H08.'},
       {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'The Cheeks held me captive trying to extract trade route data. I refused, of course. I have never been forced into a deal.'}
     ];
     if(hasYi){
@@ -632,11 +632,6 @@
   // 중복 방지: 같은 세션 내 짧은 시간 내 중복 호출 차단 (300ms)
   // _scenesSeen 영구 기록은 유지하되, 사용자가 강제 재생 가능
   var _lastTriggeredAt = {};
-  // bugfix 2026-06-14: 같은 세션에서 이미 끝까지 재생한 컷씬은 자동 재트리거를 영구 무시
-  //   (startGame 의 즉시+3회 재시도 spawn 등으로 컷씬이 닫힌 직후 다시 트리거돼 "연속 2회 재생"되던 버그)
-  //   · onDone(완료) 시점에 마킹 → 이후 자동 트리거는 즉시 return(루프/중복 차단).
-  //   · 수동 재생(forceReplay*)은 이 마크를 지워 우회 → 정상 재생.
-  var _playedSession = {};
   function triggerHeroRecruitScene(hid, onDone){
     console.log('[STORY_SCENES_PC] triggerHeroRecruitScene called for', hid);
     var scenes = getScenes(hid);
@@ -656,11 +651,6 @@
       console.log('[STORY_SCENES_PC] hero scene trigger ignored — dialog already open:', hid);
       return;
     }
-    // bugfix 2026-06-14: 이 세션에서 이미 끝까지 본 영웅 컷씬이면 자동 재트리거 무시 (연속 2회 재생 방지)
-    if(_playedSession['hero_' + hid]){
-      console.log('[STORY_SCENES_PC] hero scene already played this session — skip:', hid);
-      return;
-    }
     _lastTriggeredAt[hid] = now;
     if(!window.G) window.G = {};
     if(!window.G._scenesSeen) window.G._scenesSeen = {};
@@ -675,7 +665,6 @@
     console.log('[STORY_SCENES_PC] opening cutscene for', hid, '— scene count:', scenes.length);
     showCharDialog({ scenes: scenes, onDone: function(){
       window.G._scenesSeen[key] = true;
-      _playedSession['hero_' + hid] = true;
       if(typeof window.saveGame === 'function'){
         try{ window.saveGame(true); }catch(e){}
       }
@@ -687,7 +676,6 @@
   function forceReplay(hid){
     if(window.G && window.G._scenesSeen) delete window.G._scenesSeen['hero_' + hid];
     delete _lastTriggeredAt[hid];
-    delete _playedSession['hero_' + hid];
     return triggerHeroRecruitScene(hid);
   }
 
@@ -731,11 +719,6 @@
       console.log('[STORY_SCENES_PC] scene trigger ignored — dialog already open:', sceneId);
       return;
     }
-    // bugfix 2026-06-14: 이 세션에서 이미 끝까지 본 컷씬이면 자동 재트리거 무시 (연속 2회 재생 방지)
-    if(_playedSession['scene_' + sceneId]){
-      console.log('[STORY_SCENES_PC] scene already played this session — skip:', sceneId);
-      return;
-    }
     // 짧은 시간 중복 트리거 차단
     var now = Date.now();
     if(_lastTriggeredAt[sceneId] && (now - _lastTriggeredAt[sceneId]) < 1500){
@@ -754,7 +737,6 @@
     console.log('[STORY_SCENES_PC] opening scene:', sceneId, '— lines:', scenes.length);
     showCharDialog({ scenes: scenes, onDone: function(){
       window.G._scenesSeen['scene_' + sceneId] = true;
-      _playedSession['scene_' + sceneId] = true;
       if(typeof window.saveGame === 'function'){
         try{ window.saveGame(true); }catch(e){}
       }
@@ -773,7 +755,6 @@
   function forceReplayScene(sceneId){
     if(window.G && window.G._scenesSeen) delete window.G._scenesSeen['scene_' + sceneId];
     delete _lastTriggeredAt[sceneId];
-    delete _playedSession['scene_' + sceneId];
     return triggerScene(sceneId);
   }
 
@@ -781,4 +762,36 @@
   // 전역 노출
   // ═══════════════════════════════════════════════════════════════════
   window.STORY_SCENES_PC = {
-    version: '1.2.
+    version: '1.2.0',
+    showCharDialog: showCharDialog,
+    triggerHeroRecruitScene: triggerHeroRecruitScene,
+    triggerScene: triggerScene,
+    forceReplay: forceReplay,
+    forceReplayScene: forceReplayScene,
+    canHeroAppear: canHeroAppear,
+    nextStoryHero: nextStoryHero,
+    nextHeroAtPlanet: nextHeroAtPlanet,
+    SCENARIO_ORDER: SCENARIO_ORDER,
+    HERO_PLANET_MAP: HERO_PLANET_MAP,
+    rep: rep,
+    // 테스트용: 콘솔에서 window.STORY_SCENES_PC.testScene('H01') 가능
+    testScene: function(hid){
+      var scenes = getScenes(hid);
+      if(!scenes){ console.warn('[STORY_SCENES_PC] No scenes for', hid); return; }
+      console.log('[STORY_SCENES_PC] manual testScene for', hid);
+      showCharDialog({ scenes: scenes });
+    },
+    // 모든 영웅 컷씬 순차 재생 (테스트용)
+    playAll: function(){
+      var order = ['H08','H04','H01','H05','H02','H03','H06','H07'];
+      function next(i){
+        if(i>=order.length){ console.log('[STORY_SCENES_PC] playAll done'); return; }
+        showCharDialog({ scenes: getScenes(order[i]), onDone: function(){ next(i+1); } });
+      }
+      next(0);
+    }
+  };
+
+  console.log('[STORY_SCENES_PC] Loaded v' + window.STORY_SCENES_PC.version
+    + ' — scenario order:', SCENARIO_ORDER.join(' → '));
+})();

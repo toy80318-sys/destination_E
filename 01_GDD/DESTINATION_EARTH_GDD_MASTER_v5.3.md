@@ -1,3 +1,5 @@
+> 🗄️ **[히스토리 문서 — 대체됨]** Next.js + Supabase 기반 기획안으로 실제 구현(바닐라 JS + Electron + Steam)과 다릅니다. **현행 정본은 [`DESTINATION_EARTH_GDD_v7.0_CURRENT.md`](./DESTINATION_EARTH_GDD_v7.0_CURRENT.md)** 입니다. (보존용)
+
 # 🌌 DESTINATION EARTH — 마스터 GDD v5.3
 ## 데스티네이션 어스 통합 게임 디자인 문서
 ### (업로드 문서 v5.3 + Document 28 완전 반영 통합본)

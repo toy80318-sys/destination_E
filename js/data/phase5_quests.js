@@ -22,9 +22,9 @@ const PHASE5_QUESTS={
       ic:'🌀', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_advice',
       nm:{ko:'캅테인b 균열 진입', en:'Enter Kapteyn-b Rift'},
       desc:{ko:'캅테인 b 균열 보이드 균열 — 우주 시공이 불안정. 아우레우스 태양핵 안정화 코어 ×3 + 메카니카 양자칩 차폐 합금 ×3 소비.\n백구: "균열 진입 시 함대 손상 최소화 — 안정화가 필수예요."',
-            en:'Stabilize before entry: Aureus Solar Core ×3 + Mechanica Quantum Chip ×3.'},
+            en:'Stabilize before entry: 아우레우스 태양핵 ×3 + 메카니카 양자칩 ×3.'},
       objectives:[
-        {type:'gather', item:'R03', qty:3, label:{ko:'아우레우스 태양핵 안정화 코어 ×3', en:'Aureus Solar Core ×3 stabilize'}},
+        {type:'gather', item:'R03', qty:3, label:{ko:'아우레우스 태양핵 안정화 코어 ×3', en:'아우레우스 태양핵 ×3 stabilize'}},
       ],
       rewardCr:180000, rewardVe:120,
       rewardItems:[{id:'R05', qty:2}],
@@ -36,9 +36,9 @@ const PHASE5_QUESTS={
       ic:'🧠', npc:'아인슈타인', npcIc:'🔬', npcKey:'hero06',
       nm:{ko:'아인슈타인 영입', en:'Recruit Einstein'},
       desc:{ko:'균열 핵심부에서 아인슈타인과 조우. 지구 빈티지 씨앗 보이드 결정 ×3 + 보이드 공간 수정 시공 입자 ×3 → 그의 보이드 안정화 이론 실증 실험 협력.\n아인슈타인: "내 이론이 옳다면 — 우르사의 보이드 방어막을 0.3초만에 무력화할 수 있소."',
-            en:'Meet Einstein. Earth Vintage Seeds ×3 + Void Space Crystal ×3 → He joins. "I can disable Ursa\'s void shield in 0.3s."'},
+            en:'Meet Einstein. 지구 빈티지 씨앗 ×3 + 보이드 공간 수정 ×3 → He joins. "I can disable Ursa\'s void shield in 0.3s."'},
       objectives:[
-        {type:'gather', item:'G28', qty:3, label:{ko:'지구 빈티지 씨앗 보이드 결정 ×3', en:'Earth Vintage Seeds ×3'}},
+        {type:'gather', item:'G28', qty:3, label:{ko:'지구 빈티지 씨앗 보이드 결정 ×3', en:'지구 빈티지 씨앗 ×3'}},
       ],
       rewardCr:250000, rewardVe:150,
       rewardItems:[],
@@ -50,7 +50,7 @@ const PHASE5_QUESTS={
       ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'균열 잔해 탐색', en:'Rift Wreck Search'},
       desc:{ko:'균열 안쪽 — 100년간 사라진 함선들의 잔해. 탐색 3회. 아우레우스 태양핵·메카니카 양자칩·지구 빈티지 씨앗·보이드 공간 수정 확보 가능 + 30% 보이드 해적 조우.',
-            en:'Search 3× in rift. 70% Aureus Solar Core/Mechanica Quantum Chip/Earth Vintage Seeds/Void Space Crystal / 30% void pirates.'},
+            en:'Search 3× in rift. 70% 아우레우스 태양핵/메카니카 양자칩/지구 빈티지 씨앗/보이드 공간 수정 / 30% void pirates.'},
       objectives:[
         {type:'explore', target:'p28_rift_wreck', qty:3, label:{ko:'균열 잔해 탐색 ×3', en:'Wreck ×3'}},
       ],
@@ -77,10 +77,10 @@ const PHASE5_QUESTS={
       id:'p5_q2105', type:'story_quest', category:'sub', phase:5,
       ic:'⚙️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'균열 환경 함대 적응', en:'Rift Fleet Adaption'},
-      desc:{ko:'장영실: "균열 환경은 일반 우주와 달라. 함대 외피를 보이드 공간 수정 시공 입자로 코팅해야 시공 충격에 견딘다."\nG29 ×4 소비.',
-            en:'Void Space Crystal ×4 → Coat fleet hulls for rift environment resistance.'},
+      desc:{ko:'장영실: "균열 환경은 일반 우주와 달라. 함대 외피를 G29 시공 입자로 코팅해야 시공 충격에 견딘다."\nG29 ×4 소비.',
+            en:'보이드 공간 수정 ×4 → Coat fleet hulls for rift environment resistance.'},
       objectives:[
-        {type:'gather', item:'G29', qty:4, label:{ko:'보이드 공간 수정 시공 입자 ×4 코팅', en:'Void Space Crystal ×4 coating'}},
+        {type:'gather', item:'G29', qty:4, label:{ko:'보이드 공간 수정 시공 입자 ×4 코팅', en:'보이드 공간 수정 ×4 coating'}},
       ],
       rewardCr:80000, rewardVe:70,
       rewardItems:[{id:'R05', qty:2}],
@@ -92,9 +92,9 @@ const PHASE5_QUESTS={
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'균열 주민의 정보', en:'Rift Dweller\'s Tale'},
       desc:{ko:'균열 안 — 100년간 갇혀 살아온 작은 정착촌 발견. 지구 철광석 ×2 제공.\n정착민 장로: "우르사 메이저 본거지에는 친위대 15척 + 치크스 정찰대 14척이 호위 중이오."',
-            en:'Earth Iron Ore ×2 → "Ursa Major lair: 15 guards + 14 chiks scouts."'},
+            en:'지구 철광석 ×2 → "Ursa Major lair: 15 guards + 14 chiks scouts."'},
       objectives:[
-        {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 의례', en:'Earth Iron Ore ×2'}},
+        {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 의례', en:'지구 철광석 ×2'}},
       ],
       rewardCr:45000, rewardVe:50,
       rewardItems:[{id:'G28', qty:1}],
@@ -113,9 +113,9 @@ const PHASE5_QUESTS={
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'오리온 균열 횡단 항법', en:'Orion Rift Navigation'},
       desc:{ko:'오리온 균열 → 제타 레티쿨리 직항 항법 — 메카니카 양자칩 차폐 합금 ×5 + 아인슈타인 시공 보정 계산 협력.\n5턴마다 균열에서 분출되는 전설급 파츠 자동 수집.',
-            en:'Orion Rift→Zeta Reticuli navigation: Mechanica Quantum Chip ×5 + Einstein\'s calc. Auto-collect legendary parts from rift.'},
+            en:'오리온 균열→제타 레티쿨리 navigation: 메카니카 양자칩 ×5 + Einstein\'s calc. Auto-collect legendary parts from rift.'},
       objectives:[
-        {type:'gather', item:'R05', qty:5, label:{ko:'메카니카 양자칩 차폐 합금 ×5', en:'Mechanica Quantum Chip ×5'}},
+        {type:'gather', item:'R05', qty:5, label:{ko:'메카니카 양자칩 차폐 합금 ×5', en:'메카니카 양자칩 ×5'}},
       ],
       rewardCr:200000, rewardVe:130,
       rewardItems:[{id:'R03', qty:2}],
@@ -127,9 +127,9 @@ const PHASE5_QUESTS={
       ic:'🛡️', npc:'아인슈타인', npcIc:'🔬', npcKey:'hero06',
       nm:{ko:'보이드 방어막 해석', en:'Void Shield Decryptor'},
       desc:{ko:'시공 결정체 + 메카니카 양자칩 ×3 + 보이드 공간 수정 ×3 → 보이드 방어막 해석 장비 제작.\n아인슈타인: "이걸 거북선에 장착하면 우르사 방어막이 0.3초만에 풀려."',
-            en:'Spacetime crystal + Mechanica Quantum Chip ×3 + Void Space Crystal ×3 → void shield decryptor. Mount on Geobukseon.'},
+            en:'Spacetime crystal + 메카니카 양자칩 ×3 + 보이드 공간 수정 ×3 → void shield decryptor. Mount on Geobukseon.'},
       objectives:[
-        {type:'gather', item:'G29', qty:3, label:{ko:'보이드 공간 수정 시공 입자 ×3', en:'Void Space Crystal ×3'}},
+        {type:'gather', item:'G29', qty:3, label:{ko:'보이드 공간 수정 시공 입자 ×3', en:'보이드 공간 수정 ×3'}},
       ],
       rewardCr:150000, rewardVe:120,
       rewardItems:[],
@@ -155,9 +155,9 @@ const PHASE5_QUESTS={
       ic:'🤝', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 최종 지원 요청', en:'Resistance Final Support'},
       desc:{ko:'타이탄 기지 저항군 본부 통신 — 저항군 반물질 반물질 ×10 추가 지원 요청. 저항군 군수품 저항군 의례 ×3 + 난중일기 영인본 ×2 제공.\n레인저: "지구 해방 — 우리 모두의 꿈이에요. 함대를 보냅니다."',
-            en:'Resistance Military Supplies ×3 + "Nanjung Ilgi" Facsimile ×2 → Resistance pledges Resistance Antimatter ×10 + fleet for Earth liberation.'},
+            en:'저항군 군수품 ×3 + 난중일기 영인본 ×2 → Resistance pledges 저항군 반물질 ×10 + fleet for Earth liberation.'},
       objectives:[
-        {type:'gather', item:'G13', qty:3, label:{ko:'저항군 군수품 ×3 의례', en:'Resistance Military Supplies ×3'}},
+        {type:'gather', item:'G13', qty:3, label:{ko:'저항군 군수품 ×3 의례', en:'저항군 군수품 ×3'}},
       ],
       rewardCr:100000, rewardVe:90,
       rewardItems:[{id:'R06', qty:10}],
@@ -168,10 +168,10 @@ const PHASE5_QUESTS={
       id:'p5_q2205', type:'story_quest', category:'sub', phase:5,
       ic:'⚙️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 최종 강화', en:'Geobukseon Final Upgrade'},
-      desc:{ko:'장영실: "거북선 외피에 보이드 방어막 해석 장비 통합. 은하 혼돈 결정 ×6 + 치크스 뇌수액 ×3."\n완성 시 거북선 ATT·INT 패시브 +50% (이전 +30% → +50%).',
-            en:'Galactic Chaos Crystal ×6 + Chiks Brain Fluid ×3 → Geobukseon ATT/INT passive +50%.'},
+      desc:{ko:'장영실: "거북선 외피에 보이드 방어막 해석 장비 통합. R08 ×6 + G27 ×3."\n완성 시 거북선 ATT·INT 패시브 +50% (이전 +30% → +50%).',
+            en:'은하 혼돈 결정 ×6 + 치크스 뇌수액 ×3 → Geobukseon ATT/INT passive +50%.'},
       objectives:[
-        {type:'gather', item:'R08', qty:6, label:{ko:'은하 혼돈 결정 ×6 통합', en:'Galactic Chaos Crystal ×6'}},
+        {type:'gather', item:'R08', qty:6, label:{ko:'은하 혼돈 결정 ×6 통합', en:'은하 혼돈 결정 ×6'}},
       ],
       rewardCr:120000, rewardVe:100,
       rewardItems:[],
@@ -183,9 +183,9 @@ const PHASE5_QUESTS={
       ic:'🌌', npc:'아인슈타인', npcIc:'🔬', npcKey:'hero06',
       nm:{ko:'시공 보정 알고리즘', en:'Spacetime Correction Algo'},
       desc:{ko:'아인슈타인이 직접 작성한 시공 보정 알고리즘 — 전 함대에 적용 시 명중률 +20%.\nG28 ×4 소비 (알고리즘 검증).\n페이즈 5 종료 → 페이즈 6 (최종전 제타 레티쿨리) 진입 가능.',
-            en:'Earth Vintage Seeds ×4 → +20% accuracy. Phase 5 complete → Phase 6 (final Zeta Reticuli).'},
+            en:'지구 빈티지 씨앗 ×4 → +20% accuracy. Phase 5 complete → Phase 6 (final 제타 레티쿨리).'},
       objectives:[
-        {type:'gather', item:'G28', qty:4, label:{ko:'지구 빈티지 씨앗 ×4 검증', en:'Earth Vintage Seeds ×4 verify'}},
+        {type:'gather', item:'G28', qty:4, label:{ko:'지구 빈티지 씨앗 ×4 검증', en:'지구 빈티지 씨앗 ×4 verify'}},
       ],
       rewardCr:200000, rewardVe:180,
       rewardItems:[],
@@ -227,7 +227,7 @@ const PHASE5_CUTSCENES_KO={
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'(웃으며) 박사님 — 100년 만에 다시 같이 일하는군요.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.'}
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: A. 아인슈타인(H06). 8영웅 완전체 — 함대 최종 강화 상태.'}
   ],
 
   // ─── CH12-A "오리온의 항법" (P29 도착) ───
@@ -242,7 +242,7 @@ const PHASE5_CUTSCENES_KO={
     // ─── CH12-B "방어막 해석" (Q22-02 완료) ───
   p5_ch12b:[
     {char:'hero01', name:'이순신', color:'#c0a060', text:'끝났어, 아이젠클로.'},
-    {char:'eisenklau', name:'아이젠클로', color:'#9ee7ff', text:'...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.'},
+    {char:'system', name:'아이젠클로', color:'#9ee7ff', text:'...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.'}
   ],
 
@@ -280,4 +280,4 @@ window.PHASE5_CUTSCENES_EN=PHASE5_CUTSCENES_EN;
 window.PHASE5_PLANET_INTROS=PHASE5_PLANET_INTROS;
 
 console.log('[PHASE5_QUESTS v1.0] Loaded — 12 quests across 2 planets (P28·P29), 6 cutscenes (Void Entry)');
-})(
+})();

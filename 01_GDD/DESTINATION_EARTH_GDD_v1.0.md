@@ -1,3 +1,5 @@
+> 🗄️ **[히스토리 문서 — 대체됨]** 이 문서는 기획 단계 비전안이며 실제 구현과 다릅니다. **현행 정본은 [`DESTINATION_EARTH_GDD_v7.0_CURRENT.md`](./DESTINATION_EARTH_GDD_v7.0_CURRENT.md)** 입니다. (보존용)
+
 # 🌍 DESTINATION EARTH (데스티네이션 어스)
 ## Game Design Document (GDD) v1.0
 ### 글로벌 표준 게임 기획서

@@ -1,3 +1,5 @@
+> 🗄️ **[히스토리 문서 — 대체됨]** Firebase 실시간 서버 + F2P 설계 기획안으로, 기술 스택·플랫폼·수익화가 실제 구현과 다릅니다(창작/세계관 콘텐츠는 v7.0이 계승). **현행 정본은 [`DESTINATION_EARTH_GDD_v7.0_CURRENT.md`](./DESTINATION_EARTH_GDD_v7.0_CURRENT.md)** 입니다. (보존용)
+
 # 🌌 DESTINATION EARTH — GDD v6.0 (글로벌 스탠다드 통합본)
 ## Game Design Document — 데스티네이션 어스 공식 기획서
 

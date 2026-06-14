@@ -149,8 +149,9 @@ function spawnPhasedQuests(pid){
   // 800ms 후 triggerScene 호출하는 순서라서, 마킹 직후 어떤 이유로 트리거가
   // 실패하면 영구히 안 나옴. → 실제로 onDone 콜백이 호출됐을 때만 seen 마킹.
   if(!G._phasedIntroSeen)G._phasedIntroSeen={};
+  if(!G._introInFlight)G._introInFlight={};  // 컷씬 재생 중 재진입 차단(연속 2회 재생 방지)
   const _introKey='intro_'+pid;
-  if(!G._phasedIntroSeen[_introKey]){
+  if(!G._phasedIntroSeen[_introKey] && !G._introInFlight[_introKey]){
     const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
     let _introSceneId=null;
     for(let i=0;i<_introMaps.length;i++){
@@ -158,12 +159,15 @@ function spawnPhasedQuests(pid){
     }
     if(_introSceneId){
       console.log('[story-quest-engine] intro scene triggered immediately:', _introSceneId, 'for', pid);
+      // 재생 시작 시점에 즉시 in-flight 마킹 → 동시에 들어온 중복 호출이 같은 컷씬을 또 트리거하지 못하게 차단
+      G._introInFlight[_introKey]=true;
       // 사용자 요청 2026-06-09: 800ms 지연 제거 — 게임 시작/행성 도착 즉시 컷씬 노출
       if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
         try{
           window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
             // 실제로 컷씬이 끝났을 때만 seen 마킹 (사용자가 봤음을 확실히 보장)
             G._phasedIntroSeen[_introKey]=true;
+            G._introInFlight[_introKey]=false;
             try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
             // 사용자 요청 2026-06-09: 자동 컷씬 종료 후 메인 탭 재렌더 → 컷씬 1~N 버튼 활성화
             try{
@@ -173,6 +177,7 @@ function spawnPhasedQuests(pid){
             }catch(e){}
           });
         }catch(e){
+          G._introInFlight[_introKey]=false;  // 트리거 실패 → 잠금 해제하여 재시도 허용
           console.error('[story-quest-engine] intro trigger failed:', _introSceneId, e);
         }
       } else {
@@ -186,6 +191,7 @@ function spawnPhasedQuests(pid){
             try{
               window.STORY_SCENES_PC.triggerScene(_introSceneId, function(){
                 G._phasedIntroSeen[_introKey]=true;
+                G._introInFlight[_introKey]=false;
                 try{if(typeof saveGame==='function')saveGame(true);}catch(e){}
                 // 자동 컷씬 종료 → 메인 탭 재렌더 (컷씬 1~N 버튼 활성화)
                 try{
@@ -195,10 +201,12 @@ function spawnPhasedQuests(pid){
                 }catch(e){}
               });
             }catch(e){
+              G._introInFlight[_introKey]=false;  // 실패 → 잠금 해제
               console.error('[story-quest-engine] retry trigger failed:', e);
             }
           } else if(_retries>=25){  // 25 × 200ms = 5초 후 포기
             clearInterval(_retryTimer);
+            G._introInFlight[_introKey]=false;  // 포기 → 잠금 해제
             console.warn('[story-quest-engine] STORY_SCENES_PC never loaded — intro skipped:', _introSceneId);
           }
         }, 200);
