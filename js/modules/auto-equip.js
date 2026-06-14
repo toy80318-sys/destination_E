@@ -454,38 +454,153 @@ function _redistributeLeastFilledByValue(){
   }
   return added;
 }
+// ═══════════════════════════════════════════════════════════════════
+// 파츠 기함중심 자동배치 (사용자 지정 알고리즘 2026-06-15)
+//   1) 기함을 모든 파츠 타입(실드·장갑·엔진·레이저·미사일) + 창고로 완전 충전
+//   2) 나머지 함선에 전설+ 엔진 1개씩 순차 배치
+//   3) 실드·엔진·레이저·미사일·장갑·엔진·창고를 모든 함선에 1개씩 고루 분배
+//   4) 세트 아이템은 같은 함선에 모음 → 이후 남는 파츠를 고루 분배(같은 id 중복 금지)
+//   5) 그래도 남는 파츠는 각 함선에 라운드로빈 1개씩 (id당 최대 2개)
+//   ※ '평균배분(even)' 버튼은 변경 없음 — 이 함수만 해당.
+// ═══════════════════════════════════════════════════════════════════
 function autoEquipPartsFlagship(){
-  // 기함 중심 모드: 2단계 처리
-  //   1) 기함만 대상으로 V4 풀 실행 → 기함 빈틈 없이 완벽 채움
-  //   2) 나머지 함대 대상으로 V4 평균 분배 실행 → 균등 배분
   if(!G.fleet||!G.fleet.length){notify(I18N.t('notify.noShip'),'err');return;}
-  // 1단계: 기함 단독 처리 (G.fleet[0]만 임시로 단일 함대로 취급)
-  const _origFleet=G.fleet;
-  G.fleet=[_origFleet[0]];
-  const r1=_smartAutoEquipV2('flagship');
-  G.fleet=_origFleet;
-  if(!r1)return;
-  // 2단계: 나머지 함대 평균 분배 (G.fleet[1..] 만 임시로 노출)
-  let r2={core4:0,set:0,small:0,extra:0,missile:0};
-  if(_origFleet.length>1){
-    G.fleet=_origFleet.slice(1);
-    r2=_smartAutoEquipV2('even')||r2;
-    G.fleet=_origFleet;
-  }
-  // STEP 9 (최종): 함선당 동일 partId 1개 강제
-  const r9=_finalizeUniqueParts();
-  // STEP 12: 창고 확장 아이템 균등 분배 (기함 우선 1개씩 → 잔여 라운드 로빈)
-  const r12=_distributeCargoExtParts();
-  const total={
-    core4:r1.core4+r2.core4,
-    set:r1.set+r2.set,
-    small:r1.small+r2.small,
-    extra:r1.extra+r2.extra,
-    missile:r1.missile+r2.missile
+  if(!G.inventory)G.inventory=[];
+  // 시작: 모든 장착 파츠·창고 회수 → 인벤토리 (깨끗한 상태에서 재배치)
+  _collectAllPartsToPool();
+  if(typeof _detachAllCargoExt==='function'){ for(const s of G.fleet){ try{_detachAllCargoExt(s);}catch(_e){} } }
+
+  const CARGO_MAX=(typeof CARGO_EXT_MAX!=='undefined')?CARGO_EXT_MAX:4;
+  const SCARGO=(typeof SPECIAL_CARGO_PARTS!=='undefined')?SPECIAL_CARGO_PARTS:[];
+  const isCargo=id=>!!SCARGO.find(c=>c.id===id);
+  const classify=p=>{
+    if(WARP_ENGINE_IDS.includes(p.id))return 'engine';
+    if(p.cat==='weapon')return p.wtype==='missile'?'missile':'laser';
+    if(p.cat==='armor'&&typeof p.repairRate==='number'&&p.repairRate>0)return 'repair';
+    return p.cat; // shield / armor / engine
   };
-  const _uniq=(r9.removed||r9.redistributed)?I18N.t('ui.dedupResult',{removed:r9.removed,redistributed:r9.redistributed}):'';
-  const _cargo=r12>0?I18N.t('gacha.cargo',{n:r12}):'';
-  notify(I18N.t('notify.autoFlagshipFocus',{core4:total.core4,small:total.small,extra:total.extra,missile:total.missile,uniq:_uniq,cargo:_cargo}),'gold');
+  const area=p=>{const g=getPartGridSize(p);return g.cols*g.rows;};
+  const cellsTotal=s=>getShipPartsGridRows(s)*getShipPartsGridCols(s.tier);
+  const cellsUsed=s=>{let u=0;(s.parts||[]).forEach(pid=>{const p=partById(pid);if(p)u+=area(p);});return u;};
+  const slotsLeft=s=>cellsTotal(s)-cellsUsed(s);
+  const canFit=(s,p)=>slotsLeft(s)>=area(p);
+  const countId=(s,id)=>(s.parts||[]).filter(x=>x===id).length;
+  const rarPri={mythic:0,set:1,legend:2,L:2,hero:3,H:3,R:4,N:5};
+  const rarOf=p=>rarPri[p.rarity]??(p.tier>=15?2:p.tier>=11?3:p.tier>=6?4:5);
+  const isLegPlus=p=>!!p&&(p.rarity==='legend'||p.rarity==='set'||p.rarity==='mythic'||p.tier>=15);
+  // 강함 비교 (등급→tier→스탯)
+  const stronger=(a,b)=>{const ra=rarOf(a),rb=rarOf(b);if(ra!==rb)return ra<rb;if((a.tier||0)!==(b.tier||0))return (a.tier||0)>(b.tier||0);return ((a.ATT||0)+(a.HP||0)+(a.INT||0)+(a.TEC||0))>((b.ATT||0)+(b.HP||0)+(b.INT||0)+(b.TEC||0));};
+  // 면적 우선 비교 (테트리스 패킹 — 빈틈 채울 때)
+  const biggerThenStronger=(a,b)=>{const aa=area(a),ab=area(b);if(aa!==ab)return aa>ab;return stronger(a,b);};
+  const attach=(si,id)=>{const inv=G.inventory.find(i=>i.id===id&&i.qty>0);if(!inv)return false;attachPartSilent(si,id);return true;};
+  // 인벤토리에서 조건에 맞는 최적 파츠 1개 선택 (비-창고)
+  function bestPart(s,filter,cmp,dupCap){
+    let best=null;
+    for(const i of (G.inventory||[])){
+      if(i.qty<=0||isCargo(i.id))continue;
+      const p=PARTS.find(x=>x.id===i.id);if(!p)continue;
+      if(!canFit(s,p))continue;
+      if(dupCap!=null&&countId(s,p.id)>=dupCap)continue;
+      if(filter&&!filter(p))continue;
+      if(!best||cmp(p,best))best=p;
+    }
+    return best;
+  }
+  // 창고 1개 장착 (해당 함선 cargoExtParts ≤ CARGO_MAX)
+  function attachCargoOne(s){
+    if(!s.cargoExtParts)s.cargoExtParts=[];
+    if(s.cargoExtParts.length>=CARGO_MAX)return false;
+    const inv=(G.inventory||[]).find(i=>i.qty>0&&isCargo(i.id));if(!inv)return false;
+    const sc=SCARGO.find(c=>c.id===inv.id);
+    inv.qty--; if(inv.qty<=0)G.inventory=G.inventory.filter(x=>x!==inv);
+    s.cargoExtParts.push(sc?sc.id:inv.id);
+    s.cargoSlots=Math.min(80,(s.cargoSlots||4)+(sc?sc.cargoBonus:0));
+    return true;
+  }
+
+  const flag=G.fleet[0];
+  const allShips=G.fleet.map((_,i)=>i);
+  const otherShips=allShips.slice(1);
+  const leastFilled=()=>allShips.slice().sort((a,b)=>cellsUsed(G.fleet[a])-cellsUsed(G.fleet[b]));
+  let nParts=0,nCargo=0;
+
+  // 세트 파츠는 STEP 0에서 묶어 먼저 배치하므로 STEP 1~3 개별 배치에서 제외 (세트 분리 방지)
+  const noSet=pp=>pp.rarity!=='set';
+
+  // ── STEP 0: 세트 아이템을 같은 함선에 묶어 배치 (기함 우선) — 기함 충전 전에 공간 확보 ──
+  const setGroups={};
+  for(const i of (G.inventory||[])){
+    if(i.qty<=0)continue; const p=PARTS.find(x=>x.id===i.id);
+    if(p&&p.rarity==='set'&&p.setId){ (setGroups[p.setId]=setGroups[p.setId]||[]).push(p); }
+  }
+  Object.keys(setGroups).forEach(sid=>{
+    const parts=setGroups[sid]; const need=parts.reduce((a,p)=>a+area(p),0);
+    // 기함(0) 우선 → 그다음 가장 적게 찬 함선 (세트는 한 함선에 모음)
+    const order=[0,...leastFilled().filter(si=>si!==0)];
+    let target=-1;
+    for(const si of order){ if(slotsLeft(G.fleet[si])>=need){target=si;break;} }
+    if(target<0)return; // 묶음이 들어갈 함선이 없으면 보류 → STEP 4 개별 폴백
+    parts.forEach(p=>{ if(canFit(G.fleet[target],p)&&attach(target,p.id))nParts++; });
+  });
+
+  // ── STEP 1: 기함 완전 충전 (모든 타입 + 창고) ──
+  for(const cat of ['shield','armor','engine','laser','missile','repair']){
+    const p=bestPart(flag,pp=>noSet(pp)&&classify(pp)===cat,stronger,2);
+    if(p&&attach(0,p.id))nParts++;
+  }
+  let g=0;
+  while(slotsLeft(flag)>0 && g++<800){
+    const p=bestPart(flag,noSet,biggerThenStronger,2); // id당 최대 2개
+    if(!p||!attach(0,p.id))break; nParts++;
+  }
+  while(attachCargoOne(flag))nCargo++; // 기함 창고 슬롯(최대 4) 가득
+
+  // ── STEP 2: 나머지 함선에 전설+ 엔진 1개씩 ──
+  for(const si of otherShips){
+    const s=G.fleet[si]; if(slotsLeft(s)<=0)continue;
+    const p=bestPart(s,pp=>noSet(pp)&&classify(pp)==='engine'&&isLegPlus(pp),stronger,2);
+    if(p&&attach(si,p.id))nParts++;
+  }
+
+  // ── STEP 3: 코어 6종 + 창고를 모든 함선에 1개씩 고루 (engine 2회) ──
+  for(const cat of ['shield','engine','laser','missile','armor','engine']){
+    for(const si of allShips){
+      const s=G.fleet[si]; if(slotsLeft(s)<=0)continue;
+      const p=bestPart(s,pp=>noSet(pp)&&classify(pp)===cat,stronger,2);
+      if(p&&attach(si,p.id))nParts++;
+    }
+  }
+  for(const si of allShips){ if(attachCargoOne(G.fleet[si]))nCargo++; } // 함선당 창고 1개씩
+
+  // ── STEP 4: 남는 파츠 고루 — 같은 id 2개 이상 겹치지 않게 (id당 함선별 최대 1) ──
+  //   (세트는 STEP 0에서 묶어 배치 완료; 공간이 없어 보류된 세트 파츠는 여기서 개별 폴백)
+  g=0;
+  while(g++<2000){
+    let placed=false;
+    for(const si of leastFilled()){
+      const s=G.fleet[si]; if(slotsLeft(s)<=0)continue;
+      const p=bestPart(s,null,biggerThenStronger,1);
+      if(p&&attach(si,p.id)){nParts++;placed=true;}
+    }
+    if(!placed)break;
+  }
+
+  // ── STEP 5: 그래도 남으면 라운드로빈 1개씩 (id당 최대 2) ──
+  g=0;
+  while(g++<2000){
+    let placed=false;
+    for(const si of leastFilled()){
+      const s=G.fleet[si]; if(slotsLeft(s)<=0)continue;
+      const p=bestPart(s,null,biggerThenStronger,2);
+      if(p&&attach(si,p.id)){nParts++;placed=true;}
+    }
+    if(!placed)break;
+  }
+  // 남은 창고 라운드로빈
+  g=0;
+  while(g++<200){ let placed=false; for(const si of allShips){ if(attachCargoOne(G.fleet[si])){nCargo++;placed=true;} } if(!placed)break; }
+
+  notify(I18N.t('notify.autoFlagshipV2',{n:nParts,c:nCargo}),'gold');
   rerenderShipOrGarage();saveGame(true);
 }
 // ─── STEP 11: 2×2 파츠 균등 분배 (cap=2 허용) ─────────────────────────
