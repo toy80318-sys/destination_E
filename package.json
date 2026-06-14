@@ -56,6 +56,7 @@
       "game.js",
       "game.css",
       "manifest.json",
+      "i18n/**/*",
       "js/**/*",
       "img/**/*",
       "02_Assets/audio/**/*",

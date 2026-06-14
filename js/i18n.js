@@ -144,6 +144,21 @@ window.I18N = (function () {
     }
   }
 
+  // ── 로케일별 등록 (글로벌 표준 구조) ────────────────────────────────
+  //   registerLocale('en', { 'menu.start': 'Start', ... })  — 키→값 평면 사전
+  //   언어 추가 = 파일 1개(i18n/<lang>.js)에서 이 함수 1회 호출. 기존 키별 {ko,en} 저장소에
+  //   해당 언어 필드만 채워 넣으므로 t()/getEntry() 등 기존 동작과 완전 호환.
+  function registerLocale(lang, dict) {
+    if (!lang || !dict || typeof dict !== 'object') return;
+    if (SUPPORTED.indexOf(lang) < 0) SUPPORTED.push(lang); // 새 언어 자동 인식
+    for (const k in dict) {
+      if (Object.prototype.hasOwnProperty.call(dict, k)) {
+        if (!_dict[k]) _dict[k] = Object.create(null);
+        _dict[k][lang] = dict[k];
+      }
+    }
+  }
+
   // ── DOM 자동 적용 ────────────────────────────────────────────────
   // [data-i18n="key"]        → element.textContent = I18N.t(key)
   // [data-i18n-html="key"]   → element.innerHTML  = I18N.t(key)
@@ -188,5 +203,5 @@ window.I18N = (function () {
     }
   }
 
-  return { t, setLang, getLang, register, has, getEntry, tier, rarity, applyI18nToDOM, SUPPORTED, DEFAULT_LANG };
+  return { t, setLang, getLang, register, registerLocale, has, getEntry, tier, rarity, applyI18nToDOM, SUPPORTED, DEFAULT_LANG };
 })();
