@@ -234,11 +234,11 @@ function showEndingCredits(onDone){
     <!-- 별 배경 -->
     <div id="_end-stars" style="position:absolute;inset:0;background:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#fff,transparent),radial-gradient(1px 1px at 80% 10%,#fff,transparent),radial-gradient(2px 2px at 30% 80%,#fff,transparent),radial-gradient(1px 1px at 90% 50%,#fff,transparent);background-size:200px 200px;opacity:.4;animation:_endStars 60s linear infinite"></div>
     <!-- 대사 영역 (중앙) -->
-    <div id="_end-line-box" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,92vw);padding:32px;z-index:2;opacity:0;transition:opacity .8s ease-in-out;display:flex;gap:26px;align-items:center;justify-content:center">
+    <div id="_end-line-box" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1180px,94vw);padding:32px;z-index:2;opacity:0;transition:opacity .8s ease-in-out;display:flex;gap:36px;align-items:center;justify-content:center">
       <div id="_end-portrait" style="flex-shrink:0;display:none"></div>
       <div id="_end-textcol" style="flex:1;min-width:0;text-align:center">
-        <div id="_end-speaker" style="font-size:15px;letter-spacing:6px;color:#aaa;margin-bottom:14px"></div>
-        <div id="_end-text" style="font-size:22px;line-height:1.85;color:#fff;word-break:keep-all;overflow-wrap:break-word;line-break:strict;hyphens:auto;text-shadow:0 0 12px rgba(255,255,255,.3);padding:0 6px"></div>
+        <div id="_end-speaker" style="font-size:23px;letter-spacing:6px;color:#aaa;margin-bottom:14px"></div>
+        <div id="_end-text" style="font-size:33px;line-height:1.85;color:#fff;word-break:keep-all;overflow-wrap:break-word;line-break:strict;hyphens:auto;text-shadow:0 0 12px rgba(255,255,255,.3);padding:0 6px"></div>
       </div>
     </div>
     <!-- 크레딧 (롤링) -->
@@ -341,9 +341,9 @@ function showEndingCredits(onDone){
           let _pHTML;
           if(l.sp==='???'||l.sp.indexOf(I18N.t('chat.signal'))>=0){
             const _pc=l.col||'#ff6688';
-            _pHTML='<img src="img/chars/void_hiden.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')+'" alt="???" style="width:132px;height:132px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88">';
+            _pHTML='<img src="img/chars/void_hiden.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')+'" alt="???" style="width:396px;height:396px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88">';
           }else{
-            _pHTML=charPortraitHTML(_pspk,l.ic||(_isSys?'🤖':'⚑'),132,l.col||'#fff');
+            _pHTML=charPortraitHTML(_pspk,l.ic||(_isSys?'🤖':'⚑'),396,l.col||'#fff');
           }
           portraitEl.innerHTML=_pHTML;
           portraitEl.style.display='block';

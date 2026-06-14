@@ -135,7 +135,7 @@ function startCombat(planetDef){
     const _playerDur=_fp.hp+_fp.sh;
     // 사용자 요청 누적: 보스 본체 HP ×100 → 추가 ×10 (호위 전멸 후 본격 2페이즈용)
     let _scaleHP=Math.max(_BASE_HP,Math.round(_playerDur*2.7));
-    _scaleHP=_scaleHP*100*10;
+    _scaleHP=_scaleHP*100*10*3;  // 사용자 요청 2026-06-15: 보스 본체 체력 추가 ×3
     const _scaleATT=Math.max(_BASE_ATT,Math.round(_fp.atk*2.7));    // ATT는 기존 유지(2페이즈 진입 시 ×3)
     const _scaleSH=Math.max(_BASE_SH,Math.round(_fp.sh*2.7));       // SH는 기존 유지
     // ── 진형(열): 0=치크스 소형 / 1=치크스 중형 / 2=친위대(대형) / 3=우르사 본체(최후방) ──
@@ -2370,9 +2370,10 @@ function _finishCombat(){
         id:'BOSS_URSA_CAP_'+Date.now(),
         nm:I18N.t('enemy.ursaPrefix'),
         tier:'신화',
-        maxHP:10000000,hp:10000000,maxSH:300000,sh:300000,
+        // 사용자 요청 2026-06-15: 보상 노획 우르사 메이저 함선 체력 50% (10M → 5M)
+        maxHP:5000000,hp:5000000,maxSH:300000,sh:300000,
         // 사용자 요청 (2026-06-06): BOSS.ATT 6,000 → 30,000 (×5)에 맞춰 노획함 보상도 동기화
-        ATT:30000,INT:600,TEC:280,HP:10000000,DEF:200,LOY:80,
+        ATT:30000,INT:600,TEC:280,HP:5000000,DEF:200,LOY:80,
         parts:['MW01','MS01','MA01','ME01'],crewIds:[],cargoSlots:40,
         catalogId:'URSA',crafted:false
       };
