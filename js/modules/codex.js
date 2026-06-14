@@ -552,38 +552,32 @@
       </div>
       <!-- 사용자 요청 2026-06-09: 파츠 도감 상단에 6종 카테고리 실제 게임 기능 설명 패널 -->
       <div style="background:linear-gradient(135deg,rgba(0,243,255,.05),rgba(204,102,255,.05));border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:12px;margin-bottom:14px">
-        <div style="font-size:13px;color:var(--cyan);font-weight:bold;margin-bottom:10px;letter-spacing:1px">📖 파츠 기능 가이드 — 함선 슬롯에 장착 시 효과</div>
+        <div style="font-size:13px;color:var(--cyan);font-weight:bold;margin-bottom:10px;letter-spacing:1px">${I18N.t('partsGuide.header')}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;font-size:12px;color:var(--txt);line-height:1.55">
           <div style="background:rgba(255,59,59,.06);border-left:3px solid var(--red);padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('W01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>⚔️</span>'"><span style="color:var(--red);font-weight:bold">⚔️ 레이저 (Laser)</span></div>
-            <div><span style="color:var(--red)">ATT</span>(공격력) +5~320 부여. <b>매 턴 자동 발사</b>해 적 함선의 실드를 먼저 깎고 그 다음 HP에 직격. 명중률 100% 보장, 사거리 무제한. 일부 신화 레이저(MW01·RB10)는 가하는 피해의 일정 비율을 자기 HP/실드로 흡수.</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('W01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>⚔️</span>'"><span style="color:var(--red);font-weight:bold">${I18N.t('partsGuide.laserT')}</span></div>
+            <div>${I18N.t('partsGuide.laserD')}</div>
           </div>
           <div style="background:rgba(255,136,68,.06);border-left:3px solid #ff8844;padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('ML01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🚀</span>'"><span style="color:#ff8844;font-weight:bold">🚀 미사일 (Missile)</span></div>
-            <div><span style="color:#ff8844">ATT</span>(공격력) 부여 + <b>실드 관통</b> 피해. 실드를 통과해 HP 직격하므로 실드형 함선(치크스·아우레우스 기함)에 효과적. 매 턴 1발 발사, 명중률 100%. 신화급(MMB01 이휘소 미사일)은 추가 보이드 데미지.</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('ML01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🚀</span>'"><span style="color:#ff8844;font-weight:bold">${I18N.t('partsGuide.missileT')}</span></div>
+            <div>${I18N.t('partsGuide.missileD')}</div>
           </div>
           <div style="background:rgba(0,150,255,.06);border-left:3px solid var(--blue);padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('S01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🛡️</span>'"><span style="color:var(--blue);font-weight:bold">🛡️ 실드 (Shield)</span></div>
-            <div><span style="color:var(--blue)">INT</span>(실드 강도) 부여 + <b>maxSH</b>(실드 최대량) 증가. 매 턴 자동으로 (INT × 1.5%) 만큼 실드 자가 복구. 미사일은 통과하지만 레이저 피해를 1차로 흡수. 신화급(MS01)은 격침 시 1회 부활.</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('S01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🛡️</span>'"><span style="color:var(--blue);font-weight:bold">${I18N.t('partsGuide.shieldT')}</span></div>
+            <div>${I18N.t('partsGuide.shieldD')}</div>
           </div>
           <div style="background:rgba(212,175,55,.06);border-left:3px solid var(--gold);padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('A01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🛡</span>'"><span style="color:var(--gold);font-weight:bold">🛡 장갑 (Armor)</span></div>
-            <div><b>maxHP</b>(체력 최대량) 증가 + <span style="color:var(--gold)">DEF</span>(방어력) 부여. DEF는 받는 피해를 평탄화. 일부 장갑(RB 시리즈)은 <b>repairRate</b> 보유 → 매 턴 HP 일정% 자동 수리. 신화급(MA01·RB10)은 격침 시 부활 또는 흡혈 능력.</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('A01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>🛡</span>'"><span style="color:var(--gold);font-weight:bold">${I18N.t('partsGuide.armorT')}</span></div>
+            <div>${I18N.t('partsGuide.armorD')}</div>
           </div>
           <div style="background:rgba(0,243,255,.06);border-left:3px solid var(--cyan);padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('E01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>⚡</span>'"><span style="color:var(--cyan);font-weight:bold">⚡ 엔진 (Engine)</span></div>
-            <div><span style="color:var(--cyan)">TEC</span>(기술력) 부여 — <b>전투 시 공격속도 증가</b>:
-              <span style="color:#cce">매 턴 먼저 발사 + 선제공격 ATT +20% + 회피율 상승</span></div>
-            <div style="margin-top:6px;font-size:11px;line-height:1.5">
-              <b style="color:#fff">행성 이동 거리 3단계</b>:<br>
-              <span style="color:var(--cyan)">1단계</span> 일반 엔진 (E01~E12) — <b>인접 1홉</b> 이동 (기본)<br>
-              <span style="color:var(--gold)">2단계</span> 전설 엔진 (E15·ME01·SE01 — 함대 중 1척만 보유해도) — <b>2홉</b> 이동<br>
-              <span style="color:var(--purple)">3단계</span> 블링크 엔진 (전 함선 워프 장착) — <b>무제한 점프</b> (블랙홀·고리 무시 + 함대 항속 +20%)
-            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('E01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>⚡</span>'"><span style="color:var(--cyan);font-weight:bold">${I18N.t('partsGuide.engineT')}</span></div>
+            <div>${I18N.t('partsGuide.engineD')}</div>
+            <div style="margin-top:6px;font-size:11px;line-height:1.5">${I18N.t('partsGuide.engineMove')}</div>
           </div>
           <div style="background:rgba(102,255,153,.06);border-left:3px solid #66ff99;padding:8px 10px;border-radius:4px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('SC01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>📦</span>'"><span style="color:#66ff99;font-weight:bold">📦 특수창고 (Special Cargo, SC)</span></div>
-            <div><b>cargoBonus</b>(화물칸 추가) 부여. 정비소 「창고 확장 전용 슬롯」(함선당 최대 8칸)에 장착. SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 전설·제작) → SC05(+48 신화). 슬롯 1개 = 전용 슬롯 1칸 점유. 화물칸 합산 최대 80칸.</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><img src="${partImgSrc('SC01')}" alt="" style="width:var(--ui-part-guide-img,48px);height:var(--ui-part-guide-img,48px);object-fit:contain;flex-shrink:0;border-radius:5px;background:rgba(0,0,0,.25)" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>📦</span>'"><span style="color:#66ff99;font-weight:bold">${I18N.t('partsGuide.scT')}</span></div>
+            <div>${I18N.t('partsGuide.scD')}</div>
           </div>
         </div>
       </div>
