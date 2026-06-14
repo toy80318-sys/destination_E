@@ -51,7 +51,7 @@ function showFinalEndingCredits(){
     <!-- 별 배경 -->
     <div style="position:absolute;inset:0;background:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#fff,transparent),radial-gradient(1px 1px at 80% 10%,#fff,transparent),radial-gradient(2px 2px at 30% 80%,#fff,transparent),radial-gradient(1px 1px at 90% 50%,#fff,transparent);background-size:200px 200px;opacity:.4;animation:_finalStars 60s linear infinite"></div>
     <!-- 크레딧 롤 -->
-    <div id="_final-credits" style="position:relative;width:100%;max-width:760px;text-align:center;padding:20px;animation:_finalRoll 90s linear forwards;color:#fff">
+    <div id="_final-credits" style="position:relative;width:100%;max-width:760px;text-align:center;padding:20px;animation:_finalRoll 180s linear forwards;color:#fff">
       <div style="height:30vh"></div>
 
       <div style="font-size:36px;letter-spacing:14px;margin-bottom:12px;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 100%;animation:_finalShim 4s linear infinite">DESTINATION EARTH</div>
@@ -145,14 +145,15 @@ function showFinalEndingCredits(){
   };
   overlay.querySelector('#_final-skip').onclick=_close;
   overlay.querySelector('#_final-return').onclick=_close;
-  // 90초(크레딧 롤 종료) 후 자동 종료 대신 "게임으로 돌아가기" 버튼 노출
+  // 180초(크레딧 롤 종료, 사용자 요청 2026-06-15: 스크롤 2배 느리게 90→180s) 후
+  //   자동 종료 대신 "게임으로 돌아가기" 버튼 노출
   setTimeout(()=>{
     const rb=overlay.querySelector('#_final-return');
     if(rb){rb.style.display='block';requestAnimationFrame(()=>{rb.style.opacity='1';});}
     // 건너뛰기 버튼은 작게 유지하되 라벨 변경
     const sb=overlay.querySelector('#_final-skip');
     if(sb)sb.textContent=I18N.t('outro.closeBtn');
-  },90000);
+  },180000);
 }
 
 // ─── ACT 4 엔딩 시퀀스 (우르사 메이저 격파 후) ────────────────────
