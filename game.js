@@ -1486,10 +1486,11 @@ function rerenderTab(renderFn){
 function _subTokens(s){
   if(typeof s!=='string') return s;
   var p=(window.G&&G.profile)||{};
-  var isEn=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
-  var defCmd=isEn?'Commander':'사령관', defShip=isEn?'Mustang':'머스탱',
-      defFlag=isEn?'Great Hwarang':'위대한 화랑', defCompany=isEn?'Big Picture Space':'빅 픽처 스페이스',
-      flagSfx=isEn?' (Geobukseon-class)':'(거북선급)';
+  // 기본값을 i18n 키에서 가져옴 → 언어 추가 시 코드 수정 없이 해당 로케일 값 자동 사용 (N언어 대응)
+  var T=(window.I18N&&I18N.t)?(k=>I18N.t(k)):(k=>k);
+  var defCmd=T('ui.commanderDefault'), defShip=T('ui.shipDefault'),
+      defFlag=T('ship.flagshipDefault'), defCompany=T('ui.companyDefault'),
+      flagSfx=T('ship.mustangSuffix');
   return s.replace(/\{사령관\}/g,p.name||defCmd).replace(/\{commander\}/gi,p.name||defCmd)
     .replace(/\{함선\}/g,p.ship||defShip).replace(/\{ship\}/gi,p.ship||defShip)
     .replace(/\{기함\}/g,p.ship?(p.ship+flagSfx):defFlag).replace(/\{flagship\}/gi,p.ship?(p.ship+flagSfx):defFlag)
@@ -1498,24 +1499,26 @@ function _subTokens(s){
 window._subTokens=_subTokens;
 
 // NPC 표시명 현지화 — npc 필드는 데이터/로직 매칭용으로 한글 유지하므로, 표시 시점에만 번역.
-//   ({토큰} 치환 후, 영문판이면 한글 NPC명 → 영문 매핑. 미등록명은 원문 유지.)
-const _NPC_EN = {
-  '백구':'Baekgu','시스템':'System','아오리':'Aori',
-  '가가린':'Gagarin','유리 가가린':'Yuri Gagarin','이순신':'Yi Sun-sin','장영실':'Jang Yeong-sil',
-  '광개토대왕':'Gwanggaeto the Great','넬슨':'Nelson','호레이쇼 넬슨':'Horatio Nelson',
-  '아인슈타인':'Einstein','A. 아인슈타인':'A. Einstein','테슬라':'Tesla','니콜라 테슬라':'Nikola Tesla',
-  '마르코':'Marco','마르코 폴로':'Marco Polo','이휘소':'Lee Hwi-so','이휘소 박사':'Dr. Lee Hwi-so',
-  '광부 대표 린다':'Miner Rep Linda','기지 정비원':'Base Mechanic','닥터 에바':'Dr. Eva',
-  '레인저 맥시모프':'Ranger Maximoff','맥시모프':'Maximoff','볼프 노인':'Wolf Elder','볼프 자경단':'Wolf Vigilante',
-  '아우레우스 세관':'Aureus Customs','오스카르':'Oscar','정거장 행상':'Station Peddler','코르비누스':'Corvinus'
+//   한글명 → i18n 키 매핑 후 t()로 해석 → 현재 언어 값 반환 (ko/en/그외 언어 자동 대응).
+//   ※ 영웅명은 기존 hero.*.nm 키 재사용, 그 외 NPC는 npc.* 키(로케일 파일).
+const _NPC_KEY = {
+  '백구':'speaker.baekgu','시스템':'speaker.system','아오리':'npc.aori',
+  '이순신':'hero.H01.nm','장영실':'hero.H02.nm','광개토대왕':'hero.H03.nm',
+  '가가린':'hero.H04.nm','유리 가가린':'hero.H04.nm','넬슨':'hero.H05.nm','호레이쇼 넬슨':'hero.H05.nm',
+  '아인슈타인':'hero.H06.nm','A. 아인슈타인':'hero.H06.nm','테슬라':'hero.H07.nm','니콜라 테슬라':'hero.H07.nm',
+  '마르코':'hero.H08.nm','마르코 폴로':'hero.H08.nm',
+  '이휘소':'npc.leeHwiso','이휘소 박사':'npc.leeHwisoDr','광부 대표 린다':'npc.linda',
+  '기지 정비원':'npc.baseMechanic','닥터 에바':'npc.drEva','레인저 맥시모프':'npc.maximoff','맥시모프':'npc.maximoff',
+  '볼프 노인':'npc.wolfElder','볼프 자경단':'npc.wolfVigilante','아우레우스 세관':'npc.aureusCustoms',
+  '오스카르':'npc.oscar','정거장 행상':'npc.peddler','코르비누스':'npc.corvinus'
 };
 function _npcName(nm){
   if(typeof nm!=='string'||!nm) return nm;
   nm=(window._subTokens?window._subTokens(nm):nm);
-  var isEn=(window.I18N&&I18N.getLang&&I18N.getLang()==='en');
-  if(!isEn) return nm;
-  if(nm==='사령관') return (window.G&&G.profile&&G.profile.name)||'Commander';
-  return _NPC_EN[nm]||nm;
+  if(nm==='사령관') return (window.G&&G.profile&&G.profile.name)||((window.I18N&&I18N.t)?I18N.t('ui.commanderDefault'):nm);
+  var key=_NPC_KEY[nm];
+  if(key&&window.I18N&&I18N.has&&I18N.has(key)) return I18N.t(key);
+  return nm; // 미등록 NPC명 → 원문 유지
 }
 window._npcName=_npcName;
 

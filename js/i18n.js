@@ -150,12 +150,24 @@ window.I18N = (function () {
   //   해당 언어 필드만 채워 넣으므로 t()/getEntry() 등 기존 동작과 완전 호환.
   function registerLocale(lang, dict) {
     if (!lang || !dict || typeof dict !== 'object') return;
-    if (SUPPORTED.indexOf(lang) < 0) SUPPORTED.push(lang); // 새 언어 자동 인식
+    const isNew = SUPPORTED.indexOf(lang) < 0;
+    if (isNew) SUPPORTED.push(lang); // 새 언어 자동 인식
     for (const k in dict) {
       if (Object.prototype.hasOwnProperty.call(dict, k)) {
         if (!_dict[k]) _dict[k] = Object.create(null);
         _dict[k][lang] = dict[k];
       }
+    }
+    // 새 언어가 방금 등록됐고 사용자 저장 선호(URL ?lang= 또는 localStorage)가 이 언어라면 _lang 보정.
+    //   초기 _lang 감지는 로케일 파일 로드 전이라 SUPPORTED에 없어 놓쳤을 수 있음 → 여기서 적용.
+    if (isNew && _lang !== lang) {
+      try {
+        let pref = null;
+        const m = ((window.location && window.location.search) || '').match(/[?&]lang=([a-zA-Z]{2})/);
+        if (m) pref = m[1].toLowerCase();
+        if (!pref) { const sv = localStorage.getItem(LANG_KEY); if (sv) pref = sv; }
+        if (pref === lang) { _lang = lang; applyI18nToDOM(); }
+      } catch (e) {}
     }
   }
 

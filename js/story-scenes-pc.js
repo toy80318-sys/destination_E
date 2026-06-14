@@ -15,22 +15,18 @@
   }
   function rep(s){
     if(typeof s!=='string') return s;
+    // 공용 토큰 치환(game.js _subTokens, i18n 키 기반 = N언어)에 위임 — 단일 소스
+    if(window._subTokens) return window._subTokens(s);
+    // 폴백 (game.js 미로드 시): 동일 규칙을 i18n 키로 처리
     var p = (window.G && window.G.profile) || {};
-    var isEn = _curLang() === 'en';
-    var defCmd     = isEn ? 'Commander' : '사령관';
-    var defShip    = isEn ? 'Mustang' : '머스탱';
-    var defFlag    = isEn ? 'Great Hwarang' : '위대한 화랑';
-    var defCompany = isEn ? 'Big Picture Space' : '빅 픽처 스페이스';
-    var flagSfx    = isEn ? ' (Geobukseon-class)' : '(거북선급)';
+    var T = (window.I18N && I18N.t) ? (k=>I18N.t(k)) : (k=>k);
+    var defCmd=T('ui.commanderDefault'), defShip=T('ui.shipDefault'),
+        defFlag=T('ship.flagshipDefault'), defCompany=T('ui.companyDefault'), flagSfx=T('ship.mustangSuffix');
     return s
-      .replace(/\{사령관\}/g, p.name || defCmd)
-      .replace(/\{commander\}/gi, p.name || defCmd)
-      .replace(/\{함선\}/g, p.ship || defShip)
-      .replace(/\{ship\}/gi, p.ship || defShip)
-      .replace(/\{기함\}/g, p.ship ? (p.ship + flagSfx) : defFlag)
-      .replace(/\{flagship\}/gi, p.ship ? (p.ship + flagSfx) : defFlag)
-      .replace(/\{회사\}/g, p.company || defCompany)
-      .replace(/\{company\}/gi, p.company || defCompany);
+      .replace(/\{사령관\}/g, p.name || defCmd).replace(/\{commander\}/gi, p.name || defCmd)
+      .replace(/\{함선\}/g, p.ship || defShip).replace(/\{ship\}/gi, p.ship || defShip)
+      .replace(/\{기함\}/g, p.ship ? (p.ship + flagSfx) : defFlag).replace(/\{flagship\}/gi, p.ship ? (p.ship + flagSfx) : defFlag)
+      .replace(/\{회사\}/g, p.company || defCompany).replace(/\{company\}/gi, p.company || defCompany);
   }
 
   // ─── 캐릭터 이미지 경로 해석 ───
