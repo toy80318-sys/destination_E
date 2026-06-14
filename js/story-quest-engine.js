@@ -417,11 +417,49 @@ function relocalizeStoryQuests(){
       const src=window[s]; if(!src) return;
       Object.keys(src).forEach(pid=>{ (src[pid]||[]).forEach(t=>{ if(t&&t.id) byId[t.id]=t; }); });
     });
+    // ── 절차 생성 퀘스트(quest-gen) 재지역화 ──────────────────────────
+    //   구 세이브는 _gT(인덱스) 메타데이터가 없으므로 템플릿 ko/en 문자열 역매칭으로 인덱스 복원.
+    const _procTypes=['combat','delivery','gather','explore']; // buy는 동적 제목이라 역매칭 제외(메타데이터로만)
+    const _titleRev=Object.create(null), _descRev=Object.create(null);
+    if(typeof I18N!=='undefined'&&I18N.getEntry){
+      _procTypes.forEach(tp=>{
+        for(let i=1;i<=4;i++){
+          const te=I18N.getEntry('quest.'+tp+'.title'+i);
+          if(te){ if(te.ko)_titleRev[tp+'|'+te.ko]=i-1; if(te.en)_titleRev[tp+'|'+te.en]=i-1; }
+          const de=I18N.getEntry('quest.'+tp+'.desc'+i);
+          if(de){ if(de.ko)_descRev[tp+'|'+de.ko]=i-1; if(de.en)_descRev[tp+'|'+de.en]=i-1; }
+        }
+      });
+    }
+    function _relocProc(q){
+      if(!q||!q.type||['combat','delivery','gather','explore','buy'].indexOf(q.type)<0) return 0;
+      let ti=(q._gT!=null)?q._gT:null;
+      if(ti==null){ // 메타데이터 없는 구 세이브 → 역매칭으로 복원
+        let k=_titleRev[q.type+'|'+q.nm];
+        if(k==null && q.desc){ k=_descRev[q.type+'|'+q.desc]; if(k==null)k=_descRev[q.type+'|'+String(q.desc).split('\n')[0]]; }
+        if(k!=null){ ti=k; q._gT=ti; }
+      }
+      if(ti==null && q.type==='buy' && typeof I18N!=='undefined' && I18N.getEntry){
+        // buy 제목은 '{title} — {nm} {qty}개' 동적 → 접두어(title base) 매칭으로 인덱스 복원
+        for(let i=0;i<4;i++){ const te=I18N.getEntry('quest.buy.title'+(i+1)); if(!te)continue;
+          if((te.ko&&String(q.nm).indexOf(te.ko)===0)||(te.en&&String(q.nm).indexOf(te.en)===0)){ ti=i; q._gT=i; break; } }
+        // 단가(_gU) 복원: cr = qty × unit × 2  →  unit = cr / (qty×2)
+        if(ti!=null && q._gU==null && q.required>0) q._gU=Math.round(q.rewardCr/(q.required*2));
+      }
+      if(ti==null || typeof window._procQuestText!=='function') return 0;
+      let commNm='';
+      if(q.targetCommId && typeof COMMODITIES!=='undefined'){ const c=COMMODITIES.find(x=>x.id===q.targetCommId); if(c)commNm=c.nm; }
+      const r=window._procQuestText(q.type, ti, {commNm:commNm, qty:q.required, cr:q.rewardCr, unit:q._gU});
+      let ch=0;
+      if(r&&r.nm&&r.nm!==q.nm){ q.nm=r.nm; ch++; }
+      if(r&&r.desc&&r.desc!==q.desc){ q.desc=r.desc; ch++; }
+      return ch;
+    }
     let changed=0;
     Object.keys(G.quests).forEach(pid=>{
       (G.quests[pid]||[]).forEach(q=>{
         if(!q||!q.id) return;
-        const t=byId[q.id]; if(!t) return; // 절차 생성 퀘(quest-gen)는 템플릿 없음 → 건너뜀
+        const t=byId[q.id]; if(!t){ changed+=_relocProc(q); return; } // 템플릿 없으면 절차 퀘로 재지역화
         if(t.nm&&typeof t.nm==='object'){ const v=t.nm[_lang]||t.nm.ko; if(v&&v!==q.nm){ q.nm=v; changed++; } }
         if(t.desc&&typeof t.desc==='object'){ const v=t.desc[_lang]||t.desc.ko; if(v&&v!==q.desc){ q.desc=v; changed++; } }
         if(Array.isArray(q.objectives)&&Array.isArray(t.objectives)){

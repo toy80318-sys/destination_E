@@ -49,6 +49,25 @@ const QUEST_MAX_AVAILABLE=6;
 const QUEST_SPAWN_PER_TURN_MIN=1;
 const QUEST_SPAWN_PER_TURN_MAX=2;
 
+// 절차 퀘스트 텍스트 공용 포맷터 — 생성·재지역화에서 동일 규칙 사용 (현재 언어로 nm/desc 생성)
+//   type: combat/delivery/gather/explore/buy, ti: 템플릿 인덱스(0-based)
+//   opts(buy): {commNm, qty, cr, unit}
+function _procQuestText(type, ti, opts){
+  opts=opts||{}; ti=ti||0;
+  var TK={combat:'quest.combat',delivery:'quest.delivery',gather:'quest.gather',explore:'quest.explore',buy:'quest.buy'}[type];
+  if(!TK) return null;
+  var titleKey=TK+'.title'+(ti+1), descKey=TK+'.desc'+(ti+1);
+  var nm=I18N.t(titleKey), desc=I18N.t(descKey);
+  if(type==='buy'){
+    var cnm=opts.commNm||'';
+    nm=I18N.t('quest.buyTitle',{title:I18N.t(titleKey),nm:cnm,qty:opts.qty});
+    desc=I18N.t(descKey).replace(/N개/g,I18N.t('quest.qtyN',{n:opts.qty,nm:cnm}))
+        +I18N.t('quest.buyDescSuffix',{cr:(opts.cr||0).toLocaleString(),unit:(opts.unit||0).toLocaleString(),qty:opts.qty});
+  }
+  return {nm:nm, desc:desc};
+}
+try{window._procQuestText=_procQuestText;}catch(e){}
+
 // 단일 퀘스트 생성 (제독 or 브로커 무작위 선택)
 function _generateSingleQuest(pid,suffix){
   var pd=PLANET_DEF.find(function(p){return p.id===pid;});if(!pd)return null;
@@ -87,19 +106,17 @@ function _generateSingleQuest(pid,suffix){
     requiredQty=3+Math.floor(rng()*18);  // 3~20
     cr=requiredQty*unitPrice*2;  // 보상 = 수량 × 시세 × 2
   }
-  var nm=tmpl.titles[ti],desc=tmpl.descs[ti];
-  if(tmpl.type==='buy'){
-    // N → 실제 수량 치환, 보상가 정보 명시
-    nm=I18N.t('quest.buyTitle',{title:tmpl.titles[ti],nm:targetCommNm,qty:requiredQty});
-    desc=desc.replace(/N개/g,I18N.t('quest.qtyN',{n:requiredQty,nm:targetCommNm}))+I18N.t('quest.buyDescSuffix',{cr:cr.toLocaleString(),unit:unitPrice.toLocaleString(),qty:requiredQty});
-  }
+  // 텍스트 = 공용 포맷터로 생성. 재지역화용 메타데이터 저장: _gT(템플릿 인덱스)·_gU(단가)
+  var _qt=_procQuestText(tmpl.type, ti, {commNm:targetCommNm, qty:requiredQty, cr:cr, unit:unitPrice});
+  var nm=_qt?_qt.nm:tmpl.titles[ti], desc=_qt?_qt.desc:tmpl.descs[ti];
   return {
     id:'q_'+pid+'_a'+G.act+'_t'+G.turn+'_s'+suffix+'_'+Math.floor(Math.random()*9999),
     type:tmpl.type,ic:tmpl.ic,npc:tmpl.npc,npcIc:tmpl.npcIc,
     nm:nm,desc:desc,rewardCr:cr,rewardVe:ve,
     status:'available',targetId:targetId,progress:0,
     required:requiredQty,planetId:pid,
-    targetCommId:targetCommId
+    targetCommId:targetCommId,
+    _gT:ti, _gU:unitPrice
   };
 }
 
