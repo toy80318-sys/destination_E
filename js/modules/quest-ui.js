@@ -196,7 +196,7 @@ function _renderQuestCard(q,pid,qlist){
   const gatherSearchBtn=(q.type==='gather'&&q.status==='active')?'<button class="btn" style="'+_BTN_STYLE+';background:rgba(0,255,140,.12);border:1px solid rgba(0,255,140,.6);color:var(--green);animation:pulse 2s infinite" onclick="doGatherSearch()">'+I18N.t('qcard.searchBtn')+'</button>':'';
   const combatSearchBtn=(q.type==='combat'&&q.status==='active'&&(q.nm.includes('치크스')||q.nm.toLowerCase().includes('chiks')))?'<button class="btn" style="'+_BTN_STYLE+';background:rgba(139,0,255,.14);border:1px solid var(--purple);color:#cc88ff;animation:pulse 2s infinite" onclick="doGatherSearch()">'+I18N.t('qcard.searchBtn')+'</button>':'';
   const _qrep=G.reputation||0;
-  const _qveLock=(q.rewardVe>=40&&_qrep<200)||(q.rewardVe>=30&&_qrep<100);
+  const _qveLock=(q.rewardVe>=40&&_qrep<50)||(q.rewardVe>=30&&_qrep<10);
   const _qlockMsg=q.rewardVe>=40?I18N.t('qcard.fameReq200',{n:_qrep}):I18N.t('qcard.fameReq100',{n:_qrep});
   const _repMult=getQuestRepTierMult(q);
   const _shownCr=q.rewardCr*_repMult,_shownVe=q.rewardVe*_repMult;

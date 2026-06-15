@@ -478,8 +478,8 @@ function acceptQuest(pid,idx){
   // 명성 기반 고VE 퀘스트 수락 제한 (히든 퀘스트는 제외 — 보상 VE가 매우 크지만 의도된 콘텐츠)
   const _qrep=G.reputation||0;
   if(q.type!=='void_boss'){
-    if(q.rewardVe>=40&&_qrep<200){notify(I18N.t('notify.veQuestNeedRep200',{ve:q.rewardVe,rep:_qrep}),'err');return;}
-    if(q.rewardVe>=30&&_qrep<100){notify(I18N.t('notify.veQuestNeedRep100',{ve:q.rewardVe,rep:_qrep}),'err');return;}
+    if(q.rewardVe>=40&&_qrep<50){notify(I18N.t('notify.veQuestNeedRep200',{ve:q.rewardVe,rep:_qrep}),'err');return;}
+    if(q.rewardVe>=30&&_qrep<10){notify(I18N.t('notify.veQuestNeedRep100',{ve:q.rewardVe,rep:_qrep}),'err');return;}
   }
   const _fromTavern=G._currentHubTab==='tavern';
   // 히든 보스: 대사 팝업 → 전투 진입
