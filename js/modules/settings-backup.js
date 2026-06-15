@@ -125,11 +125,14 @@ function showSettingsModal(){
       <div style="font-size:10px;color:var(--muted);text-align:center;line-height:1.5">${I18N.t('settings.fileSaveHelp')}</div>
     </div>`}
     ${(window.desktopAPI&&window.desktopAPI.isSteamBuild)?'':`<div style="margin-bottom:16px;background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.25);border-radius:8px;padding:12px">
-      <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')} <span style="font-size:10px;color:var(--muted);font-weight:normal">${I18N.t('cheat.pwOnceHint')}</span></div>
-      ${window.desktopAPI?`<button class="btn btn-sm" style="width:100%;border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>`:`
+      <div style="font-weight:bold;margin-bottom:8px;color:#ffa500">${I18N.t('cheat.modeTitle')}</div>
+      ${window.desktopAPI?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000000)">${I18N.t('cheat.giveCr100m')}</button>
+        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',500)">${I18N.t('cheat.giveRep200')}</button>
+      </div>`:`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000)">${I18N.t('cheat.giveCr100m')}</button>
-        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',200)">${I18N.t('cheat.giveRep200')}</button>
+        <button class="btn btn-sm" style="border-color:#ffd700;color:#ffd700" onclick="cheatGiveCredits(100000000000)">${I18N.t('cheat.giveCr100m')}</button>
+        <button class="btn btn-sm" style="border-color:#66ddff;color:#66ddff" onclick="cheatGiveResource('rep',500)">${I18N.t('cheat.giveRep200')}</button>
         <button class="btn btn-sm" style="border-color:#cc66ff;color:#cc66ff" onclick="cheatGiveResource('vc',50)">${I18N.t('cheat.giveVc50')}</button>
         <button class="btn btn-sm" style="border-color:#99ffcc;color:#99ffcc" onclick="cheatGiveResource('ve',1000)">${I18N.t('cheat.giveVe1k')}</button>
       </div>

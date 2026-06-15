@@ -27,7 +27,6 @@ function _cheatUnlock(onOk){
       <input type="password" id="_cheat-pw" placeholder="${I18N.t('placeholder.password')}" autofocus
         style="width:80%;padding:10px;font-size:16px;background:rgba(0,0,0,.5);border:1px solid var(--cyan);color:#fff;border-radius:6px;text-align:center;font-family:inherit"
         onkeydown="if(event.key==='Enter')document.getElementById('_cheat-ok').click()">
-      <div style="font-size:11px;color:var(--muted);margin-top:8px">${I18N.t('cheat.pwHint')}</div>
     </div>`,
     [
       {txt:I18N.t('cheat.confirmBtn'),id:'_cheat-ok',fn:()=>{
