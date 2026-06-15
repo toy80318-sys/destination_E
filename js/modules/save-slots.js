@@ -411,7 +411,7 @@ function showCredits(){
 
       <!-- 그래픽 / 사운드 -->
       <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.graphics')}</div>
-      <div style="font-size:17px;line-height:2;margin-bottom:50px">${I18N.t('ui.leeGyubin')}<br>Toy Lee<br>Gemini · Claude<br>Midjourney · 나노바나나</div>
+      <div style="font-size:17px;line-height:2;margin-bottom:50px">${I18N.t('ui.leeGyubin')}<br>Toy Lee<br>Gemini · Claude<br>Midjourney · 나노바나나 · GPT Image2</div>
 
       <div style="color:#66ddff;font-size:14px;letter-spacing:6px;margin-bottom:8px">${I18N.t('credits.sound')}</div>
       <div style="font-size:17px;line-height:2;margin-bottom:60px">Toy Lee<br>Gemini · SUNO AI</div>
