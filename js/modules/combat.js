@@ -396,7 +396,12 @@ function _combatShipImgSrc(u){
   //   데스크탑: img/combat/ships/X.png → img/ships/H/X.png 우선, 실패 시 _COMBAT_H_FB 매핑으로
   //   _drawShipUnit 에서 원본 경로 폴백. 모바일은 기존 LOD(m/) 유지.
   if(typeof window!=='undefined'&&!window.IS_MOBILE&&typeof _r==='string'){
-    const _hd=_r.replace(/^img\/combat\/ships\/([^/?]+\.png)(\?|$)/,'img/ships/H/$1$2');
+    // ① 전투 전용 스프라이트(img/combat/ships/X.png) → HD(img/ships/H/X.png)
+    let _hd=_r.replace(/^img\/combat\/ships\/([^/?]+\.png)(\?|$)/,'img/ships/H/$1$2');
+    // ② 팔콘(S10)·거북선특수(LGD01_SP) 등 img/ships/X.png 를 직접 반환하는 케이스도
+    //    허브(shipImgSrc)와 동일하게 HD 폴더를 쓰도록 변환 — 전투/정비소 이미지 일관성
+    //    (사용자 보고 2026-06-16: 팔콘 스카우트가 전투 화면과 정비소에서 다르게 보임)
+    if(_hd===_r)_hd=_r.replace(/^img\/ships\/([^/?]+\.png)(\?|$)/,'img/ships/H/$1$2');
     if(_hd!==_r){
       try{
         if(!window._COMBAT_H_FB)window._COMBAT_H_FB={};
