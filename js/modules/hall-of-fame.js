@@ -57,12 +57,46 @@ function _recordHallOfFameEntry(act, label){
 }
 try{if(typeof window!=='undefined')window._recordHallOfFameEntry=_recordHallOfFameEntry;}catch(e){}
 
-let _hofTab='global';  // 'global' | 'mine'
+// 현재 진행 중인 게임의 실시간 기록 1건 생성 (ACT4/5 클리어 전에도 "내 기록"에 노출)
+//   _recordHallOfFameEntry와 동일 포맷 + _live 플래그. 저장하지 않고 표시 전용.
+function _hofCurrentRunEntry(){
+  const _gid=G._gameStartedAt||0;
+  if(!_gid)return null;  // 게임 시작 전(타이틀)에는 진행 기록 없음
+  const now=Date.now();
+  const elapsedMs=now-_gid;
+  const _pad=n=>String(n).padStart(2,'0');
+  const _hh=Math.floor(elapsedMs/3600000);
+  const _mm=Math.floor((elapsedMs%3600000)/60000);
+  const _ss=Math.floor((elapsedMs%60000)/1000);
+  const playTime=_hh>0?I18N.t('hof.timeHrMin',{h:_hh,m:_pad(_mm)}):I18N.t('hof.timeMinSec',{m:_mm,s:_pad(_ss)});
+  const d=new Date(now);
+  const dateStr=`${d.getFullYear()}-${_pad(d.getMonth()+1)}-${_pad(d.getDate())}`;
+  return {
+    gid:_gid,
+    act:G.act||1,
+    name:G.profile?.name||I18N.t('hof.commander'),
+    company:G.profile?.company||'',
+    gender:G.profile?.gender||'',
+    turn:G.turn||0,
+    credits:G.credits||0,
+    reputation:G.reputation||0,
+    heroes:(G.heroes||[]).length,
+    difficulty:G.difficulty||'normal',
+    playTime,
+    playedAt:now,
+    date:dateStr,
+    _live:true
+  };
+}
+try{if(typeof window!=='undefined')window._hofCurrentRunEntry=_hofCurrentRunEntry;}catch(e){}
+
+let _hofTab='mine';  // 'global' | 'mine' — 기본은 내 기록(실제 플레이 기록 즉시 노출)
 function _hofRowsHtml(list,diffLabel){
   if(!list.length)return `<div style="color:var(--dim);text-align:center;padding:24px">${I18N.t('hof.empty')}</div>`;
   return list.map(h=>{
-    const actCol=h.act>=5?'#cc66ff':h.act>=4?'#ffd700':'var(--cyan)';
-    const actLbl=h.act>=5?I18N.t('hof.act5Label'):h.act>=4?I18N.t('hof.act4Label'):`ACT ${h.act}`;
+    const actCol=h._live?'#66ff99':h.act>=5?'#cc66ff':h.act>=4?'#ffd700':'var(--cyan)';
+    const actLbl=(h._live?`ACT ${h.act}`:(h.act>=5?I18N.t('hof.act5Label'):h.act>=4?I18N.t('hof.act4Label'):`ACT ${h.act}`))
+      +(h._live?` <span style="color:#66ff99;font-size:10px;border:1px solid #66ff99;border-radius:3px;padding:0 5px;margin-left:4px">${I18N.t('hof.inProgress')}</span>`:'');
     const _ver=window._GAME_VER?'?v='+window._GAME_VER:'';
     return `<div style="border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(0,0,0,.2);display:flex;gap:12px;align-items:flex-start">
       <img src="img/ui/HN01.png${_ver}" alt="HN" style="width:56px;height:56px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 8px ${actCol});align-self:center" onerror="this.style.display='none'">
@@ -91,7 +125,10 @@ function _renderHofTab(tab){
   if(tab==='mine'){
     const hall=G.hallOfFame||[];
     const sorted=[...hall].sort((a,b)=>(b.playedAt||0)-(a.playedAt||0));
-    body.innerHTML=_hofRowsHtml(sorted,diffLabel);
+    // 진행 중인 게임의 실시간 기록을 맨 위에 노출 → 클리어 전에도 실제 플레이 기록이 보임
+    const live=_hofCurrentRunEntry();
+    const rows=live?[live,...sorted]:sorted;
+    body.innerHTML=_hofRowsHtml(rows,diffLabel);
     return;
   }
   // global — 비동기 로드 (재시도 가능)
@@ -139,15 +176,15 @@ try{if(typeof window!=='undefined')window.switchHofTab=switchHofTab;}catch(e){}
 function showHallOfFame(){
   const html=`<div style="padding:2px 0">
     <div style="display:flex;gap:6px;margin-bottom:10px">
-      <button id="hof-tab-global" onclick="switchHofTab('global')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;font-family:inherit">${I18N.t('ui.hofGlobal')}</button>
-      <button id="hof-tab-mine" onclick="switchHofTab('mine')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;font-family:inherit">${I18N.t('ui.hofMine')}</button>
+      <button id="hof-tab-global" onclick="switchHofTab('global')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;font-family:inherit">${I18N.t('ui.hofGlobal')}</button>
+      <button id="hof-tab-mine" onclick="switchHofTab('mine')" style="padding:6px 14px;font-size:13px;border-radius:6px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);cursor:pointer;font-family:inherit">${I18N.t('ui.hofMine')}</button>
     </div>
     <div id="hof-body" style="max-height:60vh;overflow-y:auto"><div style="text-align:center;color:var(--dim);padding:24px">${I18N.t('ui.loadingDot')}</div></div>
   </div>`;
   openModal(I18N.t('modal.hallOfFame'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
-  // 모달 표시 후 글로벌 탭 자동 로드
-  _hofTab='global';
-  setTimeout(()=>_renderHofTab('global'),50);
+  // 모달 표시 후 내 기록 탭 자동 로드 (실제 플레이 기록을 바로 노출 — 글로벌은 클라우드 의존)
+  _hofTab='mine';
+  setTimeout(()=>_renderHofTab('mine'),50);
 }
 // 사용자 보고 2026-06-09: 타이틀 화면 명예의 전당 버튼 미작동 — 명시적 window 노출 + 폴백
 try{if(typeof window!=='undefined'){
