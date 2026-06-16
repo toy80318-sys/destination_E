@@ -26,14 +26,21 @@ window._GACHA_LOADED=true;
 // ── 주점 가챠 ─────────────────────────────────────────────────────
 function doGacha(n,useCr,crCost,minRarity,veCost){
   if(!G.gachaPity)G.gachaPity=0;
-  const _crCost=crCost||500;
+  const _veCost=veCost||0;
   // 사용자 요청 2026-06-07: VE 기반 모집 지원 (5번째 파라미터)
-  //   veCost 가 지정되면 VE 차감, useCr 과 무관
-  if(veCost){
+  // 사용자 요청 2026-06-16: 크레딧 + VE 동시 청구 지원 (useCr && veCost 둘 다 지정 시 둘 다 차감)
+  if(_veCost>0 && useCr){
+    // 크레딧 + VE 동시 소비 — 둘 다 충분해야 진행
+    const _cc=crCost||0;
+    if((G.voidEssence||0)<_veCost){notify(I18N.t('notify.needVoidEssence',{n:_veCost}),'err');return;}
+    if((G.credits||0)<_cc){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}
+    G.voidEssence-=_veCost; G.credits-=_cc;
+  } else if(_veCost>0){
     // 버그수정 2026-06-11: 미등록 키 notify.notEnoughVoidEssence → 기존 키 needVoidEssence 사용 (키 문자열 그대로 노출되던 문제)
-    if((G.voidEssence||0)<veCost){notify(I18N.t('notify.needVoidEssence',{n:veCost}),'err');return;}
-    G.voidEssence-=veCost;
+    if((G.voidEssence||0)<_veCost){notify(I18N.t('notify.needVoidEssence',{n:_veCost}),'err');return;}
+    G.voidEssence-=_veCost;
   } else if(useCr){
+    const _crCost=crCost||500;
     if(G.credits<_crCost){notify(I18N.t('notify.notEnoughCreditsLong'),'err');return;}
     G.credits-=_crCost;
   } else {

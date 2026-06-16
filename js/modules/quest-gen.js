@@ -399,8 +399,8 @@ function _grantVoidBossRewards(){
   const _vcGrant=200;  // 사용자 요청 ×2 — 100→200 (신화 가챠 200회 가능)
   G.voidCrystal=(G.voidCrystal||0)+_vcGrant;
   // VE도 추가 (보이드 에센스 — 보이드 행성 투자/뽑기 보조 자원)
-  // 사용자 요청 2026-06-09: 전투 VE 절반으로 조정 (10000 → 5000)
-  const _veGrant=5000;
+  // 사용자 요청 2026-06-09: 전투 VE 절반 (10000 → 5000) · 2026-06-16: 추가 50% 감소 (5000 → 2500)
+  const _veGrant=2500;
   G.voidEssence=(G.voidEssence||0)+_veGrant;
   // ─── 알림 + 백구 대사 ───
   const _luckMsg=_lucky?I18N.t('reward.luckyTwo'):'';

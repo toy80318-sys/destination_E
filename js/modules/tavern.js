@@ -530,9 +530,11 @@
     // 가차 버튼 — NPC 이미지 + 정보 + 비용 + 영입 (컴팩트 사용자 요청)
     function _gachaBtn(opts){
       // 사용자 요청 2026-06-07: veCost 파라미터 지원 (VE 기반 모집)
-      const aff=opts.cost>0?(cr>=opts.cost)
-               :opts.veCost>0?((G.voidEssence||0)>=opts.veCost)
-               :((G.voidCrystal||0)>=opts.vcCost);
+      // 사용자 요청 2026-06-16: 크레딧+VE 동시 비용 시 둘 다 충분해야 활성화
+      const _affCr=opts.cost>0?(cr>=opts.cost):true;
+      const _affVe=opts.veCost>0?((G.voidEssence||0)>=opts.veCost):true;
+      const _affVc=opts.vcCost>0?((G.voidCrystal||0)>=opts.vcCost):true;
+      const aff=(opts.cost>0||opts.veCost>0||opts.vcCost>0)?(_affCr&&_affVe&&_affVc):true;
       return `<div style="background:${opts.bg};border:1.5px solid ${aff?opts.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;min-width:0;overflow:hidden;${aff?'':'opacity:.6'}">
         ${_npcImg(opts.npcType||'delivery',opts.col,104)}
         <div style="flex:1;min-width:0">
@@ -618,8 +620,8 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
               ${_gachaBtn({icon:'💰',label:I18N.t('gacha.btnRecruit500'),sub:I18N.t('gacha.btnRecruit500Sub'),cost:500,onClick:"doGacha(1,true,500,'N')",bg:'rgba(0,243,255,.08)',bdr:'var(--cyan)',col:'var(--cyan)',npcType:'delivery'})}
               ${_gachaBtn({icon:'💎',label:I18N.t('gacha.btnRecruit2k'),sub:I18N.t('gacha.btnRecruit2kSub'),cost:2000,onClick:"doGacha(1,true,2000,'R')",bg:'rgba(30,100,255,.12)',bdr:'#4499ff',col:'#88ccff',npcType:'explore'})}
-              ${_gachaBtn({icon:'💜',label:I18N.t('gacha.btnRecruitVE5'),sub:'',veCost:5,onClick:"doGacha(5,false,0,'R',5)",bg:'rgba(102,255,200,.10)',bdr:'#66ddaa',col:'#99ffcc',npcType:'gather'})}
-              ${_gachaBtn({icon:'✨',label:I18N.t('gacha.btnRecruitVE20'),sub:'',veCost:20,onClick:"doGacha(5,false,0,'H',20)",bg:'rgba(255,200,80,.12)',bdr:'#ffcc66',col:'#ffd700',npcType:'combat'})}
+              ${_gachaBtn({icon:'💜',label:I18N.t('gacha.btnRecruitVE5'),sub:'',cost:10000,veCost:5,onClick:"doGacha(5,true,10000,'R',5)",bg:'rgba(102,255,200,.10)',bdr:'#66ddaa',col:'#99ffcc',npcType:'gather'})}
+              ${_gachaBtn({icon:'✨',label:I18N.t('gacha.btnRecruitVE20'),sub:'',cost:50000,veCost:20,onClick:"doGacha(5,true,50000,'H',20)",bg:'rgba(255,200,80,.12)',bdr:'#ffcc66',col:'#ffd700',npcType:'combat'})}
             </div>
             <div style="flex:1;min-height:14px"></div>
           </div>

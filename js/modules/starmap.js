@@ -985,7 +985,7 @@
           notify(I18N.t('notify.partWithRarity',{kind:p?.rarity==='set'?I18N.t('ui.setRare'):I18N.t('ui.legendRare'),nm:p?.nm||partId}),'gold');
         }
       }
-      if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew*2;}  // 사용자 요청 ×2 (전투 승리 VE 2배)
+      if(win){G.credits=(G.credits||0)+rew;G.voidEssence=(G.voidEssence||0)+veRew;}  // 전투 승리 VE — 사용자 요청 2026-06-16: 기존 ×2 → ×1 (50% 감소)
       else{G.credits=Math.max(100,(G.credits||0)-pen);}
       // 퀘스트 1회 효과 — 도착 행성 허브 해금 진행도 +1 (해금 요소 1회 차감)
       if(win&&destPid){try{addHubProgress(destPid);}catch(e){}}
