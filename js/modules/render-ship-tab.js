@@ -185,13 +185,15 @@ function renderShipTab(body){
       </div>`;
     })()}
     </div>  <!-- /3열 컨테이너 -->`;
-    // #1: 자동배치 4버튼 묶음 → 좌측 사이드바 오른쪽 세로 액션열. 2×2 그리드로 세로폭 50% 압축.
+    // #1: 자동배치 4버튼 묶음 → 좌측 사이드바 오른쪽 세로 액션열. 세로 1열 정렬(사용자 요청 2026-06-16):
+    //   영문 라벨이 길어 2×2 셀 밖으로 넘치던 문제 해결 — 풀폭 버튼 + 줄바꿈 허용.
+    const _aSty='font-size:10px;padding:5px 4px;width:100%;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;line-height:1.18;letter-spacing:0;min-height:0';
     autoArrangeCol=`<div style="font-size:10px;font-weight:bold;color:var(--cyan);text-align:center;line-height:1.2">${I18N.t('ui.autoArrangeHeader')}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button class="btn btn-sm" style="${_aSty};border-color:var(--gold);color:var(--gold)" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="${_aSty};border-color:var(--green);color:var(--green)" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
+        <button class="btn btn-sm" style="${_aSty};border-color:var(--gold);color:var(--gold)" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="${_aSty};border-color:var(--green);color:var(--green)" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
       </div>`;
 
     const cats=[{k:'weapon',lb:'⚔️',col:'var(--red)',nm:I18N.t('cat.weapon')},{k:'shield',lb:'🛡️',col:'var(--blue)',nm:I18N.t('cat.shield')},{k:'armor',lb:'🛡',col:'var(--gold)',nm:I18N.t('cat.armor')},{k:'engine',lb:'⚡',col:'var(--cyan)',nm:I18N.t('cat.engine')}];
