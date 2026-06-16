@@ -292,7 +292,7 @@ function renderCombatView(body){
     <div id="cb-fleet-en" style="color:#ff8888;text-align:right">${I18N.t('combat.enemyMeasuring')}</div>
   </div>
   <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a">
-    <canvas id="cb-cv"></canvas>
+    <canvas id="cb-cv" style="transform:perspective(1500px) rotateX(13deg);transform-origin:center 54%"></canvas>
     <!-- 전투 상황 로그 — 우측 세로 팝업 컬럼 (사용자 요청: 하단 스트립 → 우측 페이드 팝업) -->
     <div id="cb-log" class="cb-log" style="position:absolute;right:10px;top:10px;bottom:10px;width:174px;display:flex;flex-direction:column-reverse;gap:4px;pointer-events:none;z-index:8;overflow:hidden"></div>
   </div>`;
