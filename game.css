@@ -65,7 +65,7 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
 /* 사용자 요청 (2026-06-08): 전설 크루 등장 카드 이미지 2배 확대 (160/192px) — 모달 폭 확장 (441→900) */
 .modal.modal-report.modal-crew-reveal{max-width:630px;padding:16px 18px}
 /* 사용자 요청 2026-06-15: 보이드 보상 팝업 — 가로 +50%(820→1230) · 세로 -30%(82→57vh). 버튼 노출 보장 */
-.modal.modal-reward-wide{max-width:1230px;max-height:57vh}
+.modal.modal-reward-wide{max-width:960px;max-height:64vh}
 /* 사용자 요청 2026-06-14: 게임 저장/불러오기 메뉴 — 가로 10% 축소(max-width). 변형(scaleY) 제거로 찌그러짐 방지.
    세로 컴팩트는 save-slots.js 카드 인라인 치수(이미지/패딩/간격)로 비왜곡 처리. */
 .modal.modal-save-compact{max-width:562px}
