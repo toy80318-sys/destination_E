@@ -1601,7 +1601,17 @@
           ctx.textAlign='left';  // 다른 텍스트에 영향 안 가도록 복원
         }
       }
-      if(st?.owned){ctx.fillStyle='#deff9a';ctx.font=`${Math.max(7,9*G.mapZoom)}px serif`;ctx.textAlign='center';ctx.globalAlpha=1;ctx.fillText('🏠',sp.x,sp.y-r-4);}
+      if(st?.owned){
+        // 보유(총독) 행성 아이콘 — 🏠 이모지 → STA01 이미지로 교체 (사용자 요청 2026-06-16). 미로드 시 이모지 폴백.
+        const _govSrc='img/ui/STA01_icon.png'+(window._GAME_VER?('?v='+encodeURIComponent(window._GAME_VER)):'');
+        const _govImg=_loadMapImg(_govSrc,function(){renderMap();});
+        const _gsz=Math.max(14,17*G.mapZoom);
+        if(_govImg&&_govImg.complete&&_govImg.naturalWidth>0){
+          ctx.save();ctx.globalAlpha=1;ctx.drawImage(_govImg,sp.x-_gsz/2,sp.y-r-4-_gsz,_gsz,_gsz);ctx.restore();
+        } else {
+          ctx.fillStyle='#deff9a';ctx.font=`${Math.max(7,9*G.mapZoom)}px serif`;ctx.textAlign='center';ctx.globalAlpha=1;ctx.fillText('🏠',sp.x,sp.y-r-4);
+        }
+      }
       // 라벨: 일반 행성은 잠금 상태에선 미표시, P31(지구)는 잠금이어도 라벨 항상 표시
       if((fog!=='L'||p.id==='P31')&&G.mapZoom>.35){
         ctx.fillStyle=p.id==='P31'?'#6ecfff':fog==='A'?'#ccd6f6':'rgba(160,200,220,.55)';
