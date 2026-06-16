@@ -3133,6 +3133,21 @@ try{if(typeof window!=='undefined')window.grantSpecialTurtle=grantSpecialTurtle;
 // spawnPhasedQuests — js/story-quest-engine.js 로 이관 (사용자 요청 2026-06-07: 페이즈 모듈 분리)
 // window.spawnPhasedQuests 로 글로벌 노출되어 기존 호출처 그대로 동작
 
+// 퀘스트 보상 짧은 팝업 — 아이템 보상이 없어도 보상금/VE를 2초간 띄웠다 사라지게 (사용자 요청 2026-06-16)
+function _showQuestRewardToast(cr,ve,rm){
+  try{
+    const el=document.createElement('div');
+    el.style.cssText='position:fixed;left:50%;top:30%;transform:translate(-50%,-50%) scale(.85);z-index:99998;background:linear-gradient(135deg,rgba(30,22,8,.97),rgba(20,14,30,.97));border:2px solid var(--gold);border-radius:12px;padding:16px 30px;text-align:center;box-shadow:0 8px 40px rgba(255,215,0,.35);opacity:0;transition:opacity .3s ease,transform .3s ease;pointer-events:none';
+    el.innerHTML='<div style="font-size:34px;margin-bottom:4px">🎖️</div>'
+      +'<div style="font-size:14px;color:var(--gold);font-weight:bold;letter-spacing:1px;margin-bottom:6px">'+I18N.t('modal.questReward')+'</div>'
+      +'<div style="font-size:17px;color:#ffe;font-weight:bold">'+I18N.t('ui.creditsRewardLine',{cr:(cr||0).toLocaleString()})+((rm>1.05)?' <span style="font-size:12px;color:#aaa">×'+rm.toFixed(1)+'</span>':'')+'</div>'
+      +((ve>0)?('<div style="font-size:14px;color:#88ddff;margin-top:3px">'+I18N.t('ui.veRewardLine',{n:ve})+'</div>'):'');
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>{el.style.opacity='1';el.style.transform='translate(-50%,-50%) scale(1)';});
+    setTimeout(()=>{el.style.opacity='0';el.style.transform='translate(-50%,-50%) scale(.9)';},1700);
+    setTimeout(()=>{try{el.remove();}catch(e){}},2050);
+  }catch(e){}
+}
 function completeQuest(pid,idx){
   var q=G.quests[pid]&&G.quests[pid][idx];if(!q||q.status!=='done')return;
   const _fromTavern=G._currentHubTab==='tavern';
@@ -3482,7 +3497,10 @@ function completeQuest(pid,idx){
   const _repMultLbl=_repMult>1?I18N.t('quest.fameMult',{m:_repMult}):'';
   const baseMsg=I18N.t('quest.completeMsg',{cr:_actualCr.toLocaleString(),multTxt:_rm>1.05?I18N.t('quest.multTimes',{m:_rm.toFixed(1)}):'',repMult:_repMultLbl,ve:_actualVe>0?I18N.t('quest.veGain',{n:_actualVe}):'',rep:G.reputation});
   notify(baseMsg,'gold');
-  if(!bonusMsg)baekgu(I18N.t('baekgu.questReward',{cr:_actualCr.toLocaleString(),bonus:_rm>1.05?I18N.t('baekgu.levelBonusX',{mult:_rm.toFixed(1)}):''}));
+  if(!bonusMsg){
+    baekgu(I18N.t('baekgu.questReward',{cr:_actualCr.toLocaleString(),bonus:_rm>1.05?I18N.t('baekgu.levelBonusX',{mult:_rm.toFixed(1)}):''}));
+    _showQuestRewardToast(_actualCr,_actualVe,_rm);  // 짧은 보상 팝업 (2초 자동 소멸)
+  }
 
   if(bonusMsg){
     // 🎉 희귀 보상(설계도/전설/신화) 획득 시 효과음 + 강조

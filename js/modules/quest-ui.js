@@ -216,35 +216,44 @@ function _renderQuestCard(q,pid,qlist){
   // 시나리오 퀘스트(story_quest) — 행성 배경 + 행성 이미지 + 인물 이미지 합성 히어로 썸네일
   // 사용자 요청 2026-06-07: "이미지는 행성이미지, 행성 배경이미지, 인물이미지로 넣어줘. 백구이미지활용해줘."
   let thumb;
-  // 영웅 영입 퀘스트(heroId)도 시나리오 퀘스트처럼 행성배경+행성+영웅초상 합성 썸네일로 표시. 사용자 보고 2026-06-14
-  //   · 단, q.img(이순신 yi_join 등 전용 합성)는 _questThumbHtml 경로 유지
-  if(((isStoryQuest && q.npcKey) || (isHeroQuest && q.heroId)) && !q.img){
+  // 모든 퀘스트 — 행성배경 + 행성 + 관련 인물(스토리 NPC / 영웅 / 팩션 NPC) 합성 히어로 썸네일.
+  //   · 사용자 요청 2026-06-16: "모든 퀘스트는 해당 관련 인물의 이미지가 들어가도록" — 일반 사이드 퀘스트도
+  //     기존 작은 종류 아이콘 대신 스토리 퀘스트와 동일한 합성 썸네일(행성+팩션 NPC)로 통일.
+  //   · 단, q.img(이순신 yi_join 등 전용 합성)는 _questThumbHtml 경로 유지.
+  if(!q.img){
     const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
     const _pid=q.planetId||pid;
     const _bgSrc=(typeof planetBgSrc==='function')?planetBgSrc(_pid):('img/bg/'+_pid+'.jpg'+_ver);
     const _planetSrc=(typeof planetImgSrc==='function')?planetImgSrc(_pid):('img/planets/'+_pid+'.png'+_ver);
-    // 인물 이미지 경로 — NPC 영웅(hero01~08)·백구·사령관·Phase NPC 라우팅
-    let _charSrc;
-    if(q.heroId && !q.npcKey){
+    // 관련 인물 이미지 경로 — NPC 영웅(hero01~09)·백구·사령관·Phase NPC·팩션 NPC 라우팅
+    let _charSrc, _charFb='';
+    if(isHeroQuest && q.heroId && !q.npcKey){
       // 영웅 영입 퀘스트 — 해당 영웅 초상(hero01~09)
       _charSrc='img/chars/hero'+String(q.heroId).slice(1)+'.png'+_ver;
-    } else if(/^(delivery|gather|combat|explore)_F0[1-7]$/.test(q.npcKey)){
+    } else if(q.npcKey && /^(delivery|gather|combat|explore)_F0[1-7]$/.test(q.npcKey)){
       _charSrc='img/quests/'+q.npcKey+'.png'+_ver;
     } else if(q.npcKey==='commander'){
       // 성별·외형 자동 (commander_m1 기본)
       const _g=(G&&G.profile&&G.profile.gender==='female')?'f':'m';
       const _outfit=(G&&G.profile&&G.profile.outfitIdx)||1;
       _charSrc='img/chars/commander_'+_g+_outfit+'.png'+_ver;
-    } else {
+    } else if(q.npcKey){
       _charSrc='img/chars/'+q.npcKey+'.png'+_ver;
+    } else {
+      // 일반 사이드 퀘스트(전투·운송·채집·탐사) — 행성 팩션의 종류별 NPC를 관련 인물로 사용
+      _charSrc=_questTypeImg(q);              // 팩션별 (이미 ?v= 포함)
+      _charFb=_questTypeImgGeneric(q);        // 폴백: generic 종류 이미지
     }
+    const _charErr=_charFb
+      ? 'if(this.dataset.fb){this.src=this.dataset.fb;this.dataset.fb=\'\';}else{this.style.display=\'none\';}'
+      : 'this.style.display=\'none\';';
     thumb=
       '<div style="width:140px;height:108px;flex-shrink:0;border:1.5px solid '+typeBdr+';border-radius:8px;overflow:hidden;position:relative;background:#0a0a18">'
         +'<img src="'+_bgSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55" onerror="this.style.display=\'none\'">'
-        +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,100,255,.18),rgba(0,0,0,.35) 60%,rgba(0,0,0,.65))"></div>'
+        +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+(isStoryQuest||isHeroQuest?'rgba(180,100,255,.18)':typeCol)+',rgba(0,0,0,.35) 60%,rgba(0,0,0,.65))"></div>'
         +'<img src="'+_planetSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;left:6px;top:6px;width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,243,255,.6))" onerror="this.style.display=\'none\'">'
-        +'<img src="'+_charSrc+'" alt="" loading="lazy" decoding="async" style="position:absolute;right:0;bottom:0;width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))" onerror="this.style.display=\'none\'">'
-        +'<div style="position:absolute;left:6px;bottom:4px;font-size:10px;color:#e0b3ff;background:rgba(0,0,0,.55);padding:1px 6px;border-radius:8px;font-weight:bold;letter-spacing:.5px">'+_pid+'</div>'
+        +'<img src="'+_charSrc+'" data-fb="'+_charFb+'" alt="" loading="lazy" decoding="async" style="position:absolute;right:0;bottom:0;width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))" onerror="'+_charErr+'">'
+        +'<div style="position:absolute;left:6px;bottom:4px;font-size:10px;color:'+(isStoryQuest||isHeroQuest?'#e0b3ff':'#bfe9ff')+';background:rgba(0,0,0,.55);padding:1px 6px;border-radius:8px;font-weight:bold;letter-spacing:.5px">'+_pid+'</div>'
       +'</div>';
   } else {
     thumb='<div style="width:92px;height:92px;flex-shrink:0;background:'+typeCol+';border:1px solid '+typeBdr+';border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">'

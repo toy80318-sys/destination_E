@@ -1389,6 +1389,18 @@
               notify(I18N.t('notify.partGotMinigame',{nm:lt.nm}),'gold');
               try{AudioMgr.playSfx('gacha_pull',{vol:0.5});}catch(e){}
               try{_baekguSay('happy',I18N.t('mini.bk.partsGet'),2000,false);}catch(e){}
+              // 픽업한 아이템 이미지를 잠깐 띄웠다가 사라지게 (사용자 요청 2026-06-16)
+              try{
+                const _rc=cv.getBoundingClientRect();
+                const _px=_rc.left+shipCx*(_rc.width/W), _py=_rc.top+shipCy*(_rc.height/H);
+                const _fx=document.createElement('img');
+                _fx.src='img/parts/'+lt.id+'.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'');
+                _fx.style.cssText='position:fixed;left:'+_px+'px;top:'+_py+'px;width:66px;height:66px;object-fit:contain;transform:translate(-50%,-50%) scale(.55);opacity:0;pointer-events:none;z-index:100000;filter:drop-shadow(0 0 12px '+lt.col+');transition:transform .28s ease-out,opacity .28s ease-out';
+                document.body.appendChild(_fx);
+                requestAnimationFrame(()=>{_fx.style.transform='translate(-50%,-95%) scale(1.45)';_fx.style.opacity='1';});
+                setTimeout(()=>{_fx.style.opacity='0';_fx.style.transform='translate(-50%,-160%) scale(1.1)';},560);
+                setTimeout(()=>{try{_fx.remove();}catch(e){}},980);
+              }catch(e){}
             }catch(e){}
             state.loots.splice(li,1);
             continue;

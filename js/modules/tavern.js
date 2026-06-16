@@ -463,10 +463,10 @@
       // 등급별 상위 보상 확률 요약
       const loot=MYSTERY_BOX_LOOT[tier];
       const _legendPct=Math.round((loot.partRarW.L+loot.partRarW.set+loot.partRarW.mythic)/(loot.partRarW.N+loot.partRarW.R+loot.partRarW.H+loot.partRarW.L+loot.partRarW.set+loot.partRarW.mythic)*100);
-      return `<div style="background:${cfg.bg};border:1.5px solid ${aff?cfg.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;${aff?'':'opacity:.6'}">
-        ${_npcImg(_bmNpcType,cfg.col,56)}
+      return `<div style="background:${cfg.bg};border:1.5px solid ${aff?cfg.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;min-width:0;overflow:hidden;${aff?'':'opacity:.6'}">
+        ${_npcImg(_bmNpcType,cfg.col,104)}
         <div style="flex:1;min-width:0">
-          <div style="color:${cfg.col};font-size:12px;font-weight:bold">${_ic} ${cfg.label}</div>
+          <div style="color:${cfg.col};font-size:12px;font-weight:bold;line-height:1.45">${_ic} ${cfg.label}</div>
           <div style="color:var(--dim);font-size:9px;line-height:1.3">${I18N.t('ui.lootCategoryPct',{bp:Math.round(loot.cat.bp*100),part:Math.round(loot.cat.part*100),ship:Math.round(loot.cat.ship*100),legend:_legendPct})}</div>
         </div>
         <div style="text-align:right;flex-shrink:0;font-size:10px">
@@ -474,7 +474,7 @@
           ${cfg.vc>0?`<div style="color:${G.voidCrystal>=cfg.vc?'#cc88ff':'#ff8888'}">VC×${cfg.vc}</div>`:''}
           ${cfg.ve>0?`<div style="color:${G.voidEssence>=cfg.ve?'#88ddff':'#ff8888'}">VE ${cfg.ve.toLocaleString()}</div>`:''}
         </div>
-        <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 10px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.openBox')}</button>
+        <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.openBox')}</button>
       </div>`;
     }
     // (구버전 blackMarketHtml 변수는 _bmBtn(3) 참조 오류로 제거 — 현재는 본문 innerHTML 에서 _bmBtn(0/1/2)을 인라인 호출)
