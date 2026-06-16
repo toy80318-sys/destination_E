@@ -805,6 +805,25 @@ function askBaekgu(){
   const KW=[
     // 크레딧/돈
     {k:['크레딧','돈','자금','수입','벌','earn','credit','credits','money','income','gold'],r:()=>I18N.t('chatbot.creditsTip')},
+    // 제작 재료·특산물이 많이 나오는 행성 (사용자 요청 2026-06-16) — 일반 무역 팁보다 먼저 매칭
+    {k:['재료가 많','재료 많','특산물 많','재료 행성','특산물 행성','어디서 재료','재료 어디','특산물 어디','재료 구','특산물 구','어느 행성','어떤 행성','재료 나오','특산물 나오','where material','material planet','specialty planet','which planet','where specialty','where to buy','material source','rich planet'],r:()=>{
+      try{
+        const order=['F01','F02','F03','F04','F05','F06','F07'];
+        const lines=[];
+        order.forEach(fac=>{
+          const matId=(typeof FACTION_MATS!=='undefined')?FACTION_MATS[fac]:null; if(!matId)return;
+          const mat=(COMMODITIES||[]).find(c=>c.id===matId); if(!mat)return;
+          const facNm=(FACTION[fac]&&FACTION[fac].nm)||fac;
+          const planets=(PLANET_DEF||[]).filter(p=>p.f===fac);
+          const known=planets.filter(p=>{const st=G.planets[p.id];return st&&st.fog!=='L';});
+          const pick=(known.length?known:planets).slice(0,2).map(p=>p.nm).join(', ');
+          const _matNm=(typeof commDisplayNm==='function')?commDisplayNm(mat):mat.nm;
+          lines.push(I18N.t('chatbot.matPlanetItem',{ic:mat.ic||'📦',mat:_matNm,fac:facNm,planets:pick||'?'}));
+        });
+        const explored=(PLANET_DEF||[]).filter(p=>{const st=G.planets[p.id];return st&&st.fog!=='L';}).length;
+        return I18N.t('chatbot.matPlanetHeader')+'\n'+lines.join('\n')+'\n\n'+I18N.t('chatbot.matPlanetFooter',{n:explored});
+      }catch(e){return I18N.t('chatbot.tradeTip');}
+    }},
     // 무역
     {k:['무역','특산물','상품','거래','trade','specialty','goods','merchant','commerce'],r:()=>I18N.t('chatbot.tradeTip')},
     // 함선

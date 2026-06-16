@@ -416,6 +416,40 @@ function applyFormationPreset(name){
   rerenderTab(renderGarageTab);
 }
 try{if(typeof window!=='undefined'){window._formationUnlocked=_formationUnlocked;window.applyFormationPreset=applyFormationPreset;}}catch(e){}
+// ── 편대 저장 슬롯 3개 (사용자 요청 2026-06-16) — 내 편대 구성 저장/불러오기. 불러올 때 신규 함선 자동 충원 ──
+function saveFormationSlot(i){
+  if(!G.fleetFormation||!Object.keys(G.fleetFormation).length){notify(I18N.t('formation.saveNothing'),'warn');return;}
+  if(!Array.isArray(G.fleetFormationSaves))G.fleetFormationSaves=[null,null,null];
+  G.fleetFormationSaves[i]=Object.assign({},G.fleetFormation);
+  saveGame(true);
+  notify(I18N.t('formation.saveDone',{n:i+1}),'ok');
+  rerenderTab(renderGarageTab);
+}
+function loadFormationSlot(i){
+  const saved=(Array.isArray(G.fleetFormationSaves)?G.fleetFormationSaves[i]:null);
+  if(!saved||!Object.keys(saved).length){notify(I18N.t('formation.saveEmpty'),'warn');return;}
+  if(!G.fleet||!G.fleet.length){notify(I18N.t('notify.fleetEmpty'),'warn');return;}
+  const fleetIds=new Set(G.fleet.map(function(s){return s.id;}));
+  const used=new Set(), result={};
+  // 1) 저장된 배치 중 현재 보유 함선만 적용
+  Object.keys(saved).forEach(function(sid){
+    if(!fleetIds.has(sid))return;
+    const sl=saved[sid];
+    if(typeof sl==='number'&&sl>=0&&sl<FLEET_FORMATION_SLOTS&&!used.has(sl)){result[sid]=sl;used.add(sl);}
+  });
+  // 2) 미배치 함선(신규 등)을 방어 점수 높은 순으로 빈 슬롯(앞열 우선)에 자동 충원
+  function _sc(s){const st=(typeof getShipStats==='function')?getShipStats(s):{};return (s.maxHP||0)+((s.DEF||0)+(st.DEF||0))*10+(s.maxSH||0)*1.5;}
+  const placed=new Set(Object.keys(result));
+  const remaining=G.fleet.filter(function(s){return !placed.has(s.id);}).sort(function(a,b){return _sc(b)-_sc(a);});
+  let sl=0;
+  remaining.forEach(function(s){ while(sl<FLEET_FORMATION_SLOTS&&used.has(sl))sl++; if(sl<FLEET_FORMATION_SLOTS){result[s.id]=sl;used.add(sl);sl++;} });
+  G.fleetFormation=result;
+  window._formationSelectedSlot=null;window._formationSelectedShip=null;
+  saveGame(true);
+  notify(I18N.t('formation.saveLoaded',{n:i+1}),'ok');
+  rerenderTab(renderGarageTab);
+}
+try{if(typeof window!=='undefined'){window.saveFormationSlot=saveFormationSlot;window.loadFormationSlot=loadFormationSlot;}}catch(e){}
 function onFormationSlotClick(slot){
   AudioMgr.playSfx('UI_click',{cooldown:60});
   // 1) 함선 카드를 먼저 선택해둔 상태 → 그 함선을 슬롯에 배치 (대상 슬롯에 다른 함선이 있으면 자동 배치로 밀려남)
@@ -584,12 +618,26 @@ function renderFleetFormationTab(body){
     ${_presetDefs.map(d=>`<button class="btn btn-sm" onclick="applyFormationPreset('${d[0]}')" ${_fUnlocked?'':'disabled'} style="font-size:11px;padding:4px 12px;border-color:${_fUnlocked?'var(--gold)':'var(--bdr)'};color:${_fUnlocked?'var(--gold)':'var(--dim)'};background:${_fUnlocked?'rgba(255,215,0,.10)':'transparent'};${_fUnlocked?'':'opacity:.55;cursor:not-allowed'}">${I18N.t(d[1])}</button>`).join('')}
     ${_fUnlocked?'':`<span style="font-size:11px;color:var(--dim);margin-left:auto">${I18N.t('formation.lockHint')}</span>`}
   </div>`;
+  // ── 편대 저장 슬롯 3개 (사용자 요청 2026-06-16): 내 편대 구성 저장/불러오기 (불러올 때 신규 함선 자동 충원) ──
+  const _saves=(Array.isArray(G.fleetFormationSaves)?G.fleetFormationSaves:[null,null,null]);
+  const _saveBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(120,200,255,.05);border:1px solid rgba(120,200,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:bold;color:#8cf">💾 ${I18N.t('formation.savesHeader')}</span>
+    ${[0,1,2].map(function(i){
+      const filled=_saves[i]&&Object.keys(_saves[i]).length;
+      return `<div style="display:flex;gap:3px;align-items:center;border:1px solid ${filled?'rgba(120,200,255,.45)':'var(--bdr)'};border-radius:6px;padding:2px 5px">
+        <span style="font-size:11px;font-weight:bold;color:${filled?'#8cf':'var(--dim)'};padding:0 2px">${I18N.t('formation.slotN',{n:i+1})}</span>
+        <button class="btn btn-sm" onclick="saveFormationSlot(${i})" style="font-size:10px;padding:3px 9px" title="${I18N.t('formation.saveCurrentTitle')}">${I18N.t('formation.saveBtn')}</button>
+        <button class="btn btn-sm" onclick="loadFormationSlot(${i})" ${filled?'':'disabled'} style="font-size:10px;padding:3px 9px;${filled?'border-color:#8cf;color:#8cf':'opacity:.5;cursor:not-allowed'}" title="${I18N.t('formation.loadTitle')}">${I18N.t('formation.loadBtn')}</button>
+      </div>`;
+    }).join('')}
+  </div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('formation')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${_autoBar}</div><div style="flex:1;min-width:0">
     ${summary}
     ${_presetBar}
+    ${_saveBar}
     ${hint}
     <div style="display:grid;grid-template-columns:224px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
