@@ -280,12 +280,14 @@ function renderShipTab(body){
           const _rarNm=I18N.rarity(c.rarity)||'';
           const _tip=c.nm+' ['+_rarNm+' '+(c.cl||'')+']\n'+_bn+(c.isHero?' ⭐':'')+'\n'+I18N.t('ship.slotOccupy',{n:cost})+'\n'+I18N.t('ship.clickDisembark');
           var _csz,_hSz,_igsz,_cspan;
-          if(cost===4){_csz=CELL_SZ*2+4;_hSz=_csz;_igsz=72;_cspan=';grid-column:span 2;grid-row:span 2';}
-          else if(cost===2){_csz=CELL_SZ*2+4;_hSz=CELL_SZ;_igsz=60;_cspan=';grid-column:span 2';}
-          else{_csz=CELL_SZ;_hSz=CELL_SZ;_igsz=34;_cspan='';}
+          // 이미지는 셀의 더 작은 변(높이) 기준으로 맞춰 칸 밖으로 넘치지 않게. 사용자 보고 2026-06-16:
+          //   영웅급(2칸=가로2·세로1) 크루 이미지(60px)가 41px 셀 높이를 넘어 튀어나오던 문제.
+          if(cost===4){_csz=CELL_SZ*2+4;_hSz=_csz;_igsz=CELL_SZ*2-12;_cspan=';grid-column:span 2;grid-row:span 2';}   // 86×86 → img 70
+          else if(cost===2){_csz=CELL_SZ*2+4;_hSz=CELL_SZ;_igsz=CELL_SZ-9;_cspan=';grid-column:span 2';}               // 86×41 → img 32 (높이 기준)
+          else{_csz=CELL_SZ;_hSz=CELL_SZ;_igsz=CELL_SZ-9;_cspan='';}                                                   // 41×41 → img 32
           return '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0'+_cspan+'">'
             +'<button onclick="unassignCrewById(\''+cid+'\')" title="'+_tip+'" style="background:rgba(0,0,0,.5);border:2px solid '+_col+';border-radius:6px;padding:1px;cursor:pointer;position:relative;width:'+_csz+'px;height:'+_hSz+'px;display:flex;align-items:center;justify-content:center" onmouseover="this.style.borderWidth=\'3px\'" onmouseout="this.style.borderWidth=\'2px\'">'
-            +imgOrEmoji(_imgS,c.ic||'🧑',_igsz,_igsz,'border-radius:50%;pointer-events:none;border:1px solid '+_col)
+            +imgOrEmoji(_imgS,c.ic||'🧑',_igsz,_igsz,'border-radius:50%;pointer-events:none;border:1px solid '+_col+';max-width:100%;max-height:100%;box-sizing:border-box;object-fit:cover')
             +'<span style="position:absolute;top:-4px;right:-4px;background:var(--red);color:white;font-size:8px;border-radius:50%;width:12px;height:12px;display:flex;align-items:center;justify-content:center;pointer-events:none">✕</span>'
             +(c.isHero?'<span style="position:absolute;bottom:-4px;left:-4px;font-size:11px;pointer-events:none">⭐</span>':'')
             +'<span style="position:absolute;top:-4px;left:-4px;background:'+_col+';color:#000;font-size:8px;border-radius:3px;padding:0 2px;pointer-events:none">'+I18N.t('ship.slotCells',{n:cost})+'</span>'

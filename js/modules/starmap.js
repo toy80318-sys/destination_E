@@ -1606,7 +1606,8 @@
       // 기함 이미지 표시 — 사용자 요청 2026-06-09: 행성 위쪽에 배치
       //   · 이전: 우측 (sp.x+r+5, sp.y)
       //   · 변경: 위쪽 중앙 정렬 — 행성 라벨과 겹치지 않게 위로 충분히 띄움
-      if(isCur&&G.fleet&&G.fleet.length>0){
+      // 이동 모션 중에는 출발지 정박 함선 이미지를 숨김 — 움직이는 함선만 보이게. 사용자 요청 2026-06-16.
+      if(isCur&&G.fleet&&G.fleet.length>0&&!_travelAnimFor){
         var _fsz=Math.max(18,r*3.2);
         var _fx=sp.x;  // 행성 중심과 수평 정렬
         var _fy=sp.y-r-_fsz/2-6;  // 행성 위쪽 + 6px 여백
@@ -2130,10 +2131,12 @@
       ship.className='_travel-ship';
       ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;transition:transform '+dur+'ms linear';
       ship.innerHTML=_shipInner;
-      ship.style.transform='translate('+pa.sx+'px,'+pa.sy+'px)';
+      // 이동 방향을 바라보도록 함선 회전 — 스프라이트 기본 방향 = 오른쪽(+x). 사용자 요청 2026-06-16.
+      const _ang=Math.atan2(pb.sy-pa.sy,pb.sx-pa.sx)*180/Math.PI;
+      ship.style.transform='translate('+pa.sx+'px,'+pa.sy+'px) rotate('+_ang+'deg)';
       wrap.appendChild(ship);
       void ship.offsetWidth;  // reflow → transition 적용
-      requestAnimationFrame(()=>{ship.style.transform='translate('+pb.sx+'px,'+pb.sy+'px)';});
+      requestAnimationFrame(()=>{ship.style.transform='translate('+pb.sx+'px,'+pb.sy+'px) rotate('+_ang+'deg)';});
       try{AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
       setTimeout(()=>{try{ship.remove();}catch(e){}try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},dur+80);
     }catch(e){console.warn('[travel anim]',e);onDone();}
@@ -2182,6 +2185,7 @@
         G.mapSelected=null;
         const _gb=document.getElementById('map-go');if(_gb)_gb.disabled=true;
         const _mf=document.getElementById('map-float');if(_mf)_mf.style.display='none';
+        renderMap();  // 출발지 정박 함선 이미지를 즉시 숨김 (_travelAnimFor 가드 반영)
         _startTravelAnim(G.currentPlanet,pid,_travelMs,_isBlinkJump,function(){G.mapSelected=pid;travelTo();});
         return;
       }

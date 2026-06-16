@@ -420,19 +420,20 @@ function renderCargoOnlyTab(body){
   // 전체 함대 창고 확장 비용 합계 + 가능 여부 (사용자 요청: 상단 일괄 버튼)
   const _allUpgradeCost=G.fleet.reduce((s,sh)=>s+((sh.cargoSlots||4)<100?getCargoUpgradePrice(sh):0),0);
   const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<100);
-  // 전체확장은 좌측 액션열 유지, 창고구매·창고제작은 상단 바로 이동 (사용자 요청 2026-06-16)
-  const _cargoActions=`
-    ${_anyExpandable
-      ? `<button class="btn btn-sm btn-gold" style="font-size:10px;padding:6px 4px;width:100%;white-space:normal;line-height:1.25" onclick="upgradeAllCargo()" ${G.credits>=_allUpgradeCost?'':'disabled'}>${I18N.t('ui.allFleetExpandHeader')}<br><span style="font-size:9px;color:var(--dim)">₡${_allUpgradeCost.toLocaleString()}</span></button>`
-      : `<div style="font-size:9px;color:var(--cyan);text-align:center;line-height:1.3;padding:4px 2px">${I18N.t('ship.allShipsMaxCargo')}</div>`}`;
-  const _cargoTopBtns=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+  // 상단 바에 창고구매·창고제작·전체함대 창고 확장 3버튼 일렬 배치.
+  //   사용자 요청 2026-06-16: '전체함대 창고 확장'을 '창고제작' 버튼 오른쪽으로 이동.
+  const _expandBtn=_anyExpandable
+    ? `<button class="btn btn-sm btn-gold" style="font-size:12px;padding:6px 16px" onclick="upgradeAllCargo()" ${G.credits>=_allUpgradeCost?'':'disabled'}>${I18N.t('ui.allFleetExpandHeader')} <span style="font-size:10px;color:var(--dim)">₡${_allUpgradeCost.toLocaleString()}</span></button>`
+    : `<span style="font-size:11px;color:var(--cyan);align-self:center;padding:0 4px">${I18N.t('ship.allShipsMaxCargo')}</span>`;
+  const _cargoTopBtns=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
     <button class="btn btn-sm" style="font-size:12px;padding:6px 18px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08)" onclick="(function(){_shipTab='parts';try{rerenderTab(renderShipTab);}catch(e){}hubTab('ship');})()">${I18N.t('ui.cargoBuyTitle')}</button>
     <button class="btn btn-sm" style="font-size:12px;padding:6px 18px;border-color:var(--purple);color:#cc88ff;background:rgba(139,0,255,.08)" onclick="hubTab('craft')">${I18N.t('ui.craftHoldShortcut')}</button>
+    ${_expandBtn}
   </div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
-    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('cargo')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${_cargoActions}</div><div style="flex:1;min-width:0">
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('cargo')}<div style="flex:1;min-width:0">
     ${_cargoTopBtns}
     <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap">
       <span style="font-size:13px;color:var(--cyan)"><b>${I18N.t('ui.totalOwned')}</b> ${usedSlots}/${totalSlots}칸</span>
