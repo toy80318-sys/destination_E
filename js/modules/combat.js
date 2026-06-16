@@ -1173,13 +1173,13 @@ function drawCombatFrame(){
     function _tankiness(u){
       return (+u.maxHP||+u.hp||1)+(+u.DEF||0)*8+(+u.maxSH||0)*0.6+(+u.armorTier||0)*30+(+u.shieldTier||0)*15;
     }
-    // 사용자 매뉴얼 편성: 4×4 그리드 사용
+    // 사용자 매뉴얼 편성: 6열×8행 그리드 사용 (사용자 요청 2026-06-16, slot=col*8+row)
     const manual=!isEnemy?(G&&G.fleetFormation):null;
     const hasManual=manual&&typeof manual==='object'&&Object.keys(manual).length>0;
     // 블랙홀 미러 함대(5척 신화) — 1열 5행으로 좁게 보이지 않도록 가로 펼침 모드
     const _isWideFleet=isEnemy&&units.some(u=>u&&u._isBlackHoleFleet);
     let cols,rows;
-    if(hasManual){cols=4;rows=4;}
+    if(hasManual){cols=6;rows=8;}
     else if(_isWideFleet){
       // 가로 펼침: 최대 4열, 행은 필요한 만큼 (5척 → 4열 2행)
       cols=clamp(n,1,4);

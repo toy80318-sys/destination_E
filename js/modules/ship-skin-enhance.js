@@ -318,7 +318,8 @@ function doShipEnhance(shipIdx){
 try{if(typeof window!=='undefined'){window.doShipEnhance=doShipEnhance;}}catch(e){}
 
 // ── 편대 편성: 16슬롯 그리드에 함선 배치 ─────────────────────────
-const FLEET_FORMATION_SLOTS=16; // 4×4
+const FLEET_FORMATION_SLOTS=48; // 6열×8행 (사용자 요청 2026-06-16)
+const FLEET_FORMATION_ROWS=8;   // 1열당 8칸
 window._formationSelectedSlot=window._formationSelectedSlot!==undefined?window._formationSelectedSlot:null;
 window._formationSelectedShip=window._formationSelectedShip!==undefined?window._formationSelectedShip:null;
 function _getFormation(){
@@ -326,8 +327,8 @@ function _getFormation(){
   return G.fleetFormation;
 }
 function _slotToColRow(slot){
-  // 4열×4행, slot 0=col0(front)/row0, slot 1=col0/row1, ..., slot 4=col1/row0
-  return{col:Math.floor(slot/4),row:slot%4};
+  // 6열×8행, slot = col*8+row (slot 0=col0/row0, slot 8=col1/row0)
+  return{col:Math.floor(slot/8),row:slot%8};
 }
 function getFormationShipForSlot(slot){
   const f=_getFormation();
@@ -384,6 +385,39 @@ function autoArrangeFormation(){
   notify(I18N.t('notify.autoFormation',{n:Math.min(sorted.length,FLEET_FORMATION_SLOTS)}),'ok');
   rerenderTab(renderGarageTab);
 }
+// ── 함대 대형 프리셋 (사용자 요청 2026-06-16) ──────────────────────────
+// 포메이션 해금: 이순신(H01)·넬슨(H05)·광개토(H03) 중 1명 이상 보유 시
+function _formationUnlocked(){
+  const h=G.heroes||[];
+  return h.includes('H01')||h.includes('H05')||h.includes('H03');
+}
+// 6열(0=전방)×8행(0~7) 그리드의 [col,row] 셀 목록(우선순위 순, 첫 셀=기함). slot=col*8+row
+const FORMATION_PRESETS={
+  arrow:  [[0,3],[0,4],[1,2],[1,5],[2,1],[2,6],[3,0],[3,7],[2,3],[2,4],[3,3],[3,4],[1,3],[1,4],[2,2],[2,5]],
+  crane:  [[0,0],[0,7],[0,1],[0,6],[1,1],[1,6],[1,2],[1,5],[2,2],[2,5],[2,3],[2,4],[3,3],[3,4],[4,3],[4,4]],
+  square: [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,2],[2,3],[2,4],[2,5],[3,2],[3,3],[3,4],[3,5]],
+  diamond:[[0,3],[0,4],[1,2],[1,5],[2,1],[2,6],[3,1],[3,6],[4,2],[4,5],[5,3],[5,4],[2,3],[2,4],[3,3],[3,4]]
+};
+function applyFormationPreset(name){
+  if(!_formationUnlocked()){notify(I18N.t('formation.lockHint'),'warn');return;}
+  if(!G.fleet||G.fleet.length===0){notify(I18N.t('notify.fleetEmpty'),'warn');return;}
+  const cells=FORMATION_PRESETS[name];
+  if(!cells)return;
+  function _score(s){const st=(typeof getShipStats==='function')?getShipStats(s):{};return (s.maxHP||0)+((s.DEF||0)+(st.DEF||0))*10+(s.maxSH||0)*1.5;}
+  // 기함 항상 첫 번째 → 나머지는 방어 점수 높은 순으로 셀 배정
+  const sorted=[...G.fleet].map((s,i)=>({s,i,sc:_score(s)})).sort((a,b)=>{if(a.i===0)return -1;if(b.i===0)return 1;return b.sc-a.sc;});
+  G.fleetFormation={};
+  sorted.forEach((e,idx)=>{
+    if(idx>=cells.length)return;
+    const c=cells[idx];
+    G.fleetFormation[e.s.id]=c[0]*8+c[1];
+  });
+  window._formationSelectedSlot=null;window._formationSelectedShip=null;
+  saveGame(true);
+  notify(I18N.t('notify.formationApplied',{nm:I18N.t('formation.'+name)}),'ok');
+  rerenderTab(renderGarageTab);
+}
+try{if(typeof window!=='undefined'){window._formationUnlocked=_formationUnlocked;window.applyFormationPreset=applyFormationPreset;}}catch(e){}
 function onFormationSlotClick(slot){
   AudioMgr.playSfx('UI_click',{cooldown:60});
   // 1) 함선 카드를 먼저 선택해둔 상태 → 그 함선을 슬롯에 배치 (대상 슬롯에 다른 함선이 있으면 자동 배치로 밀려남)
@@ -416,7 +450,7 @@ function onFormationSlotClick(slot){
       } else {
         // 이동
         f[srcShip.id]=slot;
-        notify(I18N.t('notify.shipMoved',{nm:shipDisplayNm(srcShip),col:Math.floor(slot/4)+1,row:slot%4+1}),'ok');
+        notify(I18N.t('notify.shipMoved',{nm:shipDisplayNm(srcShip),col:Math.floor(slot/8)+1,row:slot%8+1}),'ok');
       }
       saveGame(true);
       window._formationSelectedSlot=null;
@@ -454,46 +488,42 @@ function renderFleetFormationTab(body){
   </div>`;
   const assignedShipIds=new Set(Object.keys(_getFormation()));
   // 시각 배치: 왼쪽=4열(뒤) → 오른쪽=1열(앞). 1열이 오른쪽 끝의 적 함대와 맞닿게 표시.
-  const colLabelTexts=[I18N.t('combat.col4'),I18N.t('combat.col3'),I18N.t('combat.col2'),I18N.t('combat.col1')];
-  const colLabels=`<div style="display:grid;grid-template-columns:auto repeat(4,1fr);gap:6px;margin-bottom:6px;font-size:11px;font-weight:bold;text-align:center">
+  const _CELL=58;  // 칸 크기 절반 수준 (사용자 요청 2026-06-16: 현재의 절반)
+  const colLabelTexts=[I18N.t('combat.col6'),I18N.t('combat.col5'),I18N.t('combat.col4'),I18N.t('combat.col3'),I18N.t('combat.col2'),I18N.t('combat.col1')];
+  const colLabels=`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px;margin-bottom:5px;font-size:10px;font-weight:bold;text-align:center">
     <div style="font-size:9px;color:var(--dim);align-self:end">${I18N.t('ui.frontBackHint')}</div>
-    ${colLabelTexts.map((l,i)=>`<div style="color:${i===3?'var(--red)':i===0?'rgba(255,200,0,.7)':'var(--gold)'}">${l}</div>`).join('')}
+    ${colLabelTexts.map((l,i)=>`<div style="color:${i===5?'var(--red)':i===0?'rgba(255,200,0,.7)':'var(--gold)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l}</div>`).join('')}
   </div>`;
-  const rowLabels=[I18N.t('combat.row',{n:1}),I18N.t('combat.row',{n:2}),I18N.t('combat.row',{n:3}),I18N.t('combat.row',{n:4})];
-  let gridWithLabels=colLabels+'<div style="display:grid;grid-template-columns:auto repeat(4,1fr);gap:6px">';
-  for(let row=0;row<4;row++){
-    gridWithLabels+=`<div style="display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:11px">${rowLabels[row]}</div>`;
-    for(let visCol=0;visCol<4;visCol++){
-      // 시각 컬럼 visCol=0 → 4열(논리 col=3), visCol=3 → 1열(논리 col=0)
-      const logicalCol=3-visCol;
-      const slot=logicalCol*4+row;
+  const rowLabels=[];for(let _r=0;_r<8;_r++)rowLabels.push(I18N.t('combat.row',{n:_r+1}));
+  let gridWithLabels=colLabels+`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px">`;
+  for(let row=0;row<8;row++){
+    gridWithLabels+=`<div style="display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:10px">${rowLabels[row]}</div>`;
+    for(let visCol=0;visCol<6;visCol++){
+      // 시각 컬럼 visCol=0 → 6열(논리 col=5, 뒤), visCol=5 → 1열(논리 col=0, 앞)
+      const logicalCol=5-visCol;
+      const slot=logicalCol*8+row;
       const ship=getFormationShipForSlot(slot);
       const isFlagshipHere=ship&&G.fleet[0]&&ship.id===G.fleet[0].id;
       const sel=window._formationSelectedSlot===slot;
       const isFront=logicalCol===0;
       const slotBg=ship?'rgba(0,243,255,.10)':isFront?'rgba(255,80,80,.07)':'rgba(255,255,255,.03)';
       const slotBdr=sel?'var(--gold)':ship?'var(--cyan)':isFront?'rgba(255,80,80,.4)':'var(--bdr)';
-      const slotGlow=sel?'box-shadow:0 0 18px rgba(255,215,0,.6);':isFront?'box-shadow:0 0 8px rgba(255,80,80,.2);':'';
+      const slotGlow=sel?'box-shadow:0 0 14px rgba(255,215,0,.6);':isFront?'box-shadow:0 0 6px rgba(255,80,80,.2);':'';
       let content;
       if(ship){
         const st=getShipStats(ship);
         const hpP=clamp(Math.round(ship.hp/Math.max(1,st.HP||ship.maxHP)*100),0,100);
         const hpCol=hpP>60?'var(--green)':hpP>30?'var(--yellow)':'var(--red)';
-        content=`
-          <div style="width:100%;display:flex;justify-content:center;flex-shrink:0">${imgOrEmoji(shipImgSrc(ship),'🛸',104,104,'border-radius:6px',shipLoreKey(ship))}</div>
-          <div style="font-size:10px;color:var(--cyan);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;flex-shrink:0">${isFlagshipHere?'⭐ ':''}${shipDisplayNm(ship)}</div>
-          <div style="font-size:9px;color:${hpCol};text-align:center;margin-top:2px">HP ${hpP}%</div>
-          <div style="display:flex;justify-content:space-between;width:100%;font-size:9px;color:var(--dim);margin-top:auto;padding-top:3px;border-top:1px solid rgba(255,255,255,.08)">
-            <span style="color:#f88">❤${st.HP}</span>
-            <span style="color:var(--gold)">🔰${st.DEF}</span>
-          </div>`;
+        // 칸이 절반 크기라 이미지+기함표시+HP%만 간결하게
+        content=`<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center">
+          ${imgOrEmoji(shipImgSrc(ship),'🛸',46,46,'border-radius:4px;object-fit:contain',shipLoreKey(ship))}
+          ${isFlagshipHere?'<div style="position:absolute;top:-2px;left:-1px;font-size:11px;line-height:1">⭐</div>':''}
+          <div style="position:absolute;bottom:-2px;right:0;font-size:8px;font-weight:bold;color:${hpCol};text-shadow:0 0 3px #000,0 0 3px #000">${hpP}%</div>
+        </div>`;
       } else {
-        content=`
-          <div style="font-size:24px;color:${isFront?'rgba(255,80,80,.55)':'rgba(255,255,255,.25)'};text-align:center">+</div>
-          <div style="font-size:9px;color:${isFront?'rgba(255,80,80,.7)':'var(--dim)'};margin-top:4px;text-align:center">${isFront?I18N.t('combat.front'):I18N.t('combat.emptySlot')}</div>`;
+        content=`<div style="font-size:16px;color:${isFront?'rgba(255,80,80,.5)':'rgba(255,255,255,.22)'};display:flex;align-items:center;justify-content:center;width:100%;height:100%">+</div>`;
       }
-      // 정사각형 슬롯: aspect-ratio 1/1, 패딩·내부 flex 정렬
-      gridWithLabels+=`<div onclick="onFormationSlotClick(${slot})" style="background:${slotBg};border:1px solid ${slotBdr};border-radius:8px;padding:5px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:pointer;${slotGlow};transition:all .15s;aspect-ratio:1/1;overflow:hidden;box-sizing:border-box" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">${content}</div>`;
+      gridWithLabels+=`<div onclick="onFormationSlotClick(${slot})" title="${I18N.t('ui.gridSlot',{col:logicalCol+1,row:row+1})}" style="background:${slotBg};border:1px solid ${slotBdr};border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;${slotGlow};transition:all .12s;aspect-ratio:1/1;overflow:hidden;box-sizing:border-box" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform=''">${content}</div>`;
     }
   }
   gridWithLabels+='</div>';
@@ -502,7 +532,7 @@ function renderFleetFormationTab(body){
   // 함선 리스트 (편성 가능한 함선)
   const shipCards=G.fleet.map((s,i)=>{
     const slot=_getFormation()[s.id];
-    const slotLbl=typeof slot==='number'?I18N.t('ui.gridSlot',{col:Math.floor(slot/4)+1,row:slot%4+1}):'자동';
+    const slotLbl=typeof slot==='number'?I18N.t('ui.gridSlot',{col:Math.floor(slot/8)+1,row:slot%8+1}):'자동';
     const sel=window._formationSelectedShip===s.id;
     const isFlagship=i===0;
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
@@ -525,7 +555,7 @@ function renderFleetFormationTab(body){
   const hint=window._formationSelectedSlot!==null
     ? (()=>{
         const _selOcc=getFormationShipForSlot(window._formationSelectedSlot);
-        const _selLbl=I18N.t('ui.gridSlot',{col:Math.floor(window._formationSelectedSlot/4)+1,row:window._formationSelectedSlot%4+1});
+        const _selLbl=I18N.t('ui.gridSlot',{col:Math.floor(window._formationSelectedSlot/8)+1,row:window._formationSelectedSlot%8+1});
         const _info=_selOcc
           ? I18N.t('ui.slotSelectedHint',{nm:`<b>${shipDisplayNm(_selOcc)}</b>`,lbl:_selLbl})
           : I18N.t('ui.emptySlotSelected',{lbl:_selLbl});
@@ -540,14 +570,22 @@ function renderFleetFormationTab(body){
     <span style="font-size:12px;color:var(--dim)">${I18N.t('ui.formationHint')}</span>
     <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.manualPlace',{n:assignedShipIds.size,total:G.fleet.length})}</span>
     <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:11px;padding:4px 10px;${_declineCap?'border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.12)':'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.10)'}" title="ON(나포매각): 나포 대상 함선을 즉시 매각하여 크레딧 획득 · OFF(나포허용): 정상 나포 시도">${_declineCap?I18N.t('ui.captureSell'):I18N.t('ui.captureAllow')}</button>
-    <button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:4px 10px" onclick="autoArrangeFormation()" title="HP·DEF·SHD 높은 함선부터 1열(앞)에 배치">${I18N.t('ui.autoArrangeDefBtn')}</button>
     <button class="btn btn-sm btn-red" style="font-size:11px;padding:4px 10px" onclick="clearAllFormation()">${I18N.t('ui.resetBtn')}</button>
+  </div>`;
+  // ── 대형 자동 배치 프리셋 바 (영웅 해금) ──
+  const _fUnlocked=_formationUnlocked();
+  const _presetDefs=[['arrow','formation.arrow'],['crane','formation.crane'],['square','formation.square'],['diamond','formation.diamond']];
+  const _presetBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(255,215,0,.04);border:1px solid ${_fUnlocked?'rgba(255,215,0,.3)':'rgba(255,255,255,.12)'};border-radius:8px;padding:8px 14px;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:bold;color:${_fUnlocked?'var(--gold)':'var(--dim)'}">⚔️ ${I18N.t('formation.presetHeader')}</span>
+    ${_presetDefs.map(d=>`<button class="btn btn-sm" onclick="applyFormationPreset('${d[0]}')" ${_fUnlocked?'':'disabled'} style="font-size:11px;padding:4px 12px;border-color:${_fUnlocked?'var(--gold)':'var(--bdr)'};color:${_fUnlocked?'var(--gold)':'var(--dim)'};background:${_fUnlocked?'rgba(255,215,0,.10)':'transparent'};${_fUnlocked?'':'opacity:.55;cursor:not-allowed'}">${I18N.t(d[1])}</button>`).join('')}
+    ${_fUnlocked?'':`<span style="font-size:11px;color:var(--dim);margin-left:auto">${I18N.t('formation.lockHint')}</span>`}
   </div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     ${summary}
+    ${_presetBar}
     ${hint}
     <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
