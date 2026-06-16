@@ -461,11 +461,35 @@
         if(_diaryReady){
           // 페이즈당 4개 단위 entries 렌더 (사용자 요청 2026-06-16). 구버전(단일 ko/en) 폴백 유지.
           const _entries=(_diary.entries&&_diary.entries.length)?_diary.entries:[{t:_diary.title,ko:_diary.ko,en:_diary.en}];
+          const _ver5w=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+          // 5W 정보바 셀 — 이미지(인물/물품) 또는 라벨+값. 사용자 요청 2026-06-16 (BAEKGU_VOYAGE_LOG.html UI).
+          const _w5cellImg=function(img,fb,label,val){
+            return `<div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.28);border:1px solid ${phCol}22;border-radius:6px;padding:4px 7px;min-width:0">
+              <img src="${img}${_ver5w}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.5)" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${fb}',style:'font-size:18px;flex-shrink:0'}))">
+              <div style="min-width:0"><div style="font-size:8px;color:${phCol};letter-spacing:.5px">${label}</div><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${val||'—'}</div></div>
+            </div>`;
+          };
+          const _w5cellTxt=function(ic,label,val){
+            return `<div style="background:rgba(0,0,0,.28);border:1px solid ${phCol}22;border-radius:6px;padding:4px 8px;min-width:0">
+              <div style="font-size:8px;color:${phCol};letter-spacing:.5px">${ic} ${label}</div><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:normal;word-break:keep-all;line-height:1.3">${val||'—'}</div>
+            </div>`;
+          };
+          const _w5bar=function(e){
+            if(!(e.who||e.when||e.where||e.what))return '';
+            const L=(o)=>o?(_sub(o[lang]||o.ko||'')):'';
+            return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px">
+              ${_w5cellImg((e.who&&e.who.por)||'',(e.who&&e.who.fb)||'🐕',I18N.t('voyage.who'),L(e.who))}
+              ${_w5cellImg((e.what&&e.what.img)||'',(e.what&&e.what.fb)||'📦',I18N.t('voyage.what'),L(e.what))}
+              ${_w5cellTxt('📅',I18N.t('voyage.when'),L(e.when))}
+              ${_w5cellTxt('📍',I18N.t('voyage.where'),L(e.where))}
+            </div>`;
+          };
           const _entHtml=_entries.map(function(e){
             const _et=(e.t&&(e.t[lang]||e.t.ko))||'';
             const _ex=_sub(e[lang]||e.ko||'').replace(/</g,'&lt;');
             return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed ${phCol}33">
-              ${_et?`<div style="font-size:12px;font-weight:bold;color:${phCol};margin-bottom:4px">${_et}</div>`:''}
+              ${_et?`<div style="font-size:12px;font-weight:bold;color:${phCol};margin-bottom:6px">${_et}</div>`:''}
+              ${_w5bar(e)}
               <div style="font-size:13px;line-height:1.9;color:#e8eef5;white-space:pre-wrap;word-break:keep-all;font-style:italic">${_ex}</div>
             </div>`;
           }).join('');
