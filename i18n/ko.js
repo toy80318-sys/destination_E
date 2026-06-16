@@ -828,6 +828,8 @@ I18N.registerLocale("ko", {
   "notify.questAcceptGather": "채취 의뢰 수락 — {n}턴 대기 후 완료",
   "notify.questAcceptDelivery": "배달 의뢰 수락 — {nm}으로 이동하면 완료",
   "notify.questAcceptCombat": "전투 의뢰 수락 — 전투 승리 후 보고하세요",
+  "notify.questAcceptStory": "✓ {nm} 수락 — {lbl}",
+  "notify.storyQuestFallback": "시나리오 퀘스트",
   "notify.adjacentPlanet": "인접 행성",
   "notify.scanNoScouts": "탐색 완료 — 정찰대 미발견. 다시 탐색하세요.",
   "notify.loanGranted": "백구 긴급 대출 {amt} (누적 {total})",

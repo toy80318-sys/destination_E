@@ -828,6 +828,8 @@ I18N.registerLocale("en", {
   "notify.questAcceptGather": "Gather quest accepted — completes after {n} turns",
   "notify.questAcceptDelivery": "Delivery accepted — completes when arriving at {nm}",
   "notify.questAcceptCombat": "Combat quest accepted — report after victory",
+  "notify.questAcceptStory": "✓ {nm} accepted — {lbl}",
+  "notify.storyQuestFallback": "Story Quest",
   "notify.adjacentPlanet": "adjacent planet",
   "notify.scanNoScouts": "Scan complete — no scouts found. Try again.",
   "notify.loanGranted": "Baekgu emergency loan {amt} (total {total})",

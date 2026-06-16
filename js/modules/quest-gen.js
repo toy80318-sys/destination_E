@@ -497,8 +497,10 @@ function acceptQuest(pid,idx){
   else if(q.type==='buy'){const _cn=COMMODITIES.find(c=>c.id===q.targetCommId)?.nm||q.targetCommId;notify(I18N.t('notify.questAcceptBuy',{nm:_cn,n:q.required}),'ok');}
   else if(q.type==='story_quest'){
     const _obj=(q.objectives&&q.objectives[0])||{};
-    const _lbl=(typeof _obj.label==='object')?(_obj.label.ko||_obj.label.en||''):(_obj.label||'');
-    notify('✓ '+(q.nm||'시나리오 퀘')+' 수락 — '+_lbl,'pur');
+    // label 이 아직 {ko,en} 객체면 현재 언어로 선택 (relocalize 전 신규 퀘 대비)
+    const _lang=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en')?'en':'ko';
+    const _lbl=(typeof _obj.label==='object')?(_obj.label[_lang]||_obj.label.ko||_obj.label.en||''):(_obj.label||'');
+    notify(I18N.t('notify.questAcceptStory',{nm:(q.nm||I18N.t('notify.storyQuestFallback')),lbl:_lbl}),'pur');
   }
   else notify(I18N.t('notify.questAcceptCombat'),'ok');
   // 사용자 보고 2026-06-07: 수락 직후 이미 보유한 아이템으로 즉시 완료 처리되도록 라이브 평가
