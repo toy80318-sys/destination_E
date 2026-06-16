@@ -3149,6 +3149,8 @@ I18N.registerLocale("ko", {
   "boss.blackfalcon": "🌑 블랙팔콘",
   "boss.blackfalconLore": "침묵의 은하에서 온 자. 이름도, 고향도, 목적도 알 수 없다. 능력치는 렐러티비티의 3배.",
   "boss.blackfalconNumbered": "🌑 블랙팔콘 {idx}/{n}",
+  "quest.heroRecruitNm": "[특별] {nm} 영입",
+  "quest.heroRecruitDesc": "{planet}에서 전설의 {nm} 단서가 포착되었습니다. 추적하여 영입하세요.",
   "quest.darkShipHidden": "[히든] 검은 함선의 경고 신호",
   "quest.darkShipDesc": "제타 레티쿨리 상공에 정체불명의 검은색 소형 함선이 출현. 통신 신호가 잡혔지만 정체불명의 노이즈로 가득하다. 응답하면 어떤 사태가 벌어질지... (보상: 거대 크레딧 + 보이드 신호 + 함대 검증)",
   "voidQ.h01.line": "전열을 가다듬으십시오, 사령관. 적의 정체는 모르나, 함대의 진형부터 정비합시다.",

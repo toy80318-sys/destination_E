@@ -3149,6 +3149,8 @@ I18N.registerLocale("en", {
   "boss.blackfalcon": "🌑 Black Falcon",
   "boss.blackfalconLore": "One who came from the silent galaxy. No name, no homeland, no purpose. Stats are 3× Relativity.",
   "boss.blackfalconNumbered": "🌑 Black Falcon {idx}/{n}",
+  "quest.heroRecruitNm": "[Special] Recruit {nm}",
+  "quest.heroRecruitDesc": "A trace of the legendary {nm} has been detected at {planet}. Travel there and recruit.",
   "quest.darkShipHidden": "[Hidden] Dark Ship Warning Signal",
   "quest.darkShipDesc": "An unknown small black ship has appeared over Zeta Reticuli. A signal was captured but is full of unknown noise. Who knows what happens if you respond... (Reward: massive credits + Void signal + fleet verification)",
   "voidQ.h01.line": "Steady the formation, Commander. We don't know the enemy yet — let's align the fleet first.",

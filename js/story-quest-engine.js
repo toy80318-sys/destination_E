@@ -464,6 +464,17 @@ function relocalizeStoryQuests(){
     Object.keys(G.quests).forEach(pid=>{
       (G.quests[pid]||[]).forEach(q=>{
         if(!q||!q.id) return;
+        // 보이드 보스 / 영웅 퀘스트 재지역화 (사용자 보고 2026-06-16: 영문판에서 한글 잔존 방지)
+        if(q.type==='void_boss'){
+          const _vn=I18N.t('quest.darkShipHidden'),_vd=I18N.t('quest.darkShipDesc');
+          if(_vn&&_vn!==q.nm){q.nm=_vn;changed++;} if(_vd&&_vd!==q.desc){q.desc=_vd;changed++;}
+          return;
+        }
+        if(q.type==='hero_quest'&&q.heroId&&typeof window._heroQuestText==='function'){
+          const r=window._heroQuestText(q.heroId);
+          if(r){ if(r.nm&&r.nm!==q.nm){q.nm=r.nm;changed++;} if(r.desc&&r.desc!==q.desc){q.desc=r.desc;changed++;} }
+          return;
+        }
         const t=byId[q.id]; if(!t){ changed+=_relocProc(q); return; } // 템플릿 없으면 절차 퀘로 재지역화
         if(t.nm&&typeof t.nm==='object'){ const v=t.nm[_lang]||t.nm.ko; if(v&&v!==q.nm){ q.nm=v; changed++; } }
         if(t.desc&&typeof t.desc==='object'){ const v=t.desc[_lang]||t.desc.ko; if(v&&v!==q.desc){ q.desc=v; changed++; } }

@@ -3461,6 +3461,15 @@ const _HERO_QUEST_PLANET_MAP={
   H08:'P19', H04:'P04', H01:'P13', H05:'P14',
   H02:'P06', H03:'P08', H06:'P28', H07:'P09'
 };
+// 영웅 퀘스트 nm/desc — i18n 키 기반으로 항상 현재 언어 재해석 (사용자 보고 2026-06-16: 영문판 한글 잔존 방지)
+function _heroQuestText(heroId){
+  const planetId=_HERO_QUEST_PLANET_MAP[heroId]||'';
+  const _hKey='hero.'+heroId+'.nm';
+  const heroNm=(typeof I18N!=='undefined'&&I18N.has&&I18N.has(_hKey))?I18N.t(_hKey):((typeof HEROES!=='undefined'&&HEROES[heroId])?HEROES[heroId].nm:heroId);
+  const planetNm=(typeof PLANET_DEF!=='undefined'&&planetId)?((PLANET_DEF.find(p=>p.id===planetId)||{}).nm||planetId):'';
+  return {nm:I18N.t('quest.heroRecruitNm',{nm:heroNm}),desc:I18N.t('quest.heroRecruitDesc',{nm:heroNm,planet:planetNm}),heroNm,planetNm};
+}
+try{if(typeof window!=='undefined')window._heroQuestText=_heroQuestText;}catch(e){}
 
 function _spawnHeroQuest(heroId){
   // 의존성 가드 — 데이터 파일 미로드 시 NPE 방지
@@ -3479,10 +3488,7 @@ function _spawnHeroQuest(heroId){
   const heroIc=HEROES[heroId].ic||'⭐';
   const planetNm=(PLANET_DEF.find(p=>p.id===planetId)||{}).nm||planetId;
   const _isEn=(_i18nReady&&typeof I18N.getLang==='function'&&I18N.getLang()==='en');
-  const _nmText=_isEn?('[Special] Recruit '+heroNm):('[특별] '+heroNm+' 영입');
-  const _descText=_isEn
-    ?('A trace of the legendary '+heroNm+' has been detected at '+planetNm+'. Travel there and recruit.')
-    :(planetNm+'에서 전설의 '+heroNm+' 단서가 포착되었습니다. 추적하여 영입하세요.');
+  const _qt=_heroQuestText(heroId);  // i18n 키 기반 → 언어 전환 시 relocalize 가능
   G.quests[planetId].unshift({
     id:'q_hero_'+heroId,
     type:'hero_quest',
@@ -3490,8 +3496,8 @@ function _spawnHeroQuest(heroId){
     ic:'⭐',
     npc:heroNm,
     npcIc:heroIc,
-    nm:_nmText,
-    desc:_descText,
+    nm:_qt.nm,
+    desc:_qt.desc,
     rewardCr:1000000,
     rewardVe:50,
     status:'done',  // 도착 = 완료, 바로 보상 받기 가능
