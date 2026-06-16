@@ -829,10 +829,10 @@
     function _spawnAsteroid(){
       const roll=Math.random();
       let sz, r, hp;
-      // 소행성 HP — 사용자 누적 요청으로 추가 ×2 적용 (S:2→4 / M:4→8 / L:8→16). 크기는 그대로
-      if(roll<0.55){sz='S';r=14+Math.random()*8;hp=4;}
-      else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=8;}
-      else {sz='L';r=34+Math.random()*14;hp=16;}
+      // 소행성 HP — 추가 ×1.5 적용 (S:4→6 / M:8→12 / L:16→24, 사용자 요청 2026-06-16). 크기는 그대로
+      if(roll<0.55){sz='S';r=14+Math.random()*8;hp=6;}
+      else if(roll<0.85){sz='M';r=22+Math.random()*10;hp=12;}
+      else {sz='L';r=34+Math.random()*14;hp=24;}
       const elapsed=(Date.now()-state.startMs)/1000;
       // 소행성 속도 ½ (사용자 요청)
       const speed=(2+Math.random()*1.2+Math.min(2,elapsed/8))*0.5;
@@ -846,11 +846,11 @@
       const roll=Math.random();
       let sz, w, h, hp, fireRate, dmg;
       // 크기 비율 1:3:5 + 적함은 동급 아군보다 2× 큼 (S60/M180/L300)
-      // HP — 사용자 누적 요청으로 추가 ×2 적용 (S:6→12 / M:10→20 / L:20→40)
+      // HP — 추가 ×1.5 적용 (S:12→18 / M:20→30 / L:40→60, 사용자 요청 2026-06-16)
       // 발사 빈도 70% (사용자 요청) — fireRate(쿨다운)는 클수록 발사 느려짐: ×1/0.7 ≈ ×1.43
-      if(roll<0.5){sz='S';w=60;h=60;hp=12;fireRate=114;dmg=8;}
-      else if(roll<0.85){sz='M';w=180;h=180;hp=20;fireRate=86;dmg=14;}
-      else {sz='L';w=300;h=300;hp=40;fireRate=64;dmg=22;}
+      if(roll<0.5){sz='S';w=60;h=60;hp=18;fireRate=114;dmg=8;}
+      else if(roll<0.85){sz='M';w=180;h=180;hp=30;fireRate=86;dmg=14;}
+      else {sz='L';w=300;h=300;hp=60;fireRate=64;dmg=22;}
       state.enemies.push({
         x:W+w, y:60+Math.random()*(H-120), w, h, sz, hp, maxHp:hp,
         // 적 함선 속도 ½ (사용자 요청)
@@ -941,7 +941,7 @@
       const pen=win?0:Math.round((G.credits||0)*0.03);
       // 랜덤 드롭 (승리 시) — 각 등급 독립 roll + 격파 보너스
       //   설계도 20% + bonus / 신화 30% + bonus / 전설·세트 50% + bonus (우선순위 BP→신화→전설)
-      let dropTxt='';
+      let dropTxt='', _dropImg='', _dropNm='';   // 보상 팝업 상단 이미지/멘트용 (사용자 요청 2026-06-16)
       if(win){
         const _bpId=(typeof BLUEPRINT_MAP!=='undefined')?BLUEPRINT_MAP[destPid]:null;
         const _canBp=_bpId&&!G.blueprints?.[_bpId];
@@ -953,6 +953,7 @@
           G.blueprints[_bpId]=true;
           const _rec=(typeof CRAFT_RECIPES!=='undefined')?CRAFT_RECIPES.find(r=>r.id===_bpId):null;
           dropTxt=I18N.t('drop.blueprint',{nm:(_rec?.nm||_bpId)});
+          _dropNm=(_rec?.nm||_bpId); _dropImg='img/parts/'+_bpId+'.png';
           notify(I18N.t('notify.bpAcquiredFrom',{nm:_rec?.nm||_bpId}),'gold');
         } else if(_rMy<(0.30+_dropBonus)&&typeof QUEST_MYTHIC_PARTS!=='undefined'&&QUEST_MYTHIC_PARTS.length>0){
           // MMB01(이휘소 방정식 미사일) +5%p 가중치 (사용자 요청)
@@ -963,6 +964,7 @@
             const inv=G.inventory.find(i=>i.id===partId);
             if(inv)inv.qty++;else G.inventory.push({id:partId,nm:p.nm,qty:1});
             dropTxt=I18N.t('drop.mythicPart',{nm:(p.nm||partId)});
+            _dropNm=(typeof partDisplayNm==='function'?partDisplayNm(p):(p.nm||partId)); _dropImg='img/parts/'+partId+'.png';
             notify(I18N.t('notify.mythicPartLabel',{nm:p.nm||partId}),'gold');
           }
         } else if(_rLg<(0.50+_dropBonus)&&typeof QUEST_SET_PARTS!=='undefined'&&QUEST_SET_PARTS.length>0){
@@ -972,6 +974,7 @@
           if(inv)inv.qty++;else G.inventory.push({id:partId,qty:1});
           const p=PARTS.find(x=>x.id===partId);
           dropTxt=I18N.t('drop.partFormat',{label:p?.rarity==='set'?I18N.t('drop.setPart'):I18N.t('drop.legendPart'),nm:(p?.nm||partId)});
+          _dropNm=(typeof partDisplayNm==='function'&&p?partDisplayNm(p):(p?.nm||partId)); _dropImg='img/parts/'+partId+'.png';
           notify(I18N.t('notify.partWithRarity',{kind:p?.rarity==='set'?I18N.t('ui.setRare'):I18N.t('ui.legendRare'),nm:p?.nm||partId}),'gold');
         }
       }
@@ -982,9 +985,14 @@
       // 실제 함대 hp 반영 (전투 결과 보존)
       if(flagship){flagship.hp=Math.max(1,Math.floor(state.ship.hp));if(flagship.sh!=null)flagship.sh=Math.max(0,Math.floor(state.ship.sh));}
       saveGame(true);
+      // 상단 시각: 드롭 아이템/함선/설계도 이미지 (없으면 🚀) + 랜덤 발견 멘트 (사용자 요청 2026-06-16)
+      const _flavorN=Math.floor(Math.random()*5)+1;
+      const _flavorLine=_dropNm?`<div style="color:#ffe6a8;font-size:14px;font-style:italic;line-height:1.5;margin-bottom:10px;padding:6px 12px;background:rgba(255,215,0,.06);border-radius:6px">${I18N.t('minireward.flavor'+_flavorN,{nm:_dropNm})}</div>`:'';
+      const _topVisual=_dropImg?`<div style="width:104px;height:104px;margin:0 auto 12px;border-radius:12px;overflow:hidden;border:2px solid #ffd700;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center"><img src="${_dropImg}" style="width:100%;height:100%;object-fit:contain" onerror="this.outerHTML='<div style=&quot;font-size:56px&quot;>🚀</div>'"></div>`:`<div style="font-size:48px;margin-bottom:10px">🚀</div>`;
       const msg=win?
-        `<div style="font-size:48px;margin-bottom:10px">🚀</div>
+        `${_topVisual}
          <div style="color:#ffd700;font-size:24px;font-weight:bold;letter-spacing:3px;margin-bottom:8px">${I18N.t('ui.asteroidBreakthrough')}</div>
+         ${_flavorLine}
          <div style="color:#66ff99;font-size:13px;line-height:1.9;margin-bottom:10px">${I18N.t('ui.shipsKilled',{n:state.kills,hp:Math.floor(state.ship.hp),max:state.ship.maxHP})}</div>
          <div style="color:#ffe;font-size:13px;line-height:1.9;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px 16px">
            ${I18N.t('ui.creditsRewardLine',{cr:rew.toLocaleString()})} <span style="color:#aaa;font-size:11px">${I18N.t('ui.rewardMultLine',{pct:Math.round(_killScale*100)})}</span><br>${I18N.t('ui.veRewardLine',{n:veRew})}
@@ -999,7 +1007,8 @@
            ${I18N.t('ui.creditsPenLine',{cr:pen.toLocaleString()})}
          </div>`;
       const result=document.createElement('div');
-      result.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,10,40,.96);border:2px solid '+(win?'#ffd700':'#ff6666')+';border-radius:12px;padding:24px 36px;text-align:center;min-width:320px;box-shadow:0 8px 48px rgba(180,80,255,.5);z-index:10';
+      // 팝업 1.5배 확대 (사용자 요청 2026-06-16) — 중앙 기준 scale
+      result.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(1.5);transform-origin:center;background:rgba(20,10,40,.96);border:2px solid '+(win?'#ffd700':'#ff6666')+';border-radius:12px;padding:24px 36px;text-align:center;min-width:320px;max-width:62vw;box-shadow:0 8px 48px rgba(180,80,255,.5);z-index:10';
       result.innerHTML=msg+'<button style="margin-top:14px;padding:10px 28px;background:rgba(180,80,255,.2);border:1.5px solid #cc66ff;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;letter-spacing:2px" onclick="(function(){var ov=document.getElementById(\'_ab-mini-overlay\');if(ov)ov.remove();})()">'+I18N.t('drop.continueBtn')+'</button>';
       overlay.appendChild(result);
     }

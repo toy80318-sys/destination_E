@@ -39,7 +39,8 @@
   const MYSTERY_BOX_TIERS={
     0:{cr:50000,  vc:0, ve:0,   label:I18N.t('mbox.label0'), rank:I18N.t('mbox.rank.common'), col:'#aaaaaa', bg:'rgba(120,120,140,.14)', bdr:'rgba(180,180,200,.45)'},
     1:{cr:100000, vc:0, ve:25,  label:I18N.t('mbox.label1'), rank:I18N.t('mbox.rank.rare'), col:'#88ccff', bg:'rgba(60,160,255,.14)',  bdr:'rgba(100,200,255,.5)'},
-    2:{cr:500000, vc:0, ve:100, label:I18N.t('mbox.label2'), rank:I18N.t('mbox.rank.hero'), col:'#cc88ff', bg:'rgba(160,80,255,.16)',  bdr:'rgba(200,120,255,.55)'}
+    2:{cr:500000, vc:0, ve:100, label:I18N.t('mbox.label2'), rank:I18N.t('mbox.rank.hero'), col:'#cc88ff', bg:'rgba(160,80,255,.16)',  bdr:'rgba(200,120,255,.55)'},
+    3:{cr:2500000, vc:0, ve:300, label:I18N.t('mbox.label3'), rank:I18N.t('mbox.rank.hero5'), col:'#ffae4d', bg:'rgba(255,150,50,.16)', bdr:'rgba(255,180,90,.6)', x5:true}
   };
   
   // 전설급 이상 판정 (폭죽 트리거 — 사용자 요청)
@@ -223,6 +224,7 @@
       shipTierW:{'소형':15,'중형':35,'대형':30,'전설기함':7,'신화':3}
     }
   };
+  MYSTERY_BOX_LOOT[3]=MYSTERY_BOX_LOOT[2];  // 영웅 ×5 — 영웅 풀 5회 사용 (사용자 요청 2026-06-16)
   function _weightedPick(weightMap){
     const entries=Object.entries(weightMap);
     const total=entries.reduce((s,[,w])=>s+w,0);
@@ -273,6 +275,48 @@
     return _pool[Math.floor(Math.random()*_pool.length)];
   }
   
+  // 미스테리박스 1회 뽑기 — 카테고리(설계도/파츠/함선)→등급 가중→인벤토리 반영. result 반환.
+  function _pullMysteryOnce(loot){
+    let result=null;
+    const _catR=Math.random();
+    let cat='ship';
+    if(_catR<loot.cat.bp)cat='bp';
+    else if(_catR<loot.cat.bp+loot.cat.part)cat='part';
+    if(cat==='bp'){
+      const bpTier=_weightedPick(loot.bpTier);
+      const _bp=_pickBpByTier(bpTier);
+      if(_bp){if(!G.blueprints)G.blueprints={};G.blueprints[_bp.id]=true;result={type:'bp',rec:_bp};}
+      else cat='part';
+    }
+    if(!result&&cat==='part'){
+      const rar=_weightedPick(loot.partRarW);
+      const _p=_pickPartByRarity(rar);
+      if(_p){_addPartToInventory(_p);result={type:'part',p:_p};}
+    }
+    if(!result){
+      const st=_weightedPick(loot.shipTierW);
+      const _s=_pickShipByTier(st);
+      if(_s)result=_spawnShipReward(_s);
+    }
+    return result;
+  }
+  // showAcquisitionReport 카드용 변환 (영웅×5 묶음 보상)
+  function _boxRewardItem(result){
+    if(!result)return null;
+    if(result.type==='bp'){
+      const _r=result.rec;
+      const _nm=(_r.type==='ship'?(shipDisplayNm(SHIP_CATALOG.find(s=>s.id===_r.id))||_r.nm):(partDisplayNm(PARTS.find(p=>p.id===_r.id)||SPECIAL_CARGO_PARTS.find(c=>c.id===_r.id)||{})||_r.nm));
+      const _img=(typeof window.bpImgSrc==='function')?window.bpImgSrc(_r.id,_r.type==='ship'?'ship':'part'):(_r.type==='ship'?'img/ui/BP01.png':'img/ui/BP02.png');
+      return {ic:'📜',nm:_nm,type:I18N.t('ui.bpAcquired'),rarity:_r.tier||'legend',img:_img};
+    }
+    if(result.type==='part'){
+      return {ic:'⚙️',nm:partDisplayNm(result.p)||result.p.nm,type:I18N.t('ui.partAcquired'),rarity:result.p.rarity||'N',img:(typeof partImgSrc==='function')?partImgSrc(result.p.id):('img/parts/'+result.p.id+'.png')};
+    }
+    if(result.type==='ship'){
+      return {ic:'🚀',nm:shipDisplayNm(result.s)||result.s.nm,type:I18N.tier(result.s.tier),rarity:result.s.tier,img:(typeof shipImgSrc==='function')?shipImgSrc({id:result.s.id,catalogId:result.s.id,tier:result.s.tier}):('img/ships/'+result.s.id+'.png')};
+    }
+    return null;
+  }
   function openMysteryBox(tier){
     tier=tier||1;
     const cfg=MYSTERY_BOX_TIERS[tier];
@@ -291,31 +335,28 @@
     try{saveGame(true);}catch(e){}
     if(!G.blueprints)G.blueprints={};
     if(!G.inventory)G.inventory=[];
+    // 영웅 ×5 (tier 3): 영웅 풀 5회 뽑아 묶음 보상 → showAcquisitionReport (사용자 요청 2026-06-16)
+    if(cfg.x5){
+      const _heroLoot=MYSTERY_BOX_LOOT[2];
+      const _items=[]; let _anyFanfare=false, _lastInfo=null;
+      for(let i=0;i<5;i++){
+        const r=_pullMysteryOnce(_heroLoot);
+        if(_isLegendOrAbove(r))_anyFanfare=true;
+        const it=_boxRewardItem(r); if(it){_items.push(it); _lastInfo=it;}
+      }
+      if(_lastInfo){G._lastTavernBoxReward={type:'box5',nm:_lastInfo.nm,boxTier:tier,img:_lastInfo.img,ic:_lastInfo.ic};}
+      try{
+        if(typeof window.showAcquisitionReport==='function'){
+          window.showAcquisitionReport({title:I18N.t('gacha.titlePrefix')+cfg.label,subtitle:I18N.t('mbox.x5Sub'),items:_items,color:cfg.col,rewardWide:true,onClose:function(){try{_maybeBlackMarketAmbush(null,tier);}catch(e){} saveGame(true); rerenderTab(renderTavernView);}});
+        }
+      }catch(e){}
+      if(_anyFanfare)_showFireworks();
+      saveGame(true);
+      return;
+    }
     const loot=MYSTERY_BOX_LOOT[tier];
-    let result=null;
-    // 1단계: 카테고리(설계도/파츠/함선) 결정 — bp는 미보유 설계도가 있을 때만 시도
-    const _catR=Math.random();
-    let cat='ship';
-    if(_catR<loot.cat.bp)cat='bp';
-    else if(_catR<loot.cat.bp+loot.cat.part)cat='part';
-    // 2단계: 카테고리 내부에서 등급 가중치로 뽑기
-    if(cat==='bp'){
-      const bpTier=_weightedPick(loot.bpTier);
-      const _bp=_pickBpByTier(bpTier);
-      if(_bp){G.blueprints[_bp.id]=true;result={type:'bp',rec:_bp};}
-      else cat='part'; // 미보유 설계도 없으면 파츠로 폴백
-    }
-    if(!result&&cat==='part'){
-      const rar=_weightedPick(loot.partRarW);
-      const _p=_pickPartByRarity(rar);
-      if(_p){_addPartToInventory(_p);result={type:'part',p:_p};}
-    }
-    if(!result){
-      const st=_weightedPick(loot.shipTierW);
-      const _s=_pickShipByTier(st);
-      if(_s)result=_spawnShipReward(_s);
-    }
-  
+    let result=_pullMysteryOnce(loot);
+
     // 결과 모달
     const _isFanfare=_isLegendOrAbove(result);
     let _title=I18N.t('gacha.titlePrefix')+cfg.label+(_isFanfare?I18N.t('gacha.fanfareSuffix'):'');
@@ -422,8 +463,8 @@
       // 등급별 상위 보상 확률 요약
       const loot=MYSTERY_BOX_LOOT[tier];
       const _legendPct=Math.round((loot.partRarW.L+loot.partRarW.set+loot.partRarW.mythic)/(loot.partRarW.N+loot.partRarW.R+loot.partRarW.H+loot.partRarW.L+loot.partRarW.set+loot.partRarW.mythic)*100);
-      return `<div style="background:${cfg.bg};border:1.5px solid ${aff?cfg.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;${aff?'':'opacity:.6'}">
-        ${_npcImg(_bmNpcType,cfg.col)}
+      return `<div style="background:${cfg.bg};border:1.5px solid ${aff?cfg.bdr:'rgba(80,80,80,.4)'};border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;${aff?'':'opacity:.6'}">
+        ${_npcImg(_bmNpcType,cfg.col,56)}
         <div style="flex:1;min-width:0">
           <div style="color:${cfg.col};font-size:12px;font-weight:bold">${_ic} ${cfg.label}</div>
           <div style="color:var(--dim);font-size:9px;line-height:1.3">${I18N.t('ui.lootCategoryPct',{bp:Math.round(loot.cat.bp*100),part:Math.round(loot.cat.part*100),ship:Math.round(loot.cat.ship*100),legend:_legendPct})}</div>
@@ -600,9 +641,12 @@
         <!-- RIGHT: 블랙마켓 자와 -->
         <div style="flex:1;display:flex;flex-direction:column;background:rgba(255,80,150,.04);overflow:hidden;min-width:0">
           <!-- 헤더 -->
-          <div style="padding:8px 12px;border-bottom:1px solid rgba(255,80,150,.3);flex-shrink:0;background:rgba(5,10,22,.6)">
-            <div style="color:#ff66bb;font-size:13px;font-weight:bold">${I18N.t('ui.blackmarketZawaTitle')}</div>
-            <div style="color:var(--dim);font-size:10px;margin-top:1px">${I18N.t('ui.gachaTierBoostHint')}</div>
+          <div style="padding:8px 12px;border-bottom:1px solid rgba(255,80,150,.3);flex-shrink:0;background:rgba(5,10,22,.6);display:flex;align-items:center;gap:10px">
+            <div style="flex:1;min-width:0">
+              <div style="color:#ff66bb;font-size:13px;font-weight:bold">${I18N.t('ui.blackmarketZawaTitle')}</div>
+              <div style="color:var(--dim);font-size:10px;margin-top:1px">${I18N.t('ui.gachaTierBoostHint')}</div>
+            </div>
+            ${_bmHere?`<div style="text-align:right;flex-shrink:0;font-size:11px;line-height:1.4;white-space:nowrap"><span style="color:#ff66bb;font-weight:bold">${I18N.t('plaza.zawaHere',{nm:pd?.nm||I18N.t('qcard.dest')})}</span> · <span style="color:var(--dim);font-size:10px">${I18N.t('ui.fadesNextTurn')}</span></div>`:''}
           </div>
           <!-- 본문 — 좌측과 동일 구조: 카드 행 → spacer → 버튼 → spacer -->
           <div style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;min-height:0">
@@ -610,15 +654,8 @@
             ${rightResultHtml}
             <div style="flex:1;min-height:14px"></div>
             ${_bmHere
-              ? `<div style="display:flex;flex-direction:column;gap:8px">
-                  <div style="background:linear-gradient(135deg,rgba(80,0,40,.25),rgba(40,0,80,.25));border:1px solid rgba(255,80,150,.4);border-radius:8px;padding:7px 11px;display:flex;align-items:center;gap:8px;flex-shrink:0">
-                    <span style="font-size:18px">🎁</span>
-                    <div style="flex:1;min-width:0">
-                      <div style="color:#ff66bb;font-size:11px;font-weight:bold">${I18N.t('plaza.zawaHere',{nm:pd?.nm||I18N.t('qcard.dest')})}</div>
-                      <div style="color:var(--dim);font-size:10px;line-height:1.4">${I18N.t('ui.fadesNextTurn')}</div>
-                    </div>
-                  </div>
-                  ${_bmBtn(0)}${_bmBtn(1)}${_bmBtn(2)}
+              ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  ${_bmBtn(0)}${_bmBtn(1)}${_bmBtn(2)}${_bmBtn(3)}
                 </div>`
               : `<div style="background:rgba(20,20,30,.35);border:1px dashed rgba(255,255,255,.12);border-radius:10px;padding:14px;text-align:center">
                   <div style="font-size:30px;opacity:.4;margin-bottom:6px">🎁</div>
