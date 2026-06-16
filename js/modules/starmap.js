@@ -46,7 +46,9 @@
       </div>
       <!-- 행성 호버 툴팁 (마우스오버 시 문화권/팩션 미리보기) -->
       <div id="map-hover" style="display:none;position:absolute;pointer-events:none;z-index:11;background:rgba(5,12,26,.96);border:1px solid var(--cyan);border-radius:6px;padding:6px 10px;font-size:12px;white-space:nowrap;box-shadow:0 2px 12px rgba(0,243,255,.25);transform:translate(-50%,calc(-100% - 14px))"></div>
-    </div>`;
+    </div>
+    <!-- 탐색 도감 설명 — 은하지도 아래 (사용자 요청 2026-06-16) -->
+    <div style="flex-shrink:0;padding:7px 14px;background:rgba(13,26,42,.92);border-top:1px solid var(--bdr);font-size:11px;color:var(--dim);line-height:1.55;word-break:keep-all">${I18N.t('map.codexHint')}</div>`;
     G.mapSelected=null;
     // 레이아웃 완료 대기 후 캔버스 초기화 (다중 재시도)
     function tryInitMap(attempt){

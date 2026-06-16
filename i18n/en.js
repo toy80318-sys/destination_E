@@ -3464,6 +3464,7 @@ I18N.registerLocale("en", {
   "heroGreet.H07": "Current finds its path. I shall send my lightning to the enemy.",
   "heroGreet.H08": "So many uncharted routes — and you want to stay still? Commander, let's set sail!",
   "map.help": "[🖱️ L-click→move  R-click→3D rotate  Wheel→zoom  Click planet→select]",
+  "map.codexHint": "📖 Exploration Codex — an archive collecting the ships, parts, characters, planets, goods, civilizations, survival knowledge, and voyage log (Baekgu's diary) you discover on your journey. Open it from 'Exploration Codex' in the left menu.",
   "faction.desc.F01": "🏛️ Superbia — Nobility & politics civilization",
   "faction.desc.F02": "💰 Aureus — Finance & capital civilization",
   "faction.desc.F03": "🤖 Mechanica — Machine & robot republic",
