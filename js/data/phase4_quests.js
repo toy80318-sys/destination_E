@@ -230,7 +230,7 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1804', type:'story_quest', category:'sub', phase:4,
       ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'기가-넷 허브 협곡 잔해 탐색', en:'Giga-Net Hub Canyon Wreck'},
+      nm:{ko:'기가툼 협곡 잔해 탐색', en:'Giga-Net Hub Canyon Wreck'},
       desc:{ko:'잠복 협곡 잔해 — 과거 메카니카-크리그 충돌. 잔해 탐색 3회.',
             en:'Search 3× in canyon.'},
       objectives:[
@@ -266,8 +266,8 @@ const PHASE4_QUESTS={
       id:'p4_q1901', type:'story_quest', category:'main', phase:4,
       ic:'🔓', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'요새 코드 위조', en:'Forge Fort Code'},
-      desc:{ko:'Kepler-442b 요새 진입 코드 위조 — 아우레우스 정보 칩 정보 칩 ×3 + 메카니카 자동화 부품 ×2 소비. 마르코 폴로의 위조 기술.',
-            en:'Forge Kepler-442b entry code: Aureus Information Chip ×3 + Mechanica Automation Part ×2.'},
+      desc:{ko:'슈멜츠 요새 진입 코드 위조 — 아우레우스 정보 칩 정보 칩 ×3 + 메카니카 자동화 부품 ×2 소비. 마르코 폴로의 위조 기술.',
+            en:'Forge Schmelz entry code: Aureus Information Chip ×3 + Mechanica Automation Part ×2.'},
       objectives:[
         {type:'gather', item:'G24', qty:3, label:{ko:'아우레우스 정보 칩 ×3 위조 재료', en:'Aureus Information Chip ×3 forge'}},
       ],
@@ -307,11 +307,11 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1904', type:'story_quest', category:'sub', phase:4,
       ic:'🏛️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'아레스-III 행성 경매', en:'Ares-III Auction'},
-      desc:{ko:'아레스-III 경매. 즉구 ~95,000₡ / 최저 ~28,500₡.\n낙찰 시 매 턴 6,000₡ 세금 + 아우레우스 아우레우스 정보 칩 메카니카 자동화 부품 상시 구매.',
-            en:'Ares-III auction. Buyout ~95,000₡. Owner → 6,000/turn + Aureus Information Chip/Mechanica Automation Part shop.'},
+      nm:{ko:'페스작센 행성 경매', en:'Fessachsen Auction'},
+      desc:{ko:'페스작센 경매. 즉구 ~95,000₡ / 최저 ~28,500₡.\n낙찰 시 매 턴 6,000₡ 세금 + 아우레우스 아우레우스 정보 칩 메카니카 자동화 부품 상시 구매.',
+            en:'Fessachsen auction. Buyout ~95,000₡. Owner → 6,000/turn + Aureus Information Chip/Mechanica Automation Part shop.'},
       objectives:[
-        {type:'explore', target:'p16_auction', qty:1, label:{ko:'아레스-III 경매', en:'Auction'}},
+        {type:'explore', target:'p16_auction', qty:1, label:{ko:'페스작센 경매', en:'Auction'}},
       ],
       rewardCr:0, rewardVe:0,
       rewardItems:[],
@@ -357,7 +357,7 @@ const PHASE4_QUESTS={
       id:'p4_q2001', type:'story_quest', category:'main', phase:4,
       ic:'⚔️', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'아이젠클로 친위대 격파', en:'Eisenklau Guard Down'},
-      desc:{ko:'Kepler-442b 요새 외곽 친위대 7기 격파. 거북선 첫 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
+      desc:{ko:'슈멜츠 요새 외곽 친위대 7기 격파. 거북선 첫 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
             en:'Destroy 7 guards. Geobukseon\'s first sortie.'},
       objectives:[
         {type:'combat', target:'p14_guards', qty:1, label:{ko:'친위대 7기 격파', en:'7 guards down'}},
@@ -413,7 +413,7 @@ const PHASE4_QUESTS={
       id:'p4_q2005', type:'story_quest', category:'hidden', phase:4,
       ic:'🏆', npc:'광개토대왕', npcIc:'🛡️', npcKey:'hero03',
       nm:{ko:'정복자의 깃발', en:'Conqueror\'s Banner'},
-      desc:{ko:'Kepler-442b 요새 점령 후 광개토가 깃발을 꽂는다. 강습 스파이크 ×3 → 정복 의례.\n광개토: "이 요새는 이제 우리 것이다."',
+      desc:{ko:'슈멜츠 요새 점령 후 광개토가 깃발을 꽂는다. 강습 스파이크 ×3 → 정복 의례.\n광개토: "이 요새는 이제 우리 것이다."',
             en:'Assault Spike ×3 → Conquest banner. Gwanggaeto: "This fort is ours now."'},
       objectives:[
         {type:'gather', item:'G12', qty:3, label:{ko:'강습 스파이크 ×3 의례', en:'Assault Spike ×3 rite'}},
@@ -436,7 +436,7 @@ const PHASE4_CUTSCENES_KO={
   // ─── CH08-A "용골을 세운다" (P15 도착) ───
   p4_ch08a:[
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 제조 중이야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'Kepler-22b에서 도망쳤던 그 놈이 여기 있군.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠콕에서 도망쳤던 그 놈이 여기 있군.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'잠깐. 크리그 내부 정보망이 잡혔어. 공장 노동자 중에 반란 움직임이 있다고.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'반란군... 이용할 수 있어. 공장 설비를 가동하면 크리그 마그마 코어도 얻을 수 있고.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'둘 다 잡자. 아이젠클로 추격 + 크리그 마그마 코어 확보.'}
@@ -445,7 +445,7 @@ const PHASE4_CUTSCENES_KO={
     // ─── CH08-B "용골 완성" (Q16-01 완료) ───
   p4_ch08b:[
     {char:'volcan', name:'반란군 리더 \'볼칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸우는 {회사}야. 우리 스파크는 크리그 공장 노동자들의 자유 민병대야. 요새에 우리 동료들이 감금돼 있어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래 가능하겠네. 우리가 케플러-452b에 가면 당신 동료를 돕고, 당신들은 크리그 내부 항로 정보를 준다.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래 가능하겠네. 우리가 카토닉에 가면 당신 동료를 돕고, 당신들은 크리그 내부 항로 정보를 준다.'},
     {char:'volcan', name:'볼칸', color:'#9ee7ff', text:'그것뿐만 아니라 — 마그마 코어 비축고. 당신들이 뭘 만들려는지 모르지만, 필요하면 가져가.'}
   ],
 
@@ -520,7 +520,7 @@ const PHASE4_CUTSCENES_KO={
   // ─── CH10-B "요새 돌파" (P14 도착) ───
   p4_ch10b:[
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'거북선 초도 비행 테스트. 준비됐습니까?'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 아이젠클로의 본거지 아레스-III을 부수러 가는 거야.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 아이젠클로의 본거지 페스작센을 부수러 가는 거야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 5 — 행성 21~25. 아이젠클로 최후. 거북선으로 결전이야.'}
   ],
 
@@ -531,9 +531,9 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#ffd700', text:'제타 레티쿨리. 우르사 메이저 본거지.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우르사가 아이젠클로를 비호 중이라는 거잖아. 마지막 일전이 다가왔어.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 보스다. 직접 잡아야 끝난다.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 b 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},
+    {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아인슈타인 영입 → 보이드 횡단 → 우르사 격파 → 지구 해방. 순서가 정해졌다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 페이즈 5 — 행성 캅테인 b 균열~지구 · 아인슈타인 합류 · 보이드 균열 횡단 · 우르사 메이저 격파 · 지구 해방.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 페이즈 5 — 행성 캅테인 균열~지구 · 아인슈타인 합류 · 보이드 균열 횡단 · 우르사 메이저 격파 · 지구 해방.'}
   ]
 };
 
@@ -542,7 +542,7 @@ const PHASE4_CUTSCENES_EN={
   // ─── CH08-A "Lay the Keel" (P15 arrival) ───
   p4_ch08a:[
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'I decrypted the logs with the data decoder — Eisenklaue is personally directing this planet\'s factory. They\'re manufacturing the core for their bio-weapon right here.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So the one who fled from Kepler-22b is here.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So the one who fled from Eisenkock is here.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Wait. I\'ve tapped into Krieg\'s internal network. They say there\'s a rebellion stirring among the factory workers.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Rebels... we can use that. If we get the factory running, we can secure the Krieg Magma Core too.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We take both. Hunt down Eisenklaue, and secure the Krieg Magma Core.'}
@@ -551,7 +551,7 @@ const PHASE4_CUTSCENES_EN={
     // ─── CH08-B "Keel Complete" (Q16-01 done) ───
   p4_ch08b:[
     {char:'volcan', name:'Rebel Leader \'Volcan\'', color:'#9ee7ff', text:'So you\'re the {company} fighting alongside the resistance. Our Spark is the free militia of the Krieg factory workers. Our comrades are locked up inside the fortress.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. When we reach Kepler-452b, we\'ll help free your comrades — and you give us Krieg\'s internal route data.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. When we reach Catonic, we\'ll help free your comrades — and you give us Krieg\'s internal route data.'},
     {char:'volcan', name:'Volcan', color:'#9ee7ff', text:'And more than that — a magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
   ],
 
@@ -607,7 +607,7 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── CH10-A2 "Echo of Trafalgar" (Q19-05 start · meet Nelson) ───
   p4_ch10a2:[
-    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'On the frontier of Kepler-442b — wreckage signal detected at coordinates roughly 200 years old. Royal Navy identification code \'HMS Victory\'.'},
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'On the frontier of Schmelz — wreckage signal detected at coordinates roughly 200 years old. Royal Navy identification code \'HMS Victory\'.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Victory... the flagship of Trafalgar.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Admiral Nelson of Britain — fell at the Battle of Trafalgar in 1805. But the Victory, out in space? This — this is a deep-space preservation capsule.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Analyzing the coordinates with the Aureus Information Chip. We\'re going in.'}
@@ -626,7 +626,7 @@ const PHASE4_CUTSCENES_EN={
   // ─── CH10-B "Break the Fortress" (P14 arrival) ───
   p4_ch10b:[
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'The Geobukseon\'s maiden flight test. Are you ready?'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'With this, we go to smash Eisenklaue\'s stronghold, Ares-III.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'With this, we go to smash Eisenklaue\'s stronghold, Fessachsen.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 5 — planets 21 through 25. The end of Eisenklaue. The final battle, aboard the Geobukseon.'}
   ],
 

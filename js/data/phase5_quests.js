@@ -21,7 +21,7 @@ const PHASE5_QUESTS={
       id:'p5_q2101', type:'story_quest', category:'main', phase:5,
       ic:'🌀', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_advice',
       nm:{ko:'캅테인b 균열 진입', en:'Enter Kapteyn-b Rift'},
-      desc:{ko:'캅테인 b 균열 보이드 균열 — 우주 시공이 불안정. 아우레우스 태양핵 안정화 코어 ×3 + 메카니카 양자칩 차폐 합금 ×3 소비.\n백구: "균열 진입 시 함대 손상 최소화 — 안정화가 필수예요."',
+      desc:{ko:'캅테인 균열 보이드 균열 — 우주 시공이 불안정. 아우레우스 태양핵 안정화 코어 ×3 + 메카니카 양자칩 차폐 합금 ×3 소비.\n백구: "균열 진입 시 함대 손상 최소화 — 안정화가 필수예요."',
             en:'Stabilize before entry: Aureus Solar Core ×3 + Mechanica Quantum Chip ×3.'},
       objectives:[
         {type:'gather', item:'R03', qty:3, label:{ko:'아우레우스 태양핵 안정화 코어 ×3', en:'Aureus Solar Core ×3 stabilize'}},
@@ -154,7 +154,7 @@ const PHASE5_QUESTS={
       id:'p5_q2204', type:'story_quest', category:'sub', phase:5,
       ic:'🤝', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 최종 지원 요청', en:'Resistance Final Support'},
-      desc:{ko:'타이탄 기지 저항군 본부 통신 — 저항군 반물질 반물질 ×10 추가 지원 요청. 저항군 군수품 저항군 의례 ×3 + 난중일기 영인본 ×2 제공.\n레인저: "지구 해방 — 우리 모두의 꿈이에요. 함대를 보냅니다."',
+      desc:{ko:'타이탄H 저항군 본부 통신 — 저항군 반물질 반물질 ×10 추가 지원 요청. 저항군 군수품 저항군 의례 ×3 + 난중일기 영인본 ×2 제공.\n레인저: "지구 해방 — 우리 모두의 꿈이에요. 함대를 보냅니다."',
             en:'Resistance Military Supplies ×3 + "Nanjung Ilgi" Facsimile ×2 → Resistance pledges Resistance Antimatter ×10 + fleet for Earth liberation.'},
       objectives:[
         {type:'gather', item:'G13', qty:3, label:{ko:'저항군 군수품 ×3 의례', en:'Resistance Military Supplies ×3'}},
@@ -205,7 +205,7 @@ const PHASE5_CUTSCENES_KO={
 
   // ─── CH11-A "균열의 가장자리" (P28 도착) ───
   p5_ch11a:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'캅테인 b 균열 캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'캅테인 균열 캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'단신으로? 미친 짓이야.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'그게 그의 방식이지. 이론을 몸으로 증명하는 거.'},

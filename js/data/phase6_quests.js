@@ -124,7 +124,7 @@ const PHASE6_QUESTS={
       id:'p6_q2401', type:'story_quest', category:'main', phase:6,
       ic:'🌍', npc:'사령관', npcIc:'⚓', npcKey:'commander',
       nm:{ko:'지구 착륙', en:'Earth Landing'},
-      desc:{ko:'100년 만의 지구 착륙. 봉쇄가 풀린 지구 — 새로운 시작.\n자유 항해 모드 활성화 (프록시마 b~지구 자유 이동 + 모든 행성 경매 가능).',
+      desc:{ko:'100년 만의 지구 착륙. 봉쇄가 풀린 지구 — 새로운 시작.\n자유 항해 모드 활성화 (프록시마B~지구 자유 이동 + 모든 행성 경매 가능).',
             en:'First landing in 100 years. Free roam mode unlocked.'},
       objectives:[
         {type:'delivery', target:'P31', qty:1, label:{ko:'지구 도착', en:'Arrive at Earth'}},
@@ -300,8 +300,8 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH15-A "명예의 전당" (Q24-05 완료 · 엔딩) ───
   p6_ch15a:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마 b부터 글리제 581g 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 b 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
+    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.'},
     {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.'}
   ],
@@ -409,8 +409,8 @@ const PHASE6_CUTSCENES_EN={
 
   // ─── CH15-A "Hall of Fame" (Q24-05 complete · ending) ───
   p6_ch15a:[
-    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima b to the Gliese 581g Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn b Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima B to the Gliese Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Only once the governorship auctions are won and the defense fleets deployed will the galaxy be stable.'},
     {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'The Void planets are... going to be different somehow. They were the worlds that lay beneath Ursa Major, after all.'}
   ],

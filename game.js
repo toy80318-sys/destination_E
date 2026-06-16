@@ -250,7 +250,7 @@ function initGame(){
   generateShopStock('P01');
   // 시작 행성 P01(프록시마b·수퍼비아 F01): 광장(1회)·도크(2회) 이미 해금 상태로 시작 (프론트 1회 남음)
   G.planets['P01'].hubProg=2;
-  // 튜토리얼 편의: P02(센타우리 에코 c·수퍼비아 F01) 광장(상점·주점·제독) 1회 해금 — 첫 이동 시 즉시 거래/판매 가능
+  // 튜토리얼 편의: P02(센타우리 에코·수퍼비아 F01) 광장(상점·주점·제독) 1회 해금 — 첫 이동 시 즉시 거래/판매 가능
   if(G.planets['P02'])G.planets['P02'].hubProg=Math.max(G.planets['P02'].hubProg||0,1);
 }
 

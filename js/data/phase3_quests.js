@@ -22,7 +22,7 @@ const PHASE3_QUESTS={
       id:'p3_q1101', type:'story_quest', category:'main', phase:3,
       ic:'🛬', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 기지 착지 허가', en:'Echo Base Landing'},
-      desc:{ko:'착지 코드 대신 강습 스파이크 ×1 제공(크리그 획득 물자 — 저항군 정보가치 입증) → 지하 방공호 에코 기지 착지 허가.\n레인저: "이순신 장군... 살아계셨군요."',
+      desc:{ko:'착지 코드 대신 강습 스파이크 ×1 제공(크리그 획득 물자 — 저항군 정보가치 입증) → 벙커존 에코 기지 착지 허가.\n레인저: "이순신 장군... 살아계셨군요."',
             en:'Submit Assault Spike ×1 (Krieg materiel) instead of code → Echo Base landing approved. Ranger: "Admiral... you live."'},
       objectives:[
         {type:'gather', item:'G12', qty:1, label:{ko:'강습 스파이크 ×1 제출', en:'Submit Assault Spike ×1'}},
@@ -81,11 +81,11 @@ const PHASE3_QUESTS={
     {
       id:'p3_q1105', type:'story_quest', category:'sub', phase:3,
       ic:'🏛️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'지하 방공호 에코 행성 경매', en:'Underground Bunker Echo Auction'},
-      desc:{ko:'에코 기지 경매소에서 지하 방공호 행성 소유권 경매. 즉시구매 ~71,760₡ / 최저입찰 ~21,528₡.\n낙찰 시 지하 방공호 매 턴 세금 5,000₡ 수입 + 저항군 함선 상시 구매 가능.',
-            en:'Bid on Underground Bunker ownership. Buyout ~71,760₡, min bid ~21,528₡. Owning → 5,000₡/turn tax + resistance ship access.'},
+      nm:{ko:'벙커존 에코 행성 경매', en:'Bunker Zone Echo Auction'},
+      desc:{ko:'에코 기지 경매소에서 벙커존 행성 소유권 경매. 즉시구매 ~71,760₡ / 최저입찰 ~21,528₡.\n낙찰 시 벙커존 매 턴 세금 5,000₡ 수입 + 저항군 함선 상시 구매 가능.',
+            en:'Bid on Bunker Zone ownership. Buyout ~71,760₡, min bid ~21,528₡. Owning → 5,000₡/turn tax + resistance ship access.'},
       objectives:[
-        {type:'explore', target:'p22_auction', qty:1, label:{ko:'지하 방공호 경매 참여', en:'Participate auction'}},
+        {type:'explore', target:'p22_auction', qty:1, label:{ko:'벙커존 경매 참여', en:'Participate auction'}},
       ],
       rewardCr:0, rewardVe:0,
       rewardItems:[],
@@ -97,8 +97,8 @@ const PHASE3_QUESTS={
       id:'p3_q11m', type:'story_quest', category:'hidden', phase:3,
       ic:'🤝', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 1차 연대 합의', en:'Resistance Pact (1st)'},
-      desc:{ko:'지구 철광석 ×2 소비(저항군 전통 연대 의식) → 1차 연대 협약 체결.\n레인저: "R06 반물질 5단 팩을 드릴게요. 더 필요하면 P26 본부에 오세요."',
-            en:'Earth Iron Ore ×2 → 1st pact. Ranger: "R06 ×5 pack. More at P26 HQ."'},
+      desc:{ko:'지구 철광석 ×2 소비(저항군 전통 연대 의식) → 1차 연대 협약 체결.\n레인저: "저항군 반물질 5단 팩을 드릴게요. 더 필요하면 P26 본부에 오세요."',
+            en:'Earth Iron Ore ×2 → 1st pact. Ranger: "Resistance Antimatter ×5 pack. More at P26 HQ."'},
       objectives:[
         {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 의식', en:'Earth Iron Ore ×2 pact ritual'}},
       ],
@@ -164,7 +164,7 @@ const PHASE3_QUESTS={
       id:'p3_q1204', type:'story_quest', category:'sub', phase:3,
       ic:'🔍', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'오딧세이 잔해 탐색', en:'Odyssey Wreck Search'},
-      desc:{ko:'오그렌 격퇴 후 외곽 잔해 구역 정리. 잔해 탐색 3회.\n탐색 중 워덴클리프 설계도 조각 5% 드롭 (화성 저항군 드롭 행성).',
+      desc:{ko:'오그렌 격퇴 후 외곽 잔해 구역 정리. 잔해 탐색 3회.\n탐색 중 워덴클리프 설계도 조각 5% 드롭 (뉴 마스 드롭 행성).',
             en:'3× wreck search. 5% Wardenclyffe blueprint chance.'},
       objectives:[
         {type:'explore', target:'p23_wreck', qty:3, label:{ko:'잔해 탐색 ×3', en:'Wreck ×3'}},
@@ -178,11 +178,11 @@ const PHASE3_QUESTS={
     {
       id:'p3_q1205', type:'story_quest', category:'sub', phase:3,
       ic:'📈', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'화성 저항군 오딧세이 행성 투자', en:'Mars Resistance Investment'},
-      desc:{ko:'오딧세이 기지 경제권 확보. 화성 저항군 커머스 레벨 1 투자(~30,240₡) → 매 턴 세금 수입 +20% (5,000→6,000₡).',
-            en:'Invest Mars Resistance commerce L1 (~30,240₡) → +20% tax/turn.'},
+      nm:{ko:'뉴 마스 오딧세이 행성 투자', en:'New Mars Investment'},
+      desc:{ko:'오딧세이 기지 경제권 확보. 뉴 마스 커머스 레벨 1 투자(~30,240₡) → 매 턴 세금 수입 +20% (5,000→6,000₡).',
+            en:'Invest New Mars commerce L1 (~30,240₡) → +20% tax/turn.'},
       objectives:[
-        {type:'explore', target:'p23_commerce', qty:1, label:{ko:'화성 저항군 커머스 L1 투자', en:'Invest commerce L1'}},
+        {type:'explore', target:'p23_commerce', qty:1, label:{ko:'뉴 마스 커머스 L1 투자', en:'Invest commerce L1'}},
       ],
       rewardCr:50000, rewardVe:30,
       rewardItems:[],
@@ -192,7 +192,7 @@ const PHASE3_QUESTS={
   ],
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 13 · P08 아우레우스 글리제 667Cc (코르넬리우스 본사)
+  // 행성 13 · P08 아우레우스 글리제 (코르넬리우스 본사)
   // 팩션 특산물: G04·G06·G23·G24·R03
   // 광개토대왕(H03) 사전 등록 행성
   // ════════════════════════════════════════════════════════════════
@@ -202,7 +202,7 @@ const PHASE3_QUESTS={
       id:'p3_q1301', type:'story_quest', category:'main', phase:3,
       ic:'📡', npc:'닥터 에바', npcIc:'👩‍🔬', npcKey:'gather_F02',
       nm:{ko:'닥터 에바 접선', en:'Contact Dr. Eva'},
-      desc:{ko:'글리제 667Cc 글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\nG04 아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발테르 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
+      desc:{ko:'글리제 글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\nG04 아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발테르 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
             en:'Aureus Gold Ingot ×2 → meet Eva. "Walter sends data to Eisenklaue. Warehouse server has transfer logs."'},
       objectives:[
         {type:'gather', item:'G04', qty:2, label:{ko:'아우레우스 금괴 ×2 접선 비용', en:'Aureus Gold Ingot ×2 contact fee'}},
@@ -247,9 +247,9 @@ const PHASE3_QUESTS={
     {
       id:'p3_q1304', type:'story_quest', category:'sub', phase:3,
       ic:'🔧', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
-      nm:{ko:'글리제 667Cc 정비소 수리', en:'Gliese 667Cc Repair Shop'},
-      desc:{ko:'코르넬리우스 보안팀과의 전투로 {함선} 손상. 글리제 667Cc 정비소에서 수리.\n장영실(통신): "이번엔 내가 미리 봐줄게. 다음엔 내 작업실로 와."',
-            en:'Repair {ship} at Gliese 667Cc. Jang Yeong-sil (radio): "I\'ll prep it remotely. Next time, my workshop."'},
+      nm:{ko:'글리제 정비소 수리', en:'Gliese Repair Shop'},
+      desc:{ko:'코르넬리우스 보안팀과의 전투로 {함선} 손상. 글리제 정비소에서 수리.\n장영실(통신): "이번엔 내가 미리 봐줄게. 다음엔 내 작업실로 와."',
+            en:'Repair {ship} at Gliese. Jang Yeong-sil (radio): "I\'ll prep it remotely. Next time, my workshop."'},
       objectives:[
         {type:'explore', target:'p08_repair', qty:1, label:{ko:'정비소 수리 완료', en:'Complete repair'}},
       ],
@@ -279,8 +279,8 @@ const PHASE3_QUESTS={
       id:'p3_q13h', type:'story_quest', category:'hidden', phase:3,
       ic:'⚜️', npc:'광개토대왕', npcIc:'🏹', npcKey:'hero03',
       nm:{ko:'광개토대왕 첫 만남', en:'Meet Gwanggaeto'},
-      desc:{ko:'글리제 667Cc 항구 — 고구려 기치를 단 대형 상선. 광개토(H03) 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, P08 경매에서 최고가를 내야 하오."\n→ H03 합류 조건 등록 (Phase 4 P08 경매 낙찰 ~4,100만₡).',
-            en:'Gwanggaeto (H03) appears at Gliese 667Cc port. Condition: win Gliese 667Cc auction (~41M₡) in Phase 4.'},
+      desc:{ko:'글리제 항구 — 고구려 기치를 단 대형 상선. 광개토(H03) 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, P08 경매에서 최고가를 내야 하오."\n→ H03 합류 조건 등록 (Phase 4 P08 경매 낙찰 ~4,100만₡).',
+            en:'Gwanggaeto (H03) appears at Gliese port. Condition: win Gliese auction (~41M₡) in Phase 4.'},
       objectives:[
         {type:'explore', target:'meet_gwanggaeto', qty:1, label:{ko:'광개토와 대화', en:'Talk to Gwanggaeto'}},
       ],
@@ -334,7 +334,7 @@ const PHASE3_QUESTS={
       ic:'⚔️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'크리그 정찰대 격퇴', en:'Repel Krieg Patrol'},
       desc:{ko:'가가린: "크리그 정찰함 2기가 기어월드에 접근 중이야. P08 코르넬리우스 사건 때문에 추적해온 것 같아."\n정찰대 격퇴. 장영실: "...고마워. 내 작업실까지 들이닥칠 뻔했어."',
-            en:'Defeat 2 Krieg patrol ships pursuing from Gliese 667Cc. Jang: "Thanks. They almost reached my shop."'},
+            en:'Defeat 2 Krieg patrol ships pursuing from Gliese. Jang: "Thanks. They almost reached my shop."'},
       objectives:[
         {type:'combat', target:'krieg_patrol', qty:2, label:{ko:'크리그 정찰함 ×2', en:'Krieg patrol ×2'}},
       ],
@@ -402,9 +402,9 @@ const PHASE3_QUESTS={
     {
       id:'p3_q1501', type:'story_quest', category:'main', phase:3,
       ic:'🏛️', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
-      nm:{ko:'타이탄 기지 저항군 본부 합류', en:'Resistance HQ Arrival'},
-      desc:{ko:'타이탄 기지 최고 사령부 정식 입장. 레인저 브리핑 — 저항군 전체 병력 현황 + 크리그 Kepler-442b 거점 정보 공유.',
-            en:'Official entry. Ranger briefing on full Resistance forces + Krieg Kepler-442b base intel.'},
+      nm:{ko:'타이탄H 저항군 본부 합류', en:'Resistance HQ Arrival'},
+      desc:{ko:'타이탄H 최고 사령부 정식 입장. 레인저 브리핑 — 저항군 전체 병력 현황 + 크리그 슈멜츠 거점 정보 공유.',
+            en:'Official entry. Ranger briefing on full Resistance forces + Krieg Schmelz base intel.'},
       objectives:[
         {type:'explore', target:'p26_arrival', qty:1, label:{ko:'본부 브리핑 청취', en:'Receive HQ briefing'}},
       ],
@@ -418,7 +418,7 @@ const PHASE3_QUESTS={
       id:'p3_q1502', type:'story_quest', category:'main', phase:3,
       ic:'🤝', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 자원 지원 협상', en:'Geobukseon Resource Talks'},
-      desc:{ko:'레인저에게 저항군 반물질 반물질 비축분 협상. 장영실이 거북선 설계 도면 제시.\nG15 ×2 + 지구 빈티지 씨앗 ×1 소비(협상 성의 표시 — 지구 전통 방식) → 레인저 동의.\n레인저: "저항군 비축 R06 10단 팩. 거북선이 완성되면 우리 기함으로 써주세요."',
+      desc:{ko:'레인저에게 저항군 반물질 반물질 비축분 협상. 장영실이 거북선 설계 도면 제시.\nG15 ×2 + 지구 빈티지 씨앗 ×1 소비(협상 성의 표시 — 지구 전통 방식) → 레인저 동의.\n레인저: "저항군 비축 반물질 10단 팩. 거북선이 완성되면 우리 기함으로 써주세요."',
             en:'Earth Iron Ore ×2 + Earth Vintage Seeds ×1 sincerity offering → Ranger agrees. Resistance Antimatter ×10 pack secured.'},
       objectives:[
         {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 협상 성의', en:'Earth Iron Ore ×2 sincerity'}},
@@ -463,9 +463,9 @@ const PHASE3_QUESTS={
     {
       id:'p3_q1505', type:'story_quest', category:'sub', phase:3,
       ic:'📜', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
-      nm:{ko:'타이탄 기지 아카이브 — 설계도 탐색', en:'Titan Base Archive — Blueprints'},
-      desc:{ko:'저항군 기술 아카이브 전면 탐색. 타이탄 기지은 거북선 / H10 레비아탄 / H12 우르사 파쇄기 설계도 드롭 행성.\n탐색 중 각 5% 확률로 설계도 조각 획득.',
-            en:'Search Titan Base archive. 5% each for Geobukseon / H10 Leviathan / H12 Ursa Crusher fragments.'},
+      nm:{ko:'타이탄H 아카이브 — 설계도 탐색', en:'Titan H Archive — Blueprints'},
+      desc:{ko:'저항군 기술 아카이브 전면 탐색. 타이탄H은 거북선 / H10 레비아탄 / H12 우르사 파쇄기 설계도 드롭 행성.\n탐색 중 각 5% 확률로 설계도 조각 획득.',
+            en:'Search Titan H archive. 5% each for Geobukseon / H10 Leviathan / H12 Ursa Crusher fragments.'},
       objectives:[
         {type:'explore', target:'p26_archive', qty:3, label:{ko:'아카이브 탐색 ×3', en:'Archive search ×3'}},
       ],
@@ -479,8 +479,8 @@ const PHASE3_QUESTS={
       id:'p3_q15m', type:'story_quest', category:'hidden', phase:3,
       ic:'🛠️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 제작 준비 선언', en:'Geobukseon Forge Ready'},
-      desc:{ko:'장영실이 타이탄 기지 제작 베이에서 거북선 제작 준비 완료 선언.\n거북선(거북선) 레시피 잠금 해제 → 도크 제작 탭에서 거북선 제작 가능.\n재료 조건: 저항군 반물질 ×25 / 은하 혼돈 결정 ×15 / 수퍼비아 중력자 ×10 / 크리그 마그마 코어 ×8.',
-            en:'Geobukseon recipe unlocked at Titan Base forge bay. Materials: Resistance Antimatter ×25 / Galactic Chaos Crystal ×15 / Superbia Graviton ×10 / Krieg Magma Core ×8.'},
+      desc:{ko:'장영실이 타이탄H 제작 베이에서 거북선 제작 준비 완료 선언.\n거북선(거북선) 레시피 잠금 해제 → 도크 제작 탭에서 거북선 제작 가능.\n재료 조건: 저항군 반물질 ×25 / 은하 혼돈 결정 ×15 / 수퍼비아 중력자 ×10 / 크리그 마그마 코어 ×8.',
+            en:'Geobukseon recipe unlocked at Titan H forge bay. Materials: Resistance Antimatter ×25 / Galactic Chaos Crystal ×15 / Superbia Graviton ×10 / Krieg Magma Core ×8.'},
       objectives:[
         {type:'explore', target:'p26_forge_declare', qty:1, label:{ko:'제작 베이 가동 선언', en:'Declare forge ready'}},
       ],
@@ -503,7 +503,7 @@ const PHASE3_CUTSCENES_KO={
 
   // ─── CH05-A "첫 연락" (P22 도착) ───
   p3_ch05a:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'동쪽 항로 주파수... 케플러-62e 지하. 저항군 암호 채널이야. 내가 봉인되기 전에 함께했던 전우들의 후예가 그 기지를 운영하고 있어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'동쪽 항로 주파수... 벙커존 지하. 저항군 암호 채널이야. 내가 봉인되기 전에 함께했던 전우들의 후예가 그 기지를 운영하고 있어.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저항군? 거기가 얼마나 위험한지 알아? 치크스 사이 외톨이 거점이라고.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'그래서 더 강하다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'...크리그에서 빼낸 물자를 가져가면 믿어줄 거야.'}
@@ -514,7 +514,7 @@ const PHASE3_CUTSCENES_KO={
     {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손들이죠. 400년 전 이 방공호를 파고, 여기서 태어났어요.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE3_QUEST_CARDS L137 원문
     {char:'hero01', name:'이순신', color:'#c0a060', text:'당신들이 살아있었군." *(조용히)* "오래 기다렸겠군.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'살아남은 것만으로 부족했어요. 지금 크리그가 보급망에 첩자를 심어두고 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'화성 저항군... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'함께 처리하자.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.'}
   ],
@@ -530,8 +530,8 @@ const PHASE3_CUTSCENES_KO={
     // ─── CH06-A "기업의 배신" (Q12-03 완료) ───
   p3_ch06a:[
     {char:'hero01', name:'이순신', color:'#c0a060', text:'코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 판매하고 있다면... 단순한 이윤 추구가 아니야. 생체 병기 설계도가 거기로 흘러들어간 거야.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'글리제 667Cc. 코르넬리우스 본사가 거기야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'오그렌이 말한 내부 고발자 — \'닥터 에바\'. 글리제 667Cc에 있어. 접촉하면 물증을 줄 수 있다고 했어.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'글리제. 코르넬리우스 본사가 거기야.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'오그렌이 말한 내부 고발자 — \'닥터 에바\'. 글리제에 있어. 접촉하면 물증을 줄 수 있다고 했어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'증거 없이 아우레우스를 적으로 만들면 안 돼. 먼저 확인해야 해.'}
   ],
 
@@ -565,10 +565,10 @@ const PHASE3_CUTSCENES_KO={
   p3_ch07a:[
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'최대해봐야 8~10개.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 본부 타이탄 기지에 비축이 있을 거야. 레인저한테 받아야 해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'타이탄 기지... 그리고. 지구.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'타이탄H... 그리고. 지구.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'지구." *(잠시 침묵)* "오래 꿈꿨어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 방향은 타이탄 기지이야. 연대를 공식화하고 R06를 확보하자.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 방향은 타이탄H이야. 연대를 공식화하고 저항군 반물질을 확보하자.'}
   ],
 
     // ─── CH07-B "본부" (P26 도착) ───
@@ -583,7 +583,7 @@ const PHASE3_CUTSCENES_KO={
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 반물질 재료 목록 완성됐어. 거북선 제작 시작 가능해.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 확보하면 거북선이 완성된다.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'크리그가 행성에 새 거점을 짓고 있어요. 아이젠클로가 직접 지휘 중이에요.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'데이터 복호기가 해독한 정보와 일치해. Kepler-442b가 다음 목표야.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'데이터 복호기가 해독한 정보와 일치해. 슈멜츠가 다음 목표야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내 전술 데이터로 우리를 막으려 하겠지. 하지만 나는 그의 허점도 알고 있어.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선이 완성되면 아이젠클로의 요새도 뚫린다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 4 — 행성 16~20. 아이젠클로 추적. 거북선 완성.'}
@@ -595,7 +595,7 @@ const PHASE3_CUTSCENES_EN={
 
   // ─── CH05-A "First Contact" (P22 arrival) ───
   p3_ch05a:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eastern shipping-lane frequency... beneath Kepler-62e. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away are running that base.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eastern shipping-lane frequency... beneath Bunker Zone. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away are running that base.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Resistance? Do you know how dangerous that place is? It\'s a lone outpost surrounded by the Chiks.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That only makes them stronger.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...If we bring the supplies we pulled out of Krieg, they\'ll trust us.'}
@@ -606,7 +606,7 @@ const PHASE3_CUTSCENES_EN={
     {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. Four hundred years ago they dug out this shelter, and here we were born.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So you survived." *(quietly)* "You must have waited a long time.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Survival alone wasn\'t enough. Right now Krieg has planted spies in our supply network and is shaking us from within. We desperately need comrades we can trust.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Mars Resistance... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The New Mars... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Let\'s deal with it together.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'A token of solidarity first. Earth Iron Ore — it\'s our tradition to swear our oath on something that came from Earth\'s own soil.'}
   ],
@@ -622,8 +622,8 @@ const PHASE3_CUTSCENES_EN={
     // ─── CH06-A "The Corporation\'s Betrayal" (Q12-03 complete) ───
   p3_ch06a:[
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Cornelius. If the Aureus corporation is selling technical blueprints to Krieg... this is more than the pursuit of profit. Bio-weapon schematics have flowed into their hands.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Gliese 667Cc. The Cornelius headquarters is there.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The whistleblower Ogren mentioned — \'Doctor Eva\'. She\'s on Gliese 667Cc. She said if we make contact, she can give us hard evidence.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Gliese. The Cornelius headquarters is there.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The whistleblower Ogren mentioned — \'Doctor Eva\'. She\'s on Gliese. She said if we make contact, she can give us hard evidence.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We can\'t make an enemy of Aureus without proof. We have to confirm it first.'}
   ],
 
@@ -657,10 +657,10 @@ const PHASE3_CUTSCENES_EN={
   p3_ch07a:[
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Completing the Geobukseon needs 25 units of Resistance Antimatter. What we have right now is...'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Eight to ten at most.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The Resistance headquarters at Titan Base should have a stockpile. We need to get it from the Ranger.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan Base... and then. Earth.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The Resistance headquarters at Titan H should have a stockpile. We need to get it from the Ranger.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan H... and then. Earth.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Earth." *(a moment\'s silence)* "I\'ve dreamed of it for so long.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our heading is Titan Base. Let\'s formalize the alliance and secure the R06.'}
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our heading is Titan H. Let\'s formalize the alliance and secure the Resistance Antimatter.'}
   ],
 
     // ─── CH07-B "Headquarters" (P26 arrival) ───
@@ -675,7 +675,7 @@ const PHASE3_CUTSCENES_EN={
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The materials list for the Resistance Antimatter is complete. We can begin building the Geobukseon.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Resistance Antimatter ×25, Galactic Chaos Crystal ×15, Superbia Graviton ×10, Krieg Magma Core ×8. Secure them all and the Geobukseon is complete.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Krieg is building a new stronghold on a planet. Eisenklau is commanding it in person.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches the intel the data decoder cracked. Kepler-442b is the next target.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches the intel the data decoder cracked. Schmelz is the next target.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklau... he\'ll try to stop us with my own tactical data. But I know his weaknesses too.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Once the Geobukseon is complete, even Eisenklau\'s fortress can be breached.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 4 — planets 16~20. Hunt Eisenklau. Complete the Geobukseon.'}

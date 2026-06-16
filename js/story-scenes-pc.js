@@ -396,7 +396,7 @@
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'예상했다고요?'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.'},
-    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, 글리제 581g 균열 균열의 간섭을 받는 프록시마 b 프록시마 b. {사령관}의 각성 지점이었습니다.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, 글리제 균열 균열의 간섭을 받는 프록시마B 프록시마B. {사령관}의 각성 지점이었습니다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.'}
@@ -503,7 +503,7 @@
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'Predicted?'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'I calculated this moment a hundred years ago. That you would arrive at these coordinates — at this exact hour. Margin of error: 0.3 percent.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'And Baekgu — Dr. Lee Hwi-so and I designed him. Through a reverse-time transmission equation.'},
-    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'A location even the Cheeks could not find — Proxima b, perturbed by the 글리제 581g 균열 Rift. {사령관}\'s awakening point.'},
+    {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. {사령관}\'s awakening point.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Commander… now I understand. I am a program designed to wait a hundred years — for you.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Because you are the only one who carries both at once. Wrath, and mercy.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Wrath to bring down the Cheeks. Mercy to understand them. Wrath alone only builds another Ursa Major.'}
@@ -551,14 +551,14 @@
   // 기반: Doc/QUEST_TIMELINE_HERO_ROUTE.md + Doc/galaxy_map_hero_route_analysis.html
   // 실제 지도 이동 경로 기반 — 백트래킹 최소화
   //
-  //   step #6  → H08 마르코 폴로     (우르사-알파, CH05)
-  //   step #7  → H04 유리 가가린      (로스 128-b, CH04)
-  //   step #10 → H01 이순신          (Kepler-22b, CH03)
-  //   step #17 → H05 호레이쇼 넬슨    (Kepler-442b, CH06)
+  //   step #6  → H08 마르코 폴로     (우르사 알파, CH05)
+  //   step #7  → H04 유리 가가린      (카스텔룸, CH04)
+  //   step #10 → H01 이순신          (아이젠콕, CH03)
+  //   step #17 → H05 호레이쇼 넬슨    (슈멜츠, CH06)
   //   step ★   → H02 장영실          (넥서스 프라임 귀환, CH07)
-  //   step #19 → H03 광개토대왕      (글리제 667Cc 재방문, CH13~14)
+  //   step #19 → H03 광개토대왕      (글리제 재방문, CH13~14)
   //   step #23 → H06 아인슈타인      (캅테인b 균열, CH09)
-  //   step #31 → H07 니콜라 테슬라    (TRAPPIST-1e, CH10~12)
+  //   step #31 → H07 니콜라 테슬라    (볼티움, CH10~12)
   // ═══════════════════════════════════════════════════════════════════
   var SCENARIO_ORDER = ['H08','H04','H01','H05','H02','H03','H06','H07'];
 
@@ -567,24 +567,24 @@
   // cond: 영입 추가 조건 함수 (해당 영웅이 등장하기 위해 필요한 추가 조건)
   // step: 사용자 타임라인 step 번호 (디버그/로깅용)
   var HERO_PLANET_MAP = {
-    H08: { planet:'P19', step:6,  ko:'우르사-알파',        cond:function(){ return true; } },
-    H04: { planet:'P04', step:7,  ko:'로스 128-b',         cond:function(){ return true; } },
-    H01: { planet:'P13', step:10, ko:'Kepler-22b',         cond:function(){
+    H08: { planet:'P19', step:6,  ko:'우르사 알파',        cond:function(){ return true; } },
+    H04: { planet:'P04', step:7,  ko:'카스텔룸',         cond:function(){ return true; } },
+    H01: { planet:'P13', step:10, ko:'아이젠콕',         cond:function(){
       // 난중일기 영인본(G18) 보유 시
       return !!(window.G && window.G.inventory && window.G.inventory.find(function(i){ return i.id==='G18' && i.qty>0; }));
     }},
-    H05: { planet:'P14', step:17, ko:'Kepler-442b',        cond:function(){ return true; } },
+    H05: { planet:'P14', step:17, ko:'슈멜츠',        cond:function(){ return true; } },
     H02: { planet:'P06', step:18, ko:'넥서스 프라임 (귀환)', cond:function(){
       // 설계도 1권 보유 (H05 넬슨 영입 후 자연 획득 가정)
       // 단순화: H05 영입 완료 시 = 설계도 1권 확보 상태로 간주
       return !!(window.G && window.G.heroes && window.G.heroes.indexOf('H05') >= 0);
     }},
-    H03: { planet:'P08', step:19, ko:'글리제 667Cc (재)',   cond:function(){
+    H03: { planet:'P08', step:19, ko:'글리제 (재)',   cond:function(){
       // 4,100만 크레딧 누적 (경매 자본)
       return !!(window.G && (window.G.credits||0) >= 41000000);
     }},
     H06: { planet:'P28', step:23, ko:'캅테인b 균열',        cond:function(){ return true; } },
-    H07: { planet:'P09', step:31, ko:'TRAPPIST-1e',        cond:function(){
+    H07: { planet:'P09', step:31, ko:'볼티움',        cond:function(){
       // 무역 누적 100,000 크레딧 (game.js 측의 _tradeTotalEarned 또는 유사 필드)
       var total = 0;
       if(window.G){

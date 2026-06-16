@@ -15,7 +15,7 @@ if(window.PHASE2_QUESTS) return;
 const PHASE2_QUESTS={
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 6 · P19 치크스 "우르사-알파" (외곽 첩보 거점 · 적대)
+  // 행성 6 · P19 치크스 "우르사 알파" (외곽 첩보 거점 · 적대)
   // 팩션 특산물: G16·G17·G27·R02
   // ════════════════════════════════════════════════════════════════
   P19:[
@@ -99,8 +99,8 @@ const PHASE2_QUESTS={
       id:'p2_q06m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'마르코의 칩 해독', en:'Marco\'s Chip Decode'},
-      desc:{ko:'페이즈 1 바나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 로스 128-b 수퍼비아 집하장 —32구역 경유."',
-            en:'Marco (already joined Phase 1) deepens trust. Chiks Crystal Shard ×2 → decode Aureus Information Chip → Krieg spy route to Ross 128-b zone-32.'},
+      desc:{ko:'페이즈 1 버나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 카스텔룸 수퍼비아 집하장 —32구역 경유."',
+            en:'Marco (already joined Phase 1) deepens trust. Chiks Crystal Shard ×2 → decode Aureus Information Chip → Krieg spy route to Castellum zone-32.'},
       objectives:[
         {type:'gather', item:'G17', qty:2, label:{ko:'치크스 결정 파편 ×2 암호 해석 매체', en:'Chiks Crystal Shard ×2 cipher media'}},
       ],
@@ -112,7 +112,7 @@ const PHASE2_QUESTS={
   ],
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 7 · P04 수퍼비아 "로스 128-b" (폐자재 집하장)
+  // 행성 7 · P04 수퍼비아 "카스텔룸" (폐자재 집하장)
   // 팩션 특산물: G01·G02·G03·G05·G22·R07
   // ════════════════════════════════════════════════════════════════
   P04:[
@@ -197,7 +197,7 @@ const PHASE2_QUESTS={
       id:'p2_q07m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린의 비밀 항로', en:'Gagarin\'s Secret Route'},
-      desc:{ko:'페이즈 1 티가든 금융 b에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
+      desc:{ko:'페이즈 1 티가든에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
             en:'Gagarin (already joined Phase 1) recovers old memories from VOSTOK. Energy Core ×2 + Superbia Graviton ×1 → "Soviet covert route to Omicron Persei."'},
       objectives:[
         {type:'gather', item:'G02', qty:2, label:{ko:'에너지 코어 ×2 항법 재가동', en:'Energy Core ×2 reactivation'}},
@@ -352,8 +352,8 @@ const PHASE2_QUESTS={
       id:'p2_q0903', type:'story_quest', category:'main', phase:2,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'테슬라 구출', en:'Rescue Tesla'},
-      desc:{ko:'격리 구역 잠금 해제: 메카니카 자동화 부품 ×1 소비(격리 도어 바이패스) → 테슬라 구출.\n테슬라: "크리그 최종 요새는 Kepler-22b야. 지하 감옥에 이순신 장군 캡슐이 수백 년째 봉인돼 있어. 크리그가 방패막이로 쓰고 있는 거야."',
-            en:'Mechanica Automation Part ×1 → bypass quarantine. Tesla rescued. "Final fortress at Kepler-22b. Yi Sun-sin sealed for centuries — Krieg uses him as shield."'},
+      desc:{ko:'격리 구역 잠금 해제: 메카니카 자동화 부품 ×1 소비(격리 도어 바이패스) → 테슬라 구출.\n테슬라: "크리그 최종 요새는 아이젠콕야. 지하 감옥에 이순신 장군 캡슐이 수백 년째 봉인돼 있어. 크리그가 방패막이로 쓰고 있는 거야."',
+            en:'Mechanica Automation Part ×1 → bypass quarantine. Tesla rescued. "Final fortress at Eisenkock. Yi Sun-sin sealed for centuries — Krieg uses him as shield."'},
       objectives:[
         {type:'gather', item:'G25', qty:1, label:{ko:'메카니카 자동화 부품 ×1 도어 바이패스', en:'Mechanica Automation Part ×1 door bypass'}},
       ],
@@ -395,7 +395,7 @@ const PHASE2_QUESTS={
   ],
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 10 · P13 크리그 "Kepler-22b" (최정예 요새 · 적대)
+  // 행성 10 · P13 크리그 "아이젠콕" (최정예 요새 · 적대)
   // 특산물: G10·G11·G12·G26·R04
   // 이순신 봉인 해제: G18 난중일기 영인본 (페이즈 3 P22에서 보충)
   // ════════════════════════════════════════════════════════════════
@@ -445,7 +445,7 @@ const PHASE2_QUESTS={
       rewardItems:[],
       rewardFlags:['turtle_captain_freed'],
       locked:true,
-      lockReason:{ko:'페이즈 3 저항군 기지(저항군 지하 방공호)에서 난중일기 영인본을 먼저 입수하라.',
+      lockReason:{ko:'페이즈 3 저항군 기지(저항군 벙커존)에서 난중일기 영인본을 먼저 입수하라.',
                   en:'Acquire Nanjung Ilgi Facsimile at the Resistance base (underground bunker) in Phase 3 first.'},
       cutscene_pre:null, cutscene_post:null
     },
@@ -502,7 +502,7 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03-A "마르코의 첫 정보" (Q06-M 완료) ───
   p2_ch03a:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 로스 128-b 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했을 거야.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했을 거야.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그리고... 이상한 게 하나 더. 그 구역 폐기물 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야.'}
   ],
 
@@ -589,7 +589,7 @@ const PHASE2_CUTSCENES_EN={
 
   // ─── CH03-A "Marco\'s First Intel" (Q06-M complete) ───
   p2_ch03a:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'{commander}, I\'ve got it. Ross 128-b, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'{commander}, I\'ve got it. Castellum, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'And... one more odd thing. An old capsule that isn\'t on that sector\'s disposal manifest. The design is centuries old.'}
   ],
 
@@ -616,7 +616,7 @@ const PHASE2_CUTSCENES_EN={
   // ─── CH04-A "The Next Destination" (Q08-05 complete) ───
   p2_ch04a:[
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Tesla has been abducted. Mechanica\'s greatest engineer. Krieg is forcing him to design a bio-weapon.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The surface of LHS 1140-b is an LHS crystal mine. I\'ve heard they\'ve dug down as far as seventeen levels underground.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The surface of Mercatus is an LHS crystal mine. I\'ve heard they\'ve dug down as far as seventeen levels underground.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'We have to destroy that weapon\'s blueprints. And we have to save Tesla too.'}
   ],
 

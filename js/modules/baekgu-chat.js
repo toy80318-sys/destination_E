@@ -166,7 +166,10 @@ function getBaekguStoryHint(){
   }
   // ACT 3 힌트 (조건: 60턴 자동 ACT 4 또는 우르사 메이저 격파)
   if(G.act===3){
-    const cheeksCleared=(G.combatHistory||[]).filter(c=>{const _pl=(c.planet||'').toLowerCase();return c.win&&(_pl.includes('치크스')||_pl.includes('chiks')||_pl.includes('toi')||_pl.includes('케플러-452')||_pl.includes('kepler-452')||_pl.includes('우르사-알파')||_pl.includes('ursa-alpha')||_pl.includes('오미크론')||_pl.includes('omicron')||_pl.includes('타이탄-x')||_pl.includes('titan-x'));}).length;
+    // 치크스(F05) 적대 행성 P17~P21 — 신규 행성명 + 구명(기존 세이브 전투기록 호환) 모두 매칭. 사용자 요청 2026-06-16.
+    const _cheeksNames=['치크스','chiks','하이브','hive','카토닉','catonic','우르사 알파','ursa alpha','오미크론','omicron','코사크','cossack',
+      'toi','케플러-452','kepler-452','우르사-알파','ursa-alpha','타이탄-x','titan-x'];
+    const cheeksCleared=(G.combatHistory||[]).filter(c=>{const _pl=(c.planet||'').toLowerCase();return c.win&&_cheeksNames.some(h=>_pl.includes(h));}).length;
     if(heroCount<8){const m=8-heroCount;return I18N.t('hint.act3.heroN8',{heroCount,remaining:m});}
     if(cheeksCleared===0)return I18N.t('hint.act3.cheeksFirst');
     if(cheeksCleared<5)return I18N.t('hint.act3.cheeksProg',{cleared:cheeksCleared,remaining:5-cheeksCleared});

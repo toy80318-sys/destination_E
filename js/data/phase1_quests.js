@@ -149,8 +149,8 @@ const PHASE1_QUESTS={
     {
       id:'p1_q0205', type:'story_quest', category:'sub', phase:1,
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
-      nm:{ko:'바나드 프라임 공인 정비소 수리', en:'Barnard Prime Repair Shop'},
-      desc:{ko:'해적 소탕 후 {함선} 외장 파손. 바나드 프라임 공인 정비소 수리. 고철 프레임 ×1 함께 제출 → 수리비 10% 할인.',
+      nm:{ko:'버나드 프라임 공인 정비소 수리', en:'Barnard Prime Repair Shop'},
+      desc:{ko:'해적 소탕 후 {함선} 외장 파손. 버나드 프라임 공인 정비소 수리. 고철 프레임 ×1 함께 제출 → 수리비 10% 할인.',
             en:'Repair {ship} at the Barnard Prime certified shop. Submit Scrap Frame ×1 for 10% discount.'},
       objectives:[
         {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 정비소 제출', en:'Submit Scrap Frame ×1'}},
@@ -216,9 +216,9 @@ const PHASE1_QUESTS={
     {
       id:'p1_q0303', type:'story_quest', category:'sub', phase:1,
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
-      nm:{ko:'티가든 금융 b 공인 정비소', en:'Teegarden Financial b Repair Shop'},
-      desc:{ko:'해적 3기 격파로 {함선} 외장 손상. 티가든 금융 b 공인 정비소 수리.\n가가린: "내 배도 망가졌으니까 같이 가도 돼? 데이터 칩 분석도 도와줄게."',
-            en:'Repair {ship} at Teegarden Financial b. Gagarin: "Mine\'s wrecked too — can I come along?"'},
+      nm:{ko:'티가든 공인 정비소', en:'Teegarden Repair Shop'},
+      desc:{ko:'해적 3기 격파로 {함선} 외장 손상. 티가든 공인 정비소 수리.\n가가린: "내 배도 망가졌으니까 같이 가도 돼? 데이터 칩 분석도 도와줄게."',
+            en:'Repair {ship} at Teegarden. Gagarin: "Mine\'s wrecked too — can I come along?"'},
       objectives:[
         {type:'explore', target:'p05_repair', qty:1, label:{ko:'정비소 수리 완료', en:'Complete repair'}},
       ],
@@ -361,7 +361,7 @@ const PHASE1_QUESTS={
       ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 신호 중계기 발견', en:'Yi Sun-sin Relay Found'},
       desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
-            en:'Found an old signal relay. Consume Aureus Solar Coin ×2 to restore → signal points to TRAPPIST-1e Galileo outpost.'},
+            en:'Found an old signal relay. Consume Aureus Solar Coin ×2 to restore → signal points to Voltium Galileo outpost.'},
       objectives:[
         {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 해독 장비 대여비', en:'Spend Aureus Solar Coin ×2 for decoder'}},
       ],
@@ -483,7 +483,7 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마 b에서 왔소? 거기 사람이 아직 있었어?'},
+    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마B에서 왔소? 거기 사람이 아직 있었어?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'좀 오래 잠들어 있었습니다.'},
     {char:'aori', name:'아오리', color:'#d4a574', text:'허. 뭘 팔 거요?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요.'}
@@ -540,7 +540,7 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'47 우르사이 마요리스 b (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
+    {char:'system', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},
@@ -571,7 +571,7 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'Aori', color:'#d4a574', text:'You came from Proxima b? There\'s still anybody left out there?'},
+    {char:'aori', name:'Aori', color:'#d4a574', text:'You came from Proxima B? There\'s still anybody left out there?'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'I was asleep for quite a while.'},
     {char:'aori', name:'Aori', color:'#d4a574', text:'Huh. So what are you selling?'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap.'}
@@ -628,7 +628,7 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'47 Ursae Majoris b (Chiks) Ring 1... The moment we enter, we go hostile. We need to be ready.'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'Ursae Majoris (Chiks) Ring 1... The moment we enter, we go hostile. We need to be ready.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'But Yi Sun-sin is there. And so is the way to stop Krieg.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Probability calculation... survival odds 62%. Odds of obtaining Krieg strategic intel upon rescuing Yi Sun-sin: 89%.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Baekgu, 62% is enough.'},
