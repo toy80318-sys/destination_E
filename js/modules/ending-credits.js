@@ -92,7 +92,7 @@ function showFinalEndingCredits(){
       <div style="color:#66ff99;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.fleetStats')}</div>
       <div style="font-size:15px;color:#fff;line-height:2;margin-bottom:60px">
         ${I18N.t('ui.endingTurnsTaken')}: <b style="color:#ffd700">${G.turn||0}</b><br>
-        ${I18N.t('ui.endingHeroesRecruited')}: <b style="color:#ff99ff">${heroList.length}/8</b><br>
+        ${I18N.t('ui.endingHeroesRecruited')}: <b style="color:#ff99ff">${heroList.length}/${(typeof HEROES!=='undefined'&&HEROES)?Object.keys(HEROES).length:9}</b><br>
         ${I18N.t('ui.endingPlanetsOwned')}: <b style="color:#66ddff">${Object.values(G.planets||{}).filter(p=>p.owned).length}/30</b><br>
         ${I18N.t('ui.endingFinalCredits')}: <b style="color:#ffd700">₡${(G.credits||0).toLocaleString()}</b><br>
         난이도: <b style="color:#fff">${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')}</b>
@@ -399,7 +399,7 @@ function showEndingCredits(onDone){
         <div style="color:#66ff99;font-size:14px;letter-spacing:6px;margin-bottom:6px">${I18N.t('ui.fleetStats')}</div>
         <div style="font-size:16px;color:#fff;line-height:1.9;margin-bottom:40px">
           ${I18N.t('ui.turnsTaken')}: <b style="color:#ffd700">${G.turn||0}</b><br>
-          ${I18N.t('ui.heroesHired')}: <b style="color:#ff99ff">${(G.heroes||[]).length}/8</b><br>
+          ${I18N.t('ui.heroesHired')}: <b style="color:#ff99ff">${(G.heroes||[]).length}/${(typeof HEROES!=='undefined'&&HEROES)?Object.keys(HEROES).length:9}</b><br>
           ${I18N.t('ui.planetsOwned')}: <b style="color:#66ddff">${Object.values(G.planets).filter(p=>p.owned).length}/30</b><br>
           ${I18N.t('ui.finalCredits')}: <b style="color:#ffd700">₡${(G.credits||0).toLocaleString()}</b><br>
           ${I18N.t('ui.difficulty')}: <b style="color:#fff">${({easy:I18N.t('difficulty.easy'),normal:I18N.t('difficulty.normal'),hard:I18N.t('difficulty.hard'),extreme:I18N.t('difficulty.extreme')})[G.difficulty]||I18N.t('difficulty.normal')}</b>

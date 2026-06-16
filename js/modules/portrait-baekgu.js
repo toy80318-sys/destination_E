@@ -85,7 +85,8 @@ const HERO_PORTRAITS_BY_ID={
   H05:'img/chars/hero05.png',
   H06:'img/chars/hero06.png',
   H07:'img/chars/hero07.png',
-  H08:'img/chars/hero08.png'
+  H08:'img/chars/hero08.png',
+  H09:'img/chars/hero09.png'
 };
 // ─── 백구 무드 → 이미지 매핑 (시리즈 2 다양한 표정 활용) ───
 // 파일명 기반 자동 배정:

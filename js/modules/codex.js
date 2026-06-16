@@ -739,7 +739,7 @@
           <div style="font-size:10px;color:var(--dim);margin-top:2px"><img src="img/ui/HN01.png${window._GAME_VER?'?v='+window._GAME_VER:''}" alt="HN" style="width:12px;height:12px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='⭐'">${_cmdRep} · ⚔${_cmdPlv}</div>
         </div>
       </div>
-      <!-- 전설 영웅 8인 -->
+      <!-- 전설 영웅 9인 (H09 이휘소 추가, 2026-06-17) -->
       <div style="font-size:13px;color:var(--gold);font-weight:bold;margin-bottom:8px;letter-spacing:1px">${I18N.t('ui.legendHeroesLabel')} <span style="color:var(--dim);font-size:11px">${recruited}/${heroList.length}</span></div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:16px">
         ${heroList.map(([id,h])=>{const have=G.heroes.includes(id);const aboard=G.fleet.find(s=>(s.crewIds||[]).includes(id));

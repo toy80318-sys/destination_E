@@ -44,7 +44,34 @@
     return enemies;
   }
 
-  // 수락된 퀘스트(q)를 받아: 신규 대면 컷신 → 전투. 전투 승리 시 퀘스트 'done'.
+  // 이휘소(H09) 9번째 전설 영웅 합류 + 획득 팝업
+  function _hv(){ return window._GAME_VER?('?v='+encodeURIComponent(window._GAME_VER)):''; }
+  function showHero09Popup(){
+    if(typeof openModal!=='function')return;
+    const v=_hv(), nm=I18N.t('hero.H09.nm'), sk=I18N.t('hero.H09.sk');
+    const html='<div style="text-align:center;padding:6px 4px">'
+      +'<div style="font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:10px;font-weight:bold">'+I18N.t('hero.newLegendBanner')+'</div>'
+      +'<img src="img/chars/H/hero09.png'+v+'" onerror="this.onerror=null;this.src=\'img/chars/hero09.png'+v+'\'" style="width:200px;height:200px;border-radius:14px;object-fit:cover;border:2px solid var(--gold);box-shadow:0 0 28px rgba(255,215,0,.45);background:rgba(0,0,0,.4)">'
+      +'<div style="font-size:23px;font-weight:bold;color:#ffe;margin-top:12px">🔬 '+nm+'</div>'
+      +'<div style="font-size:13px;color:var(--cyan);margin-top:4px">'+sk+'</div>'
+      +'<div style="font-size:12px;color:var(--dim);margin-top:10px;line-height:1.6;max-width:340px;margin-left:auto;margin-right:auto;word-break:keep-all">'+I18N.t('hero.H09.found')+'</div>'
+      +'</div>';
+    openModal(I18N.t('hero.acqTitle'), html, [{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-gold'}]);
+    try{ if(typeof _showFireworks==='function')_showFireworks(); }catch(e){}
+    try{ if(typeof sfxCoin==='function')sfxCoin(); }catch(e){}
+  }
+  function grantHero09(){
+    if(!Array.isArray(G.heroes))G.heroes=[];
+    if(G.heroes.indexOf('H09')<0){
+      G.heroes.push('H09');
+      try{ if(typeof updateHUD==='function')updateHUD(); }catch(e){}
+      showHero09Popup();
+      try{ notify(I18N.t('notify.heroRecruitedIc',{ic:(HEROES.H09&&HEROES.H09.ic)||'🔬',nm:I18N.t('hero.H09.nm')}),'pur'); }catch(e){}
+      try{ if(typeof baekgu==='function')baekgu(I18N.t('baekgu.heroJoined',{nm:I18N.t('hero.H09.nm')})); }catch(e){}
+    }
+  }
+
+  // 수락된 퀘스트(q)를 받아: 신규 대면 컷신 → 전투. 전투 승리 시 퀘스트 'done' + 이휘소 영입.
   function startEisenklauMidBoss(q){
     const _qid=q&&q.id, _qpid=(q&&q.planetId)||G.currentPlanet;
     function _enterCombat(){
@@ -58,6 +85,7 @@
             const arr=(G.quests&&G.quests[_qpid])||[];
             const lq=arr.find(function(x){return x&&x.id===_qid;});
             if(lq && lq.status==='active'){ lq.status='done'; lq.progress=lq.required||1; }
+            grantHero09();   // 이휘소(H09) 9번째 전설 영웅 합류 + 획득 팝업
             if(typeof saveGame==='function')saveGame(true);
           }catch(e){}
         },

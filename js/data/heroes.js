@@ -1,5 +1,5 @@
 // ═══ HERO & NPC DATA ══════════════════════════════════════════════
-// 8명의 전설 영웅(역사 인물) + NPC 크루 풀.
+// 9명의 전설 영웅(역사 인물) + NPC 크루 풀. (H09 이휘소 — 아이젠클로 격파 보상, 사용자 요청 2026-06-17)
 // nm/sk 및 HERO_LORE의 origin/found/stats/char/op는 i18n_dict.js의 'hero.<id>.*' 키로 다국어화.
 const HEROES={
   H01:{nm:I18N.t('hero.H01.nm'),cl:'Pilot',ic:'⚔️',STR:99,ATT:88,INT:150,DEF:70,HP:120,LOY:100,sk:I18N.t('hero.H01.sk')},
@@ -9,7 +9,8 @@ const HEROES={
   H05:{nm:I18N.t('hero.H05.nm'),cl:'Pilot',ic:'🎖️',STR:145,ATT:82,INT:65,DEF:45,HP:85,LOY:92,sk:I18N.t('hero.H05.sk')},
   H06:{nm:I18N.t('hero.H06.nm'),cl:'Eng',ic:'🧪',STR:150,ATT:110,INT:150,DEF:80,HP:100,LOY:100,sk:I18N.t('hero.H06.sk')},
   H07:{nm:I18N.t('hero.H07.nm'),cl:'Eng',ic:'⚡',STR:110,ATT:90,INT:95,DEF:35,HP:80,LOY:95,sk:I18N.t('hero.H07.sk')},
-  H08:{nm:I18N.t('hero.H08.nm'),cl:'Merch',ic:'🧭',STR:60,ATT:120,INT:90,DEF:25,HP:80,LOY:95,sk:I18N.t('hero.H08.sk')}
+  H08:{nm:I18N.t('hero.H08.nm'),cl:'Merch',ic:'🧭',STR:60,ATT:120,INT:90,DEF:25,HP:80,LOY:95,sk:I18N.t('hero.H08.sk')},
+  H09:{nm:I18N.t('hero.H09.nm'),cl:'Eng',ic:'🔬',STR:120,ATT:95,INT:165,DEF:55,HP:95,LOY:100,sk:I18N.t('hero.H09.sk')}
 };
 
 const HERO_LORE={
@@ -20,7 +21,8 @@ const HERO_LORE={
   'H05':{origin:I18N.t('hero.H05.origin'),found:I18N.t('hero.H05.found'),stats:I18N.t('hero.H05.stats'),char:I18N.t('hero.H05.char'),op:I18N.t('hero.H05.op')},
   'H06':{origin:I18N.t('hero.H06.origin'),found:I18N.t('hero.H06.found'),stats:I18N.t('hero.H06.stats'),char:I18N.t('hero.H06.char'),op:I18N.t('hero.H06.op')},
   'H07':{origin:I18N.t('hero.H07.origin'),found:I18N.t('hero.H07.found'),stats:I18N.t('hero.H07.stats'),char:I18N.t('hero.H07.char'),op:I18N.t('hero.H07.op')},
-  'H08':{origin:I18N.t('hero.H08.origin'),found:I18N.t('hero.H08.found'),stats:I18N.t('hero.H08.stats'),char:I18N.t('hero.H08.char'),op:I18N.t('hero.H08.op')}
+  'H08':{origin:I18N.t('hero.H08.origin'),found:I18N.t('hero.H08.found'),stats:I18N.t('hero.H08.stats'),char:I18N.t('hero.H08.char'),op:I18N.t('hero.H08.op')},
+  'H09':{origin:I18N.t('hero.H09.origin'),found:I18N.t('hero.H09.found'),stats:I18N.t('hero.H09.stats'),char:I18N.t('hero.H09.char'),op:I18N.t('hero.H09.op')}
 };
 
 // 사용자 요청 (2026-06-06): 모집 시점 언어로 nm이 굳어버려 언어 전환 시 혼재되는 문제를 막기 위해

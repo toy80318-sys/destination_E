@@ -1513,7 +1513,7 @@ function renderMain(body){
       <div class="ic"><span class="icl">${I18N.t('ui.shipLabelShort')}</span><span class="icv">🛸 ${G.fleet.length}척</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.crewShort')}</span><span class="icv">👥 ${G.crew.length}명</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.planetShort')}</span><span class="icv">🌍 ${owned}개</span></div>
-      <div class="ic"><span class="icl">${I18N.t('ui.heroShort')}</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/8</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.heroShort')}</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/${(typeof HEROES!=='undefined')?Object.keys(HEROES).length:9}</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.turnTax')}</span><span class="icv" style="color:var(--green)">₡${tax.toLocaleString()}</span></div>
       <div class="ic"><span class="icl">ACT/TURN</span><span class="icv" style="color:var(--cyan)">${G.act}/${G.turn}</span></div>
       ${(()=>{const lv=calcPlayerLevel(),rk=getLevelRank(lv);return`<div class="ic"><span class="icl">${I18N.t('ui.levelShort')}</span><span class="icv" style="color:${rk.col};font-weight:bold">Lv.${lv} <span style="font-size:12px">${rk.lb}</span></span></div>`;})()}

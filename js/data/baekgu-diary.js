@@ -455,6 +455,15 @@
         },
         "ko": "거북선을 손에 넣은 우리에게, 마지막으로 한 사람이 더 찾아왔다.\n\n행성 경매장에서, 우리는 광개토대왕의 유산을 두고 다른 세력들과 치열하게 경합했다. 영토를 넓히는 데 평생을 바친 그 위대한 정복왕의 봉인을, 우리는 끝내 낙찰받았다. 그가 우리 깃발 아래 모이자, 함대는 비로소 공격과 확장의 기세를 갖추게 됐다.\n\n이제 함대는 시대를 뛰어넘은 전설의 영웅들로 가득 찼다. 바다의 이순신, 우주의 가가린, 만든 자 장영실, 그리고 정복왕 광개토. 누구도 상상하지 못했던 조합이었다. 나는 종종 생각했다 — 이들이 한 깃발 아래 모인 것 자체가, 어쩌면 봉쇄를 깨뜨릴 첫 번째 기적이었는지도 모른다고.\n\n준비는 끝났다. 거북선이 있고, 영웅들이 있고, 저항군이 있었다. 우르사 메이저로 가는 길목에 버틴 봉쇄의 집행관 아이젠클로를, 마침내 끝장낼 때가 다가왔다.",
         "en": "To us, now holding the Turtle Ship, one more person finally came.\n\nAt a planetary auction, we fought fiercely against rival powers over the legacy of Gwanggaeto the Great. The seal of that mighty conqueror-king, who had given his life to widen his realm, we won in the end. As he gathered beneath our banner, the fleet at last gained the momentum to attack and expand.\n\nNow the fleet brimmed with legendary heroes leaping across the ages. Yi Sun-sin of the seas, Gagarin of space, Jang Yeong-sil the maker, and Gwanggaeto the conqueror. It was a combination no one could have imagined. I often thought — that they had gathered beneath one banner at all was perhaps the first miracle that would break the blockade.\n\nThe preparations were done. We had the Turtle Ship, the heroes, the Resistance. The time to finish Eisenklau, the blockade's enforcer barring the road to Ursa Major, was drawing near."
+      },
+      {
+        "t": { "ko": "05. 집행관 격파", "en": "05. The Enforcer Falls" },
+        "who": { "por": "img/chars/H/hero06.png", "ko": "아인슈타인 · 테슬라 · 이휘소", "en": "Einstein · Tesla · Lee Hwi-so" },
+        "when": { "ko": "봉쇄력 100년 11월", "en": "B.E. 100 · Nov" },
+        "where": { "ko": "페스작센 전역", "en": "Battle of Fessachsen" },
+        "what": { "img": "img/chars/H/hero09.png", "ko": "이휘소 박사 합류", "en": "Dr. Lee Hwi-so joins" },
+        "ko": "봉쇄력 100년 11월, 페스작센 전역에서 \"전 함대 — 거북선을 따른다\"는 이순신 장군의 명령이 채널을 타고 울려 퍼졌다. 우리는 진형을 좁혀 거북선을 화살촉 삼아 적진을 갈랐다. 아인슈타인의 시간 역행이 적의 일제사격을 무력화하고 테슬라의 연쇄 번개가 포대를 차례로 침묵시키며, 마침내 우리는 봉쇄 집행관 아이젠클로를 격파했다. 우리가 그를 끝장낸 이유는, 우르사 메이저로 향하는 마지막 장애물을 제거하기 위해서였다. 그가 쓰러지자 두 가지가 따라왔다 — 천재 물리학자 이휘소 박사가 우리에게 합류했고, 심연 깊은 곳에서 잊혀진 세종 AI의 흔적이 발견됐다. 하수인을 치우자, 비로소 그 뒤에 숨은 거대한 것의 윤곽이 드러나기 시작했다.",
+        "en": "B.E. 100, November — across the Battle of Fessachsen, Admiral Yi Sun-sin's order rang out over every channel: \"All ships — follow the Turtle Ship.\" We tightened our formation and drove the Turtle Ship like an arrowhead through the enemy line. Einstein's time-reversal nullified their volleys, Tesla's chain lightning silenced their batteries one by one, and at last we struck down Eisenklaue, enforcer of the blockade. We finished him to clear the final obstacle on the road to Ursa Major. As he fell, two things followed — the genius physicist Dr. Lee Hwi-so joined us, and in the deep of the abyss, traces of the long-forgotten Sejong AI were found. Only once the underling was swept aside did the outline of the vast thing hiding behind him begin to show."
       }
     ]
   },
