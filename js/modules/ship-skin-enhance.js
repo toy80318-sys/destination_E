@@ -554,14 +554,14 @@ function renderFleetFormationTab(body){
         const hpCol=hpP>60?'var(--green)':hpP>30?'var(--yellow)':'var(--red)';
         // 칸이 절반 크기라 이미지+기함표시+HP%만 간결하게
         content=`<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center">
-          ${imgOrEmoji(shipImgSrc(ship),'🛸',46,46,'border-radius:4px;object-fit:contain',shipLoreKey(ship))}
+          ${imgOrEmoji(shipImgSrc(ship),'🛸',40,40,'border-radius:4px;object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(ship))}
           ${isFlagshipHere?'<div style="position:absolute;top:-2px;left:-1px;font-size:11px;line-height:1">⭐</div>':''}
           <div style="position:absolute;bottom:-2px;right:0;font-size:8px;font-weight:bold;color:${hpCol};text-shadow:0 0 3px #000,0 0 3px #000">${hpP}%</div>
         </div>`;
       } else {
         content=`<div style="font-size:16px;color:${isFront?'rgba(255,80,80,.5)':'rgba(255,255,255,.22)'};display:flex;align-items:center;justify-content:center;width:100%;height:100%">+</div>`;
       }
-      gridWithLabels+=`<div onclick="onFormationSlotClick(${slot})" title="${I18N.t('ui.gridSlot',{col:logicalCol+1,row:row+1})}" style="background:${slotBg};border:1px solid ${slotBdr};border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;${slotGlow};transition:all .12s;aspect-ratio:1/1;overflow:hidden;box-sizing:border-box" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform=''">${content}</div>`;
+      gridWithLabels+=`<div onclick="onFormationSlotClick(${slot})" title="${I18N.t('ui.gridSlot',{col:logicalCol+1,row:row+1})}" style="background:${slotBg};border:1px solid ${slotBdr};border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;${slotGlow};transition:all .12s;aspect-ratio:1/0.7;overflow:hidden;box-sizing:border-box" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform=''">${content}</div>`;
     }
   }
   gridWithLabels+='</div>';
@@ -612,41 +612,43 @@ function renderFleetFormationTab(body){
   </div>`;
   // ── 기본 자동배치 버튼 — 대형 프리셋 줄 가장 우측에 배치 (사용자 요청 2026-06-16) ──
   //   앞열=체력·방어력 높은 함선, 뒤열=공격력 높은(내구 낮은) 함선
-  const _autoBtn=`<button class="btn btn-sm" onclick="autoArrangeFormation()" title="${I18N.t('formation.autoArrangeHint')}" style="font-size:11px;padding:4px 14px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold;white-space:nowrap">🛡️ ${I18N.t('formation.autoArrange')}</button>`;
-  // ── 대형 자동 배치 프리셋 바 (영웅 해금) ──
+  // 사용자 요청 2026-06-16: 대형자동배치·자동배치·내편대저장을 보유함선 우측 세로열로 이동 → 모두 세로(폭 100%) 레이아웃.
+  const _autoBtn=`<button class="btn btn-sm" onclick="autoArrangeFormation()" title="${I18N.t('formation.autoArrangeHint')}" style="font-size:11px;padding:6px 10px;width:100%;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold;white-space:nowrap">🛡️ ${I18N.t('formation.autoArrange')}</button>`;
+  // ── 대형 자동 배치 프리셋 (영웅 해금) — 세로 배치 ──
   const _fUnlocked=_formationUnlocked();
   const _presetDefs=[['arrow','formation.arrow'],['crane','formation.crane'],['square','formation.square'],['diamond','formation.diamond']];
-  const _presetBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;flex-shrink:0;background:rgba(255,215,0,.04);border:1px solid ${_fUnlocked?'rgba(255,215,0,.3)':'rgba(255,255,255,.12)'};border-radius:8px;padding:8px 14px;margin-bottom:10px">
-    <span style="font-size:13px;font-weight:bold;color:${_fUnlocked?'var(--gold)':'var(--dim)'}">⚔️ ${I18N.t('formation.presetHeader')}</span>
-    ${_presetDefs.map(d=>`<button class="btn btn-sm" onclick="applyFormationPreset('${d[0]}')" ${_fUnlocked?'':'disabled'} style="font-size:11px;padding:4px 12px;border-color:${_fUnlocked?'var(--gold)':'var(--bdr)'};color:${_fUnlocked?'var(--gold)':'var(--dim)'};background:${_fUnlocked?'rgba(255,215,0,.10)':'transparent'};${_fUnlocked?'':'opacity:.55;cursor:not-allowed'}">${I18N.t(d[1])}</button>`).join('')}
-    ${_autoBtn}
-    ${_fUnlocked?'':`<span style="font-size:11px;color:var(--dim)">${I18N.t('formation.lockHint')}</span>`}
+  const _presetBar=`<div style="display:flex;flex-direction:column;gap:6px;background:rgba(255,215,0,.04);border:1px solid ${_fUnlocked?'rgba(255,215,0,.3)':'rgba(255,255,255,.12)'};border-radius:8px;padding:8px 10px">
+    <span style="font-size:12px;font-weight:bold;color:${_fUnlocked?'var(--gold)':'var(--dim)'};white-space:nowrap">⚔️ ${I18N.t('formation.presetHeader')}</span>
+    ${_presetDefs.map(d=>`<button class="btn btn-sm" onclick="applyFormationPreset('${d[0]}')" ${_fUnlocked?'':'disabled'} style="font-size:11px;padding:5px 10px;width:100%;border-color:${_fUnlocked?'var(--gold)':'var(--bdr)'};color:${_fUnlocked?'var(--gold)':'var(--dim)'};background:${_fUnlocked?'rgba(255,215,0,.10)':'transparent'};${_fUnlocked?'':'opacity:.55;cursor:not-allowed'}">${I18N.t(d[1])}</button>`).join('')}
+    ${_fUnlocked?'':`<span style="font-size:10px;color:var(--dim);line-height:1.3">${I18N.t('formation.lockHint')}</span>`}
   </div>`;
   // ── 편대 저장 슬롯 3개 (사용자 요청 2026-06-16): 내 편대 구성 저장/불러오기 (불러올 때 신규 함선 자동 충원) ──
   const _saves=(Array.isArray(G.fleetFormationSaves)?G.fleetFormationSaves:[null,null,null]);
-  const _saveBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;flex-shrink:0;background:rgba(120,200,255,.05);border:1px solid rgba(120,200,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
-    <span style="font-size:13px;font-weight:bold;color:#8cf">💾 ${I18N.t('formation.savesHeader')}</span>
+  const _saveBar=`<div style="display:flex;flex-direction:column;gap:6px;background:rgba(120,200,255,.05);border:1px solid rgba(120,200,255,.28);border-radius:8px;padding:8px 10px">
+    <span style="font-size:12px;font-weight:bold;color:#8cf;white-space:nowrap">💾 ${I18N.t('formation.savesHeader')}</span>
     ${[0,1,2].map(function(i){
       const filled=_saves[i]&&Object.keys(_saves[i]).length;
-      return `<div style="display:flex;gap:3px;align-items:center;border:1px solid ${filled?'rgba(120,200,255,.45)':'var(--bdr)'};border-radius:6px;padding:2px 5px">
-        <span style="font-size:11px;font-weight:bold;color:${filled?'#8cf':'var(--dim)'};padding:0 2px">${I18N.t('formation.slotN',{n:i+1})}</span>
-        <button class="btn btn-sm" onclick="saveFormationSlot(${i})" style="font-size:10px;padding:3px 9px" title="${I18N.t('formation.saveCurrentTitle')}">${I18N.t('formation.saveBtn')}</button>
-        <button class="btn btn-sm" onclick="loadFormationSlot(${i})" ${filled?'':'disabled'} style="font-size:10px;padding:3px 9px;${filled?'border-color:#8cf;color:#8cf':'opacity:.5;cursor:not-allowed'}" title="${I18N.t('formation.loadTitle')}">${I18N.t('formation.loadBtn')}</button>
+      return `<div style="display:flex;gap:4px;align-items:center;border:1px solid ${filled?'rgba(120,200,255,.45)':'var(--bdr)'};border-radius:6px;padding:3px 5px">
+        <span style="font-size:11px;font-weight:bold;color:${filled?'#8cf':'var(--dim)'};padding:0 2px;flex-shrink:0">${I18N.t('formation.slotN',{n:i+1})}</span>
+        <button class="btn btn-sm" onclick="saveFormationSlot(${i})" style="font-size:10px;padding:3px 6px;flex:1" title="${I18N.t('formation.saveCurrentTitle')}">${I18N.t('formation.saveBtn')}</button>
+        <button class="btn btn-sm" onclick="loadFormationSlot(${i})" ${filled?'':'disabled'} style="font-size:10px;padding:3px 6px;flex:1;${filled?'border-color:#8cf;color:#8cf':'opacity:.5;cursor:not-allowed'}" title="${I18N.t('formation.loadTitle')}">${I18N.t('formation.loadBtn')}</button>
       </div>`;
     }).join('')}
   </div>`;
+  // 보유함선 우측 세로 컨트롤 열 — 대형자동배치(프리셋) · 자동배치 · 내편대저장
+  const _formationCtrlCol=`<div style="display:flex;flex-direction:column;gap:10px">${_presetBar}${_autoBtn}${_saveBar}</div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('formation')}<div style="flex:1;min-width:0">
     ${summary}
-    <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:nowrap;overflow-x:auto">${_presetBar}${_saveBar}</div>
     ${hint}
-    <div style="display:grid;grid-template-columns:216px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
+    <div style="display:grid;grid-template-columns:216px 168px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px;position:sticky;top:0;background:rgba(5,10,26,.95);padding:2px 0;z-index:1">${I18N.t('ui.ownedShipsHeader',{n:G.fleet.length})}</div>
         <div style="display:flex;flex-direction:column;gap:6px">${shipCards}</div>
       </div>
+      ${_formationCtrlCol}
       <div>
         <div style="display:flex;gap:10px;align-items:stretch">
           <div style="flex:1">${gridWithLabels}</div>

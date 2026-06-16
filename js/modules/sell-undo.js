@@ -417,18 +417,11 @@ function renderCargoOnlyTab(body){
       </div>
     </div>`;
   }).join('');
-  // 전체 함대 창고 확장 비용 합계 + 가능 여부 (사용자 요청: 상단 일괄 버튼)
-  const _allUpgradeCost=G.fleet.reduce((s,sh)=>s+((sh.cargoSlots||4)<100?getCargoUpgradePrice(sh):0),0);
-  const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<100);
-  // 상단 바에 창고구매·창고제작·전체함대 창고 확장 3버튼 일렬 배치.
-  //   사용자 요청 2026-06-16: '전체함대 창고 확장'을 '창고제작' 버튼 오른쪽으로 이동.
-  const _expandBtn=_anyExpandable
-    ? `<button class="btn btn-sm btn-gold" style="font-size:12px;padding:6px 16px" onclick="upgradeAllCargo()" ${G.credits>=_allUpgradeCost?'':'disabled'}>${I18N.t('ui.allFleetExpandHeader')} <span style="font-size:10px;color:var(--dim)">₡${_allUpgradeCost.toLocaleString()}</span></button>`
-    : `<span style="font-size:11px;color:var(--cyan);align-self:center;padding:0 4px">${I18N.t('ship.allShipsMaxCargo')}</span>`;
+  // 상단 바: 창고구매·창고제작 2버튼.
+  //   사용자 요청 2026-06-16: '전체함대 창고 확장' 버튼 삭제 (개별 함선 확장만 사용).
   const _cargoTopBtns=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
     <button class="btn btn-sm" style="font-size:12px;padding:6px 18px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08)" onclick="(function(){_shipTab='parts';try{rerenderTab(renderShipTab);}catch(e){}hubTab('ship');})()">${I18N.t('ui.cargoBuyTitle')}</button>
     <button class="btn btn-sm" style="font-size:12px;padding:6px 18px;border-color:var(--purple);color:#cc88ff;background:rgba(139,0,255,.08)" onclick="hubTab('craft')">${I18N.t('ui.craftHoldShortcut')}</button>
-    ${_expandBtn}
   </div>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}

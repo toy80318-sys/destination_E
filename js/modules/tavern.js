@@ -474,7 +474,7 @@
           ${cfg.vc>0?`<div style="color:${G.voidCrystal>=cfg.vc?'#cc88ff':'#ff8888'}">VC×${cfg.vc}</div>`:''}
           ${cfg.ve>0?`<div style="color:${G.voidEssence>=cfg.ve?'#88ddff':'#ff8888'}">VE ${cfg.ve.toLocaleString()}</div>`:''}
         </div>
-        <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.openBox')}</button>
+        <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('ui.openBox')}</button>
       </div>`;
     }
     // (구버전 blackMarketHtml 변수는 _bmBtn(3) 참조 오류로 제거 — 현재는 본문 innerHTML 에서 _bmBtn(0/1/2)을 인라인 호출)
@@ -546,7 +546,7 @@
           ${opts.veCost>0?`<div style="color:${(G.voidEssence||0)>=opts.veCost?'#99ffcc':'#ff8888'};font-weight:bold">VE ${opts.veCost}</div>`:''}
           ${opts.vcCost>0?`<div style="color:${(G.voidCrystal||0)>=opts.vcCost?'#cc88ff':'#ff8888'};font-weight:bold">VC×${opts.vcCost}</div>`:''}
         </div>
-        <button class="btn" onclick="${opts.onClick}" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?opts.col:'var(--bdr)'};color:${aff?opts.col:'var(--dim)'};font-weight:bold;flex-shrink:0">${I18N.t('ui.recruit')}</button>
+        <button class="btn" onclick="${opts.onClick}" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?opts.col:'var(--bdr)'};color:${aff?opts.col:'var(--dim)'};font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('ui.recruit')}</button>
       </div>`;
     }
     // 미니 카드 — 5장 가로 행 (사용자 요청)
