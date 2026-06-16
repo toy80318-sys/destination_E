@@ -591,6 +591,8 @@ function _enemySize(u){
        ||nm.includes('블랙팔콘')||nm.includes('블랙 팔콘')||nm.includes('black falcon')||nm.includes('blackfalcon'))
       return{w:448,h:276,bar:300,label:17,gap:900};
   }
+  // 아이젠클로 중간보스 기함 — 일반 대형(144×88)의 2배 크기. 사용자 요청 2026-06-17.
+  if(u._eisenklauBoss||nm.includes('아이젠클로 기함')||nm.includes('eisenklau flagship')) return{w:288,h:176,bar:264,label:14,gap:900};
   // 일반 해적 모선
   if(nm.includes('모선')||nm.includes('mothership')||nm.includes('carrier')) return{w:252,h:153,bar:324,label:16,gap:700};
   if(tier==='신화') return{w:224,h:138,bar:264,label:15,gap:640};
@@ -2350,6 +2352,8 @@ function _finishCombat(){
   let earned=0;
   if(win){
     addCombatLog(I18N.t('combat.victory'),'ok');
+    // raidDef 승리 콜백 (아이젠클로 중간보스 등 — 승리 시 퀘스트 완료 처리). 사용자 요청 2026-06-17.
+    try{ if(combatState.planetDef && typeof combatState.planetDef._onWin==='function'){ combatState.planetDef._onWin(); combatState.planetDef._onWin=null; } }catch(e){}
     // bugfix 2026-06-11 v2: 시나리오 전투 퀘 정밀 연동 — 전투 종류(우르사 보스/치크스/일반)별 매칭
     try{
       if(typeof bumpStoryQuestProgress==='function'){
@@ -2673,6 +2677,8 @@ function _finishCombat(){
       addCombatLog(I18N.t('combat.blackfalconQuestReset'),'warn');
       notify(I18N.t('notify.blackfalconRetryQuest'),'warn');
     }
+    // 미드보스(아이젠클로 등) 패배 시 재도전 콜백 — raidDef._onLose. 사용자 요청 2026-06-17.
+    try{ if(combatState&&combatState.planetDef&&typeof combatState.planetDef._onLose==='function'){ combatState.planetDef._onLose(); combatState.planetDef._onLose=null; } }catch(e){}
   }
   // 전투 기록 저장 (렌더링이 참조하는 필드 모두 포함)
   if(!G.combatHistory)G.combatHistory=[];

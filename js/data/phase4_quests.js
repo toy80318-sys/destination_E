@@ -345,6 +345,23 @@ const PHASE4_QUESTS={
       rewardItems:[],
       rewardFlags:['nelson_formation_data'],
       cutscene_pre:null, cutscene_post:null
+    },
+    // ── 아이젠클로 중간보스전 (수락 즉시 대면 컷신 → 전투) 사용자 요청 2026-06-17 ──
+    {
+      id:'p4_q1907', type:'story_quest', category:'main', phase:4,
+      ic:'⚔️', npc:'아이젠클로', npcIc:'🔥', npcKey:'eisenklau',
+      nm:{ko:'아이젠클로 격돌 — 페스작센 결전', en:'Clash with Eisenklaue — Battle of Fessachsen'},
+      desc:{ko:'페스작센 단조 공장 심장부. 봉쇄의 집행관 아이젠클로의 함대와 정면 충돌.\n수락 즉시 대면 → 전투. 크리그 소형·중형·대형 함대 + 2배 크기 아이젠클로 기함(체력·방어 ×10, 공격 ×5). 호위를 걷어내고 기함을 격파하라.',
+            en:'The heart of the Fessachsen forge — a head-on clash with the fleet of Eisenklaue, enforcer of the blockade.\nAccept → confrontation → battle. Krieg small/medium/large fleet + a double-size Eisenklaue flagship (HP/DEF ×10, ATT ×5). Strip the escorts, then destroy the flagship.'},
+      objectives:[
+        {type:'combat', target:'eisenklau_midboss', qty:1, label:{ko:'아이젠클로 기함 격파', en:'Destroy Eisenklaue flagship'}},
+      ],
+      required:1,
+      rewardCr:150000, rewardVe:80,
+      rewardItems:[],
+      rewardFlags:['eisenklau_midboss_cleared'],
+      cutscene_pre:null, cutscene_post:null,
+      _midBoss:'eisenklau'
     }
   ],
 
@@ -534,6 +551,15 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아인슈타인 영입 → 보이드 횡단 → 우르사 격파 → 지구 해방. 순서가 정해졌다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 페이즈 5 — 행성 캅테인 균열~지구 · 아인슈타인 합류 · 보이드 균열 횡단 · 우르사 메이저 격파 · 지구 해방.'}
+  ],
+
+    // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
+  p4_eisenklau:[
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'여기까지 왔군, 인간. 페스작센 — 내 단조 공장의 심장부다. 한 발도 더 들이지 못한다.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로. 100년 봉쇄의 집행관. 오늘 네 함대를 여기 묻겠다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'저 기함 — 다른 함선의 열 배는 단단하다. 정면은 피해. 호위부터 걷어내고 본함을 친다.'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'(기함 출력 최대) 크리그 전 함대 — 전열 정비! 저 거북선을 갈아버려라!'},
+    {char:'baekgu2_fight', name:'백구', color:'#66ddff', text:'아이젠클로 기함 포착 — 크기 2배, 장갑 이상. 전 함선 전투 준비!'}
   ]
 };
 
@@ -640,6 +666,15 @@ const PHASE4_CUTSCENES_EN={
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before we can reach Zeta Reticuli — we have to pass through the Kapteyn-b rift. Einstein is there. He\'s the authority on Void stabilization theory. He can neutralize Ursa\'s Void shield.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Recruit Einstein → cross the Void → destroy Ursa → liberate Earth. The order is set.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 4 complete. Phase 5 — planets Kapteyn-b rift to Earth · Einstein joins · cross the Void rift · destroy Ursa Major · liberate Earth.'}
+  ],
+
+    // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17
+  p4_eisenklau:[
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'So you reached this far, human. Fessachsen — the heart of my forge. Not one step further.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Eisenklaue. Enforcer of the century-long blockade. Today your fleet is buried here.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That flagship — ten times the hull of the rest. Avoid a head-on. Strip the escorts first, then strike the core.'},
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'(flagship to full power) All Krieg ships — form ranks! Grind that Turtle Ship to dust!'},
+    {char:'baekgu2_fight', name:'Baekgu', color:'#66ddff', text:'Eisenklaue flagship detected — double size, abnormal armor. All ships, prepare for battle!'}
   ]
 };
 
