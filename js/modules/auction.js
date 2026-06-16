@@ -195,7 +195,7 @@
         <div style="font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:3px">${I18N.t('ui.myOwnedPlanets',{n:ownedList.length,max:_maxPlanets2})}</div>
         <div style="font-size:11px;color:var(--green)">${I18N.t('ui.totalTaxIncome',{n:totalTax.toLocaleString()})}</div>
       </div>
-      <div data-scroll-id="auct-owned" style="flex:1;overflow-y:auto;min-height:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(212,175,55,.3) transparent">${ownedCardHtml}</div>
+      <div data-scroll-id="auct-owned" style="flex:1;overflow-y:auto;min-height:0;display:grid;grid-template-columns:1fr;align-content:start;gap:8px;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(212,175,55,.3) transparent">${ownedCardHtml}</div>
     </div>`;
     // 우측: 입찰 중 행성 (기존 카드들)
     const biddingHtml=`<div style="display:flex;flex-direction:column;height:100%;min-height:0">

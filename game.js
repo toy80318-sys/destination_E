@@ -1733,7 +1733,7 @@ function showHub(){
 // 함수 시그니처는 호환성을 위해 유지 (호출하는 다른 모듈 안전 보호).
 function showOnboardingTutorial(){ /* deprecated 2026-06-07 — see Phase 1 scenario quests */ }
 function replayTutorial(){ /* deprecated 2026-06-07 — see Phase 1 scenario quests */ }
-const ALL_TABS=['main','map','plaza','front','tavern','gacha','auction','clog','ship','crew','planets','trade','quest','combat','result'];
+const ALL_TABS=['main','map','plaza','front','tavern','gacha','auction','clog','ship','crew','trade','quest','combat','result'];
 function setHubNav(tab){
   // 잔해 탐색 버튼 라벨 즉시 갱신 (전투 진입/종료 시 합류 호출 모드 전환)
   try{if(typeof updateGatherBtn==='function')updateGatherBtn();}catch(e){}
@@ -1744,7 +1744,7 @@ function setHubNav(tab){
   const captainTabs=['map','crew','clog','combat','result','codex'];
   const dockTabs=['ship','craft','garage'];
   const plazaTabs=['tavern','gacha','trade','quest','plaza'];
-  const frontTabs=['auction','planets','front'];
+  const frontTabs=['auction','front'];
   let folderId=null;
   if(dockTabs.includes(tab))folderId='dock';
   else if(plazaTabs.includes(tab))folderId='plaza';
@@ -1881,7 +1881,7 @@ function hubTab(tab){
     // 카테고리별 단계는 팩션별 동적 (_getCategoryStage)
     const _plazaTabs=['tavern','gacha','trade','quest'];
     const _dockTabs=['ship','craft','garage'];
-    const _frontTabs=['front','plaza','planets','auction'];
+    const _frontTabs=['front','plaza','auction'];
     let needed=0,stageName='',stageEmoji='🏗️';
     if(_plazaTabs.includes(tab)){needed=_getCategoryStage(pid,'plaza');stageName=I18N.t('stage.plaza');stageEmoji='🏪';}
     else if(_dockTabs.includes(tab)){needed=_getCategoryStage(pid,'dock');stageName=I18N.t('stage.dock');stageEmoji='🚀';}
@@ -4647,14 +4647,13 @@ function renderFrontView(body){
   body.classList.remove('cv');document.body.classList.remove('combat-mode');
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
   const cards=[
-    {tab:'planets',ic:'🌍',nm:I18N.t('plaza.planetsNm'),desc:I18N.t('plaza.planetsDesc'),color:'var(--green)',bg:'rgba(0,255,140,.07)',bdr:'rgba(0,255,140,.25)'},
     {tab:'auction',ic:'🏛️',nm:I18N.t('ui.planetAuction'),desc:I18N.t('ui.planetAuctionDesc'),color:'var(--gold)',bg:'rgba(212,175,55,.07)',bdr:'rgba(212,175,55,.2)'},
   ];
   body.innerHTML=`<div class="hub-scroll">
 ${hubBanner('front','🌍',I18N.t('front.title'),pd?.f)}
 <div class="hub-t">${I18N.t('hub.planetFrontT')} — ${pd?pd.nm:''}</div>
 <div style="color:var(--dim);font-size:13px;margin-bottom:20px;text-align:center">${I18N.t('ui.auctionIntro')}</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:0 auto">
+<div style="display:grid;grid-template-columns:1fr;gap:14px;max-width:260px;margin:0 auto">
 ${cards.map(c=>`<button onclick="hubTab('${c.tab}')" style="background:${c.bg};border:2px solid ${c.bdr};border-radius:14px;padding:20px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
 <div style="font-size:38px">${c.ic}</div>
 <div style="color:${c.color};font-size:14px;font-weight:bold">${c.nm}</div>
