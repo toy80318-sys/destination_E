@@ -1335,6 +1335,8 @@ I18N.registerLocale("en", {
   "ui.taxRoi": "Tax ₡{tax}/turn | ROI {roi} turns",
   "ui.blinkJump": "⚡ Blink Jump ₡{cost}",
   "ui.cargoSlots": "📦 {n} slots",
+  "ui.rangeShort": "RNG",
+  "ui.rangeHint": "Combat range — higher reaches the enemy fleet's rear columns. Missile-armed and high-mobility ships have longer range.",
   "ui.cargoCrewLine": "📦 {n} slots · Crew {a}/{b}",
   "ui.partsBtnLabel": "🔧 Parts",
   "ui.crewBtnLabel": "👥 Crew",

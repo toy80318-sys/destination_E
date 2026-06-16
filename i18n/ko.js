@@ -1335,6 +1335,8 @@ I18N.registerLocale("ko", {
   "ui.taxRoi": "세율 ₡{tax}/턴 | 회수 {roi}턴",
   "ui.blinkJump": "⚡ 블링크 순간이동 ₡{cost}",
   "ui.cargoSlots": "📦 {n}칸",
+  "ui.rangeShort": "사거리",
+  "ui.rangeHint": "전투 사거리 — 클수록 적 함대의 뒤쪽 열까지 타격. 미사일·고기동 함선이 사거리가 길다.",
   "ui.cargoCrewLine": "📦 {n}칸 · 크루 {a}/{b}",
   "ui.partsBtnLabel": "🔧 파츠",
   "ui.crewBtnLabel": "👥 크루",

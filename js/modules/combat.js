@@ -8,6 +8,29 @@
 // 로드 위치: index.html 에서 game.js 직후 (전투는 사용자 트리거 시 호출되므로 안전)
 // ═══════════════════════════════════════════════════════════════════
 
+// ── 함선 사거리(RNG) — 전투에서 '앞열 기준 상대 종심' 도달 거리 (사용자 요청 2026-06-16) ──
+//   공격자 종심 + 타겟 종심 의 합이 이 값 이내인 적만 타격 가능. 최전열(종심 0)은 항상 사거리 내라
+//   사거리에 의한 전체 소강(stalemate)은 발생하지 않음 — 앞열이 죽으면 다음 열이 최전열이 되어 자동 재교전.
+//   기본 3 · 레이저 +1 · 미사일 +2(희귀도 보너스 최대 +2) · 고기동(TEC≥400) +1  → 3~7 분포
+function shipCombatRange(s){
+  if(!s)return 3;
+  let missile=0,laser=0,bestRank=0;
+  const rar={mythic:2,set:1,legend:1,epic:1};
+  const parts=(s.parts)||[];
+  for(let i=0;i<parts.length;i++){
+    const pp=(typeof partById==='function')?partById(parts[i]):null;
+    if(!pp||pp.cat!=='weapon')continue;
+    if(pp.wtype==='missile'){missile++;const rk=rar[pp.rarity]||0;if(rk>bestRank)bestRank=rk;}
+    else laser++;
+  }
+  let r=3;
+  if(missile>0)r+=2+bestRank;
+  else if(laser>0)r+=1;
+  if((+s.TEC||0)>=400)r+=1;
+  return r;
+}
+if(typeof window!=='undefined')window.shipCombatRange=shipCombatRange;
+
 // 적대 행성 적 함대 생성 (startCombat과 브리핑에서 공용)
 // 적함 등급 30% 확률로 한 단계 상위 (사용자 요청: 대형 함선 비중 30% 증가)
 //   소형 → 중형, 중형 → 대형 으로 상향 (대형은 그대로 유지, 확률은 누적이 아닌 단일 롤)
@@ -1164,6 +1187,7 @@ function drawCombatFrame(){
         arr.forEach((ui,ri)=>{
           units[ui]._frontRank=c;       // 앞열(소형 c=0)일수록 우선 타겟 / 보스(c=3)는 최후
           units[ui]._fleetCols=COLS;
+          units[ui]._fleetCol=c;
           out[ui]={x:xA + c*cw, y:ri*ch - colH/2};
         });
       }
@@ -1196,7 +1220,7 @@ function drawCombatFrame(){
     const cellW=maxW*(isEnemy?1.45:1.7),cellH=maxH*(isEnemy?1.5:1.7);
     // 앵커는 로컬 좌표(=ctx.scale(z) 적용 전). /z 보정을 제거해 줌과 함께 함대 거리도 확대/축소된다.
     // 적군은 화면을 벗어나지 않도록 약간 가깝게 배치 (0.22)
-    const xAnchor=(isEnemy?+1:-1)*W*0.22;
+    const _xAnchorMag=W*0.22;
     const totalH=(rows-1)*cellH;
     const totalSlots=cols*rows;
     let slotForIdx;
@@ -1237,14 +1261,26 @@ function drawCombatFrame(){
         }
       }
     }
+    // ── 최전열 전멸 시 함대가 안쪽으로 가까워지도록(사거리 소강 방지 시각화) ──
+    //   살아있는 최전열 컬럼만큼 앵커를 중앙 쪽으로 이동. 양측이 모두 이동하면 두 함대가 좁혀진다.
+    let _minAliveSlotCol=99;
+    for(let i=0;i<n;i++){
+      if(units[i]&&units[i].hp>0){
+        const sl=slotForIdx[i];
+        if(sl>=0){const sc=_isWideFleet?(sl%cols):Math.floor(sl/rows);if(sc<_minAliveSlotCol)_minAliveSlotCol=sc;}
+      }
+    }
+    if(_minAliveSlotCol===99)_minAliveSlotCol=0;
+    const xAnchor=(isEnemy?+1:-1)*Math.max(W*0.085,_xAnchorMag-_minAliveSlotCol*cellW*0.55);
     return units.map((u,i)=>{
       const slot=slotForIdx[i];
-      if(slot<0){u._frontRank=99;return{x:xAnchor,y:0};}
+      if(slot<0){u._frontRank=99;u._fleetCol=99;return{x:xAnchor,y:0};}
       // 가로 펼침 모드는 row-first 매핑: slotCol=slot%cols, slotRow=floor(slot/cols)
       const slotCol=_isWideFleet?(slot%cols):Math.floor(slot/rows);
       const slotRow=_isWideFleet?Math.floor(slot/cols):(slot%rows);
       u._frontRank=slot;
       u._fleetCols=cols;
+      u._fleetCol=slotCol;    // 사거리(종심) 계산용 — 열 인덱스(0=최전열)
       const xLocal=xAnchor + (isEnemy?+1:-1)*slotCol*cellW;
       const yLocal=slotRow*cellH - totalH/2;
       const idStr=String(u.id||('U'+i));
@@ -1751,17 +1787,41 @@ function runCombatTurn(){
   let log=[];
   const W=cbCV?cbCV.width:400, ox=cbOffX, oy=cbOffY;
 
+  // ── 같은 함대에서 살아있는 최전열(최소 _fleetCol) — 상대 종심 계산 기준 ──
+  function _minAliveCol(units){
+    let m=99;
+    for(let i=0;i<units.length;i++){const u=units[i];if(u&&u.hp>0){const c=(typeof u._fleetCol==='number')?u._fleetCol:0;if(c<m)m=c;}}
+    return m===99?0:m;
+  }
+  // ── 사거리 필터: 비보스 함대전에서 공격자·타겟의 '앞열 기준 상대 종심' 합이 사거리 이내인 적만 후보로 ──
+  //   최전열은 종심 0 → 항상 사거리 내(전체 소강 방지). 앞열이 죽으면 다음 열이 최전열이 되어 자동으로 교전.
+  function _rangeFilter(candidates,attacker,attackerFleet){
+    if(!attacker||!attackerFleet)return candidates;
+    if(combatState.isBoss||combatState.isVoidBoss)return candidates;  // 보스전은 별도 타겟 규칙 — 사거리 미적용
+    const range=shipCombatRange(attacker);
+    const attMin=_minAliveCol(attackerFleet),tgtMin=_minAliveCol(candidates);
+    const attDepth=Math.max(0,((typeof attacker._fleetCol==='number')?attacker._fleetCol:0)-attMin);
+    return candidates.filter(c=>{
+      const cd=Math.max(0,((typeof c._fleetCol==='number')?c._fleetCol:0)-tgtMin);
+      return (attDepth+cd)<=range;
+    });
+  }
   // ── 앞쪽(낮은 _frontRank) 함선 우선 타겟팅: 가중치 = (n - rank). 70% 확률로 가중 적용, 30%는 균등 무작위 ──
-  function _pickFrontBiased(candidates){
-    if(candidates.length<=1)return candidates[0];
-    if(Math.random()<0.30)return candidates[Math.floor(Math.random()*candidates.length)];
-    const ranks=candidates.map(c=>typeof c._frontRank==='number'?c._frontRank:99);
+  //   attacker/attackerFleet 전달 시 사거리 필터 적용 → 사거리 밖이면 null(공격 스킵)
+  function _pickFrontBiased(candidates,attacker,attackerFleet){
+    if(!candidates||!candidates.length)return null;
+    if(candidates.length===1)return candidates[0];
+    let pool=_rangeFilter(candidates,attacker,attackerFleet);
+    if(!pool.length)return null;          // 사거리 밖 — 공격 스킵
+    if(pool.length===1)return pool[0];
+    if(Math.random()<0.30)return pool[Math.floor(Math.random()*pool.length)];
+    const ranks=pool.map(c=>typeof c._frontRank==='number'?c._frontRank:99);
     const maxR=Math.max(...ranks);
     const weights=ranks.map(r=>(maxR-r+1)*(maxR-r+1)); // 제곱 가중치로 앞쪽 강조
     const total=weights.reduce((a,b)=>a+b,0);
     let r=Math.random()*total;
-    for(let i=0;i<candidates.length;i++){r-=weights[i];if(r<=0)return candidates[i];}
-    return candidates[candidates.length-1];
+    for(let i=0;i<pool.length;i++){r-=weights[i];if(r<=0)return pool[i];}
+    return pool[pool.length-1];
   }
 
   // ── 발사 스태거: 각 공격자가 시간 차로 발사하도록 delay 누적 ──
@@ -1948,7 +2008,8 @@ function runCombatTurn(){
         }
       }
     }
-    const target=_pickFrontBiased(aliveEn);
+    const target=_pickFrontBiased(aliveEn,p,pl);
+    if(!target)return;   // 사거리 밖 — 이번 턴 이 함선은 공격 스킵(앞열 정리되면 자동 교전)
     const rawDmg=Math.max(1,Math.round((+p.ATT||1)-Math.floor((target.armorTier||0)*1.5)));
     const shDmg=Math.min(target.sh||0,rawDmg);
     const hpDmg=rawDmg-shDmg;
@@ -2095,7 +2156,8 @@ function runCombatTurn(){
   if(!_skipNormalEnemyAttack)en.filter(e=>e.hp>0).forEach(e=>{
     const alivePl=pl.filter(p=>p.hp>0);
     if(!alivePl.length)return;
-    const target=_pickFrontBiased(alivePl);
+    const target=_pickFrontBiased(alivePl,e,en);
+    if(!target)return;   // 사거리 밖 — 이번 턴 이 적함은 공격 스킵
     // ─── 회피(TEC 기반) ─────────────────────────────────────────
     //   사용자 명세: 엔진(TEC) 수치가 높을수록 회피율 상승
     //   공식: evade = min(0.40, TEC / 2500)  → TEC 0=0% / 250=10% / 500=20% / 1000=40% (캡)

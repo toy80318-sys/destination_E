@@ -475,6 +475,7 @@ function renderShipTab(body){
               <span style="font-size:10px;color:var(--red);white-space:nowrap">⚔ ATT ${totalATT}</span>
               <span style="font-size:10px;color:var(--blue);white-space:nowrap">🛡 SHD ${totalINT}</span>
               <span style="font-size:10px;color:var(--cyan);white-space:nowrap">⚙ ENG ${totalTEC}</span>
+              <span style="font-size:10px;color:#ffb86c;white-space:nowrap" title="${I18N.t('ui.rangeHint')}">🎯 ${I18N.t('ui.rangeShort')} ${(window.shipCombatRange?window.shipCombatRange(s):3)}</span>
               <span style="font-size:10px;color:var(--gold);white-space:nowrap">🔰 DEF ${getShipStats(s).DEF||0}</span>
               <span style="font-size:10px;color:#f88;white-space:nowrap">❤ HP ${(s.maxHP+bonus.hp).toLocaleString()}</span>
               <span style="font-size:10px;color:var(--dim);white-space:nowrap">${I18N.t('ui.cargoSlots',{n:s.cargoSlots||4})}</span>
