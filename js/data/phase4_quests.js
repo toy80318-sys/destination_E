@@ -360,7 +360,7 @@ const PHASE4_QUESTS={
       rewardCr:150000, rewardVe:80,
       rewardItems:[],
       rewardFlags:['eisenklau_midboss_cleared'],
-      cutscene_pre:null, cutscene_post:null,
+      cutscene_pre:null, cutscene_post:'p4_ch10c',
       _midBoss:'eisenklau'
     }
   ],
@@ -410,7 +410,7 @@ const PHASE4_QUESTS={
       rewardCr:120000, rewardVe:100,
       rewardItems:[],
       rewardFlags:['ursa_major_target_known','phase4_complete'],
-      cutscene_pre:null, cutscene_post:'p4_ch10c'
+      cutscene_pre:null, cutscene_post:null
     },
     {
       id:'p4_q2004', type:'story_quest', category:'sub', phase:4,
@@ -543,14 +543,15 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
   p4_ch10c:[
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로는 — 도망쳤어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'어디로?'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'제타 레티쿨리. 우르사 메이저 본거지.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우르사가 아이젠클로를 비호 중이라는 거잖아. 마지막 일전이 다가왔어.'},
-    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 보스다. 직접 잡아야 끝난다.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 도달 전에 — 캅테인 균열 캅테인b 균열을 거쳐야 해. 거기에 아인슈타인이 있어. 보이드 안정화 이론의 권위자야. 우르사의 보이드 방어막을 무력화할 수 있어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'아인슈타인 영입 → 보이드 횡단 → 우르사 격파 → 지구 해방. 순서가 정해졌다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 페이즈 5 — 행성 캅테인 균열~지구 · 아인슈타인 합류 · 보이드 균열 횡단 · 우르사 메이저 격파 · 지구 해방.'}
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.'},
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'...여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.'},
+    {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.'},
+    {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 집행관 격파 · 이휘소(9번째 전설 영웅) 합류. 페이즈 5 — 캅테인 균열~지구, 우르사 메이저로.'}
   ],
 
     // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
@@ -658,14 +659,15 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── CH10-C "Escape Coordinates" (Q20-03 done · Phase 4 end) ───
   p4_ch10c:[
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Command-room data recovered. Eisenklaue has — fled.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Where to?'},
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Zeta Reticuli. Ursa Major\'s home base.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That means Ursa is sheltering Eisenklaue. The final battle is upon us.'},
-    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the boss. It ends only when we take them down ourselves.'},
-    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before we can reach Zeta Reticuli — we have to pass through the Kapteyn-b rift. Einstein is there. He\'s the authority on Void stabilization theory. He can neutralize Ursa\'s Void shield.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Recruit Einstein → cross the Void → destroy Ursa → liberate Earth. The order is set.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 4 complete. Phase 5 — planets Kapteyn-b rift to Earth · Einstein joins · cross the Void rift · destroy Ursa Major · liberate Earth.'}
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Command-room data recovered. Eisenklaue — confirmed destroyed. The blockade\'s enforcer met his end at Fessachsen.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We severed one hand of the century-long blockade. But the head still remains.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'A preservation capsule in the research wing beneath the factory — life signs! Someone is alive.'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'...where am I. I am Lee Hwi-so — I was a particle physicist. A hundred years asleep...'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Your equations led us here a century later, Doctor. Come with us.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'One coordinate buried in Eisenklaue\'s data — Zeta Reticuli. Ursa Major\'s home base.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the true boss. It ends only when we take it down ourselves.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before Zeta Reticuli we must pass the Kapteyn rift. Einstein is there — the key to unlocking Ursa\'s Void shield.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 4 complete. The enforcer is down · Dr. Lee Hwi-so (9th legendary hero) joins. Phase 5 — Kapteyn rift to Earth, on to Ursa Major.'}
   ],
 
     // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17
