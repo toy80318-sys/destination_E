@@ -2489,7 +2489,8 @@ function getMaxCrew(ship){
   // 티어 기본값:
   //  소형 8 · 중형 10 · 대형 16 · 전설기함 20 · 신화 20
   const t=ship.tier;
-  const tierMin=t==='신화'?20:t==='전설기함'?20:t==='대형'?16:t==='중형'?10:8;
+  // 신화 함선실: 4열×6행=24 기본 (사용자 요청 2026-06-16)
+  const tierMin=t==='신화'?24:t==='전설기함'?20:t==='대형'?16:t==='중형'?10:8;
   // 인스턴스/카탈로그 override가 더 크면 사용, 아니면 티어 기본 (티어 기본이 최소 보장)
   let base=tierMin;
   if(typeof ship.crewMax==='number'&&ship.crewMax>tierMin)base=ship.crewMax;
@@ -2498,13 +2499,15 @@ function getMaxCrew(ship){
     const def=cid?SHIP_CATALOG.find(d=>d.id===cid):null;
     if(def&&typeof def.crewMax==='number'&&def.crewMax>tierMin)base=def.crewMax;
   }
-  // 절대 상한: 20명 + 구매 확장(crewMaxExtra: 4 × N)
+  // 베이스 상한: 신화 24 · 그 외 20. 구매 확장(crewMaxExtra: 6×N) 가산 후 절대 상한: 신화 48 · 그 외 32.
+  const _baseCap=t==='신화'?24:20;
+  const _absCap=t==='신화'?48:32;
   const extra=(+ship.crewMaxExtra)||0;
-  return Math.min(20,base)+extra;
+  return Math.min(_absCap, Math.min(_baseCap,base)+extra);
 }
-// 함선실(크루) 확장 — 4칸당 1회 구매, 최대 3회(+12칸)
-const CREW_EXT_PER=4;
-const CREW_EXT_MAX_BUYS=3;
+// 함선실(크루) 확장 — 6칸(1열)당 1회 구매 (사용자 요청 2026-06-16: 가로로 6칸씩). 신화 24→48까지 4회.
+const CREW_EXT_PER=6;
+const CREW_EXT_MAX_BUYS=4;
 function getCrewMaxUpgradePrice(s){
   if(!s)return 0;
   const cnt=Math.floor(((+s.crewMaxExtra)||0)/CREW_EXT_PER);

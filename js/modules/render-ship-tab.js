@@ -211,9 +211,10 @@ function renderShipTab(body){
 
       // ─── RPG 그리드 계산 ───
       const maxCrew=getMaxCrew(s);
-      // 크루 그리드: 모든 함선 2열로 고정 → 세로로 길게 (화면 폭 절약)
-      // 함선실: 4열로 확장 (좌측 2열 추가) → 8~16칸 함선실 표시 가능
-      const crewCols=4;
+      // 함선실 그리드: 6행 고정 + 열을 가로로 확장 (사용자 요청 2026-06-16: 세로↑ 대신 가로↑).
+      //   crewCols=ceil(maxCrew/6) — 신화 기본 4열×6행=24칸 → 추가 구매 시 가로로 6칸(1열)씩 → 최대 8열×6행=48칸.
+      //   _crewRows(아래)가 ceil(maxCrew/crewCols)이라 자동으로 ≤6행 유지. row-major 배치라 멀티셀 크루(2칸/2×2) 정상.
+      const crewCols=Math.min(8,Math.max(4,Math.ceil(maxCrew/6)));
       const PART_COLS=getShipPartsGridCols(s.tier);
       const PART_ROWS=getShipPartsGridRows(s);
       const partsLayout=layoutPartsGrid(s.parts||[],PART_COLS,PART_ROWS);
@@ -288,9 +289,9 @@ function renderShipTab(body){
             +'<span style="font-size:8px;color:'+_col+';text-align:center;max-width:'+_csz+'px;line-height:1;overflow:hidden;white-space:nowrap">'+_nm+'</span>'
             +'</div>';
         }else{
+          // 빈슬롯 글자 제거 (사용자 요청 2026-06-16) — 추가 버튼만 표시
           return '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0">'
             +'<button onclick="pickCrewForSlot('+idx+')" title="'+I18N.t('ui.crewAssignBtn')+'" style="background:rgba(0,243,255,.03);border:1px dashed rgba(0,243,255,.2);border-radius:6px;cursor:pointer;width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;display:flex;align-items:center;justify-content:center;color:rgba(0,243,255,.3);font-size:24px;line-height:1" onmouseover="this.style.background=\'rgba(0,243,255,.08)\'" onmouseout="this.style.background=\'rgba(0,243,255,.03)\'">+</button>'
-            +'<span style="font-size:8px;color:rgba(255,255,255,.18);text-align:center;max-width:51px;line-height:1">'+I18N.t('ui.emptySlot')+'</span>'
             +'</div>';
         }
       }).join('');

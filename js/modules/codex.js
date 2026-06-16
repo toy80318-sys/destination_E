@@ -457,11 +457,21 @@
         const _dt=(_diary.title&&(_diary.title[lang]||_diary.title.ko))||'';
         const _shipNm=(G.profile&&G.profile.ship)||I18N.t('ui.shipDefault');
         const _coNm=(G.profile&&G.profile.company)||I18N.t('ui.companyDefault');
-        const _dx=(window._subTokens?window._subTokens(_diary[lang]||_diary.ko||''):((_diary[lang]||_diary.ko||'').split('{함선}').join(_shipNm).split('{ship}').join(_shipNm).split('{회사}').join(_coNm).split('{company}').join(_coNm)));
+        const _sub=function(txt){return window._subTokens?window._subTokens(txt||''):((txt||'').split('{함선}').join(_shipNm).split('{ship}').join(_shipNm).split('{회사}').join(_coNm).split('{company}').join(_coNm));};
         if(_diaryReady){
+          // 페이즈당 4개 단위 entries 렌더 (사용자 요청 2026-06-16). 구버전(단일 ko/en) 폴백 유지.
+          const _entries=(_diary.entries&&_diary.entries.length)?_diary.entries:[{t:_diary.title,ko:_diary.ko,en:_diary.en}];
+          const _entHtml=_entries.map(function(e){
+            const _et=(e.t&&(e.t[lang]||e.t.ko))||'';
+            const _ex=_sub(e[lang]||e.ko||'').replace(/</g,'&lt;');
+            return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed ${phCol}33">
+              ${_et?`<div style="font-size:12px;font-weight:bold;color:${phCol};margin-bottom:4px">${_et}</div>`:''}
+              <div style="font-size:13px;line-height:1.9;color:#e8eef5;white-space:pre-wrap;word-break:keep-all;font-style:italic">${_ex}</div>
+            </div>`;
+          }).join('');
           diaryPanel=`<div style="background:linear-gradient(160deg,rgba(255,215,0,.06),rgba(0,243,255,.04));border:1px solid ${phCol}66;border-radius:10px;padding:14px 16px">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${_baekguMini()}<div style="font-size:13px;font-weight:bold;color:${phCol}">🐕 ${I18N.t('voyage.diaryTitle')} — ${_dt}</div></div>
-            <div style="font-size:13px;line-height:1.95;color:#e8eef5;white-space:pre-wrap;word-break:keep-all;font-style:italic">${_dx.replace(/</g,'&lt;')}</div>
+            ${_entHtml}
           </div>`;
         } else {
           diaryPanel=`<div style="background:rgba(80,80,80,.06);border:1px dashed ${phCol}44;border-radius:10px;padding:14px 16px;text-align:center">
