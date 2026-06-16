@@ -1603,33 +1603,7 @@
         ctx.setLineDash([]);
       }
       if(isCur){ctx.strokeStyle='rgba(222,255,154,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(sp.x,sp.y,r+11,0,Math.PI*2);ctx.stroke();}
-      // 기함 이미지 표시 — 사용자 요청 2026-06-09: 행성 위쪽에 배치
-      //   · 이전: 우측 (sp.x+r+5, sp.y)
-      //   · 변경: 위쪽 중앙 정렬 — 행성 라벨과 겹치지 않게 위로 충분히 띄움
-      // 이동 모션 중에는 출발지 정박 함선 이미지를 숨김 — 움직이는 함선만 보이게. 사용자 요청 2026-06-16.
-      if(isCur&&G.fleet&&G.fleet.length>0&&!_travelAnimFor){
-        var _fsz=Math.max(18,r*3.2);
-        var _fx=sp.x;  // 행성 중심과 수평 정렬
-        var _fy=sp.y-r-_fsz/2-6;  // 행성 위쪽 + 6px 여백
-        var _fImgSrc=shipImgSrc(G.fleet[0]);
-        var _fImg=_loadMapImg(_fImgSrc,function(){renderMap();});
-        if(_fImg&&_fImg.complete&&_fImg.naturalWidth>0){
-          ctx.save();ctx.globalAlpha=0.95;
-          ctx.beginPath();ctx.arc(_fx,_fy,_fsz/2,0,Math.PI*2);ctx.clip();
-          ctx.drawImage(_fImg,_fx-_fsz/2,_fy-_fsz/2,_fsz,_fsz);
-          ctx.restore();
-          // 행성과 함선 사이 미세 연결선 (위치 표시 강조)
-          ctx.globalAlpha=0.6;ctx.strokeStyle='rgba(222,255,154,.5)';ctx.lineWidth=1;
-          ctx.beginPath();ctx.moveTo(sp.x,sp.y-r-1);ctx.lineTo(_fx,_fy+_fsz/2+1);ctx.stroke();
-          ctx.globalAlpha=1;
-        } else {
-          ctx.globalAlpha=1;ctx.fillStyle='#deff9a';
-          ctx.font=Math.max(10,r*2)+'px serif';
-          ctx.textAlign='center';
-          ctx.fillText('🛸',_fx,_fy+r*0.6);
-          ctx.textAlign='left';  // 다른 텍스트에 영향 안 가도록 복원
-        }
-      }
+      // 우주정거장(STA01) 아이콘 먼저 그림 → 함선이 그 위 레이어로 올라오게. 행성 위쪽 중앙.
       if(st?.owned){
         // 보유(총독) 행성 아이콘 — 🏠 이모지 → STA01 이미지로 교체 (사용자 요청 2026-06-16). 미로드 시 이모지 폴백.
         const _govSrc='img/ui/STA01_icon.png'+(window._GAME_VER?('?v='+encodeURIComponent(window._GAME_VER)):'');
@@ -1639,6 +1613,30 @@
           ctx.save();ctx.globalAlpha=1;ctx.drawImage(_govImg,sp.x-_gsz/2,sp.y-r-4-_gsz,_gsz,_gsz);ctx.restore();
         } else {
           ctx.fillStyle='#deff9a';ctx.font=`${Math.max(7,9*G.mapZoom)}px serif`;ctx.textAlign='center';ctx.globalAlpha=1;ctx.fillText('🏠',sp.x,sp.y-r-4);
+        }
+      }
+      // 기함 이미지 — 우주정거장(상단 중앙)보다 위 레이어 + 행성 '좌측 상단'에 고정해 겹침 방지. 사용자 요청 2026-06-17.
+      //   · 이동 모션 중에는 출발지 정박 함선 숨김(_travelAnimFor). (※ 정거장 블록 뒤에 그려 함선이 위에 보임)
+      if(isCur&&G.fleet&&G.fleet.length>0&&!_travelAnimFor){
+        var _fsz=Math.max(18,r*3.2);
+        var _fx=sp.x-r-_fsz*0.30;   // 행성 좌측 (정거장=상단 중앙 과 분리)
+        var _fy=sp.y-r-_fsz*0.30;   // 행성 상단
+        var _fImgSrc=shipImgSrc(G.fleet[0]);
+        var _fImg=_loadMapImg(_fImgSrc,function(){renderMap();});
+        if(_fImg&&_fImg.complete&&_fImg.naturalWidth>0){
+          // 행성과 함선 사이 연결선 (함선 아래 레이어에 먼저)
+          ctx.save();ctx.globalAlpha=0.6;ctx.strokeStyle='rgba(222,255,154,.5)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(sp.x-r*0.7,sp.y-r*0.7);ctx.lineTo(_fx+_fsz*0.35,_fy+_fsz*0.35);ctx.stroke();ctx.restore();
+          ctx.save();ctx.globalAlpha=0.97;
+          ctx.beginPath();ctx.arc(_fx,_fy,_fsz/2,0,Math.PI*2);ctx.clip();
+          ctx.drawImage(_fImg,_fx-_fsz/2,_fy-_fsz/2,_fsz,_fsz);
+          ctx.restore();ctx.globalAlpha=1;
+        } else {
+          ctx.globalAlpha=1;ctx.fillStyle='#deff9a';
+          ctx.font=Math.max(10,r*2)+'px serif';
+          ctx.textAlign='center';
+          ctx.fillText('🛸',_fx,_fy);
+          ctx.textAlign='left';  // 다른 텍스트에 영향 안 가도록 복원
         }
       }
       // 라벨: 일반 행성은 잠금 상태에선 미표시, P31(지구)는 잠금이어도 라벨 항상 표시
