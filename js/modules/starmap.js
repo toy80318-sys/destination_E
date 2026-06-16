@@ -100,7 +100,8 @@
     mapCV.oncontextmenu=e=>{e.preventDefault();}; // 우클릭 메뉴 방지
     mapCV.onmousedown=e=>{
       lx=e.clientX;ly=e.clientY;sx0=e.clientX;sy0=e.clientY;moved=false;mdownT=Date.now();
-      if(e.button===0){panDrag=true;mapCV.style.cursor='grabbing';}
+      // 좌클릭: 모드에 따라 회전/이동 (사용자 요청 2026-06-16: 좌우 회전 가능하게) · 우클릭: 항상 회전
+      if(e.button===0){if(mapDragMode==='rotate')rotateDrag=true;else panDrag=true;mapCV.style.cursor='grabbing';}
       else if(e.button===2){rotateDrag=true;mapCV.style.cursor='grabbing';}
     };
     mapCV.onmousemove=e=>{
@@ -123,8 +124,9 @@
     mapCV.onmouseup=e=>{
       if(e.button===0){
         const elapsed=Date.now()-mdownT;
-        const wasClick=(!moved||elapsed<CLICK_MS)&&panDrag;
-        panDrag=false;mapCV.style.cursor='crosshair';
+        const wasClick=(!moved||elapsed<CLICK_MS);  // 클릭이면 회전/이동 모드 무관하게 행성 선택
+        panDrag=false;if(mapDragMode==='rotate')rotateDrag=false;
+        mapCV.style.cursor='crosshair';
         if(wasClick)onMapClick(e);
       } else if(e.button===2){rotateDrag=false;mapCV.style.cursor='crosshair';}
     };
@@ -141,7 +143,21 @@
       }
     };
     mapCV.onmouseleave=()=>{panDrag=false;rotateDrag=false;mapCV.style.cursor='crosshair';_hideMapHover();};
-    mapCV.onwheel=e=>{e.preventDefault();G.mapZoom=clamp(G.mapZoom+(e.deltaY>0?-.12:.12),.25,4);renderMap();};
+    mapCV.onwheel=e=>{
+      e.preventDefault();
+      // 커서 기준 줌 (사용자 요청 2026-06-16): 커서 아래 지점이 고정되도록 오프셋 보정
+      const rect=mapCV.getBoundingClientRect();
+      const mx=(e.clientX-rect.left)*(mapCV.width/Math.max(1,rect.width));
+      const my=(e.clientY-rect.top)*(mapCV.height/Math.max(1,rect.height));
+      const oldZ=G.mapZoom,newZ=clamp(oldZ+(e.deltaY>0?-.12:.12),.25,4),k=newZ/oldZ;
+      if(k!==1){
+        const cx=mapCV.width/2+mapOffX,cy=mapCV.height/2+mapOffY;
+        mapOffX=mx-(mx-cx)*k-mapCV.width/2;
+        mapOffY=my-(my-cy)*k-mapCV.height/2;
+        G.mapZoom=newZ;
+      }
+      renderMap();
+    };
     // touch events — mapCV는 동일 DOM 인스턴스 재사용이므로 1회만 부착 (반복 진입 누수 차단)
     if(!mapCV.dataset.touchInit){
       let touches=[],touchStartT=0;
