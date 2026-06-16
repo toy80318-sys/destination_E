@@ -65,12 +65,12 @@ function renderShipSkinTab(body){
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipSkinT')} — ${pd?pd.nm:''}</div>
-    ${subNav}
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('skin')}<div style="flex:1;min-width:0">
     <div style="background:rgba(204,102,255,.08);border:1px solid rgba(204,102,255,.35);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
       🐕 <b style="color:#cc88ff">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.skinExplain',{shield:I18N.t('ui.hologramShield')})}
     </div>
     ${removeBtn}
-    <div style="display:grid;grid-template-columns:308px 1fr;gap:14px;padding-bottom:240px">
+    <div style="display:grid;grid-template-columns:216px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="skin-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
@@ -80,7 +80,7 @@ function renderShipSkinTab(body){
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">${gallery}</div>
       </div>
     </div>
-  </div>`;
+  </div></div></div>`;
 }
 function applyShipSkin(shipIdx, skinId){
   const s=G.fleet[shipIdx];
@@ -207,7 +207,7 @@ function renderShipEnhanceTab(body){
       const succColor=succ>=1?'var(--green)':succ>=0.6?'#ffd700':succ>=0.4?'#ff8800':'var(--red)';
       rightPanel=`<div style="background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:10px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:288px;height:288px;border-radius:14px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',288,288,'object-fit:cover;width:100%;height:100%')}</div>
+          <div style="width:202px;height:202px;border-radius:14px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',202,202,'object-fit:cover;width:100%;height:100%')}</div>
           <div style="flex:1">
             <div style="font-size:15px;font-weight:bold;color:var(--cyan)">${(typeof shipDisplayNm==='function'?shipDisplayNm(sel):sel.nm)}</div>
             <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.curEnhanceLine',{cur:curLv,curPct:curLv*5,next:nextLv,nextPct:nextLv*5})}</div>
@@ -242,18 +242,18 @@ function renderShipEnhanceTab(body){
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipEnhanceT')} — ${pd?pd.nm:''}</div>
-    ${subNav}
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('enhance')}<div style="flex:1;min-width:0">
     <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--txt);line-height:1.7">
       🐕 <b style="color:#ffd700">${I18N.t('speaker.baekgu')}</b>: ${I18N.t('ui.enhanceExplain')}
     </div>
-    <div style="display:grid;grid-template-columns:308px 1fr;gap:14px;padding-bottom:240px">
+    <div style="display:grid;grid-template-columns:216px 1fr;gap:14px;padding-bottom:240px">
       <div data-scroll-id="enh-fleet" style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:60vh;overflow-y:auto;scrollbar-width:thin">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px">${I18N.t('ui.myFleetLabel')} (${G.fleet.length})</div>
         ${fleetList||`<div style="color:var(--dim);text-align:center;padding:20px">${I18N.t('ui.noShips')}</div>`}
       </div>
       <div data-scroll-id="enh-panel">${rightPanel}</div>
     </div>
-  </div>`;
+  </div></div></div>`;
 }
 function doShipEnhance(shipIdx){
   const s=G.fleet[shipIdx];if(!s){notify(I18N.t('notify.shipNone'),'err');return;}
@@ -486,14 +486,14 @@ function renderFleetFormationTab(body){
   </div>`;
   const assignedShipIds=new Set(Object.keys(_getFormation()));
   // 시각 배치: 왼쪽=4열(뒤) → 오른쪽=1열(앞). 1열이 오른쪽 끝의 적 함대와 맞닿게 표시.
-  const _CELL=58;  // 칸 크기 절반 수준 (사용자 요청 2026-06-16: 현재의 절반)
+  const _CELL=70;  // 사용자 요청 2026-06-16: 편대 칸 1.2배 확대 (58→70)
   const colLabelTexts=[I18N.t('combat.col6'),I18N.t('combat.col5'),I18N.t('combat.col4'),I18N.t('combat.col3'),I18N.t('combat.col2'),I18N.t('combat.col1')];
-  const colLabels=`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px;margin-bottom:5px;font-size:10px;font-weight:bold;text-align:center">
+  const colLabels=`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px;margin-bottom:5px;font-size:10px;font-weight:bold;text-align:center;width:fit-content;margin-left:auto;margin-right:auto">
     <div style="font-size:9px;color:var(--dim);align-self:end">${I18N.t('ui.frontBackHint')}</div>
     ${colLabelTexts.map((l,i)=>`<div style="color:${i===5?'var(--red)':i===0?'rgba(255,200,0,.7)':'var(--gold)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l}</div>`).join('')}
   </div>`;
   const rowLabels=[];for(let _r=0;_r<8;_r++)rowLabels.push(I18N.t('combat.row',{n:_r+1}));
-  let gridWithLabels=colLabels+`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px">`;
+  let gridWithLabels=colLabels+`<div style="display:grid;grid-template-columns:auto repeat(6,${_CELL}px);gap:5px;width:fit-content;margin:0 auto">`;
   for(let row=0;row<8;row++){
     gridWithLabels+=`<div style="display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:10px">${rowLabels[row]}</div>`;
     for(let visCol=0;visCol<6;visCol++){
@@ -536,7 +536,7 @@ function renderFleetFormationTab(body){
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
     const bdrCol=sel?'var(--gold)':typeof slot==='number'?'var(--cyan)':'var(--bdr)';
     return`<div onclick="onFormationShipClick('${s.id}')" style="background:${bgCol};border:1px solid ${bdrCol};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;width:273px;transition:all .15s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
-      <div style="width:273px;height:273px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',273,273,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
+      <div style="width:191px;height:191px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',191,191,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
       <div style="width:100%;text-align:center">
         <div style="font-size:13px;font-weight:bold;color:${isFlagship?'var(--cyan)':'var(--txt)'};word-break:keep-all;line-height:1.3">${isFlagship?'⭐ ':''}${shipDisplayName(s)}</div>
         ${(()=>{
@@ -572,11 +572,10 @@ function renderFleetFormationTab(body){
   </div>`;
   // ── 기본 자동 배치 바 (영웅 해금 불필요, 항상 사용 가능 — 사용자 요청 2026-06-16) ──
   //   앞열=체력·방어력 높은 함선, 뒤열=공격력 높은(내구 낮은) 함선
-  const _autoBar=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
-    <span style="font-size:13px;font-weight:bold;color:var(--cyan)">🛡️ ${I18N.t('formation.autoHeader')}</span>
-    <button class="btn btn-sm" onclick="autoArrangeFormation()" style="font-size:12px;padding:5px 16px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold">${I18N.t('formation.autoArrange')}</button>
-    <span style="font-size:11px;color:var(--dim)">${I18N.t('formation.autoArrangeHint')}</span>
-  </div>`;
+  // #6: 자동배치 버튼 — 좌측 사이드바 오른쪽 세로 액션열에 배치 (가로로 길게 X)
+  const _autoBar=`<div style="font-size:11px;font-weight:bold;color:var(--cyan);text-align:center;line-height:1.3">🛡️ ${I18N.t('formation.autoHeader')}</div>
+    <button class="btn btn-sm" onclick="autoArrangeFormation()" style="font-size:11px;padding:7px 6px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold;width:100%;white-space:normal;line-height:1.25">${I18N.t('formation.autoArrange')}</button>
+    <div style="font-size:9px;color:var(--dim);text-align:center;line-height:1.3">${I18N.t('formation.autoArrangeHint')}</div>`;
   // ── 대형 자동 배치 프리셋 바 (영웅 해금) ──
   const _fUnlocked=_formationUnlocked();
   const _presetDefs=[['arrow','formation.arrow'],['crane','formation.crane'],['square','formation.square'],['diamond','formation.diamond']];
@@ -588,12 +587,11 @@ function renderFleetFormationTab(body){
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
-    ${subNav}
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('formation')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${_autoBar}</div><div style="flex:1;min-width:0">
     ${summary}
-    ${_autoBar}
     ${_presetBar}
     ${hint}
-    <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
+    <div style="display:grid;grid-template-columns:224px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px;position:sticky;top:0;background:rgba(5,10,26,.95);padding:2px 0;z-index:1">${I18N.t('ui.ownedShipsHeader',{n:G.fleet.length})}</div>
         <div style="display:flex;flex-direction:column;gap:6px">${shipCards}</div>
@@ -606,7 +604,7 @@ function renderFleetFormationTab(body){
         <div style="margin-top:8px;font-size:11px;color:var(--dim);text-align:center">${I18N.t('ui.frontLineHint')}</div>
       </div>
     </div>
-  </div>`;
+  </div></div></div>`;
   G._garageMode=false;
 }
 

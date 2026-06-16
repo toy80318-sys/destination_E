@@ -403,8 +403,8 @@ function renderCargoOnlyTab(body){
     if(slots<100){const cp=getCargoUpgradePrice(s);btn='';}
     else btn='<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxAlt')+'</span>';
     return `<div style="background:var(--card);border:1px solid ${fc};border-radius:8px;padding:10px 12px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start">
-      <div style="width:273px;flex-shrink:0;text-align:center">
-        ${imgOrEmoji(shipImgSrc(s),tierIc,273,273,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain;max-width:100%',shipLoreKey(s))}
+      <div style="width:191px;flex-shrink:0;text-align:center">
+        ${imgOrEmoji(shipImgSrc(s),tierIc,191,191,'border-radius:8px;background:rgba(0,0,0,.5);border:1px solid '+fc+'66;object-fit:contain;max-width:100%',shipLoreKey(s))}
         <div style="font-size:11px;color:${fc};font-weight:bold;margin-top:4px;word-break:keep-all">${I18N.tier(s.tier)}</div>
       </div>
       <div style="flex:1;min-width:0">
@@ -420,33 +420,24 @@ function renderCargoOnlyTab(body){
   // 전체 함대 창고 확장 비용 합계 + 가능 여부 (사용자 요청: 상단 일괄 버튼)
   const _allUpgradeCost=G.fleet.reduce((s,sh)=>s+((sh.cargoSlots||4)<100?getCargoUpgradePrice(sh):0),0);
   const _anyExpandable=G.fleet.some(sh=>(sh.cargoSlots||4)<100);
+  // #3: 단축 액션 3종(전체확장·창고구매·창고제작) → 좌측 사이드바 오른쪽 세로 액션열로 정렬
+  const _cargoActions=`
+    ${_anyExpandable
+      ? `<button class="btn btn-sm btn-gold" style="font-size:10px;padding:6px 4px;width:100%;white-space:normal;line-height:1.25" onclick="upgradeAllCargo()" ${G.credits>=_allUpgradeCost?'':'disabled'}>${I18N.t('ui.allFleetExpandHeader')}<br><span style="font-size:9px;color:var(--dim)">₡${_allUpgradeCost.toLocaleString()}</span></button>`
+      : `<div style="font-size:9px;color:var(--cyan);text-align:center;line-height:1.3;padding:4px 2px">${I18N.t('ship.allShipsMaxCargo')}</div>`}
+    <button class="btn btn-sm" style="font-size:10px;padding:6px 4px;width:100%;white-space:normal;line-height:1.25;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08)" onclick="(function(){_shipTab='parts';try{rerenderTab(renderShipTab);}catch(e){}hubTab('ship');})()">${I18N.t('ui.cargoBuyTitle')}</button>
+    <button class="btn btn-sm" style="font-size:10px;padding:6px 4px;width:100%;white-space:normal;line-height:1.25;border-color:var(--purple);color:#cc88ff;background:rgba(139,0,255,.08)" onclick="hubTab('craft')">${I18N.t('ui.craftHoldShortcut')}</button>`;
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
-    ${subNav}
-    <!-- 사용자 요청: 상단 단축 액션 3종 — 전체확장 | 창고구매(거래소 파츠탭) | 창고제작(제작소) -->
-    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:stretch">
-      <div style="flex:2;min-width:240px;background:rgba(0,255,140,.05);border:1px solid rgba(46,204,113,.3);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span style="font-size:13px;font-weight:bold;color:var(--green)">${I18N.t('ui.allFleetExpandHeader')}</span>
-          <span style="font-size:11px;color:var(--dim);margin-left:auto">${_anyExpandable?I18N.t('ship.upgradeAllInfo',{cost:_allUpgradeCost.toLocaleString()}):I18N.t('ship.allShipsMaxCargo')}</span>
-        </div>
-        ${_anyExpandable?`<button class="btn btn-gold" style="font-size:12px;padding:5px 10px;width:100%" onclick="upgradeAllCargo()" ${G.credits>=_allUpgradeCost?'':'disabled'}>${I18N.t('ui.expandAllBtn',{cr:_allUpgradeCost.toLocaleString()})}</button>`:`<div style="font-size:11px;color:var(--cyan);text-align:center">${I18N.t('ui.holdExpUnneeded')}</div>`}
-      </div>
-      <button class="btn btn-sm" style="flex:1;min-width:160px;font-size:12px;padding:10px 12px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.08);display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.4" onclick="(function(){_shipTab='parts';try{rerenderTab(renderShipTab);}catch(e){}hubTab('ship');})()">
-        ${I18N.t('ui.cargoBuyTitle')}<br><span style="font-size:10px;color:var(--dim);font-weight:normal">${I18N.t('ui.cargoBuySub')}</span>
-      </button>
-      <button class="btn btn-sm" style="flex:1;min-width:160px;font-size:12px;padding:10px 12px;border-color:var(--purple);color:#cc88ff;background:rgba(139,0,255,.08);display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.4" onclick="hubTab('craft')">
-        ${I18N.t('ui.craftHoldShortcut')}<br><span style="font-size:10px;color:var(--dim);font-weight:normal">${I18N.t('ui.goToShipWorkshop')}</span>
-      </button>
-    </div>
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('cargo')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${_cargoActions}</div><div style="flex:1;min-width:0">
     <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap">
       <span style="font-size:13px;color:var(--cyan)"><b>${I18N.t('ui.totalOwned')}</b> ${usedSlots}/${totalSlots}칸</span>
       <span style="font-size:13px;color:var(--gold)"><b>${I18N.t('ui.totalValue')}</b> ₡${totalValue.toLocaleString()}</span>
       <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.cargoPerShipHelp')}</span>
     </div>
     ${shipCards||`<div style="text-align:center;color:var(--dim);padding:30px">${I18N.t('ui.noShips')}</div>`}
-  </div>`;
+  </div></div></div>`;
   G._garageMode=false;
 }
 // 전체 함대 화물칸 일괄 +2 확장 (모든 함선 < 100칸 대상)

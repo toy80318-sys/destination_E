@@ -22,6 +22,26 @@ if(typeof window==='undefined')return;
 if(window._RENDER_SHIP_TAB_LOADED)return;
 window._RENDER_SHIP_TAB_LOADED=true;
 
+// ── 정비소 좌측 세로 탭 사이드바 (5개 탭 공통, 사용자 요청 2026-06-16) ──
+//   상단 가로 탭(subNav) → 좌측 세로열로 이동. window 노출(타 IIFE 모듈에서 호출).
+function _garageSideNav(activeKey){
+  const tabs=[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}];
+  return '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;width:108px">'+
+    tabs.map(function(t){var act=(t.k===activeKey);
+      return '<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:9px 10px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+';text-align:left;white-space:nowrap;line-height:1.2">'+t.lb+'</button>';
+    }).join('')+
+  '</div>';
+}
+// 좌측 사이드바 + (선택)액션 세로열 + 본문 을 flex row 로 감싸는 래퍼.
+function _garageWrap(activeKey, actionColHtml, contentHtml){
+  return '<div style="display:flex;gap:10px;align-items:flex-start">'+
+    _garageSideNav(activeKey)+
+    (actionColHtml?('<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">'+actionColHtml+'</div>'):'')+
+    '<div style="flex:1;min-width:0">'+contentHtml+'</div>'+
+  '</div>';
+}
+try{if(typeof window!=='undefined'){window._garageSideNav=_garageSideNav;window._garageWrap=_garageWrap;}}catch(e){}
+
 function renderShipTab(body){
   if(!body)return;
   const pd=PLANET_DEF.find(p=>p.id===G.currentPlanet);
@@ -84,18 +104,16 @@ function renderShipTab(body){
   }
   // ── 내 편대 ──────────────────────────────────────────────────────
   let content='';
+  let autoArrangeCol='';   // #1: 정비소 좌측 액션열용 자동배치 4버튼 (garage 모드에서만 채움)
   if(_shipTab==='fleet'){
     // 정렬
     function fleetSortBtn(key,label){
       const act=_fleetSort===key;
       return `<button onclick="_fleetSort='${key}';rerenderShipOrGarage()" style="padding:4px 12px;border:1px solid ${act?'var(--cyan)':'var(--bdr)'};background:${act?'rgba(0,243,255,.12)':'transparent'};color:${act?'var(--cyan)':'var(--dim)'};cursor:pointer;border-radius:4px;font-size:12px;font-family:Courier New,monospace">${label}</button>`;
     }
-    const TIER_ORDER={'신화':0,'전설기함':1,'대형':2,'중형':3,'소형':4};
     const sortedFleet=[...G.fleet.map((s,i)=>({...s,_origIdx:i}))];
-    if(_fleetSort==='tier') sortedFleet.sort((a,b)=>(TIER_ORDER[a.tier]??5)-(TIER_ORDER[b.tier]??5)||(a._origIdx-b._origIdx));
-    else if(_fleetSort==='att') sortedFleet.sort((a,b)=>{const ba=getPartBonus(a),bb=getPartBonus(b),ca=getCrewBonus(a),cb2=getCrewBonus(b);return(b.ATT+bb.att+cb2.att)-(a.ATT+ba.att+ca.att);});
-    else if(_fleetSort==='hp') sortedFleet.sort((a,b)=>{const ba=getPartBonus(a),bb=getPartBonus(b);return(b.maxHP+bb.hp)-(a.maxHP+ba.hp);});
-    else if(_fleetSort==='name') sortedFleet.sort((a,b)=>(a.nm||'').localeCompare(b.nm||''));
+    // #2: 정렬 버튼 전체 삭제 — 내구도(HP) 기준 고정 정렬 (사용자 요청 2026-06-16)
+    sortedFleet.sort((a,b)=>{const ba=getPartBonus(a),bb=getPartBonus(b);return(b.maxHP+bb.hp)-(a.maxHP+ba.hp);});
     // 사용자 요청: 정렬 결과와 관계없이 기함(_origIdx===0)은 항상 최상단 고정
     {
       const _flagIdx=sortedFleet.findIndex(s=>s._origIdx===0);
@@ -116,12 +134,7 @@ function renderShipTab(body){
     const garageSubNav=G._garageMode?`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
       ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
     </div>`:'';
-    const sortBar=garageSubNav+`<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-      <span style="font-size:12px;color:var(--dim)">${I18N.t('ui.sortPrefix')}</span>
-      ${fleetSortBtn('tier',I18N.t('ui.sortByTierEmoji'))}${fleetSortBtn('att',I18N.t('ui.sortByAtt'))}${fleetSortBtn('hp',I18N.t('ui.sortByHP'))}${fleetSortBtn('name',I18N.t('ui.sortByName'))}
-      <span style="font-size:12px;color:var(--dim);margin-left:auto">${I18N.t('ui.fleetN',{n:G.fleet.length})}</span>
-    </div>
-    <!-- 사용자 요청: 좌(📊 종합 능력치) · 중(🔧 전체 수리) · 우(나포허용/매각) 3열 -->
+    const sortBar=`<!-- 좌(📊 종합 능력치) · 중(🔧 전체 수리) · 우(나포허용/매각) 3열 -->
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:stretch">
     ${(()=>{
       const tot={hp:0,maxHp:0,sh:0,maxSh:0,att:0,int:0,tec:0,def:0};
@@ -171,19 +184,15 @@ function renderShipTab(body){
         <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:12px;padding:6px 10px;border:1.5px solid ${_bd};color:${_col};background:${_bg};width:100%" title="${I18N.t('ui.clickToToggle',{next:_next})}">${_lbl}</button>
       </div>`;
     })()}
-    </div>  <!-- /3열 컨테이너 -->
-    <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="font-size:14px;font-weight:bold;color:var(--cyan)">${I18N.t('ui.autoArrangeHeader')}</span>
-        <span style="font-size:11px;color:var(--dim)">${I18N.t('ui.clickToReplace')}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
-        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:11px;padding:6px 4px" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
-        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:6px 4px" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
-      </div>
-    </div>`;
+    </div>  <!-- /3열 컨테이너 -->`;
+    // #1: 자동배치 4버튼 묶음 → 좌측 사이드바 오른쪽 세로 액션열. 2×2 그리드로 세로폭 50% 압축.
+    autoArrangeCol=`<div style="font-size:10px;font-weight:bold;color:var(--cyan);text-align:center;line-height:1.2">${I18N.t('ui.autoArrangeHeader')}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
+        <button class="btn btn-sm" style="border-color:var(--gold);color:var(--gold);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
+        <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:9px;padding:4px 2px;white-space:normal;line-height:1.15" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
+      </div>`;
 
     const cats=[{k:'weapon',lb:'⚔️',col:'var(--red)',nm:I18N.t('cat.weapon')},{k:'shield',lb:'🛡️',col:'var(--blue)',nm:I18N.t('cat.shield')},{k:'armor',lb:'🛡',col:'var(--gold)',nm:I18N.t('cat.armor')},{k:'engine',lb:'⚡',col:'var(--cyan)',nm:I18N.t('cat.engine')}];
 
@@ -952,7 +961,7 @@ function renderShipTab(body){
     ${G._garageMode?hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f):hubBanner('ship','🛸',I18N.t('hub.bannerShipTrade'),pd?.f)}
     <div class="hub-t">${G._garageMode?I18N.t('hub.shipGarageT'):I18N.t('hub.shipTradeT')} — ${pd?.nm||''}</div>
     ${subNav}
-    ${mainHTML}
+    ${G._garageMode?`<div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('parts')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${autoArrangeCol}</div><div style="flex:1;min-width:0">${mainHTML}</div></div>`:mainHTML}
   </div>`;
 }
 
