@@ -2557,6 +2557,7 @@ function _finishCombat(){
             sfx:null,
             bossfight:true,
             imgScale:0.5,  // 사용자 요청 2026-06-15: 보상 이미지 절반 크기 (일반 전투 보고와 동일)
+            acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine('bossReward',I18N.t('ship.URSA.nm'),'mythic'):'',
             congrats:I18N.t('ending.finalCongrats'),
             // 보상 확인 후 — 어두운 화면 + 영웅/주인공 대사 + 엔딩 크레딧 → 보이드 페이즈
             onClose:()=>{
@@ -2572,7 +2573,12 @@ function _finishCombat(){
       }),600);
     } else {
       setTimeout(()=>{
-        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin')});
+        // 획득 경로 몰입 멘트 — 나포함선이 있으면 적 유형별, 없으면 일반 전리품
+        const _hasCap=_capturedShips.length>0;
+        const _acqCtx=_hasCap?(_chixFleetSnap?'chixWarehouse':_debrisCombatSnap?'salvage':'pirateDrop'):'combatGeneric';
+        const _acqNm=_hasCap?((typeof shipDisplayNm==='function'?shipDisplayNm(_capturedShips[0]):'')||_capturedShips[0].nm):'';
+        const _acqRar=_hasCap?(_capturedShips[0].tier||''):'';
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin')});
       },900);
     }
     checkQuestCombatDone();

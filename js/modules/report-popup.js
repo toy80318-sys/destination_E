@@ -18,6 +18,23 @@
     return String(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c]);
   }
 
+  // 획득 경로 몰입 멘트 (사용자 요청 2026-06-16) — context별 + 등급 높을수록 수식 추가
+  //   context: found/pirateDrop/chance/gift/asteroid/chixWarehouse/salvage/combatLoot/combatGeneric/bossReward/void
+  function _acqFlavorLine(context,name,rarity){
+    try{
+      const I18N=window.I18N; const key='acq.'+(context||'combatLoot');
+      let base=I18N.t(key,{nm:name||''});
+      if(!base||base===key)base=I18N.t('acq.combatLoot',{nm:name||''});
+      let suf='';
+      if(name){ // 구체 아이템명이 있을 때만 등급 수식
+        if(rarity==='mythic'||rarity==='신화')suf=I18N.t('acq.rarityMythic');
+        else if(rarity==='legend'||rarity==='L'||/전설/.test(String(rarity||'')))suf=I18N.t('acq.rarityLegend');
+      }
+      return base+suf;
+    }catch(e){return name||'';}
+  }
+  window._acqFlavorLine=_acqFlavorLine;
+
   function showAcquisitionReport(opts){
     opts=opts||{};
     const I18N=window.I18N;
@@ -65,8 +82,11 @@
     const _gridStyle='display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px;width:100%;margin:0 auto';
     const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
     const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
+    // 획득 경로 몰입 멘트 (한 줄)
+    const acqLineHtml=opts.acqLine?`<div style="margin:2px auto 9px;padding:8px 16px;max-width:600px;background:linear-gradient(90deg,rgba(255,215,0,.07),rgba(120,180,255,.05));border-left:3px solid ${headerColor};border-radius:6px;text-align:center;font-size:14px;color:#ffe6a8;font-style:italic;line-height:1.55;word-break:keep-all">${escapeHtml(opts.acqLine)}</div>`:'';
     const html=`<div style="padding:2px 2px">
       ${congratsHtml}
+      ${acqLineHtml}
       ${subtitleHtml}
       ${itemRows?`<div style="${_gridStyle}">${itemRows}</div>`:`<div style="text-align:center;color:var(--dim);padding:18px">${I18N.t('ui.noAcquired')}</div>`}
     </div>`;

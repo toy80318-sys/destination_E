@@ -445,6 +445,7 @@ function _grantVoidBossRewards(){
       items,color:'#cc66ff',sfx:null,
       imgScale:0.7,   // 사용자 요청 2026-06-15: 보상 이미지 70% 크기
       rewardWide:true, // 가로 +50% · 세로 -30% 모달 (버튼 노출 보장)
+      acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine('void',I18N.t('boss.blackfalcon'),'mythic'):'',
       congrats:I18N.t('reward.voidApproval')
     });
   }
