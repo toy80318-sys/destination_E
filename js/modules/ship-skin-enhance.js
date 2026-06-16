@@ -205,37 +205,43 @@ function renderShipEnhanceTab(body){
       const creditsOk=(G.credits||0)>=cost;
       const canEnhance=matsOk&&creditsOk;
       const succColor=succ>=1?'var(--green)':succ>=0.6?'#ffd700':succ>=0.4?'#ff8800':'var(--red)';
+      // 레이아웃(사용자 요청 2026-06-16): [좌=비용·성공률+강화버튼] [중앙=함선] [우=필요재료 2×2]
       rightPanel=`<div style="background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:10px;padding:14px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:202px;height:202px;border-radius:14px;overflow:hidden;flex-shrink:0">${imgOrEmoji(shipImgSrc(sel),'🛸',202,202,'object-fit:cover;width:100%;height:100%')}</div>
-          <div style="flex:1">
-            <div style="font-size:15px;font-weight:bold;color:var(--cyan)">${(typeof shipDisplayNm==='function'?shipDisplayNm(sel):sel.nm)}</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+          <!-- 좌: 비용·성공률 + 강화 버튼 -->
+          <div style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px">
+                <div style="font-size:11px;color:var(--dim);margin-bottom:3px">${I18N.t('ui.enhanceCostLabel')}</div>
+                <div style="font-size:14px;font-weight:bold;color:${creditsOk?'var(--gold)':'var(--red)'}">₡${cost.toLocaleString()}</div>
+                ${!creditsOk?`<div style="font-size:10px;color:var(--red);margin-top:3px">${I18N.t('ui.notEnoughCreditsShort')}</div>`:''}
+              </div>
+              <div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.3);border-radius:6px;padding:10px">
+                <div style="font-size:11px;color:var(--dim);margin-bottom:3px">${I18N.t('ui.enhanceSuccessProb')}</div>
+                <div style="font-size:14px;font-weight:bold;color:${succColor}">${(succ*100).toFixed(0)}%</div>
+                ${regress>0?`<div style="font-size:10px;color:var(--red);margin-top:3px">${I18N.t('ui.failRegress',{n:regress,cur:Math.max(0,curLv-regress)})}</div>`:`<div style="font-size:10px;color:var(--green);margin-top:3px">${I18N.t('ui.noRetreatOnFail')}</div>`}
+              </div>
+            </div>
+            <button class="btn btn-gold" style="width:100%;font-size:14px;padding:10px" onclick="doShipEnhance(${window._selectedEnhanceShipIdx})" ${canEnhance?'':'disabled'}>${canEnhance?I18N.t('enhance.tryLv',{lv:nextLv}):(creditsOk?I18N.t('enhance.lackMaterial'):I18N.t('enhance.lackCredits'))}</button>
+          </div>
+          <!-- 중앙: 강화 대상 함선 -->
+          <div style="flex-shrink:0;width:202px;text-align:center">
+            <div style="width:202px;height:202px;border-radius:14px;overflow:hidden">${imgOrEmoji(shipImgSrc(sel),'🛸',202,202,'object-fit:cover;width:100%;height:100%')}</div>
+            <div style="font-size:15px;font-weight:bold;color:var(--cyan);margin-top:6px">${(typeof shipDisplayNm==='function'?shipDisplayNm(sel):sel.nm)}</div>
             <div style="font-size:12px;color:var(--dim)">${I18N.t('ui.curEnhanceLine',{cur:curLv,curPct:curLv*5,next:nextLv,nextPct:nextLv*5})}</div>
           </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-          <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:6px;padding:10px">
-            <div style="font-size:11px;color:var(--dim);margin-bottom:3px">${I18N.t('ui.enhanceCostLabel')}</div>
-            <div style="font-size:14px;font-weight:bold;color:${creditsOk?'var(--gold)':'var(--red)'}">₡${cost.toLocaleString()}</div>
-            ${!creditsOk?`<div style="font-size:10px;color:var(--red);margin-top:3px">${I18N.t('ui.notEnoughCreditsShort')}</div>`:''}
-          </div>
-          <div style="background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.3);border-radius:6px;padding:10px">
-            <div style="font-size:11px;color:var(--dim);margin-bottom:3px">${I18N.t('ui.enhanceSuccessProb')}</div>
-            <div style="font-size:14px;font-weight:bold;color:${succColor}">${(succ*100).toFixed(0)}%</div>
-            ${regress>0?`<div style="font-size:10px;color:var(--red);margin-top:3px">${I18N.t('ui.failRegress',{n:regress,cur:Math.max(0,curLv-regress)})}</div>`:`<div style="font-size:10px;color:var(--green);margin-top:3px">${I18N.t('ui.noRetreatOnFail')}</div>`}
-          </div>
-        </div>
-        <div style="background:rgba(139,0,255,.05);border:1px solid rgba(139,0,255,.3);border-radius:6px;padding:10px;margin-bottom:14px">
-          <div style="font-size:12px;color:#cc88ff;font-weight:bold;margin-bottom:6px">${I18N.t('ui.enhanceMatsLabel')}</div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-            ${matInfos.map(m=>`<div style="background:${m.have>=1?'rgba(80,200,120,.12)':'rgba(255,60,60,.12)'};border:1px solid ${m.have>=1?'var(--green)':'var(--red)'};border-radius:5px;padding:6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px">
-              <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">${imgOrEmoji(commImgSrc(m.id),m.ic,44,44,'object-fit:cover;width:100%;height:100%','mat_'+m.id)}</div>
-              <div style="font-size:10px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${commDisplayNm(m)}</div>
-              <div style="font-size:10px;color:${m.have>=1?'var(--green)':'var(--red)'};font-weight:bold">${m.have}/1</div>
-            </div>`).join('')}
+          <!-- 우: 필요 재료 (2×2) -->
+          <div style="flex:1;min-width:170px;background:rgba(139,0,255,.05);border:1px solid rgba(139,0,255,.3);border-radius:6px;padding:10px">
+            <div style="font-size:12px;color:#cc88ff;font-weight:bold;margin-bottom:6px">${I18N.t('ui.enhanceMatsLabel')}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              ${matInfos.map(m=>`<div style="background:${m.have>=1?'rgba(80,200,120,.12)':'rgba(255,60,60,.12)'};border:1px solid ${m.have>=1?'var(--green)':'var(--red)'};border-radius:5px;padding:6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px">
+                <div style="width:48px;height:48px;border-radius:6px;overflow:hidden;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">${imgOrEmoji(commImgSrc(m.id),m.ic,44,44,'object-fit:cover;width:100%;height:100%','mat_'+m.id)}</div>
+                <div style="font-size:10px;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${commDisplayNm(m)}</div>
+                <div style="font-size:10px;color:${m.have>=1?'var(--green)':'var(--red)'};font-weight:bold">${m.have}/1</div>
+              </div>`).join('')}
+            </div>
           </div>
         </div>
-        <button class="btn btn-gold" style="width:100%;font-size:14px;padding:10px" onclick="doShipEnhance(${window._selectedEnhanceShipIdx})" ${canEnhance?'':'disabled'}>${canEnhance?I18N.t('enhance.tryLv',{lv:nextLv}):(creditsOk?I18N.t('enhance.lackMaterial'):I18N.t('enhance.lackCredits'))}</button>
       </div>`;
     }
   }
@@ -570,7 +576,7 @@ function renderFleetFormationTab(body){
     const bgCol=sel?'rgba(255,215,0,.15)':typeof slot==='number'?'rgba(0,243,255,.06)':'var(--card)';
     const bdrCol=sel?'var(--gold)':typeof slot==='number'?'var(--cyan)':'var(--bdr)';
     return`<div onclick="onFormationShipClick('${s.id}')" style="background:${bgCol};border:1px solid ${bdrCol};border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center;width:273px;transition:all .15s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
-      <div style="width:191px;height:191px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',191,191,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
+      <div style="width:153px;height:153px;flex-shrink:0;background:rgba(0,0,0,.4);border-radius:8px;display:flex;align-items:center;justify-content:center">${imgOrEmoji(shipImgSrc(s),'🛸',153,153,'object-fit:contain;max-width:100%;max-height:100%',shipLoreKey(s))}</div>
       <div style="width:100%;text-align:center">
         <div style="font-size:13px;font-weight:bold;color:${isFlagship?'var(--cyan)':'var(--txt)'};word-break:keep-all;line-height:1.3">${isFlagship?'⭐ ':''}${shipDisplayName(s)}</div>
         ${(()=>{
@@ -636,7 +642,7 @@ function renderFleetFormationTab(body){
     ${summary}
     <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:nowrap;overflow-x:auto">${_presetBar}${_saveBar}</div>
     ${hint}
-    <div style="display:grid;grid-template-columns:224px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
+    <div style="display:grid;grid-template-columns:180px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
         <div style="font-size:13px;font-weight:bold;color:var(--cyan);margin-bottom:8px;position:sticky;top:0;background:rgba(5,10,26,.95);padding:2px 0;z-index:1">${I18N.t('ui.ownedShipsHeader',{n:G.fleet.length})}</div>
         <div style="display:flex;flex-direction:column;gap:6px">${shipCards}</div>

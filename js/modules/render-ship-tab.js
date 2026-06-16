@@ -185,20 +185,22 @@ function renderShipTab(body){
       </div>`;
     })()}
     </div>  <!-- /3열 컨테이너 -->`;
-    // #1: 자동배치 4버튼 묶음 → 좌측 사이드바 오른쪽 세로 액션열. 세로 1열 정렬(사용자 요청 2026-06-16):
-    //   영문 라벨이 길어 2×2 셀 밖으로 넘치던 문제 해결 — 풀폭 버튼 + 줄바꿈 허용.
-    const _aSty='font-size:10px;padding:5px 4px;width:100%;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;line-height:1.18;letter-spacing:0;min-height:0';
-    autoArrangeCol=`<div style="font-size:10px;font-weight:bold;color:var(--cyan);text-align:center;line-height:1.2">${I18N.t('ui.autoArrangeHeader')}</div>
-      <div style="display:flex;flex-direction:column;gap:4px">
+    // 자동배치 4버튼 — 상단 가로 바로 복귀 (사용자 요청 2026-06-16: 좌측 세로 액션열은 칸 정렬이 어긋나 상단으로).
+    //   상단 풀폭 4열이라 영문 라벨도 충분히 들어감(넘침 없음).
+    const _aSty='font-size:11px;padding:6px 4px;white-space:normal;overflow-wrap:anywhere;line-height:1.2;letter-spacing:0';
+    autoArrangeCol=`<div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.25);border-radius:8px;padding:8px 14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap"><span style="font-size:13px;font-weight:bold;color:var(--cyan)">${I18N.t('ui.autoArrangeHeader')}</span><span style="font-size:11px;color:var(--dim)">${I18N.t('ui.clickToReplace')}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
         <button class="btn btn-sm" style="${_aSty};border-color:var(--gold);color:var(--gold)" onclick="autoEquipPartsFlagship()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
         <button class="btn btn-sm" style="${_aSty};border-color:var(--green);color:var(--green)" onclick="autoEquipPartsEven()">${I18N.t('ui.partsBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
         <button class="btn btn-sm" style="${_aSty};border-color:var(--gold);color:var(--gold)" onclick="autoAssignCrewFlagship()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.flagshipCentered')}</button>
         <button class="btn btn-sm" style="${_aSty};border-color:var(--green);color:var(--green)" onclick="autoAssignCrewEven()">${I18N.t('ui.crewBtnLabel')}<br>${I18N.t('ui.evenDistribution')}</button>
-      </div>`;
+      </div>
+    </div>`;
 
     const cats=[{k:'weapon',lb:'⚔️',col:'var(--red)',nm:I18N.t('cat.weapon')},{k:'shield',lb:'🛡️',col:'var(--blue)',nm:I18N.t('cat.shield')},{k:'armor',lb:'🛡',col:'var(--gold)',nm:I18N.t('cat.armor')},{k:'engine',lb:'⚡',col:'var(--cyan)',nm:I18N.t('cat.engine')}];
 
-    content = sortBar + sortedFleet.map(s=>{
+    content = sortBar + autoArrangeCol + sortedFleet.map(s=>{
       const idx=s._origIdx; // 실제 fleet 인덱스 (버튼 onclick용)
       const _stP=getShipStats(s);const _eHpP=Math.max(1,_stP.HP||s.maxHP),_eSPp=Math.max(1,_stP.maxSH||s.maxSH);
       const hpP=clamp(Math.round(s.hp/_eHpP*100),0,100),shP=(_stP.maxSH||s.maxSH)>0?clamp(Math.round(s.sh/_eSPp*100),0,100):0;
@@ -964,7 +966,7 @@ function renderShipTab(body){
     ${G._garageMode?hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f):hubBanner('ship','🛸',I18N.t('hub.bannerShipTrade'),pd?.f)}
     <div class="hub-t">${G._garageMode?I18N.t('hub.shipGarageT'):I18N.t('hub.shipTradeT')} — ${pd?.nm||''}</div>
     ${subNav}
-    ${G._garageMode?`<div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('parts')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${autoArrangeCol}</div><div style="flex:1;min-width:0">${mainHTML}</div></div>`:mainHTML}
+    ${G._garageMode?`<div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('parts')}<div style="flex:1;min-width:0">${mainHTML}</div></div>`:mainHTML}
   </div>`;
 }
 
