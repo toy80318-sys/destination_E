@@ -2063,7 +2063,7 @@
     // 사용자 요청 2026-06-09: 전투 중 행성 이동 차단
     //   · combatState 가 있고 done 이 false 면 진행 중 — 이동 거부
     //   · 도주는 escapePirateRaid / 항복 / 보스 패배 처리 경로 사용
-    if(typeof window!=='undefined'&&window.combatState&&!window.combatState.done){
+    if(typeof combatState!=='undefined'&&combatState&&!combatState.done){   // combatState 는 전역 lexical(window 아님) — 직접 참조 (사용자 보고 2026-06-16: 전투 중 이동이 막히지 않던 버그 수정)
       try{notify(I18N.t('notify.combatTravelBlocked')||'⚔️ 전투 중에는 다른 행성으로 이동할 수 없습니다.','err');}catch(e){}
       try{if(typeof baekgu==='function')baekgu(I18N.t('baekgu.combatTravelBlocked')||'먼저 이 전투부터 끝내야 합니다.');}catch(e){}
       return;

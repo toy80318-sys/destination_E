@@ -177,7 +177,7 @@
             <div style="width:80px;flex-shrink:0;overflow:hidden;background:${pBg}">
               <img src="${planetImgSrc(p.id)}" style="width:100%;height:100%;object-fit:cover;opacity:.9" onerror="this.style.display='none'">
             </div>
-            <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:3px;min-width:0">
+            <div style="flex:8;padding:8px 10px;display:flex;flex-direction:column;gap:3px;min-width:0">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
                 <span style="font-size:13px;font-weight:bold;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nm}</span>
                 <span style="font-size:9px;color:${f.col};border:1px solid ${f.col};border-radius:3px;padding:0 4px">${f.nm}</span>
@@ -185,8 +185,11 @@
               <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--dim)">${I18N.t('ui.commerceLv')}</span><span style="color:var(--gold);font-weight:bold">${lv}/10</span></div>
               <div style="height:4px;background:var(--panel);border-radius:2px;overflow:hidden"><div style="width:${lv*10}%;height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00)"></div></div>
               <div style="font-size:11px;color:var(--green);font-weight:bold;margin-top:auto">${I18N.t('ui.taxPerTurnLine',{cr:tax.toLocaleString()})}</div>
-              ${lv<10?`<button class="btn btn-sm btn-gold" style="font-size:10px;padding:3px 6px;width:100%" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>${I18N.t('ui.invest',{lv:lv+1,cost:investCost.toLocaleString()})}</button>`:`<span style="font-size:10px;color:var(--gold);text-align:center;padding:3px">${I18N.t('ui.maxLevel')}</span>`}
             </div>
+            <!-- #6: 투자 버튼 → 카드 우측 8:2 지점 직사각형(full-height) (사용자 요청 2026-06-16) -->
+            ${lv<10
+              ? `<button class="btn btn-gold" style="flex:2;flex-shrink:0;border-radius:0;border:0;border-left:1px solid var(--gold);font-size:10px;padding:4px;white-space:normal;line-height:1.3;display:flex;align-items:center;justify-content:center;text-align:center" onclick="investPlanet('${p.id}')" ${G.credits>=investCost?'':'disabled'}>${I18N.t('ui.invest',{lv:lv+1,cost:investCost.toLocaleString()})}</button>`
+              : `<div style="flex:2;flex-shrink:0;border-left:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);text-align:center;padding:4px">${I18N.t('ui.maxLevel')}</div>`}
           </div>`;
         }).join('');
     const totalTax=ownedList.reduce((s,p)=>s+calcTaxFor(p.id),0);
