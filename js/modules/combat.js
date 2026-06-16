@@ -2578,7 +2578,9 @@ function _finishCombat(){
         const _acqCtx=_hasCap?(_chixFleetSnap?'chixWarehouse':_debrisCombatSnap?'salvage':'pirateDrop'):'combatGeneric';
         const _acqNm=_hasCap?((typeof shipDisplayNm==='function'?shipDisplayNm(_capturedShips[0]):'')||_capturedShips[0].nm):'';
         const _acqRar=_hasCap?(_capturedShips[0].tier||''):'';
-        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin')});
+        // 해적 격파 후 상인 구출 보상 — 치크스/잔해 아닌 해적전 25% 확률 (보고 확인 후 등장)
+        const _merchant=(!_chixFleetSnap&&!_debrisCombatSnap&&Math.random()<0.25)?_rollMerchantRescue(pd):null;
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
       },900);
     }
     checkQuestCombatDone();
@@ -2631,6 +2633,57 @@ function _finishCombat(){
   },1800);
 }
 
+// ── 해적 격파 후 상인 구출 보상 (사용자 요청 2026-06-16) ─────────────
+//   해적 함대(치크스/잔해 제외) 격파 시 일정 확률로 구출된 상인이 사례(특산물/파츠/사례금) 지급
+function _rollMerchantRescue(pd){
+  try{
+    const _fac=(pd&&/^F0[1-7]$/.test(pd.f||''))?pd.f:'F01';
+    const _act=G.act||1;
+    const thanksIdx=1+((Math.random()*3)|0);
+    const roll=Math.random();
+    if(roll<0.25){ const amount=Math.floor((6000+Math.random()*9000)*(1+_act*0.5)); return {type:'credits',amount,fac:_fac,thanksIdx}; }
+    if(roll<0.40 && typeof PARTS!=='undefined'){
+      const pool=PARTS.filter(p=>p&&p.id&&p.cat&&!p.rarity&&(p.tier||0)<=8);
+      if(pool.length){ const p=pool[(Math.random()*pool.length)|0]; return {type:'part',id:p.id,nm:(typeof partDisplayNm==='function'?partDisplayNm(p):'')||p.nm,fac:_fac,thanksIdx}; }
+    }
+    if(typeof COMMODITIES!=='undefined'){
+      const goods=COMMODITIES.filter(c=>c&&c.id&&((c.buy||0)>0||c.material));
+      if(goods.length){ const c=goods[(Math.random()*goods.length)|0]; const qty=2+((Math.random()*3)|0); return {type:'commodity',id:c.id,nm:(typeof commDisplayNm==='function'?commDisplayNm(c):'')||c.nm,ic:c.ic||'📦',qty,fac:_fac,thanksIdx}; }
+    }
+    return {type:'credits',amount:10000,fac:_fac,thanksIdx};
+  }catch(e){return null;}
+}
+function _grantMerchantReward(d){
+  try{
+    if(d.type==='commodity'){
+      if(!Array.isArray(G.cargo))G.cargo=[];
+      const slot=G.cargo.find(x=>x.id===d.id&&x.loot===true);
+      if(slot)slot.qty+=d.qty; else G.cargo.push({id:d.id,nm:d.nm,qty:d.qty,buyPrice:0,buyPlanetId:null,buyFaction:d.fac,loot:true});
+    } else if(d.type==='credits'){ G.credits=(G.credits||0)+(d.amount||0); }
+    else if(d.type==='part'){ if(!G.inventory)G.inventory=[]; const inv=G.inventory.find(i=>i.id===d.id); if(inv)inv.qty++; else G.inventory.push({id:d.id,qty:1}); }
+    notify(I18N.t('merchant.received'),'gold');
+    try{updateHUD();saveGame(true);}catch(e){}
+  }catch(e){console.warn('[merchant grant]',e);}
+}
+function _showMerchantRescue(d){
+  if(!d)return;
+  try{
+    const _ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+    const _img='img/quests/delivery_'+(d.fac||'F01')+'.png'+_ver;
+    let _rewardLine='';
+    if(d.type==='commodity')_rewardLine=(d.ic||'📦')+' '+I18N.t('merchant.rewardCommodity',{nm:d.nm,n:d.qty});
+    else if(d.type==='credits')_rewardLine='💰 '+I18N.t('merchant.rewardCredits',{n:(d.amount||0).toLocaleString()});
+    else if(d.type==='part')_rewardLine='✦ '+I18N.t('merchant.rewardPart',{nm:d.nm});
+    const html=`<div style="text-align:center;padding:14px">
+      ${imgOrEmoji(_img,'🧑‍🚀',120,120,'border-radius:12px;object-fit:cover;border:2px solid var(--gold);box-shadow:0 0 16px rgba(212,175,55,.5);margin:0 auto 10px')}
+      <div style="color:var(--gold);font-size:16px;font-weight:bold;margin-bottom:8px">${I18N.t('merchant.title')}</div>
+      <div style="color:#ffe9b0;font-size:14px;line-height:1.7;font-style:italic;background:rgba(212,175,55,.06);border-left:3px solid var(--gold);border-radius:6px;padding:10px 14px;margin-bottom:10px;word-break:keep-all">"${I18N.t('merchant.thanks'+d.thanksIdx)}"</div>
+      <div style="color:var(--green);font-size:15px;font-weight:bold">🎁 ${_rewardLine}</div>
+    </div>`;
+    openModal(I18N.t('merchant.title'),html,[{txt:I18N.t('merchant.btnReceive'),fn:()=>{_grantMerchantReward(d);closeModal();},cls:'btn-gold'}],{});
+    try{AudioMgr.playSfx('coin',{vol:0.8,cooldown:0});}catch(e){}
+  }catch(e){console.warn('[merchant modal]',e);}
+}
 // ── 이순신 일점사 전술 ──────────────────────────────────────────
 // 발동 효과: ① 가장 앞쪽 적 1척을 집중사격 타겟으로 지정 — 아군 전 함선이 그 1척을 집중 공격
 //           ② 남은 전투 내내 아군 공격력 ×2
