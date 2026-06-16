@@ -68,7 +68,7 @@ function _sortedCrewByPower(){
 function _shipPartCap(s){
   if(!s)return 4;
   const rows=(typeof getShipPartsGridRows==='function')?getShipPartsGridRows(s):2;
-  const cols=(typeof getShipPartsGridCols==='function')?getShipPartsGridCols(s.tier):2;
+  const cols=(typeof getShipPartsGridCols==='function')?getShipPartsGridCols(s):2;  // 확장 열 포함
   return Math.max(1,rows*cols);
 }
 function _shipCrewCap(s){return getMaxCrew(s);}
@@ -276,7 +276,7 @@ function _distributeCargoExtParts(){
   if(!G||!G.fleet||!G.fleet.length)return 0;
   if(!G.inventory)G.inventory=[];
   if(typeof SPECIAL_CARGO_PARTS==='undefined')return 0;
-  const _CARGO_EXT_MAX=(typeof CARGO_EXT_MAX!=='undefined')?CARGO_EXT_MAX:4;
+  const _CARGO_EXT_MAX=(typeof CARGO_EXT_MAX!=='undefined')?CARGO_EXT_MAX:6;
   function _firstCargoInv(){
     return (G.inventory||[]).find(i=>i.qty>0&&SPECIAL_CARGO_PARTS.find(c=>c.id===i.id));
   }
@@ -470,7 +470,7 @@ function autoEquipPartsFlagship(){
   _collectAllPartsToPool();
   if(typeof _detachAllCargoExt==='function'){ for(const s of G.fleet){ try{_detachAllCargoExt(s);}catch(_e){} } }
 
-  const CARGO_MAX=(typeof CARGO_EXT_MAX!=='undefined')?CARGO_EXT_MAX:4;
+  const CARGO_MAX=(typeof CARGO_EXT_MAX!=='undefined')?CARGO_EXT_MAX:6;
   const SCARGO=(typeof SPECIAL_CARGO_PARTS!=='undefined')?SPECIAL_CARGO_PARTS:[];
   const isCargo=id=>!!SCARGO.find(c=>c.id===id);
   const classify=p=>{
@@ -480,7 +480,7 @@ function autoEquipPartsFlagship(){
     return p.cat; // shield / armor / engine
   };
   const area=p=>{const g=getPartGridSize(p);return g.cols*g.rows;};
-  const cellsTotal=s=>getShipPartsGridRows(s)*getShipPartsGridCols(s.tier);
+  const cellsTotal=s=>getShipPartsGridRows(s)*getShipPartsGridCols(s);  // 확장 열 포함
   const cellsUsed=s=>{let u=0;(s.parts||[]).forEach(pid=>{const p=partById(pid);if(p)u+=area(p);});return u;};
   const slotsLeft=s=>cellsTotal(s)-cellsUsed(s);
   const canFit=(s,p)=>slotsLeft(s)>=area(p);
@@ -946,7 +946,7 @@ function _smartAutoEquipV2(mode){
 
   // ── 실제 셀(area) 기반 잔여 슬롯 계산 — 테트리스 패킹 정확도 ──
   function _cellsTotal(s){
-    return getShipPartsGridRows(s)*getShipPartsGridCols(s.tier);
+    return getShipPartsGridRows(s)*getShipPartsGridCols(s);  // 확장 열 포함
   }
   function _cellsUsed(s){
     let used=0;

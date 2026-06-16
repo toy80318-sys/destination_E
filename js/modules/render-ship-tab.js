@@ -219,7 +219,7 @@ function renderShipTab(body){
       //   crewCols=ceil(maxCrew/6) — 신화 기본 4열×6행=24칸 → 추가 구매 시 가로로 6칸(1열)씩 → 최대 8열×6행=48칸.
       //   _crewRows(아래)가 ceil(maxCrew/crewCols)이라 자동으로 ≤6행 유지. row-major 배치라 멀티셀 크루(2칸/2×2) 정상.
       const crewCols=Math.min(8,Math.max(4,Math.ceil(maxCrew/6)));
-      const PART_COLS=getShipPartsGridCols(s.tier);
+      const PART_COLS=getShipPartsGridCols(s);   // 확장분(추가 열) 포함
       const PART_ROWS=getShipPartsGridRows(s);
       const partsLayout=layoutPartsGrid(s.parts||[],PART_COLS,PART_ROWS);
       const CELL_SZ=41;  // 함선 칸(파츠/함선실) 박스 크기 — 현재의 80% 축소 (사용자 요청 2026-06-16, 51→41)
@@ -369,16 +369,16 @@ function renderShipTab(body){
             return {grid,btn};
           })();
           // 통합 정비: 파츠장비 + 함선실 + 화물칸 3개 그리드를 좌→우로 한 줄에 표시
-          const _maxExtraRows=getMaxExtraPartsRows(s.tier);
+          // 확장은 우측 1열씩 — 열(가로) 기준으로 현재/최대 표시
+          const _maxExtraCols=getMaxExtraPartsRows(s.tier);
           const _curExtra=+s.partsRowsExtra||0;
-          // 카탈로그 override 가 있으면 그 값을 base로 사용
-          const _baseRows=getShipPartsGridRows(s)-_curExtra;
-          const _maxTotalRows=_baseRows+_maxExtraRows;
-          const _atMax=_curExtra>=_maxExtraRows;
+          const _baseCols=getShipPartsGridCols(s)-_curExtra;   // 함선 기본 열 수
+          const _maxTotalCols=_baseCols+_maxExtraCols;
+          const _atMax=_curExtra>=_maxExtraCols;
           const _upgPrice=_atMax?0:getPartsUpgradePrice(s);
           const _upgBtn=_atMax
-            ? `<span style="font-size:11px;color:var(--cyan)">${I18N.t('ui.maxRowsCount',{n:_maxTotalRows})}</span>`
-            : `<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 8px" onclick="upgradePartsRow(${idx})" ${G.credits>=_upgPrice?'':'disabled'}>${I18N.t('ui.rowPlus1',{cost:_upgPrice.toLocaleString(),n:PART_ROWS,max:_maxTotalRows})}</button>`;
+            ? `<span style="font-size:11px;color:var(--cyan)">${I18N.t('ui.maxRowsCount',{n:_maxTotalCols})}</span>`
+            : `<button class="btn btn-sm" style="border-color:var(--cyan);color:var(--cyan);font-size:11px;padding:3px 8px" onclick="upgradePartsRow(${idx})" ${G.credits>=_upgPrice?'':'disabled'}>${I18N.t('ui.rowPlus1',{cost:_upgPrice.toLocaleString(),n:PART_COLS,max:_maxTotalCols})}</button>`;
           // 컬럼 공통: flex 세로 배치 + spacer 로 액션 버튼을 하단에 고정 → 3컬럼 액션 버튼 높이 정렬
           // 파츠↔함선실 간격 20% 축소 (10→6, 양쪽 합산 20→12)
           // 파츠 그리드 실제 너비 계산 (CELL_SZ=51 + gap=3) → 신화(8열)/대형(6열) 함선이 함선실과 겹치지 않게 min-width 보장

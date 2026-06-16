@@ -1144,8 +1144,9 @@ function buyCargoExtPart(id){
   baekgu(I18N.t('baekgu.holdPartBought',{nm:partDisplayNm(ci)||ci.nm,bonus:ci.cargoBonus}));
   rerenderShipOrGarage();saveGame(true);
 }
-// ── 창고 확장 전용 슬롯 (함선당 최대 8칸) — 장착/해제/선택 ─────────────────
-const CARGO_EXT_MAX=4;
+// ── 창고 확장 전용 슬롯 (함선당 최대 6칸) — 장착/해제/선택 ─────────────────
+//   사용자 요청 2026-06-16: 창고슬롯 최대 6칸으로 상향 (4→6).
+const CARGO_EXT_MAX=6;
 function _shipCargoExt(s){if(!s.cargoExtParts)s.cargoExtParts=[];return s.cargoExtParts;}
 function equipCargoExt(shipIdx,partId){
   const s=G.fleet[shipIdx];if(!s)return;

@@ -357,7 +357,7 @@
         // 함선 효과 — 함선별 특수 슬롯/캐퍼시티 + desc 의 효과 문장 정리
         const ef=[];
         if(s.partsRows)ef.push(I18N.t('ui.partsRowsBase',{n:s.partsRows*2}));
-        if(s.partsRowsExtra)ef.push(I18N.t('ui.partsRowsExt',{n:s.partsRowsExtra*6}));
+        if(s.partsRowsExtra)ef.push(I18N.t('ui.partsRowsExt',{n:s.partsRowsExtra*((typeof getShipPartsGridRows==='function')?getShipPartsGridRows(s):6)}));
         if(s.crewMax)ef.push(I18N.t('ui.crewMaxShipSpec',{n:s.crewMax}));
         if(s.cargoStart)ef.push(I18N.t('ui.cargoStartSpec',{n:s.cargoStart}));
         if(s.cargoSlots)ef.push(I18N.t('ui.cargoSlotsSpec',{n:s.cargoSlots}));

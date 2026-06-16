@@ -2446,18 +2446,24 @@ function getPartGridSize(p){
 function getBasePartsGridRows(tier){
   return tier==='신화'?6:tier==='전설기함'?5:tier==='대형'?4:tier==='중형'?3:2;
 }
-function getShipPartsGridCols(tier){
-  // 소형=4, 중형=8(×2), 대형/전설기함=12(×3), 신화=16(×4)
-  return tier==='신화'?8:tier==='전설기함'||tier==='대형'?6:tier==='중형'?4:2;
+// 파츠 그리드 열(가로) 수 — 함선 객체를 주면 확장분(partsRowsExtra=추가 열)을 포함.
+//   사용자 요청 2026-06-16: 파츠 장비창 확장은 아래(행) 대신 우측(열)으로 1열씩 늘어난다.
+//   · partsRowsExtra 필드는 기존 세이브 호환을 위해 이름을 유지하되 의미는 '추가 열 수'로 재해석.
+function getShipPartsGridCols(s){
+  const tier=(typeof s==='string')?s:(s&&s.tier);
+  // 기본 열: 소형 2 · 중형 4 · 대형/전설기함 6 · 신화 8
+  const base=tier==='신화'?8:tier==='전설기함'||tier==='대형'?6:tier==='중형'?4:2;
+  const extra=(s&&typeof s==='object')?(+s.partsRowsExtra||0):0;
+  return base+extra;
 }
-// 티어별 파츠 그리드 행 확장 한도
-// 소형 3x · 중형 1.5x · 대형 1.2x · 전설기함·신화 1.1x — 행 단위 확장 환산
+// 티어별 파츠 그리드 열(우측) 확장 한도 (확장 1회 = 우측 1열 추가)
+//   기존 행 확장 한도 값을 그대로 열 확장 한도로 사용 — 총 확장 횟수/밸런스 유지.
 function getMaxExtraPartsRows(tier){
-  if(tier==='소형')return 4;       // 2→6 행 (×3)
-  if(tier==='중형')return 2;       // 3→5 행 (≈×1.67, 1.5x 상한 근사)
-  if(tier==='대형')return 1;       // 4→5 행 (×1.25)
-  if(tier==='전설기함')return 1;   // 5→6 행 (×1.2)
-  if(tier==='신화')return 1;       // 6→7 행 (≈×1.17)
+  if(tier==='소형')return 4;       // 2→6 열
+  if(tier==='중형')return 2;       // 4→6 열
+  if(tier==='대형')return 1;       // 6→7 열
+  if(tier==='전설기함')return 1;   // 6→7 열
+  if(tier==='신화')return 1;       // 8→9 열
   return 0;
 }
 function getShipPartsGridRows(s){
@@ -2472,7 +2478,8 @@ function getShipPartsGridRows(s){
     const def=cid?SHIP_CATALOG.find(d=>d.id===cid):null;
     if(def&&typeof def.partsRows==='number')baseRows=def.partsRows;
   }
-  return baseRows+(+s.partsRowsExtra||0);
+  // 확장은 이제 열(우측) 단위 → 행 수는 함선 기본값 유지
+  return baseRows;
 }
 function getPartsUpgradePrice(s){
   if(!s)return 0;
@@ -2485,19 +2492,18 @@ function upgradePartsRow(shipIdx,fromModal){
   const cur=+s.partsRowsExtra||0;
   const maxExtra=getMaxExtraPartsRows(s.tier);
   if(cur>=maxExtra){
-    // 실제 기본 행 수(카탈로그 override 포함) 계산
-    const _baseRowsActual=getShipPartsGridRows(s)-cur;
-    notify(I18N.t('notify.partsSlotMax',{nm:shipDisplayNm(s),rows:_baseRowsActual+maxExtra}),'warn');
+    // 최대 열 수(확장은 우측 1열씩) — 현재 총 열 수가 한도
+    notify(I18N.t('notify.partsSlotMax',{rows:getShipPartsGridCols(s),nm:shipDisplayNm(s)}),'warn');
     return;
   }
   const cost=getPartsUpgradePrice(s);
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
   G.credits-=cost;
-  s.partsRowsExtra=cur+1;
-  const newRows=getShipPartsGridRows(s);
-  const cols=getShipPartsGridCols(s.tier);
+  s.partsRowsExtra=cur+1;   // 확장 1회 = 우측 1열 추가 (필드명은 세이브 호환 유지)
+  const rows=getShipPartsGridRows(s);
+  const cols=getShipPartsGridCols(s);
   updateHUD();
-  notify(I18N.t('notify.partsSlotExpand',{nm:shipDisplayNm(s),rows:newRows,cols,total:newRows*cols,cost:cost.toLocaleString()}),'gold');
+  notify(I18N.t('notify.partsSlotExpand',{nm:shipDisplayNm(s),rows,cols,total:rows*cols,cost:cost.toLocaleString()}),'gold');
   baekgu(I18N.t('baekgu.partSlotsAdded',{nm:shipDisplayNm(s)}));
   saveGame(true);
   if(fromModal&&typeof showShipDetailModal==='function')showShipDetailModal(shipIdx);
