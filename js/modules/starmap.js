@@ -567,17 +567,22 @@
     let weaponTier='normal';  // normal (영웅 이하) / legend (전설·세트) / mythic (신화)
     // 미사일 등급 판정 — 기함 장착 미사일 파츠의 rarity로 분류 (미사일 cd 배율 결정)
     let missileTier='normal';
+    // 무기 등급(희귀도) → 동시 발사 수 (사용자 요청 2026-06-16: 일반1·희귀2·영웅3·전설4·신화5 확산식)
+    const _rarityToShots=(r)=> r==='mythic'?5 : (r==='legend'||r==='set')?4 : (r==='hero'||r==='epic')?3 : (r==='rare'||r==='R')?2 : 1;
+    let _laserShots=1, _missileShots=1;
     if(flagship&&flagship.parts){
       for(const pid of flagship.parts){
         const p=PARTS.find(x=>x.id===pid);
         if(!p)continue;
         if(p.cat==='weapon'&&(p.wtype!=='missile')){
+          _laserShots=Math.max(_laserShots,_rarityToShots(p.rarity));
           if(p.rarity==='mythic')weaponTier='mythic';
           else if(p.rarity==='legend'||p.rarity==='set')weaponTier=(weaponTier==='mythic'?'mythic':'legend');
           else if(weaponTier==='normal')weaponTier='normal';
         }
         // 미사일 (cat==='missile' 또는 weapon+wtype==='missile')
         if(p.cat==='missile'||(p.cat==='weapon'&&p.wtype==='missile')){
+          _missileShots=Math.max(_missileShots,_rarityToShots(p.rarity));
           if(p.rarity==='mythic')missileTier='mythic';
           else if(p.rarity==='legend'||p.rarity==='set')missileTier=(missileTier==='mythic'?'mythic':'legend');
         }
@@ -756,11 +761,11 @@
     function _fireLaser(){
       if(state.laserCd>0||state.ended)return;
       state.laserCd=5;  // ≈85ms @ 60fps (기존 8 → 1.5× 빠르게)
-      state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:14, dmg:_laserDmg, life:90});
-      // 신화 무기 — 40% 확률 다단발사 (약간 위/아래 스프레드)
-      if(_laserMultiShotRate>0&&Math.random()<_laserMultiShotRate){
-        const _offY=(Math.random()-0.5)*16;
-        state.pBullets.push({x:state.ship.x+state.ship.w/2, y:state.ship.y+_offY, vx:14, dmg:_laserDmg, life:90});
+      // 무기 등급별 확산 발사 (일반1·희귀2·영웅3·전설4·신화5) — 중심 대칭 부채꼴
+      const cx=state.ship.x+state.ship.w/2, cy=state.ship.y, n=_laserShots;
+      for(let i=0;i<n;i++){
+        const off=(i-(n-1)/2);          // 중심 기준 대칭 오프셋
+        state.pBullets.push({x:cx, y:cy+off*6, vx:14, vy:off*1.7, dmg:_laserDmg, life:90});
       }
       try{AudioMgr.playSfx('laser_fire',{vol:0.4,cooldown:30});}catch(e){}
     }
@@ -776,7 +781,12 @@
         const d=Math.hypot(e.x-state.ship.x,e.y-state.ship.y);
         if(d<td){td=d;target=e;}
       });
-      state.pMissiles.push({x:state.ship.x+state.ship.w/2, y:state.ship.y, vx:6, vy:0, target, dmg:_missileDmg, life:140});
+      // 무기 등급별 확산 발사 (일반1·희귀2·영웅3·전설4·신화5) — 호밍이라 초기 부채꼴 후 타겟 추적
+      const cx=state.ship.x+state.ship.w/2, cy=state.ship.y, n=_missileShots;
+      for(let i=0;i<n;i++){
+        const off=(i-(n-1)/2);
+        state.pMissiles.push({x:cx, y:cy+off*9, vx:6, vy:off*1.3, target, dmg:_missileDmg, life:140});
+      }
       try{AudioMgr.playSfx('missile',{vol:0.5,cooldown:60});}catch(e){}
     }
     // 필살기 — 테슬라 초공간 라이트닝 (LeftShift, 10초 쿨다운)
@@ -1126,7 +1136,7 @@
   
       // 아군 레이저
       for(let i=state.pBullets.length-1;i>=0;i--){
-        const b=state.pBullets[i];b.x+=b.vx*dt;b.life-=dt;
+        const b=state.pBullets[i];b.x+=b.vx*dt;b.y+=(b.vy||0)*dt;b.life-=dt;
         if(b.x>W||b.life<=0){state.pBullets.splice(i,1);continue;}
         // 충돌
         let hit=false;
