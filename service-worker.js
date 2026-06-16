@@ -1,6 +1,6 @@
 // DESTINATION EARTH — PWA Service Worker (v2 — 캐시 효율화)
 // 캐시 버전은 game.js의 _GAME_VER 가 바뀔 때마다 함께 올려야 새 빌드가 강제 갱신됨.
-const CACHE_VERSION = 'de-cache-v20260616-021';
+const CACHE_VERSION = 'de-cache-v20260616-022';
 
 // ── 캐시를 두 종류로 분리하여 LRU·정리 효율화 ──────────────────────────
 // · CORE: 핵심 코드(HTML/JS/CSS) — 항상 최신 (network-first)
