@@ -49,7 +49,7 @@
       //   imgScale 지정(전투 보고 등) 시에는 고정 px 사용 — 전역 튜너 토큰에 영향받지 않음
       const _imgVar=(_scale!==1)?`${_icSz}px`:`var(--ui-reward-img${_many?'-many':''}, ${_icSz}px)`;
       const imgHtml=it.img
-        ? `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(it.img,ic,_imgVar,_imgVar,'object-fit:cover')}</div>`
+        ? `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(it.img,ic,_imgVar,_imgVar,'object-fit:contain')}</div>`
         : `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
       return `<div style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
         ${imgHtml}
