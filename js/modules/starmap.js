@@ -195,7 +195,10 @@
   // 3D projection
   function rotate3D(x,y,z,rx,ry){
     const x1=x*Math.cos(ry)-z*Math.sin(ry),z1=x*Math.sin(ry)+z*Math.cos(ry);
-    const y2=y*Math.cos(rx)-z1*Math.sin(rx),z2=y*Math.sin(rx)+z1*Math.cos(rx);
+    // 수직 성분 부호 반전 — 기존 2D 지도와 상하 방향 일치 (사용자 보고 2026-06-16:
+    //   3D 틸트 도입 후 행성 배치가 상하 뒤집혀 보이던 문제). 모든 호출이 y=0 (수평 디스크)이므로
+    //   y 출력만 뒤집어도 가로위치·깊이정렬·좌우 회전 핸들링은 그대로 유지된다.
+    const y2=z1*Math.sin(rx)-y*Math.cos(rx),z2=y*Math.sin(rx)+z1*Math.cos(rx);
     return{x:x1,y:y2,z:z2};
   }
   function project3D(x,y,z){
@@ -748,11 +751,12 @@
     const onMM=e=>{const r=cv.getBoundingClientRect();state.mouseX=(e.clientX-r.left)*(W/r.width);state.mouseY=(e.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
     const onMD=e=>{e.preventDefault();state._mouseDown=true;};  // 누르면 hold 시작
     const onMU=e=>{state._mouseDown=false;};
-    const onML=e=>{state._mouseDown=false;};
     cv.addEventListener('mousemove',onMM);
     cv.addEventListener('mousedown',onMD);
-    cv.addEventListener('mouseup',onMU);
-    cv.addEventListener('mouseleave',onML);
+    // 버튼 해제는 window 레벨에서 감지 — 커서가 캔버스 밖(벽)으로 나가도 발사 유지.
+    //   사용자 보고 2026-06-16: 함선을 벽에 밀어붙이면 커서가 캔버스를 벗어나
+    //   mouseleave 로 발사가 끊기던 문제. mouseleave 로 발사를 멈추지 않는다.
+    window.addEventListener('mouseup',onMU);
     // 터치 (모바일 대응)
     const onTS=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';_fireLaser();};
     const onTM=e=>{e.preventDefault();const t=e.touches[0];if(!t)return;const r=cv.getBoundingClientRect();state.mouseX=(t.clientX-r.left)*(W/r.width);state.mouseY=(t.clientY-r.top)*(H/r.height);state._inputMode='mouse';};
@@ -925,6 +929,7 @@
       // 리스너 정리
       window.removeEventListener('keydown',onKD);
       window.removeEventListener('keyup',onKU);
+      window.removeEventListener('mouseup',onMU);
       // 보상
       // 명성 구간별 보상 비율 — 사용자 명세 (1/10로 축소 + 별도 드롭 보장)
       //   rep  1~10  → 10% / rep 11~50 → 5% / rep 51~100 → 3% / rep 100+ → 1%
@@ -2088,16 +2093,48 @@
       const pa=worldToScreen(a.x,a.y),pb=worldToScreen(b.x,b.y);
       if(getComputedStyle(wrap).position==='static')wrap.style.position='relative';
       mapCV.style.pointerEvents='none';  // 이동 중 맵 조작 차단
-      const ship=document.createElement('div');
-      ship.className='_travel-ship'+(isBlink?' _travel-blink':'');
-      ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;transition:transform '+dur+'ms '+(isBlink?'ease-in-out':'linear');
       const _img=(typeof shipImgSrc==='function'&&G.fleet&&G.fleet[0])?shipImgSrc(G.fleet[0]):'';
-      ship.innerHTML=_img?('<img src="'+_img+'" style="width:100%;height:100%;object-fit:contain">'):'🚀';
+      const _shipInner=_img?('<img src="'+_img+'" style="width:100%;height:100%;object-fit:contain">'):'🚀';
+      // ── 블링크(순간이동) — 출발지에서 번쩍 → 즉시 이동 → 도착지에서 번쩍 후 정지 ──
+      //   사용자 요청 2026-06-16: "이동 직전 번쩍 / 즉시 이동 / 도착 번쩍 후 멈춤". 글라이드 없음.
+      if(isBlink){
+        const _flash=(x,y)=>{
+          const f=document.createElement('div');
+          f.style.cssText='position:absolute;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;z-index:41;pointer-events:none;border-radius:50%;'
+            +'background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(120,225,255,.85) 35%,rgba(0,180,255,.35) 60%,rgba(0,180,255,0) 75%);'
+            +'transform:translate('+x+'px,'+y+'px) scale(.25);opacity:0;transition:transform .32s cubic-bezier(.2,.7,.3,1),opacity .32s ease-out';
+          wrap.appendChild(f);
+          void f.offsetWidth;
+          requestAnimationFrame(()=>{f.style.transform='translate('+x+'px,'+y+'px) scale(2.4)';f.style.opacity='1';});
+          setTimeout(()=>{f.style.opacity='0';},160);
+          setTimeout(()=>{try{f.remove();}catch(e){}},420);
+        };
+        try{AudioMgr.playSfx('UI_open',{cooldown:0});}catch(e){}
+        _flash(pa.sx,pa.sy);                     // 출발 번쩍
+        setTimeout(()=>{                          // 즉시 이동 후 도착 번쩍
+          try{AudioMgr.playSfx('UI_open',{cooldown:0});}catch(e){}
+          _flash(pb.sx,pb.sy);
+          // 도착지에 함선이 짧게 나타났다가 정지 (페이드 인)
+          const ship=document.createElement('div');
+          ship.className='_travel-ship';
+          ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;opacity:0;transition:opacity .2s ease-out;transform:translate('+pb.sx+'px,'+pb.sy+'px)';
+          ship.innerHTML=_shipInner;
+          wrap.appendChild(ship);
+          requestAnimationFrame(()=>{ship.style.opacity='1';});
+          setTimeout(()=>{try{ship.remove();}catch(e){}},360);
+        },180);
+        setTimeout(()=>{try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},560);
+        return;
+      }
+      const ship=document.createElement('div');
+      ship.className='_travel-ship';
+      ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;transition:transform '+dur+'ms linear';
+      ship.innerHTML=_shipInner;
       ship.style.transform='translate('+pa.sx+'px,'+pa.sy+'px)';
       wrap.appendChild(ship);
       void ship.offsetWidth;  // reflow → transition 적용
       requestAnimationFrame(()=>{ship.style.transform='translate('+pb.sx+'px,'+pb.sy+'px)';});
-      try{AudioMgr.playSfx(isBlink?'UI_open':'UI_click',{cooldown:0});}catch(e){}
+      try{AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
       setTimeout(()=>{try{ship.remove();}catch(e){}try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},dur+80);
     }catch(e){console.warn('[travel anim]',e);onDone();}
   }
@@ -2136,11 +2173,10 @@
     if(G.credits<cost){notify(I18N.t('notify.travelCostShort',{cost:cost.toLocaleString()}),'err');return;}
     // ── 엔진 등급별 이동 시간 + 은하지도 이동 모션 (사용자 요청 2026-06-16) ──
     //   먼저 모션을 재생하고, 끝나면 travelTo를 재진입해 실제 도착 처리를 수행한다.
-    //   블링크 점프(연결 항로 밖)는 무조건 1초 + 반짝임.
+    //   블링크 엔진 보유 시 모든 이동이 순간이동(번쩍→즉시→번쩍). 사용자 요청 2026-06-16.
     if(_travelAnimFor!==pid){
-      const _maxHops2=hasLegendaryEngineOnAny()?2:1;
-      const _isBlinkJump=blink&&!isWithinHops(G.currentPlanet,pid,_maxHops2);
-      const _travelMs=_isBlinkJump?1000:_travelDelayMs();
+      const _isBlinkJump=blink;   // 블링크 엔진이면 인접/원거리 무관하게 순간이동 연출
+      const _travelMs=_isBlinkJump?560:_travelDelayMs();
       if(_travelMs>0){
         _travelAnimFor=pid;
         G.mapSelected=null;

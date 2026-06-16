@@ -1272,6 +1272,17 @@ function drawCombatFrame(){
     }
     if(_minAliveSlotCol===99)_minAliveSlotCol=0;
     const xAnchor=(isEnemy?+1:-1)*Math.max(W*0.085,_xAnchorMag-_minAliveSlotCol*cellW*0.55);
+    // 점유된 행 기준으로 수직 중앙 정렬 — 빈 행까지 포함해 totalH/2로 중앙을 잡으면
+    //   (특히 수동 6×8 격자에서 상단 행만 사용 시) 함선이 캔버스 위로 잘리는 문제 발생.
+    //   사용자 보고 2026-06-16: "전투 모드 좌측 상단 화면 잘림". 실제 사용 행만으로 중앙을 잡는다.
+    let _occMinRow=Infinity,_occMaxRow=-Infinity;
+    for(let _k=0;_k<n;_k++){
+      const _sl=slotForIdx[_k]; if(_sl<0)continue;
+      const _sr=_isWideFleet?Math.floor(_sl/cols):(_sl%rows);
+      if(_sr<_occMinRow)_occMinRow=_sr; if(_sr>_occMaxRow)_occMaxRow=_sr;
+    }
+    if(_occMinRow===Infinity){_occMinRow=0;_occMaxRow=0;}
+    const _rowMid=(_occMinRow+_occMaxRow)/2;
     return units.map((u,i)=>{
       const slot=slotForIdx[i];
       if(slot<0){u._frontRank=99;u._fleetCol=99;return{x:xAnchor,y:0};}
@@ -1282,7 +1293,7 @@ function drawCombatFrame(){
       u._fleetCols=cols;
       u._fleetCol=slotCol;    // 사거리(종심) 계산용 — 열 인덱스(0=최전열)
       const xLocal=xAnchor + (isEnemy?+1:-1)*slotCol*cellW;
-      const yLocal=slotRow*cellH - totalH/2;
+      const yLocal=(slotRow-_rowMid)*cellH;   // 점유 행 중앙 정렬 (상단 잘림 방지)
       const idStr=String(u.id||('U'+i));
       let seed=0;for(let k=0;k<idStr.length;k++)seed=(seed*131+idStr.charCodeAt(k))>>>0;
       const rng=_seedRng(seed);
@@ -1339,8 +1350,10 @@ function drawCombatFrame(){
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
     if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      // 사용자 요청 (2026-06-06): 학익진 이동 속도 +50% (0.00016 → 0.00024)
-      const T=0.00024;
+      // 학익진 진형 수렴 속도 — 일반 재배치(0.0008)와 동일하게 맞춤. 사용자 보고 2026-06-16:
+      //   기존 0.00024는 너무 느려 진형이 눈에 띄게 형성되지 않음("학익진 누르면 변형되도록").
+      //   일반 이동속도와 동일하게 두어 '이동속도는 그대로 유지'하면서 진형이 실제로 형성된다.
+      const T=0.0008;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
     } else {
