@@ -25,7 +25,7 @@ window._RENDER_SHIP_TAB_LOADED=true;
 // ── 정비소 좌측 세로 탭 사이드바 (5개 탭 공통, 사용자 요청 2026-06-16) ──
 //   상단 가로 탭(subNav) → 좌측 세로열로 이동. window 노출(타 IIFE 모듈에서 호출).
 function _garageSideNav(activeKey){
-  const tabs=[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}];
+  const tabs=[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')},{k:'cargo',lb:I18N.t('garage.cargo')}];
   return '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;width:108px">'+
     tabs.map(function(t){var act=(t.k===activeKey);
       return '<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:9px 10px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+';text-align:left;white-space:nowrap;line-height:1.2">'+t.lb+'</button>';
@@ -132,7 +132,7 @@ function renderShipTab(body){
     // 정비 서브탭: parts(파츠+크루) / cargo(화물칸 전용) / formation(편대)
     const _isMaintain=_garageSubTab!=='formation'&&_garageSubTab!=='cargo';
     const garageSubNav=G._garageMode?`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-      ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'cargo',lb:I18N.t('garage.cargo')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
+      ${[{k:'parts',lb:I18N.t('garage.shipMaint')},{k:'formation',lb:I18N.t('garage.formation')},{k:'skin',lb:I18N.t('garage.shipSkin')},{k:'enhance',lb:I18N.t('garage.shipEnhance')},{k:'cargo',lb:I18N.t('garage.cargo')}].map(function(t){const act=(t.k===_garageSubTab||(t.k==='parts'&&_isMaintain));return'<button onclick="_garageSubTab=\''+t.k+'\';rerenderTab(renderGarageTab)" style="padding:5px 14px;border:1px solid '+(act?'var(--cyan)':'var(--bdr)')+';background:'+(act?'rgba(0,243,255,.12)':'transparent')+';color:'+(act?'var(--cyan)':'var(--dim)')+';border-radius:6px;cursor:pointer;font-size:12px;font-weight:'+(act?'bold':'normal')+'">'+t.lb+'</button>';}).join('')}
     </div>`:'';
     const sortBar=`<!-- 좌(📊 종합 능력치) · 중(🔧 전체 수리) · 우(나포허용/매각) 3열 -->
     <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:stretch">
@@ -220,7 +220,7 @@ function renderShipTab(body){
       const PART_COLS=getShipPartsGridCols(s.tier);
       const PART_ROWS=getShipPartsGridRows(s);
       const partsLayout=layoutPartsGrid(s.parts||[],PART_COLS,PART_ROWS);
-      const CELL_SZ=51;
+      const CELL_SZ=41;  // 함선 칸(파츠/함선실) 박스 크기 — 현재의 80% 축소 (사용자 요청 2026-06-16, 51→41)
 
       // 크루 색상 헬퍼
 
@@ -380,7 +380,7 @@ function renderShipTab(body){
           // 컬럼 공통: flex 세로 배치 + spacer 로 액션 버튼을 하단에 고정 → 3컬럼 액션 버튼 높이 정렬
           // 파츠↔함선실 간격 20% 축소 (10→6, 양쪽 합산 20→12)
           // 파츠 그리드 실제 너비 계산 (CELL_SZ=51 + gap=3) → 신화(8열)/대형(6열) 함선이 함선실과 겹치지 않게 min-width 보장
-          const _CELL_SZ=51, _CELL_GAP=3;
+          const _CELL_SZ=41, _CELL_GAP=3;  // CELL_SZ 80% 축소와 동기화
           const _partsGridW=PART_COLS*_CELL_SZ+(PART_COLS-1)*_CELL_GAP+12; // 12=padding 여유
           // ── 창고 확장 전용 슬롯 (파츠 그리드 오른쪽 세로 1열, 최대 CARGO_EXT_MAX 칸) ──
           //   기존 세이브가 7칸 보유 중이면 그대로 표시 (해제만 가능, 신규 장착은 6칸까지)
@@ -439,7 +439,7 @@ function renderShipTab(body){
               ${_crewBonusInfo}
               <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintClickDisembark')}</span>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(${crewCols},51px);grid-template-rows:repeat(${_crewRows},51px);gap:3px;flex-shrink:0">${crewGrid}</div>
+            <div style="display:grid;grid-template-columns:repeat(${crewCols},${CELL_SZ}px);grid-template-rows:repeat(${_crewRows},${CELL_SZ}px);gap:3px;flex-shrink:0">${crewGrid}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;justify-content:flex-start;align-self:flex-start;max-width:100%">
               <button class="btn btn-sm" style="border-color:var(--green);color:var(--green);font-size:11px;padding:3px 8px;white-space:nowrap" onclick="pickCrewForSlot(${idx})">${I18N.t('ui.crewAssignPlus')}</button>
@@ -501,7 +501,7 @@ function renderShipTab(body){
           <!-- Col 3: Crew 그리드 -->
           <div style="flex-shrink:0;padding:8px 10px;border-right:1px solid var(--bdr)">
             <div style="font-size:10px;color:var(--dim);margin-bottom:5px">👥 <b style="color:var(--green)">${I18N.t('ui.crewAssignBtn')}</b> ${(s.crewIds||[]).length}/${maxCrew}명 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintClickAssign')}</span></div>
-            <div style="display:grid;grid-template-columns:repeat(${crewCols},51px);gap:4px">${crewGrid}</div>
+            <div style="display:grid;grid-template-columns:repeat(${crewCols},${CELL_SZ}px);gap:4px">${crewGrid}</div>
           </div>
           <!-- Col 4: Cargo 그리드 -->
           <div style="flex:1;padding:8px 10px;min-width:196px;">

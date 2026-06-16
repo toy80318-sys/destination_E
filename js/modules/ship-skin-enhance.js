@@ -604,23 +604,21 @@ function renderFleetFormationTab(body){
     <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:11px;padding:4px 10px;${_declineCap?'border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.12)':'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.10)'}" title="ON(나포매각): 나포 대상 함선을 즉시 매각하여 크레딧 획득 · OFF(나포허용): 정상 나포 시도">${_declineCap?I18N.t('ui.captureSell'):I18N.t('ui.captureAllow')}</button>
     <button class="btn btn-sm btn-red" style="font-size:11px;padding:4px 10px" onclick="clearAllFormation()">${I18N.t('ui.resetBtn')}</button>
   </div>`;
-  // ── 기본 자동 배치 바 (영웅 해금 불필요, 항상 사용 가능 — 사용자 요청 2026-06-16) ──
+  // ── 기본 자동배치 버튼 — 대형 프리셋 줄 가장 우측에 배치 (사용자 요청 2026-06-16) ──
   //   앞열=체력·방어력 높은 함선, 뒤열=공격력 높은(내구 낮은) 함선
-  // #6: 자동배치 버튼 — 좌측 사이드바 오른쪽 세로 액션열에 배치 (가로로 길게 X)
-  const _autoBar=`<div style="font-size:11px;font-weight:bold;color:var(--cyan);text-align:center;line-height:1.3">🛡️ ${I18N.t('formation.autoHeader')}</div>
-    <button class="btn btn-sm" onclick="autoArrangeFormation()" style="font-size:11px;padding:7px 6px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold;width:100%;white-space:normal;line-height:1.25">${I18N.t('formation.autoArrange')}</button>
-    <div style="font-size:9px;color:var(--dim);text-align:center;line-height:1.3">${I18N.t('formation.autoArrangeHint')}</div>`;
+  const _autoBtn=`<button class="btn btn-sm" onclick="autoArrangeFormation()" title="${I18N.t('formation.autoArrangeHint')}" style="font-size:11px;padding:4px 14px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold;white-space:nowrap">🛡️ ${I18N.t('formation.autoArrange')}</button>`;
   // ── 대형 자동 배치 프리셋 바 (영웅 해금) ──
   const _fUnlocked=_formationUnlocked();
   const _presetDefs=[['arrow','formation.arrow'],['crane','formation.crane'],['square','formation.square'],['diamond','formation.diamond']];
-  const _presetBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(255,215,0,.04);border:1px solid ${_fUnlocked?'rgba(255,215,0,.3)':'rgba(255,255,255,.12)'};border-radius:8px;padding:8px 14px;margin-bottom:10px">
+  const _presetBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;flex-shrink:0;background:rgba(255,215,0,.04);border:1px solid ${_fUnlocked?'rgba(255,215,0,.3)':'rgba(255,255,255,.12)'};border-radius:8px;padding:8px 14px;margin-bottom:10px">
     <span style="font-size:13px;font-weight:bold;color:${_fUnlocked?'var(--gold)':'var(--dim)'}">⚔️ ${I18N.t('formation.presetHeader')}</span>
     ${_presetDefs.map(d=>`<button class="btn btn-sm" onclick="applyFormationPreset('${d[0]}')" ${_fUnlocked?'':'disabled'} style="font-size:11px;padding:4px 12px;border-color:${_fUnlocked?'var(--gold)':'var(--bdr)'};color:${_fUnlocked?'var(--gold)':'var(--dim)'};background:${_fUnlocked?'rgba(255,215,0,.10)':'transparent'};${_fUnlocked?'':'opacity:.55;cursor:not-allowed'}">${I18N.t(d[1])}</button>`).join('')}
-    ${_fUnlocked?'':`<span style="font-size:11px;color:var(--dim);margin-left:auto">${I18N.t('formation.lockHint')}</span>`}
+    ${_autoBtn}
+    ${_fUnlocked?'':`<span style="font-size:11px;color:var(--dim)">${I18N.t('formation.lockHint')}</span>`}
   </div>`;
   // ── 편대 저장 슬롯 3개 (사용자 요청 2026-06-16): 내 편대 구성 저장/불러오기 (불러올 때 신규 함선 자동 충원) ──
   const _saves=(Array.isArray(G.fleetFormationSaves)?G.fleetFormationSaves:[null,null,null]);
-  const _saveBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(120,200,255,.05);border:1px solid rgba(120,200,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
+  const _saveBar=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;flex-shrink:0;background:rgba(120,200,255,.05);border:1px solid rgba(120,200,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
     <span style="font-size:13px;font-weight:bold;color:#8cf">💾 ${I18N.t('formation.savesHeader')}</span>
     ${[0,1,2].map(function(i){
       const filled=_saves[i]&&Object.keys(_saves[i]).length;
@@ -634,10 +632,9 @@ function renderFleetFormationTab(body){
   body.innerHTML=`<div class="hub-scroll">
     ${hubBanner('garage','🔧',I18N.t('ui.shipMaintenance'),pd?.f)}
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
-    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('formation')}<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;width:132px">${_autoBar}</div><div style="flex:1;min-width:0">
+    <div style="display:flex;gap:10px;align-items:flex-start">${window._garageSideNav('formation')}<div style="flex:1;min-width:0">
     ${summary}
-    ${_presetBar}
-    ${_saveBar}
+    <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:nowrap;overflow-x:auto">${_presetBar}${_saveBar}</div>
     ${hint}
     <div style="display:grid;grid-template-columns:224px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
       <div style="background:rgba(5,10,26,.5);border:1px solid var(--bdr);border-radius:8px;padding:10px;max-height:85vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.3) transparent" data-scroll-id="formation-ships">
