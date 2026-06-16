@@ -366,16 +366,16 @@ const PHASE4_QUESTS={
   ],
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 20 · P14 크리그 "아이젠클로 요새" (페이즈 4 종착지)
+  // 행성 20 · P14 크리그 "아이젠클로 잔존 요새 · 점령" (페이즈 4 종착지) — 집행관 격파 후 잔당 소탕/요새 점령 톤 (2026-06-17)
   // 팩션 특산물: G09·G10·G12·R08
   // ════════════════════════════════════════════════════════════════
   P14:[
     {
       id:'p4_q2001', type:'story_quest', category:'main', phase:4,
       ic:'⚔️', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
-      nm:{ko:'아이젠클로 친위대 격파', en:'Eisenklau Guard Down'},
-      desc:{ko:'슈멜츠 요새 외곽 친위대 7기 격파. 거북선 첫 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
-            en:'Destroy 7 guards. Geobukseon\'s first sortie.'},
+      nm:{ko:'아이젠클로 잔당 소탕', en:'Crush the Remnants'},
+      desc:{ko:'집행관을 잃은 슈멜츠 요새 — 그래도 친위대 잔당이 끝까지 버틴다. 외곽 친위대 7기 소탕. 거북선 출격.\n이순신: "거북선의 노포가 그들의 방패를 뚫는다."',
+            en:'With their enforcer dead, the Schmelz fort\'s praetorian remnants resist to the last. Sweep 7 outer guards. Geobukseon sorties.'},
       objectives:[
         {type:'combat', target:'p14_guards', qty:1, label:{ko:'친위대 7기 격파', en:'7 guards down'}},
       ],
@@ -387,7 +387,7 @@ const PHASE4_QUESTS={
     {
       id:'p4_q2002', type:'story_quest', category:'main', phase:4,
       ic:'💥', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
-      nm:{ko:'요새 코어 폭파', en:'Fort Core Breach'},
+      nm:{ko:'요새 점령 — 코어 제압', en:'Seize the Fort — Core Breach'},
       desc:{ko:'요새 중앙 에너지 코어에 수퍼비아 중력자 ×5 + 크리그 마그마 코어 ×3 삽입 → 폭파 유도. 60초 탈출 후 강습 스파이크 ×8 회수.',
             en:'Superbia Graviton ×5 + Krieg Magma Core ×3 → core breach. Escape 60s, loot Assault Spike ×8.'},
       objectives:[
@@ -401,9 +401,9 @@ const PHASE4_QUESTS={
     {
       id:'p4_q2003', type:'story_quest', category:'main', phase:4,
       ic:'📜', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
-      nm:{ko:'아이젠클로의 비밀 — 도주 좌표', en:'Eisenklau\'s Escape Coord'},
-      desc:{ko:'요새 사령실 데이터 회수. 수퍼비아 중력자 ×2 해독.\n결과: "아이젠클로는 P30 제타 레티쿨리 우르사 메이저 본거지로 도주. 우르사가 그를 비호 중."',
-            en:'Superbia Graviton ×2 → "Eisenklau escaped to P30 Ursa Major lair."'},
+      nm:{ko:'사령실 점령 — 우르사 좌표 확보', en:'Command Room — Ursa Coordinates'},
+      desc:{ko:'슈멜츠 요새 사령실 점령 후 데이터 회수. 수퍼비아 중력자 ×2 해독.\n결과: "아이젠클로의 기록 — 그는 우르사 메이저의 하수인이었다. 본거지 좌표: P30 제타 레티쿨리."',
+            en:'Seize the Schmelz command room, recover the data. Superbia Graviton ×2 → "Eisenklaue\'s records — he was Ursa Major\'s pawn. Lair coordinates: P30 Zeta Reticuli."'},
       objectives:[
         {type:'gather', item:'R07', qty:2, label:{ko:'수퍼비아 중력자 ×2 해독', en:'Superbia Graviton ×2'}},
       ],
@@ -536,9 +536,9 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
   p4_ch10b:[
-    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'거북선 초도 비행 테스트. 준비됐습니까?'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'이걸로 아이젠클로의 본거지 페스작센을 부수러 가는 거야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 5 — 행성 21~25. 아이젠클로 최후. 거북선으로 결전이야.'}
+    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'페스작센은 끝났습니다. 집행관은 격파됐어요. 하지만 크리그 보급 요새 슈멜츠가 아직 살아있습니다.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'아이젠클로는 죽었어도 친위대 잔당이 요새를 붙잡고 있어. 뿌리까지 뽑자.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 거북선으로 슈멜츠를 점령한다. 사령실 데이터에 — 우르사로 가는 길이 있을 거야.'}
   ],
 
     // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
@@ -652,9 +652,9 @@ const PHASE4_CUTSCENES_EN={
 
   // ─── CH10-B "Break the Fortress" (P14 arrival) ───
   p4_ch10b:[
-    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'The Geobukseon\'s maiden flight test. Are you ready?'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'With this, we go to smash Eisenklaue\'s stronghold, Fessachsen.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 5 — planets 21 through 25. The end of Eisenklaue. The final battle, aboard the Geobukseon.'}
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Fessachsen is finished — the enforcer is dead. But the Krieg supply fort Schmelz still stands.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Eisenklaue may be gone, but his praetorian remnants still hold the fort. Let\'s pull it out by the roots.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. We seize Schmelz with the Geobukseon. The command-room data should hold the road to Ursa.'}
   ],
 
     // ─── CH10-C "Escape Coordinates" (Q20-03 done · Phase 4 end) ───

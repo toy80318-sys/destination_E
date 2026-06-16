@@ -413,8 +413,8 @@ function relocalizeStoryQuests(){
   try{
     if(!window.G||!G.quests) return 0;
     const _lang=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en')?'en':'ko';
-    // 버전 태그(.v2): 영문 데이터 한글 잔존 정리 반영 — 구 세이브(태그 없음/구버전)는 1회 강제 재지역화
-    const _tag=_lang+'.v2';
+    // 버전 태그: 데이터 변경 시 +1 → 구 세이브 1회 강제 재지역화. v3: P14 잔당소탕/요새점령 + 우르사좌표 리톤 (2026-06-17)
+    const _tag=_lang+'.v3';
     if(G._questLocLang===_tag) return 0; // 이미 현재 언어·버전으로 지역화됨 — 스킵
     // id → 원본 템플릿 맵 구성
     const byId=Object.create(null);
