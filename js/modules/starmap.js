@@ -15,6 +15,7 @@
   // 모듈 내부 상태 (캡슐화)
   let mapCtx,mapCV,mapOffX=0,mapOffY=0;
   let map3dRotX=0.35,map3dRotY=0.0,mapDragMode='pan';
+  let _travelAnimFor=null;  // 이동 모션 진행 중 목적지 (재진입 가드)
   function renderMapView(body){
     body.innerHTML=`<div style="height:48px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0">
       <span style="color:var(--yellow);font-weight:bold;font-size:16px">${I18N.t('map.title')}</span>
@@ -2004,6 +2005,43 @@
     const conn=hasBlinkOnAll()||(fog!=='L'&&isConnected(G.currentPlanet,p.id));
     updateFloatBtn(p,fog,conn,isCur,cost);
   }
+  // 엔진 등급별 이동 시간(ms) — 기함 엔진 파츠 최고 tier 기준 (사용자 요청 2026-06-16)
+  //   엔진없음 10초 / E01 8초 / E04 6초 / E08 4초 / E12 2초 / E15·SE01 1초 / ME01(신화) 즉시
+  function _travelDelayMs(){
+    const flag=G.fleet&&G.fleet[0];let bestTier=0;
+    if(flag&&flag.parts&&typeof PARTS!=='undefined'){
+      for(const pid of flag.parts){const p=PARTS.find(x=>x.id===pid);if(p&&p.cat==='engine'&&(p.tier||0)>bestTier)bestTier=p.tier||0;}
+    }
+    if(bestTier>=20)return 0;
+    if(bestTier>=15)return 1000;
+    if(bestTier>=12)return 2000;
+    if(bestTier>=8)return 4000;
+    if(bestTier>=4)return 6000;
+    if(bestTier>=1)return 8000;
+    return 10000;
+  }
+  // 은하지도 위에서 함선이 출발행성→목적행성으로 이동하는 모션 (블링크면 반짝임)
+  function _startTravelAnim(fromPid,toPid,dur,isBlink,onDone){
+    try{
+      const wrap=document.getElementById('map-wrap');
+      const a=G.mapPositions&&G.mapPositions[fromPid],b=G.mapPositions&&G.mapPositions[toPid];
+      if(!wrap||!a||!b||!mapCV){onDone();return;}
+      const pa=worldToScreen(a.x,a.y),pb=worldToScreen(b.x,b.y);
+      if(getComputedStyle(wrap).position==='static')wrap.style.position='relative';
+      mapCV.style.pointerEvents='none';  // 이동 중 맵 조작 차단
+      const ship=document.createElement('div');
+      ship.className='_travel-ship'+(isBlink?' _travel-blink':'');
+      ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;transition:transform '+dur+'ms '+(isBlink?'ease-in-out':'linear');
+      const _img=(typeof shipImgSrc==='function'&&G.fleet&&G.fleet[0])?shipImgSrc(G.fleet[0]):'';
+      ship.innerHTML=_img?('<img src="'+_img+'" style="width:100%;height:100%;object-fit:contain">'):'🚀';
+      ship.style.transform='translate('+pa.sx+'px,'+pa.sy+'px)';
+      wrap.appendChild(ship);
+      void ship.offsetWidth;  // reflow → transition 적용
+      requestAnimationFrame(()=>{ship.style.transform='translate('+pb.sx+'px,'+pb.sy+'px)';});
+      try{AudioMgr.playSfx(isBlink?'UI_open':'UI_click',{cooldown:0});}catch(e){}
+      setTimeout(()=>{try{ship.remove();}catch(e){}try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},dur+80);
+    }catch(e){console.warn('[travel anim]',e);onDone();}
+  }
   function travelTo(){
     const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
     // 사용자 요청 2026-06-09: 전투 중 행성 이동 차단
@@ -2037,6 +2075,23 @@
     // 탐험되지 않은 행성은 블링크로도 이동 불가
     if(G.planets[pid]?.fog==='L'&&!blink){notify(I18N.t('notify.unexploredVisitAdjFirst'),'err');return;}
     if(G.credits<cost){notify(I18N.t('notify.travelCostShort',{cost:cost.toLocaleString()}),'err');return;}
+    // ── 엔진 등급별 이동 시간 + 은하지도 이동 모션 (사용자 요청 2026-06-16) ──
+    //   먼저 모션을 재생하고, 끝나면 travelTo를 재진입해 실제 도착 처리를 수행한다.
+    //   블링크 점프(연결 항로 밖)는 무조건 1초 + 반짝임.
+    if(_travelAnimFor!==pid){
+      const _maxHops2=hasLegendaryEngineOnAny()?2:1;
+      const _isBlinkJump=blink&&!isWithinHops(G.currentPlanet,pid,_maxHops2);
+      const _travelMs=_isBlinkJump?1000:_travelDelayMs();
+      if(_travelMs>0){
+        _travelAnimFor=pid;
+        G.mapSelected=null;
+        const _gb=document.getElementById('map-go');if(_gb)_gb.disabled=true;
+        const _mf=document.getElementById('map-float');if(_mf)_mf.style.display='none';
+        _startTravelAnim(G.currentPlanet,pid,_travelMs,_isBlinkJump,function(){G.mapSelected=pid;travelTo();});
+        return;
+      }
+    }
+    _travelAnimFor=null;  // 모션 완료(또는 즉시이동) → 실제 도착 처리 진행
     G.credits-=cost;G.currentPlanet=pid;G.planets[pid].fog='A';G.stayTurns=0;if(G.planets[pid].hubProg===undefined)G.planets[pid].hubProg=0;
     // 행성 도착 시 잠금 상태 복원 + 광장(s1) 단계 자동 해금
     // 1) _hubProgMax(영구 최대값) 트래커로 잠금 회귀 방지 — 한 번 해금한 단계는 재방문 시에도 유지

@@ -69,6 +69,10 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
 /* 사용자 요청 2026-06-14: 게임 저장/불러오기 메뉴 — 가로 10% 축소(max-width). 변형(scaleY) 제거로 찌그러짐 방지.
    세로 컴팩트는 save-slots.js 카드 인라인 치수(이미지/패딩/간격)로 비왜곡 처리. */
 .modal.modal-save-compact{max-width:562px}
+/* 은하지도 함선 이동 모션 (사용자 요청 2026-06-16) — 엔진 등급별 이동 + 블링크 반짝임 */
+._travel-ship{filter:drop-shadow(0 0 7px rgba(0,243,255,.85))}
+@keyframes _travelBlink{0%,100%{opacity:1;filter:drop-shadow(0 0 8px #6cf) brightness(1)}50%{opacity:.28;filter:drop-shadow(0 0 22px #fff) brightness(2.2)}}
+._travel-blink{animation:_travelBlink .22s ease-in-out infinite}
 /* 영문판 보상 카드 텍스트 잘림 방지 — 한글 어절 단위 + 영문 단어 단위만 줄바꿈 (단어 중간 강제 끊김 금지)
    사용자 보고 (2026-06-06): 우르사 인트로에서 단어 중간 비정상 줄바꿈 → overflow-wrap을 anywhere→break-word로 유지(이미 안전) */
 .modal.modal-bossfight div, .modal.modal-report div{word-break:keep-all;overflow-wrap:break-word;hyphens:none}
