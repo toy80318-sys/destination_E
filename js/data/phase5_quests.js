@@ -77,7 +77,7 @@ const PHASE5_QUESTS={
       id:'p5_q2105', type:'story_quest', category:'sub', phase:5,
       ic:'⚙️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'균열 환경 함대 적응', en:'Rift Fleet Adaption'},
-      desc:{ko:'장영실: "균열 환경은 일반 우주와 달라. 함대 외피를 G29 시공 입자로 코팅해야 시공 충격에 견딘다."\nG29 ×4 소비.',
+      desc:{ko:'장영실: "균열 환경은 일반 우주와 달라. 함대 외피를 보이드 공간 수정 시공 입자로 코팅해야 시공 충격에 견딘다."\nG29 ×4 소비.',
             en:'Void Space Crystal ×4 → Coat fleet hulls for rift environment resistance.'},
       objectives:[
         {type:'gather', item:'G29', qty:4, label:{ko:'보이드 공간 수정 시공 입자 ×4 코팅', en:'Void Space Crystal ×4 coating'}},
@@ -154,7 +154,7 @@ const PHASE5_QUESTS={
       id:'p5_q2204', type:'story_quest', category:'sub', phase:5,
       ic:'🤝', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 최종 지원 요청', en:'Resistance Final Support'},
-      desc:{ko:'타이탄H 저항군 본부 통신 — 저항군 반물질 반물질 ×10 추가 지원 요청. 저항군 군수품 저항군 의례 ×3 + 난중일기 영인본 ×2 제공.\n레인저: "지구 해방 — 우리 모두의 꿈이에요. 함대를 보냅니다."',
+      desc:{ko:'타이탄H 저항군 본부 통신 — 저항군 반물질 ×10 추가 지원 요청. 저항군 군수품 ×3 + 난중일기 영인본 ×2 제공.\n레인저: "지구 해방 — 우리 모두의 꿈이에요. 함대를 보냅니다."',
             en:'Resistance Military Supplies ×3 + "Nanjung Ilgi" Facsimile ×2 → Resistance pledges Resistance Antimatter ×10 + fleet for Earth liberation.'},
       objectives:[
         {type:'gather', item:'G13', qty:3, label:{ko:'저항군 군수품 ×3 의례', en:'Resistance Military Supplies ×3'}},
@@ -168,7 +168,7 @@ const PHASE5_QUESTS={
       id:'p5_q2205', type:'story_quest', category:'sub', phase:5,
       ic:'⚙️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 최종 강화', en:'Geobukseon Final Upgrade'},
-      desc:{ko:'장영실: "거북선 외피에 보이드 방어막 해석 장비 통합. R08 ×6 + G27 ×3."\n완성 시 거북선 ATT·INT 패시브 +50% (이전 +30% → +50%).',
+      desc:{ko:'장영실: "거북선 외피에 보이드 방어막 해석 장비 통합. 은하 혼돈 결정 ×6 + 치크스 뇌수액 ×3."\n완성 시 거북선 ATT·INT 패시브 +50% (이전 +30% → +50%).',
             en:'Galactic Chaos Crystal ×6 + Chiks Brain Fluid ×3 → Geobukseon ATT/INT passive +50%.'},
       objectives:[
         {type:'gather', item:'R08', qty:6, label:{ko:'은하 혼돈 결정 ×6 통합', en:'Galactic Chaos Crystal ×6'}},
@@ -227,7 +227,7 @@ const PHASE5_CUTSCENES_KO={
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'(웃으며) 박사님 — 100년 만에 다시 같이 일하는군요.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: A. 아인슈타인(H06). 8영웅 완전체 — 함대 최종 강화 상태.'}
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.'}
   ],
 
   // ─── CH12-A "오리온의 항법" (P29 도착) ───
@@ -292,7 +292,7 @@ const PHASE5_CUTSCENES_EN={
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Ursa\'s Void shield — strike it at the right frequency and it resonates loose in 0.3 seconds. I will run the calculations for you.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) Doctor — working together again after a hundred years.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Tesla. Your wireless power was right all along. Time has proven it.'},
-    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: A. Einstein (H06). All eight heroes complete — fleet at maximum reinforcement.'}
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: A. Einstein. All eight heroes complete — fleet at maximum reinforcement.'}
   ],
 
   // ─── CH12-A "Navigation of Orion" (P29 arrival) ───

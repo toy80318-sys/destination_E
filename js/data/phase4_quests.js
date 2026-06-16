@@ -21,8 +21,8 @@ const PHASE4_QUESTS={
       id:'p4_q1601', type:'story_quest', category:'main', phase:4,
       ic:'🛠️', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 용골 주조', en:'Geobukseon Keel Cast'},
-      desc:{ko:'장영실: "거북선 용골은 R08 메카니카 합금 ×15가 필요해. 메카니카 본거지 P15에서 직접 만들어야 정밀도가 나와."\nR08 ×15 확보 후 제작 베이에서 용골 주조.',
-            en:'Yi: "Need R08 ×15 for Geobukseon keel. Cast at P15 mecha-bay."'},
+      desc:{ko:'장영실: "거북선 용골은 은하 혼돈 결정 메카니카 합금 ×15가 필요해. 메카니카 본거지 타르타로스에서 직접 만들어야 정밀도가 나와."\nR08 ×15 확보 후 제작 베이에서 용골 주조.',
+            en:'Yi: "Need Galactic Chaos Crystal ×15 for Geobukseon keel. Cast at Tartarus mecha-bay."'},
       objectives:[
         {type:'gather', item:'R08', qty:15, label:{ko:'은하 혼돈 결정 메카니카 합금 ×15 확보', en:'Secure Galactic Chaos Crystal ×15'}},
       ],
@@ -35,8 +35,8 @@ const PHASE4_QUESTS={
       id:'p4_q1602', type:'story_quest', category:'main', phase:4,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'코어 점화 시스템', en:'Core Ignition System'},
-      desc:{ko:'테슬라: "거북선 추진코어는 내가 손볼게. R07 합성 코어 ×10 + R04 ×8이 필요해."',
-            en:'Tesla: "I\'ll handle the core. R07 ×10 + R04 ×8."'},
+      desc:{ko:'테슬라: "거북선 추진코어는 내가 손볼게. 수퍼비아 중력자 합성 코어 ×10 + 크리그 마그마 코어 ×8이 필요해."',
+            en:'Tesla: "I\'ll handle the core. Superbia Graviton ×10 + Krieg Magma Core ×8."'},
       objectives:[
         {type:'gather', item:'R07', qty:10, label:{ko:'수퍼비아 중력자 합성 코어 ×10', en:'Superbia Graviton ×10'}},
       ],
@@ -49,8 +49,8 @@ const PHASE4_QUESTS={
       id:'p4_q1603', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'기어월드 변두리 주점', en:'Gearworld Outskirt Tavern'},
-      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 ×2 소비 → 정보: "P12 아이젠클로 보급선이 매 6턴마다 통과해." (P12 잠복 가능).',
-            en:'Krieg Weapon Ore ×2 → "Eisenklau supply ship passes P12 every 6 turns."'},
+      desc:{ko:'타르타로스 기어월드 변두리 주점. 크리그 무기 원석 ×2 소비 → 정보: "기가툼 아이젠클로 보급선이 매 6턴마다 통과해." (기가툼 잠복 가능).',
+            en:'Krieg Weapon Ore ×2 → "Eisenklau supply ship passes Gigatum every 6 turns."'},
       objectives:[
         {type:'gather', item:'G10', qty:2, label:{ko:'크리그 무기 원석 ×2 정보료', en:'Krieg Weapon Ore ×2 fee'}},
       ],
@@ -112,7 +112,7 @@ const PHASE4_QUESTS={
       id:'p4_q1701', type:'story_quest', category:'main', phase:4,
       ic:'⛏️', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_advice',
       nm:{ko:'콜드웰 광산 크리그 마그마 코어 채굴', en:'Coldwell Krieg Magma Core Mining'},
-      desc:{ko:'백구: "거북선 외피 코팅에 R04 양자합금 ×8이 필요해요. P10 콜드웰 광산이 R04 주산지예요. G03 ×4 채굴권 비용 지불."',
+      desc:{ko:'백구: "거북선 외피 코팅에 크리그 마그마 코어 양자합금 ×8이 필요해요. 페르세틴 콜드웰 광산이 크리그 마그마 코어 주산지예요. 오리온 위스키 ×4 채굴권 비용 지불."',
             en:'Krieg Magma Core ×8 needed for hull. Orion Whisky ×4 mining fee.'},
       objectives:[
         {type:'gather', item:'R04', qty:8, label:{ko:'크리그 마그마 코어 양자합금 ×8 확보', en:'Secure Krieg Magma Core ×8'}},
@@ -126,7 +126,7 @@ const PHASE4_QUESTS={
       id:'p4_q1702', type:'story_quest', category:'sub', phase:4,
       ic:'🔧', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'정밀 부품 가공', en:'Precision Parts'},
-      desc:{ko:'장영실: "콜드웰의 G04 정밀 합금이 거북선 노포 발사구에 좋아. G04 ×5 확보해 P15 베이에 보내줘."',
+      desc:{ko:'장영실: "콜드웰의 아우레우스 금괴 정밀 합금이 거북선 노포 발사구에 좋아. 아우레우스 금괴 ×5 확보해 타르타로스 베이에 보내줘."',
             en:'Aureus Gold Ingot ×5 for turtle cannon ports.'},
       objectives:[
         {type:'gather', item:'G04', qty:5, label:{ko:'아우레우스 금괴 ×5 확보', en:'Aureus Gold Ingot ×5'}},
@@ -154,8 +154,8 @@ const PHASE4_QUESTS={
       id:'p4_q1704', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'콜드웰 광부 술집', en:'Coldwell Miner\'s Pub'},
-      desc:{ko:'수퍼비아 귀족 향수 수퍼비아 향수 ×2 소비 → 광부 노조 정보: "아이젠클로가 R04를 매 분기 대량 구매해. 가격 부풀린 책임자가 콜드웰 시장이야."',
-            en:'Superbia Noble Perfume ×2 → "Eisenklau buys R04 in bulk; mayor inflates price."'},
+      desc:{ko:'수퍼비아 귀족 향수 ×2 소비 → 광부 노조 정보: "아이젠클로가 크리그 마그마 코어를 매 분기 대량 구매해. 가격 부풀린 책임자가 콜드웰 시장이야."',
+            en:'Superbia Noble Perfume ×2 → "Eisenklau buys Krieg Magma Core in bulk; mayor inflates price."'},
       objectives:[
         {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'Superbia Noble Perfume ×2'}},
       ],
@@ -168,7 +168,7 @@ const PHASE4_QUESTS={
       id:'p4_q1705', type:'story_quest', category:'hidden', phase:4,
       ic:'🌑', npc:'백구', npcIc:'🐕', npcKey:'baekgu2_think',
       nm:{ko:'폐갱 깊은 곳의 신호', en:'Deep Shaft Signal'},
-      desc:{ko:'폐갱 최심부 — 100년 전 봉인된 캡슐 한 점 발견. 안에는 작은 데이터 칩 + 수퍼비아 중력수정 ×3.\n백구: "오래된 좌표예요. P28 캅테인b 균열 입구."',
+      desc:{ko:'폐갱 최심부 — 100년 전 봉인된 캡슐 한 점 발견. 안에는 작은 데이터 칩 + 수퍼비아 중력수정 ×3.\n백구: "오래된 좌표예요. 캅테인 균열 입구."',
             en:'Old capsule found — chip + Superbia Gravity Crystal ×3. Coords for Kapteyn-b void rift.'},
       objectives:[
         {type:'explore', target:'p10_deep_capsule', qty:1, label:{ko:'폐갱 최심부 캡슐 회수', en:'Recover capsule'}},
@@ -189,7 +189,7 @@ const PHASE4_QUESTS={
       id:'p4_q1801', type:'story_quest', category:'main', phase:4,
       ic:'🎯', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'보급선 잠복', en:'Supply Line Ambush'},
-      desc:{ko:'이순신: "P12 항로의 좁은 협곡 — 매 6턴 아이젠클로 보급선이 통과해. 매복 격파 후 G09 강화 부품 ×6 노획."\n전투 1회 승리 후 보상 회수.',
+      desc:{ko:'이순신: "기가툼 항로의 좁은 협곡 — 매 6턴 아이젠클로 보급선이 통과해. 매복 격파 후 중수소 배터리 강화 부품 ×6 노획."\n전투 1회 승리 후 보상 회수.',
             en:'Ambush Eisenklau supply ship at Giga-Net Hub narrow pass. Win combat, loot Deuterium Battery ×6.'},
       objectives:[
         {type:'combat', target:'p12_supply_ship', qty:1, label:{ko:'보급선 격파', en:'Destroy supply'}},
@@ -203,8 +203,8 @@ const PHASE4_QUESTS={
       id:'p4_q1802', type:'story_quest', category:'main', phase:4,
       ic:'📡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'보급선 통신 로그 해독', en:'Decrypt Comm Log'},
-      desc:{ko:'노획한 통신 로그 해독 — 수퍼비아 중력자 ×3 소비.\n결과: "P14 요새 — 아이젠클로 친위대 7기 + 모선급 1기 배치."',
-            en:'Superbia Graviton ×3 → "P14 fort — 7 guards + 1 mothership."'},
+      desc:{ko:'노획한 통신 로그 해독 — 수퍼비아 중력자 ×3 소비.\n결과: "슈멜츠 요새 — 아이젠클로 친위대 7기 + 모선급 1기 배치."',
+            en:'Superbia Graviton ×3 → "Schmelz fort — 7 guards + 1 mothership."'},
       objectives:[
         {type:'gather', item:'R07', qty:3, label:{ko:'수퍼비아 중력자 ×3 해독 비용', en:'Superbia Graviton ×3 decrypt'}},
       ],
@@ -294,8 +294,8 @@ const PHASE4_QUESTS={
       id:'p4_q1903', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'케플러 외곽 주점', en:'Kepler Outskirt Pub'},
-      desc:{ko:'수퍼비아 귀족 향수 향수 ×2 → 정보: "P28 캅테인b 균열에 아인슈타인이 잠수 중. 양자물리학자 — 보이드 안정화 이론의 권위자."',
-            en:'Superbia Noble Perfume ×2 → "Einstein hiding in P28 rift. Quantum physicist."'},
+      desc:{ko:'수퍼비아 귀족 향수 ×2 → 정보: "캅테인 균열에 아인슈타인이 잠수 중. 양자물리학자 — 보이드 안정화 이론의 권위자."',
+            en:'Superbia Noble Perfume ×2 → "Einstein hiding in Kapteyn Rift. Quantum physicist."'},
       objectives:[
         {type:'gather', item:'G22', qty:2, label:{ko:'수퍼비아 귀족 향수 ×2', en:'Superbia Noble Perfume ×2'}},
       ],
@@ -308,7 +308,7 @@ const PHASE4_QUESTS={
       id:'p4_q1904', type:'story_quest', category:'sub', phase:4,
       ic:'🏛️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'페스작센 행성 경매', en:'Fessachsen Auction'},
-      desc:{ko:'페스작센 경매. 즉구 ~95,000₡ / 최저 ~28,500₡.\n낙찰 시 매 턴 6,000₡ 세금 + 아우레우스 아우레우스 정보 칩 메카니카 자동화 부품 상시 구매.',
+      desc:{ko:'페스작센 경매. 즉구 ~95,000₡ / 최저 ~28,500₡.\n낙찰 시 매 턴 6,000₡ 세금 + 아우레우스 정보 칩 메카니카 자동화 부품 상시 구매.',
             en:'Fessachsen auction. Buyout ~95,000₡. Owner → 6,000/turn + Aureus Information Chip/Mechanica Automation Part shop.'},
       objectives:[
         {type:'explore', target:'p16_auction', qty:1, label:{ko:'페스작센 경매', en:'Auction'}},
@@ -402,8 +402,8 @@ const PHASE4_QUESTS={
       id:'p4_q2003', type:'story_quest', category:'main', phase:4,
       ic:'📜', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'사령실 점령 — 우르사 좌표 확보', en:'Command Room — Ursa Coordinates'},
-      desc:{ko:'슈멜츠 요새 사령실 점령 후 데이터 회수. 수퍼비아 중력자 ×2 해독.\n결과: "아이젠클로의 기록 — 그는 우르사 메이저의 하수인이었다. 본거지 좌표: P30 제타 레티쿨리."',
-            en:'Seize the Schmelz command room, recover the data. Superbia Graviton ×2 → "Eisenklaue\'s records — he was Ursa Major\'s pawn. Lair coordinates: P30 Zeta Reticuli."'},
+      desc:{ko:'슈멜츠 요새 사령실 점령 후 데이터 회수. 수퍼비아 중력자 ×2 해독.\n결과: "아이젠클로의 기록 — 그는 우르사 메이저의 하수인이었다. 본거지 좌표: 제타 레티쿨리."',
+            en:'Seize the Schmelz command room, recover the data. Superbia Graviton ×2 → "Eisenklaue\'s records — he was Ursa Major\'s pawn. Lair coordinates: Zeta Reticuli."'},
       objectives:[
         {type:'gather', item:'R07', qty:2, label:{ko:'수퍼비아 중력자 ×2 해독', en:'Superbia Graviton ×2'}},
       ],
@@ -531,7 +531,7 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'동방의 거북선 제독... 이름은 들었소. 같은 바다의 영웅을 우주에서 만나다니.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다 — 마지막 일전이 어디든.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진과 트라팔가르 진형 — 두 바다의 전술을 하나로 묶으면 우르사도 막을 수 없을 거요.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨(H05). 영국 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨. 영국 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
   ],
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
@@ -647,7 +647,7 @@ const PHASE4_CUTSCENES_EN={
     {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'The turtle-ship admiral of the East... I have heard the name. To meet a hero of the same sea, here among the stars.'},
     {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'I never thought I would feel the winds of Trafalgar again. I will stand with your fleet — wherever this last battle may be.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Crane Wing and the Trafalgar line — bind the tactics of two seas into one, and not even Ursa can stop us.'},
-    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Horatio Nelson (H05). Royal Navy formation data acquired → Crane Wing accuracy +15%.'}
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Horatio Nelson. Royal Navy formation data acquired → Crane Wing accuracy +15%.'}
   ],
 
   // ─── CH10-B "Break the Fortress" (P14 arrival) ───

@@ -37,8 +37,8 @@ const PHASE3_QUESTS={
       id:'p3_q1102', type:'story_quest', category:'main', phase:3,
       ic:'📜', npc:'이순신', npcIc:'⚔️', npcKey:'hero01',
       nm:{ko:'난중일기 재보충', en:'Restock Nanjung Diary'},
-      desc:{ko:'이순신: "G18 난중일기 영인본 — 캡슐 봉인 해제에 소모한 원본 데이터를 재보충해야 해. 저항군 아카이브에 비축분이 있어."\nG13 ×2 소비(아카이브 열람 비용) → G18 ×2 입수.',
-            en:'Yi Sun-sin: "G18 must be restocked from the archive." G13 ×2 → G18 ×2.'},
+      desc:{ko:'이순신: "난중일기 영인본 — 캡슐 봉인 해제에 소모한 원본 데이터를 재보충해야 해. 저항군 아카이브에 비축분이 있어."\nG13 ×2 소비(아카이브 열람 비용) → 난중일기 영인본 ×2 입수.',
+            en:'Yi Sun-sin: "Nanjung Ilgi Facsimile must be restocked from the archive." Resistance Military Supplies ×2 → Nanjung Ilgi Facsimile ×2.'},
       objectives:[
         {type:'gather', item:'G13', qty:2, label:{ko:'저항군 군수품 ×2 열람 비용', en:'Resistance Military Supplies ×2 archive fee'}},
       ],
@@ -52,8 +52,8 @@ const PHASE3_QUESTS={
       id:'p3_q1103', type:'story_quest', category:'sub', phase:3,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'에코 주점 — 케이드의 정보', en:'Echo Tavern — Kade'},
-      desc:{ko:'에코 기지 비공개 주점. 전통 발효주 ×2 소비 → 정보원 "케이드": "P23 오딧세이 보급망에서 이상한 화물 움직임이 있어. 크리그 색깔이야."\n주점 가챠 가능 (정예 2,000₡ 또는 VC 5).',
-            en:'Traditional Fermented Liquor ×2 → Kade: "Strange Krieg-pattern cargo in P23 supply." Tavern gacha available.'},
+      desc:{ko:'에코 기지 비공개 주점. 전통 발효주 ×2 소비 → 정보원 "케이드": "뉴 마스 오딧세이 보급망에서 이상한 화물 움직임이 있어. 크리그 색깔이야."\n주점 가챠 가능 (정예 2,000₡ 또는 VC 5).',
+            en:'Traditional Fermented Liquor ×2 → Kade: "Strange Krieg-pattern cargo in New Mars supply." Tavern gacha available.'},
       objectives:[
         {type:'gather', item:'G14', qty:2, label:{ko:'전통 발효주 ×2', en:'Traditional Fermented Liquor ×2'}},
       ],
@@ -97,8 +97,8 @@ const PHASE3_QUESTS={
       id:'p3_q11m', type:'story_quest', category:'hidden', phase:3,
       ic:'🤝', npc:'레인저 맥시모프', npcIc:'🎖️', npcKey:'delivery_F06',
       nm:{ko:'저항군 1차 연대 합의', en:'Resistance Pact (1st)'},
-      desc:{ko:'지구 철광석 ×2 소비(저항군 전통 연대 의식) → 1차 연대 협약 체결.\n레인저: "저항군 반물질 5단 팩을 드릴게요. 더 필요하면 P26 본부에 오세요."',
-            en:'Earth Iron Ore ×2 → 1st pact. Ranger: "Resistance Antimatter ×5 pack. More at P26 HQ."'},
+      desc:{ko:'지구 철광석 ×2 소비(저항군 전통 연대 의식) → 1차 연대 협약 체결.\n레인저: "저항군 반물질 5단 팩을 드릴게요. 더 필요하면 타이탄H 본부에 오세요."',
+            en:'Earth Iron Ore ×2 → 1st pact. Ranger: "Resistance Antimatter ×5 pack. More at Titan HQ."'},
       objectives:[
         {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 의식', en:'Earth Iron Ore ×2 pact ritual'}},
       ],
@@ -149,7 +149,7 @@ const PHASE3_QUESTS={
       id:'p3_q1203', type:'story_quest', category:'main', phase:3,
       ic:'⚔️', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'오그렌 격퇴·포획', en:'Defeat & Capture Ogren'},
-      desc:{ko:'오그렌의 크리그 연락 함선 차단 → 오딧세이 외곽 전투.\n격퇴 후 심문: "코르넬리우스 CEO \'발테르\'가 아우레우스 P08에서 크리그에 기술 설계도를 팔고 있어. 아이젠클로 직속 거래야."',
+      desc:{ko:'오그렌의 크리그 연락 함선 차단 → 오딧세이 외곽 전투.\n격퇴 후 심문: "코르넬리우스 CEO \'발테르\'가 아우레우스 글리제에서 크리그에 기술 설계도를 팔고 있어. 아이젠클로 직속 거래야."',
             en:'Defeat & capture Ogren. Interrogation: "Cornelius CEO Walter sells tech to Krieg via Eisenklaue direct."'},
       objectives:[
         {type:'combat', target:'ogren_boss', qty:1, label:{ko:'오그렌 포획', en:'Capture Ogren'}},
@@ -202,7 +202,7 @@ const PHASE3_QUESTS={
       id:'p3_q1301', type:'story_quest', category:'main', phase:3,
       ic:'📡', npc:'닥터 에바', npcIc:'👩‍🔬', npcKey:'gather_F02',
       nm:{ko:'닥터 에바 접선', en:'Contact Dr. Eva'},
-      desc:{ko:'글리제 글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\nG04 아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발테르 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
+      desc:{ko:'글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\n아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발테르 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
             en:'Aureus Gold Ingot ×2 → meet Eva. "Walter sends data to Eisenklaue. Warehouse server has transfer logs."'},
       objectives:[
         {type:'gather', item:'G04', qty:2, label:{ko:'아우레우스 금괴 ×2 접선 비용', en:'Aureus Gold Ingot ×2 contact fee'}},
@@ -217,7 +217,7 @@ const PHASE3_QUESTS={
       id:'p3_q1302', type:'story_quest', category:'main', phase:3,
       ic:'🔓', npc:'닥터 에바', npcIc:'👩‍🔬', npcKey:'gather_F02',
       nm:{ko:'코르넬리우스 창고 잠입', en:'Cornelius Warehouse'},
-      desc:{ko:'에바가 창고 접근 코드 제공. 아우레우스 태양 화폐 ×2 소비(경비원 매수) → 잠입. 아우레우스 정보 칩 ×1 소비(접속 인증 생성) → 기술 이전 로그 다운로드.\n로그: "LGD 설계도 기반 생체 엔진 데이터를 P13 아이젠클로 직속 실험실로 3차례 전송."',
+      desc:{ko:'에바가 창고 접근 코드 제공. 아우레우스 태양 화폐 ×2 소비(경비원 매수) → 잠입. 아우레우스 정보 칩 ×1 소비(접속 인증 생성) → 기술 이전 로그 다운로드.\n로그: "LGD 설계도 기반 생체 엔진 데이터를 아이젠콕 아이젠클로 직속 실험실로 3차례 전송."',
             en:'Aureus Solar Coin ×2 (bribe) + Aureus Information Chip ×1 (auth) → download tech-transfer log to Eisenklaue lab.'},
       objectives:[
         {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 경비원 매수', en:'Aureus Solar Coin ×2 bribe'}},
@@ -263,8 +263,8 @@ const PHASE3_QUESTS={
       id:'p3_q1305', type:'story_quest', category:'sub', phase:3,
       ic:'🛒', npc:'닥터 에바', npcIc:'👩‍🔬', npcKey:'gather_F02',
       nm:{ko:'데이터 복호기 제작', en:'Craft Data Decoder'},
-      desc:{ko:'에바: "G24 정보 칩과 R03 태양핵을 결합하면 복호기를 만들 수 있어요."\nG24 ×1 + R03 ×2 → 데이터 복호기 → 로그 완전 해독.\n해독 로그: "아이젠클로의 다음 행선지 — P14 크리그 공장 행성."',
-            en:'Aureus Information Chip ×1 + Aureus Solar Core ×2 → decoder → "Eisenklaue\'s next stop — P14 Krieg factory planet."'},
+      desc:{ko:'에바: "아우레우스 정보 칩과 아우레우스 태양핵을 결합하면 복호기를 만들 수 있어요."\nG24 ×1 + 아우레우스 태양핵 ×2 → 데이터 복호기 → 로그 완전 해독.\n해독 로그: "아이젠클로의 다음 행선지 — 슈멜츠 크리그 공장 행성."',
+            en:'Aureus Information Chip ×1 + Aureus Solar Core ×2 → decoder → "Eisenklaue\'s next stop — Schmelz Krieg factory planet."'},
       objectives:[
         {type:'gather', item:'G24', qty:1, label:{ko:'아우레우스 정보 칩 ×1', en:'Aureus Information Chip ×1'}},
         {type:'gather', item:'R03', qty:2, label:{ko:'아우레우스 태양핵 ×2', en:'Aureus Solar Core ×2'}},
@@ -279,8 +279,8 @@ const PHASE3_QUESTS={
       id:'p3_q13h', type:'story_quest', category:'hidden', phase:3,
       ic:'⚜️', npc:'광개토대왕', npcIc:'🏹', npcKey:'hero03',
       nm:{ko:'광개토대왕 첫 만남', en:'Meet Gwanggaeto'},
-      desc:{ko:'글리제 항구 — 고구려 기치를 단 대형 상선. 광개토(H03) 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, P08 경매에서 최고가를 내야 하오."\n→ H03 합류 조건 등록 (Phase 4 P08 경매 낙찰 ~4,100만₡).',
-            en:'Gwanggaeto (H03) appears at Gliese port. Condition: win Gliese auction (~41M₡) in Phase 4.'},
+      desc:{ko:'글리제 항구 — 고구려 기치를 단 대형 상선. 광개토 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, 글리제 경매에서 최고가를 내야 하오."\n→ 광개토대왕 합류 조건 등록 (Phase 4 글리제 경매 낙찰 ~4,100만₡).',
+            en:'Gwanggaeto appears at Gliese port. Condition: win Gliese auction (~41M₡) in Phase 4.'},
       objectives:[
         {type:'explore', target:'meet_gwanggaeto', qty:1, label:{ko:'광개토와 대화', en:'Talk to Gwanggaeto'}},
       ],
@@ -333,7 +333,7 @@ const PHASE3_QUESTS={
       id:'p3_q1403', type:'story_quest', category:'main', phase:3,
       ic:'⚔️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'크리그 정찰대 격퇴', en:'Repel Krieg Patrol'},
-      desc:{ko:'가가린: "크리그 정찰함 2기가 기어월드에 접근 중이야. P08 코르넬리우스 사건 때문에 추적해온 것 같아."\n정찰대 격퇴. 장영실: "...고마워. 내 작업실까지 들이닥칠 뻔했어."',
+      desc:{ko:'가가린: "크리그 정찰함 2기가 기어월드에 접근 중이야. 글리제 코르넬리우스 사건 때문에 추적해온 것 같아."\n정찰대 격퇴. 장영실: "...고마워. 내 작업실까지 들이닥칠 뻔했어."',
             en:'Defeat 2 Krieg patrol ships pursuing from Gliese. Jang: "Thanks. They almost reached my shop."'},
       objectives:[
         {type:'combat', target:'krieg_patrol', qty:2, label:{ko:'크리그 정찰함 ×2', en:'Krieg patrol ×2'}},
@@ -379,8 +379,8 @@ const PHASE3_QUESTS={
       heroId:'H02',
       ic:'🌟', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'장영실 합류', en:'Jang Yeong-sil Joins'},
-      desc:{ko:'장영실 제안: "거북선 — 내 손으로 완성시키겠소."\nG10 ×3 소비(거북선 용골 핵심 원자재) + G25 ×1 소비(제작 베이 초기화).\n장영실: "크리그 놈들 한 방 제대로 먹여줍시다."\n효과: 수리비 40% 할인 + 탐색 안개 제거.',
-            en:'Jang: "I\'ll build the Geobukseon." G10 ×3 + G25 ×1. Effect: 40% repair discount + fog clear.'},
+      desc:{ko:'장영실 제안: "거북선 — 내 손으로 완성시키겠소."\nG10 ×3 소비(거북선 용골 핵심 원자재) + 메카니카 자동화 부품 ×1 소비(제작 베이 초기화).\n장영실: "크리그 놈들 한 방 제대로 먹여줍시다."\n효과: 수리비 40% 할인 + 탐색 안개 제거.',
+            en:'Jang: "I\'ll build the Geobukseon." Krieg Weapon Ore ×3 + Mechanica Automation Part ×1. Effect: 40% repair discount + fog clear.'},
       objectives:[
         {type:'gather', item:'G10', qty:3, label:{ko:'크리그 무기 원석 ×3', en:'Krieg Weapon Ore ×3'}},
         {type:'gather', item:'G25', qty:1, label:{ko:'메카니카 자동화 부품 ×1 제작 베이 초기화', en:'Mechanica Automation Part ×1 forge init'}},
@@ -418,7 +418,7 @@ const PHASE3_QUESTS={
       id:'p3_q1502', type:'story_quest', category:'main', phase:3,
       ic:'🤝', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 자원 지원 협상', en:'Geobukseon Resource Talks'},
-      desc:{ko:'레인저에게 저항군 반물질 반물질 비축분 협상. 장영실이 거북선 설계 도면 제시.\nG15 ×2 + 지구 빈티지 씨앗 ×1 소비(협상 성의 표시 — 지구 전통 방식) → 레인저 동의.\n레인저: "저항군 비축 반물질 10단 팩. 거북선이 완성되면 우리 기함으로 써주세요."',
+      desc:{ko:'레인저에게 저항군 반물질 비축분 협상. 장영실이 거북선 설계 도면 제시.\nG15 ×2 + 지구 빈티지 씨앗 ×1 소비(협상 성의 표시 — 지구 전통 방식) → 레인저 동의.\n레인저: "저항군 비축 반물질 10단 팩. 거북선이 완성되면 우리 기함으로 써주세요."',
             en:'Earth Iron Ore ×2 + Earth Vintage Seeds ×1 sincerity offering → Ranger agrees. Resistance Antimatter ×10 pack secured.'},
       objectives:[
         {type:'gather', item:'G15', qty:2, label:{ko:'지구 철광석 ×2 협상 성의', en:'Earth Iron Ore ×2 sincerity'}},
@@ -449,7 +449,7 @@ const PHASE3_QUESTS={
       id:'p3_q1504', type:'story_quest', category:'sub', phase:3,
       ic:'🚀', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'저항군 대형 함선 구매', en:'Buy Resistance Capital Ship'},
-      desc:{ko:'마르코: "P26 도크에서 저항군 대형 함선 살 수 있어. HP가 모든 클래스 중 최강이야."\nF06 저항군 대형 함선(1,020,000₡) 구매 → 페이즈 4 크리그 요새 공략 대비.',
+      desc:{ko:'마르코: "타이탄H 도크에서 저항군 대형 함선 살 수 있어. HP가 모든 클래스 중 최강이야."\nF06 저항군 대형 함선(1,020,000₡) 구매 → 페이즈 4 크리그 요새 공략 대비.',
             en:'Resistance capital ship at 1,020,000₡ — HP top-class for Phase 4 fortress assault.'},
       objectives:[
         {type:'explore', target:'p26_capital_ship', qty:1, label:{ko:'저항군 대형 함선 구매', en:'Buy Resistance capital'}},
@@ -464,8 +464,8 @@ const PHASE3_QUESTS={
       id:'p3_q1505', type:'story_quest', category:'sub', phase:3,
       ic:'📜', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'타이탄H 아카이브 — 설계도 탐색', en:'Titan H Archive — Blueprints'},
-      desc:{ko:'저항군 기술 아카이브 전면 탐색. 타이탄H은 거북선 / H10 레비아탄 / H12 우르사 파쇄기 설계도 드롭 행성.\n탐색 중 각 5% 확률로 설계도 조각 획득.',
-            en:'Search Titan H archive. 5% each for Geobukseon / H10 Leviathan / H12 Ursa Crusher fragments.'},
+      desc:{ko:'저항군 기술 아카이브 전면 탐색. 타이탄H은 거북선 / 레비아탄 / 우르사 파쇄기 설계도 드롭 행성.\n탐색 중 각 5% 확률로 설계도 조각 획득.',
+            en:'Search Titan H archive. 5% each for Geobukseon / Leviathan / Ursa Crusher fragments.'},
       objectives:[
         {type:'explore', target:'p26_archive', qty:3, label:{ko:'아카이브 탐색 ×3', en:'Archive search ×3'}},
       ],

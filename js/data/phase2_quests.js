@@ -39,8 +39,8 @@ const PHASE2_QUESTS={
       id:'p2_q0602', type:'story_quest', category:'sub', phase:2,
       ic:'🔍', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'잔해 구역 탐색', en:'Wreck Zone Search'},
-      desc:{ko:'마르코: "전투 잔해 구역에 치크스 화물이 남아있어. G17 파편을 모아두면 나중에 써먹을 수 있어."\nG17 ×1 소비(탐색 시동) → 잔해 탐색 → G17 ×2 + R02 ×1 회수.',
-            en:'Marco: "Cygnus cargo in the wreck zone." G17 ×1 → search → G17 ×2 + R02 ×1.'},
+      desc:{ko:'마르코: "전투 잔해 구역에 치크스 화물이 남아있어. 치크스 결정 파편을 모아두면 나중에 써먹을 수 있어."\nG17 ×1 소비(탐색 시동) → 잔해 탐색 → 치크스 결정 파편 ×2 + 치크스 결정석 ×1 회수.',
+            en:'Marco: "Cygnus cargo in the wreck zone." Chiks Crystal Shard ×1 → search → Chiks Crystal Shard ×2 + Chiks Crystalstone ×1.'},
       objectives:[
         {type:'gather', item:'G17', qty:1, label:{ko:'치크스 결정 파편 ×1 탐색 시동', en:'Spend Chiks Crystal Shard ×1'}},
       ],
@@ -55,7 +55,7 @@ const PHASE2_QUESTS={
       ic:'🕵️', npc:'정거장 행상', npcIc:'🛍️', npcKey:'delivery_F05',
       nm:{ko:'중개상 추적', en:'Track the Broker'},
       desc:{ko:'행상: "마르코라는 밀수꾼이 어딘가 숨어있어. 정거장 지하 격납고 쪽일 거야."\nG17 ×1 지불(정보비) → 마르코 폴로 은신처 좌표 확인.',
-            en:'Trader: "Marco hides in the lower hangar." G17 ×1 → coordinates.'},
+            en:'Trader: "Marco hides in the lower hangar." Chiks Crystal Shard ×1 → coordinates.'},
       objectives:[
         {type:'gather', item:'G17', qty:1, label:{ko:'치크스 결정 파편 ×1 정보비', en:'Pay Chiks Crystal Shard ×1'}},
       ],
@@ -69,8 +69,8 @@ const PHASE2_QUESTS={
       id:'p2_q0604', type:'story_quest', category:'main', phase:2,
       ic:'💨', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'포자 압박 해결', en:'Spore Pressure Released'},
-      desc:{ko:'마르코: "치크스가 내 화물칸에 G16 포자를 강제 하역하라고 압박 중이야. 지휘선에서 잠금 해제 코드를 빼와."\n치크스 지휘선 강습 → 코드 탈취 + G27 뇌수액 ×2 부수 노획.',
-            en:'Marco: "Cygnus forces G16 spores onto my hold. Steal the override code." Storm command ship.'},
+      desc:{ko:'마르코: "치크스가 내 화물칸에 치크스 변이 포자를 강제 하역하라고 압박 중이야. 지휘선에서 잠금 해제 코드를 빼와."\n치크스 지휘선 강습 → 코드 탈취 + 치크스 뇌수액 ×2 부수 노획.',
+            en:'Marco: "Cygnus forces Chiks Mutation Spore onto my hold. Steal the override code." Storm command ship.'},
       objectives:[
         {type:'combat', target:'cygnus_command', qty:1, label:{ko:'치크스 지휘선 ×1 강습', en:'Storm command ship ×1'}},
       ],
@@ -84,8 +84,8 @@ const PHASE2_QUESTS={
       id:'p2_q0605', type:'story_quest', category:'main', phase:2,
       ic:'👑', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'치크스 군주 격퇴', en:'Defeat Cygnus Warlord'},
-      desc:{ko:'마르코: "우르사 치크스 군주 \'갈크리스\'를 쓰러뜨려야 내가 이 구역에서 완전히 자유로워져."\n보스 전투 → 갈크리스 격퇴. 포자 창고 탈취 + R02 ×2 노획.',
-            en:'Marco: "Take down warlord Galkris." Boss combat → spore stockpile + R02 ×2.'},
+      desc:{ko:'마르코: "우르사 치크스 군주 \'갈크리스\'를 쓰러뜨려야 내가 이 구역에서 완전히 자유로워져."\n보스 전투 → 갈크리스 격퇴. 포자 창고 탈취 + 치크스 결정석 ×2 노획.',
+            en:'Marco: "Take down warlord Galkris." Boss combat → spore stockpile + Chiks Crystalstone ×2.'},
       objectives:[
         {type:'combat', target:'galkris_boss', qty:1, label:{ko:'갈크리스 보스 격퇴', en:'Defeat Galkris'}},
       ],
@@ -121,8 +121,8 @@ const PHASE2_QUESTS={
       id:'p2_q0701', type:'story_quest', category:'main', phase:2,
       ic:'🛂', npc:'코르비누스', npcIc:'🧑‍💼', npcKey:'delivery_F01',
       nm:{ko:'집하장 접근권 확보', en:'Dockyard Access'},
-      desc:{ko:'코르비누스: "이 구역 진입은 거래자만 가능해. G01 고철 프레임 ×2 납품부터."\nG01 ×2 소비 → —32구역 접근 허가.',
-            en:'Corvinus: "Traders only. G01 ×2 first." Submit → zone-32 access.'},
+      desc:{ko:'코르비누스: "이 구역 진입은 거래자만 가능해. 고철 프레임 ×2 납품부터."\nG01 ×2 소비 → —32구역 접근 허가.',
+            en:'Corvinus: "Traders only. Scrap Frame ×2 first." Submit → zone-32 access.'},
       objectives:[
         {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2 납품', en:'Submit Scrap Frame ×2'}},
       ],
@@ -151,8 +151,8 @@ const PHASE2_QUESTS={
       id:'p2_q0703', type:'story_quest', category:'sub', phase:2,
       ic:'⚙️', npc:'오스카르', npcIc:'🔧', npcKey:'gather_F01',
       nm:{ko:'중력 시스템 응급 복구', en:'Gravity System Repair'},
-      desc:{ko:'오스카르: "G05 중력수정이 오정렬됐어. 집하장 컨베이어 전체가 멈출 것 같아."\nG05 ×2 제공 → 시스템 복구.',
-            en:'Oscar: "G05 misaligned, conveyor failing." Provide G05 ×2 → restore.'},
+      desc:{ko:'오스카르: "수퍼비아 중력수정이 오정렬됐어. 집하장 컨베이어 전체가 멈출 것 같아."\nG05 ×2 제공 → 시스템 복구.',
+            en:'Oscar: "Superbia Gravity Crystal misaligned, conveyor failing." Provide Superbia Gravity Crystal ×2 → restore.'},
       objectives:[
         {type:'gather', item:'G05', qty:2, label:{ko:'수퍼비아 중력수정 ×2 제공', en:'Provide Superbia Gravity Crystal ×2'}},
       ],
@@ -181,8 +181,8 @@ const PHASE2_QUESTS={
       id:'p2_q0705', type:'story_quest', category:'main', phase:2,
       ic:'⛏️', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'VOSTOK 캡슐 발굴', en:'Recover VOSTOK Capsule'},
-      desc:{ko:'폐기 구역 구형 캡슐 인양. 표면에 키릴 문자: "VOSTOK".\nG02 ×1 소비(중장비 가동) + G22 ×1 소비(코르비누스 추가 허가 뇌물) → 캡슐 인양 성공.',
-            en:'Recover the spherical capsule marked "VOSTOK". G02 ×1 (heavy machinery) + G22 ×1 (bribe).'},
+      desc:{ko:'폐기 구역 구형 캡슐 인양. 표면에 키릴 문자: "VOSTOK".\nG02 ×1 소비(중장비 가동) + 수퍼비아 귀족 향수 ×1 소비(코르비누스 추가 허가 뇌물) → 캡슐 인양 성공.',
+            en:'Recover the spherical capsule marked "VOSTOK". Energy Core ×1 (heavy machinery) + Superbia Noble Perfume ×1 (bribe).'},
       objectives:[
         {type:'gather', item:'G02', qty:1, label:{ko:'에너지 코어 ×1 중장비 가동', en:'Spend Energy Core ×1'}},
         {type:'gather', item:'G22', qty:1, label:{ko:'수퍼비아 귀족 향수 ×1 뇌물', en:'Spend Superbia Noble Perfume ×1'}},
@@ -213,7 +213,7 @@ const PHASE2_QUESTS={
       id:'p2_q07s1', type:'story_quest', category:'sub', phase:2,
       ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'보스토크-1 정찰 모듈', en:'Vostok-1 Scout Module'},
-      desc:{ko:'가가린: "캡슐 안에 소련 설계 도면이 있어. 수퍼비아 조선소 제작 베이를 쓰면 정찰 모듈을 만들 수 있어."\nG01 ×2 + G07 ×1 + R07 ×1 소비 → 보스토크-1 제작.\n효과: 잔해 탐색 쿨다운 -2초 · 탐지 범위 +15%.',
+      desc:{ko:'가가린: "캡슐 안에 소련 설계 도면이 있어. 수퍼비아 조선소 제작 베이를 쓰면 정찰 모듈을 만들 수 있어."\nG01 ×2 + 분열 배터리 ×1 + 수퍼비아 중력자 ×1 소비 → 보스토크-1 제작.\n효과: 잔해 탐색 쿨다운 -2초 · 탐지 범위 +15%.',
             en:'Scrap Frame ×2 + Fission Battery ×1 + Superbia Graviton ×1 → Vostok-1 scout module. Wreck search cooldown -2s, range +15%.'},
       objectives:[
         {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2', en:'Scrap Frame ×2'}},
@@ -237,8 +237,8 @@ const PHASE2_QUESTS={
       id:'p2_q0801', type:'story_quest', category:'main', phase:2,
       ic:'🎭', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'교역소 위장 잠입', en:'Trade Post Infiltration'},
-      desc:{ko:'마르코: "G16 치크스 변이 포자 ×3을 거래 화물인 척 들고 들어가야 해."\nG16 ×3 소비(위장 화물) → 교역소 내부 잠입 성공.',
-            en:'Marco: "Bring G16 ×3 as cover cargo." G16 ×3 → inside infiltration.'},
+      desc:{ko:'마르코: "치크스 변이 포자 ×3을 거래 화물인 척 들고 들어가야 해."\nG16 ×3 소비(위장 화물) → 교역소 내부 잠입 성공.',
+            en:'Marco: "Bring Chiks Mutation Spore ×3 as cover cargo." Chiks Mutation Spore ×3 → inside infiltration.'},
       objectives:[
         {type:'gather', item:'G16', qty:3, label:{ko:'치크스 변이 포자 ×3 위장 화물', en:'Chiks Mutation Spore ×3 cover cargo'}},
       ],
@@ -252,7 +252,7 @@ const PHASE2_QUESTS={
       id:'p2_q0802', type:'story_quest', category:'main', phase:2,
       ic:'💾', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'밀수 증거 확보', en:'Secure Smuggling Evidence'},
-      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\nG07 분열 배터리 ×1 소비(해킹 장비 가동) → 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 메카니카 자동화 부품 ×1 회수.',
+      desc:{ko:'교역 기록 서버 해킹 — 아이템 제작 연계.\n분열 배터리 ×1 소비(해킹 장비 가동) → 메카니카 자동화 부품이 크리그로 밀수되는 경로 데이터 확보. 증거물 메카니카 자동화 부품 ×1 회수.',
             en:'Hack the trade server. Fission Battery ×1 → route data + Mechanica Automation Part ×1 evidence.'},
       objectives:[
         {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 해킹 장비', en:'Fission Battery ×1 hacker'}},
@@ -367,8 +367,8 @@ const PHASE2_QUESTS={
       id:'p2_q0904', type:'story_quest', category:'main', phase:2,
       ic:'💥', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'제조창 파괴', en:'Destroy the Lab'},
-      desc:{ko:'테슬라: "R03 코어 재료를 에너지 주노드에 삽입하면 연쇄 과부하가 일어나."\nR03 ×1 소비(과부하 유도) → 60초 탈출. 탈출 경로에서 G07 ×2 회수 가능.',
-            en:'Tesla: "R03 in the main node triggers overload." R03 ×1 → 60s escape. G07 ×2 along route.'},
+      desc:{ko:'테슬라: "아우레우스 태양핵 코어 재료를 에너지 주노드에 삽입하면 연쇄 과부하가 일어나."\nR03 ×1 소비(과부하 유도) → 60초 탈출. 탈출 경로에서 분열 배터리 ×2 회수 가능.',
+            en:'Tesla: "Aureus Solar Core in the main node triggers overload." Aureus Solar Core ×1 → 60s escape. Fission Battery ×2 along route.'},
       objectives:[
         {type:'gather', item:'R03', qty:1, label:{ko:'아우레우스 태양핵 ×1 과부하 유도', en:'Aureus Solar Core ×1 overload'}},
       ],
@@ -455,8 +455,8 @@ const PHASE2_QUESTS={
       heroId:'H01',
       ic:'⚔️', npc:'이순신', npcIc:'🛡️', npcKey:'hero01',
       nm:{ko:'이순신 장군 합류', en:'Admiral Yi Sun-sin Joins'},
-      desc:{ko:'Q10-03 캡슐 봉인 해제 완료 → 이순신 장군(H01) 합류.\n합류 보상: SW01 이순신 무기 세트 (ATT +180) + SA01 이순신 장갑 세트 (HP +5,000 / DEF +60) 자동 인벤토리.',
-            en:'Yi Sun-sin (H01) joins. Reward: SW01 (ATT +180) + SA01 (HP+5000 / DEF+60) auto-equipped.'},
+      desc:{ko:'Q10-03 캡슐 봉인 해제 완료 → 이순신 장군 합류.\n합류 보상: SW01 이순신 무기 세트 (ATT +180) + SA01 이순신 장갑 세트 (HP +5,000 / DEF +60) 자동 인벤토리.',
+            en:'Yi Sun-sin joins. Reward: SW01 (ATT +180) + SA01 (HP+5000 / DEF+60) auto-equipped.'},
       objectives:[
         {type:'explore', target:'yi_join', qty:1, label:{ko:'이순신 합류 확정', en:'Confirm Yi Sun-sin'}},
       ],
@@ -471,7 +471,7 @@ const PHASE2_QUESTS={
       ic:'🏃', npc:'시스템', npcIc:'📡', npcKey:'system',
       nm:{ko:'아이젠클로 대면 · 전략 철수', en:'Eisenklaue · Strategic Retreat'},
       desc:{ko:'크리그 지휘관 아이젠클로 등장: "그 캡슐은 우리 방어 코어야. 내놔라."\n전면전 불가. 이순신: "지금은 물러서는 것이 전략이다. 철수."\nG11 ×1 소비(연막 폭발물 즉석 제조) → 탈출 성공. 페이즈 2 완료.',
-            en:'Eisenklaue appears. Yi Sun-sin: "Retreat is strategy now." G11 ×1 (smoke bomb) → escape. Phase 2 done.'},
+            en:'Eisenklaue appears. Yi Sun-sin: "Retreat is strategy now." Krieg Bloodstone ×1 (smoke bomb) → escape. Phase 2 done.'},
       objectives:[
         {type:'gather', item:'G11', qty:1, label:{ko:'크리그 혈철석 ×1 연막 폭발물', en:'Krieg Bloodstone ×1 smoke bomb'}},
       ],
@@ -523,7 +523,7 @@ const PHASE2_CUTSCENES_KO={
   p2_ch04:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 \'오르크\'가 여기 담당이야.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'치크스 감시선 순찰 중이야. 잠입은 거래자 위장이 최선이야.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'치크스 변이 포자 포자 ×3 있지. 이 구역 화물이야. 써먹자.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'치크스 변이 포자 ×3 있지. 이 구역 화물이야. 써먹자.'}
   ],
 
   // ─── CH04-A "다음 목적지" (Q08-05 완료) ───

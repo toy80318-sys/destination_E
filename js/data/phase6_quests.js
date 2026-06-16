@@ -152,7 +152,7 @@ const PHASE6_QUESTS={
       id:'p6_q2403', type:'story_quest', category:'sub', phase:6,
       ic:'🎓', npc:'장영실', npcIc:'⚙️', npcKey:'hero02',
       nm:{ko:'거북선 제작소 설립', en:'Geobukseon Foundry'},
-      desc:{ko:'장영실: "지구에 거북선 제작소를 세울게. R08 ×30 + R04 ×20 자금."\n설립 후 거북선 LGD01 제작이 P31에서도 가능.',
+      desc:{ko:'장영실: "지구에 거북선 제작소를 세울게. 은하 혼돈 결정 ×30 + 크리그 마그마 코어 ×20 자금."\n설립 후 거북선 제작이 지구에서도 가능.',
             en:'Galactic Chaos Crystal ×30 + Krieg Magma Core ×20 → Earth-based Geobukseon foundry.'},
       objectives:[
         {type:'gather', item:'R08', qty:30, label:{ko:'은하 혼돈 결정 ×30 출자', en:'Galactic Chaos Crystal ×30 funding'}},
@@ -166,7 +166,7 @@ const PHASE6_QUESTS={
       id:'p6_q2404', type:'story_quest', category:'sub', phase:6,
       ic:'⚡', npc:'테슬라', npcIc:'🔬', npcKey:'hero07',
       nm:{ko:'무선 전력망 재건', en:'Wireless Grid'},
-      desc:{ko:'테슬라: "지구 봉쇄 100년간 끊긴 무선 전력망을 다시 깐다. R07 ×15 + R05 ×10."',
+      desc:{ko:'테슬라: "지구 봉쇄 100년간 끊긴 무선 전력망을 다시 깐다. 수퍼비아 중력자 ×15 + 메카니카 양자칩 ×10."',
             en:'Superbia Graviton ×15 + Mechanica Quantum Chip ×10 → Earth wireless grid restored.'},
       objectives:[
         {type:'gather', item:'R07', qty:15, label:{ko:'수퍼비아 중력자 ×15 코어', en:'Superbia Graviton ×15'}},

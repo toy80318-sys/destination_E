@@ -364,7 +364,7 @@
     var lines = [
       {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'허허. 100년을 기다렸소. 이런 통쾌한 광경을.'},
       {char:'commander', name:'{사령관}', color:'#00f3ff', text:'당신은…?'},
-      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'마르코 폴로요. 제네시스 프로토콜 H08.'},
+      {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.'},
       {char:'hero08', name:'마르코 폴로', color:'#ffcc66', text:'치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.'}
     ];
     if(hasYi){
@@ -396,7 +396,7 @@
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'예상했다고요?'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.'},
-    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, 글리제 균열 균열의 간섭을 받는 프록시마B 프록시마B. {사령관}의 각성 지점이었습니다.'},
+    {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. {사령관}의 각성 지점이었습니다.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.'}
@@ -471,7 +471,7 @@
     var lines = [
       {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Ha. A hundred years I waited — for a sight as satisfying as this.'},
       {char:'commander', name:'{사령관}', color:'#00f3ff', text:'And you are…?'},
-      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Marco Polo. Genesis Protocol H08.'},
+      {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'Marco Polo. Marco Polo of the Genesis Protocol.'},
       {char:'hero08', name:'Marco Polo', color:'#ffcc66', text:'The Cheeks held me captive trying to extract trade route data. I refused, of course. I have never been forced into a deal.'}
     ];
     if(hasYi){

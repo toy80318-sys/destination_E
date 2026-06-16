@@ -23,7 +23,7 @@ const PHASE1_QUESTS={
       id:'p1_q0101', type:'story_quest', category:'main', phase:1,
       ic:'🚀', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'첫 발걸음', en:'First Steps'},
-      desc:{ko:'100년 만에 깨어났다. 에너지 잔량 7%. 격납고 곳곳 고철 프레임을 수거해 {함선} 시스템을 재부팅하라.\n백구: "G01 3개면 연료전지 교체하고도 크레딧 남아요."',
+      desc:{ko:'100년 만에 깨어났다. 에너지 잔량 7%. 격납고 곳곳 고철 프레임을 수거해 {함선} 시스템을 재부팅하라.\n백구: "고철 프레임 3개면 연료전지 교체하고도 크레딧 남아요."',
             en:'Awakened after 100 years. Energy at 7%. Collect Scrap Frames around the hangar to reboot {ship} systems.'},
       objectives:[
         {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 수거', en:'Collect Scrap Frame ×3'}},
@@ -53,7 +53,7 @@ const PHASE1_QUESTS={
       id:'p1_q0103', type:'story_quest', category:'sub', phase:1,
       ic:'🔧', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'함선 긴급 수리', en:'Emergency Repairs'},
-      desc:{ko:'100년 방치로 {함선} 외장 손상. 격납고 자가 정비 구역에서 고철 프레임 ×1 소비 → HP 30% 임시 수리.\n백구: "P03 교역소에 공인 정비소가 있어요. 거기서 제대로 수리하세요."',
+      desc:{ko:'100년 방치로 {함선} 외장 손상. 격납고 자가 정비 구역에서 고철 프레임 ×1 소비 → HP 30% 임시 수리.\n백구: "버나드 프라임 교역소에 공인 정비소가 있어요. 거기서 제대로 수리하세요."',
             en:'{ship} hull damaged from 100 years of neglect. Use Scrap Frame ×1 for self-repair → HP +30%.'},
       objectives:[
         {type:'gather', item:'G01', qty:1, label:{ko:'고철 프레임 ×1 소비', en:'Consume Scrap Frame ×1'}},
@@ -105,8 +105,8 @@ const PHASE1_QUESTS={
       id:'p1_q0202', type:'story_quest', category:'sub', phase:1,
       ic:'🍺', npc:'백구', npcIc:'🐕', npcKey:'baekgu1',
       nm:{ko:'마르코 폴로 영입', en:'Recruit Marco Polo'},
-      desc:{ko:'볼프 주점 "오리온" 방문. G03 오리온 위스키 ×2 소비(주점 사교 비용) → 정보 브로커 마르코 폴로 발견. 정예 모집 1,500₡ 필요.',
-            en:'Visit Wolf Tavern "Orion". Consume G03 Orion Whisky ×2 for socializing. Marco Polo recruitment costs 1,500₡.'},
+      desc:{ko:'볼프 주점 "오리온" 방문. 오리온 위스키 ×2 소비(주점 사교 비용) → 정보 브로커 마르코 폴로 발견. 정예 모집 1,500₡ 필요.',
+            en:'Visit Wolf Tavern "Orion". Consume Orion Whisky ×2 for socializing. Marco Polo recruitment costs 1,500₡.'},
       objectives:[
         {type:'gather', item:'G03', qty:2, label:{ko:'오리온 위스키 ×2 소비', en:'Consume Orion Whisky ×2'}},
       ],
@@ -120,8 +120,8 @@ const PHASE1_QUESTS={
       id:'p1_q0203', type:'story_quest', category:'sub', phase:1,
       ic:'⚔️', npc:'볼프 자경단', npcIc:'🛡️', npcKey:'combat_F01',
       nm:{ko:'볼프 Ring 해적 소탕', en:'Wolf Ring Pirate Cleanup'},
-      desc:{ko:'Ring 1 주변 소형 해적 "스크랩 갱" 현상 수배 — 1기 격파당 2,000₡ 지급. 2기 격파 → G01 ×1 노획.',
-            en:'Bounty on Ring 1 "Scrap Gang" — 2,000₡ per kill. Defeat 2 → loot G01 ×1.'},
+      desc:{ko:'Ring 1 주변 소형 해적 "스크랩 갱" 현상 수배 — 1기 격파당 2,000₡ 지급. 2기 격파 → 고철 프레임 ×1 노획.',
+            en:'Bounty on Ring 1 "Scrap Gang" — 2,000₡ per kill. Defeat 2 → loot Scrap Frame ×1.'},
       objectives:[
         {type:'combat', target:'scrap_gang', qty:2, label:{ko:'스크랩 갱 ×2 격파', en:'Defeat Scrap Gang ×2'}},
       ],
@@ -135,7 +135,7 @@ const PHASE1_QUESTS={
       id:'p1_q0204', type:'story_quest', category:'sub', phase:1,
       ic:'🚀', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'추진 파츠 업그레이드', en:'Thruster Upgrade'},
-      desc:{ko:'마르코: "에리다니까지 가려면 함선이 좀 더 빨라야 해. P03 도크에서 추진 파츠 달자."\n소형 추진 파츠 구매(20,000₡) → 파츠 슬롯 +1 장착 → 기동력 +10%.',
+      desc:{ko:'마르코: "에리다니까지 가려면 함선이 좀 더 빨라야 해. 버나드 프라임 도크에서 추진 파츠 달자."\n소형 추진 파츠 구매(20,000₡) → 파츠 슬롯 +1 장착 → 기동력 +10%.',
             en:'Marco: "We need speed to reach Eridani." Buy a thruster part (20,000₡) for +10% mobility.'},
       objectives:[
         {type:'explore', target:'thruster_install', qty:1, label:{ko:'추진 파츠 장착', en:'Install thruster'}},
@@ -166,7 +166,7 @@ const PHASE1_QUESTS={
       ic:'🗣️', npc:'볼프 노인', npcIc:'👴', npcKey:'gather_F01',
       nm:{ko:'이순신의 소문 · 거북선의 흔적', en:'Rumors of Yi Sun-sin · Geobukseon Trace'},
       desc:{ko:'마르코: "오리온 주점 노인한테 위스키 한 잔 더 사줘. 이순신 얘기 꺼내면 뭔가 알 것 같아."\nG03 ×1 추가 소비 → 노인 제보: 100년 전 이순신이 크리그에 저항하다 캡슐에 봉인됐다. 아우레우스 에리다니 쪽에서 그 신호.\n노인이 닳은 데이터 칩 한 조각을 건넨다 — 거북선 설계도 단편 1/3.',
-            en:'Marco: "Buy the old man one more drink." Consume G03 ×1 → tip about Yi Sun-sin\'s capsule. Old man hands over a Geobukseon blueprint fragment 1/3.'},
+            en:'Marco: "Buy the old man one more drink." Consume Orion Whisky ×1 → tip about Yi Sun-sin\'s capsule. Old man hands over a Geobukseon blueprint fragment 1/3.'},
       objectives:[
         {type:'gather', item:'G03', qty:1, label:{ko:'오리온 위스키 ×1 노인에게 증정', en:'Give Orion Whisky ×1'}},
       ],
@@ -187,8 +187,8 @@ const PHASE1_QUESTS={
       id:'p1_q0301', type:'story_quest', category:'main', phase:1,
       ic:'🛂', npc:'아우레우스 세관', npcIc:'🏛️', npcKey:'delivery_F02',
       nm:{ko:'아우레우스 입항 허가', en:'Aureus Entry Permit'},
-      desc:{ko:'세관: "수퍼비아 출신이면 G05 중력수정 세관 신고 필수. 미신고 시 전량 몰수."\nG05 ×2 자진 신고 → 아우레우스 시세(개당 2,520₡)로 자진 판매 → 입항 허가.',
-            en:'Customs: "Declare G05 Gravity Crystal or lose all." Declare G05 ×2 → auto-sell at 2,520₡ each.'},
+      desc:{ko:'세관: "수퍼비아 출신이면 수퍼비아 중력수정 세관 신고 필수. 미신고 시 전량 몰수."\nG05 ×2 자진 신고 → 아우레우스 시세(개당 2,520₡)로 자진 판매 → 입항 허가.',
+            en:'Customs: "Declare Superbia Gravity Crystal or lose all." Declare Superbia Gravity Crystal ×2 → auto-sell at 2,520₡ each.'},
       objectives:[
         {type:'gather', item:'G05', qty:2, label:{ko:'수퍼비아 중력수정 ×2 자진 신고', en:'Declare Superbia Gravity Crystal ×2'}},
       ],
@@ -202,7 +202,7 @@ const PHASE1_QUESTS={
       id:'p1_q0302', type:'story_quest', category:'main', phase:1,
       ic:'🆘', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'가가린 구출', en:'Rescue Gagarin'},
-      desc:{ko:'항구 외곽 해적선 3기 격파 → 탐사선 "VOSTOK" 구출. 노획: G01 ×1 · G24 아우레우스 정보 칩 ×1 (가가린의 데이터 칩).',
+      desc:{ko:'항구 외곽 해적선 3기 격파 → 탐사선 "VOSTOK" 구출. 노획: 고철 프레임 ×1 · 아우레우스 정보 칩 ×1 (가가린의 데이터 칩).',
             en:'Defeat 3 pirates outside the harbor → rescue VOSTOK. Loot: Scrap Frame ×1, Aureus Information Chip ×1.'},
       objectives:[
         {type:'combat', target:'pirate_small', qty:3, label:{ko:'해적선 ×3 격파', en:'Defeat pirates ×3'}},
@@ -232,8 +232,8 @@ const PHASE1_QUESTS={
       id:'p1_q0304', type:'story_quest', category:'sub', phase:1,
       ic:'🛡️', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'아우레우스 방어 파츠 강화', en:'Aureus Defense Part'},
-      desc:{ko:'마르코: "P05 파츠샵에 좋은 게 있어. G06 LHS 크리스탈이 있으면 보조 결제 돼서 싸게 살 수 있어."\nG06 ×1 + 15,000₡ → 아우레우스 방어 파츠 장착 → 방어력 +15%.',
-            en:'Marco: "Pay with G06 for a discount." G06 ×1 + 15,000₡ → defense part (+15% defense).'},
+      desc:{ko:'마르코: "티가든 파츠샵에 좋은 게 있어. LHS 크리스탈이 있으면 보조 결제 돼서 싸게 살 수 있어."\nG06 ×1 + 15,000₡ → 아우레우스 방어 파츠 장착 → 방어력 +15%.',
+            en:'Marco: "Pay with LHS Crystal for a discount." LHS Crystal ×1 + 15,000₡ → defense part (+15% defense).'},
       objectives:[
         {type:'gather', item:'G06', qty:1, label:{ko:'LHS 크리스탈 ×1 보조 결제', en:'Use LHS Crystal ×1 as payment'}},
       ],
@@ -247,8 +247,8 @@ const PHASE1_QUESTS={
       id:'p1_q0305', type:'story_quest', category:'sub', phase:1,
       ic:'🏛️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'에리다니 경매 참여', en:'Eridani Auction'},
-      desc:{ko:'가가린: "저 경매소 — 아우레우스 소형 파츠 경매야. 한 번 참여해봐."\n에리다니 소형 경매 참여 — 최저 5,000₡ ~ 즉시구매 40,000₡. 낙찰 시 G23 ×2 또는 소형 파츠 ×1.',
-            en:'Gagarin: "Try the Eridani auction." Min bid 5,000₡ ~ buyout 40,000₡. Win → G23 ×2 or small part.'},
+      desc:{ko:'가가린: "저 경매소 — 아우레우스 소형 파츠 경매야. 한 번 참여해봐."\n에리다니 소형 경매 참여 — 최저 5,000₡ ~ 즉시구매 40,000₡. 낙찰 시 아우레우스 태양 화폐 ×2 또는 소형 파츠 ×1.',
+            en:'Gagarin: "Try the Eridani auction." Min bid 5,000₡ ~ buyout 40,000₡. Win → Aureus Solar Coin ×2 or small part.'},
       objectives:[
         {type:'explore', target:'p05_auction', qty:1, label:{ko:'경매 1회 참여', en:'Participate ×1'}},
       ],
@@ -262,7 +262,7 @@ const PHASE1_QUESTS={
       id:'p1_q03m', type:'story_quest', category:'hidden', phase:1,
       ic:'⭐', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린 합류 & 거북선 외피', en:'Gagarin Joins · Geobukseon Hull'},
-      desc:{ko:'가가린: "내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게."\nG24 아우레우스 정보 칩 ×1 소비 → 분석 결과: P06 LHS 광산 방향에서 이순신 신호 패턴 탐지.\n해독 데이터 안에 거북선 설계도 두 번째 단편이 들어 있다 — 외피 가시 돌기 구조도 2/3.',
+      desc:{ko:'가가린: "내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게."\n아우레우스 정보 칩 ×1 소비 → 분석 결과: 넥서스 프라임 LHS 광산 방향에서 이순신 신호 패턴 탐지.\n해독 데이터 안에 거북선 설계도 두 번째 단편이 들어 있다 — 외피 가시 돌기 구조도 2/3.',
             en:'Gagarin joins your crew. Consume Aureus Information Chip ×1 → Nexus Prime LHS Mine signal detected. Decoded data includes Geobukseon hull plate fragment 2/3.'},
       objectives:[
         {type:'gather', item:'G24', qty:1, label:{ko:'아우레우스 정보 칩 ×1 데이터 해독', en:'Decode Aureus Information Chip ×1'}},
@@ -284,7 +284,7 @@ const PHASE1_QUESTS={
       id:'p1_q0401', type:'story_quest', category:'main', phase:1,
       ic:'🛬', npc:'광부 대표 린다', npcIc:'⛏️', npcKey:'explore_F02',
       nm:{ko:'LHS 광산 착지 허가', en:'LHS Mine Landing Permit'},
-      desc:{ko:'광산 관리소: 입장 채굴세 아우레우스 금괴 ×1 납부 → 착지 허가.\n린다: "크리그 해적단이 3주째예요. 뭔가 파고 있어요."\nG06 LHS 크리스탈 ×2 지급(관리소 보답).',
+      desc:{ko:'광산 관리소: 입장 채굴세 아우레우스 금괴 ×1 납부 → 착지 허가.\n린다: "크리그 해적단이 3주째예요. 뭔가 파고 있어요."\nLHS 크리스탈 ×2 지급(관리소 보답).',
             en:'Pay Aureus Gold Ingot ×1 as landing tax. Linda: "Kriegs been here 3 weeks. They\'re digging for something."'},
       objectives:[
         {type:'gather', item:'G04', qty:1, label:{ko:'아우레우스 금괴 ×1 납부', en:'Pay Aureus Gold Ingot ×1'}},
@@ -299,7 +299,7 @@ const PHASE1_QUESTS={
       id:'p1_q0402', type:'story_quest', category:'main', phase:1,
       ic:'⚔️', npc:'광부 대표 린다', npcIc:'⛏️', npcKey:'explore_F02',
       nm:{ko:'크리그 해적단 소탕', en:'Krieg Pirate Cleanup'},
-      desc:{ko:'크리그 소형 3기 + 중형 지휘선 1기 격파 → 광부 억류 해제.\n린다: "정말 감사합니다. 저희 제작소 자유롭게 쓰세요."\n노획: G04 ×1 · G06 ×2 · G10 크리그 무기 원석 ×1',
+      desc:{ko:'크리그 소형 3기 + 중형 지휘선 1기 격파 → 광부 억류 해제.\n린다: "정말 감사합니다. 저희 제작소 자유롭게 쓰세요."\n노획: 아우레우스 금괴 ×1 · LHS 크리스탈 ×2 · 크리그 무기 원석 ×1',
             en:'Defeat 3 Krieg fighters + 1 command ship. Linda: "Use our workshop freely."'},
       objectives:[
         {type:'combat', target:'krieg_pirate', qty:4, label:{ko:'크리그 ×4 격파(소형 3 + 중형 1)', en:'Defeat Krieg ×4 (3 small + 1 mid)'}},
@@ -314,7 +314,7 @@ const PHASE1_QUESTS={
       id:'p1_q0403', type:'story_quest', category:'sub', phase:1,
       ic:'🛒', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'강화 선체 코팅 제작', en:'Craft Hull Coating'},
-      desc:{ko:'가가린: "제작소 장비 써봐. G01 ×2 + G06 ×1 조합하면 선체 코팅 만들 수 있어."\n강화 선체 코팅 제작 → 장착 시 방어력 +8%.',
+      desc:{ko:'가가린: "제작소 장비 써봐. 고철 프레임 ×2 + LHS 크리스탈 ×1 조합하면 선체 코팅 만들 수 있어."\n강화 선체 코팅 제작 → 장착 시 방어력 +8%.',
             en:'Craft Reinforced Hull Coating: Scrap Frame ×2 + LHS Crystal ×1 → +8% defense.'},
       objectives:[
         {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2 소비', en:'Consume Scrap Frame ×2'}},
@@ -331,7 +331,7 @@ const PHASE1_QUESTS={
       ic:'📈', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'LHS 광산 행성 투자', en:'LHS Mine Investment'},
       desc:{ko:'마르코: "광산 되찾았으니 투자 딱이야. 크리그 없으니 수익 바로 나."\nP06 커머스 레벨 1 투자(~18,000₡) → 매 턴 수입 +20% 증가.',
-            en:'Marco: "Mine\'s free now. Invest." P06 commerce L1 invest (~18,000₡) → +20% revenue.'},
+            en:'Marco: "Mine\'s free now. Invest." Nexus Prime commerce L1 invest (~18,000₡) → +20% revenue.'},
       objectives:[
         {type:'explore', target:'p06_commerce', qty:1, label:{ko:'넥서스 프라임 커머스 레벨 1 투자', en:'Invest commerce L1'}},
       ],
@@ -360,7 +360,7 @@ const PHASE1_QUESTS={
       id:'p1_q04m', type:'story_quest', category:'hidden', phase:1,
       ic:'📡', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 신호 중계기 발견', en:'Yi Sun-sin Relay Found'},
-      desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... P09 갈릴레오 전초기지 방향에서 증폭된 거야."',
+      desc:{ko:'크리그가 파던 구역 깊숙한 곳에서 오래된 신호 중계기 발견. 아우레우스 태양 화폐 ×2 소비(해독 장비 대여비) → 중계기 복원.\n가가린: "신호 패턴... 볼티움 갈릴레오 전초기지 방향에서 증폭된 거야."',
             en:'Found an old signal relay. Consume Aureus Solar Coin ×2 to restore → signal points to Voltium Galileo outpost.'},
       objectives:[
         {type:'gather', item:'G23', qty:2, label:{ko:'아우레우스 태양 화폐 ×2 해독 장비 대여비', en:'Spend Aureus Solar Coin ×2 for decoder'}},
@@ -382,8 +382,8 @@ const PHASE1_QUESTS={
       id:'p1_q0501', type:'story_quest', category:'main', phase:1,
       ic:'🛬', npc:'기지 정비원', npcIc:'🔧', npcKey:'explore_F03',
       nm:{ko:'갈릴레오 기지 착지', en:'Galileo Base Landing'},
-      desc:{ko:'메카니카 기지 통행세: 수퍼비아 중력수정 ×1 소비(수퍼비아 무역품 — 메카니카에서 희귀) → 착지 허가.\n정비원: "무법자 해적단이 2주째야. 안테나 접근 못 하고 있어요."\nG07 분열 배터리 ×2 지급(기지 사례).',
-            en:'Pay Superbia Gravity Crystal ×1 as transit. Mechanic: "Outlaws blocked the antenna for 2 weeks." G07 ×2 reward.'},
+      desc:{ko:'메카니카 기지 통행세: 수퍼비아 중력수정 ×1 소비(수퍼비아 무역품 — 메카니카에서 희귀) → 착지 허가.\n정비원: "무법자 해적단이 2주째야. 안테나 접근 못 하고 있어요."\n분열 배터리 ×2 지급(기지 사례).',
+            en:'Pay Superbia Gravity Crystal ×1 as transit. Mechanic: "Outlaws blocked the antenna for 2 weeks." Fission Battery ×2 reward.'},
       objectives:[
         {type:'gather', item:'G05', qty:1, label:{ko:'수퍼비아 중력수정 ×1 통행세 납부', en:'Pay Superbia Gravity Crystal ×1 transit'}},
       ],
@@ -397,7 +397,7 @@ const PHASE1_QUESTS={
       id:'p1_q0502', type:'story_quest', category:'main', phase:1,
       ic:'⚔️', npc:'기지 정비원', npcIc:'🔧', npcKey:'explore_F03',
       nm:{ko:'무법자 해적단 소탕', en:'Outlaw Pirate Cleanup'},
-      desc:{ko:'무법자 해적 소형 2기 + 지휘선 1기 격파 → 안테나 구역 접근 확보.\n가가린: "이제 안테나 쓸 수 있어."\n노획: G08 메카니카 광학 렌즈 ×1 · G25 메카니카 자동화 부품 ×1',
+      desc:{ko:'무법자 해적 소형 2기 + 지휘선 1기 격파 → 안테나 구역 접근 확보.\n가가린: "이제 안테나 쓸 수 있어."\n노획: 메카니카 광학 렌즈 ×1 · 메카니카 자동화 부품 ×1',
             en:'Defeat 2 outlaw fighters + 1 command ship → antenna access. Gagarin: "Now we can use it."'},
       objectives:[
         {type:'combat', target:'outlaw_pirate', qty:3, label:{ko:'무법자 ×3 격파(소형 2 + 지휘선 1)', en:'Defeat Outlaws ×3'}},
@@ -412,8 +412,8 @@ const PHASE1_QUESTS={
       id:'p1_q0503', type:'story_quest', category:'sub', phase:1,
       ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'정찰 드론 모듈 제작', en:'Scout Drone Module'},
-      desc:{ko:'가가린: "P19 치크스 영역은 적대야. 정찰 드론이 있으면 유리해."\nG01 ×3 + G07 ×1 소비 → 소형 정찰 드론 모듈 제작.\n효과: 잔해 탐색 탐지 범위 +10% · 적 선제 감지 +1턴.',
-            en:'Gagarin: "Cygnus is hostile. A drone helps." G01 ×3 + G07 ×1 → +10% detection, +1 turn pre-emption.'},
+      desc:{ko:'가가린: "우르사 알파 치크스 영역은 적대야. 정찰 드론이 있으면 유리해."\nG01 ×3 + 분열 배터리 ×1 소비 → 소형 정찰 드론 모듈 제작.\n효과: 잔해 탐색 탐지 범위 +10% · 적 선제 감지 +1턴.',
+            en:'Gagarin: "Cygnus is hostile. A drone helps." Scrap Frame ×3 + Fission Battery ×1 → +10% detection, +1 turn pre-emption.'},
       objectives:[
         {type:'gather', item:'G01', qty:3, label:{ko:'고철 프레임 ×3 소비', en:'Consume Scrap Frame ×3'}},
         {type:'gather', item:'G07', qty:1, label:{ko:'분열 배터리 ×1 소비', en:'Consume Fission Battery ×1'}},
@@ -443,7 +443,7 @@ const PHASE1_QUESTS={
       id:'p1_q05m', type:'story_quest', category:'hidden', phase:1,
       ic:'🎯', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 좌표 확정 · 거북선 코어', en:'Yi Sun-sin Coordinates · Geobukseon Core'},
-      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "P19. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... P19... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 페이즈 1 종료 시 3단편 통합 완성도 확인.',
+      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "우르사 알파. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... 우르사 알파... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 페이즈 1 종료 시 3단편 통합 완성도 확인.',
             en:'Coordinates confirmed. Last Geobukseon fragment — Active Core blueprint 3/3 — recovered from antenna stream.'},
       objectives:[
         {type:'explore', target:'antenna_amp', qty:1, label:{ko:'안테나 신호 증폭 가동', en:'Activate antenna amp'}},
