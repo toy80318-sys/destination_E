@@ -78,14 +78,14 @@ function showFinalEndingCredits(){
       ${heroList.length>0?`
         <div style="color:#ff99ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.recruitedHeroesN',{n:heroList.length})}</div>
         <div style="font-size:17px;line-height:2;margin-bottom:40px">
-          ${heroList.map(n=>`<div>⭐ ${n}</div>`).join('')}
+          ${heroList.map(n=>`<div>${n}</div>`).join('')}
         </div>
       `:''}
 
       <div style="color:#cc66ff;font-size:14px;letter-spacing:6px;margin-bottom:10px">${I18N.t('ui.finalBoss')}</div>
       <div style="font-size:17px;line-height:1.9;margin-bottom:40px">
-        💀 ${I18N.t('speaker.ursaMajor')} — ${I18N.t('credits.ursaDesc')}<br>
-        🌑 ${I18N.t('speaker.blackfalcon')} — ${I18N.t('credits.blackfalconDesc')}
+        ${I18N.t('speaker.ursaMajor')} — ${I18N.t('credits.ursaDesc')}<br>
+        ${I18N.t('speaker.blackfalcon')} — ${I18N.t('credits.blackfalconDesc')}
       </div>
 
       <!-- 함대 통계 -->
@@ -388,7 +388,7 @@ function showEndingCredits(onDone){
             const _dispNm=(h.id&&typeof HEROES!=='undefined'&&HEROES[h.id]&&HEROES[h.id].nm)||h.nm;
             return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px">
               ${_hImg?`<img src="${_hImg}" alt="${_dispNm}" style="width:56px;height:56px;border-radius:50%;border:2px solid ${h.col};object-fit:cover;background:rgba(0,0,0,.4);box-shadow:0 0 14px ${h.col}66" onerror="this.outerHTML='<span style=&quot;font-size:30px&quot;>${h.ic}</span>'">`:`<span style="font-size:30px">${h.ic}</span>`}
-              <div style="font-size:19px;color:${h.col};font-weight:bold;letter-spacing:1px">${h.ic} ${_dispNm}</div>
+              <div style="font-size:19px;color:${h.col};font-weight:bold;letter-spacing:1px">${_dispNm}</div>
             </div>`;
           }).join('')}
           <div style="height:40px"></div>

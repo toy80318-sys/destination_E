@@ -356,7 +356,8 @@ function clearAllFormation(){
   notify(I18N.t('notify.fleetFormationReset'),'ok');
   rerenderTab(renderGarageTab);
 }
-// 방어력/체력/실드 높은 함선을 1열부터 자동 배치 (4열×4행, 슬롯 0~3=1열)
+// 체력·방어력·실드 높은 함선은 앞열, 공격력 높은(=내구 낮은) 함선은 뒤열로 자동 배치.
+//   6열×8행(slot=col*8+row, slot 0~7=col0=최전방). 영웅 해금 없이 기본 사용 가능 (사용자 요청 2026-06-16).
 function autoArrangeFormation(){
   if(!G.fleet||G.fleet.length===0){notify(I18N.t('notify.fleetEmpty'),'warn');return;}
   // 함선 방어력 점수 계산 (HP + DEF*10 + maxSH*1.5 + armorTier*30 + shieldTier*15)
@@ -367,14 +368,11 @@ function autoArrangeFormation(){
     const sh=(s.maxSH||0)+(st.shBonus||0);
     return hp + def*10 + sh*1.5;
   }
-  // 정렬: 방어력 높은 순 → 기함은 항상 최우선
-  const sorted=[...G.fleet].map((s,i)=>({s,i,score:_defScore(s)})).sort((a,b)=>{
-    if(a.i===0)return -1;  // 기함 항상 첫 번째
-    if(b.i===0)return 1;
-    return b.score-a.score;
-  });
-  // 4열×4행 = 16슬롯. col 0(slot 0~3)이 앞열(전투 시 우선 공격받음)
-  // 앞열부터 채우기 위해 slot 0,1,2,3 (col 0) → 4,5,6,7 (col 1) → ...
+  // 정렬: 방어 점수 높은 순 (기함 예외 없음 — 사용자 명세 "앞=방어, 뒤=공격" 그대로 반영).
+  //   내구 높은 함선이 앞열, 내구 낮은(보통 고공격) 함선이 뒤열로 자연 배치된다.
+  const sorted=[...G.fleet].map((s,i)=>({s,i,score:_defScore(s)})).sort((a,b)=>b.score-a.score);
+  // 6열×8행 = 48슬롯. slot=col*8+row → slot 0~7 = col0(최전방, 전투 시 우선 피격).
+  // 방어 점수 내림차순으로 앞 슬롯부터 채움 → 앞열=탱커, 뒤열=내구 낮은 공격함 자동 배치.
   G.fleetFormation={};
   sorted.forEach((entry,idx)=>{
     if(idx>=FLEET_FORMATION_SLOTS)return;  // 16척 초과 무시
@@ -572,6 +570,13 @@ function renderFleetFormationTab(body){
     <button class="btn btn-sm" onclick="toggleDeclineCapture()" style="font-size:11px;padding:4px 10px;${_declineCap?'border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.12)':'border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.10)'}" title="ON(나포매각): 나포 대상 함선을 즉시 매각하여 크레딧 획득 · OFF(나포허용): 정상 나포 시도">${_declineCap?I18N.t('ui.captureSell'):I18N.t('ui.captureAllow')}</button>
     <button class="btn btn-sm btn-red" style="font-size:11px;padding:4px 10px" onclick="clearAllFormation()">${I18N.t('ui.resetBtn')}</button>
   </div>`;
+  // ── 기본 자동 배치 바 (영웅 해금 불필요, 항상 사용 가능 — 사용자 요청 2026-06-16) ──
+  //   앞열=체력·방어력 높은 함선, 뒤열=공격력 높은(내구 낮은) 함선
+  const _autoBar=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(0,243,255,.05);border:1px solid rgba(0,243,255,.28);border-radius:8px;padding:8px 14px;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:bold;color:var(--cyan)">🛡️ ${I18N.t('formation.autoHeader')}</span>
+    <button class="btn btn-sm" onclick="autoArrangeFormation()" style="font-size:12px;padding:5px 16px;border-color:var(--cyan);color:var(--cyan);background:rgba(0,243,255,.12);font-weight:bold">${I18N.t('formation.autoArrange')}</button>
+    <span style="font-size:11px;color:var(--dim)">${I18N.t('formation.autoArrangeHint')}</span>
+  </div>`;
   // ── 대형 자동 배치 프리셋 바 (영웅 해금) ──
   const _fUnlocked=_formationUnlocked();
   const _presetDefs=[['arrow','formation.arrow'],['crane','formation.crane'],['square','formation.square'],['diamond','formation.diamond']];
@@ -585,6 +590,7 @@ function renderFleetFormationTab(body){
     <div class="hub-t">${I18N.t('hub.shipGarageT')} — ${pd?pd.nm:''}</div>
     ${subNav}
     ${summary}
+    ${_autoBar}
     ${_presetBar}
     ${hint}
     <div style="display:grid;grid-template-columns:320px 1fr;gap:14px;margin-top:10px;align-items:flex-start">
