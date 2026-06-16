@@ -14,7 +14,7 @@
   if(typeof window==='undefined')return;
   // 모듈 내부 상태 (캡슐화)
   let mapCtx,mapCV,mapOffX=0,mapOffY=0;
-  let map3dRotX=0.35,map3dRotY=0.0,mapDragMode='pan';
+  let map3dRotX=0.62,map3dRotY=0.0,mapDragMode='pan';   // 수평 디스크 기준 기본 피치(위에서 내려다보는 틸트) — 사용자 요청 2026-06-16
   let _travelAnimFor=null;  // 이동 모션 진행 중 목적지 (재진입 가드)
   function renderMapView(body){
     body.innerHTML=`<div style="height:48px;background:rgba(13,26,42,.97);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0">
@@ -71,7 +71,7 @@
     if(!mapCV||!G.mapPositions)return;
     const pos=G.mapPositions[G.currentPlanet];
     if(!pos)return;
-    const p3=rotate3D(pos.x,pos.y,0,map3dRotX,map3dRotY);
+    const p3=rotate3D(pos.x,0,pos.y,map3dRotX,map3dRotY);
     const FOV=700;
     const scale=FOV/(FOV+p3.z*0.5)*(G.mapZoom||1);
     // screen = world*scale + (canvas/2 + offset). 중앙(canvas/2)에 두려면 offset = -world*scale
@@ -202,7 +202,7 @@
     return{sx:x*scale+cx,sy:y*scale+cy,scale};
   }
   function worldToScreen(wx,wy){
-    const p3=rotate3D(wx,wy,0,map3dRotX,map3dRotY);
+    const p3=rotate3D(wx,0,wy,map3dRotX,map3dRotY);   // 2D 맵을 수평면(X-Z)에 배치 → 좌우 드래그=Y축 턴테이블 회전 (사용자 요청 2026-06-16)
     return project3D(p3.x,p3.y,p3.z);
   }
   function toScr(wx,wy){const r=worldToScreen(wx,wy);return{x:r.sx,y:r.sy};}
@@ -1506,7 +1506,7 @@
     const drawList=[];
     PLANET_DEF.forEach(p=>{
       const pos=G.mapPositions[p.id];if(!pos)return;
-      const p3=rotate3D(pos.x,pos.y,0,map3dRotX,map3dRotY);
+      const p3=rotate3D(pos.x,0,pos.y,map3dRotX,map3dRotY);
       const proj=project3D(p3.x,p3.y,p3.z);
       drawList.push({p,proj,z:p3.z});
     });
@@ -1616,7 +1616,7 @@
     // P31이 실제 지도 행성으로 PLANET_DEF에 있으므로 별도 구체 렌더링은 제거.
     if(G&&!G._earthLiberated&&G.mapPositions&&G.mapPositions['P31']){
       const _p31pos=G.mapPositions['P31'];
-      const _p31_3d=rotate3D(_p31pos.x,_p31pos.y,0,map3dRotX,map3dRotY);
+      const _p31_3d=rotate3D(_p31pos.x,0,_p31pos.y,map3dRotX,map3dRotY);
       const _p31p=project3D(_p31_3d.x,_p31_3d.y,_p31_3d.z);
       const _p31r=Math.max(8,12*G.mapZoom);
       ctx.strokeStyle='rgba(255,60,60,0.55)';ctx.lineWidth=1.4;ctx.setLineDash([4,5]);
@@ -1625,7 +1625,7 @@
     // ── 거대 블랙홀 (은하 중앙) ────────────────────────────────────────
     {
       const bhWX=0,bhWY=0;
-      const bh3d=rotate3D(bhWX,bhWY,0,map3dRotX,map3dRotY);
+      const bh3d=rotate3D(bhWX,0,bhWY,map3dRotX,map3dRotY);
       const bp=project3D(bh3d.x,bh3d.y,bh3d.z);
       const br=Math.max(10,18*G.mapZoom);  // 2배 확대
       const _bhT=(Date.now()/1000)%360;
@@ -1889,7 +1889,7 @@
     // ※ ACT<3 무조건 차단 추가 — _isUrsaDefeated()가 손상 상태에서 true로 잘못 보고되어도 지구 접근 불가
     if(G&&G.mapPositions&&G.mapPositions['P31']){
       const _p31w=G.mapPositions['P31'];
-      const _p31_3d=rotate3D(_p31w.x,_p31w.y,0,map3dRotX,map3dRotY);
+      const _p31_3d=rotate3D(_p31w.x,0,_p31w.y,map3dRotX,map3dRotY);
       const _p31p=project3D(_p31_3d.x,_p31_3d.y,_p31_3d.z);
       const _p31r=Math.max(8,12*G.mapZoom);
       if(Math.hypot(_p31p.sx-mx,_p31p.sy-my)<_p31r*2.5){
