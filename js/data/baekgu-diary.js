@@ -593,7 +593,7 @@
         "who": {
           "por": "img/chars/H/commander_m1.png",
           "ko": "7대 문명권 · {회사}",
-          "en": "7 civilizations · {회사}"
+          "en": "7 civilizations · {company}"
         },
         "when": {
           "ko": "봉쇄력 101년 3월",
@@ -619,7 +619,7 @@
         "who": {
           "por": "img/chars/H/commander_m1.png",
           "ko": "{회사}(중립 총독)",
-          "en": "{회사} (neutral Governor)"
+          "en": "{company} (neutral Governor)"
         },
         "when": {
           "ko": "봉쇄력 101년 4월",
@@ -684,7 +684,7 @@
         "what": {
           "img": "img/ships/H/S01.png",
           "ko": "다시 불 붙인 {함선}",
-          "en": "The {함선}, relit"
+          "en": "The {ship}, relit"
         },
         "ko": "그래도 — 나는 두렵지 않다.\n\n돌이켜 보면 우리는 가진 것 없이 시작했다. 에너지 7%의 폐선, 먼지뿐인 격납고, 그리고 폐지를 줍던 한 사람. 그곳에서 출발해, 우리는 은하를 건너고, 일곱 문명권을 가로지르고, 100년의 봉쇄를 부수고, 끝내 푸른 지구를 되찾았다. 시대를 뛰어넘은 영웅들이 한 깃발 아래 모였고, 변방의 상단은 은하의 총독이 됐다.\n\n그 모든 과정에는 이유가 있었다. 거래로 금고를 채운 것은 함대를 일구기 위해서였고, 함대를 일군 것은 영웅을 구하기 위해서였고, 영웅을 모은 것은 봉쇄에 맞서기 위해서였다. 작은 한 걸음 한 걸음이, 결국 푸른 행성으로 향하는 하나의 길이었다.\n\n이제 보이드의 심연이 새로운 어둠을 예고한다. 하지만 사령관과 나, 백구가 함께라면 어떤 균열도 건널 수 있다. 우리는 한 번 불가능을 가능으로 바꿔 본 사람들이니까.\n\n우리의 항해는, 계속된다.",
         "en": "Even so — I am not afraid.\n\nLooking back, we began with nothing. A derelict at 7% energy, a hangar full of dust, and one person who picked scrap to live. From there we crossed the galaxy, cut through seven civilizations, shattered a century of blockade, and reclaimed the blue Earth in the end. Heroes leaping across the ages gathered beneath one banner, and a frontier trade band became the galaxy's Governor.\n\nEvery step of it had a reason. We filled the vault by trade to build a fleet; we built a fleet to rescue heroes; we gathered heroes to stand against the blockade. Each small step was, in the end, one road leading to the blue planet.\n\nNow the Void Abyss foretells a new darkness. But as long as the Commander and I, Baekgu, are together, we can cross any rift. For we are those who once turned the impossible into the possible.\n\nOur voyage continues."
