@@ -356,8 +356,9 @@ function renderShipTab(body){
             // 화물 그리드: 슬롯 수에 따라 동적 행/셀 사이즈 조정 (100칸까지 화면에 들어가게)
             // 8칸 이하: 4행, 9~24칸: 6행, 25~48칸: 7행, 49~100칸: 8행
             const _cgRows=slots<=8?4:slots<=24?6:slots<=48?7:8;
-            // 셀 사이즈도 크기에 따라 살짝 줄임 (전체 폭 ~360px 이내 유지)
-            const _cgCell=slots<=24?40:slots<=48?36:32;
+            // 창고 셀 크기 = 파츠장비 그리드 셀(CELL_SZ)과 동일 (사용자 요청 2026-06-17).
+            // 슬롯 많을 때는 _cgRows(행↑)로 열 수를 줄여 폭을 억제 + 래퍼 overflow-x로 보호.
+            const _cgCell=CELL_SZ;
             let grid='<div style="display:grid;grid-template-rows:repeat('+_cgRows+','+_cgCell+'px);grid-auto-flow:column;grid-auto-columns:'+_cgCell+'px;gap:3px">';
             const _innerSz=_cgCell-4;
             for(let i=0;i<slots;i++){
@@ -455,7 +456,7 @@ function renderShipTab(body){
           // 버튼은 우측 정렬로 함선실 버튼과 충돌 회피
           const _cargoCol=`<div style="flex:1;min-width:0;padding-left:8px;margin-left:-10%;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column">
             <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}/100칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
-            <div style="flex-shrink:0">${_cargoData.grid}</div>
+            <div style="flex-shrink:0;overflow-x:auto;max-width:100%">${_cargoData.grid}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;justify-content:flex-end;align-self:flex-end">${_cargoData.btn}</div>
           </div>`;

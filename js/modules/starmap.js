@@ -2075,8 +2075,10 @@
     if(flag&&flag.parts&&typeof PARTS!=='undefined'){
       for(const pid of flag.parts){const p=PARTS.find(x=>x.id===pid);if(p&&p.cat==='engine'&&(p.tier||0)>bestTier)bestTier=p.tier||0;}
     }
-    if(bestTier>=20)return 0;
-    if(bestTier>=15)return 1000;
+    // 사용자 요청 2026-06-17: 엔진 등급별 이동 모션이 "사라지지 않게" — 최고 등급도 0이 아닌
+    //   짧은 글라이드(700ms)를 유지. 등급이 높을수록 빠르되 항상 눈에 보이는 이동 연출이 남는다.
+    if(bestTier>=20)return 700;
+    if(bestTier>=15)return 1200;
     if(bestTier>=12)return 2000;
     if(bestTier>=8)return 4000;
     if(bestTier>=4)return 6000;
