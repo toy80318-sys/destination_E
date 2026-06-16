@@ -229,7 +229,7 @@ function _heroPortrait(h, size, borderColor){
   }
   return `<div style="${_frame};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px">${_ic}</div>`;
 }
-function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
+function charPortraitHTML(speaker, fallbackEmoji, size, borderColor, hd){
   size=size||54;
   borderColor=borderColor||'var(--cyan)';
   // HEROES 순회 — speaker가 영웅 이름(KO/EN 어느 쪽이든)과 매칭되면 ic + ID 캡처
@@ -271,6 +271,13 @@ function charPortraitHTML(speaker, fallbackEmoji, size, borderColor){
   // 원형 폴백 프레임 — 이미지 로드 실패 시도 동일한 크기·테두리 유지해 레이아웃 흔들림 없음
   const _frame=`width:${size}px;height:${size}px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid ${borderColor};flex-shrink:0;box-shadow:0 0 12px ${borderColor}66;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.58)}px`;
   if(src){
+    // 크레딧 등 대형(396px) 표시용 — HD 폴더(img/chars/H/) 우선 로드, 실패 시 저해상도 → 이모지 순 폴백.
+    //   사용자 보고 2026-06-16: 우르사전 이후 크레딧 인물 이미지 해상도가 낮음.
+    if(hd && src.indexOf('img/chars/')>=0 && src.indexOf('img/chars/H/')<0){
+      let _hdSrc=src.replace('img/chars/','img/chars/H/');
+      _hdSrc=_hdSrc.replace('/H/baekgu1.png','/H/baekgu002.png');  // baekgu1 HD 원본 파일명 보정
+      return `<img src="${_hdSrc}" data-lo="${src}" alt="${speaker}" style="${_frame};object-fit:cover" onerror="if(this.dataset.lo){this.src=this.dataset.lo;this.dataset.lo='';}else{this.outerHTML='<div style=\\'${_frame}\\'>${fallbackEmoji}</div>';}">`;
+    }
     return `<img src="${src}" alt="${speaker}" style="${_frame};object-fit:cover" onerror="this.outerHTML='<div style=\\'${_frame}\\'>${fallbackEmoji}</div>'">`;
   }
   return `<div style="${_frame}">${fallbackEmoji}</div>`;

@@ -342,9 +342,11 @@ function showEndingCredits(onDone){
           let _pHTML;
           if(l.sp==='???'||l.sp.indexOf(I18N.t('chat.signal'))>=0){
             const _pc=l.col||'#ff6688';
-            _pHTML='<img src="img/chars/void_hiden.png'+((window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'')+'" alt="???" style="width:396px;height:396px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88">';
+            const _vv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+            // HD 우선(img/chars/H/) → 실패 시 저해상도 폴백. 사용자 보고 2026-06-16: 크레딧 해상도 낮음.
+            _pHTML='<img src="img/chars/H/void_hiden.png'+_vv+'" data-lo="img/chars/void_hiden.png'+_vv+'" alt="???" style="width:396px;height:396px;border-radius:50%;object-fit:cover;border:2px solid '+_pc+';background:rgba(0,0,0,.4);box-shadow:0 0 18px '+_pc+'88" onerror="if(this.dataset.lo){this.src=this.dataset.lo;this.dataset.lo=\'\';}">';
           }else{
-            _pHTML=charPortraitHTML(_pspk,l.ic||(_isSys?'🤖':'⚑'),396,l.col||'#fff');
+            _pHTML=charPortraitHTML(_pspk,l.ic||(_isSys?'🤖':'⚑'),396,l.col||'#fff',true);
           }
           portraitEl.innerHTML=_pHTML;
           portraitEl.style.display='block';

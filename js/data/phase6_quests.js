@@ -222,10 +222,10 @@ const PHASE6_CUTSCENES_KO={
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.'},
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.'},
-    {char:'void_hiden', name:'아이젠클로', color:'#ff6644', text:'우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.'},
     {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.'},
-    {char:'void_hiden', name:'아이젠클로', color:'#ff6644', text:'(이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'(이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진. 펼친다.'}
   ],
 
@@ -331,10 +331,10 @@ const PHASE6_CUTSCENES_EN={
     {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Yi Sun-sin. Your tactical data was the heart of my defensive algorithm. I sealed you — to strip away the strongest weapon.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'That algorithm — General Yi\'s tactics now point straight back at your blind spots. Once the seal breaks — the shield becomes the sword.'},
     {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Einstein, too... The old scholar I cast into the rift a century ago, still alive. How intriguing.'},
-    {char:'void_hiden', name:'Eisenklaue', color:'#ff6644', text:'Lord Ursa. The humans have built something they call the Geobukseon. A reinforced warship — running Yi Sun-sin\'s tactical data.'},
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'Lord Ursa. The humans have built something they call the Geobukseon. A reinforced warship — running Yi Sun-sin\'s tactical data.'},
     {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'Eisenklaue. Your duty was the blockade. And you failed the blockade. Excuses — I do not accept.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Eisenklaue. The crime of caging humanity for a hundred years — ends today.'},
-    {char:'void_hiden', name:'Eisenklaue', color:'#ff6644', text:'(grinding his teeth) Mere humans... Praetorians, Alpha through Epsilon! Form ranks! Concentrate all fire — on the Geobukseon!'},
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'(grinding his teeth) Mere humans... Praetorians, Alpha through Epsilon! Form ranks! Concentrate all fire — on the Geobukseon!'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Crane Wing. Deploy.'}
   ],
 
