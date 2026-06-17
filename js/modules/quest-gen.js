@@ -207,60 +207,35 @@ function showVoidBossIntro(questRef){
     {sp:cmdName,tx:I18N.t('voidQ.cmdBkScold')},
     {sp:_spBk,tx:I18N.t('ui.allFleetWaiting',{cmdName})}
   ];
-  let _idx=0;
-  function _renderLine(){
-    const l=lines[_idx];
+  // 사용자 요청 2026-06-17: 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC.showCharDialog).
+  //   화자 char 매핑 — 보이드/???='void_hiden', 백구='baekgu1', 사령관='commander', 영웅=hero0X(이름 매칭).
+  //   컷신 종료 후 '전투 시작 / 나중에' 선택 모달로 기존 선택지를 보존한다.
+  const _heroChar=function(sp){if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';};
+  const scenes=lines.map(function(l){
     const isVoid=l.sp==='???'||l.sp===I18N.t('ui.signalReceived');
-    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
+    const isBaekgu=(l.sp==='백구'||l.sp==='Baekgu'||l.sp===_spBk);
     const isCmd=l.sp===cmdName;
-    const isHero=!isVoid&&!isBaekgu&&!isCmd;
-    const spColor=isVoid?'#cc66ff':isBaekgu?'var(--cyan)':isHero?'#ffaa44':'var(--gold)';
-    const spIc=isVoid?'🌑':isBaekgu?'🐕':isHero?'⚔️':'⚑';
-    const portrait=charPortraitHTML(l.sp,spIc,216,spColor);
-    // 호러 분위기: glitch/static 라인은 흑색 배경 + 글리치 흔들림 + 자주색 텍스트
-    const bgGrad=isVoid
-      ?'linear-gradient(135deg,rgba(60,0,90,.7),rgba(0,0,0,.95))'
-      :isBaekgu
-        ?'linear-gradient(135deg,rgba(0,180,200,.12),rgba(10,30,50,.7))'
-        :isHero
-          ?'linear-gradient(135deg,rgba(255,160,40,.1),rgba(40,20,5,.7))'
-          :'linear-gradient(135deg,rgba(255,215,0,.08),rgba(20,15,5,.7))';
-    const borderColor=isVoid?'rgba(204,102,255,.6)':isBaekgu?'rgba(0,243,255,.45)':isHero?'rgba(255,170,68,.45)':'rgba(255,215,0,.45)';
-    const glowColor=isVoid?'rgba(204,102,255,.45)':isBaekgu?'rgba(0,243,255,.25)':isHero?'rgba(255,170,68,.2)':'rgba(255,215,0,.2)';
-    const textColor=isVoid?'#e0c0ff':'var(--yellow)';
-    const textShadow=isVoid?'0 0 8px rgba(200,100,255,.55),0 0 16px rgba(140,60,200,.3)':'0 1px 2px rgba(0,0,0,.5)';
-    const glitchAnim=l.fx==='static'||l.fx==='glitch'?'animation:glitchShake .35s infinite':'';
+    let ch,col;
+    if(isVoid){ch='void_hiden';col='#cc66ff';}
+    else if(isBaekgu){ch='baekgu1';col='#66ddff';}
+    else if(isCmd){ch='commander';col='#00f3ff';}
+    else {ch=_heroChar(l.sp);col='#ffaa44';}
+    return {char:ch,name:l.sp,color:col,text:l.tx};
+  });
+  function _engageChoice(){
     openModal(I18N.t('modal.zetaSignal'),
-      `<div style="padding:14px;min-height:240px;background:${isVoid?'radial-gradient(circle at center,rgba(40,0,60,.4),rgba(0,0,0,.9))':'transparent'};border-radius:8px">
-        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${glowColor};${glitchAnim}">
-          ${portrait}
-          <div style="flex:1">
-            <div style="font-size:13px;color:${spColor};font-weight:bold;margin-bottom:6px;letter-spacing:${isVoid?'3px':'1.5px'};${isVoid?'text-shadow:0 0 8px '+spColor:''}">${l.sp}</div>
-            <div style="font-size:17px;color:${textColor};line-height:1.85;word-break:keep-all;text-shadow:${textShadow};${isVoid?'font-family:\'Courier New\',monospace':''}">"${l.tx}"</div>
-          </div>
-        </div>
-        ${_idx===lines.length-1&&typeof _formatEnemyPreview==='function'?_formatEnemyPreview([{...VOID_BOSS}]):''}
-        <div style="text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px">${_idx+1} / ${lines.length}</div>
-      </div>
-      <style>
-        @keyframes glitchShake{
-          0%,100%{transform:translate(0,0)}
-          25%{transform:translate(-1px,1px)}
-          50%{transform:translate(1px,-1px)}
-          75%{transform:translate(-1px,-1px)}
-        }
-      </style>`,
+      `<div style="padding:10px 6px;text-align:center">${(typeof _formatEnemyPreview==='function'?_formatEnemyPreview([{...VOID_BOSS}]):'')}</div>`,
       [
-        _idx<lines.length-1
-          ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
-          : {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startVoidBossCombat(questRef);},cls:'btn-red'},
+        {txt:I18N.t('ui.startBattle'),fn:()=>{closeModal();startVoidBossCombat(questRef);},cls:'btn-red'},
         {txt:I18N.t('voidQ.later'),fn:()=>{closeModal();questRef.status='available';saveGame(true);if(typeof rerenderTab==='function'&&typeof renderQuestTab==='function')rerenderTab(renderQuestTab);},cls:'btn-sm'}
       ],
       {wide:true}
     );
   }
   try{AudioMgr.playBgm('boss');}catch(e){}
-  _renderLine();
+  if(typeof window!=='undefined'&&window.STORY_SCENES_PC&&typeof STORY_SCENES_PC.showCharDialog==='function'){
+    STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:_engageChoice});
+  } else { _engageChoice(); }
 }
 
 // 히든 보스 격파/철수 시 — 작별 메시지 + 함대 복구 + 보상 수령
@@ -278,44 +253,25 @@ function showVoidBossOutro(){
     {sp:_spBk,tx:I18N.t('ui.victoryLine3',{nm:cmdName})},
     {sp:cmdName,tx:I18N.t('falconEnd.cmd')}
   ];
-  let _idx=0;
-  function _renderLine(){
-    const l=lines[_idx];
-    // 사용자 요청 (2026-06-06): 화자 비교에 한/영 양쪽 alias 포함 — 영문 모드에서도 정상 분기
-    const isVoid=l.sp==='팔콘 스카우트'||l.sp==='Falcon Scout'
-              ||l.sp==='블랙팔콘'||l.sp==='Blackfalcon'||l.sp==='Black Falcon'
-              ||l.sp===I18N.t('ui.signalReceived');
-    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
-    const spColor=isVoid?'#cc66ff':isBaekgu?'var(--cyan)':'var(--gold)';
-    const spIc=isVoid?'🌑':isBaekgu?'🐕':'⚑';
-    const portrait=charPortraitHTML(l.sp,spIc,216,spColor);
-    const bgGrad=isVoid
-      ?'linear-gradient(135deg,rgba(60,0,90,.7),rgba(0,0,0,.95))'
-      :isBaekgu
-        ?'linear-gradient(135deg,rgba(0,180,200,.12),rgba(10,30,50,.7))'
-        :'linear-gradient(135deg,rgba(255,215,0,.08),rgba(20,15,5,.7))';
-    const borderColor=isVoid?'rgba(204,102,255,.6)':isBaekgu?'rgba(0,243,255,.45)':'rgba(255,215,0,.45)';
-    const glitchAnim=l.fx==='static'?'animation:glitchShake .35s infinite':'';
-    openModal(I18N.t('modal.blackshipFarewell'),
-      `<div style="padding:14px;min-height:240px;background:${isVoid?'radial-gradient(circle at center,rgba(40,0,60,.4),rgba(0,0,0,.9))':'transparent'};border-radius:8px">
-        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${borderColor};${glitchAnim}">
-          ${portrait}
-          <div style="flex:1">
-            <div style="font-size:13px;color:${spColor};font-weight:bold;margin-bottom:6px;letter-spacing:${isVoid?'3px':'1.5px'};${isVoid?'text-shadow:0 0 8px '+spColor:''}">${l.sp}</div>
-            <div style="font-size:17px;color:${isVoid?'#e0c0ff':'var(--yellow)'};line-height:1.85;word-break:keep-all;${isVoid?'font-family:\'Courier New\',monospace':''}">"${l.tx}"</div>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px">${_idx+1} / ${lines.length}</div>
-      </div>
-      <style>@keyframes glitchShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,-1px)}}</style>`,
-      [
-        _idx<lines.length-1
-          ? {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
-          : {txt:I18N.t('falconEnd.btnReward'),fn:()=>{closeModal();_grantVoidBossRewards();},cls:'btn-gold'}
-      ]
-    );
+  // 사용자 요청 2026-06-17: 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC.showCharDialog).
+  //   화자 char 매핑 — 보이드/팔콘='void_hiden', 백구='baekgu1', 사령관='commander'.
+  const _heroChar=function(sp){if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';};
+  const scenes=lines.map(function(l){
+    const isVoid=l.sp==='팔콘 스카우트'||l.sp==='Falcon Scout'||l.sp==='블랙팔콘'||l.sp==='Blackfalcon'||l.sp==='Black Falcon'||l.sp===_spFalcon||l.sp===I18N.t('ui.signalReceived');
+    const isBaekgu=(l.sp==='백구'||l.sp==='Baekgu'||l.sp===_spBk);
+    const isCmd=l.sp===cmdName;
+    let ch,col;
+    if(isVoid){ch='void_hiden';col='#cc66ff';}
+    else if(isBaekgu){ch='baekgu1';col='#66ddff';}
+    else if(isCmd){ch='commander';col='#00f3ff';}
+    else {ch=_heroChar(l.sp);col='#ffaa44';}
+    return {char:ch,name:l.sp,color:col,text:l.tx};
+  });
+  if(typeof window!=='undefined'&&window.STORY_SCENES_PC&&typeof STORY_SCENES_PC.showCharDialog==='function'){
+    STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){try{_grantVoidBossRewards();}catch(e){}}});
+  } else {
+    try{_grantVoidBossRewards();}catch(e){}
   }
-  _renderLine();
 }
 
 // 보이드 보스 격파 보상 수령 + 함대 복구

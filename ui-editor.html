@@ -27,12 +27,21 @@
   #main{display:flex;height:calc(100% - 52px)}
   #stagewrap{flex:1;position:relative;overflow:hidden;background:#02060f}
   #game{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  /* 편집 모드 캡처 레이어: 켜지면 pointer-events:auto 가 되어 마우스 입력을 가로채 게임 iframe엔 전혀 닿지 않게 한다. */
+  #pickLayer{position:absolute;inset:0;z-index:4;pointer-events:none;cursor:crosshair}
   #overlay{position:absolute;inset:0;pointer-events:none;z-index:5}
+  /* 스냅 정렬 가이드 선 (이동 시 형제/부모의 가장자리·중심에 맞춰 표시) */
+  .snap-guide{position:absolute;background:#ff3df0;z-index:8;pointer-events:none;display:none;box-shadow:0 0 3px rgba(255,61,240,.85)}
+  .snap-guide.v{width:1px;top:0;bottom:0}
+  .snap-guide.h{height:1px;left:0;right:0}
+  /* 다중 선택 시 primary 외 나머지 요소 윤곽 */
+  .selextra{position:absolute;border:1.5px dashed rgba(255,215,0,.6);background:rgba(255,215,0,.05);pointer-events:none;z-index:5;display:none}
   #hl{position:absolute;border:1.5px dashed rgba(0,243,255,.55);background:rgba(0,243,255,.07);display:none;pointer-events:none}
   #sel{position:absolute;border:2px solid var(--gold);display:none;pointer-events:none}
   .handle{position:absolute;width:12px;height:12px;background:var(--gold);border:1px solid #000;border-radius:2px;pointer-events:auto;z-index:6}
   .handle.nw{cursor:nwse-resize}.handle.ne{cursor:nesw-resize}.handle.sw{cursor:nesw-resize}.handle.se{cursor:nwse-resize}
   .handle.n{cursor:ns-resize}.handle.s{cursor:ns-resize}.handle.e{cursor:ew-resize}.handle.w{cursor:ew-resize}
+  .handle.move{width:18px;height:18px;border-radius:50%;background:rgba(255,215,0,.92);border:2px solid #000;cursor:move;box-shadow:0 0 0 2px rgba(0,243,255,.55)}
   #sizetag{position:absolute;background:#000;color:var(--gold);font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid var(--gold);white-space:nowrap;display:none;z-index:7;pointer-events:none;font-family:'Courier New',monospace}
   #panel{width:300px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden}
   #panel h3{margin:0;padding:11px 14px;font-size:13px;color:var(--cyan);border-bottom:1px solid var(--bdr);background:#0a1830}
@@ -40,6 +49,10 @@
   #selinfo .sel-sel{color:var(--gold);font-family:'Courier New',monospace;word-break:break-all;font-size:11px}
   #selinfo .row{display:flex;gap:8px;align-items:center;margin-top:6px}
   #selinfo input{width:72px;background:#02060f;border:1px solid var(--bdr);color:#fff;border-radius:4px;padding:3px 6px;font:inherit;font-size:12px}
+  #selinfo input[type=range]{width:116px;padding:0;background:transparent;border:0;accent-color:var(--gold);cursor:pointer}
+  #selinfo .hvblk{margin-top:10px;padding-top:9px;border-top:1px dashed var(--bdr)}
+  #selinfo .hvblk .ttl{color:#9fdcff;font-size:11px}
+  #selinfo .hvblk .v{color:var(--gold);font-family:'Courier New',monospace;font-size:11px;min-width:40px;text-align:right}
   #changes{flex:1;overflow-y:auto;padding:8px 10px}
   #changes .ch{background:#0a1426;border:1px solid var(--bdr);border-radius:6px;padding:7px 9px;margin-bottom:7px;font-size:11px;font-family:'Courier New',monospace}
   #changes .ch .s{color:var(--cyan);word-break:break-all}
@@ -52,6 +65,12 @@
 <div id="toolbar">
   <span class="ttl">🛠 UI 에디터</span>
   <button class="btn" id="editToggle">✏️ 편집 모드: 꺼짐</button>
+  <button class="btn on" id="flexLockBtn" title="켜면 크기 조절 시 flex:0 0 auto 를 함께 적용 — 메뉴(flex/grid) 안의 버튼 크기가 정확히 반영됩니다.">🔒 flex 고정: 켜짐</button>
+  <button class="btn" id="hoverBtn" title="켜면 선택한 버튼의 '마우스 오버 시 살짝 커지며 떠오르는' 정도(상승·확대)를 슬라이더로 조절하고 :hover CSS로 복사합니다. 평소 편집(크기) 모드에선 호버 반응이 완전히 꺼져 있습니다.">🖱 호버 편집: 꺼짐</button>
+  <button class="btn" id="combatPauseBtn" title="전투 화면을 편집할 때 사용 — 게임의 전투 일시정지 기능을 호출해 턴 진행·애니메이션을 멈춥니다(전투 화면에서만 동작).">⏸ 전투 일시정지</button>
+  <button class="btn" id="snapBtn" title="켜면 이동 시 다른 요소(형제·부모)의 가장자리·중심에 자동으로 달라붙어 정렬됩니다. 분홍색 가이드 선 표시.">🧲 스냅 정렬: 꺼짐</button>
+  <button class="btn" id="undoBtn" title="되돌리기 (Ctrl+Z)" disabled>↶ 되돌리기</button>
+  <button class="btn" id="redoBtn" title="다시 실행 (Ctrl+Shift+Z)" disabled>↷ 다시</button>
   <button class="btn" id="reloadBtn">↻ 새로고침</button>
   <span class="hint" id="modeHint">편집 모드를 켜면 요소를 클릭해 선택하고 모서리를 드래그해 크기를 조절합니다.</span>
   <span class="sp"></span>
@@ -60,6 +79,7 @@
 <div id="main">
   <div id="stagewrap">
     <iframe id="game" src="index.html"></iframe>
+    <div id="pickLayer"></div>
     <div id="overlay">
       <div id="hl"></div>
       <div id="sel"></div>
@@ -84,21 +104,55 @@
   var hl=document.getElementById('hl'), selBox=document.getElementById('sel'), sizetag=document.getElementById('sizetag');
   var selinfo=document.getElementById('selinfo'), changesEl=document.getElementById('changes');
   var editToggle=document.getElementById('editToggle'), modeHint=document.getElementById('modeHint');
-  var editMode=false, hovered=null, selected=null;
-  var changes={};           // selector -> {el, w, h}
+  var pickLayer=document.getElementById('pickLayer');
+  // flexLock 기본 ON: 메뉴(flex/grid) 안 버튼은 부모가 크기를 강제해 width/height가 안 먹으므로 flex:0 0 auto를 함께 줘야 크기 조절이 보인다.
+  var editMode=false, hovered=null, selected=null, flexLock=true;
+  var selectedSet=[];       // Ctrl+클릭 다중 선택 집합 (selected = 그 중 primary=마지막 클릭)
+  var hoverEdit=false, _hoverPrevEl=null;   // 호버(마우스 오버) 상태 편집 모드 / 미리보기 중인 요소
+  var hovers={};            // selector -> {lift, scale} : 마우스 오버 시 상승(px)·확대(%)
+  var hidden={};            // selector -> true : Del 키로 숨긴(삭제) 요소 → 복사 시 display:none
+  var snapOn=false, SNAP_DIST=7;   // 스냅 정렬 ON 여부 / 스냅 허용 거리(화면 px)
+  var snapV=document.createElement('div'); snapV.className='snap-guide v';
+  var snapH=document.createElement('div'); snapH.className='snap-guide h';
+  var history=[], histPos=-1, HIST_MAX=200;   // 되돌리기(Ctrl+Z) 스택 — 각 작업 후 상태 스냅샷
+  var changes={};           // selector -> {w, h, flex}
+  // 클릭 지점에서 가장 가까운 버튼/링크/onclick 요소(메뉴 안 버튼) 탐색 — 내부 span/img 클릭해도 버튼 선택
+  function nearestButton(el){
+    var cur=el;
+    while(cur && cur.nodeType===1 && cur.tagName!=='BODY' && cur.tagName!=='HTML'){
+      if(cur.tagName==='BUTTON' || cur.tagName==='A' || (cur.getAttribute && cur.getAttribute('onclick')) || cur.getAttribute('role')==='button') return cur;
+      cur=cur.parentElement;
+    }
+    return null;
+  }
   var HANDLES=['nw','n','ne','e','se','s','sw','w'];
   var handleEls={};
   HANDLES.forEach(function(h){var d=document.createElement('div');d.className='handle '+h;d.dataset.h=h;document.getElementById('overlay').appendChild(d);d.style.display='none';handleEls[h]=d;});
+  // 중앙 이동 그립 — 작은 점만 입력을 받아 박스 안쪽 클릭은 그대로 통과(아래 작은 메뉴 선택 가능)
+  var moveHandle=document.createElement('div'); moveHandle.className='handle move'; moveHandle.title='드래그하여 이동';
+  document.getElementById('overlay').appendChild(moveHandle); moveHandle.style.display='none';
+  document.getElementById('overlay').appendChild(snapV); document.getElementById('overlay').appendChild(snapH);
+  // 다중 선택 윤곽 박스 풀
+  var _extraBoxes=[];
+  function _getExtraBox(i){ if(!_extraBoxes[i]){ var d=document.createElement('div'); d.className='selextra'; document.getElementById('overlay').appendChild(d); _extraBoxes[i]=d; } return _extraBoxes[i]; }
+  function _hideExtraBoxes(from){ for(var i=from||0;i<_extraBoxes.length;i++)_extraBoxes[i].style.display='none'; }
 
   function idoc(){ try{return iframe.contentDocument||iframe.contentWindow.document;}catch(e){return null;} }
   function iframeOffset(){ var r=iframe.getBoundingClientRect(), s=stage.getBoundingClientRect(); return {x:r.left-s.left, y:r.top-s.top}; }
+  // 게임은 #game-stage 에 transform:scale(s) 를 적용한다. 화면 px(getBoundingClientRect)와
+  //   인라인 width(CSS px)가 s배 차이나서 리사이즈가 제멋대로 튀던 문제 → 이 비율로 변환한다.
+  function gameScale(){
+    try{ var d=idoc(); if(!d)return 1; var st=d.getElementById('game-stage')||d.body; if(!st)return 1;
+      var w=st.offsetWidth; if(!w)return 1; var s=st.getBoundingClientRect().width/w; return (s>0.05&&s<20)?s:1;
+    }catch(e){return 1;}
+  }
 
-  // ── 요소 선택자 생성 (대략적, 사람이 식별 가능한 경로) ──
+  // ── 요소 선택자 생성 — 가능한 한 ID 조상까지 거슬러 올라가 스코프를 만든다(전역 오염 방지) ──
   function selectorFor(el){
     if(!el||el.nodeType!==1)return '';
     if(el.id)return '#'+el.id;
     var parts=[], cur=el, depth=0;
-    while(cur && cur.nodeType===1 && depth<4 && cur.tagName!=='BODY'){
+    while(cur && cur.nodeType===1 && depth<12 && cur.tagName!=='BODY'){
       var part=cur.tagName.toLowerCase();
       if(cur.id){ part='#'+cur.id; parts.unshift(part); break; }
       var cls=(cur.getAttribute('class')||'').trim().split(/\s+/).filter(Boolean)[0];
@@ -120,122 +174,449 @@
     var off=iframeOffset(), L=off.x+rect.left, T=off.y+rect.top, W=rect.width, H=rect.height;
     var pos={nw:[L,T],n:[L+W/2,T],ne:[L+W,T],e:[L+W,T+H/2],se:[L+W,T+H],s:[L+W/2,T+H],sw:[L,T+H],w:[L,T+H/2]};
     HANDLES.forEach(function(h){var p=pos[h];var d=handleEls[h];d.style.left=(p[0]-6)+'px';d.style.top=(p[1]-6)+'px';d.style.display=editMode?'block':'none';});
+    moveHandle.style.left=(L+W/2-9)+'px'; moveHandle.style.top=(T+H/2-9)+'px'; moveHandle.style.display=editMode?'block':'none';
   }
   function showSizeTag(rect){
     var off=iframeOffset();
-    sizetag.textContent=Math.round(rect.width)+' × '+Math.round(rect.height);
+    // 표시 크기는 실제 지정값(CSS px=offsetWidth)으로, 위치는 화면 rect로.
+    var cw=selected?selected.offsetWidth:Math.round(rect.width), ch=selected?selected.offsetHeight:Math.round(rect.height);
+    sizetag.textContent=Math.round(cw)+' × '+Math.round(ch);
     sizetag.style.left=(off.x+rect.left)+'px'; sizetag.style.top=(off.y+rect.top-22)+'px'; sizetag.style.display='block';
   }
   function refreshSelectionBox(){
-    if(!selected){selBox.style.display='none';sizetag.style.display='none';HANDLES.forEach(function(h){handleEls[h].style.display='none';});return;}
+    if(!selected){selBox.style.display='none';sizetag.style.display='none';HANDLES.forEach(function(h){handleEls[h].style.display='none';});moveHandle.style.display='none';_hideExtraBoxes(0);return;}
     var rect=selected.getBoundingClientRect();
     placeBox(selBox,rect); placeHandles(rect); showSizeTag(rect);
+    // 다중 선택: primary 외 나머지 요소 윤곽 표시
+    var n=0;
+    for(var i=0;i<selectedSet.length;i++){ var el=selectedSet[i]; if(el===selected||!el.isConnected)continue; placeBox(_getExtraBox(n), el.getBoundingClientRect()); n++; }
+    _hideExtraBoxes(n);
   }
 
-  function selectEl(el){
-    selected=el; hl.style.display='none';
+  // additive(Ctrl) 시 집합에 토글, 아니면 단일 선택. selected=집합의 마지막(primary).
+  function selectEl(el, additive){
+    clearHoverPreview();
+    if(additive && el){
+      var i=selectedSet.indexOf(el);
+      if(i>=0)selectedSet.splice(i,1); else selectedSet.push(el);
+    } else {
+      selectedSet = el?[el]:[];
+    }
+    selected = selectedSet.length?selectedSet[selectedSet.length-1]:null;
+    hl.style.display='none';
     refreshSelectionBox();
     renderSelInfo();
+    applyHoverPreview();
   }
   function renderSelInfo(){
     if(!selected){selinfo.innerHTML='<div id="empty">선택된 요소가 없습니다.</div>';return;}
     var rect=selected.getBoundingClientRect();
     var sel=selectorFor(selected);
-    selinfo.innerHTML='<div class="sel-sel">'+sel+'</div>'+
-      '<div class="row">W <input id="inW" type="number" value="'+Math.round(rect.width)+'"> '+
-      'H <input id="inH" type="number" value="'+Math.round(rect.height)+'"> px</div>'+
-      '<div class="row"><button class="btn" id="resetEl" style="font-size:11px;padding:4px 9px">이 요소 크기 초기화</button></div>';
-    document.getElementById('inW').addEventListener('change',function(){ applySize(selected, parseFloat(this.value), selected.getBoundingClientRect().height); });
-    document.getElementById('inH').addEventListener('change',function(){ applySize(selected, selected.getBoundingClientRect().width, parseFloat(this.value)); });
+    var tag=selected.tagName.toLowerCase();
+    var nChild=selected.children?selected.children.length:0;
+    var isBtn=selected.tagName==='BUTTON'||selected.tagName==='A';
+    // 호버 편집 모드일 때만 '마우스 오버 상태' 조절 슬라이더를 노출
+    var hvHtml='';
+    if(hoverEdit){
+      var hc=hovers[sel]||{lift:0,scale:100};
+      hvHtml='<div class="hvblk">'+
+        '<div class="row ttl">🖱 마우스 오버 상태 — 살짝 커지며 떠오름</div>'+
+        '<div class="row">상승 <input id="hvLift" type="range" min="0" max="24" step="1" value="'+hc.lift+'"><span class="v" id="hvLiftV">'+hc.lift+'px</span></div>'+
+        '<div class="row">확대 <input id="hvScale" type="range" min="100" max="120" step="1" value="'+hc.scale+'"><span class="v" id="hvScaleV">'+hc.scale+'%</span></div>'+
+        '<div class="row"><button class="btn" id="hvReset" style="font-size:11px;padding:3px 8px">호버 초기화</button></div>'+
+      '</div>';
+    }
+    selinfo.innerHTML=(selectedSet.length>1?'<div style="color:#ffd700;font-size:11px;margin-bottom:5px;font-weight:bold">🔵 '+selectedSet.length+'개 선택됨 — 크기·이동·삭제 동시 적용 (대표: 아래)</div>':'')+
+      '<div class="sel-sel">'+sel+'</div>'+
+      // DOM 탐색 — 메뉴 안 정확한 버튼 선택용 (부모/첫 자식/가장 가까운 버튼)
+      '<div class="row" style="flex-wrap:wrap;gap:5px">'+
+        '<span style="color:#9fdcff;font-size:11px;font-family:monospace">&lt;'+tag+'&gt;'+(isBtn?' ⬚':'')+'</span>'+
+        '<button class="btn" id="navUp" title="부모 요소 선택" style="font-size:11px;padding:3px 8px">▲ 부모</button>'+
+        '<button class="btn" id="navDown" title="첫 자식 요소 선택" style="font-size:11px;padding:3px 8px"'+(nChild?'':' disabled')+'>▼ 자식</button>'+
+        '<button class="btn" id="navBtn" title="가장 가까운 버튼 선택" style="font-size:11px;padding:3px 8px">⬚ 버튼</button>'+
+      '</div>'+
+      '<div class="row">W <input id="inW" type="number" value="'+Math.round(selected.offsetWidth)+'"> '+
+      'H <input id="inH" type="number" value="'+Math.round(selected.offsetHeight)+'"> px</div>'+
+      '<div class="row"><button class="btn" id="resetEl" style="font-size:11px;padding:4px 9px">크기 초기화</button>'+
+        '<button class="btn" id="delEl" title="이 요소를 숨김(삭제) — Del/Backspace 키와 동일" style="font-size:11px;padding:4px 9px;border-color:#ff6a6a;color:#ff9a9a">🗑 삭제 (Del)</button></div>'+hvHtml;
+    if(hoverEdit){
+      var hvLift=document.getElementById('hvLift'), hvScale=document.getElementById('hvScale');
+      var _hvApply=function(){
+        var k=selectorFor(selected);
+        var c=hovers[k]||(hovers[k]={lift:0,scale:100});
+        c.lift=parseInt(hvLift.value,10)||0; c.scale=parseInt(hvScale.value,10)||100;
+        document.getElementById('hvLiftV').textContent=c.lift+'px';
+        document.getElementById('hvScaleV').textContent=c.scale+'%';
+        if(!c.lift&&c.scale===100)delete hovers[k];
+        applyHoverPreview(); renderChanges();
+      };
+      hvLift.addEventListener('input',_hvApply);
+      hvScale.addEventListener('input',_hvApply);
+      hvLift.addEventListener('change',commitHistory);
+      hvScale.addEventListener('change',commitHistory);
+      document.getElementById('hvReset').addEventListener('click',function(){ delete hovers[selectorFor(selected)]; clearHoverPreview(); refreshSelectionBox(); renderSelInfo(); renderChanges(); commitHistory(); });
+    }
+    // 다중 선택이면 W/H·초기화를 선택된 모든 요소에 적용.
+    document.getElementById('inW').addEventListener('change',function(){ var v=parseFloat(this.value); selectedSet.forEach(function(el){ applySize(el, v, el.offsetHeight); }); commitHistory(); });
+    document.getElementById('inH').addEventListener('change',function(){ var v=parseFloat(this.value); selectedSet.forEach(function(el){ applySize(el, el.offsetWidth, v); }); commitHistory(); });
     document.getElementById('resetEl').addEventListener('click',function(){
-      selected.style.width=''; selected.style.height='';
-      delete changes[selectorFor(selected)];
-      refreshSelectionBox(); renderSelInfo(); renderChanges();
+      selectedSet.forEach(function(el){ el.style.width=''; el.style.height=''; el.style.flex=''; el.style.transform=''; el.style.boxSizing=''; delete changes[selectorFor(el)]; });
+      refreshSelectionBox(); renderSelInfo(); renderChanges(); commitHistory();
     });
+    document.getElementById('delEl').addEventListener('click',function(){ hideSelected(); });
+    document.getElementById('navUp').addEventListener('click',function(){ var p=selected&&selected.parentElement; if(p&&p.tagName!=='BODY'&&p.tagName!=='HTML')selectEl(p); });
+    document.getElementById('navDown').addEventListener('click',function(){ var c=selected&&selected.firstElementChild; if(c)selectEl(c); });
+    document.getElementById('navBtn').addEventListener('click',function(){ var b=nearestButton(selected); if(b)selectEl(b); else selectEl(selected); });
   }
 
+  // ── 기하(크기+위치) 편집 모델 ──
+  // changes[selector] = {bw,bh,w,h,mx,my,flex}
+  //   bw,bh : 최초 편집 시점의 원래 크기(baseline) — 중심 고정 계산 기준
+  //   w,h   : 지정 크기   /   mx,my : 이동 오프셋(px)
+  //   중심축 = 박스 가운데: 크기가 변해도 (bw-w)/2 만큼 보정해 중심이 그대로 유지된다.
+  function ensureGeo(el){
+    var k=selectorFor(el), g=changes[k];
+    if(!g){ g=changes[k]={bw:el.offsetWidth, bh:el.offsetHeight, w:el.offsetWidth, h:el.offsetHeight, mx:0, my:0, flex:flexLock}; }
+    return g;
+  }
+  function _applyGeomData(el,g){   // 기하 데이터 → 인라인 스타일 (applyGeom / 되돌리기 공용)
+    el.style.boxSizing='border-box';
+    el.style.width=g.w+'px'; el.style.height=g.h+'px';
+    var tx=Math.round((g.mx||0)+((g.bw||g.w)-g.w)/2), ty=Math.round((g.my||0)+((g.bh||g.h)-g.h)/2);  // 중심 고정 + 이동
+    el.style.transform='translate('+tx+'px,'+ty+'px)';
+    el.style.transformOrigin='center center';
+    if(el.tagName.toLowerCase()==='img'&&!el.style.objectFit)el.style.objectFit='contain';
+    if(g.flex)el.style.flex='0 0 auto';
+  }
+  function applyGeom(el){
+    var g=changes[selectorFor(el)]; if(!g)return;
+    if(g.flex||flexLock)g.flex=true;
+    _applyGeomData(el,g);
+    var inW=document.getElementById('inW'),inH=document.getElementById('inH');
+    if(inW)inW.value=g.w; if(inH)inH.value=g.h;
+  }
+  // W/H 입력 → 크기 변경(중심 고정)
   function applySize(el,w,h){
     if(!el)return;
-    w=Math.max(6,Math.round(w)); h=Math.max(6,Math.round(h));
-    el.style.width=w+'px'; el.style.height=h+'px';
-    var tag=el.tagName.toLowerCase();
-    if(tag==='img'&&!el.style.objectFit)el.style.objectFit='contain';
-    changes[selectorFor(el)]={w:w,h:h};
-    refreshSelectionBox();
-    var inW=document.getElementById('inW'),inH=document.getElementById('inH');
-    if(inW)inW.value=w; if(inH)inH.value=h;
-    renderChanges();
+    var g=ensureGeo(el);
+    g.w=Math.max(6,Math.round(w)); g.h=Math.max(6,Math.round(h));
+    applyGeom(el); refreshSelectionBox(); renderChanges();
   }
 
+  function _cssFor(c){
+    var tx=Math.round((c.mx||0)+((c.bw||c.w)-c.w)/2), ty=Math.round((c.my||0)+((c.bh||c.h)-c.h)/2);
+    var s='box-sizing:border-box; width:'+c.w+'px; height:'+c.h+'px;';
+    if(tx||ty)s+=' transform: translate('+tx+'px,'+ty+'px);';
+    if(c.flex)s+=' flex:0 0 auto;';
+    return s;
+  }
+
+  // ── 되돌리기(Undo) / 다시 실행(Redo) ──
+  // 각 작업이 끝날 때 commitHistory()로 {changes,hovers,hidden} 스냅샷을 쌓는다. Ctrl+Z = 이전 스냅샷 복원(여러 회).
+  function stateStr(){ return JSON.stringify({c:changes,h:hovers,d:hidden}); }
+  function commitHistory(){
+    var s=stateStr();
+    if(histPos>=0 && history[histPos]===s) return;     // 변화 없으면 기록 안 함
+    history=history.slice(0,histPos+1);
+    history.push(s); histPos=history.length-1;
+    if(history.length>HIST_MAX){ history.shift(); histPos--; }
+    _syncUndoBtns();
+  }
+  function applyState(s){
+    var st; try{ st=JSON.parse(s); }catch(e){ return; }
+    var d=idoc();
+    if(d){
+      var sels={};
+      [changes,hovers,hidden,st.c,st.h,st.d].forEach(function(o){ Object.keys(o).forEach(function(k){sels[k]=1;}); });
+      Object.keys(sels).forEach(function(k){ try{var el=d.querySelector(k); if(el){el.style.width='';el.style.height='';el.style.transform='';el.style.transformOrigin='';el.style.flex='';el.style.boxSizing='';el.style.display='';el.style.zIndex='';el.style.objectFit='';}}catch(e){} });
+    }
+    changes=st.c; hovers=st.h; hidden=st.d;
+    if(d){
+      Object.keys(changes).forEach(function(k){ try{var el=d.querySelector(k); if(el)_applyGeomData(el,changes[k]);}catch(e){} });
+      Object.keys(hidden).forEach(function(k){ try{var el=d.querySelector(k); if(el)el.style.display='none';}catch(e){} });
+    }
+    selectedSet=selectedSet.filter(function(el){return el&&el.isConnected&&!hidden[selectorFor(el)];});
+    if(selected && (!selected.isConnected || hidden[selectorFor(selected)])) selected=selectedSet.length?selectedSet[selectedSet.length-1]:null;
+    _hoverPrevEl=null;
+    refreshSelectionBox(); renderSelInfo(); renderChanges();
+    if(hoverEdit) applyHoverPreview();
+  }
+  function undo(){ if(histPos>0){ histPos--; applyState(history[histPos]); _syncUndoBtns(); } }
+  function redo(){ if(histPos<history.length-1){ histPos++; applyState(history[histPos]); _syncUndoBtns(); } }
+  function _syncUndoBtns(){ var u=document.getElementById('undoBtn'),r=document.getElementById('redoBtn'); if(u)u.disabled=(histPos<=0); if(r)r.disabled=(histPos>=history.length-1); }
   function renderChanges(){
-    var keys=Object.keys(changes);
-    if(!keys.length){changesEl.innerHTML='<div id="empty">아직 변경한 요소가 없습니다.</div>';return;}
-    changesEl.innerHTML=keys.map(function(k){var c=changes[k];return '<div class="ch"><div class="s">'+k+'</div><div class="d">width:'+c.w+'px; height:'+c.h+'px;</div></div>';}).join('');
+    var sk=Object.keys(changes), hk=Object.keys(hovers), dk=Object.keys(hidden);
+    if(!sk.length&&!hk.length&&!dk.length){changesEl.innerHTML='<div id="empty">아직 변경한 요소가 없습니다.</div>';return;}
+    var html=sk.map(function(k){return '<div class="ch"><div class="s">'+k+'</div><div class="d">'+_cssFor(changes[k])+'</div></div>';}).join('');
+    html+=hk.map(function(k){return '<div class="ch"><div class="s">'+k+':hover</div><div class="d">'+_hoverCssFor(hovers[k])+'</div></div>';}).join('');
+    html+=dk.map(function(k){return '<div class="ch"><div class="s">'+k+'</div><div class="d" style="color:#ff9a9a">display: none; <button class="btn" data-restore="'+k.replace(/"/g,'&quot;')+'" style="font-size:10px;padding:2px 7px;margin-left:4px">복원</button></div></div>';}).join('');
+    changesEl.innerHTML=html;
+    Array.prototype.forEach.call(changesEl.querySelectorAll('[data-restore]'),function(b){ b.addEventListener('click',function(){ restoreHidden(this.getAttribute('data-restore')); }); });
+  }
+
+  // ── 호버(마우스 오버) 상태 편집 ──
+  // 메뉴 버튼이 '마우스를 올렸을 때 살짝 커지며 떠오르는' 정도(상승 translateY + 확대 scale)를 조절·미리보기·복사.
+  //  평소 편집(크기) 모드에선 호버 반응이 완전히 꺼져 있고(iframe pointer-events:none + freeze),
+  //  호버 편집을 켰을 때만 그 상태를 인라인 transform 으로 재현해 수치를 맞춘다. (Webflow/Framer의 상태별 스타일 편집과 동일 개념)
+  function _hoverCssFor(c){ return 'transition: transform .15s ease; transform: translateY(-'+c.lift+'px) scale('+(c.scale/100).toFixed(3)+');'; }
+  function clearHoverPreview(){ if(_hoverPrevEl){ _hoverPrevEl.style.transform=''; _hoverPrevEl.style.transformOrigin=''; _hoverPrevEl.style.zIndex=''; _hoverPrevEl=null; } }
+  function applyHoverPreview(){
+    clearHoverPreview();
+    if(!hoverEdit||!selected)return;
+    var c=hovers[selectorFor(selected)];
+    if(c&&(c.lift||c.scale!==100)){
+      selected.style.transform='translateY(-'+c.lift+'px) scale('+(c.scale/100)+')';
+      selected.style.transformOrigin='center center';
+      selected.style.zIndex='50';
+      _hoverPrevEl=selected;
+    }
+    refreshSelectionBox();
+  }
+
+  // ── 요소 삭제(숨김) / 복원 ──
+  // 편집 모드에서 Del/Backspace 로 선택 요소를 숨긴다(메뉴 앞 아이콘 등 제거). 게임 코드는 안 건드리고
+  //   인라인 display:none + 복사 목록에 'selector { display:none }' 기록 → 개발자가 게임 CSS에 반영.
+  function hideSelected(){
+    var targets=selectedSet.length?selectedSet.slice():(selected?[selected]:[]);
+    if(!targets.length)return;
+    clearHoverPreview();
+    targets.forEach(function(el){ hidden[selectorFor(el)]=true; el.style.display='none'; });
+    selectedSet=[]; selected=null;
+    refreshSelectionBox(); renderSelInfo(); renderChanges(); commitHistory();
+  }
+  function restoreHidden(k){
+    delete hidden[k];
+    var d=idoc(); if(d){ try{var el=d.querySelector(k); if(el)el.style.display='';}catch(e){} }
+    renderChanges(); refreshSelectionBox(); commitHistory();
   }
 
   // ── 편집 모드 토글 ──
+  // 핵심: 편집 모드에선 게임 iframe을 pointer-events:none 으로 만들어 마우스 입력이 게임에 전혀 닿지 않게 한다.
+  //   대신 투명 캡처 레이어(#pickLayer)가 입력을 받아 elementFromPoint 로 게임 요소를 가리키고 '선택'만 수행 →
+  //   게임의 호버 효과·버튼 동작·드래그가 일절 발생하지 않아 "틱틱거림/제멋대로 움직임"이 사라진다.
+  function _blocker(e){ if(e.preventDefault)e.preventDefault(); if(e.stopPropagation)e.stopPropagation(); }
+  // 편집 중에는 게임의 자동 애니메이션·트랜지션·호버 변형까지 멈춘다(모든 반응 정지).
+  function _freezeStyle(d,on){
+    var id='_uie-freeze', ex=d.getElementById?d.getElementById(id):null;
+    if(on){
+      if(!ex){
+        var st=d.createElement('style'); st.id=id;
+        st.textContent='*{transition:none !important;animation:none !important;}'+
+          '*:hover{transform:none !important;filter:none !important;box-shadow:none !important;}';
+        (d.head||d.documentElement).appendChild(st);
+      }
+    } else if(ex){ ex.parentNode&&ex.parentNode.removeChild(ex); }
+  }
+  // 캡처 레이어의 화면 좌표 → iframe 내부의 해당 요소 (게임 scale과 무관하게 정확)
+  function pickFromEvent(e){
+    var d=idoc(); if(!d)return null;
+    var r=iframe.getBoundingClientRect();
+    var x=e.clientX-r.left, y=e.clientY-r.top;
+    // elementsFromPoint = 그 지점의 모든 요소(앞→뒤). 화면을 거의 덮는 큰 배경/투명 오버레이는 건너뛰고
+    //   그 아래의 더 구체적인(작은) 메뉴를 우선 선택한다 → 배경 틀에 막혀 메뉴를 못 고르는 문제 해결.
+    var list=d.elementsFromPoint?d.elementsFromPoint(x,y):[d.elementFromPoint(x,y)];
+    list=Array.prototype.filter.call(list||[],function(el){ return el&&el.nodeType===1&&el.tagName!=='HTML'&&el.tagName!=='BODY'; });
+    if(!list.length)return null;
+    // Alt = 크기 필터를 무시하고 맨 앞 요소 선택 → 화면을 크게 덮는 영역·구분선 컨테이너도 잡을 수 있다.
+    if(e&&e.altKey)return list[0];
+    var vw=d.documentElement.clientWidth||r.width, vh=d.documentElement.clientHeight||r.height;
+    var vpArea=Math.max(1,vw*vh);
+    for(var i=0;i<list.length;i++){
+      var rc=list[i].getBoundingClientRect();
+      if((rc.width*rc.height)/vpArea < 0.7) return list[i];   // 화면 70% 미만 = 선택 대상
+    }
+    return list[0];   // 전부 거대하면 맨 앞 요소
+  }
   function setEdit(on){
     editMode=on;
     editToggle.textContent='✏️ 편집 모드: '+(on?'켜짐':'꺼짐');
     editToggle.classList.toggle('on',on);
-    modeHint.textContent=on?'요소 위로 마우스를 올려 강조 → 클릭 선택 → 노란 모서리 핸들을 드래그해 크기 조절.':'편집 모드를 켜면 요소를 클릭해 선택하고 모서리를 드래그해 크기를 조절합니다.';
-    var d=idoc(); if(!d)return;
-    if(on){ d.addEventListener('mousemove',onHover,true); d.addEventListener('click',onPick,true); }
-    else { d.removeEventListener('mousemove',onHover,true); d.removeEventListener('click',onPick,true); hl.style.display='none'; }
+    modeHint.textContent=on?'편집 ON — 클릭=선택 / Ctrl+클릭=다중 / Alt+클릭=영역·구분선 / 8핸들=크기(동시) / 그립=이동 / Shift=축 고정.':'편집 모드를 켜면 요소를 클릭해 선택하고 모서리를 드래그해 크기를 조절합니다.';
+    var d=idoc();
+    if(on){
+      iframe.style.pointerEvents='none';     // 게임은 어떤 마우스 입력도 받지 않음
+      pickLayer.style.pointerEvents='auto';  // 모든 입력은 캡처 레이어가 받는다
+      pickLayer.addEventListener('mousemove',onHover);
+      pickLayer.addEventListener('click',onPick);
+      pickLayer.addEventListener('mousedown',_blocker);
+      if(d)_freezeStyle(d,true);
+    } else {
+      iframe.style.pointerEvents='';
+      pickLayer.style.pointerEvents='none';
+      selBox.style.pointerEvents='none';
+      pickLayer.removeEventListener('mousemove',onHover);
+      pickLayer.removeEventListener('click',onPick);
+      pickLayer.removeEventListener('mousedown',_blocker);
+      if(d)_freezeStyle(d,false);
+      hl.style.display='none';
+    }
     refreshSelectionBox();
   }
   function onHover(e){
-    var el=e.target; if(!el||el===hovered)return; hovered=el;
+    if(drag||moveDrag)return;                 // 리사이즈/이동 중엔 하이라이트 갱신 안 함
+    var el=pickFromEvent(e); if(!el||el===hovered)return; hovered=el;
     if(el===selected){hl.style.display='none';return;}
     placeBox(hl, el.getBoundingClientRect());
   }
   function onPick(e){
     e.preventDefault(); e.stopPropagation();
-    selectEl(e.target);
+    var el=pickFromEvent(e); if(el)selectEl(el, e.ctrlKey||e.metaKey);
   }
 
-  // ── 핸들 드래그 → 리사이즈 ──
-  var drag=null;
+  // ── 스냅 정렬 — 이동 중 형제·부모 요소의 가장자리·중심에 달라붙음 + 분홍 가이드 선 ──
+  function _clearSnapGuides(){ snapV.style.display='none'; snapH.style.display='none'; }
+  function _snapMove(axis){
+    if(!selected||!selected.parentElement)return;
+    var g=changes[selectorFor(selected)]; if(!g)return;
+    var doX=axis!=='y', doY=axis!=='x';   // 축 고정 시 해당 축만 스냅
+    var sc=gameScale()||1, off=iframeOffset();
+    var r=selected.getBoundingClientRect();
+    var ownX=[r.left, r.left+r.width/2, r.right];   // 좌·중·우
+    var ownY=[r.top, r.top+r.height/2, r.bottom];   // 상·중·하
+    var cand=[], sibs=selected.parentElement.children;
+    for(var i=0;i<sibs.length;i++){ var s=sibs[i]; if(s===selected||s.nodeType!==1||selectedSet.indexOf(s)>=0)continue; var rc=s.getBoundingClientRect(); if(rc.width||rc.height)cand.push(rc); }
+    cand.push(selected.parentElement.getBoundingClientRect());   // 부모 중심/모서리도 후보
+    var bestX=null,gx=null,bestY=null,gy=null;
+    cand.forEach(function(t){
+      var tX=[t.left,t.left+t.width/2,t.right], tY=[t.top,t.top+t.height/2,t.bottom];
+      ownX.forEach(function(o){ tX.forEach(function(c){ var d=c-o; if(Math.abs(d)<SNAP_DIST&&(bestX===null||Math.abs(d)<Math.abs(bestX))){bestX=d;gx=c;} }); });
+      ownY.forEach(function(o){ tY.forEach(function(c){ var d=c-o; if(Math.abs(d)<SNAP_DIST&&(bestY===null||Math.abs(d)<Math.abs(bestY))){bestY=d;gy=c;} }); });
+    });
+    if(doX&&bestX!==null)g.mx+=bestX/sc;
+    if(doY&&bestY!==null)g.my+=bestY/sc;
+    if((doX&&bestX!==null)||(doY&&bestY!==null))applyGeom(selected);
+    if(doX&&gx!==null){snapV.style.display='block';snapV.style.left=(off.x+gx)+'px';}else snapV.style.display='none';
+    if(doY&&gy!==null){snapH.style.display='block';snapH.style.top=(off.y+gy)+'px';}else snapH.style.display='none';
+  }
+
+  // ── 핸들 드래그 → 리사이즈(중심 고정), 선택 박스 본체 드래그 → 이동 ──
+  var drag=null, moveDrag=null;
   HANDLES.forEach(function(h){
     handleEls[h].addEventListener('mousedown',function(e){
-      e.preventDefault();
+      e.preventDefault(); e.stopPropagation();
       if(!selected)return;
-      var r=selected.getBoundingClientRect();
-      drag={h:h,x0:e.clientX,y0:e.clientY,w0:r.width,h0:r.height};
+      var g=ensureGeo(selected);
+      // 선택된 모든 요소의 시작 크기 캡처 → 같은 델타를 동시에 적용.
+      var starts=selectedSet.map(function(el){ var gg=ensureGeo(el); return {el:el,w0:gg.w,h0:gg.h}; });
+      // 기준 크기는 CSS px(w/h). 화면 이동량은 gameScale로 CSS px 환산.
+      drag={h:h,x0:e.clientX,y0:e.clientY,w0:g.w,h0:g.h,scale:gameScale(),starts:starts};
     });
   });
-  window.addEventListener('mousemove',function(e){
-    if(!drag||!selected)return;
-    var dx=e.clientX-drag.x0, dy=e.clientY-drag.y0, h=drag.h;
-    var nw=drag.w0, nh=drag.h0;
-    if(h.indexOf('e')>=0)nw=drag.w0+dx;
-    if(h.indexOf('w')>=0)nw=drag.w0-dx;
-    if(h.indexOf('s')>=0)nh=drag.h0+dy;
-    if(h.indexOf('n')>=0)nh=drag.h0-dy;
-    applySize(selected,nw,nh);
+  // 중앙 그립을 끌면 이동. 그립(작은 점)만 입력을 받으므로 박스 안쪽 빈 곳 클릭은 그대로 통과한다.
+  moveHandle.addEventListener('mousedown',function(e){
+    if(!selected)return;
+    e.preventDefault(); e.stopPropagation();
+    var g=ensureGeo(selected);
+    var starts=selectedSet.map(function(el){ var gg=ensureGeo(el); return {el:el,mx0:gg.mx,my0:gg.my}; });
+    moveDrag={x0:e.clientX,y0:e.clientY,mx0:g.mx,my0:g.my,scale:gameScale(),starts:starts};
   });
-  window.addEventListener('mouseup',function(){drag=null;});
+  window.addEventListener('mousemove',function(e){
+    if(moveDrag&&selected){
+      var sc=moveDrag.scale||1, g=changes[selectorFor(selected)];
+      if(g){
+        var rawX=e.clientX-moveDrag.x0, rawY=e.clientY-moveDrag.y0;
+        // Shift = 축 고정: 더 많이 움직인 방향으로만 이동(수평 또는 수직).  axis 'x'=수평 / 'y'=수직 / null=자유
+        var axis=e.shiftKey ? (Math.abs(rawX)>=Math.abs(rawY)?'x':'y') : null;
+        g.mx = (axis==='y') ? moveDrag.mx0 : moveDrag.mx0+rawX/sc;
+        g.my = (axis==='x') ? moveDrag.my0 : moveDrag.my0+rawY/sc;
+        applyGeom(selected); if(snapOn)_snapMove(axis);
+        // primary가 실제로 움직인 양(스냅 보정 포함)을 나머지 선택 요소에도 동일 적용 → 그룹 강체 이동.
+        if(moveDrag.starts&&moveDrag.starts.length>1){
+          var adx=g.mx-moveDrag.mx0, ady=g.my-moveDrag.my0;
+          moveDrag.starts.forEach(function(st){ if(st.el===selected)return; var g2=changes[selectorFor(st.el)]; if(!g2)return; g2.mx=st.mx0+adx; g2.my=st.my0+ady; applyGeom(st.el); });
+        }
+        refreshSelectionBox(); renderChanges();
+      }
+      return;
+    }
+    if(!drag||!selected)return;
+    var sc=drag.scale||1;
+    var dx=(e.clientX-drag.x0)/sc, dy=(e.clientY-drag.y0)/sc, h=drag.h;
+    // 중심 고정: 끄는 변이 커서를 따라가도록 변화량을 2배(반대 변은 거울처럼 이동) → 중심 유지.
+    var sx=(h.indexOf('e')>=0?1:(h.indexOf('w')>=0?-1:0));
+    var sy=(h.indexOf('s')>=0?1:(h.indexOf('n')>=0?-1:0));
+    var dw=sx*2*dx, dh=sy*2*dy;   // 모든 선택 요소에 동일 적용할 크기 델타
+    (drag.starts&&drag.starts.length?drag.starts:[{el:selected,w0:drag.w0,h0:drag.h0}]).forEach(function(st){
+      var g2=changes[selectorFor(st.el)]; if(!g2)return;
+      g2.w=Math.max(6,Math.round(st.w0+dw));
+      g2.h=Math.max(6,Math.round(st.h0+dh));
+      applyGeom(st.el);
+    });
+    refreshSelectionBox(); renderChanges();
+  });
+  window.addEventListener('mouseup',function(){ var was=drag||moveDrag; drag=null;moveDrag=null; _clearSnapGuides(); if(was)commitHistory(); });
+  // Del / Backspace = 선택 요소 삭제(숨김). 입력칸 타이핑 중엔 무시.
+  window.addEventListener('keydown',function(e){
+    // Ctrl+Z = 되돌리기 / Ctrl+Shift+Z·Ctrl+Y = 다시 실행 (입력칸 포커스와 무관하게 동작)
+    if((e.ctrlKey||e.metaKey)&&(e.key==='z'||e.key==='Z')){ e.preventDefault(); if(e.shiftKey)redo(); else undo(); return; }
+    if((e.ctrlKey||e.metaKey)&&(e.key==='y'||e.key==='Y')){ e.preventDefault(); redo(); return; }
+    var t=e.target;
+    if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+    if(!editMode||!selected)return;
+    if(e.key==='Delete'||e.key==='Backspace'){ e.preventDefault(); hideSelected(); }
+  });
   // 스크롤/리사이즈 시 박스 추적
   window.addEventListener('resize',refreshSelectionBox);
   try{ if(iframe.contentWindow) iframe.contentWindow.addEventListener('scroll',refreshSelectionBox,true); }catch(e){}
-  setInterval(function(){ if(selected){ if(!selected.isConnected){selected=null;renderSelInfo();} refreshSelectionBox(); } },400);
+  setInterval(function(){ if(drag||moveDrag)return; selectedSet=selectedSet.filter(function(el){return el&&el.isConnected;}); if(selected){ if(!selected.isConnected){selected=selectedSet.length?selectedSet[selectedSet.length-1]:null;renderSelInfo();} refreshSelectionBox(); } },400);
 
   // ── 툴바 버튼 ──
   editToggle.addEventListener('click',function(){setEdit(!editMode);});
-  document.getElementById('reloadBtn').addEventListener('click',function(){ selected=null; hovered=null; changes={}; renderChanges(); renderSelInfo(); iframe.src=iframe.src; });
+  document.getElementById('flexLockBtn').addEventListener('click',function(){
+    flexLock=!flexLock;
+    this.textContent='🔒 flex 고정: '+(flexLock?'켜짐':'꺼짐');
+    this.classList.toggle('on',flexLock);
+    // 켤 때 현재 선택 요소가 이미 변경됐다면 즉시 flex 적용
+    if(flexLock&&selected&&changes[selectorFor(selected)]){selected.style.flex='0 0 auto';changes[selectorFor(selected)].flex=true;renderChanges();}
+  });
+  // 🖱 호버 편집 토글 — 마우스 오버 상태(상승·확대) 조절 모드. 크기 편집과 별개로 동작.
+  document.getElementById('hoverBtn').addEventListener('click',function(){
+    hoverEdit=!hoverEdit;
+    this.textContent='🖱 호버 편집: '+(hoverEdit?'켜짐':'꺼짐');
+    this.classList.toggle('on',hoverEdit);
+    if(!hoverEdit)clearHoverPreview();
+    renderSelInfo(); applyHoverPreview();
+  });
+  // ⏸ 전투 일시정지 — 게임 iframe의 toggleCombatPause() 호출(전투 화면에서만). 편집 중 전투 정지용.
+  document.getElementById('combatPauseBtn').addEventListener('click',function(){
+    var w; try{w=iframe.contentWindow;}catch(e){w=null;}
+    if(!w||typeof w.toggleCombatPause!=='function'||!w.combatState||w.combatState.done){
+      alert('전투 화면에서만 사용할 수 있습니다.\n게임에서 전투를 먼저 시작한 뒤 눌러주세요.'); return;
+    }
+    var paused=w.toggleCombatPause();
+    this.textContent=paused?'▶ 전투 재개':'⏸ 전투 일시정지';
+    this.classList.toggle('on',!!paused);
+  });
+  // 🧲 스냅 정렬 토글
+  document.getElementById('snapBtn').addEventListener('click',function(){
+    snapOn=!snapOn;
+    this.textContent='🧲 스냅 정렬: '+(snapOn?'켜짐':'꺼짐');
+    this.classList.toggle('on',snapOn);
+    if(!snapOn)_clearSnapGuides();
+  });
+  document.getElementById('reloadBtn').addEventListener('click',function(){ selected=null; selectedSet=[]; hovered=null; clearHoverPreview(); changes={}; hovers={}; hidden={}; history=[]; histPos=-1; renderChanges(); renderSelInfo(); iframe.src=iframe.src; });
+  document.getElementById('undoBtn').addEventListener('click',undo);
+  document.getElementById('redoBtn').addEventListener('click',redo);
   document.getElementById('clearBtn').addEventListener('click',function(){
-    Object.keys(changes).forEach(function(k){var c=changes[k]; if(c.el&&c.el.style){c.el.style.width='';c.el.style.height='';}});
-    changes={}; renderChanges();
+    var d=idoc();
+    if(d){
+      Object.keys(changes).forEach(function(k){ try{var el=d.querySelector(k); if(el){el.style.width='';el.style.height='';el.style.transform='';el.style.flex='';el.style.boxSizing='';}}catch(e){} });
+      Object.keys(hidden).forEach(function(k){ try{var el=d.querySelector(k); if(el)el.style.display='';}catch(e){} });
+    }
+    clearHoverPreview(); changes={}; hovers={}; hidden={}; renderChanges(); renderSelInfo(); refreshSelectionBox(); commitHistory();
   });
   document.getElementById('copyBtn').addEventListener('click',function(){
-    var keys=Object.keys(changes);
-    if(!keys.length){alert('변경된 요소가 없습니다.');return;}
-    var txt=keys.map(function(k){return k+' { width:'+changes[k].w+'px; height:'+changes[k].h+'px; }';}).join('\n');
+    var lines=Object.keys(changes).map(function(k){return k+' { '+_cssFor(changes[k])+' }';});
+    Object.keys(hovers).forEach(function(k){ lines.push(k+':hover { '+_hoverCssFor(hovers[k])+' }'); });
+    Object.keys(hidden).forEach(function(k){ lines.push(k+' { display:none; }'); });
+    if(!lines.length){alert('변경된 요소가 없습니다.');return;}
+    var txt=lines.join('\n');
     navigator.clipboard.writeText(txt).then(function(){document.getElementById('copyBtn').textContent='✓ 복사됨';setTimeout(function(){document.getElementById('copyBtn').textContent='📋 변경 복사';},1200);},function(){alert(txt);});
   });
 
-  iframe.addEventListener('load',function(){ selected=null; hovered=null; renderSelInfo(); if(editMode)setEdit(true); });
+  iframe.addEventListener('load',function(){ selected=null; selectedSet=[]; hovered=null; history=[]; histPos=-1; renderSelInfo(); renderChanges(); commitHistory(); if(editMode)setEdit(true); });
   renderChanges();
+  commitHistory();   // 빈 상태 = 되돌리기 기준점
 })();
 </script>
 </body>

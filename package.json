@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.242",
+  "version": "1.0.0-beta.243",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -8,6 +8,8 @@
   "scripts": {
     "electron": "electron .",
     "electron:dev": "electron . --enable-logging",
+    "serve": "npx --yes http-server . -p 8123 -c-1 -s",
+    "uieditor": "npx --yes http-server . -p 8123 -c-1 -s -o /ui-editor.html",
     "icons": "node scripts/gen-app-icons.js",
     "icons:pwa": "node scripts/resize-icon.js",
     "icons:all": "node scripts/resize-icon.js && node scripts/gen-app-icons.js",

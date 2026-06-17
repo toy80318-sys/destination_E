@@ -202,11 +202,37 @@ function startCombat(planetDef){
   setHubNav('combat');updateHUD();
   _cbEffects=[];_unitPos={};if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
   combatState._sunsinUsed=false;
+  combatState._paused=false;window._cbPaused=false;  // 새 전투는 항상 진행 상태로 시작
   // 함선 즉시 등장 (애니메이션 없음)
   combatState._entranceT=1;combatState._entranceDone=true;
   sfxAlert();try{AudioMgr.playBgm(isBoss?'boss':'combat');}catch(e){}
   _preloadCombatImages();requestAnimationFrame(()=>{initCombatCanvas();const t=document.getElementById('cb-title');if(t)t.textContent=I18N.t('combat.titleBoss',{bossTitle:isBoss?I18N.t('combat.title.bossUrsa'):I18N.t('combat.title.default'),nm:planetDef.nm});_cbStartAnimLoop();_updateCombatFleetStats();setTimeout(runCombatTurn,600);});
 }
+// 전투 일시정지 / 재개 (사용자 요청) — 턴 진행·애니메이션을 멈췄다 다시 시작.
+//   force 미지정 시 토글. UI 에디터에서도 window.toggleCombatPause() 로 호출 가능.
+function toggleCombatPause(force){
+  if(!combatState||combatState.done)return false;
+  const want=(typeof force==='boolean')?force:!combatState._paused;
+  combatState._paused=want; window._cbPaused=want;
+  // 헤더 버튼 라벨
+  const btn=document.getElementById('cb-pause-btn');
+  if(btn){btn.textContent=want?I18N.t('combat.resume'):I18N.t('combat.pause');btn.classList.toggle('cb-paused-on',want);}
+  // 일시정지 오버레이(아레나 중앙)
+  const arena=document.getElementById('cb-arena');
+  let ov=document.getElementById('cb-pause-ov');
+  if(want){
+    if(arena&&!ov){
+      ov=document.createElement('div');ov.id='cb-pause-ov';
+      ov.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,8,20,.45);z-index:12;pointer-events:none;backdrop-filter:blur(1px)';
+      ov.innerHTML=`<div style="color:#ffd700;font-size:26px;font-weight:bold;letter-spacing:6px;text-shadow:0 2px 12px rgba(0,0,0,.7);border:2px solid rgba(255,215,0,.5);border-radius:12px;padding:14px 34px;background:rgba(8,16,28,.6)">⏸ ${I18N.t('combat.paused')}</div>`;
+      arena.appendChild(ov);
+    }
+  } else if(ov){ try{ov.remove();}catch(e){} }
+  // 해제 시: runCombatTurn 체인이 250ms 내 자동 재개되므로 별도 kick 불필요(중복 턴 방지).
+  return want;
+}
+try{if(typeof window!=='undefined'){window.toggleCombatPause=toggleCombatPause;}}catch(e){}
+
 // 전투 중 도망가기 — 확인 모달 → fleeCombat 실행
 function confirmFleeCombat(){
   if(!combatState||combatState.done)return;
@@ -301,7 +327,7 @@ function renderCombatView(body){
     <div id="cb-fleet-en" style="color:#ff8888;text-align:right">${I18N.t('combat.enemyMeasuring')}</div>
   </div>
   <div id="cb-arena" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050a1a">
-    <canvas id="cb-cv" style="transform:perspective(1500px) rotateX(13deg);transform-origin:center 54%"></canvas>
+    <canvas id="cb-cv" style="transform:perspective(1800px) rotateX(7deg);transform-origin:center center"></canvas>
     <!-- 전투 상황 로그 — 우측 세로 팝업 컬럼 (사용자 요청: 하단 스트립 → 우측 페이드 팝업) -->
     <div id="cb-log" class="cb-log" style="position:absolute;right:10px;top:10px;bottom:10px;width:174px;display:flex;flex-direction:column-reverse;gap:4px;pointer-events:none;z-index:8;overflow:hidden"></div>
   </div>`;
@@ -311,7 +337,8 @@ function initCombatCanvas(){
   cbCV=document.getElementById('cb-cv');if(!cbCV)return;
   const arena=document.getElementById('cb-arena');
   const aw=arena?arena.clientWidth:800,ah=arena?arena.clientHeight:400;
-  cbCV.width=Math.max(aw,400);cbCV.height=Math.max(ah,300);
+  // 3D 틸트(rotateX)로 캔버스가 위아래로 잘리지 않도록 세로 여유(headroom)를 둔다. 사용자 요청 2026-06-17.
+  cbCV.width=Math.max(aw,400);cbCV.height=Math.max(Math.round(ah*0.93),280);
   cbCtx=cbCV.getContext('2d');
   cbZoom=1.0;cbOffX=0;cbOffY=0;
   // 마우스 휠: 줌
@@ -352,6 +379,7 @@ function initCombatCanvas(){
     // 사용자 요청: 상단 -, + 줌 버튼 삭제. 시점 리셋(⌂) 만 유지. 줌은 휠·핀치로 계속 가능.
     btns.innerHTML=`<span style="font-size:10px;color:var(--muted);white-space:nowrap">${I18N.t('combat.controlsHint')}</span>
       <button class="btn btn-sm" onclick="cbZoom=1;cbOffX=0;cbOffY=0;drawCombatFrame()" style="padding:3px 11px;font-size:16px;min-height:34px" title="${I18N.t('map.resetView')}">⌂</button>
+      <button id="cb-pause-btn" onclick="toggleCombatPause()" title="${I18N.t('combat.pauseTip')}" style="padding:5px 13px;font-size:13px;font-weight:bold;min-height:34px;border:1.5px solid rgba(0,200,255,.55);background:rgba(0,180,255,.12);color:#9fe6ff;border-radius:6px;cursor:pointer;white-space:nowrap">${I18N.t('combat.pause')}</button>
       <button id="cb-flee-btn" onclick="confirmFleeCombat()" title="${I18N.t('combat.fleeTooltip')}"
         style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${I18N.t('combat.flee')}</button>`;
     hdr.insertBefore(btns,hdr.children[1]);
@@ -775,6 +803,7 @@ function _cbStartAnimLoop(){
   let _skipToggle=false;
   const tick=()=>{
     if(!cbCtx||!cbCV){_cbAnimReq=null;return;}
+    if(window._cbPaused){_cbAnimReq=requestAnimationFrame(tick);return;}  // 일시정지: 마지막 프레임 고정, 루프는 유지
     const _effs=_cbEffects||[];
     const _calm=_effs.length<50&&_effs.every(e=>!e||(e.life||0)<((e.maxLife||1)/2));
     if(_calm){
@@ -1744,6 +1773,8 @@ function _txPos(pos){
 }
 function runCombatTurn(){
   if(!combatState||combatState.done){drawCombatFrame();return;}
+  // 일시정지: 턴 진행 보류 — 짧게 재확인하며 대기(루프 유지). 해제되면 다음 확인에서 정상 진행.
+  if(combatState._paused){setTimeout(runCombatTurn,250);return;}
   // ── 재진입 가드 — 페이즈 팝업 콜백 + setTimeout 체인이 중첩되는 경우 차단 ──
   // 동일 턴 중복 실행 시 적/아군 상태가 두 번 변동되어 시각 스터터·계산 오류 유발
   if(combatState._turnInProgress)return;

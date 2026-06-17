@@ -482,24 +482,29 @@
     function _materialBarterCard(){
       const _mats=(typeof COMMODITIES!=='undefined')?COMMODITIES.filter(c=>c.material):[];
       if(!_mats.length)return '';
-      const _nm=c=>(typeof commDisplayNm==='function'?commDisplayNm(c):c.nm)||c.id;
-      const recvOpts=_mats.map(c=>`<option value="${c.id}">${_nm(c)}</option>`).join('');
-      const owned=_mats.filter(c=>(G.materials&&G.materials[c.id]||0)>0);
-      const giveOpts='<option value="">—</option>'+owned.map(c=>`<option value="${c.id}">${_nm(c)} ×${G.materials[c.id]}</option>`).join('');
-      const _selSty='font-size:10px;padding:3px 4px;background:rgba(0,0,0,.55);color:var(--txt);border:1px solid rgba(255,200,80,.35);border-radius:4px;max-width:46%';
-      return `<div style="margin-top:8px;background:rgba(255,200,80,.06);border:1.5px solid rgba(255,200,80,.35);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0">
-        <div style="flex:1;min-width:0">
-          <div style="color:#ffcc66;font-size:12px;font-weight:bold;line-height:1.4">${I18N.t('bm.barterTitle')}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px">
-            <span style="font-size:10px;color:var(--dim)">${I18N.t('bm.barterRecv')}</span>
-            <select id="bm-ex-recv" style="${_selSty}">${recvOpts}</select>
-            <span style="font-size:10px;color:var(--dim);margin-left:4px">${I18N.t('bm.barterGive')}</span>
-            <select id="bm-ex-give0" style="${_selSty}">${giveOpts}</select>
-            <select id="bm-ex-give1" style="${_selSty}">${giveOpts}</select>
-            <select id="bm-ex-give2" style="${_selSty}">${giveOpts}</select>
-          </div>
+      if(!Array.isArray(window._bmBarterGive))window._bmBarterGive=[null,null,null];
+      const _img=id=>(typeof commImgSrc==='function')?commImgSrc(id):'';
+      const _nm=id=>{const c=_mats.find(x=>x.id===id);return c?((typeof commDisplayNm==='function'?commDisplayNm(c):c.nm)||id):'';};
+      // 이미지 선택 슬롯 — 선택된 재료 이미지 + 이름 + 보유갯수. 클릭 시 재료 선택 팝업.
+      function _slot(id,slotKey,placeholder){
+        const cnt=id?((G.materials&&G.materials[id])||0):0;
+        return `<button onclick="bmPickMaterial('${slotKey}')" title="${id?_nm(id):placeholder}" style="width:52px;height:64px;flex-shrink:0;background:rgba(0,0,0,.4);border:1.5px solid ${id?'rgba(255,200,80,.55)':'rgba(255,255,255,.18)'};border-radius:7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px;font-family:inherit">
+          ${id?`<img src="${_img(id)}" alt="" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display='none'">`:`<span style="font-size:22px;color:rgba(255,255,255,.35);line-height:1">＋</span>`}
+          <span style="font-size:8px;color:${id?'#e6edf5':'var(--dim)'};max-width:48px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.1">${id?_nm(id):placeholder}</span>
+          ${id?`<span style="font-size:8px;color:${cnt>0?'var(--cyan)':'#ff8888'};font-weight:bold">×${cnt}</span>`:''}
+        </button>`;
+      }
+      const _plus='<span style="color:#ffcc66;font-weight:bold;font-size:14px;flex-shrink:0">+</span>';
+      const recvSlot=_slot(window._bmBarterRecv,'recv',I18N.t('bm.barterRecv'));
+      const giveSlots=[0,1,2].map(i=>_slot(window._bmBarterGive[i],String(i),I18N.t('bm.barterGive'))).join(_plus);
+      return `<div style="margin-top:8px;background:rgba(255,200,80,.06);border:1.5px solid rgba(255,200,80,.35);border-radius:8px;padding:8px 10px;flex-shrink:0">
+        <div style="color:#ffcc66;font-size:12px;font-weight:bold;line-height:1.4;margin-bottom:7px">${I18N.t('bm.barterTitle')}</div>
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          ${recvSlot}
+          <span style="color:#ffcc66;font-weight:bold;font-size:16px;flex-shrink:0">=</span>
+          ${giveSlots}
+          <button class="btn" onclick="exchangeMaterials()" style="font-size:12px;padding:8px 12px;background:rgba(255,200,80,.15);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;margin-left:auto;align-self:stretch">${I18N.t('bm.barterBtn')}</button>
         </div>
-        <button class="btn" onclick="exchangeMaterials()" style="font-size:11px;padding:5px 12px;background:rgba(255,200,80,.15);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('bm.barterBtn')}</button>
       </div>`;
     }
     // (구버전 blackMarketHtml 변수는 _bmBtn(3) 참조 오류로 제거 — 현재는 본문 innerHTML 에서 _bmBtn(0/1/2)을 인라인 호출)
@@ -776,14 +781,35 @@
   //   · 727줄, 12개 함수 (renderCodexTab, showCodex*Modal, _markShipDiscovered 등)
   
 
+  // 재료 선택 팝업 — 이미지 그리드(보유갯수 표시). 지불 슬롯은 미보유(0) 비활성. (사용자 요청 2026-06-17)
+  function bmPickMaterial(slotKey){
+    const mats=(typeof COMMODITIES!=='undefined')?COMMODITIES.filter(c=>c.material):[];
+    const isRecv=slotKey==='recv';
+    const grid=mats.map(c=>{
+      const cnt=(G.materials&&G.materials[c.id])||0;
+      const img=(typeof commImgSrc==='function')?commImgSrc(c.id):'';
+      const nm=(typeof commDisplayNm==='function'?commDisplayNm(c):c.nm)||c.id;
+      const dis=!isRecv&&cnt<=0;
+      return `<button onclick="bmSetMaterial('${slotKey}','${c.id}')" ${dis?'disabled':''} style="background:rgba(0,0,0,.4);border:1px solid rgba(255,200,80,.3);border-radius:8px;cursor:${dis?'not-allowed':'pointer'};padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;${dis?'opacity:.4':''}">
+        <img src="${img}" alt="" style="width:44px;height:44px;object-fit:contain" onerror="this.style.display='none'">
+        <span style="font-size:11px;color:#e6edf5;text-align:center;line-height:1.2;word-break:keep-all">${nm}</span>
+        <span style="font-size:11px;color:${cnt>0?'var(--cyan)':'#ff8888'};font-weight:bold">×${cnt}</span>
+      </button>`;
+    }).join('');
+    openModal(I18N.t('bm.barterPickTitle'),`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:4px">${grid}</div>`,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
+  }
+  function bmSetMaterial(slotKey,id){
+    if(slotKey==='recv'){window._bmBarterRecv=id;}
+    else{if(!Array.isArray(window._bmBarterGive))window._bmBarterGive=[null,null,null];window._bmBarterGive[+slotKey]=id;}
+    try{closeModal();}catch(e){}
+    try{rerenderTab(renderTavernView);}catch(e){}
+  }
   // 제작 재료 1:3 맞교환 — 줄 재료 3개 소비 → 받을 재료 1개 획득 (사용자 요청 2026-06-17)
+  //   선택은 window._bmBarterRecv / window._bmBarterGive[] 에 보존 → 교환을 연속해 눌러도 슬롯 선택 유지.
   function exchangeMaterials(){
     try{
-      const recv=document.getElementById('bm-ex-recv');
-      const g0=document.getElementById('bm-ex-give0'),g1=document.getElementById('bm-ex-give1'),g2=document.getElementById('bm-ex-give2');
-      if(!recv||!g0||!g1||!g2)return;
-      const recvId=recv.value;
-      const gives=[g0.value,g1.value,g2.value].filter(Boolean);
+      const recvId=window._bmBarterRecv;
+      const gives=(Array.isArray(window._bmBarterGive)?window._bmBarterGive:[]).filter(Boolean);
       if(!recvId||gives.length<3){notify(I18N.t('bm.barterPick'),'warn');return;}
       // 줄 재료 수량 집계 후 보유량 검증 (중복 선택 포함)
       const need={};gives.forEach(id=>{need[id]=(need[id]||0)+1;});
@@ -799,10 +825,10 @@
       const _nm=(_comm&&typeof commDisplayNm==='function')?commDisplayNm(_comm):(recvId);
       notify(I18N.t('bm.barterDone',{nm:_nm}),'ok');
       try{if(typeof AudioMgr!=='undefined')AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
-      rerenderTab(renderTavernView);
+      rerenderTab(renderTavernView);  // 선택 상태는 window._bmBarter* 에 유지 → 슬롯 그대로 남음
     }catch(e){console.warn('[barter]',e);}
   }
-  try{if(typeof window!=='undefined')window.exchangeMaterials=exchangeMaterials;}catch(e){}
+  try{if(typeof window!=='undefined'){window.exchangeMaterials=exchangeMaterials;window.bmPickMaterial=bmPickMaterial;window.bmSetMaterial=bmSetMaterial;}}catch(e){}
 
   // ─── 전역 노출 ─────────────────────────────────────────────
   window.renderTavernView=renderTavernView;

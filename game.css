@@ -257,3 +257,39 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
   #bkdialog{height:180px}
   #bkdialog.bk-collapsed{height:30px}
 }
+
+/* ═══ 타이틀 메인메뉴 — manu01.png 패널 오버레이 버튼 (사용자 요청 2026-06-17) ═══ */
+/* 박스는 이미지에 이미 그려져 있고, 버튼은 그 위에 투명하게 얹혀 글씨+클릭+호버 3D 담당. */
+.tmenu-panel{filter:drop-shadow(0 12px 34px rgba(0,0,0,.55))}
+.tmenu-box{
+  position:absolute;background:transparent;border:0;border-radius:12px;
+  color:#cfe9ff;font-weight:bold;font-family:inherit;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  line-height:1.3;font-size:13px;letter-spacing:.3px;padding:0;
+  transition:transform .16s cubic-bezier(.2,.7,.3,1), box-shadow .16s ease, filter .16s ease, background .16s ease;
+  will-change:transform;
+}
+.tmenu-box:hover{
+  transform:translateY(-2px) scale(1.025) !important;
+  background:rgba(0,170,255,.12);
+  box-shadow:0 5px 16px rgba(0,180,255,.42), inset 0 0 14px rgba(0,210,255,.22) !important;
+  filter:brightness(1.14);
+  z-index:5;
+}
+.tmenu-box:active{transform:translateY(-1px) scale(1.0) !important}
+.tmenu-main{font-size:23px;letter-spacing:2px;color:#eaf6ff;text-shadow:0 0 14px rgba(0,200,255,.65)}
+.tmenu-wide{font-size:14px}
+.tmenu-exit{color:#ffb3b3}
+.tmenu-exit:hover{
+  background:rgba(255,60,60,.14);
+  box-shadow:0 12px 28px rgba(255,70,70,.5), inset 0 0 18px rgba(255,95,95,.28) !important;
+}
+
+/* ───────────────────────────────────────────────────────────
+   UI 에디터 조정값 (ui-editor.html에서 생성한 레이아웃 미세 보정)
+   · #game-stage(1536×864) 고정 스케일 기준이라 px 값 사용 OK.
+   · 허브 상단 배너/타이틀 정렬 (사용자 조정 2026-06-18)
+   ─────────────────────────────────────────────────────────── */
+#hub-body > div.hub-scroll > div:nth-of-type(1){ box-sizing:border-box; width:1337px; height:45px; transform:translate(-17px,-22px); }
+#hub-body > div.hub-scroll > div:nth-of-type(1) > img:nth-of-type(1){ box-sizing:border-box; width:1346px; height:48px; transform:translate(-1px,0); }
+#hub-body > div.hub-scroll > div.hub-t:nth-of-type(2){ box-sizing:border-box; width:1300px; height:33px; }

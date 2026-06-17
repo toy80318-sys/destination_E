@@ -630,8 +630,8 @@ function renderFleetFormationTab(body){
       const filled=_saves[i]&&Object.keys(_saves[i]).length;
       return `<div style="display:flex;gap:4px;align-items:center;border:1px solid ${filled?'rgba(120,200,255,.45)':'var(--bdr)'};border-radius:6px;padding:3px 5px">
         <span style="font-size:11px;font-weight:bold;color:${filled?'#8cf':'var(--dim)'};padding:0 2px;flex-shrink:0">${I18N.t('formation.slotN',{n:i+1})}</span>
-        <button class="btn btn-sm" onclick="saveFormationSlot(${i})" style="font-size:10px;padding:3px 6px;flex:1" title="${I18N.t('formation.saveCurrentTitle')}">${I18N.t('formation.saveBtn')}</button>
-        <button class="btn btn-sm" onclick="loadFormationSlot(${i})" ${filled?'':'disabled'} style="font-size:10px;padding:3px 6px;flex:1;${filled?'border-color:#8cf;color:#8cf':'opacity:.5;cursor:not-allowed'}" title="${I18N.t('formation.loadTitle')}">${I18N.t('formation.loadBtn')}</button>
+        <button class="btn btn-sm" onclick="saveFormationSlot(${i})" style="font-size:10px;padding:3px 4px;flex:1;min-height:34px;display:grid;place-items:center;text-align:center;line-height:1.2;white-space:normal" title="${I18N.t('formation.saveCurrentTitle')}">${I18N.t('formation.saveBtn')}</button>
+        <button class="btn btn-sm" onclick="loadFormationSlot(${i})" ${filled?'':'disabled'} style="font-size:10px;padding:3px 4px;flex:1;min-height:34px;display:grid;place-items:center;text-align:center;line-height:1.2;white-space:normal;${filled?'border-color:#8cf;color:#8cf':'opacity:.5;cursor:not-allowed'}" title="${I18N.t('formation.loadTitle')}">${I18N.t('formation.loadBtn')}</button>
       </div>`;
     }).join('')}
   </div>`;
