@@ -462,16 +462,17 @@
           // 페이즈당 4개 단위 entries 렌더 (사용자 요청 2026-06-16). 구버전(단일 ko/en) 폴백 유지.
           const _entries=(_diary.entries&&_diary.entries.length)?_diary.entries:[{t:_diary.title,ko:_diary.ko,en:_diary.en}];
           const _ver5w=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
-          // 5W 정보바 셀 — 이미지(인물/물품) 또는 라벨+값. 사용자 요청 2026-06-16 (BAEKGU_VOYAGE_LOG.html UI).
+          // 5W 정보바 셀 — 라벨(누가/무엇을/언제/어디서) 제거, 값만 표시. 사용자 요청 2026-06-17 (몰입 저해 요소 제거).
+          //   인물/물품은 이미지 + 값, 시점/장소는 아이콘 + 값만 노출 (label 인자는 미사용).
           const _w5cellImg=function(img,fb,label,val){
             return `<div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.28);border:1px solid ${phCol}22;border-radius:6px;padding:4px 7px;min-width:0">
               <img src="${img}${_ver5w}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.5)" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${fb}',style:'font-size:18px;flex-shrink:0'}))">
-              <div style="min-width:0"><div style="font-size:8px;color:${phCol};letter-spacing:.5px">${label}</div><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${val||'—'}</div></div>
+              <div style="min-width:0"><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${val||'—'}</div></div>
             </div>`;
           };
           const _w5cellTxt=function(ic,label,val){
-            return `<div style="background:rgba(0,0,0,.28);border:1px solid ${phCol}22;border-radius:6px;padding:4px 8px;min-width:0">
-              <div style="font-size:8px;color:${phCol};letter-spacing:.5px">${ic} ${label}</div><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:normal;word-break:keep-all;line-height:1.3">${val||'—'}</div>
+            return `<div style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.28);border:1px solid ${phCol}22;border-radius:6px;padding:4px 8px;min-width:0">
+              <span style="font-size:13px;flex-shrink:0">${ic}</span><div style="font-size:11px;color:#e6edf5;font-weight:bold;white-space:normal;word-break:keep-all;line-height:1.3">${val||'—'}</div>
             </div>`;
           };
           const _w5bar=function(e){

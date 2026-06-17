@@ -2781,18 +2781,19 @@ function _startTacticGauge(label,durMs){
     const fill=document.getElementById('cb-tg-fill');
     const lbl=document.getElementById('cb-tg-label');
     if(!g||!fill)return;
+    // 이전 'ready 라벨' 타이머 정리 — 더블클릭/연속클릭 시 stale 타이머가 라벨/표시를 흔들지 않게.
+    if(combatState)clearTimeout(combatState._tacticGaugeTimer);
     if(lbl)lbl.textContent='⚡ '+I18N.t('combat.tacticCharging')+' → '+label;
-    g.style.display='block';
+    g.style.display='block';   // 한 번 표시되면 전투 내내 유지 — 자동 숨김 제거 (사용자 요청 2026-06-17: 여러 번 클릭해도 게이지 바가 사라지지 않게)
     fill.style.transition='none';
     fill.style.width='0%';
     void fill.offsetWidth;  // reflow → transition 재시작 보장
     fill.style.transition='width '+durMs+'ms linear';
     requestAnimationFrame(()=>{const f=document.getElementById('cb-tg-fill');if(f)f.style.width='100%';});
-    if(combatState)clearTimeout(combatState._tacticGaugeTimer);
     const _t=setTimeout(()=>{
       const l2=document.getElementById('cb-tg-label');
       if(l2)l2.textContent='✅ '+I18N.t('combat.tacticReady')+' — '+label;
-      setTimeout(()=>{const gg=document.getElementById('cb-tactic-gauge');if(gg&&(!combatState||!combatState.done))gg.style.display='none';},1400);
+      // 게이지는 숨기지 않고 그대로 둠 — 다음 전술 사용 시 새 충전 사이클로 갱신.
     },durMs);
     if(combatState)combatState._tacticGaugeTimer=_t;
   }catch(e){console.warn('[tactic gauge]',e);}
@@ -3408,56 +3409,37 @@ function showBossVictoryEpilogue(onDone){
   // 사용자 요청 (2026-06-06): 영문판 화자명 한글 잔재 제거 — i18n 라우팅
   const _spUrsa=I18N.t('speaker.ursaMajor');
   const _spBk=I18N.t('speaker.baekgu');
-  const lines=[
+  const _spSys=I18N.t('actTrans.2.sysSp');
+  const _raw=[
     {sp:_spUrsa,tx:I18N.t('ursa.outro.1')},
     {sp:_spUrsa,tx:I18N.t('ursa.outro.2')},
     {sp:_spUrsa,tx:I18N.t('ursa.outro.3')},
-    {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys1')},
+    {sp:_spSys,tx:I18N.t('ursa.outro.sys1')},
     {sp:_spBk,tx:I18N.t('ui.victoryLine1',{nm:cmdName})},
     {sp:_spBk,tx:I18N.t('ursa.outro.bk')},
-    {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys2')},
+    {sp:_spSys,tx:I18N.t('ursa.outro.sys2')},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd1')},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd2')},
     {sp:_spBk,tx:I18N.t('ui.victoryLine2',{nm:cmdName})},
     {sp:cmdName,tx:I18N.t('ursa.outro.cmd3')},
-    {sp:I18N.t('actTrans.2.sysSp'),tx:I18N.t('ursa.outro.sys3')}
+    {sp:_spSys,tx:I18N.t('ursa.outro.sys3')}
   ];
-  let _idx=0;
-  function _renderLine(){
-    const l=lines[_idx];
-    const isFinal=_idx===lines.length-1;
-    const isUrsa=l.sp==='우르사 메이저'||l.sp==='Ursa Major';
-    const isSys=l.sp==='시스템'||l.sp==='System';
-    const isBaekgu=(l.sp=='백구'||l.sp=='Baekgu');
-    const spColor=isUrsa?'#ff3366':isSys?'#66ffcc':isBaekgu?'var(--cyan)':'var(--gold)';
-    const spIc=isUrsa?'💀':isSys?'⚡':isBaekgu?'🐕':'⚑';
-    const portrait=charPortraitHTML(l.sp,spIc,216,spColor);
-    // 배경 그라데이션: 우르사=어두운 적색 / 시스템=황금 / 그 외=영광스러운 분위기
-    const bgGrad=isUrsa
-      ?'linear-gradient(135deg,rgba(80,10,10,.85),rgba(15,2,2,.95))'
-      :isSys
-        ?'linear-gradient(135deg,rgba(255,215,0,.15),rgba(20,30,40,.85))'
-        :'linear-gradient(135deg,rgba(40,80,140,.25),rgba(10,15,30,.9))';
-    const borderColor=isUrsa?'rgba(255,80,80,.6)':isSys?'rgba(255,215,0,.55)':'rgba(120,180,255,.5)';
-    openModal(I18N.t('modal.finalEpilogue'),
-      `<div style="padding:14px;min-height:240px">
-        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:16px;background:${bgGrad};border:1.5px solid ${borderColor};border-radius:12px;box-shadow:0 0 24px ${borderColor}">
-          ${portrait}
-          <div style="flex:1">
-            <div style="font-size:13px;color:${spColor};font-weight:bold;margin-bottom:6px;letter-spacing:1.5px">${l.sp}</div>
-            <div style="font-size:17px;color:var(--yellow);line-height:1.85;word-break:keep-all;text-shadow:0 1px 2px rgba(0,0,0,.6)">"${l.tx}"</div>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px">${_idx+1} / ${lines.length}</div>
-      </div>`,
-      [
-        isFinal
-          ? {txt:I18N.t('outro.confirmReward'),fn:()=>{closeModal();if(typeof onDone==='function')onDone();},cls:'btn-gold'}
-          : {txt:I18N.t('ui.continueArrow'),fn:()=>{_idx++;_renderLine();},cls:'btn-gold'}
-      ]
-    );
+  // 사용자 요청 2026-06-17: 에필로그 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC)으로 변경.
+  //   화자별 char(초상)·color 매핑 — 우르사='ursa', 시스템='system', 백구='baekgu1', 사령관='commander'.
+  const scenes=_raw.map(function(l){
+    let _char,_color;
+    if(l.sp===_spUrsa){_char='ursa';_color='#ff3366';}
+    else if(l.sp===_spSys){_char='system';_color='#66ffcc';}
+    else if(l.sp===_spBk){_char='baekgu1';_color='#66ddff';}
+    else {_char='commander';_color='#00f3ff';}
+    return {char:_char,name:l.sp,color:_color,text:l.tx};
+  });
+  if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
+    window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onDone==='function')onDone();}});
+  } else {
+    // 폴백: 컷신 시스템 미로드 시에도 진행 보장
+    if(typeof onDone==='function')onDone();
   }
-  _renderLine();
 }
 
 // ─── 보스 격파 특별 셀레브레이션 팝업 (지구 해방 선언) ──────────
@@ -3471,7 +3453,7 @@ function showBossCelebration(onDone){
   const survivors=(G.fleet||[]).filter(s=>s.hp>0).length;
   const html=`
     <div style="padding:22px 18px;text-align:center;background:radial-gradient(ellipse at center,rgba(20,20,60,.6),rgba(0,0,0,.95));border-radius:8px">
-      <div style="font-size:64px;margin-bottom:8px;animation:pulse 1.4s infinite;text-shadow:0 0 30px gold,0 0 60px gold">🌍</div>
+      <img src="${(typeof planetImgSrc==='function')?planetImgSrc('P31'):'img/planets/P31.png'}" alt="" style="width:92px;height:92px;border-radius:50%;object-fit:cover;margin-bottom:8px;animation:pulse 1.4s infinite;box-shadow:0 0 30px gold,0 0 60px rgba(255,215,0,.45);border:2px solid rgba(255,215,0,.6);display:inline-block" onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'🌍',style:'font-size:64px;margin-bottom:8px;animation:pulse 1.4s infinite;text-shadow:0 0 30px gold,0 0 60px gold'}))">
       <div style="font-size:30px;font-weight:bold;background:linear-gradient(90deg,#ffd700,#ff66cc,#66ffff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:8px;margin-bottom:6px;background-size:200% 100%;animation:shimmer 3s linear infinite">${I18N.t('ui.earthFreedom')}</div>
       <div style="font-size:13px;color:var(--cyan);letter-spacing:3px;margin-bottom:18px">EARTH LIBERATED · 100Y SIEGE ENDED</div>
       <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;margin:18px 0;padding:14px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.3);border-radius:10px">
