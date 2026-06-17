@@ -26,6 +26,8 @@ en.png
 # Electron 빌드 산출물
 dist/
 out/
+# 로컬 에디터/Claude 설정 (머신별 — 공유 안 함)
+.claude/
 # 임시 스크린샷 업로드
 git01.png
 # i18n 추출 산출물 (scripts/extract-i18n.js 의 출력 — 재생성 가능)
