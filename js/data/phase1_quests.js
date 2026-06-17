@@ -443,7 +443,7 @@ const PHASE1_QUESTS={
       id:'p1_q05m', type:'story_quest', category:'hidden', phase:1,
       ic:'🎯', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 좌표 확정 · 거북선 코어', en:'Yi Sun-sin Coordinates · Geobukseon Core'},
-      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "우르사 알파. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... 우르사 알파... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 페이즈 1 종료 시 3단편 통합 완성도 확인.',
+      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "우르사 알파. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... 우르사 알파... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 임무 종료 시 3단편 통합 완성도 확인.',
             en:'Coordinates confirmed. Last Geobukseon fragment — Active Core blueprint 3/3 — recovered from antenna stream.'},
       objectives:[
         {type:'explore', target:'antenna_amp', qty:1, label:{ko:'안테나 신호 증폭 가동', en:'Activate antenna amp'}},
@@ -507,7 +507,7 @@ const PHASE1_CUTSCENES_KO={
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 Ring 1. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'}
   ],
 
@@ -523,24 +523,24 @@ const PHASE1_CUTSCENES_KO={
   // ─── CH02-B "크리그의 그림자" (P06 도착) ───
   p1_ch02b:[
     {char:'hero04', name:'가가린', color:'#88ccff', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'크리그 소형 3기, 중형 지휘선 1기 확인됩니다. 광부 민간인 7명 억류 중이에요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'크리그를 여기서 만날 줄은...'},
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'지구 봉쇄만 하는 게 아니야. 이 구역도 건드리고 있어.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'지구 봉쇄만 하는 게 아니야. 이 구역도 건드리고 있어.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'먼저 사람부터.'}
   ],
 
     // ─── CH02-C "신호의 근원" (P09 도착) ───
   p1_ch02c:[
     {char:'hero04', name:'가가린', color:'#88ccff', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'해적 소형 2기, 지휘선 1기 감지됩니다. 기지 외곽 배치.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
   ],
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'system', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},

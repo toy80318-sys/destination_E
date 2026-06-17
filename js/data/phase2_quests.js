@@ -99,8 +99,8 @@ const PHASE2_QUESTS={
       id:'p2_q06m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'마르코의 칩 해독', en:'Marco\'s Chip Decode'},
-      desc:{ko:'페이즈 1 버나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 카스텔룸 수퍼비아 집하장 —32구역 경유."',
-            en:'Marco (already joined Phase 1) deepens trust. Chiks Crystal Shard ×2 → decode Aureus Information Chip → Krieg spy route to Castellum zone-32.'},
+      desc:{ko:'버나드 프라임에서 합류한 마르코, 우르사 작전 완수 후 신뢰 한 단계 깊어짐.\n마르코 작업대에서 아우레우스 정보 칩 해독 — 치크스 결정 파편 ×2 소비(암호 해석 매체 제작) → 칩 해독 성공.\n해독 결과: "크리그 스파이가 카스텔룸 수퍼비아 집하장 —32구역 경유."',
+            en:'Marco (already joined earlier) deepens trust. Chiks Crystal Shard ×2 → decode Aureus Information Chip → Krieg spy route to Castellum zone-32.'},
       objectives:[
         {type:'gather', item:'G17', qty:2, label:{ko:'치크스 결정 파편 ×2 암호 해석 매체', en:'Chiks Crystal Shard ×2 cipher media'}},
       ],
@@ -197,8 +197,8 @@ const PHASE2_QUESTS={
       id:'p2_q07m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린의 비밀 항로', en:'Gagarin\'s Secret Route'},
-      desc:{ko:'페이즈 1 티가든에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
-            en:'Gagarin (already joined Phase 1) recovers old memories from VOSTOK. Energy Core ×2 + Superbia Graviton ×1 → "Soviet covert route to Omicron Persei."'},
+      desc:{ko:'티가든에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
+            en:'Gagarin (already joined earlier) recovers old memories from VOSTOK. Energy Core ×2 + Superbia Graviton ×1 → "Soviet covert route to Omicron Persei."'},
       objectives:[
         {type:'gather', item:'G02', qty:2, label:{ko:'에너지 코어 ×2 항법 재가동', en:'Energy Core ×2 reactivation'}},
         {type:'gather', item:'R07', qty:1, label:{ko:'수퍼비아 중력자 ×1 중력자', en:'Superbia Graviton ×1 graviton'}},
@@ -445,8 +445,8 @@ const PHASE2_QUESTS={
       rewardItems:[],
       rewardFlags:['turtle_captain_freed'],
       locked:true,
-      lockReason:{ko:'페이즈 3 저항군 기지(저항군 벙커존)에서 난중일기 영인본을 먼저 입수하라.',
-                  en:'Acquire Nanjung Ilgi Facsimile at the Resistance base (underground bunker) in Phase 3 first.'},
+      lockReason:{ko:'저항군 기지(저항군 벙커존)에서 난중일기 영인본을 먼저 입수하라.',
+                  en:'Acquire Nanjung Ilgi Facsimile at the Resistance base (underground bunker) first.'},
       cutscene_pre:null, cutscene_post:null
     },
     // ── Q10-M 이순신(H01) 합류 (영웅 퀘스트 + 세트 보상) ──
@@ -470,8 +470,8 @@ const PHASE2_QUESTS={
       id:'p2_q1004', type:'story_quest', category:'main', phase:2,
       ic:'🏃', npc:'시스템', npcIc:'📡', npcKey:'system',
       nm:{ko:'아이젠클로 대면 · 전략 철수', en:'Eisenklaue · Strategic Retreat'},
-      desc:{ko:'크리그 지휘관 아이젠클로 등장: "그 캡슐은 우리 방어 코어야. 내놔라."\n전면전 불가. 이순신: "지금은 물러서는 것이 전략이다. 철수."\nG11 ×1 소비(연막 폭발물 즉석 제조) → 탈출 성공. 페이즈 2 완료.',
-            en:'Eisenklaue appears. Yi Sun-sin: "Retreat is strategy now." Krieg Bloodstone ×1 (smoke bomb) → escape. Phase 2 done.'},
+      desc:{ko:'크리그 지휘관 아이젠클로 등장: "그 캡슐은 우리 방어 코어야. 내놔라."\n전면전 불가. 이순신: "지금은 물러서는 것이 전략이다. 철수."\nG11 ×1 소비(연막 폭발물 즉석 제조) → 탈출 성공. 임무 완료.',
+            en:'Eisenklaue appears. Yi Sun-sin: "Retreat is strategy now." Krieg Bloodstone ×1 (smoke bomb) → escape. Mission complete.'},
       objectives:[
         {type:'gather', item:'G11', qty:1, label:{ko:'크리그 혈철석 ×1 연막 폭발물', en:'Krieg Bloodstone ×1 smoke bomb'}},
       ],
@@ -567,12 +567,12 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH05 "집결" (페이즈 2 결말 · Q10-04 완료) ───
   p2_ch05:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내가 봉인된 이유가 저 자였군. 내 전술 데이터를 방패로 쓰다니. 페이즈 3에서 반드시 청산해야 할 빚이 생겼다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내가 봉인된 이유가 저 자였군. 내 전술 데이터를 방패로 쓰다니. 다음 단계에서 반드시 청산해야 할 빚이 생겼다.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'크리그 방어 알고리즘 약점을 이제 우리가 알아. 이순신 장군의 전술이 거꾸로 그들의 허점을 가리켜.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'다음 루트는 내가 잡겠어. 크리그 보급 거점 — 전부 알고 있어.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'생체 병기 설계도는 LHS에서 파괴했어. 하지만 백업이 어딘가에 있을 거야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'다음 계획을 세우자. {사령관}.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 2 완료. 페이즈 3 — 행성 11~15 · 저항군과의 연대.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 다음 단계 — 행성 11~15 · 저항군과의 연대.'}
   ]
 };
 
@@ -654,12 +654,12 @@ const PHASE2_CUTSCENES_EN={
 
   // ─── CH05 "The Gathering" (Phase 2 finale · Q10-04 complete) ───
   p2_ch05:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue... so that is the one behind my sealing. To use my tactical data as a shield. In Phase 3, there is a debt I must settle, without fail.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue... so that is the one behind my sealing. To use my tactical data as a shield. In the next stage, there is a debt I must settle, without fail.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Now we know the weakness of the Krieg defense algorithm. General Yi Sun-sin\'s tactics point straight back at their blind spot.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'I\'ll chart the next route. Krieg\'s supply outposts — I know every one of them.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'I destroyed the bio-weapon blueprints at LHS. But there\'s sure to be a backup somewhere.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Let us lay the next plan. {commander}.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 2 complete. Phase 3 — planets 11 through 15 · alliance with the resistance.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. Next stage — planets 11 through 15 · alliance with the resistance.'}
   ]
 };
 

@@ -477,6 +477,31 @@
         <button class="btn" onclick="openMysteryBox(${tier})" ${aff?'':'disabled'} style="font-size:11px;padding:5px 12px;background:${aff?'rgba(255,200,80,.15)':'rgba(50,50,50,.3)'};border-color:${aff?cfg.col:'var(--bdr)'};color:${aff?cfg.col:'var(--dim)'};font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('ui.openBox')}</button>
       </div>`;
     }
+    // 제작 재료 1:3 맞교환 카드 (사용자 요청 2026-06-17) — 미스테리박스 하단.
+    //   받을 재료 1개 + 줄 재료 3개(슬롯) → 1:3 교환. 우측 '교환' 버튼.
+    function _materialBarterCard(){
+      const _mats=(typeof COMMODITIES!=='undefined')?COMMODITIES.filter(c=>c.material):[];
+      if(!_mats.length)return '';
+      const _nm=c=>(typeof commDisplayNm==='function'?commDisplayNm(c):c.nm)||c.id;
+      const recvOpts=_mats.map(c=>`<option value="${c.id}">${_nm(c)}</option>`).join('');
+      const owned=_mats.filter(c=>(G.materials&&G.materials[c.id]||0)>0);
+      const giveOpts='<option value="">—</option>'+owned.map(c=>`<option value="${c.id}">${_nm(c)} ×${G.materials[c.id]}</option>`).join('');
+      const _selSty='font-size:10px;padding:3px 4px;background:rgba(0,0,0,.55);color:var(--txt);border:1px solid rgba(255,200,80,.35);border-radius:4px;max-width:46%';
+      return `<div style="margin-top:8px;background:rgba(255,200,80,.06);border:1.5px solid rgba(255,200,80,.35);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <div style="color:#ffcc66;font-size:12px;font-weight:bold;line-height:1.4">${I18N.t('bm.barterTitle')}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px">
+            <span style="font-size:10px;color:var(--dim)">${I18N.t('bm.barterRecv')}</span>
+            <select id="bm-ex-recv" style="${_selSty}">${recvOpts}</select>
+            <span style="font-size:10px;color:var(--dim);margin-left:4px">${I18N.t('bm.barterGive')}</span>
+            <select id="bm-ex-give0" style="${_selSty}">${giveOpts}</select>
+            <select id="bm-ex-give1" style="${_selSty}">${giveOpts}</select>
+            <select id="bm-ex-give2" style="${_selSty}">${giveOpts}</select>
+          </div>
+        </div>
+        <button class="btn" onclick="exchangeMaterials()" style="font-size:11px;padding:5px 12px;background:rgba(255,200,80,.15);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('bm.barterBtn')}</button>
+      </div>`;
+    }
     // (구버전 blackMarketHtml 변수는 _bmBtn(3) 참조 오류로 제거 — 현재는 본문 innerHTML 에서 _bmBtn(0/1/2)을 인라인 호출)
     // P30 보이드 보스 소문 (모든 보이드 행성 보유 시 백구가 귀띔) — 격파/진행 상태별 메시지
     const voidBossRumorHtml=(()=>{
@@ -658,7 +683,8 @@
             ${_bmHere
               ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
                   ${_bmBtn(0)}${_bmBtn(1)}${_bmBtn(2)}${_bmBtn(3)}
-                </div>`
+                </div>
+                ${_materialBarterCard()}`
               : `<div style="background:rgba(20,20,30,.35);border:1px dashed rgba(255,255,255,.12);border-radius:10px;padding:14px;text-align:center">
                   <div style="font-size:30px;opacity:.4;margin-bottom:6px">🎁</div>
                   <div style="color:var(--dim);font-size:12px;line-height:1.6">${I18N.t('ui.noBlackmarketHerePlanet')}<br><span style="font-size:11px;opacity:.7">매 턴 30% 행성에 랜덤 등장<br>${I18N.t('ui.exploreOtherPlanets')}</span></div>
@@ -749,6 +775,34 @@
   // ═══ CODEX — js/modules/codex.js 로 분할됨 (2026-06-08, v1.0.0-beta.88) ═══
   //   · 727줄, 12개 함수 (renderCodexTab, showCodex*Modal, _markShipDiscovered 등)
   
+
+  // 제작 재료 1:3 맞교환 — 줄 재료 3개 소비 → 받을 재료 1개 획득 (사용자 요청 2026-06-17)
+  function exchangeMaterials(){
+    try{
+      const recv=document.getElementById('bm-ex-recv');
+      const g0=document.getElementById('bm-ex-give0'),g1=document.getElementById('bm-ex-give1'),g2=document.getElementById('bm-ex-give2');
+      if(!recv||!g0||!g1||!g2)return;
+      const recvId=recv.value;
+      const gives=[g0.value,g1.value,g2.value].filter(Boolean);
+      if(!recvId||gives.length<3){notify(I18N.t('bm.barterPick'),'warn');return;}
+      // 줄 재료 수량 집계 후 보유량 검증 (중복 선택 포함)
+      const need={};gives.forEach(id=>{need[id]=(need[id]||0)+1;});
+      for(const id in need){ if(((G.materials&&G.materials[id])||0)<need[id]){notify(I18N.t('bm.barterShort'),'err');return;} }
+      // 3개 소비 → 1개 획득
+      gives.forEach(id=>{ if(typeof consumeMaterialQty==='function')consumeMaterialQty(id,1); });
+      if(!G.materials)G.materials={};
+      G.materials[recvId]=(G.materials[recvId]||0)+1;
+      if(typeof _validateCargoIntegrity==='function')_validateCargoIntegrity();
+      try{saveGame(true);}catch(e){}
+      try{updateHUD();}catch(e){}
+      const _comm=(typeof COMMODITIES!=='undefined')?COMMODITIES.find(c=>c.id===recvId):null;
+      const _nm=(_comm&&typeof commDisplayNm==='function')?commDisplayNm(_comm):(recvId);
+      notify(I18N.t('bm.barterDone',{nm:_nm}),'ok');
+      try{if(typeof AudioMgr!=='undefined')AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
+      rerenderTab(renderTavernView);
+    }catch(e){console.warn('[barter]',e);}
+  }
+  try{if(typeof window!=='undefined')window.exchangeMaterials=exchangeMaterials;}catch(e){}
 
   // ─── 전역 노출 ─────────────────────────────────────────────
   window.renderTavernView=renderTavernView;

@@ -279,8 +279,8 @@ const PHASE3_QUESTS={
       id:'p3_q13h', type:'story_quest', category:'hidden', phase:3,
       ic:'⚜️', npc:'광개토대왕', npcIc:'🏹', npcKey:'hero03',
       nm:{ko:'광개토대왕 첫 만남', en:'Meet Gwanggaeto'},
-      desc:{ko:'글리제 항구 — 고구려 기치를 단 대형 상선. 광개토 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, 글리제 경매에서 최고가를 내야 하오."\n→ 광개토대왕 합류 조건 등록 (Phase 4 글리제 경매 낙찰 ~4,100만₡).',
-            en:'Gwanggaeto appears at Gliese port. Condition: win Gliese auction (~41M₡) in Phase 4.'},
+      desc:{ko:'글리제 항구 — 고구려 기치를 단 대형 상선. 광개토 등장.\n광개토: "이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, 글리제 경매에서 최고가를 내야 하오."\n→ 광개토대왕 합류 조건 등록 (이후 글리제 경매 낙찰 ~4,100만₡).',
+            en:'Gwanggaeto appears at Gliese port. Condition: win Gliese auction (~41M₡) later.'},
       objectives:[
         {type:'explore', target:'meet_gwanggaeto', qty:1, label:{ko:'광개토와 대화', en:'Talk to Gwanggaeto'}},
       ],
@@ -449,8 +449,8 @@ const PHASE3_QUESTS={
       id:'p3_q1504', type:'story_quest', category:'sub', phase:3,
       ic:'🚀', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
       nm:{ko:'저항군 대형 함선 구매', en:'Buy Resistance Capital Ship'},
-      desc:{ko:'마르코: "타이탄H 도크에서 저항군 대형 함선 살 수 있어. HP가 모든 클래스 중 최강이야."\nF06 저항군 대형 함선(1,020,000₡) 구매 → 페이즈 4 크리그 요새 공략 대비.',
-            en:'Resistance capital ship at 1,020,000₡ — HP top-class for Phase 4 fortress assault.'},
+      desc:{ko:'마르코: "타이탄H 도크에서 저항군 대형 함선 살 수 있어. HP가 모든 클래스 중 최강이야."\nF06 저항군 대형 함선(1,020,000₡) 구매 → 다음 단계 크리그 요새 공략 대비.',
+            en:'Resistance capital ship at 1,020,000₡ — HP top-class for the next-stage fortress assault.'},
       objectives:[
         {type:'explore', target:'p26_capital_ship', qty:1, label:{ko:'저항군 대형 함선 구매', en:'Buy Resistance capital'}},
       ],
@@ -586,7 +586,7 @@ const PHASE3_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#88ccff', text:'데이터 복호기가 해독한 정보와 일치해. 슈멜츠가 다음 목표야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내 전술 데이터로 우리를 막으려 하겠지. 하지만 나는 그의 허점도 알고 있어.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선이 완성되면 아이젠클로의 요새도 뚫린다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 페이즈 4 — 행성 16~20. 아이젠클로 추적. 거북선 완성.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 다음 단계 — 행성 16~20. 아이젠클로 추적. 거북선 완성.'}
   ],
 
   };
@@ -678,7 +678,7 @@ const PHASE3_CUTSCENES_EN={
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches the intel the data decoder cracked. Schmelz is the next target.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklau... he\'ll try to stop us with my own tactical data. But I know his weaknesses too.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Once the Geobukseon is complete, even Eisenklau\'s fortress can be breached.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Phase 4 — planets 16~20. Hunt Eisenklau. Complete the Geobukseon.'}
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Next stage — planets 16~20. Hunt Eisenklau. Complete the Geobukseon.'}
   ],
 
   };

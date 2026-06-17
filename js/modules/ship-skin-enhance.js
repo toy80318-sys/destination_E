@@ -421,7 +421,7 @@ function applyFormationPreset(name){
   notify(I18N.t('notify.formationApplied',{nm:I18N.t('formation.'+name)}),'ok');
   rerenderTab(renderGarageTab);
 }
-try{if(typeof window!=='undefined'){window._formationUnlocked=_formationUnlocked;window.applyFormationPreset=applyFormationPreset;}}catch(e){}
+try{if(typeof window!=='undefined'){window._formationUnlocked=_formationUnlocked;window.applyFormationPreset=applyFormationPreset;window.FORMATION_PRESETS=FORMATION_PRESETS;}}catch(e){}
 // ── 편대 저장 슬롯 3개 (사용자 요청 2026-06-16) — 내 편대 구성 저장/불러오기. 불러올 때 신규 함선 자동 충원 ──
 function saveFormationSlot(i){
   if(!G.fleetFormation||!Object.keys(G.fleetFormation).length){notify(I18N.t('formation.saveNothing'),'warn');return;}

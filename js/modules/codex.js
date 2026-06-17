@@ -861,7 +861,7 @@
           // 미발견 문명 — 카드 골격만 노출, 모든 정보를 ??? 처리
           return `<div style="background:rgba(0,0,0,.3);border:1px dashed var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:14px;opacity:.55">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bdr)">
-              <div style="width:126px;height:126px;border-radius:50%;flex-shrink:0;border:2px solid var(--bdr);background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:72px;color:var(--dim)">❔</div>
+              <div style="width:189px;height:189px;border-radius:50%;flex-shrink:0;border:2px solid var(--bdr);background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:108px;color:var(--dim)">❔</div>
               <div style="flex:1;min-width:0">
                 <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
                   <span style="font-size:22px;color:var(--dim)">❔</span>
@@ -877,9 +877,9 @@
         const planetImg=planetImgSrc(l.rep);
         return `<div style="background:rgba(0,0,0,.3);border:1px solid ${col}55;border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px ${col}22">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid ${col}44">
-            <div style="width:126px;height:126px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${col};box-shadow:0 0 16px ${col}66;background:radial-gradient(circle at center, ${col}33, #000);position:relative">
+            <div style="width:189px;height:189px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid ${col};box-shadow:0 0 16px ${col}66;background:radial-gradient(circle at center, ${col}33, #000);position:relative">
               <img src="${planetImg}" alt="${repName}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:66px">${l.icon||'🪐'}</div>
+              <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:99px">${l.icon||'🪐'}</div>
             </div>
             <div style="flex:1;min-width:0">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
@@ -919,9 +919,9 @@
         const _sysCard=(s)=>`<div style="background:rgba(0,0,0,.3);border:1px solid rgba(0,243,255,.25);border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,243,255,.08)">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(0,243,255,.2)">
             <!-- 좌측 84×84 원형 시스템 배경 이미지 — 문명 카드와 동일 구조 -->
-            <div style="width:126px;height:126px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--cyan);box-shadow:0 0 16px rgba(0,243,255,.4);background:radial-gradient(circle at center, rgba(0,243,255,.2), #000);position:relative">
+            <div style="width:189px;height:189px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--cyan);box-shadow:0 0 16px rgba(0,243,255,.4);background:radial-gradient(circle at center, rgba(0,243,255,.2), #000);position:relative">
               <img src="${s.img||''}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:66px">${s.icon||'📘'}</div>
+              <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:99px">${s.icon||'📘'}</div>
             </div>
             <div style="flex:1;min-width:0">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">

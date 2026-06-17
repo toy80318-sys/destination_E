@@ -285,6 +285,15 @@ function renderCombatView(body){
     <div id="cb-turn" style="color:var(--cyan);font-size:11px;flex-shrink:0">TURN 0</div>
     <div id="cb-status" style="color:var(--dim);font-size:11px;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${I18N.t('combat.statusPreparing')}</div>
   </div>
+  <!-- 함대 전술 충전 게이지 (사용자 요청 2026-06-17) — 다음 전술로 넘어갈 때 상단에 게이지 충전 모션 -->
+  <div id="cb-tactic-gauge" style="display:none;background:rgba(8,16,28,.95);border-bottom:1px solid var(--bdr);padding:3px 12px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="cb-tg-label" style="font-size:10px;color:var(--gold);white-space:nowrap;flex-shrink:0;font-weight:bold"></span>
+      <div style="flex:1;height:9px;background:rgba(0,0,0,.5);border-radius:5px;overflow:hidden;border:1px solid rgba(255,215,0,.35)">
+        <div id="cb-tg-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#ff8833,#ffd700);border-radius:5px;box-shadow:0 0 8px rgba(255,200,80,.6)"></div>
+      </div>
+    </div>
+  </div>
   <!-- 사용자 요청: 함대 전술 버튼은 헤더 바로 하단 1행에 정렬 표시 -->
   <div id="cb-tactics" style="background:rgba(8,16,28,.92);border-bottom:1px solid var(--bdr);padding:4px 10px;flex-shrink:0;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;min-height:42px"></div>
   <div id="cb-fleet-stats" style="background:rgba(8,16,28,.96);border-bottom:1px solid var(--bdr);padding:6px 14px;flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:11px;font-family:Courier New,monospace">
@@ -1352,10 +1361,8 @@ function drawCombatFrame(){
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
     if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      // 학익진 진형 수렴 속도 — 일반 재배치(0.0008)와 동일하게 맞춤. 사용자 보고 2026-06-16:
-      //   기존 0.00024는 너무 느려 진형이 눈에 띄게 형성되지 않음("학익진 누르면 변형되도록").
-      //   일반 이동속도와 동일하게 두어 '이동속도는 그대로 유지'하면서 진형이 실제로 형성된다.
-      const T=0.0008;
+      // 학익진 진형 수렴(이동) 속도 — 사용자 요청 2026-06-17: 일반 이동(0.0008)의 50% 속도로 천천히 수렴.
+      const T=0.0004;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
     } else {
@@ -2765,6 +2772,31 @@ function _showMerchantRescue(d){
     try{AudioMgr.playSfx('coin',{vol:0.8,cooldown:0});}catch(e){}
   }catch(e){console.warn('[merchant modal]',e);}
 }
+// ── 함대 전술 충전 게이지 — 다음 전술로 넘어갈 때(5초 충전) 전투화면 상단 게이지 충전 모션 ──
+//   (사용자 요청 2026-06-17) 일점사→학익진→시간차→테슬라→제네시스→데스티네이션 전환마다 호출.
+function _startTacticGauge(label,durMs){
+  durMs=durMs||5000;
+  try{
+    const g=document.getElementById('cb-tactic-gauge');
+    const fill=document.getElementById('cb-tg-fill');
+    const lbl=document.getElementById('cb-tg-label');
+    if(!g||!fill)return;
+    if(lbl)lbl.textContent='⚡ '+I18N.t('combat.tacticCharging')+' → '+label;
+    g.style.display='block';
+    fill.style.transition='none';
+    fill.style.width='0%';
+    void fill.offsetWidth;  // reflow → transition 재시작 보장
+    fill.style.transition='width '+durMs+'ms linear';
+    requestAnimationFrame(()=>{const f=document.getElementById('cb-tg-fill');if(f)f.style.width='100%';});
+    if(combatState)clearTimeout(combatState._tacticGaugeTimer);
+    const _t=setTimeout(()=>{
+      const l2=document.getElementById('cb-tg-label');
+      if(l2)l2.textContent='✅ '+I18N.t('combat.tacticReady')+' — '+label;
+      setTimeout(()=>{const gg=document.getElementById('cb-tactic-gauge');if(gg&&(!combatState||!combatState.done))gg.style.display='none';},1400);
+    },durMs);
+    if(combatState)combatState._tacticGaugeTimer=_t;
+  }catch(e){console.warn('[tactic gauge]',e);}
+}
 // ── 이순신 일점사 전술 ──────────────────────────────────────────
 // 발동 효과: ① 가장 앞쪽 적 1척을 집중사격 타겟으로 지정 — 아군 전 함선이 그 1척을 집중 공격
 //           ② 남은 전투 내내 아군 공격력 ×2
@@ -2806,6 +2838,7 @@ function activateSunsinFocus(){
   const _h=G.heroes||[];
   if(!(_h.includes('H01')&&_h.includes('H05')))return;
   combatState._haikjinPending=true;
+  try{_startTacticGauge(I18N.t('ult.crane'),5000);}catch(e){}
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._haikjinPending||combatState._haikjinUsed)return;
     _showHaikjinButton();
@@ -2842,61 +2875,40 @@ function _setupHaikjinFormation(){
   if(pl.length===0||en.length===0)return;
   combatState._haikjinFormation=true;
   combatState._haikjinT0=performance.now();
-  // 방어 점수: 체력(maxHP) + 실드(maxSH) + 방어력(DEF×10) — 사용자 명시 3개 핵심 스탯
-  //  · 같은 점수일 경우 장갑·실드 tier로 미세 가중
-  function _defScore(u){
-    return (+u.maxHP||+u.hp||1)
-         + (+u.maxSH||0)
-         + (+u.DEF||0)*10
-         + (+u.armorTier||0)*25
-         + (+u.shieldTier||0)*15;
-  }
-  const tank=pl.slice().sort((a,b)=>_defScore(b)-_defScore(a))[0];
-  // 적군 중심점 (적 함선의 평균 위치) — _unitPos는 drawCombatFrame이 매 프레임 갱신
+  // ── 편대편성 '학익진(crane)' 프리셋과 동일한 진형으로 배치 (사용자 요청 2026-06-17) ──
+  //   crane: 6열(0=전방)×8행 그리드의 [col,row] 셀 목록(우선순위 순, 첫 셀=기함).
+  //   좌표는 _haikjinTarget(x,y)에 저장 → drawCombatFrame이 lerp 보간(현재의 50% 속도)으로 천천히 수렴.
+  const CRANE=(typeof window!=='undefined'&&window.FORMATION_PRESETS&&window.FORMATION_PRESETS.crane)
+    ||[[0,0],[0,7],[0,1],[0,6],[1,1],[1,6],[1,2],[1,5],[2,2],[2,5],[2,3],[2,4],[3,3],[3,4],[4,3],[4,4]];
+  // 적군 중심/분산 — _unitPos는 drawCombatFrame이 매 프레임 갱신(=_curX/_curY와 동일 로컬 좌표계)
   const _up=_unitPos||{};
   const _eposx=en.map(u=>_up[u.id]?_up[u.id].x:0);
   const _eposy=en.map(u=>_up[u.id]?_up[u.id].y:0);
   const cxE=_eposx.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
   const cyE=_eposy.reduce((a,b)=>a+b,0)/Math.max(1,en.length);
-  // 적 함대 spread (적의 분산 크기 — 진형 크기 결정 기준)
   const spread=Math.max(...en.map(u=>{const p=_up[u.id]||{};return Math.hypot((p.x||0)-cxE,(p.y||0)-cyE);}),120);
-  // 사용자 요청 (2026-06-06, hack.png 참조): 학익진 = U자 호 형태, 열린 면이 적군을 향함
-  //   · 16척을 현재 Y 좌표 기준 정렬 → 위쪽 절반은 U의 상단 arm, 아래쪽 절반은 하단 arm
-  //   · U 호의 중심 C(가상 원 중심)은 적 좌측 가까이 → 호의 안쪽(curve)은 좌측, 열린 면은 우측(적군)
-  //   · 각 arm 은 호의 중간(좌측 back) → 외각(상/하측 tip, 적 방향)으로 배치
-  const R_arc=spread+220;                 // 호 반경 (전체 진형 크기)
-  const C_x=cxE-R_arc*0.65;               // 호 중심: 적 좌측 (호의 좌측 끝이 깊이 들어가도록)
-  const C_y=cyE;                          // Y는 적 중심과 같은 높이
-  const ARC_HALF=Math.PI*0.65;            // 각 arm 의 호 각도 범위(rad): π*0.65 ≈ 117° → 두 arm 합 234°
-  // 모든 아군 함선을 현재 Y 좌표 기준 정렬 (tank 구분 없이 일괄 분할)
-  const sorted=pl.slice().sort((a,b)=>{
-    const ya=(_up[a.id]?_up[a.id].y:0);
-    const yb=(_up[b.id]?_up[b.id].y:0);
-    return ya-yb;
-  });
-  const n=sorted.length;
-  if(n>0){
-    const half=Math.ceil(n/2);
-    const top=sorted.slice(0,half);       // Y 작은 쪽 = 위쪽 → U 상단 arm
-    const bottom=sorted.slice(half);      // Y 큰 쪽 = 아래쪽 → U 하단 arm
-    // 상단 arm: 호의 back(π=좌측) → tip(π+ARC_HALF=상우측)
-    //   캔버스 좌표: +X=우, +Y=아래. sin(angle)<0 이면 캔버스에서 위쪽.
-    //   t=0 → back of U (좌측), t=1 → upper tip (우상단, 적 정면 위)
-    top.forEach((p,i)=>{
-      const t=top.length===1?0.5:(i/(top.length-1));
-      const angle=Math.PI+t*ARC_HALF;     // π → π+0.65π (≈ 1.65π = 297°)
-      p._haikjinTargetX=C_x+R_arc*Math.cos(angle);
-      p._haikjinTargetY=C_y+R_arc*Math.sin(angle);   // sin가 음수 → 캔버스 위쪽
-    });
-    // 하단 arm: 호의 back(π=좌측) → tip(π-ARC_HALF=하우측)
-    //   t=0 → back of U (좌측), t=1 → lower tip (우하단, 적 정면 아래)
-    bottom.forEach((p,i)=>{
-      const t=bottom.length===1?0.5:(i/(bottom.length-1));
-      const angle=Math.PI-t*ARC_HALF;     // π → π-0.65π (≈ 0.35π = 63°)
-      p._haikjinTargetX=C_x+R_arc*Math.cos(angle);
-      p._haikjinTargetY=C_y+R_arc*Math.sin(angle);   // sin가 양수 → 캔버스 아래쪽
-    });
+  // 셀 간격 — 플레이어 함선 크기 기준 (일반 편대 배치 ×1.7과 유사)
+  const pSizes=pl.map(p=>(typeof _shipDrawSize==='function')?_shipDrawSize(p):{w:60,h:40});
+  const cellW=Math.max(40,...pSizes.map(s=>s.w))*1.6;
+  const cellH=Math.max(28,...pSizes.map(s=>s.h))*1.6;
+  // 크레인 진형 앵커: 전방열(col 0)=적 정면 좌측, col 증가 시 후방(좌측)으로 / 8행 세로 중앙(=3.5) 정렬
+  const frontX=cxE-spread-cellW*0.8;
+  const rowMid=3.5;  // 8행 그리드 중앙
+  // 방어 점수 (체력+실드+방어력×10 + 장갑/실드 tier) — 편대편성 프리셋과 동일한 배정 우선순위
+  function _defScore(u){
+    return (+u.maxHP||+u.hp||1)+(+u.maxSH||0)+(+u.DEF||0)*10+(+u.armorTier||0)*25+(+u.shieldTier||0)*15;
   }
+  // 배정 순서 — 기함(첫 함선) 우선, 나머지는 방어 점수 높은 순 (applyFormationPreset과 동일)
+  const _flagId=(typeof G!=='undefined'&&G.fleet&&G.fleet[0])?G.fleet[0].id:null;
+  const ordered=pl.slice().sort((a,b)=>{
+    if(a.id===_flagId)return -1; if(b.id===_flagId)return 1;
+    return _defScore(b)-_defScore(a);
+  });
+  ordered.forEach((p,idx)=>{
+    const cell=CRANE[idx]; if(!cell)return;   // 16척(프리셋 셀 수) 초과분은 진형 미지정 → 일반 배치 유지
+    p._haikjinTargetX=frontX-cell[0]*cellW;          // col 0=전방(적 가까이), col↑=후방
+    p._haikjinTargetY=cyE+(cell[1]-rowMid)*cellH;    // row 0=위, row 7=아래 (중앙 정렬)
+  });
 }
 
 // 학익진 전술 — 아군 ATT ×3 (일점사 ×2 위에 덮어쓰기, 즉 원본 대비 ×3)
@@ -2931,6 +2943,7 @@ function activateHaikjin(){
   const _h2=G.heroes||[];
   if(!(_h2.includes('H01')&&_h2.includes('H05')&&_h2.includes('H06')))return;
   combatState._einsteinPending=true;
+  try{_startTacticGauge(I18N.t('ult.einstein'),5000);}catch(e){}
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._einsteinPending||combatState._einsteinUsed)return;
     _showEinsteinButton();
@@ -2980,6 +2993,7 @@ function activateEinsteinTimeAttack(){
   const _h3=G.heroes||[];
   if(!(_h3.includes('H01')&&_h3.includes('H05')&&_h3.includes('H06')&&_h3.includes('H07')))return;
   combatState._teslaPending=true;
+  try{_startTacticGauge(I18N.t('ult.tesla'),5000);}catch(e){}
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._teslaPending||combatState._teslaUsed)return;
     _showTeslaButton();
@@ -3043,6 +3057,7 @@ function activateTeslaHyperspace(){
   const _h4=G.heroes||[];
   if(!(_h4.includes('H01')&&_h4.includes('H03')&&_h4.includes('H05')&&_h4.includes('H06')&&_h4.includes('H07')))return;
   combatState._genesisPending=true;
+  try{_startTacticGauge(I18N.t('ult.genesis'),5000);}catch(e){}
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._genesisPending||combatState._genesisUsed)return;
     _showGenesisButton();
@@ -3092,6 +3107,7 @@ function activateGenesisImpact(){
   // 영웅 8명 모두 영입 시에만 활성화
   if(!G.heroes||G.heroes.length<8)return;
   combatState._destinationPending=true;
+  try{_startTacticGauge(I18N.t('ult.destEarth'),5000);}catch(e){}
   setTimeout(()=>{
     if(!combatState||combatState.done||!combatState._destinationPending||combatState._destinationUsed)return;
     _showDestinationButton();

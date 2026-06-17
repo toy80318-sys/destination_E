@@ -182,8 +182,8 @@ const PHASE5_QUESTS={
       id:'p5_q2206', type:'story_quest', category:'hidden', phase:5,
       ic:'🌌', npc:'아인슈타인', npcIc:'🔬', npcKey:'hero06',
       nm:{ko:'시공 보정 알고리즘', en:'Spacetime Correction Algo'},
-      desc:{ko:'아인슈타인이 직접 작성한 시공 보정 알고리즘 — 전 함대에 적용 시 명중률 +20%.\nG28 ×4 소비 (알고리즘 검증).\n페이즈 5 종료 → 페이즈 6 (최종전 제타 레티쿨리) 진입 가능.',
-            en:'Earth Vintage Seeds ×4 → +20% accuracy. Phase 5 complete → Phase 6 (final Zeta Reticuli).'},
+      desc:{ko:'아인슈타인이 직접 작성한 시공 보정 알고리즘 — 전 함대에 적용 시 명중률 +20%.\nG28 ×4 소비 (알고리즘 검증).\n임무 종료 → 다음 단계 (최종전 제타 레티쿨리) 진입 가능.',
+            en:'Earth Vintage Seeds ×4 → +20% accuracy. Mission complete → next stage (final Zeta Reticuli).'},
       objectives:[
         {type:'gather', item:'G28', qty:4, label:{ko:'지구 빈티지 씨앗 ×4 검증', en:'Earth Vintage Seeds ×4 verify'}},
       ],
@@ -262,7 +262,7 @@ const PHASE5_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#ffd700', text:'지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'좌표 — 제타 레티쿨리. 우르사 메이저 본거지.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 진입한다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 5 완료. 페이즈 6 — 최종전 제타 레티쿨리·지구. 우르사 메이저 격파 · 지구 해방.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 다음 단계 — 최종전 제타 레티쿨리·지구. 우르사 메이저 격파 · 지구 해방.'}
   ]
 };
 
@@ -327,7 +327,7 @@ const PHASE5_CUTSCENES_EN={
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Earth is — just beyond. When we finish this — people will look at the sky again.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Coordinates — Zeta Reticuli. Ursa Major\'s stronghold.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'... We\'re going in.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 5 complete. Phase 6 — final battle at Zeta Reticuli and Earth. Defeat Ursa Major and liberate Earth.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. Next stage — final battle at Zeta Reticuli and Earth. Defeat Ursa Major and liberate Earth.'}
   ]
 };
 

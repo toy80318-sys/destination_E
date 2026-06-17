@@ -2085,61 +2085,51 @@
     if(bestTier>=1)return 8000;
     return 10000;
   }
-  // 은하지도 위에서 함선이 출발행성→목적행성으로 이동하는 모션 (블링크면 반짝임)
-  function _startTravelAnim(fromPid,toPid,dur,isBlink,onDone){
+  // 은하지도 위에서 함선이 출발행성→목적행성으로 글라이드 이동하는 모션.
+  //   · 항상 글라이드(이동 애니메이션) + dur 만큼 시간 소요. (사용자 요청 2026-06-17)
+  //   · showFlash(블링크 이상 엔진)일 때만 출발/도착 지점에 워프 "번쩍" 효과를 글라이드 위에 겹쳐 표시.
+  function _startTravelAnim(fromPid,toPid,dur,showFlash,onDone){
     try{
       const wrap=document.getElementById('map-wrap');
       const a=G.mapPositions&&G.mapPositions[fromPid],b=G.mapPositions&&G.mapPositions[toPid];
-      if(!wrap||!a||!b||!mapCV){onDone();return;}
+      // 지도 DOM/캔버스가 준비 안 됐어도 "이동 시간"은 그대로 소요 — 즉시 도착(instant) 방지.
+      if(!wrap||!a||!b||!mapCV){setTimeout(onDone,Math.max(0,dur||0));return;}
       const pa=worldToScreen(a.x,a.y),pb=worldToScreen(b.x,b.y);
       if(getComputedStyle(wrap).position==='static')wrap.style.position='relative';
       mapCV.style.pointerEvents='none';  // 이동 중 맵 조작 차단
       const _img=(typeof shipImgSrc==='function'&&G.fleet&&G.fleet[0])?shipImgSrc(G.fleet[0]):'';
       const _shipInner=_img?('<img src="'+_img+'" style="width:100%;height:100%;object-fit:contain">'):'🚀';
-      // ── 블링크(순간이동) — 출발지에서 번쩍 → 즉시 이동 → 도착지에서 번쩍 후 정지 ──
-      //   사용자 요청 2026-06-16: "이동 직전 번쩍 / 즉시 이동 / 도착 번쩍 후 멈춤". 글라이드 없음.
-      if(isBlink){
-        const _flash=(x,y)=>{
-          const f=document.createElement('div');
-          f.style.cssText='position:absolute;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;z-index:41;pointer-events:none;border-radius:50%;'
-            +'background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(120,225,255,.85) 35%,rgba(0,180,255,.35) 60%,rgba(0,180,255,0) 75%);'
-            +'transform:translate('+x+'px,'+y+'px) scale(.25);opacity:0;transition:transform .32s cubic-bezier(.2,.7,.3,1),opacity .32s ease-out';
-          wrap.appendChild(f);
-          void f.offsetWidth;
-          requestAnimationFrame(()=>{f.style.transform='translate('+x+'px,'+y+'px) scale(2.4)';f.style.opacity='1';});
-          setTimeout(()=>{f.style.opacity='0';},160);
-          setTimeout(()=>{try{f.remove();}catch(e){}},420);
-        };
-        try{AudioMgr.playSfx('UI_open',{cooldown:0});}catch(e){}
-        _flash(pa.sx,pa.sy);                     // 출발 번쩍
-        setTimeout(()=>{                          // 즉시 이동 후 도착 번쩍
-          try{AudioMgr.playSfx('UI_open',{cooldown:0});}catch(e){}
-          _flash(pb.sx,pb.sy);
-          // 도착지에 함선이 짧게 나타났다가 정지 (페이드 인)
-          const ship=document.createElement('div');
-          ship.className='_travel-ship';
-          ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;opacity:0;transition:opacity .2s ease-out;transform:translate('+pb.sx+'px,'+pb.sy+'px)';
-          ship.innerHTML=_shipInner;
-          wrap.appendChild(ship);
-          requestAnimationFrame(()=>{ship.style.opacity='1';});
-          setTimeout(()=>{try{ship.remove();}catch(e){}},360);
-        },180);
-        setTimeout(()=>{try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},560);
-        return;
-      }
+      // 워프 "번쩍" 효과 (블링크 이상 엔진 전용) — 글라이드 위에 겹쳐 출발/도착 지점에서 번쩍.
+      const _flash=(x,y)=>{
+        const f=document.createElement('div');
+        f.style.cssText='position:absolute;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;z-index:41;pointer-events:none;border-radius:50%;'
+          +'background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(120,225,255,.85) 35%,rgba(0,180,255,.35) 60%,rgba(0,180,255,0) 75%);'
+          +'transform:translate('+x+'px,'+y+'px) scale(.25);opacity:0;transition:transform .32s cubic-bezier(.2,.7,.3,1),opacity .32s ease-out';
+        wrap.appendChild(f);
+        void f.offsetWidth;
+        requestAnimationFrame(()=>{f.style.transform='translate('+x+'px,'+y+'px) scale(2.4)';f.style.opacity='1';});
+        setTimeout(()=>{f.style.opacity='0';},160);
+        setTimeout(()=>{try{f.remove();}catch(e){}},420);
+      };
+      // ── 글라이드 이동 (항상 적용 — 이동 애니메이션 + dur 시간 소요) ──
       const ship=document.createElement('div');
       ship.className='_travel-ship';
       ship.style.cssText='position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:40;pointer-events:none;transition:transform '+dur+'ms linear';
       ship.innerHTML=_shipInner;
-      // 이동 방향을 바라보도록 함선 회전 — 스프라이트 기본 방향 = 오른쪽(+x). 사용자 요청 2026-06-16.
+      // 이동 방향을 바라보도록 함선 회전 — 스프라이트 기본 방향 = 오른쪽(+x).
       const _ang=Math.atan2(pb.sy-pa.sy,pb.sx-pa.sx)*180/Math.PI;
       ship.style.transform='translate('+pa.sx+'px,'+pa.sy+'px) rotate('+_ang+'deg)';
       wrap.appendChild(ship);
       void ship.offsetWidth;  // reflow → transition 적용
       requestAnimationFrame(()=>{ship.style.transform='translate('+pb.sx+'px,'+pb.sy+'px) rotate('+_ang+'deg)';});
-      try{AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
+      try{AudioMgr.playSfx(showFlash?'UI_open':'UI_click',{cooldown:0});}catch(e){}
+      // 워프 번쩍 — 블링크 이상 엔진에서만: 출발 즉시 번쩍 + 도착 직전(글라이드 종료 무렵) 번쩍.
+      if(showFlash){
+        _flash(pa.sx,pa.sy);
+        setTimeout(()=>{try{AudioMgr.playSfx('UI_open',{cooldown:0});}catch(e){}_flash(pb.sx,pb.sy);},Math.max(0,dur-120));
+      }
       setTimeout(()=>{try{ship.remove();}catch(e){}try{if(mapCV)mapCV.style.pointerEvents='';}catch(e){}onDone();},dur+80);
-    }catch(e){console.warn('[travel anim]',e);onDone();}
+    }catch(e){console.warn('[travel anim]',e);setTimeout(onDone,Math.max(0,dur||0));}
   }
   function travelTo(){
     const pid=G.mapSelected;if(!pid||pid===G.currentPlanet)return;
@@ -2174,19 +2164,21 @@
     // 탐험되지 않은 행성은 블링크로도 이동 불가
     if(G.planets[pid]?.fog==='L'&&!blink){notify(I18N.t('notify.unexploredVisitAdjFirst'),'err');return;}
     if(G.credits<cost){notify(I18N.t('notify.travelCostShort',{cost:cost.toLocaleString()}),'err');return;}
-    // ── 엔진 등급별 이동 시간 + 은하지도 이동 모션 (사용자 요청 2026-06-16) ──
+    // ── 행성 이동 모션 (사용자 요청 2026-06-17) ──
+    //   1) 모든 이동은 글라이드 애니메이션 + 엔진 등급별 시간 소요(_travelDelayMs).
+    //   2) "번쩍(워프 플래시)" 효과는 블링크 이상 엔진(WARP_ENGINE_IDS=E15·SE01·ME01) 장착 시에만 추가.
     //   먼저 모션을 재생하고, 끝나면 travelTo를 재진입해 실제 도착 처리를 수행한다.
-    //   블링크 엔진 보유 시 모든 이동이 순간이동(번쩍→즉시→번쩍). 사용자 요청 2026-06-16.
     if(_travelAnimFor!==pid){
-      const _isBlinkJump=blink;   // 블링크 엔진이면 인접/원거리 무관하게 순간이동 연출
-      const _travelMs=_isBlinkJump?560:_travelDelayMs();
+      const _flagship=G.fleet&&G.fleet[0];
+      const _showFlash=!!(_flagship&&(_flagship.parts||[]).some(_pid=>WARP_ENGINE_IDS.includes(_pid)));  // 블링크 이상 엔진
+      const _travelMs=_travelDelayMs();   // 항상 엔진 등급별 시간 소요 (최소 700ms)
       if(_travelMs>0){
         _travelAnimFor=pid;
         G.mapSelected=null;
         const _gb=document.getElementById('map-go');if(_gb)_gb.disabled=true;
         const _mf=document.getElementById('map-float');if(_mf)_mf.style.display='none';
         renderMap();  // 출발지 정박 함선 이미지를 즉시 숨김 (_travelAnimFor 가드 반영)
-        _startTravelAnim(G.currentPlanet,pid,_travelMs,_isBlinkJump,function(){G.mapSelected=pid;travelTo();});
+        _startTravelAnim(G.currentPlanet,pid,_travelMs,_showFlash,function(){G.mapSelected=pid;travelTo();});
         return;
       }
     }

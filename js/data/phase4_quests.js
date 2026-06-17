@@ -258,7 +258,7 @@ const PHASE4_QUESTS={
   ],
 
   // ════════════════════════════════════════════════════════════════
-  // 행성 19 · P16 아우레우스 "케플러 442b 외곽"
+  // 행성 19 · P16 아우레우스 "페스작센 외곽"
   // 팩션 특산물: G24·G25·G27
   // ════════════════════════════════════════════════════════════════
   P16:[
@@ -293,7 +293,7 @@ const PHASE4_QUESTS={
     {
       id:'p4_q1903', type:'story_quest', category:'sub', phase:4,
       ic:'🍺', npc:'마르코 폴로', npcIc:'🗺️', npcKey:'hero08',
-      nm:{ko:'케플러 외곽 주점', en:'Kepler Outskirt Pub'},
+      nm:{ko:'페스작센 외곽 주점', en:'Fessachsen Outskirt Pub'},
       desc:{ko:'수퍼비아 귀족 향수 ×2 → 정보: "캅테인 균열에 아인슈타인이 잠수 중. 양자물리학자 — 보이드 안정화 이론의 권위자."',
             en:'Superbia Noble Perfume ×2 → "Einstein hiding in Kapteyn Rift. Quantum physicist."'},
       objectives:[
@@ -322,7 +322,7 @@ const PHASE4_QUESTS={
       id:'p4_q1905', type:'story_quest', category:'main', phase:4,
       ic:'⚓', npc:'호레이쇼 넬슨', npcIc:'⚓', npcKey:'hero05',
       nm:{ko:'넬슨 제독과의 조우', en:'Encounter Admiral Nelson'},
-      desc:{ko:'케플러 442b 외곽 — 영국 해군 제독 호레이쇼 넬슨의 옛 함선 \'빅토리\' 잔해 좌표 입수. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1 소비하여 잔해 깊이 진입.\n넬슨: "트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다."',
+      desc:{ko:'페스작센 외곽 — 영국 해군 제독 호레이쇼 넬슨의 옛 함선 \'빅토리\' 잔해 좌표 입수. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1 소비하여 잔해 깊이 진입.\n넬슨: "트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다."',
             en:'Find Nelson\'s old flagship Victory wreckage. Aureus Information Chip ×2 + Chiks Brain Fluid ×1. Nelson: "I never thought I\'d catch the wind of Trafalgar again. I join your fleet."'},
       objectives:[
         {type:'gather', item:'G24', qty:2, label:{ko:'아우레우스 정보 칩 정보 칩 ×2 좌표 분석', en:'Aureus Information Chip ×2 coord'}},
@@ -518,7 +518,7 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── CH10-A2 "트라팔가르의 메아리" (Q19-05 시작 · 넬슨 만남) ───
   p4_ch10a2:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'케플러 442b 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 영국 해군 식별 코드 \'HMS Victory\'.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 영국 해군 식별 코드 \'HMS Victory\'.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'빅토리... 트라팔가르의 기함.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'영국 넬슨 제독 — 1805년 트라팔가르 해전에서 전사. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아우레우스 정보 칩 정보 칩으로 좌표 분석. 진입한다.'}
@@ -527,7 +527,7 @@ const PHASE4_CUTSCENES_KO={
   // ─── CH10-A3 "넬슨 합류" (Q19-05 완료) ───
   p4_ch10a3:[
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(캡슐에서 깨어나며) ...영국이었어. 마지막 본 것은 트라팔가르의 안개였소.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'(영어 자동 번역) 넬슨 제독. 나는 이순신이오.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'넬슨 제독. 나는 이순신이오.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'동방의 거북선 제독... 이름은 들었소. 같은 바다의 영웅을 우주에서 만나다니.'},
     {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다 — 마지막 일전이 어디든.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진과 트라팔가르 진형 — 두 바다의 전술을 하나로 묶으면 우르사도 막을 수 없을 거요.'},
@@ -551,7 +551,7 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'페이즈 4 완료. 집행관 격파 · 이휘소(9번째 전설 영웅) 합류. 페이즈 5 — 캅테인 균열~지구, 우르사 메이저로.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 집행관 격파 · 이휘소(9번째 전설 영웅) 합류. 다음 단계 — 캅테인 균열~지구, 우르사 메이저로.'}
   ],
 
     // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
@@ -643,7 +643,7 @@ const PHASE4_CUTSCENES_EN={
   // ─── CH10-A3 "Nelson Joins" (Q19-05 done) ───
   p4_ch10a3:[
     {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(waking from the capsule) ...It was Britain. The last thing I saw was the mist of Trafalgar.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(auto-translated from English) Admiral Nelson. I am Yi Sun-sin.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Admiral Nelson. I am Yi Sun-sin.'},
     {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'The turtle-ship admiral of the East... I have heard the name. To meet a hero of the same sea, here among the stars.'},
     {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'I never thought I would feel the winds of Trafalgar again. I will stand with your fleet — wherever this last battle may be.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Crane Wing and the Trafalgar line — bind the tactics of two seas into one, and not even Ursa can stop us.'},
@@ -667,7 +667,7 @@ const PHASE4_CUTSCENES_EN={
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'One coordinate buried in Eisenklaue\'s data — Zeta Reticuli. Ursa Major\'s home base.'},
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the true boss. It ends only when we take it down ourselves.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before Zeta Reticuli we must pass the Kapteyn rift. Einstein is there — the key to unlocking Ursa\'s Void shield.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Phase 4 complete. The enforcer is down · Dr. Lee Hwi-so (9th legendary hero) joins. Phase 5 — Kapteyn rift to Earth, on to Ursa Major.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. The enforcer is down · Dr. Lee Hwi-so (9th legendary hero) joins. Next stage — Kapteyn rift to Earth, on to Ursa Major.'}
   ],
 
     // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17
