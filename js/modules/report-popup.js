@@ -84,8 +84,11 @@
     const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
     // 획득 경로 몰입 멘트 (한 줄)
     const acqLineHtml=opts.acqLine?`<div style="margin:2px auto 9px;padding:8px 16px;max-width:600px;background:linear-gradient(90deg,rgba(255,215,0,.07),rgba(120,180,255,.05));border-left:3px solid ${headerColor};border-radius:6px;text-align:center;font-size:14px;color:#ffe6a8;font-style:italic;line-height:1.55;word-break:keep-all">${escapeHtml(opts.acqLine)}</div>`:'';
+    // Doc#6 지시4: 전투 종료 후 패배측(적) 극적 멘트 — 멘트 글씨 1.5배(≈21px)
+    const enemyMentHtml=opts.enemyMent?`<div style="margin:2px auto 11px;padding:11px 16px;max-width:620px;background:linear-gradient(135deg,rgba(255,60,60,.10),rgba(10,5,5,.55));border-left:3px solid #ff6a6a;border-radius:8px;text-align:center;font-size:21px;color:#ffb3b3;line-height:1.5;word-break:keep-all;text-shadow:0 0 6px rgba(255,60,60,.3)">💬 "${escapeHtml(opts.enemyMent)}"</div>`:'';
     const html=`<div style="padding:2px 2px">
       ${congratsHtml}
+      ${enemyMentHtml}
       ${acqLineHtml}
       ${subtitleHtml}
       ${itemRows?`<div style="${_gridStyle}">${itemRows}</div>`:`<div style="text-align:center;color:var(--dim);padding:18px">${I18N.t('ui.noAcquired')}</div>`}

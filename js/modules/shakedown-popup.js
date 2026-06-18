@@ -82,7 +82,7 @@
           ${portrait}
           <div style="flex:1;min-width:200px">
             <div style="font-size:13px;color:${npc.col};font-weight:bold;margin-bottom:6px;letter-spacing:1px">${npc.nm}</div>
-            <div style="font-size:16px;color:var(--yellow);line-height:1.8;word-break:keep-all">"${line}"</div>
+            <div style="font-size:24px;color:var(--yellow);line-height:1.55;word-break:keep-all">"${line}"</div>
             ${!canPay?`<div style="font-size:12px;color:#ff9999;margin-top:8px">${I18N.t('toll.cannotPay')}</div>`:''}
           </div>
         </div>

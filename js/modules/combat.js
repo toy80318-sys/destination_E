@@ -70,6 +70,11 @@ function _buildHostilePlanetEnemies(planetDef){
 
 // 적대 행성 진입 시 — 적 스펙 브리핑 팝업 → 전투 시작
 function showHostilePlanetBriefing(planetDef){
+  if(!planetDef)return;
+  // Doc#6 지시1: 동일 행성 등장 팝업 중복(2회 이상) 방지 — 직전 1.5초 내 같은 행성 재호출은 무시(더블클릭·중복 트리거 가드).
+  const _nowB=Date.now();
+  if(window._hostileBriefLast&&window._hostileBriefLast.id===planetDef.id&&(_nowB-window._hostileBriefLast.t)<1500)return;
+  window._hostileBriefLast={id:planetDef.id,t:_nowB};
   const enemies=_buildHostilePlanetEnemies(planetDef);
   planetDef._previewEnemies=enemies;
   const fp=calcFleetAvgPower();
@@ -78,6 +83,12 @@ function showHostilePlanetBriefing(planetDef){
   const advisor=totFleetAtk>=totEnemyAtk*1.2?{c:'var(--green)',t:I18N.t('advisor.advantage'),lvl:'win'}
                 :totFleetAtk>=totEnemyAtk*0.8?{c:'var(--yellow)',t:I18N.t('advisor.even'),lvl:'mid'}
                 :{c:'var(--red)',t:I18N.t('advisor.disadvantage'),lvl:'lose'};
+  // Doc#6 지시2: 상대 스텟 요약 (척수·총 HP·실드·평균 ATT·위협도%)
+  const _eN=enemies.length;
+  const _eHP=enemies.reduce((s,e)=>s+(e.maxHP||e.hp||e.HP||0),0);
+  const _eSH=enemies.reduce((s,e)=>s+(e.maxSH||e.sh||0),0);
+  const _eAvgAtt=_eN?Math.round(totEnemyAtk/_eN):0;
+  const _eThreat=totFleetAtk>0?Math.round(totEnemyAtk/totFleetAtk*100):0;
   // 사용자 요청 2026-06-07: 적대 대치 팝업 통일 — _hostileVsHeader 헬퍼 사용 (192px 캐릭터, 16px VS, ⚠ 제거)
   const _hFac=(/^F0[1-7]$/.test(planetDef?.f||''))?planetDef.f:'F05';
   const _hVer=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
@@ -91,6 +102,7 @@ function showHostilePlanetBriefing(planetDef){
         <span style="color:${advisor.c};font-weight:bold">${I18N.t('ui.powerAssessment',{t:advisor.t})}</span>
       </div>
     </div>
+    <div style="margin:6px auto 2px;max-width:560px;padding:8px 12px;background:rgba(255,60,60,.06);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;color:var(--txt);text-align:center;line-height:1.75">${I18N.t('ui.enemyStatSummary',{n:_eN,hp:_eHP.toLocaleString(),sh:_eSH.toLocaleString(),att:_eAvgAtt.toLocaleString(),threat:_eThreat})}</div>
     ${_formatEnemyPreview(enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('ui.winConquerLoseCr')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('advisor.bkPreCombat')}${advisor.lvl==='win'?I18N.t('advisor.bkPush'):advisor.lvl==='mid'?I18N.t('advisor.bkCareful'):I18N.t('advisor.bkComeLater')}"</div>`,
@@ -2703,7 +2715,7 @@ function _finishCombat(){
         const _acqRar=_hasCap?(_capturedShips[0].tier||''):'';
         // 해적 격파 후 상인 구출 보상 — 치크스/잔해 아닌 해적전 25% 확률 (보고 확인 후 등장)
         const _merchant=(!_chixFleetSnap&&!_debrisCombatSnap&&Math.random()<0.25)?_rollMerchantRescue(pd):null;
-        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',enemyMent:I18N.t('combat.defeatGeneric'+(1+Math.floor(Math.random()*3))),congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
       },900);
     }
     checkQuestCombatDone();
