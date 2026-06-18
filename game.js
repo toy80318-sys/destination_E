@@ -107,6 +107,12 @@ function initGame(){
   G._phasedIntroSeen={};
   G._scenesSeen={};
   G._phasedIntroSeenV2=false;
+  // 사용자 보고 2026-06-18: 완료(고진행) 세이브를 불러온 뒤 새 게임을 시작하면 완료 플래그가 메모리에 잔존 →
+  //   _commanderStage()가 _earthLiberated 등으로 stage 3(대제독)을 반환해 사령관 복장이 고등급으로 표시되던 문제.
+  //   새 게임은 진행도 0이므로 완료/엔딩 플래그를 명시적으로 초기화한다(엔딩 자동재생·P31 항로 잔존도 함께 방지).
+  G._earthLiberated=false;
+  G._falconDefeated=false;
+  G._endingShown=false;
   G._gameStartedAt=Date.now();
   G.turn=0;G.act=1;G.currentPlanet='P01';G.gachaPity=0;G.stayTurns=0;
   G.credits=50000;G.voidEssence=0;G.voidCrystal=3;
