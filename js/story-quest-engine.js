@@ -220,7 +220,7 @@ function spawnPhasedQuests(pid){
 }
 
 // ─── 시나리오 퀘 진행도 라이브 평가 ─────────────────────────────
-function _storyQuestCurrentProgress(q){
+function _storyQuestCurrentProgress(q,pid){
   if(!q||!q.objectives||!q.objectives.length)return q.progress||0;
   const G=window.G; if(!G)return q.progress||0;
   const obj=q.objectives[0];
@@ -232,7 +232,19 @@ function _storyQuestCurrentProgress(q){
     const matQty=(G.materials&&G.materials[item])||0;
     return cargoQty+invQty+matQty;
   }
-  if(obj.type==='explore') return (G._storyExploreCount&&G._storyExploreCount[obj.target])||q.progress||0;
+  if(obj.type==='explore'){
+    const _evt=(G._storyExploreCount&&G._storyExploreCount[obj.target])||0;
+    if(_evt>0)return _evt;
+    // 사용자 요청 2026-06-18: 이미 충족된 상태를 소급 인정 → 즉시 완료
+    //   경매 낙찰(=행성 소유) / 행성 투자(commerce) 는 이벤트 카운터가 없어도 상태로 판정.
+    const _t=String(obj.target||'').toLowerCase();
+    const _pl=(pid&&G.planets)?G.planets[pid]:null;
+    if(_pl){
+      if(/auction/.test(_t)&&_pl.owned)return obj.qty||1;
+      if(/commerce/.test(_t)&&(_pl.commerce||_pl.owned))return obj.qty||1;
+    }
+    return q.progress||0;
+  }
   if(obj.type==='delivery'&&obj.target) return (G.currentPlanet===obj.target)?obj.qty||1:0;
   if(obj.type==='combat') return (G._storyCombatKills&&G._storyCombatKills[q.id])||q.progress||0;
   return q.progress||0;
@@ -244,7 +256,7 @@ function tickStoryQuests(){
   Object.keys(G.quests).forEach(function(pid){
     (G.quests[pid]||[]).forEach(function(q){
       if(q.type!=='story_quest'||q.status!=='active')return;
-      const _cur=_storyQuestCurrentProgress(q);
+      const _cur=_storyQuestCurrentProgress(q,pid);
       const _need=q.required||((q.objectives&&q.objectives[0]&&q.objectives[0].qty)||1);
       const _newProg=Math.min(_need,_cur);
       if(_newProg!==q.progress) q.progress=_newProg;
@@ -259,6 +271,30 @@ function tickStoryQuests(){
     });
   });
 }
+
+// ─── 이미 충족된 시나리오 퀘스트 자동 완료+보상 (사용자 요청 2026-06-18) ───
+//   tickStoryQuests로 충족분을 'done'으로 만든 뒤, 'done' 시나리오 퀘를 즉시 보상 수령(completeQuest).
+//   completeQuest가 'claimed'로 전환하므로 멱등(중복 수령 없음). 재진입 가드로 렌더 중 호출도 안전.
+function autoResolveSatisfiedStoryQuests(){
+  const G=window.G; if(!G||!G.quests)return 0;
+  if(window._autoResolvingQuests)return 0;
+  window._autoResolvingQuests=true;
+  let _claimed=0;
+  try{
+    try{tickStoryQuests();}catch(e){}
+    Object.keys(G.quests).forEach(function(pid){
+      const arr=G.quests[pid]||[];
+      for(let i=0;i<arr.length;i++){
+        const q=arr[i];
+        if(q&&q.type==='story_quest'&&q.status==='done'){
+          try{ if(typeof window.completeQuest==='function'){ window.completeQuest(pid,i); _claimed++; } }catch(e){}
+        }
+      }
+    });
+  } finally { window._autoResolvingQuests=false; }
+  return _claimed;
+}
+window.autoResolveSatisfiedStoryQuests=autoResolveSatisfiedStoryQuests;
 
 // ─── 시나리오 퀘 진행 카운터 증가 (bugfix 2026-06-11) ─────────────
 //   문제: _storyCombatKills / _storyExploreCount 를 읽기만 하고 어디서도 증가시키지 않아

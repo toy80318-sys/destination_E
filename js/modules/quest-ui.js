@@ -300,7 +300,8 @@ function renderQuestTab(body){
   try{ if(typeof spawnPhasedQuests==='function')spawnPhasedQuests(pid); }catch(e){console.warn('[questTab] spawnPhasedQuests fail:',e);}
   generateQuests(pid);
   // 사용자 보고 2026-06-07: 메인 퀘스트가 완료 안 되는 문제 — 카드 렌더 시점에 라이브 평가
-  try{if(typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
+  // 사용자 요청 2026-06-18: 이미 충족된 시나리오 퀘스트는 즉시 자동 완료+보상 (재진입 가드로 안전)
+  try{if(typeof window.autoResolveSatisfiedStoryQuests==='function')window.autoResolveSatisfiedStoryQuests();else if(typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
   var qlist=G.quests[pid]||[];
   var pd=PLANET_DEF.find(function(p){return p.id===pid;});
   var canLoan=(G.credits||0)<300,alreadyMax=(G.loan||0)>=20000;

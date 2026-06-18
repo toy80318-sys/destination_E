@@ -460,7 +460,7 @@ function acceptQuest(pid,idx){
   }
   else notify(I18N.t('notify.questAcceptCombat'),'ok');
   // 사용자 보고 2026-06-07: 수락 직후 이미 보유한 아이템으로 즉시 완료 처리되도록 라이브 평가
-  try{if(q.type==='story_quest'&&typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
+  try{if(q.type==='story_quest'&&typeof window.autoResolveSatisfiedStoryQuests==='function')window.autoResolveSatisfiedStoryQuests();else if(q.type==='story_quest'&&typeof tickStoryQuests==='function')tickStoryQuests();}catch(e){}
   saveGame(true);
   // 아이젠클로 중간보스 — 수락 즉시 신규 대면 컷신 → 전투. 사용자 요청 2026-06-17.
   if(q.type==='story_quest' && q._midBoss==='eisenklau' && typeof window.startEisenklauMidBoss==='function'){

@@ -287,6 +287,8 @@
     // 사용자 요청 (2026-06-06): 경매 낙찰 시 폭죽 + 중앙 팝업 (2초 후 자동 해제)
     try{_showAuctionWinPopup(pd,_lbc,amount);}catch(e){console.warn('[auction popup]',e);}
     updateHUD();saveGame(true);
+    // 사용자 요청 2026-06-18: 경매 낙찰(행성 소유) 즉시 관련 시나리오 퀘스트 자동 완료+보상
+    try{if(typeof window.autoResolveSatisfiedStoryQuests==='function')window.autoResolveSatisfiedStoryQuests();}catch(e){}
     // 낙찰 후 경매 화면 그대로 유지 — 페이지 이동 없이 현재 탭 새로고침
     if(typeof rerenderTab==='function'&&typeof renderAuctionView==='function'){
       rerenderTab(renderAuctionView);
