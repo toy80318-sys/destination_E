@@ -494,9 +494,11 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
   p1_turtle1:[
-    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'(낡은 데이터 칩을 건네며) 이것도 가져가요. 100년 전 어떤 조선인이 두고 갔는데, "거북선"이라고 했어요.'},
+    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'(낡은 데이터 칩을 건네며) 자네 눈빛이… 그 사람과 닮았군. 이것도 가져가요. 100년 전, 끝까지 싸우던 어떤 조선인이 두고 갔소. "거북선"이라 했지.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'거북선...?'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'데이터 분석 — 함선 설계도 단편 1/3. 골격 구조도. 나머지 두 개를 더 찾으면 복원 가능합니다.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'데이터 분석 — 함선 설계도 단편 1/3. 골격 구조도입니다. 봉쇄 이전의 전설급 함선이에요.'},
+    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'그 배가 다시 별로 나가는 날이 오면… 봉쇄도 끝나려나. 늙은이의 헛소리지만.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'나머지 두 조각을 찾으면 복원할 수 있어요. 헛소리인지 아닌지는, 우리가 증명하죠.'}
   ],
 
   // ─── 마르코 폴로 영입 ───
@@ -584,9 +586,11 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
   p1_turtle1:[
-    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'(handing over a worn data chip) Take this too. Some Korean left it here a hundred years ago — called it the "Turtle Ship."'},
+    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'(handing over a worn data chip) That look in your eyes… you remind me of him. Take this too. A hundred years ago, some Korean who fought to the very end left it here. Called it the "Turtle Ship."'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Turtle Ship...?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Data analysis — ship blueprint fragment, 1 of 3. The skeletal frame schematic. Find the other two and it can be restored.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Data analysis — blueprint fragment, 1 of 3. The skeletal frame. A legend-class ship from before the blockade.'},
+    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'If that ship ever sails the stars again… maybe the blockade ends too. An old man\'s nonsense, I know.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Find the other two fragments and we can restore it. Nonsense or not — we\'ll be the ones to prove it.'}
   ],
 
   // ─── 마르코 폴로 영입 ───
