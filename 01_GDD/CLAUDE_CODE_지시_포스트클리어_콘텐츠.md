@@ -97,6 +97,8 @@
 
 > 부정 별칭도 획득·표시하되, 효과는 장착 시에만. (수집 요소 겸 자학 플레이용.)
 
+> ⚠️ **효과 중첩 규칙(검증 보강 2026-06-18):** 별칭 효과는 **동시 1개(activeTitle)만** 적용 → 할인·배수 중첩 원천 차단. 단 **"데스티네이션 어스를 달성한"의 지구저항군 ×5 배수는 "구매한 일반 지구저항군 함선"에만 적용**하고, **벙커존 미니게임 보상 ×2 특수함선(EARTH_RESIST_SP) 등 이미 배수가 적용된 특수함선에는 재적용(중첩) 금지**. (안 그러면 ×10이 되어 밸런스 붕괴.)
+
 ---
 
 # ③ 보스 러시 / 엔들리스 (블랙홀)
@@ -104,7 +106,7 @@
 - **진입:** 블랙홀에서 플레이 가능한 별도 모드(기존 블랙홀 전설 함대 연출 `combat.legendFleetAppears` 자산 활용).
 - **규칙:**
   - **10초마다 보스전 적 함대 8대 추가** 스폰.
-  - **적 함선 48대 도달** 또는 **아군 함대 전멸** 시 **패배**.
+  - **화면 내 동시 적 함선 48대 도달**(누적 아님) 또는 **아군 함대 전멸** 시 **패배**. → 격추로 동시 수를 48 미만으로 유지하는 DPS 레이스.
   - **버틴 시간(타이머)을 화면 우측 상단에 크게 표시.**
 - **기록:** 생존 시간/최대 처치 수를 명예의전당(①-A)에 기록 → 글로벌 경쟁.
 - 구현: combat.js 전투 루프에 endless 모드 분기(10초 인터벌 스폰, 적 카운트 48 상한 체크, 타이머 HUD 우상단). 기존 적 함대 생성 로직 재사용.
@@ -115,9 +117,5 @@
 
 ```bash
 node --check js/data/ships.js js/data/titles.js js/modules/combat.js js/modules/hall-of-fame.js game.js
-node scripts/i18n-parity.js     # 별칭·멘트 키 ko/en 일치
-grep -nE "LGD03_SP|TITLES|activeTitle|endless|codexCompleteReward" js/data/ships.js js/data/titles.js js/modules/combat.js game.js
-```
-- 인게임: 도감 100%→렐러티비티 특수(×5·1.5배) 지급 / 업적 달성→백구 팝업·이름 상단 별칭 표시·클릭 변경·효과 발동 / 보스러시 10초 스폰·48대/전멸 패배·우상단 타이머 / HoF 신규 기록 확인 → Director 보고.
-
-> 연계: 멘트 몰입 원칙 = CLAUDE_CODE_지시_전투팝업_몰입강화.md · 거북선 특수(LGD01_SP) 패턴 = CLAUDE_CODE_지시_거북선_보스컷신_메타.md · 스토리 = CLAUDE_CODE_지시_스토리연결성_강화.md
+node scripts/i18n-parity.js
+grep -nE "LGD03_SP|TITLES|activeTitle|endless|codexCompleteReward" js/data/ships.js js/data/titles.js js/modules/combat.
