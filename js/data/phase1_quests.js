@@ -466,27 +466,30 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── CH01-A "100년의 잠" (P01 시작) ───
   p1_ch01a:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7%. 지금 일어나지 않으면 다음은 없습니다.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...얼마나 됐어?'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'100년 3개월 12일입니다. 지구는 아직 봉쇄 중이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구가... 우르사 메이저가 아직도 봉쇄 중이야?'},  // 수정 2026-06-11: 지구 봉쇄 주체는 치크스(우르사 메이저) — GDD PHASE1_QUEST_CARDS 원문
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'떠날 때와 달라진 게 없어요. 오히려 더 조여졌습니다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'감상은 나중에 하세요. 일단 살아야 합니다. 격납고 곳곳에 고철 프레임이 있어요. 수거하면 수리비랑 연료값은 나와요.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7% — 이 경보를 울리려고 마지막 전력까지 끌어모았습니다.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...얼마나, 잤지?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구는... 아직도?'},
+    // 지구 봉쇄 주체 = 우르사 메이저(치크스) — GDD PHASE1_QUEST_CARDS 원문 유지
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'우르사 메이저의 봉쇄, 그대로입니다. 떠날 때보다 오히려 더 조여졌어요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...고향이, 아직 저 위에 있군.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'네. 그러니 감상은 나중에 하세요 — 일단 살아야 그 고향에 갑니다. 격납고에 고철 프레임이 흩어져 있어요. 수거하면 멈춘 엔진에 다시 불을 붙일 수 있습니다.'}
   ],
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'볼프 교역소. 수퍼비아 내권역 무역 정거장이에요. 아직 운영 중이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'사람들이 있어?'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'있습니다. 수퍼비아 중력수정 — 여기선 시세가 낮아요. 아우레우스 쪽에선 40% 비싸게 팔 수 있어요. 첫 자금 만들기에 좋아요.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'고철로 엔진은 데웠어요. 이제 금고를 채울 차례입니다 — 볼프 교역소, 수퍼비아 내권역의 무역 정거장. 100년이 지났는데도 아직 불이 켜져 있어요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'사람이... 남아 있어?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'네. 봉쇄 안에서도 사람은 어떻게든 살아가니까요. 수퍼비아 중력수정 — 여기선 헐값이지만 아우레우스에선 40% 더 받습니다. 첫 자금은 거기서 만들죠.'}
   ],
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마B에서 왔소? 거기 사람이 아직 있었어?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'좀 오래 잠들어 있었습니다.'},
+    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마B에서 왔다고? 거기서 살아 돌아온 사람은 처음 보는군. 다들 그 차가운 궤도에서 잊혀지는데 말이야.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'좀 오래 잠들어 있었습니다. 이제 막 깼고요.'},
     {char:'aori', name:'아오리', color:'#d4a574', text:'허. 뭘 팔 거요?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요. 하지만 곧, 더 큰 걸 찾을 겁니다.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'(작게) 저 안쪽 노인 — 데이터에 100년 된 흔적이 잡혀요. 한번 말을 붙여 보죠.'}
   ],
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
@@ -554,27 +557,29 @@ const PHASE1_CUTSCENES_EN={
 
   // ─── CH01-A "100년의 잠" (P01 시작) ───
   p1_ch01a:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'{commander}. Wake up. Energy reserves at 7%. If you don\'t rise now, there won\'t be a next time.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'...How long has it been?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'One hundred years, three months, twelve days. Earth is still under blockade.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Earth... Ursa Major still has it blockaded?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Nothing\'s changed since we left. If anything, the noose has tightened.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Save the sentiment for later. First, we survive. There are Scrap Frames scattered all over the hangar. Salvage them and we\'ll cover the repairs and fuel.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'{commander}. Wake up. Energy at 7% — I burned the last of our reserves just to sound this alarm.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'...How long was I out?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'A hundred years, three months, twelve days. I never once shut myself down — I was afraid no one would be left to wake you.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'And Earth... still?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Ursa Major\'s blockade holds. Tighter now than the day we left.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'...So home is still up there.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'It is. So save the sentiment for later — we survive first, then we reach it. The hangar\'s littered with Scrap Frames. Salvage them and we can light the dead engine again.'}
   ],
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The Wolf Trading Post. A trade station in the inner Superbia region. It\'s still operational.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'There are people there?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'There are. Superbia gravity crystals — they go cheap here. You can sell them on Aureus for 40% more. A good way to raise your first funds.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The scrap got the engine warm. Now we fill the vault — the Wolf Trading Post, a station in the inner Superbia region. A hundred years on, and its lights are still burning.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'People... still out here?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Yes. Even inside a blockade, people find a way to live. Superbia gravity crystals — dirt cheap here, but Aureus pays 40% more. That\'s where we raise our first funds.'}
   ],
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'Aori', color:'#d4a574', text:'You came from Proxima B? There\'s still anybody left out there?'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'I was asleep for quite a while.'},
+    {char:'aori', name:'Aori', color:'#d4a574', text:'Came from Proxima B? First soul I\'ve met who made it back alive. Everyone else just gets forgotten out in that cold orbit.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'I was asleep a long while. Only just woke.'},
     {char:'aori', name:'Aori', color:'#d4a574', text:'Huh. So what are you selling?'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap.'}
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap. But soon — something bigger.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'(quietly) That old man in the back — my sensors catch a hundred-year-old trace on him. Worth a word.'}
   ],
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
