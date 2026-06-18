@@ -572,7 +572,7 @@ const PHASE2_CUTSCENES_KO={
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'다음 루트는 내가 잡겠어. 크리그 보급 거점 — 전부 알고 있어.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'생체 병기 설계도는 LHS에서 파괴했어. 하지만 백업이 어딘가에 있을 거야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'다음 계획을 세우자. {사령관}.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 다음 단계 — 행성 11~15 · 저항군과의 연대.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 이제 다음 항로로 — 저항군과 손을 잡으러 가요.'}
   ]
 };
 

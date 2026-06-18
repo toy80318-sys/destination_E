@@ -120,8 +120,8 @@ const PHASE1_QUESTS={
       id:'p1_q0203', type:'story_quest', category:'sub', phase:1,
       ic:'⚔️', npc:'볼프 자경단', npcIc:'🛡️', npcKey:'combat_F01',
       nm:{ko:'볼프 Ring 해적 소탕', en:'Wolf Ring Pirate Cleanup'},
-      desc:{ko:'Ring 1 주변 소형 해적 "스크랩 갱" 현상 수배 — 1기 격파당 2,000₡ 지급. 2기 격파 → 고철 프레임 ×1 노획.',
-            en:'Bounty on Ring 1 "Scrap Gang" — 2,000₡ per kill. Defeat 2 → loot Scrap Frame ×1.'},
+      desc:{ko:'내권역 주변 소형 해적 "스크랩 갱" 현상 수배 — 1기 격파당 2,000₡ 지급. 2기 격파 → 고철 프레임 ×1 노획.',
+            en:'Bounty on the inner-region "Scrap Gang" — 2,000₡ per kill. Defeat 2 → loot Scrap Frame ×1.'},
       objectives:[
         {type:'combat', target:'scrap_gang', qty:2, label:{ko:'스크랩 갱 ×2 격파', en:'Defeat Scrap Gang ×2'}},
       ],
@@ -443,7 +443,7 @@ const PHASE1_QUESTS={
       id:'p1_q05m', type:'story_quest', category:'hidden', phase:1,
       ic:'🎯', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'이순신 좌표 확정 · 거북선 코어', en:'Yi Sun-sin Coordinates · Geobukseon Core'},
-      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "우르사 알파. 치크스 Ring 1이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... 우르사 알파... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 임무 종료 시 3단편 통합 완성도 확인.',
+      desc:{ko:'안테나 신호 증폭 가동 → 이순신 캡슐 완전 좌표 확정.\n가가린: "우르사 알파. 치크스 내권역이야."\n이순신(통신): "...나는 이순신. 크리그를 막아야... 우르사 알파... 제발..."\n안테나 데이터 스트림에서 거북선 설계도 마지막 단편 — 활성 코어 격자 도면 3/3 확보. 임무 종료 시 3단편 통합 완성도 확인.',
             en:'Coordinates confirmed. Last Geobukseon fragment — Active Core blueprint 3/3 — recovered from antenna stream.'},
       objectives:[
         {type:'explore', target:'antenna_amp', qty:1, label:{ko:'안테나 신호 증폭 가동', en:'Activate antenna amp'}},
@@ -476,7 +476,7 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'볼프 교역소. 수퍼비아 Ring 1 무역 정거장이에요. 아직 운영 중이에요.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'볼프 교역소. 수퍼비아 내권역 무역 정거장이에요. 아직 운영 중이에요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'사람들이 있어?'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'있습니다. 수퍼비아 중력수정 — 여기선 시세가 낮아요. 아우레우스 쪽에선 40% 비싸게 팔 수 있어요. 첫 자금 만들기에 좋아요.'}
   ],
@@ -506,7 +506,7 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 Ring 1. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 내권역. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
     {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'}
   ],
@@ -540,7 +540,7 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) Ring 1... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) 외곽... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},
@@ -564,7 +564,7 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The Wolf Trading Post. A trade station on Superbia Ring 1. It\'s still operational.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The Wolf Trading Post. A trade station in the inner Superbia region. It\'s still operational.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'There are people there?'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'There are. Superbia gravity crystals — they go cheap here. You can sell them on Aureus for 40% more. A good way to raise your first funds.'}
   ],
@@ -594,7 +594,7 @@ const PHASE1_CUTSCENES_EN={
 
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Aureus Ring 1. Taxes are steep and the regulations are strict. Superbia gravity crystals are rare here, so they fetch a high price.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Inner Aureus region. Taxes are steep and the regulations are strict. Superbia gravity crystals are rare here, so they fetch a high price.'},
     {char:'system', name:'Marco', color:'#9ee7ff', text:'Hold on, look over there — that survey ship is getting hit by pirates, isn\'t it?'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'We move to rescue.'}
   ],
@@ -628,7 +628,7 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'Ursae Majoris (Chiks) Ring 1... The moment we enter, we go hostile. We need to be ready.'},
+    {char:'system', name:'Marco', color:'#9ee7ff', text:'Ursae Majoris (Chiks) frontier... The moment we enter, we go hostile. We need to be ready.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'But Yi Sun-sin is there. And so is the way to stop Krieg.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Probability calculation... survival odds 62%. Odds of obtaining Krieg strategic intel upon rescuing Yi Sun-sin: 89%.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Baekgu, 62% is enough.'},

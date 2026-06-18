@@ -118,4 +118,8 @@
 ```bash
 node --check js/data/ships.js js/data/titles.js js/modules/combat.js js/modules/hall-of-fame.js game.js
 node scripts/i18n-parity.js
-grep -nE "LGD03_SP|TITLES|activeTitle|endless|codexCompleteReward" js/data/ships.js js/data/titles.js js/modules/combat.
+grep -nE "LGD03_SP|TITLES|activeTitle|endless|codexCompleteReward" js/data/ships.js js/data/titles.js js/modules/combat.js game.js
+```
+- 인게임: 도감 100%→렐러티비티 특수(×5·1.5배) 지급 / 업적 달성→백구 팝업·이름 상단 별칭 표시·클릭 변경·효과 발동 / 보스러시 10초 스폰·48대/전멸 패배·우상단 타이머 / HoF 신규 기록 확인 → Director 보고.
+
+> 연계: 멘트 몰입 원칙 = CLAUDE_CODE_지시_전투팝업_몰입강화.md · 거북선 특수(LGD01_SP) 패턴 = CLAUDE_CODE_지시_거북선_보스컷신_메타.md · 스토리 = CLAUDE_CODE_지시_스토리연결성_강화.md

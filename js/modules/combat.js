@@ -908,11 +908,15 @@ function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
 
 // 미사일 살보 (최대 13발). 각 미사일은 곡선 궤적으로 날아가 타겟에서 폭발.
 // count: 1~13, 자동으로 클램프됨
-function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,sizeMul){
+function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,sizeMul,highRarity){
   // 사용자 명세: 기본 1발, 전설·신화 미사일은 최대 4발까지 다양한 곡선으로 발사
   count=clamp(count|0,1,4);
   baseDelay=baseDelay||0;
   sizeMul=Math.max(1,sizeMul||1);
+  // Doc#5: 전설·신화 미사일 — 더 큰 탄·더 넓은 곡선·발광 트레일 (발사 수는 그대로, VFX만 강화)
+  if(highRarity)sizeMul*=1.45;
+  const _archBoost=highRarity?34:0;
+  const _spreadBoost=highRarity?1.4:1.0;
   // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함
   const _cs=combatState;
   const _sfxOk=()=>_cs&&!_cs.done;
@@ -925,20 +929,22 @@ function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,si
   for(let i=0;i<count;i++){
     const stagger=baseDelay + i*4; // 미사일 사이 4프레임 (살짝 더 분명한 발사 텀)
     // 다양한 곡선 (사용자 요청) — 부채꼴 + 위/아래 교차 호 + 약간 랜덤 지터
-    const spread=(i-(count-1)/2)*22;  // 직전 8 → 22 (3배 더 넓게 퍼짐)
+    const spread=(i-(count-1)/2)*22*_spreadBoost;  // 직전 8 → 22 (3배 더 넓게 퍼짐). 전설+는 더 넓게.
     const _archDir=(i%2===0)?-1:1;     // 짝수 미사일은 위 호, 홀수는 아래 호 — 시각적 다양성
-    const _archBase=70+i*10;            // 미사일마다 호 높이 다르게
+    const _archBase=70+i*10+_archBoost; // 미사일마다 호 높이 다르게 (전설+는 더 큰 호)
     const _jx=(Math.random()-0.5)*16;   // 가로 지터 ±8
     const _jy=(Math.random()-0.5)*20;   // 세로 지터 ±10
     const midx=(a1.x+a2.x)/2 + spread + _jx;
     const midy=(a1.y+a2.y)/2 + _archDir*(_archBase+Math.abs(spread)*0.3) + _jy;
     const isLast=(i===count-1);
-    _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:salvoCol,r:6*sizeMul,life:6,maxLife:6,delay:stagger});
+    _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:salvoCol,r:(highRarity?9:6)*sizeMul,life:highRarity?9:6,maxLife:highRarity?9:6,delay:stagger});
     _cbEffects.push({
       type:'missile', x1:a1.x,y1:a1.y, x2:a2.x,y2:a2.y, ctrlx:midx,ctrly:midy,
       t:0, speed:0.045, col:salvoCol, life:60, maxLife:60, delay:stagger,
       isLastInSalvo:isLast, isDead:isDead, wasShielded:wasShielded, sizeMul:sizeMul
     });
+    // 전설·신화: 궤적 중간에 발광 트레일 한 점 추가 (더 화려한 곡선 느낌)
+    if(highRarity)_cbEffects.push({type:'muzzle',x:midx,y:midy,col:salvoCol,r:5*sizeMul,life:11,maxLife:11,delay:stagger+6});
   }
   _cbStartAnimLoop();
 }
@@ -2130,7 +2136,7 @@ function runCombatTurn(){
         if(combatState._teslaUsed){      _mSize*=1.1; _mCol='#ff8822';}
         if(combatState._genesisUsed){    _mSize*=1.1; _mCol='#ff6633';}
         if(combatState._destinationUsed){_mSize*=1.1; _mCol='#ff3333';}
-        _cbAddMissileSalvo(a1,a2,_mCol,isDead,mcnt,_fireDelay,wasShielded,_mSize);
+        _cbAddMissileSalvo(a1,a2,_mCol,isDead,mcnt,_fireDelay,wasShielded,_mSize,_isHighRarity);
         _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+50);  // 미사일 도달 시점에 데미지 표시
         _fireDelay+=18+mcnt*2;
       } else {
@@ -3394,43 +3400,23 @@ function showUrsaMajorIntro(){
 
 // ─── 우르사 메이저 2페이즈 진입 팝업 (호위 전멸 → 본체 각성) ───
 function _showUrsaPhase2Popup(onClose){
-  const _line=I18N.t('ursa.phase2Line');
-  // 사용자 요청 (2026-06-06): 영문판에서 화자명 한글 잔재 제거 — i18n speaker 라우팅 (CHAR_PORTRAITS에 EN alias 있음)
-  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML(I18N.t('speaker.ursaMajor'),'☠️',216,'#ff3366'):'';
-  openModal(I18N.t('modal.ursaPhase2'),
-    `<div style="padding:14px;min-height:160px">
-      <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(255,30,80,.1),rgba(20,5,5,.88));border:1.5px solid rgba(255,80,80,.6);border-radius:12px;box-shadow:0 0 26px rgba(255,40,40,.4)">
-        ${portrait}
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:14px;color:#ff3366;font-weight:bold;margin-bottom:8px;letter-spacing:2px">${I18N.t('ursa.bossNameStory')}</div>
-          <div style="font-size:19px;color:var(--yellow);line-height:1.85;word-break:keep-all;text-shadow:0 0 8px rgba(255,60,60,.45)">"${_line}"</div>
-          <div style="font-size:12px;color:#ff9999;margin-top:10px">${I18N.t('ui.ursaShieldDown')}</div>
-        </div>
-      </div>
-    </div>`,
-    [{txt:I18N.t('ui.keepFighting'),fn:()=>{closeModal();if(typeof onClose==='function')onClose();},cls:'btn-red'}],
-    {bossfight:true}
-  );
+  // Doc#3 #2: 페이즈2 각성 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC) 전환. 화자=우르사 메이저.
+  const scenes=[{char:'ursa',name:I18N.t('ursa.bossNameStory'),color:'#ff3366',text:I18N.t('ursa.phase2Line')}];
+  if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
+    window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onClose==='function')onClose();}});
+  } else {
+    if(typeof onClose==='function')onClose();  // 폴백: 컷신 미로드 시에도 전투 진행 보장
+  }
 }
 // ─── 블랙팔콘 히든전: 호위 전멸 → 본체 각성 팝업 ───
 function _showBlackfalconPhase2Popup(onClose){
-  const _line=I18N.t('falcon.afterUrsa');
-  // 사용자 요청 (2026-06-06): 영문판 화자명 한글 잔재 제거 — i18n 라우팅
-  const portrait=(typeof charPortraitHTML==='function')?charPortraitHTML(I18N.t('speaker.blackfalcon'),'🌑',216,'#cc66ff'):'';
-  openModal(I18N.t('modal.blackfalconAwaken'),
-    `<div style="padding:14px;min-height:160px">
-      <div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px;background:linear-gradient(135deg,rgba(120,0,180,.18),rgba(8,2,18,.92));border:1.5px solid rgba(204,102,255,.6);border-radius:12px;box-shadow:0 0 26px rgba(204,102,255,.4)">
-        ${portrait}
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:14px;color:#cc66ff;font-weight:bold;margin-bottom:8px;letter-spacing:2px">${I18N.t('falcon.bossNameStory')}</div>
-          <div style="font-size:19px;color:#e0c0ff;line-height:1.85;word-break:keep-all;text-shadow:0 0 8px rgba(204,102,255,.5)">"${_line}"</div>
-          <div style="font-size:12px;color:#e0b8ff;margin-top:10px">${I18N.t('ui.falconCoreOpen')}</div>
-        </div>
-      </div>
-    </div>`,
-    [{txt:I18N.t('ui.keepFighting'),fn:()=>{closeModal();if(typeof onClose==='function')onClose();},cls:'btn-red'}],
-    {bossfight:true}
-  );
+  // Doc#3 #2: 본체 각성 팝업(openModal) → 풀스크린 컷신 전환. 화자=블랙팔콘(void_hiden).
+  const scenes=[{char:'void_hiden',name:I18N.t('falcon.bossNameStory'),color:'#cc66ff',text:I18N.t('falcon.afterUrsa')}];
+  if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
+    window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onClose==='function')onClose();}});
+  } else {
+    if(typeof onClose==='function')onClose();  // 폴백: 컷신 미로드 시에도 전투 진행 보장
+  }
 }
 // ─── 보스 격파 에필로그 — 지구 해방 엔딩 (격정적 대사 → onDone 콜백) ─
 // 우르사 메이저 단말마 → 백구·주인공 격정 대사 → 지구 해방 선언으로 완벽 마무리

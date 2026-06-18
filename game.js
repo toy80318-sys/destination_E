@@ -3057,6 +3057,13 @@ function completeQuest(pid,idx){
     if(_turtleGained && typeof showGeobukseonBlueprintModal==='function'){
       const _delay = q.cutscene_post ? 2400 : 600;
       setTimeout(()=>showGeobukseonBlueprintModal(_turtleGained), _delay);
+      // Doc#4 지시2: 다음 거북선 설계도 조각이 있는 행성을 백구가 안내 (미수령 단편이 남았을 때만).
+      const _nextFragPlanet={1:'P06',2:'P09'}[_turtleGained];
+      if(_nextFragPlanet && typeof baekgu==='function'){
+        const _np=(typeof PLANET_DEF!=='undefined')?PLANET_DEF.find(p=>p.id===_nextFragPlanet):null;
+        const _npNm=(_np&&_np.nm)||_nextFragPlanet;
+        setTimeout(()=>{ try{ baekgu(I18N.t('blueprint.nextHint',{nm:_npNm})); }catch(e){} }, _delay+1400);
+      }
     }
     // 스토리 플래그
     if(!G._storyFlags)G._storyFlags={};
@@ -4348,8 +4355,15 @@ function getShipStats(s){
   const _rmTEC=_shipRoleMul(s,'TEC');
   const _rmHP =_shipRoleMul(s,'HP');
   const _rmSH =_shipRoleMul(s,'SH');
+  // Doc#5: 이휘소(H09) 보유 시 미사일 무기 장착 함선 공격력 ×2 (방정식 탄도). 배수는 상수로 분리.
+  const H09_MISSILE_MULT=2.0;
+  let _missileMul=1.0;
+  if(G.heroes&&G.heroes.includes('H09')&&typeof PARTS!=='undefined'){
+    const _wpn=PARTS.find(p=>p.cat==='weapon'&&(s.parts||[]).includes(p.id));
+    if(_wpn&&_wpn.wtype==='missile')_missileMul=H09_MISSILE_MULT;
+  }
   return{
-    ATT:Math.round(((+s.ATT||0)+b.att+cb.att)*hm*_hp.attMul*_geobukMul*_enhMul*_rmATT),
+    ATT:Math.round(((+s.ATT||0)+b.att+cb.att)*hm*_hp.attMul*_geobukMul*_enhMul*_rmATT*_missileMul),
     INT:Math.round(((+s.INT||0)+b.int2+cb.int2)*hm*_hp.intMul*_geobukMul*_enhMul*_rmINT),
     TEC:Math.round(((+s.TEC||0)+b.tec+cb.tec)*hm*_hp.tecMul*_enhMul*_rmTEC),
     DEF:Math.round(((+s.DEF||0)+b.def+cb.def)*hm*_enhMul),

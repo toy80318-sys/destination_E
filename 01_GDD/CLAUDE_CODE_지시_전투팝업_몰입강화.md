@@ -66,4 +66,23 @@
 ## 6) 버튼 위치
 
 - **전투(시작) 버튼 = 항상 팝업 우측 하단.** (전투 관련 **팝업**의 시작 버튼 공통 — 브리핑 팝업 combat.js L98~99 등.)
-- ⚠️ **개정(2026-06-18): 전투 모드
+- ⚠️ **개정(2026-06-18): 전투 모드(전투 화면) 중 "일시정지"·"도망가기" 버튼은 기존 위치 그대로 유지** — 이동하지 말 것. (앞서의 "도망 버튼 좌측 하단" 지시 철회.)
+- 즉, 변경 대상은 **팝업의 전투 시작 버튼(우측 하단)뿐**. 전투 HUD의 일시정지·도망가기 위치는 현행 유지. 버튼 라벨·기능 모두 유지.
+
+## 7) 공통 — 멘트 글씨 1.5배 + 인물 멘트 보강
+
+- 등장·통행료·보상 팝업의 **상단 대사 멘트 글씨 1.5배**(예 `shakedown-popup.js` 16px→24px). 보조 텍스트·수치는 제외, **대사 멘트만**. `line-height` 동반 조정, `word-break:keep-all` 유지.
+- 모든 멘트 세계관 1인칭 몰입형, i18n 키로 분리(하드코딩 금지).
+
+---
+
+## 검증 (적용 후)
+
+```bash
+node --check js/modules/combat.js js/modules/shakedown-popup.js js/modules/report-popup.js game.js
+node scripts/i18n-parity.js
+grep -nE "_fireFireworks|baekgu|font-size:24px|누적|btn-red|justify-content" js/modules/report-popup.js js/modules/combat.js
+```
+- 인게임: 등장 팝업 기존대로 / 스펙카드 백구 하단·2배 / 전투후 상인·과학자·적군(후회·도망) 멘트 / 특별보상 폭죽+백구 하단 멘트 / "누적 등장·강화수치" 미노출 / 전투버튼 우하단·도망버튼 좌하단 / 멘트 1.5배 확인 → Director 보고.
+
+> 연계: 스토리 연결성·멘트 원칙 = CLAUDE_CODE_지시_스토리연결성_강화.md · 이휘소(과학자 합류) = CLAUDE_CODE_지시_이휘소_영웅.md

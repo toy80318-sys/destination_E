@@ -469,6 +469,11 @@ function acceptQuest(pid,idx){
   }
   if(_fromTavern)rerenderTab(renderTavernView);
   else rerenderTab(renderQuestTab);
+  // Doc#2 지시1: 시나리오 퀘스트 수락 시 cutscene_pre 강제 자동 재생 (eisenklau 패턴 일반화).
+  //   status==='active' 전환으로 재수락이 막혀 중복 재생 없음. cutscene_pre 없으면 조용히 스킵.
+  if(q.type==='story_quest' && q.cutscene_pre && window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.forceReplayScene==='function'){
+    setTimeout(function(){ try{ window.STORY_SCENES_PC.forceReplayScene(q.cutscene_pre); }catch(e){ console.error('[quest] pre-cutscene failed', q.cutscene_pre, e); } }, 300);
+  }
 }
 function startVoidBossCombat(questRef){
   const pd={id:'P30',nm:I18N.t('planet.blackfalconLoc'),ring:5,void:true,f:'F07'};

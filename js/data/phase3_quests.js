@@ -586,7 +586,7 @@ const PHASE3_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#88ccff', text:'데이터 복호기가 해독한 정보와 일치해. 슈멜츠가 다음 목표야.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내 전술 데이터로 우리를 막으려 하겠지. 하지만 나는 그의 허점도 알고 있어.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선이 완성되면 아이젠클로의 요새도 뚫린다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 다음 단계 — 행성 16~20. 아이젠클로 추적. 거북선 완성.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}, 다음 항로로 향하자. 아이젠클로를 추적해, 마침내 거북선을 완성한다.'}
   ],
 
   };

@@ -12,8 +12,8 @@
   window.BAEKGU_DIARY = {
   "1": {
     "title": {
-      "ko": "제1지 — 각성 (행성 1~5)",
-      "en": "Log I — Awakening (Planets 1–5)"
+      "ko": "제1지 — 각성 · 변방의 새벽",
+      "en": "Log I — Awakening · Frontier Dawn"
     },
     "entries": [
       {
@@ -31,8 +31,8 @@
           "en": "B.E. 100 · Mar 12"
         },
         "where": {
-          "ko": "프록시마B · 1링",
-          "en": "Proxima B · Ring 1"
+          "ko": "프록시마B · 내권역",
+          "en": "Proxima B · Inner Reaches"
         },
         "what": {
           "img": "img/commodities/G01.png",
@@ -124,8 +124,8 @@
   },
   "2": {
     "title": {
-      "ko": "제2지 — 결집 (행성 6~10)",
-      "en": "Log II — Gathering (Planets 6–10)"
+      "ko": "제2지 — 결집 · 그림자 권역",
+      "en": "Log II — Gathering · The Shadow Reaches"
     },
     "entries": [
       {
@@ -236,8 +236,8 @@
   },
   "3": {
     "title": {
-      "ko": "제3지 — 연대 (행성 11~15)",
-      "en": "Log III — Solidarity (Planets 11–15)"
+      "ko": "제3지 — 연대 · 저항의 벙커",
+      "en": "Log III — Solidarity · Bunker of Resistance"
     },
     "entries": [
       {
@@ -348,8 +348,8 @@
   },
   "4": {
     "title": {
-      "ko": "제4지 — 거북선 (행성 16~20)",
-      "en": "Log IV — The Turtle Ship (Planets 16–20)"
+      "ko": "제4지 — 거북선 · 포지의 불길",
+      "en": "Log IV — The Turtle Ship · Fires of the Forge"
     },
     "entries": [
       {
@@ -469,8 +469,8 @@
   },
   "5": {
     "title": {
-      "ko": "제5지 — 결전 (행성 21~25)",
-      "en": "Log V — The Decisive Battle (Planets 21–25)"
+      "ko": "제5지 — 결전 · 어둠의 요새",
+      "en": "Log V — The Decisive Battle · Fortress of Darkness"
     },
     "entries": [
       {
@@ -581,8 +581,8 @@
   },
   "6": {
     "title": {
-      "ko": "제6지 — 총독 시대 (행성 26~30)",
-      "en": "Log VI — The Governor Era (Planets 26–30)"
+      "ko": "제6지 — 총독 시대 · 심연의 균열",
+      "en": "Log VI — The Governor Era · Rift of the Abyss"
     },
     "entries": [
       {
