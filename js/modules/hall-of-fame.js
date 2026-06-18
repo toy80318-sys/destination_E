@@ -49,6 +49,7 @@ function _recordHallOfFameEntry(act, label){
       if(window.CloudSave&&typeof CloudSave.uploadHallOfFame==='function'){
         CloudSave.uploadHallOfFame(entry).then(r=>{
           if(r&&r.ok&&!r.skipped)try{notify(I18N.t('notify.hofRegistered'),'gold');}catch(_){}
+          else if(r&&r.queued)try{notify(I18N.t('notify.hofQueued'),'cyan');}catch(_){}  // 오프라인 — 큐에 저장, 온라인 시 자동 등록
           if(r&&r.error)console.warn('[HoF] global upload failed',r.error);
         }).catch(e=>console.warn('[HoF] upload err',e));
       }
@@ -128,7 +129,7 @@ function _renderHofTab(tab){
     // 진행 중인 게임의 실시간 기록을 맨 위에 노출 → 클리어 전에도 실제 플레이 기록이 보임
     const live=_hofCurrentRunEntry();
     const rows=live?[live,...sorted]:sorted;
-    body.innerHTML=_hofRowsHtml(rows,diffLabel);
+    body.innerHTML=rows.length?_hofRowsHtml(rows,diffLabel):`<div style="color:var(--dim);text-align:center;padding:24px;line-height:1.7;white-space:pre-line">${I18N.t('hof.mineEmpty')}</div>`;
     return;
   }
   // global — 비동기 로드 (재시도 가능)
@@ -143,11 +144,17 @@ function _renderHofTab(tab){
   }
   CloudSave.listHallOfFame({limit:100}).then(r=>{
     if(r.error){
-      body.innerHTML=`<div style="color:var(--red);text-align:center;padding:24px">
-        ${I18N.t('ui.lookupFail',{err:r.error})}
-        <div style="color:var(--dim);font-size:11px;margin-top:8px">${I18N.t('ui.checkAuthOrNetwork')}</div>
-        <button onclick="_renderHofTab('global')" style="margin-top:12px;padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">${I18N.t('ui.tryAgain')}</button>
-      </div>`;
+      // 익명 인증 미설정(auth/configuration-not-found 등) → 원인을 구체적으로 안내
+      const _authOff=/configuration-not-found|operation-not-allowed|admin-restricted/i.test(String(r.code||r.error||''));
+      const _detail=_authOff?I18N.t('ui.hofAuthDisabled'):I18N.t('ui.checkAuthOrNetwork');
+      // 오프라인/실패 폴백 — 로컬 ACT4·5 기록을 그대로 보여줘 기록이 사라지지 않게 한다.
+      const localPool=(G.hallOfFame||[]).filter(h=>h.act>=4).sort((a,b)=>(b.playedAt||0)-(a.playedAt||0));
+      const pend=(window.CloudSave&&CloudSave.hofPendingCount)?CloudSave.hofPendingCount():0;
+      let html='<div style="background:rgba(255,180,0,.08);border:1px solid rgba(255,180,0,.35);border-radius:6px;padding:9px 13px;margin-bottom:10px;font-size:11px;color:#ffcf66;line-height:1.6;white-space:pre-line">'
+        +'⚠️ '+I18N.t('hof.offlineFallback')+(pend?'\n'+I18N.t('hof.pendingCount',{n:pend}):'')+'\n'+_detail+'</div>';
+      html+=localPool.length?_hofRowsHtml(localPool,diffLabel):('<div style="color:var(--dim);text-align:center;padding:16px;white-space:pre-line">'+I18N.t('hof.empty')+'</div>');
+      html+='<div style="text-align:center;margin-top:10px"><button onclick="_renderHofTab(\'global\')" style="padding:6px 14px;border:1px solid var(--cyan);background:rgba(0,243,255,.12);color:var(--cyan);border-radius:6px;cursor:pointer">'+I18N.t('ui.tryAgain')+'</button></div>';
+      body.innerHTML=html;
       return;
     }
     body.innerHTML=_hofRowsHtml(r.items||[],diffLabel);

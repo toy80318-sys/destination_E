@@ -1344,12 +1344,13 @@ function hubBanner(tabId,emoji,label,factionId){
   const npcFirst=npcTemp;
   // 퀘스트·크루를 언급하는 담당자(제독=quest · 주점주인=tavern)는 2배 크게 (사용자 요청)
   const _npcBig=(tabId==='quest'||tabId==='tavern');
-  const _npcH=_npcBig?208:104;
-  const _npcMaxW=_npcBig?300:140;
+  // 사용자 요청 2026-06-18: 배너 배경·인물 이미지 세로폭을 기존의 50%로 축소
+  const _npcH=_npcBig?104:52;
+  const _npcMaxW=_npcBig?150:70;
   const npcHtml=_hasNpc&&npcFirst?(
     '<img src="'+npcFirst+'" alt="" style="position:absolute;right:8px;bottom:0;height:'+_npcH+'px;width:auto;max-width:'+_npcMaxW+'px;object-fit:contain;object-position:bottom right;z-index:2;filter:drop-shadow(-2px 0 8px rgba(0,0,0,.5));pointer-events:none" onerror="this.onerror=null;this.style.display=\'none\'">'
   ):'';
-  const bannerH=_hasNpc?(_npcBig?200:96):60;
+  const bannerH=_hasNpc?(_npcBig?100:48):30;
   return '<div style="position:relative;width:100%;height:'+bannerH+'px;border-radius:8px;overflow:hidden;margin-bottom:8px;flex-shrink:0;background:rgba(5,10,22,.8)">'
     +'<img src="'+firstSrc+'" data-gen="'+genSrc+'" alt="'+label+'" style="width:100%;height:100%;object-fit:cover;display:block" onerror="var g=this.dataset.gen;if(this.src!==g&&this.src!==location.origin+\'/\'+g&&!this.src.endsWith(g)){this.src=g}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'}">'
     +'<div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:6px">'
@@ -1375,9 +1376,9 @@ function renderMain(body){
   try{body.innerHTML=`
     <div style="display:flex;gap:8px;padding:8px 14px;background:rgba(13,26,42,.98);border-bottom:1px solid var(--bdr);flex-wrap:nowrap;overflow-x:auto;flex-shrink:0;scrollbar-width:none">
       <div class="ic"><span class="icl">${I18N.t('ui.locationShort')}</span><span class="icv" style="color:${fac?.col||'var(--cyan)'}">📍 ${pd?.nm||'?'}</span></div>
-      <div class="ic"><span class="icl">${I18N.t('ui.shipLabelShort')}</span><span class="icv">🛸 ${G.fleet.length}척</span></div>
-      <div class="ic"><span class="icl">${I18N.t('ui.crewShort')}</span><span class="icv">👥 ${G.crew.length}명</span></div>
-      <div class="ic"><span class="icl">${I18N.t('ui.planetShort')}</span><span class="icv">🌍 ${owned}개</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.shipLabelShort')}</span><span class="icv">🛸 ${G.fleet.length}${I18N.t('ui.unitShips')}</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.crewShort')}</span><span class="icv">👥 ${G.crew.length}${I18N.t('ui.unitCrew')}</span></div>
+      <div class="ic"><span class="icl">${I18N.t('ui.planetShort')}</span><span class="icv">🌍 ${owned}${I18N.t('ui.unitPlanets')}</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.heroShort')}</span><span class="icv" style="color:var(--gold)">⚡ ${G.heroes.length}/${(typeof HEROES!=='undefined')?Object.keys(HEROES).length:9}</span></div>
       <div class="ic"><span class="icl">${I18N.t('ui.turnTax')}</span><span class="icv" style="color:var(--green)">₡${tax.toLocaleString()}</span></div>
       <div class="ic"><span class="icl">ACT/TURN</span><span class="icv" style="color:var(--cyan)">${G.act}/${G.turn}</span></div>

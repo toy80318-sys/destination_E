@@ -69,6 +69,8 @@
           _emit();
           // 첫 로그인시 클라우드 → 로컬 자동 풀
           try{await pullAll();}catch(e){_log('pullAll 실패',e);}
+          // 오프라인 중 쌓인 명예의전당 기록 자동 재전송
+          try{await flushHofQueue();}catch(e){_log('HoF 큐 동기화 실패',e);}
         }else{
           _log('로그아웃 상태');
           _emit();
@@ -77,7 +79,7 @@
       // 익명 로그인 (아직 로그인 안 됐을 때)
       if(!_state.auth.currentUser){
         try{await _state.auth.signInAnonymously();}
-        catch(e){_log('익명 로그인 실패',e.message);}
+        catch(e){_state.lastAuthError=(e&&e.code)||e.message;_log('익명 로그인 실패',e.message);}
       }
     }catch(e){
       _log('init 실패:',e.message,'— 로컬 저장만 사용됩니다');
@@ -135,6 +137,7 @@
       user:_state.user?{uid:_state.user.uid,email:_state.user.email,isAnon:_state.user.isAnonymous}:null,
       lastUploadAt:_state.lastUploadAt,
       lastUploadError:_state.lastUploadError,
+      lastAuthError:_state.lastAuthError||null,
       uploadCount:_state.uploadCount||0,
       queueSize:_state.uploadQueue.size,
       firebaseLoaded:!!window.firebase,
@@ -284,7 +287,7 @@
         // 5초 경과 + 아직 인증 안 됨 → 명시적 재로그인 1회 시도
         if(elapsed>=5000&&!_retried&&_state.auth){
           _retried=true;
-          try{await _state.auth.signInAnonymously();}catch(e){_log('재로그인 실패',e.message);}
+          try{await _state.auth.signInAnonymously();}catch(e){_state.lastAuthError=(e&&e.code)||e.message;_log('재로그인 실패',e.message);}
         }
         if(elapsed>=timeoutMs){clearInterval(iv);return reject(new Error('auth_timeout_'+timeoutMs+'ms'));}
       },tick);
@@ -377,13 +380,36 @@
   //   · 컬렉션: hall_of_fame/{auto-id} — 누구나 조회 가능, 본인만 작성
   //   · 중복 방지: gid+act 조합 키, 동일 게임 1회만 업로드
   // ══════════════════════════════════════════════════════════════════
-  async function uploadHallOfFame(entry){
-    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
-    if(!_state.db)return{error:'Firebase 미초기화'};
-    if(!_state.user){
-      try{await _waitForAuth(10000);}catch(e){return{error:'auth_pending'};}
+  // ── 오프라인 큐: 업로드 실패 시 localStorage에 보관 → 온라인/인증되면 자동 재전송 ──
+  function _hofQueueLoad(){ try{return JSON.parse(localStorage.getItem('de_hof_pending')||'[]');}catch(e){return [];} }
+  function _hofQueueSave(arr){ try{localStorage.setItem('de_hof_pending',JSON.stringify((arr||[]).slice(-50)));}catch(e){} }
+  function _hofQueueAdd(entry){
+    const q=_hofQueueLoad(); const key=(entry.gid||0)+'_'+entry.act;
+    if(q.some(e=>((e.gid||0)+'_'+e.act)===key))return;  // 같은 게임·액트 중복 방지
+    q.push(entry); _hofQueueSave(q);
+    _log('HoF 오프라인 큐 저장 (대기 '+q.length+'건)');
+  }
+  function hofPendingCount(){ return _hofQueueLoad().length; }
+  async function flushHofQueue(){
+    const q=_hofQueueLoad();
+    if(!q.length||!_state.db||!_state.user)return{flushed:0,pending:q.length};
+    const remain=[]; let flushed=0;
+    for(const entry of q){
+      try{ const r=await uploadHallOfFame(entry,true); if(r&&r.ok)flushed++; else remain.push(entry); }
+      catch(e){ remain.push(entry); }
     }
+    _hofQueueSave(remain);
+    if(flushed)_log('HoF 큐 동기화: '+flushed+'건 업로드, '+remain.length+'건 대기');
+    return{flushed,pending:remain.length};
+  }
+
+  async function uploadHallOfFame(entry,fromQueue){
     if(!entry||typeof entry.act!=='number')return{error:'invalid_entry'};
+    if(!_state.db){try{await init();await new Promise(r=>setTimeout(r,500));}catch(e){}}
+    if(!_state.db){ if(!fromQueue)_hofQueueAdd(entry); return{error:'Firebase 미초기화',queued:!fromQueue}; }
+    if(!_state.user){
+      try{await _waitForAuth(10000);}catch(e){ if(!fromQueue)_hofQueueAdd(entry); return{error:'auth_pending',queued:!fromQueue}; }
+    }
     try{
       const doc={
         act:entry.act,
@@ -414,7 +440,7 @@
       await _state.db.collection('hall_of_fame').add(doc);
       _log('HoF 업로드 완료 act='+entry.act);
       return{ok:true};
-    }catch(e){_log('HoF 업로드 실패',e.code,e.message);return{error:(e.code||'')+': '+e.message};}
+    }catch(e){_log('HoF 업로드 실패',e.code,e.message); if(!fromQueue)_hofQueueAdd(entry); return{error:(e.code||'')+': '+e.message,queued:!fromQueue};}
   }
   async function listHallOfFame(opts){
     opts=opts||{};
@@ -430,12 +456,12 @@
     if(!_state.user){
       try{
         if(_state.auth&&!_state.auth.currentUser){
-          try{await _state.auth.signInAnonymously();}catch(e){_log('signInAnonymously 실패',e.message);}
+          try{await _state.auth.signInAnonymously();}catch(e){_state.lastAuthError=(e&&e.code)||e.message;_log('signInAnonymously 실패',e.message);}
         }
         await _waitForAuth(15000);
-      }catch(e){return{error:'인증 대기 실패 — 네트워크/익명 로그인 확인 ('+e.message+')'};}
+      }catch(e){return{error:'인증 대기 실패 — 네트워크/익명 로그인 확인 ('+e.message+')',code:_state.lastAuthError};}
     }
-    if(!_state.user)return{error:'인증 미완료 — 다시 시도해 주세요'};
+    if(!_state.user)return{error:'인증 미완료 — 다시 시도해 주세요',code:_state.lastAuthError};
     // 3) 쿼리 실행 — orderBy 인덱스 누락 시 fallback (tsClient → playedAt → ts)
     const _runQuery=async(orderField)=>{
       let q=_state.db.collection('hall_of_fame');
@@ -478,6 +504,6 @@
     // 이메일 기반 API
     setEmail,getEmail,clearEmail,loadByEmail,registerEmail,uploadByEmail,
     // 글로벌 명예의 전당
-    uploadHallOfFame,listHallOfFame,
+    uploadHallOfFame,listHallOfFame,flushHofQueue,hofPendingCount,
     _normalizeEmail,_validEmail};
 })();
