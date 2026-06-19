@@ -341,8 +341,10 @@ function doNextTurn(){
       notify(I18N.t('notify.pirateStayWarn'),'err');
     },400);
   }
-  // ── 적 행성 2턴 체류: 치크스 함대 50% 출몰 ───────────────
-  if(pd?.hostile&&G.stayTurns>=2&&G.turn-(G.lastChixTurn||-999)>1){
+  // ── 치크스(적) 행성: 체류 1턴부터 치크스 함대 50% 출몰 ───────────────
+  //   사용자 요청 2026-06-20: 치크스 전위대·지휘선이 잘 안 나타나 퀘스트(격퇴/강습)가 막히던 문제 →
+  //   2턴 체류 게이트를 1턴으로 완화해 치크스 행성에서 50% 확률로 안정적으로 등장(쿨다운 1턴 유지).
+  if(pd?.hostile&&G.stayTurns>=1&&G.turn-(G.lastChixTurn||-999)>1){
     if(Math.random()<0.50){
       setTimeout(()=>triggerChixFleet(pd),700);
       return;
