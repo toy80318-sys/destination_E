@@ -20,6 +20,7 @@ MODEL_ID = "eleven_v3"          # 태그 미인식이면 "eleven_multilingual_v2
 OUT_DIR  = "out"
 CSV_PATH = "lines.csv"
 SLEEP    = 0.7                  # 호출 간 간격(요금/레이트리밋 대비)
+USE_EMOTION_TAGS = False       # True면 [감정]태그 포함 입력(v3). False=깨끗한 대사만(권장: 태그/감탄사 오독 방지)
 
 # 캐릭터 char_slug -> voice_id  (반드시 채울 것. 빈 값이면 DEFAULT 사용)
 VOICE_MAP = {
@@ -63,7 +64,7 @@ def main():
             print(f"[!] voice_id 없음: {r['character']}({r['char_slug']}) — 건너뜀"); fail += 1; continue
         url = f"https://api.elevenlabs.io/v1/text-to-speech/{vid}"
         body = {
-            "text": r["input_text"],
+            "text": (r["input_text"] if USE_EMOTION_TAGS else r["text"]),
             "model_id": MODEL_ID,
             "voice_settings": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.3},
         }
