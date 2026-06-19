@@ -545,13 +545,22 @@ const PHASE4_CUTSCENES_KO={
   p4_ch10c:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.'},
-    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'...여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'(방정식을 정리하며) 내 방정식이, 마침내 쓰일 곳을 찾았군요. 미사일에 보이드 에너지를 실으면 — 저 머리도 벨 수 있습니다.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다.'}
+  ],
+
+    // ─── 이휘소 박사(H09) 합류 — 아이젠클로 격파 직후 강제 재생 (Doc#5) ───
+  p4_leehwiso_join:[
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'(스캔) 공장 지하 연구동 — 보존 캡슐 하나. 생체 반응… 미약하지만, 분명히 살아있어요!'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'열어라. 아이젠클로가 이렇게까지 숨겨둔 것이라면 — 보통 인물이 아니다.'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'(캡슐에서 깨어나며) …여기가, 어디요. 나는 이휘소. 입자물리학자였소. 100년을… 잤다는 거요?'},
+    {char:'hero09', name:'이휘소', color:'#9ee7ff', text:'(정신을 차리며) 아니, 그보다 — 내 방정식. 보이드 에너지와 반물질을 결합하면, 지금껏 이 우주에 없던 미사일 화력이 나옵니다. 그게 봉쇄를 푸는 열쇠요.'},
+    {char:'hero02', name:'장영실', color:'#80e8c0', text:'(눈을 빛내며) …그 탄도 방정식, 거북선에 실을 수 있어요. 당신과 나, 손을 맞추면 — 이 함대의 미사일이 달라집니다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'박사. 당신의 방정식이 100년을 건너 우리를 여기로 이끌었소. 함께 갑시다.'},
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 이휘소 박사. 미사일 위력 2배 — 방정식 탄도 활성화.'}
   ],
 
     // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
@@ -661,13 +670,22 @@ const PHASE4_CUTSCENES_EN={
   p4_ch10c:[
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Command-room data recovered. Eisenklaue — confirmed destroyed. The blockade\'s enforcer met his end at Fessachsen.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We severed one hand of the century-long blockade. But the head still remains.'},
-    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'A preservation capsule in the research wing beneath the factory — life signs! Someone is alive.'},
-    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'...where am I. I am Lee Hwi-so — I was a particle physicist. A hundred years asleep...'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Your equations led us here a century later, Doctor. Come with us.'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'(tidying his equations) So my equations have finally found their purpose. Load Void energy into a missile — and even that head can be cut down.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'One coordinate buried in Eisenklaue\'s data — Zeta Reticuli. Ursa Major\'s home base.'},
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the true boss. It ends only when we take it down ourselves.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before Zeta Reticuli we must pass the Kapteyn rift. Einstein is there — the key to unlocking Ursa\'s Void shield.'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. The enforcer is down, and Dr. Lee Hwi-so has joined us. Now we pass through the Kapteyn rift — on to Ursa Major\'s stronghold.'}
+  ],
+
+    // ─── Dr. Lee Hwi-so (H09) joins — force-played right after Eisenklaue is destroyed (Doc#5) ───
+  p4_leehwiso_join:[
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'(scanning) The research wing beneath the factory — a preservation capsule. Life signs… faint, but unmistakable. Someone\'s alive!'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Open it. If Eisenklaue went this far to hide it — this is no ordinary person.'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'(waking from the capsule) …Where… am I. I am Lee Hwi-so. I was a particle physicist. A hundred years… asleep?'},
+    {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'(gathering himself) No — more than that, my equations. Combine Void energy with antimatter, and you get missile firepower this universe has never seen. That is the key to breaking the blockade.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'(eyes lighting up) …That ballistic equation — I can load it into the Geobukseon. You and I, working together — this fleet\'s missiles will be a different beast.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Doctor. Your equations crossed a hundred years to lead us here. Come with us.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Dr. Lee Hwi-so. Missile firepower doubled — Equation Ballistics active.'}
   ],
 
     // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17

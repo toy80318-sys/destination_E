@@ -65,9 +65,16 @@
     if(G.heroes.indexOf('H09')<0){
       G.heroes.push('H09');
       try{ if(typeof updateHUD==='function')updateHUD(); }catch(e){}
-      showHero09Popup();
       try{ notify(I18N.t('notify.heroRecruitedIc',{ic:(HEROES.H09&&HEROES.H09.ic)||'🔬',nm:I18N.t('hero.H09.nm')}),'pur'); }catch(e){}
       try{ if(typeof baekgu==='function')baekgu(I18N.t('baekgu.heroJoined',{nm:I18N.t('hero.H09.nm')})); }catch(e){}
+      // Doc#5: 합류 컷신(p4_leehwiso_join) 강제 재생 → 종료 시 영웅 획득 카드. 실패 시 카드만.
+      try{
+        var S=window.STORY_SCENES_PC;
+        if(S&&typeof S.triggerScene==='function'){
+          if(G._scenesSeen) delete G._scenesSeen['scene_p4_leehwiso_join'];
+          S.triggerScene('p4_leehwiso_join', showHero09Popup);
+        } else { showHero09Popup(); }
+      }catch(e){ showHero09Popup(); }
     }
   }
 
