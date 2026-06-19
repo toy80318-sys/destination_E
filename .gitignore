@@ -39,3 +39,6 @@ download-log.txt
 build-linux-log.txt
 # 3-OS 패키징 산출물 (build-3os.bat 출력 — Windows 빌드 + mac/linux 다운로드 모음, git 추적 금지)
 release/
+
+# 빌드 로그(전이성)
+build-log.txt
