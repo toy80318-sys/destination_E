@@ -14,7 +14,13 @@ try:
 except ImportError:
     sys.exit("requests 필요: pip install requests")
 
-API_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
+import os as _os
+def _load_key():
+    k=_os.environ.get("ELEVENLABS_API_KEY","")
+    if not k and _os.path.exists("el_key.txt"):
+        k=open("el_key.txt",encoding="utf-8").read().strip()
+    return k
+API_KEY=_load_key()
 # v3 audio tag([excited] 등)을 인식하는 모델 사용. 사양 변동 시 공식 문서에서 모델 id 확인.
 MODEL_ID = "eleven_v3"          # 태그 미인식이면 "eleven_multilingual_v2"
 OUT_DIR  = os.environ.get("OUT_DIR", "out")
