@@ -2715,7 +2715,14 @@ function _finishCombat(){
         const _acqRar=_hasCap?(_capturedShips[0].tier||''):'';
         // 해적 격파 후 상인 구출 보상 — 치크스/잔해 아닌 해적전 25% 확률 (보고 확인 후 등장)
         const _merchant=(!_chixFleetSnap&&!_debrisCombatSnap&&Math.random()<0.25)?_rollMerchantRescue(pd):null;
-        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',enemyMent:I18N.t('combat.defeatGeneric'+(1+Math.floor(Math.random()*3))),congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
+        // 사용자 요청: 패배 멘트 좌측에 해적/적군 이미지. 격파 적함 이미지와 동일 라우팅(shipImgSrc → 잔해/치크스/해적 폴백).
+        const _mVer=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+        const _mentImg=(_firstEnemySnap && typeof shipImgSrc==='function')
+          ? shipImgSrc(_firstEnemySnap)
+          : (_debrisCombatSnap?('img/combat/enemies/DBRP_M.png'+_mVer)
+              :_chixFleetSnap?('img/combat/enemies/CHIX_M.png'+_mVer)
+              :('img/combat/enemies/PIRATE_M.png'+_mVer));
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',enemyMent:I18N.t('combat.defeatGeneric'+(1+Math.floor(Math.random()*3))),enemyImg:_mentImg,congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
       },900);
     }
     checkQuestCombatDone();
