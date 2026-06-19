@@ -17,7 +17,8 @@ function showSettingsModal(){
   const _mPct=Math.round((AudioMgr.master||0)*100);
   const _bPct=Math.round((AudioMgr.bgm||0)*100);
   const _sPct=Math.round((AudioMgr.sfx||0)*100);
-  const _bOff=AudioMgr.bgmOff, _sOff=AudioMgr.sfxOff;
+  const _vPct=Math.round((AudioMgr.voice||0)*100);
+  const _bOff=AudioMgr.bgmOff, _sOff=AudioMgr.sfxOff, _vOff=AudioMgr.voiceOff;
   // 토글 버튼 스타일 (켜짐=초록, 꺼짐=회색)
   function _toggleBtnStyle(on){
     return on
@@ -39,6 +40,10 @@ function showSettingsModal(){
           ${_sOff?I18N.t('settings.sfxOff'):I18N.t('settings.sfxOn')}
           <div style="font-size:10px;font-weight:normal;margin-top:2px;opacity:.85">${_sOff?I18N.t('settings.clickToOn'):I18N.t('settings.clickToOff')}</div>
         </button>
+        <button id="set-voice-toggle" onclick="(function(){const off=!AudioMgr.voiceOff;AudioMgr.setVoiceOff(off);notify(off?I18N.t('settings.voiceOff'):I18N.t('settings.voiceOn'),'ok');showSettingsModal();})()" style="padding:10px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:bold;${_toggleBtnStyle(!_vOff)}">
+          ${_vOff?I18N.t('settings.voiceOff'):I18N.t('settings.voiceOn')}
+          <div style="font-size:10px;font-weight:normal;margin-top:2px;opacity:.85">${_vOff?I18N.t('settings.clickToOn'):I18N.t('settings.clickToOff')}</div>
+        </button>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
         <div>
@@ -52,6 +57,10 @@ function showSettingsModal(){
         <div style="opacity:${_sOff?0.4:1}">
           <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:3px"><span>${I18N.t('settings.sfxVolume')}</span><span id="set-sv">${_sPct}%</span></div>
           <input type="range" min="0" max="100" value="${_sPct}" style="width:100%" ${_sOff?'disabled':''} oninput="document.getElementById('set-sv').textContent=this.value+'%';AudioMgr.setSfxVol(this.value/100);" onchange="AudioMgr.playSfx('UI_click');">
+        </div>
+        <div style="opacity:${_vOff?0.4:1}">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:3px"><span>${I18N.t('settings.voiceVolume')}</span><span id="set-vv">${_vPct}%</span></div>
+          <input type="range" min="0" max="100" value="${_vPct}" style="width:100%" ${_vOff?'disabled':''} oninput="document.getElementById('set-vv').textContent=this.value+'%';AudioMgr.setVoiceVol(this.value/100);">
         </div>
       </div>
     </div>

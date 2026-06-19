@@ -995,19 +995,21 @@ function addCombatLog(msg,cls){
 window.AudioMgr=(function(){
   const SFX_BASE='02_Assets/audio/sfx/';
   const BGM_BASE='02_Assets/audio/bgm/';
-  let masterVol=0.7,bgmVol=0.6,sfxVol=0.8;
-  let bgmOff=false,sfxOff=false; // 개별 끄기 토글
+  let masterVol=0.7,bgmVol=0.6,sfxVol=0.8,voiceVol=0.95;
+  let bgmOff=false,sfxOff=false,voiceOff=false; // 개별 끄기 토글 (voice=대사 보이스)
   try{
     const s=JSON.parse(localStorage.getItem('de_audio_settings')||'{}');
     if(typeof s.master==='number')masterVol=s.master;
     if(typeof s.bgm==='number')bgmVol=s.bgm;
     if(typeof s.sfx==='number')sfxVol=s.sfx;
+    if(typeof s.voice==='number')voiceVol=s.voice;
     if(typeof s.bgmOff==='boolean')bgmOff=s.bgmOff;
     if(typeof s.sfxOff==='boolean')sfxOff=s.sfxOff;
+    if(typeof s.voiceOff==='boolean')voiceOff=s.voiceOff;
     // 구버전 호환: muted 플래그가 있으면 BGM/SFX 모두 켜기
     if(typeof s.muted==='boolean'&&s.muted){bgmOff=true;sfxOff=true;}
   }catch(e){}
-  function save(){try{localStorage.setItem('de_audio_settings',JSON.stringify({master:masterVol,bgm:bgmVol,sfx:sfxVol,bgmOff,sfxOff}));}catch(e){}}
+  function save(){try{localStorage.setItem('de_audio_settings',JSON.stringify({master:masterVol,bgm:bgmVol,sfx:sfxVol,voice:voiceVol,bgmOff,sfxOff,voiceOff}));}catch(e){}}
   let curBgmName=null,curBgmAudio=null,userInteracted=false,pendingBgm=null;
   const _INTERACT_EVENTS=['click','keydown','touchstart','pointerdown'];
   function _onInteract(){
@@ -1109,13 +1111,54 @@ window.AudioMgr=(function(){
     }
   }
   function setSfxOff(off){sfxOff=!!off;save();}
+  // ── 대사 보이스 (컷신·팝업 줄별 mp3) — 음성_적용_가이드.md ──────────────
+  const VOICE_BASE='02_Assets/audio/voice/';
+  let curVoiceAudio=null;
+  // 컷신 char 키 → 보이스 폴더(=VOICE_MAP 키). 현재 보유: 백구·사령관·이순신(hero01).
+  function _voiceKey(char){
+    if(!char)return null;
+    if(char.indexOf('baekgu')===0)return 'baekgu';
+    if(char==='commander')return 'commander';
+    if(char==='hero01')return 'yisunsin';
+    return null;
+  }
+  // 런타임 정규화 — scripts/gen-voice-map.js 의 _vnorm 과 반드시 동일.
+  function _vnorm(t){
+    if(!t)return '';
+    return String(t)
+      .replace(/\([^)]*\)/g,'')
+      .replace(/\{[^}]*\}/g,function(m){var k=m.slice(1,-1).toLowerCase();return (k==='commander'||k==='사령관')?'사령관':k==='함선'?'함선':k==='회사'?'회사':'';})
+      .replace(/[^가-힣a-zA-Z0-9]/g,'')
+      .toLowerCase();
+  }
+  function stopVoice(){ if(curVoiceAudio){try{curVoiceAudio.pause();curVoiceAudio.src='';}catch(e){}curVoiceAudio=null;} }
+  // 컷신 라인 보이스 재생. 매칭 없으면 자막만(false 반환). 직전 보이스는 자동 정지.
+  function playVoice(char,rawText){
+    stopVoice();
+    if(voiceOff||masterVol<=0||voiceVol<=0)return false;
+    if(!userInteracted)return false;
+    const vk=_voiceKey(char); if(!vk)return false;
+    const map=(typeof window!=='undefined'&&window.VOICE_MAP&&window.VOICE_MAP[vk])||null; if(!map)return false;
+    const clip=map[_vnorm(rawText)]; if(!clip)return false;
+    try{
+      const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+      const a=new Audio(VOICE_BASE+vk+'/'+clip+'.mp3'+_ver);
+      a.volume=Math.min(1,masterVol*voiceVol);
+      curVoiceAudio=a;
+      a.play().catch(function(){});
+      return true;
+    }catch(e){return false;}
+  }
+  function setVoiceVol(v){voiceVol=clamp(+v||0,0,1);if(curVoiceAudio)curVoiceAudio.volume=Math.min(1,masterVol*voiceVol);save();}
+  function setVoiceOff(off){voiceOff=!!off;if(voiceOff)stopVoice();save();}
   // 구버전 호환
   function setMuted(m){setBgmOff(m);setSfxOff(m);}
   return{
     playBgm,stopBgm,playSfx,stopAllSfx,setMaster,setBgmVol,setSfxVol,setBgmOff,setSfxOff,setMuted,
+    playVoice,stopVoice,setVoiceVol,setVoiceOff,
     get curBgm(){return curBgmName;},
-    get master(){return masterVol;},get bgm(){return bgmVol;},get sfx(){return sfxVol;},
-    get bgmOff(){return bgmOff;},get sfxOff(){return sfxOff;},
+    get master(){return masterVol;},get bgm(){return bgmVol;},get sfx(){return sfxVol;},get voice(){return voiceVol;},
+    get bgmOff(){return bgmOff;},get sfxOff(){return sfxOff;},get voiceOff(){return voiceOff;},
     get muted(){return bgmOff&&sfxOff;}
   };
 })();
