@@ -235,6 +235,7 @@ function renderShipTab(body){
       // physSlots[i] = cid | 'skip' | null
       const physSlots=Array(maxCrew).fill(null);
       const _skip=new Set();
+      const _nRows=Math.ceil(maxCrew/crewCols);  // 그리드 행 수 — 멀티셀 크루 배치를 전 행에서 탐색(사용자 보고: 크루 누락)
 
       (s.crewIds||[]).forEach(function(cid2){
         const _c2=_allPG.find(function(x){return x.id===cid2;});
@@ -242,23 +243,26 @@ function renderShipTab(body){
         if(cost2===1){
           for(var i=0;i<maxCrew;i++){if(!_skip.has(i)&&physSlots[i]===null){physSlots[i]=cid2;break;}}
         }else if(cost2===2){
-          // 같은 행 연속 2칸
-          outer2:for(var r2=0;r2<2;r2++){
+          // 같은 행 연속 2칸 — 전 행 탐색(기존 첫 2행 한정 버그로 하위 행 크루 누락되던 문제 수정)
+          outer2:for(var r2=0;r2<_nRows;r2++){
             for(var c2=0;c2<crewCols-1;c2++){
               var p2=r2*crewCols+c2;
-              if(!_skip.has(p2)&&!_skip.has(p2+1)&&physSlots[p2]===null&&physSlots[p2+1]===null){
+              if(p2+1<maxCrew&&!_skip.has(p2)&&!_skip.has(p2+1)&&physSlots[p2]===null&&physSlots[p2+1]===null){
                 physSlots[p2]=cid2;_skip.add(p2+1);physSlots[p2+1]='skip';break outer2;
               }
             }
           }
         }else{
-          // 2×2 블록 (4칸) — col 0 or (crewCols-2) 에서 시작
-          outer4:for(var c4=0;c4<=crewCols-2;c4+=2){
-            var ps=[c4,c4+1,c4+crewCols,c4+crewCols+1];
-            if(ps.every(function(p){return!_skip.has(p)&&physSlots[p]===null;})){
-              physSlots[c4]=cid2;
-              ps.slice(1).forEach(function(p){_skip.add(p);physSlots[p]='skip';});
-              break outer4;
+          // 2×2 블록 (4칸) — 전 행 × col 0/2/… 탐색(기존 첫 행 한정 버그 수정)
+          outer4:for(var r4=0;r4<=_nRows-2;r4++){
+            for(var c4=0;c4<=crewCols-2;c4+=2){
+              var base4=r4*crewCols+c4;
+              var ps=[base4,base4+1,base4+crewCols,base4+crewCols+1];
+              if(ps.every(function(p){return p<maxCrew&&!_skip.has(p)&&physSlots[p]===null;})){
+                physSlots[base4]=cid2;
+                ps.slice(1).forEach(function(p){_skip.add(p);physSlots[p]='skip';});
+                break outer4;
+              }
             }
           }
         }
@@ -340,7 +344,7 @@ function renderShipTab(body){
             ${isFlagship?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 5px">${I18N.t('ship.flagshipChip')}</span>`:''}
             <span style="font-size:11px;color:${tierCol};border:1px solid ${tierCol};border-radius:3px;padding:1px 5px">${I18N.tier(s.tier)}</span>
           </div>
-          <span style="font-size:13px;font-weight:bold;color:${hpC}">HP ${hpP}%${shP>0?' | '+I18N.t('ui.shieldShort')+' '+shP+'%':''}</span>
+          <span style="font-size:13px;font-weight:bold;color:${hpC}">HP ${Math.round(s.hp).toLocaleString()}/${_eHpP.toLocaleString()} (${hpP}%)${shP>0?' | '+I18N.t('ui.shieldShort')+' '+shP+'%':''}</span>
         </div>
 
         <!-- ── 본문: 정비소=2열(정보+서브탭) / 거래소=4열 ── -->
@@ -397,12 +401,12 @@ function renderShipTab(body){
             if(_cpid){
               const _csc=SPECIAL_CARGO_PARTS.find(c=>c.id===_cpid);
               const _cb=_csc?_csc.cargoBonus:0;
-              _cextCells+='<button onclick="unequipCargoExt('+idx+','+_ce+')" title="'+((_csc?(partDisplayNm(_csc)||_csc.nm):_cpid))+' '+I18N.t('ship.cargoExtTip',{n:_cb})+'" style="width:46px;height:46px;background:rgba(212,175,55,.12);border:1px solid var(--gold);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:2px">'
-                +imgOrEmoji('img/parts/'+_cpid+'.png',(_csc&&_csc.ic)||'📦',38,38,'pointer-events:none;object-fit:contain;max-width:100%;max-height:100%','part_'+_cpid)
+              _cextCells+='<button onclick="unequipCargoExt('+idx+','+_ce+')" title="'+((_csc?(partDisplayNm(_csc)||_csc.nm):_cpid))+' '+I18N.t('ship.cargoExtTip',{n:_cb})+'" style="width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;background:rgba(212,175,55,.12);border:1px solid var(--gold);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:2px">'
+                +imgOrEmoji('img/parts/'+_cpid+'.png',(_csc&&_csc.ic)||'📦',CELL_SZ-6,CELL_SZ-6,'pointer-events:none;object-fit:contain;max-width:100%;max-height:100%','part_'+_cpid)
                 +'<span style="position:absolute;bottom:-3px;right:-2px;font-size:8px;color:#fff;background:var(--gold);border-radius:3px;padding:0 2px;font-weight:bold">+'+_cb+'</span>'
                 +'</button>';
             } else {
-              _cextCells+='<button onclick="pickCargoExtForSlot('+idx+')" title="'+I18N.t('title.holdExpEquip')+'" style="width:46px;height:46px;background:rgba(212,175,55,.04);border:1px dashed rgba(212,175,55,.3);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.45);font-size:16px" onmouseover="this.style.background=\'rgba(212,175,55,.1)\'" onmouseout="this.style.background=\'rgba(212,175,55,.04)\'">+</button>';
+              _cextCells+='<button onclick="pickCargoExtForSlot('+idx+')" title="'+I18N.t('title.holdExpEquip')+'" style="width:'+CELL_SZ+'px;height:'+CELL_SZ+'px;background:rgba(212,175,55,.04);border:1px dashed rgba(212,175,55,.3);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(212,175,55,.45);font-size:16px" onmouseover="this.style.background=\'rgba(212,175,55,.1)\'" onmouseout="this.style.background=\'rgba(212,175,55,.04)\'">+</button>';
             }
           }
           const _cargoExtCol=`<div style="flex-shrink:0;display:flex;flex-direction:column;gap:3px;padding-left:8px">
