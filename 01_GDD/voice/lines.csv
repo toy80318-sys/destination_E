@@ -1,25 +1,25 @@
 ﻿num,character,char_slug,emotion,text,input_text,filename
-001,주인공(사령관),commander,[resolute][hesitant][curious],"...얼마나, 잤지?","[resolute][hesitant][curious] ...얼마나, 잤지?",001_commander.mp3
+001,주인공(사령관),commander,[resolute][hesitant][curious],"얼마나, 잤지?","[resolute][hesitant][curious] 얼마나, 잤지?",001_commander.mp3
 002,주인공(사령관),commander,[resolute][hesitant][curious],지구는... 아직도?,[resolute][hesitant][curious] 지구는... 아직도?,002_commander.mp3
-003,주인공(사령관),commander,[resolute][hesitant],"...고향이, 아직 저 위에 있군.","[resolute][hesitant] ...고향이, 아직 저 위에 있군.",003_commander.mp3
-004,주인공(사령관),commander,[resolute][hesitant][curious],…사람이? 아직 누가 남아 있다고?,[resolute][hesitant][curious] …사람이? 아직 누가 남아 있다고?,004_commander.mp3
+003,주인공(사령관),commander,[resolute][hesitant],"고향이, 아직 저 위에 있군.","[resolute][hesitant] 고향이, 아직 저 위에 있군.",003_commander.mp3
+004,주인공(사령관),commander,[resolute][hesitant][curious],사람이? 아직 누가 남아 있다고?,[resolute][hesitant][curious] 사람이? 아직 누가 남아 있다고?,004_commander.mp3
 005,주인공(사령관),commander,[resolute][curious],고작 장사로 봉쇄를 뚫겠다고?,[resolute][curious] 고작 장사로 봉쇄를 뚫겠다고?,005_commander.mp3
 006,주인공(사령관),commander,[resolute],좀 오래 잠들어 있었습니다. 이제 막 깼고요.,[resolute] 좀 오래 잠들어 있었습니다. 이제 막 깼고요.,006_commander.mp3
 007,주인공(사령관),commander,[resolute],"지금은 고철뿐입니다. 하지만 곧, 훨씬 큰 걸 들고 오죠.","[resolute] 지금은 고철뿐입니다. 하지만 곧, 훨씬 큰 걸 들고 오죠.",007_commander.mp3
 008,주인공(사령관),commander,[resolute][hesitant][curious],거북선…?,[resolute][hesitant][curious] 거북선…?,008_commander.mp3
-009,주인공(사령관),commander,[resolute][hesitant][curious],"…그 사람은, 지금 어디 있지?","[resolute][hesitant][curious] …그 사람은, 지금 어디 있지?",009_commander.mp3
+009,주인공(사령관),commander,[resolute][hesitant][curious],"그 사람은, 지금 어디 있지?","[resolute][hesitant][curious] 그 사람은, 지금 어디 있지?",009_commander.mp3
 010,주인공(사령관),commander,[resolute],잘 부탁해.,[resolute] 잘 부탁해.,010_commander.mp3
 011,주인공(사령관),commander,[resolute],구한다.,[resolute] 구한다.,011_commander.mp3
 012,주인공(사령관),commander,[resolute],간다.,[resolute] 간다.,012_commander.mp3
 013,주인공(사령관),commander,[resolute],"크리그를, 벌써 여기서 만나는군.","[resolute] 크리그를, 벌써 여기서 만나는군.",013_commander.mp3
-014,주인공(사령관),commander,[resolute][hesitant],…사람부터 꺼낸다.,[resolute][hesitant] …사람부터 꺼낸다.,014_commander.mp3
+014,주인공(사령관),commander,[resolute][hesitant],사람부터 꺼낸다.,[resolute][hesitant] 사람부터 꺼낸다.,014_commander.mp3
 015,주인공(사령관),commander,[resolute],"백구, 62%면 충분해.","[resolute] 백구, 62%면 충분해.",015_commander.mp3
 016,주인공(사령관),commander,[resolute],마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.,[resolute] 마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.,016_commander.mp3
 017,주인공(사령관),commander,[resolute],여긴 은하 공용 항로다. 비켜.,[resolute] 여긴 은하 공용 항로다. 비켜.,017_commander.mp3
 018,주인공(사령관),commander,[resolute],"발굴한다. 살아있는 거라면, 더더욱.","[resolute] 발굴한다. 살아있는 거라면, 더더욱.",018_commander.mp3
 019,주인공(사령관),commander,[resolute],오르크를 잡으면 다음 경로가 열려. 출발한다.,[resolute] 오르크를 잡으면 다음 경로가 열려. 출발한다.,019_commander.mp3
 020,주인공(사령관),commander,[resolute],"치크스 변이 포자 ×3, 마침 이 구역 화물이다. 위장 미끼로 써먹자.","[resolute] 치크스 변이 포자 ×3, 마침 이 구역 화물이다. 위장 미끼로 써먹자.",020_commander.mp3
-021,주인공(사령관),commander,[resolute][hesitant],설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. (짧게) …사람부터다.,[resolute][hesitant] 설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. (짧게) …사람부터다.,021_commander.mp3
+021,주인공(사령관),commander,[resolute][hesitant],설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. …사람부터다.,[resolute][hesitant] 설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. …사람부터다.,021_commander.mp3
 022,주인공(사령관),commander,[resolute][curious],"지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?","[resolute][curious] 지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?",022_commander.mp3
 023,주인공(사령관),commander,[resolute],"이순신 장군이 수백 년째 저기 갇혀 있다. 오늘, 우리가 끝낸다.","[resolute] 이순신 장군이 수백 년째 저기 갇혀 있다. 오늘, 우리가 끝낸다.",023_commander.mp3
 024,주인공(사령관),commander,[resolute],장군. 함께 갑시다.,[resolute] 장군. 함께 갑시다.,024_commander.mp3
@@ -27,14 +27,14 @@
 026,주인공(사령관),commander,[resolute],아우레우스 정보 칩으로 좌표 분석. 진입한다.,[resolute] 아우레우스 정보 칩으로 좌표 분석. 진입한다.,026_commander.mp3
 027,주인공(사령관),commander,[resolute],"아이젠클로. 100년 봉쇄의 집행관. 오늘, 네 쇠사슬을 여기서 끊는다.","[resolute] 아이젠클로. 100년 봉쇄의 집행관. 오늘, 네 쇠사슬을 여기서 끊는다.",027_commander.mp3
 028,주인공(사령관),commander,[resolute],"들어간다. 아우레우스 태양핵 셋, 메카니카 양자칩 셋 — 충분해.","[resolute] 들어간다. 아우레우스 태양핵 셋, 메카니카 양자칩 셋 — 충분해.",028_commander.mp3
-029,주인공(사령관),commander,[resolute][hesitant],... 진입한다.,[resolute][hesitant] ... 진입한다.,029_commander.mp3
+029,주인공(사령관),commander,[resolute][hesitant],진입한다.,[resolute][hesitant] 진입한다.,029_commander.mp3
 030,주인공(사령관),commander,[resolute],전 함대. 진형 학익진. 거북선 중앙. 진입한다.,[resolute] 전 함대. 진형 학익진. 거북선 중앙. 진입한다.,030_commander.mp3
 031,주인공(사령관),commander,[resolute],아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.,[resolute] 아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.,031_commander.mp3
-032,주인공(사령관),commander,[resolute][hesitant],... 발사.,[resolute][hesitant] ... 발사.,032_commander.mp3
-033,주인공(사령관),commander,[resolute][hesitant],... 모두. 발사.,[resolute][hesitant] ... 모두. 발사.,033_commander.mp3
-034,주인공(사령관),commander,[resolute][hesitant],... 백구.,[resolute][hesitant] ... 백구.,034_commander.mp3
-035,주인공(사령관),commander,[resolute][hesitant],... 내려간다.,[resolute][hesitant] ... 내려간다.,035_commander.mp3
-036,주인공(사령관),commander,[resolute][hesitant],... 어디든. 우리는 함께다.,[resolute][hesitant] ... 어디든. 우리는 함께다.,036_commander.mp3
+032,주인공(사령관),commander,[resolute][hesitant],발사.,[resolute][hesitant] 발사.,032_commander.mp3
+033,주인공(사령관),commander,[resolute][hesitant],모두. 발사.,[resolute][hesitant] 모두. 발사.,033_commander.mp3
+034,주인공(사령관),commander,[resolute][hesitant],백구.,[resolute][hesitant] 백구.,034_commander.mp3
+035,주인공(사령관),commander,[resolute][hesitant],내려간다.,[resolute][hesitant] 내려간다.,035_commander.mp3
+036,주인공(사령관),commander,[resolute][hesitant],어디든. 우리는 함께다.,[resolute][hesitant] 어디든. 우리는 함께다.,036_commander.mp3
 037,주인공(사령관),commander,[resolute],이순신 제독님.,[resolute] 이순신 제독님.,037_commander.mp3
 038,주인공(사령관),commander,[resolute],아직 봉쇄 중입니다.,[resolute] 아직 봉쇄 중입니다.,038_commander.mp3
 039,주인공(사령관),commander,[resolute],네. 100년이 지났습니다.,[resolute] 네. 100년이 지났습니다.,039_commander.mp3
@@ -42,34 +42,34 @@
 041,주인공(사령관),commander,[resolute],찾았습니다. 설계도 1권을 가지고 있습니다.,[resolute] 찾았습니다. 설계도 1권을 가지고 있습니다.,041_commander.mp3
 042,주인공(사령관),commander,[resolute][curious],예상했다고요?,[resolute][curious] 예상했다고요?,042_commander.mp3
 043,주인공(사령관),commander,[resolute],광개토대왕.,[resolute] 광개토대왕.,043_commander.mp3
-044,백구,baekgu,[matter-of-fact],"{사령관}. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.","[matter-of-fact] {사령관}. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.",044_baekgu.mp3
+044,백구,baekgu,[matter-of-fact],"사령관. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.","[matter-of-fact] 사령관. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.",044_baekgu.mp3
 045,백구,baekgu,[matter-of-fact],"100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요.","[matter-of-fact] 100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요.",045_baekgu.mp3
 046,백구,baekgu,[matter-of-fact],"우르사 메이저의 봉쇄, 그대로입니다. 떠날 때보다 오히려 더 조여졌어요.","[matter-of-fact] 우르사 메이저의 봉쇄, 그대로입니다. 떠날 때보다 오히려 더 조여졌어요.",046_baekgu.mp3
 047,백구,baekgu,[matter-of-fact],네. 그러니 감상은 나중에 하세요 — 일단 살아야 그 고향에 갑니다. 격납고에 고철 프레임이 흩어져 있어요. 수거하면 멈춘 엔진에 다시 불을 붙일 수 있습니다.,[matter-of-fact] 네. 그러니 감상은 나중에 하세요 — 일단 살아야 그 고향에 갑니다. 격납고에 고철 프레임이 흩어져 있어요. 수거하면 멈춘 엔진에 다시 불을 붙일 수 있습니다.,047_baekgu.mp3
 048,백구,baekgu,[matter-of-fact],"볼프 교역소예요. 수퍼비아 내권역의 낡은 정거장 — 그런데 사령관님, 불이 켜져 있어요. 100년 만에 처음 보는 '살아있는' 신호입니다.","[matter-of-fact] 볼프 교역소예요. 수퍼비아 내권역의 낡은 정거장 — 그런데 사령관님, 불이 켜져 있어요. 100년 만에 처음 보는 '살아있는' 신호입니다.",048_baekgu.mp3
 049,백구,baekgu,[matter-of-fact],"버티는 거죠, 우리처럼. 저들에게 중력수정을 싸게 사서 아우레우스에 넘기면 40% 차익 — 첫 자금이에요.","[matter-of-fact] 버티는 거죠, 우리처럼. 저들에게 중력수정을 싸게 사서 아우레우스에 넘기면 40% 차익 — 첫 자금이에요.",049_baekgu.mp3
 050,백구,baekgu,[matter-of-fact],"큰 불도 불씨 하나에서 시작해요. 살아남는 게, 반격의 첫 걸음입니다.","[matter-of-fact] 큰 불도 불씨 하나에서 시작해요. 살아남는 게, 반격의 첫 걸음입니다.",050_baekgu.mp3
-051,백구,baekgu,[matter-of-fact][hesitant],"(귀를 쫑긋) …사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.","[matter-of-fact][hesitant] (귀를 쫑긋) …사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.",051_baekgu.mp3
+051,백구,baekgu,[matter-of-fact][alert][hesitant],"사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.","[matter-of-fact][alert][hesitant] 사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.",051_baekgu.mp3
 052,백구,baekgu,[matter-of-fact],"설계도 단편 1/3, 골격도예요. 사령관님, 이건 단순한 함선이 아닙니다. 우르사 메이저조차 두려워했던 전설이에요.","[matter-of-fact] 설계도 단편 1/3, 골격도예요. 사령관님, 이건 단순한 함선이 아닙니다. 우르사 메이저조차 두려워했던 전설이에요.",052_baekgu.mp3
 053,백구,baekgu,[matter-of-fact],"나머지 두 조각을 모으는 길이, 곧 그 전설을 만나는 길입니다.","[matter-of-fact] 나머지 두 조각을 모으는 길이, 곧 그 전설을 만나는 길입니다.",053_baekgu.mp3
-054,백구,baekgu,[matter-of-fact][whispers],"마르코 폴로 — 정보 브로커 등록. (작게) 허풍인지 진짜인지는, 제가 지켜볼게요.","[matter-of-fact][whispers] 마르코 폴로 — 정보 브로커 등록. (작게) 허풍인지 진짜인지는, 제가 지켜볼게요.",054_baekgu.mp3
+054,백구,baekgu,[matter-of-fact][whispers],"마르코 폴로 — 정보 브로커 등록. 허풍인지 진짜인지는, 제가 지켜볼게요.","[matter-of-fact][whispers] 마르코 폴로 — 정보 브로커 등록. 허풍인지 진짜인지는, 제가 지켜볼게요.",054_baekgu.mp3
 055,백구,baekgu,[matter-of-fact],"아우레우스 내권역이에요. 세금도 규정도 빡빡해요 — 대신 수퍼비아 중력수정은 여기선 희귀품, 비싸게 팔려요.","[matter-of-fact] 아우레우스 내권역이에요. 세금도 규정도 빡빡해요 — 대신 수퍼비아 중력수정은 여기선 희귀품, 비싸게 팔려요.",055_baekgu.mp3
 056,백구,baekgu,[matter-of-fact],거북선 설계도 단편 2/3 확보 — 외피 가시 돌기 구조도. 코어 단편 하나만 더면 복원됩니다.,[matter-of-fact] 거북선 설계도 단편 2/3 확보 — 외피 가시 돌기 구조도. 코어 단편 하나만 더면 복원됩니다.,056_baekgu.mp3
-057,백구,baekgu,[matter-of-fact][growls][hesitant],"크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. (낮게 으르렁) …이건, 마음에 안 들어요.","[matter-of-fact][growls][hesitant] 크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. (낮게 으르렁) …이건, 마음에 안 들어요.",057_baekgu.mp3
+057,백구,baekgu,[matter-of-fact][growls][hesitant],"크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. …이건, 마음에 안 들어요.","[matter-of-fact][growls][hesitant] 크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. …이건, 마음에 안 들어요.",057_baekgu.mp3
 058,백구,baekgu,[matter-of-fact],"해적 소형 2, 지휘선 1 — 외곽 배치. 제가 먼저 길 열게요.","[matter-of-fact] 해적 소형 2, 지휘선 1 — 외곽 배치. 제가 먼저 길 열게요.",058_baekgu.mp3
 059,백구,baekgu,[matter-of-fact],생존 확률 62%. 이순신 구출 시 크리그 전략 정보 확보 89%.,[matter-of-fact] 생존 확률 62%. 이순신 구출 시 크리그 전략 정보 확보 89%.,059_baekgu.mp3
-060,백구,baekgu,[matter-of-fact][hesitant],"…사실은, 사령관님이랑이면 100%라고 적고 싶었어요. (꼬리 흔들 듯) …그냥요.","[matter-of-fact][hesitant] …사실은, 사령관님이랑이면 100%라고 적고 싶었어요. (꼬리 흔들 듯) …그냥요.",060_baekgu.mp3
-061,백구,baekgu,[matter-of-fact][growls][hesitant],"(낮게 으르렁) …말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.","[matter-of-fact][growls][hesitant] (낮게 으르렁) …말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.",061_baekgu.mp3
-062,백구,baekgu,[matter-of-fact][whispers][hesitant],"우주어 자동 번역 활성화. (작게) …100년입니다, 장군님.","[matter-of-fact][whispers][hesitant] 우주어 자동 번역 활성화. (작게) …100년입니다, 장군님.",062_baekgu.mp3
+060,백구,baekgu,[matter-of-fact][warm][hesitant],"사실은, 사령관님이랑이면 100%라고 적고 싶었어요. …그냥요.","[matter-of-fact][warm][hesitant] 사실은, 사령관님이랑이면 100%라고 적고 싶었어요. …그냥요.",060_baekgu.mp3
+061,백구,baekgu,[matter-of-fact][growls][hesitant],"말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.","[matter-of-fact][growls][hesitant] 말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.",061_baekgu.mp3
+062,백구,baekgu,[matter-of-fact][whispers][hesitant],"우주어 자동 번역 활성화. …100년입니다, 장군님.","[matter-of-fact][whispers][hesitant] 우주어 자동 번역 활성화. …100년입니다, 장군님.",062_baekgu.mp3
 063,백구,baekgu,[matter-of-fact],SW01 무기 세트 + SA01 장갑 세트 자동 장착 완료. 화력 대폭 상승.,[matter-of-fact] SW01 무기 세트 + SA01 장갑 세트 자동 장착 완료. 화력 대폭 상승.,063_baekgu.mp3
-064,백구,baekgu,[matter-of-fact],"임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. (꼬리 흔들 듯) 이제, 혼자가 아니에요.","[matter-of-fact] 임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. (꼬리 흔들 듯) 이제, 혼자가 아니에요.",064_baekgu.mp3
+064,백구,baekgu,[matter-of-fact][warm],"임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. 이제, 혼자가 아니에요.","[matter-of-fact][warm] 임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. 이제, 혼자가 아니에요.",064_baekgu.mp3
 065,백구,baekgu,[matter-of-fact],페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 옛 지구 해군 식별 코드 'HMS Victory'.,[matter-of-fact] 페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 옛 지구 해군 식별 코드 'HMS Victory'.,065_baekgu.mp3
 066,백구,baekgu,[matter-of-fact],영웅 합류: 호레이쇼 넬슨. 옛 지구 해군 진형 데이터 입수 → 학익진 명중률 +15%.,[matter-of-fact] 영웅 합류: 호레이쇼 넬슨. 옛 지구 해군 진형 데이터 입수 → 학익진 명중률 +15%.,066_baekgu.mp3
 067,백구,baekgu,[matter-of-fact],공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.,[matter-of-fact] 공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.,067_baekgu.mp3
 068,백구,baekgu,[matter-of-fact],"임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다.","[matter-of-fact] 임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다.",068_baekgu.mp3
-069,백구,baekgu,[matter-of-fact][growls][excited][hesitant],"아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. (으르렁) …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!","[matter-of-fact][growls][excited][hesitant] 아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. (으르렁) …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!",069_baekgu.mp3
+069,백구,baekgu,[matter-of-fact][growls][excited][hesitant],"아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!","[matter-of-fact][growls][excited][hesitant] 아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!",069_baekgu.mp3
 070,백구,baekgu,[matter-of-fact],캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.,[matter-of-fact] 캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.,070_baekgu.mp3
-071,백구,baekgu,[matter-of-fact],(시공 왜곡) ⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.,[matter-of-fact] (시공 왜곡) ⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.,071_baekgu.mp3
+071,백구,baekgu,[matter-of-fact],⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.,[matter-of-fact] ⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.,071_baekgu.mp3
 072,백구,baekgu,[matter-of-fact],영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.,[matter-of-fact] 영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.,072_baekgu.mp3
 073,백구,baekgu,[matter-of-fact],거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.,[matter-of-fact] 거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.,073_baekgu.mp3
 074,백구,baekgu,[matter-of-fact],"임무 완료. 이제, 마지막입니다 — 제타 레티쿨리, 그리고 지구. 우르사 메이저를 끝장내고, 지구를 되찾으러 갑니다.","[matter-of-fact] 임무 완료. 이제, 마지막입니다 — 제타 레티쿨리, 그리고 지구. 우르사 메이저를 끝장내고, 지구를 되찾으러 갑니다.",074_baekgu.mp3
@@ -80,415 +80,413 @@
 079,백구,baekgu,[matter-of-fact],이겨야 하는 싸움입니다.,[matter-of-fact] 이겨야 하는 싸움입니다.,079_baekgu.mp3
 080,백구,baekgu,[matter-of-fact][hesitant],사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.,[matter-of-fact][hesitant] 사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.,080_baekgu.mp3
 081,백구,baekgu,[matter-of-fact],10만 크레딧 무역 실적 보유 팀이 왔습니다.,[matter-of-fact] 10만 크레딧 무역 실적 보유 팀이 왔습니다.,081_baekgu.mp3
-082,백구,baekgu,[matter-of-fact],"지금 위치: {nm} ({fac} 팩션, 링 {ring}). 행성 광장에서 퀘스트·상점·주점 이용 가능.","[matter-of-fact] 지금 위치: {nm} ({fac} 팩션, 링 {ring}). 행성 광장에서 퀘스트·상점·주점 이용 가능.",082_baekgu.mp3
-083,백구,baekgu,[matter-of-fact],잡파츠 정리 완료. {cr} 크레딧 들어왔어.,[matter-of-fact] 잡파츠 정리 완료. {cr} 크레딧 들어왔어.,083_baekgu.mp3
-084,백구,baekgu,[matter-of-fact][hesitant],강화 실패... {nm}이(가) {regress}단계 후퇴해서 +{newLv}이 됐어. 재료를 더 모아서 다시 도전해.,[matter-of-fact][hesitant] 강화 실패... {nm}이(가) {regress}단계 후퇴해서 +{newLv}이 됐어. 재료를 더 모아서 다시 도전해.,084_baekgu.mp3
+082,백구,baekgu,[matter-of-fact],지금 위치: . 행성 광장에서 퀘스트·상점·주점 이용 가능.,[matter-of-fact] 지금 위치: . 행성 광장에서 퀘스트·상점·주점 이용 가능.,082_baekgu.mp3
+083,백구,baekgu,[matter-of-fact],잡파츠 정리 완료. 크레딧 들어왔어.,[matter-of-fact] 잡파츠 정리 완료. 크레딧 들어왔어.,083_baekgu.mp3
+084,백구,baekgu,[matter-of-fact][hesitant],강화 실패... 이 단계 후퇴해서 +이 됐어. 재료를 더 모아서 다시 도전해.,[matter-of-fact][hesitant] 강화 실패... 이 단계 후퇴해서 +이 됐어. 재료를 더 모아서 다시 도전해.,084_baekgu.mp3
 085,백구,baekgu,[matter-of-fact][hesitant],강화 실패... 다음엔 운이 따르길.,[matter-of-fact][hesitant] 강화 실패... 다음엔 운이 따르길.,085_baekgu.mp3
-086,백구,baekgu,[matter-of-fact][excited],"검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 {cap}척{luck}, 신화 설계도 {bp}장, 신화 파츠 5종, VC {vc}개, VE {ve}을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!","[matter-of-fact][excited] 검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 {cap}척{luck}, 신화 설계도 {bp}장, 신화 파츠 5종, VC {vc}개, VE {ve}을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!",086_baekgu.mp3
-087,백구,baekgu,[matter-of-fact], (행운 2척!),[matter-of-fact]  (행운 2척!),087_baekgu.mp3
-088,백구,baekgu,[matter-of-fact],신화급 파츠야! {nm}. 상점에서는 절대 못 사는 거야.,[matter-of-fact] 신화급 파츠야! {nm}. 상점에서는 절대 못 사는 거야.,088_baekgu.mp3
-089,백구,baekgu,[matter-of-fact][excited],설계도 드랍! {nm} 설계도야. 재료 모아서 제작소에서 만들어봐!,[matter-of-fact][excited] 설계도 드랍! {nm} 설계도야. 재료 모아서 제작소에서 만들어봐!,089_baekgu.mp3
-090,백구,baekgu,[matter-of-fact][excited],"넬슨의 일점사야! 전 함대, {nm} 한 척에 화력 집중! ATT 두 배!","[matter-of-fact][excited] 넬슨의 일점사야! 전 함대, {nm} 한 척에 화력 집중! ATT 두 배!",090_baekgu.mp3
-091,백구,baekgu,[matter-of-fact],신화 5종({names}) 받았어. 정비소에서 장착해.,[matter-of-fact] 신화 5종({names}) 받았어. 정비소에서 장착해.,091_baekgu.mp3
-092,백구,baekgu,[matter-of-fact], · 추가 설계도 {names} — 제작소 가능.,[matter-of-fact]  · 추가 설계도 {names} — 제작소 가능.,092_baekgu.mp3
-093,백구,baekgu,[matter-of-fact],먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.,[matter-of-fact] 먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.,093_baekgu.mp3
-094,백구,baekgu,[matter-of-fact],"사령관, {nm} 은(는) 이미 {max}대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요.","[matter-of-fact] 사령관, {nm} 은(는) 이미 {max}대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요.",094_baekgu.mp3
-095,백구,baekgu,[matter-of-fact],치크스 {nm} 합병 완료. 이제 우리 땅이야.,[matter-of-fact] 치크스 {nm} 합병 완료. 이제 우리 땅이야.,095_baekgu.mp3
-096,백구,baekgu,[matter-of-fact],{nm} 낙찰. 세금 ₡{tax} 들어온다.,[matter-of-fact] {nm} 낙찰. 세금 ₡{tax} 들어온다.,096_baekgu.mp3
-097,백구,baekgu,[matter-of-fact],{nm} 구매 완료.,[matter-of-fact] {nm} 구매 완료.,097_baekgu.mp3
-098,백구,baekgu,[matter-of-fact],{nm} 합류. 잘 써.,[matter-of-fact] {nm} 합류. 잘 써.,098_baekgu.mp3
-099,백구,baekgu,[matter-of-fact],{nm} 기함 승격. 전투 시 중앙에 배치돼.,[matter-of-fact] {nm} 기함 승격. 전투 시 중앙에 배치돼.,099_baekgu.mp3
-100,백구,baekgu,[matter-of-fact],{nm} 충성도 {loy}야. 곧 이탈할 수도 있어. 빨리 크루 태워.,[matter-of-fact] {nm} 충성도 {loy}야. 곧 이탈할 수도 있어. 빨리 크루 태워.,100_baekgu.mp3
-101,백구,baekgu,[matter-of-fact][excited],{nm} 충성도 만렙이야. 이제 한층 더 강해졌어!,[matter-of-fact][excited] {nm} 충성도 만렙이야. 이제 한층 더 강해졌어!,101_baekgu.mp3
-102,백구,baekgu,[matter-of-fact],{nm} 충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.,[matter-of-fact] {nm} 충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.,102_baekgu.mp3
-103,백구,baekgu,[matter-of-fact],{nm} 최고 레벨 보상! {item} 들어왔어.,[matter-of-fact] {nm} 최고 레벨 보상! {item} 들어왔어.,103_baekgu.mp3
-104,백구,baekgu,[matter-of-fact],{nm} 파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.,[matter-of-fact] {nm} 파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.,104_baekgu.mp3
-105,백구,baekgu,[matter-of-fact],{nm} 출격 준비 완료. 즉시 전열에 투입.,[matter-of-fact] {nm} 출격 준비 완료. 즉시 전열에 투입.,105_baekgu.mp3
-106,백구,baekgu,[matter-of-fact],{rs} 출격! {ac} 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.,[matter-of-fact] {rs} 출격! {ac} 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.,106_baekgu.mp3
-107,백구,baekgu,[matter-of-fact],{nm} 정비소에 ₡{cr}에 매각했어. 파츠랑 크루는 잘 챙겨놨고.,[matter-of-fact] {nm} 정비소에 ₡{cr}에 매각했어. 파츠랑 크루는 잘 챙겨놨고.,107_baekgu.mp3
-108,백구,baekgu,[matter-of-fact],{nm} 의 홀로그램 외피를 {skin} 형태로 재구성했어. 능력치는 그대로니까 안심해.,[matter-of-fact] {nm} 의 홀로그램 외피를 {skin} 형태로 재구성했어. 능력치는 그대로니까 안심해.,108_baekgu.mp3
-109,백구,baekgu,[matter-of-fact],{nm} 의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.,[matter-of-fact] {nm} 의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.,109_baekgu.mp3
-110,백구,baekgu,[matter-of-fact][excited],🎉 축하해! {nm} 이(가) +{lv} 강화에 성공했어. 능력치가 {pct}% 상승!,[matter-of-fact][excited] 🎉 축하해! {nm} 이(가) +{lv} 강화에 성공했어. 능력치가 {pct}% 상승!,110_baekgu.mp3
-111,백구,baekgu,[matter-of-fact],{nm} {ship}에 탑승. 함선 성능 올라갔어.,[matter-of-fact] {nm} {ship}에 탑승. 함선 성능 올라갔어.,111_baekgu.mp3
-112,백구,baekgu,[matter-of-fact],{nm} 팔았어. ₡{cr} 들어왔다. 잘 썼네.,[matter-of-fact] {nm} 팔았어. ₡{cr} 들어왔다. 잘 썼네.,112_baekgu.mp3
-113,백구,baekgu,[matter-of-fact],{nm}으로 이름 바꿨어. 새 출발이네.,[matter-of-fact] {nm}으로 이름 바꿨어. 새 출발이네.,113_baekgu.mp3
-114,백구,baekgu,[matter-of-fact],{nm} 기함 변경. 주의해서 타.,[matter-of-fact] {nm} 기함 변경. 주의해서 타.,114_baekgu.mp3
-115,백구,baekgu,[matter-of-fact],{nm} 창고 {n}칸으로 확장. {note},[matter-of-fact] {nm} 창고 {n}칸으로 확장. {note},115_baekgu.mp3
-116,백구,baekgu,[matter-of-fact][excited],이제 최대야!,[matter-of-fact][excited] 이제 최대야!,116_baekgu.mp3
-117,백구,baekgu,[matter-of-fact],다음 확장은 더 비싸질 거야.,[matter-of-fact] 다음 확장은 더 비싸질 거야.,117_baekgu.mp3
-118,백구,baekgu,[matter-of-fact],{nm} 샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +{bonus} 늘어나.,[matter-of-fact] {nm} 샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +{bonus} 늘어나.,118_baekgu.mp3
-119,백구,baekgu,[matter-of-fact],{nm} 장착! {done}/{total}척 완료. 전 함선 장착하면 순간이동 가능해.,[matter-of-fact] {nm} 장착! {done}/{total}척 완료. 전 함선 장착하면 순간이동 가능해.,119_baekgu.mp3
-120,백구,baekgu,[matter-of-fact],{nm} 합류! {old}은 하선했어.,[matter-of-fact] {nm} 합류! {old}은 하선했어.,120_baekgu.mp3
-121,백구,baekgu,[matter-of-fact][excited],전설 영웅 등장! 대박이야!,[matter-of-fact][excited] 전설 영웅 등장! 대박이야!,121_baekgu.mp3
-122,백구,baekgu,[matter-of-fact][excited],전설급이야! 대박!,[matter-of-fact][excited] 전설급이야! 대박!,122_baekgu.mp3
-123,백구,baekgu,[matter-of-fact][excited],영웅급 크루 영입!,[matter-of-fact][excited] 영웅급 크루 영입!,123_baekgu.mp3
-124,백구,baekgu,[matter-of-fact],크루 영입 완료. 함선에 탑승시켜봐.,[matter-of-fact] 크루 영입 완료. 함선에 탑승시켜봐.,124_baekgu.mp3
-125,백구,baekgu,[matter-of-fact],{nm} 상업 레벨 {lv}. 세금 ₡{tax} 들어온다.,[matter-of-fact] {nm} 상업 레벨 {lv}. 세금 ₡{tax} 들어온다.,125_baekgu.mp3
-126,백구,baekgu,[matter-of-fact],{nm}가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.,[matter-of-fact] {nm}가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.,126_baekgu.mp3
-127,백구,baekgu,[matter-of-fact],{nm}가 합류했어! 전설급이야. 함선에 태워봐.,[matter-of-fact] {nm}가 합류했어! 전설급이야. 함선에 태워봐.,127_baekgu.mp3
-128,백구,baekgu,[matter-of-fact],세트 아이템이야! {nm}. 세트 완성하면 추가 보너스가 붙어.,[matter-of-fact] 세트 아이템이야! {nm}. 세트 완성하면 추가 보너스가 붙어.,128_baekgu.mp3
-129,백구,baekgu,[matter-of-fact],전설 파츠야! {nm}. 상점에서는 못 사는 거야.,[matter-of-fact] 전설 파츠야! {nm}. 상점에서는 못 사는 거야.,129_baekgu.mp3
-130,백구,baekgu,[matter-of-fact],퀘스트 보상 지급. {cr} 크레딧{bonus}.,[matter-of-fact] 퀘스트 보상 지급. {cr} 크레딧{bonus}.,130_baekgu.mp3
-131,백구,baekgu,[matter-of-fact][excited],. 레벨 보너스 ×{mult}배!,[matter-of-fact][excited] . 레벨 보너스 ×{mult}배!,131_baekgu.mp3
-132,백구,baekgu,[matter-of-fact],{nm} 발견! {quality},[matter-of-fact] {nm} 발견! {quality},132_baekgu.mp3
-133,백구,baekgu,[matter-of-fact],전설급이네. 대박이다.,[matter-of-fact] 전설급이네. 대박이다.,133_baekgu.mp3
-134,백구,baekgu,[matter-of-fact],꽤 좋은 파츠야.,[matter-of-fact] 꽤 좋은 파츠야.,134_baekgu.mp3
-135,백구,baekgu,[matter-of-fact],{nm} 회수 완료. 함대에 추가됐어.,[matter-of-fact] {nm} 회수 완료. 함대에 추가됐어.,135_baekgu.mp3
-136,백구,baekgu,[matter-of-fact][excited],대박! {label}이야. 능력치 +{pct}% 상승!,[matter-of-fact][excited] 대박! {label}이야. 능력치 +{pct}% 상승!,136_baekgu.mp3
-137,백구,baekgu,[matter-of-fact],아쉽지만 {label}이 나왔어. 다시 도전해봐.,[matter-of-fact] 아쉽지만 {label}이 나왔어. 다시 도전해봐.,137_baekgu.mp3
-138,백구,baekgu,[matter-of-fact],{nm} 완성! {label}.,[matter-of-fact] {nm} 완성! {label}.,138_baekgu.mp3
-139,백구,baekgu,[matter-of-fact],{nm} 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +{bonus} 늘어나.,[matter-of-fact] {nm} 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 +{bonus} 늘어나.,139_baekgu.mp3
-140,백구,baekgu,[matter-of-fact][excited],함선 완성! {label}이야. 편대 확인해봐!,[matter-of-fact][excited] 함선 완성! {label}이야. 편대 확인해봐!,140_baekgu.mp3
-141,백구,baekgu,[matter-of-fact],{nm} 완성. {label}.,[matter-of-fact] {nm} 완성. {label}.,141_baekgu.mp3
-142,백구,baekgu,[matter-of-fact],{nm} 탑승. 이제 그 함선 1.2배 강해졌어.,[matter-of-fact] {nm} 탑승. 이제 그 함선 1.2배 강해졌어.,142_baekgu.mp3
-143,백구,baekgu,[matter-of-fact],지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT {act}),[matter-of-fact] 지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어! (현재 ACT {act}),143_baekgu.mp3
-144,백구,baekgu,[matter-of-fact],항로에서 뭔가 잡혔어. 조심해.,[matter-of-fact] 항로에서 뭔가 잡혔어. 조심해.,144_baekgu.mp3
-145,백구,baekgu,[matter-of-fact][excited],⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!,[matter-of-fact][excited] ⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!,145_baekgu.mp3
-146,백구,baekgu,[matter-of-fact][excited],{nm}에서 퀘스트 클리어하면 {bp} 설계도가 5% 확률로 드랍돼. 도전해봐!,[matter-of-fact][excited] {nm}에서 퀘스트 클리어하면 {bp} 설계도가 5% 확률로 드랍돼. 도전해봐!,146_baekgu.mp3
-147,백구,baekgu,[matter-of-fact],{mat} {have}/{need}개. 이 행성 상점에서 살 수 있어. {bp} 제작에 필요해.,[matter-of-fact] {mat} {have}/{need}개. 이 행성 상점에서 살 수 있어. {bp} 제작에 필요해.,147_baekgu.mp3
-148,백구,baekgu,[matter-of-fact],{nm}은 {mat} 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.,[matter-of-fact] {nm}은 {mat} 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.,148_baekgu.mp3
-149,백구,baekgu,[matter-of-fact],"{nm}, 지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.","[matter-of-fact] {nm}, 지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.",149_baekgu.mp3
-150,백구,baekgu,[matter-of-fact],"{nm}, 메가 충전 완료! 다시 빠르게 진행해 봐.","[matter-of-fact] {nm}, 메가 충전 완료! 다시 빠르게 진행해 봐.",150_baekgu.mp3
-151,백구,baekgu,[matter-of-fact][excited],"{nm}, 맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!","[matter-of-fact][excited] {nm}, 맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!",151_baekgu.mp3
-152,백구,baekgu,[matter-of-fact],응? 뭔가 물어봐야 대답하지.,[matter-of-fact] 응? 뭔가 물어봐야 대답하지.,152_baekgu.mp3
-153,백구,baekgu,[matter-of-fact],크레딧 거의 없어. 무역이나 퀘스트로 충전해.,[matter-of-fact] 크레딧 거의 없어. 무역이나 퀘스트로 충전해.,153_baekgu.mp3
-154,백구,baekgu,[matter-of-fact],해적들이 강해졌어. 조심해.,[matter-of-fact] 해적들이 강해졌어. 조심해.,154_baekgu.mp3
-155,백구,baekgu,[matter-of-fact],해적이 더 강해졌다. 파츠 업그레이드해.,[matter-of-fact] 해적이 더 강해졌다. 파츠 업그레이드해.,155_baekgu.mp3
-156,백구,baekgu,[matter-of-fact],해적 전투력 최대치. 최고 장비 갖춰.,[matter-of-fact] 해적 전투력 최대치. 최고 장비 갖춰.,156_baekgu.mp3
-157,백구,baekgu,[matter-of-fact],같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.,[matter-of-fact] 같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.,157_baekgu.mp3
-158,백구,baekgu,[matter-of-fact],간신히 따돌렸어. 항로 주의해.,[matter-of-fact] 간신히 따돌렸어. 항로 주의해.,158_baekgu.mp3
-159,백구,baekgu,[matter-of-fact],겨우 빠져나왔어. 빨리 이 구역 떠나자.,[matter-of-fact] 겨우 빠져나왔어. 빨리 이 구역 떠나자.,159_baekgu.mp3
-160,백구,baekgu,[matter-of-fact],도망쳤어. 다음엔 일찍 움직여.,[matter-of-fact] 도망쳤어. 다음엔 일찍 움직여.,160_baekgu.mp3
-161,백구,baekgu,[matter-of-fact][excited],전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!,[matter-of-fact][excited] 전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!,161_baekgu.mp3
-162,백구,baekgu,[matter-of-fact],영입 거절. 현재 크루 유지.,[matter-of-fact] 영입 거절. 현재 크루 유지.,162_baekgu.mp3
-163,백구,baekgu,[matter-of-fact][excited],보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!,[matter-of-fact][excited] 보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!,163_baekgu.mp3
-164,백구,baekgu,[matter-of-fact],전설 동료 영입 거절. 현재 크루 유지.,[matter-of-fact] 전설 동료 영입 거절. 현재 크루 유지.,164_baekgu.mp3
-165,백구,baekgu,[matter-of-fact],잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.,[matter-of-fact] 잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.,165_baekgu.mp3
-166,백구,baekgu,[matter-of-fact],탐색 시작. 잔해 구역 접근 중.,[matter-of-fact] 탐색 시작. 잔해 구역 접근 중.,166_baekgu.mp3
-167,백구,baekgu,[matter-of-fact],이번엔 없네. 다시 탐색해봐.,[matter-of-fact] 이번엔 없네. 다시 탐색해봐.,167_baekgu.mp3
-168,백구,baekgu,[matter-of-fact],이번엔 별다른 게 없네. 다시 시도해봐.,[matter-of-fact] 이번엔 별다른 게 없네. 다시 시도해봐.,168_baekgu.mp3
-169,백구,baekgu,[matter-of-fact],잔해 탐색 완료. 퀘스트 보상 받아.,[matter-of-fact] 잔해 탐색 완료. 퀘스트 보상 받아.,169_baekgu.mp3
-170,백구,baekgu,[matter-of-fact][excited],소문 하나 — 전설의 영웅 {hero}이(가) {planet}(링 {ring})에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!,[matter-of-fact][excited] 소문 하나 — 전설의 영웅 {hero}이(가) {planet}(링 {ring})에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!,170_baekgu.mp3
-171,백구,baekgu,[matter-of-fact],잔해 일부 발견. 계속 탐색해야 해.,[matter-of-fact] 잔해 일부 발견. 계속 탐색해야 해.,171_baekgu.mp3
-172,백구,baekgu,[matter-of-fact],목적지 도착. 퀘스트 탭에서 보상 받아.,[matter-of-fact] 목적지 도착. 퀘스트 탭에서 보상 받아.,172_baekgu.mp3
-173,백구,baekgu,[matter-of-fact],빌려줄게. 빨리 갚아.,[matter-of-fact] 빌려줄게. 빨리 갚아.,173_baekgu.mp3
-174,백구,baekgu,[matter-of-fact][hesitant],제작 중이야... 잠깐만 기다려.,[matter-of-fact][hesitant] 제작 중이야... 잠깐만 기다려.,174_baekgu.mp3
-175,백구,baekgu,[matter-of-fact],매수 의뢰 보고 완료. 보상 받으러 가자.,[matter-of-fact] 매수 의뢰 보고 완료. 보상 받으러 가자.,175_baekgu.mp3
-176,백구,baekgu,[matter-of-fact],입찰 경쟁에서 졌어. 더 높게 써야 했는데.,[matter-of-fact] 입찰 경쟁에서 졌어. 더 높게 써야 했는데.,176_baekgu.mp3
-177,백구,baekgu,[matter-of-fact],통행세 내고 무사 통과! 안전이 최우선이지~,[matter-of-fact] 통행세 내고 무사 통과! 안전이 최우선이지~,177_baekgu.mp3
-178,백구,baekgu,[matter-of-fact][excited],"소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!","[matter-of-fact][excited] 소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!",178_baekgu.mp3
-179,백구,baekgu,[matter-of-fact],블랙홀로 가는 진입로는 치크스(적대) 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.,[matter-of-fact] 블랙홀로 가는 진입로는 치크스(적대) 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.,179_baekgu.mp3
-180,백구,baekgu,[matter-of-fact][hesitant],저긴 은하 중심의 블랙홀... 먼저 지구를 해방(우르사 메이저 격파)해야 실마리가 잡힐 거야.,[matter-of-fact][hesitant] 저긴 은하 중심의 블랙홀... 먼저 지구를 해방(우르사 메이저 격파)해야 실마리가 잡힐 거야.,180_baekgu.mp3
-181,백구,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!,[matter-of-fact][excited][hesitant] 지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!,181_baekgu.mp3
-182,백구,baekgu,[matter-of-fact][excited],지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!,[matter-of-fact][excited] 지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!,182_baekgu.mp3
-183,백구,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 기다린다. 모든 화력 준비!,[matter-of-fact][excited][hesitant] 지구다... 우르사 메이저가 기다린다. 모든 화력 준비!,183_baekgu.mp3
-184,백구,baekgu,[matter-of-fact],이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.,[matter-of-fact] 이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.,184_baekgu.mp3
-185,백구,baekgu,[matter-of-fact],난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.,[matter-of-fact] 난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.,185_baekgu.mp3
-186,백구,baekgu,[matter-of-fact],한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.,[matter-of-fact] 한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.,186_baekgu.mp3
-187,백구,baekgu,[matter-of-fact],통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.,[matter-of-fact] 통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.,187_baekgu.mp3
-188,백구,baekgu,[matter-of-fact],도망쳤어. 다음엔 더 강해진 다음에 부딪치자.,[matter-of-fact] 도망쳤어. 다음엔 더 강해진 다음에 부딪치자.,188_baekgu.mp3
-189,백구,baekgu,[matter-of-fact][excited],학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!,[matter-of-fact][excited] 학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!,189_baekgu.mp3
-190,백구,baekgu,[matter-of-fact],아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.,[matter-of-fact] 아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.,190_baekgu.mp3
-191,백구,baekgu,[matter-of-fact][excited],테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!,[matter-of-fact][excited] 테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!,191_baekgu.mp3
-192,백구,baekgu,[matter-of-fact],제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.,[matter-of-fact] 제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.,192_baekgu.mp3
-193,백구,baekgu,[matter-of-fact][excited],데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!,[matter-of-fact][excited] 데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!,193_baekgu.mp3
-194,백구,baekgu,[matter-of-fact][excited],보이드 페이즈 강제 해금됨. 제타 레티쿨리(P30)로 이동해서 광장 → 제독 의뢰 확인해봐!,[matter-of-fact][excited] 보이드 페이즈 강제 해금됨. 제타 레티쿨리(P30)로 이동해서 광장 → 제독 의뢰 확인해봐!,194_baekgu.mp3
-195,백구,baekgu,[matter-of-fact],보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.,[matter-of-fact] 보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.,195_baekgu.mp3
-196,백구,baekgu,[matter-of-fact][excited],"보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!","[matter-of-fact][excited] 보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!",196_baekgu.mp3
-197,백구,baekgu,[matter-of-fact],"8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.","[matter-of-fact] 8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.",197_baekgu.mp3
-198,백구,baekgu,[matter-of-fact],백구의 일기,[matter-of-fact] 백구의 일기,198_baekgu.mp3
-199,백구,baekgu,[matter-of-fact],백구,[matter-of-fact] 백구,199_baekgu.mp3
-200,백구,baekgu,[matter-of-fact][excited],거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!,[matter-of-fact][excited] 거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!,200_baekgu.mp3
-201,백구,baekgu,[matter-of-fact],세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.,[matter-of-fact] 세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.,201_baekgu.mp3
-202,백구,baekgu,[matter-of-fact],이동 완료. 다음 목표 정해.,[matter-of-fact] 이동 완료. 다음 목표 정해.,202_baekgu.mp3
-203,백구,baekgu,[matter-of-fact],워프 성공.,[matter-of-fact] 워프 성공.,203_baekgu.mp3
-204,백구,baekgu,[matter-of-fact],이겼어. 당연한 거 아닌가.,[matter-of-fact] 이겼어. 당연한 거 아닌가.,204_baekgu.mp3
-205,백구,baekgu,[matter-of-fact],크레딧 벌었다.,[matter-of-fact] 크레딧 벌었다.,205_baekgu.mp3
-206,백구,baekgu,[matter-of-fact],졌어. 다시 해.,[matter-of-fact] 졌어. 다시 해.,206_baekgu.mp3
-207,백구,baekgu,[matter-of-fact],포기하면 안 돼.,[matter-of-fact] 포기하면 안 돼.,207_baekgu.mp3
-208,백구,baekgu,[matter-of-fact],영웅 등급! 쓸만하겠는데.,[matter-of-fact] 영웅 등급! 쓸만하겠는데.,208_baekgu.mp3
-209,백구,baekgu,[matter-of-fact][excited],전설 등급이다!,[matter-of-fact][excited] 전설 등급이다!,209_baekgu.mp3
-210,백구,baekgu,[matter-of-fact],크레딧 부족해. 무역해.,[matter-of-fact] 크레딧 부족해. 무역해.,210_baekgu.mp3
-211,백구,baekgu,[matter-of-fact][excited],내가 경고했잖아. 싸워!,[matter-of-fact][excited] 내가 경고했잖아. 싸워!,211_baekgu.mp3
-212,이순신,yisunsin,[solemn][hesitant],"[옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.","[solemn][hesitant] [옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.",212_yisunsin.mp3
-213,이순신,yisunsin,[solemn][hesitant],"100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. (눈을 뜨며) …나를 깨운 자가 {사령관}인가. 빚을 졌다.","[solemn][hesitant] 100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. (눈을 뜨며) …나를 깨운 자가 {사령관}인가. 빚을 졌다.",213_yisunsin.mp3
-214,이순신,yisunsin,[solemn],무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.,[solemn] 무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.,214_yisunsin.mp3
-215,이순신,yisunsin,[solemn][hesitant],"…패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.","[solemn][hesitant] …패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.",215_yisunsin.mp3
-216,이순신,yisunsin,[solemn][hesitant],"아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. (조용히) 다음 단계에서, 반드시 거둘 빚이다.","[solemn][hesitant] 아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. (조용히) 다음 단계에서, 반드시 거둘 빚이다.",216_yisunsin.mp3
-217,이순신,yisunsin,[solemn],"흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, {사령관}.","[solemn] 흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, {사령관}.",217_yisunsin.mp3
-218,이순신,yisunsin,[solemn][hesitant],"동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.","[solemn][hesitant] 동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.",218_yisunsin.mp3
-219,이순신,yisunsin,[solemn],외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.,[solemn] 외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.,219_yisunsin.mp3
-220,이순신,yisunsin,[solemn][hesitant],"…크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.","[solemn][hesitant] …크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.",220_yisunsin.mp3
-221,이순신,yisunsin,[solemn],"(조용히) 당신들이 살아있었군. 오래, 기다렸겠소.","[solemn] (조용히) 당신들이 살아있었군. 오래, 기다렸겠소.",221_yisunsin.mp3
-222,이순신,yisunsin,[solemn],내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.,[solemn] 내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.,222_yisunsin.mp3
-223,이순신,yisunsin,[solemn][hesitant],코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.,[solemn][hesitant] 코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.,223_yisunsin.mp3
-224,이순신,yisunsin,[solemn],"증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.","[solemn] 증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.",224_yisunsin.mp3
-225,이순신,yisunsin,[solemn][hesitant],(낮게) …광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.,[solemn][hesitant] (낮게) …광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.,225_yisunsin.mp3
-226,이순신,yisunsin,[solemn],"거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.","[solemn] 거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.",226_yisunsin.mp3
-227,이순신,yisunsin,[solemn],메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.,[solemn] 메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.,227_yisunsin.mp3
-228,이순신,yisunsin,[solemn],그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.,[solemn] 그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.,228_yisunsin.mp3
-229,이순신,yisunsin,[solemn],그분의 설계도를 갖고 왔소.,[solemn] 그분의 설계도를 갖고 왔소.,229_yisunsin.mp3
-230,이순신,yisunsin,[solemn],필요한 건 뭐든 구해 오겠소.,[solemn] 필요한 건 뭐든 구해 오겠소.,230_yisunsin.mp3
-231,이순신,yisunsin,[solemn][hesitant],타이탄H… 그리고 그 너머에 — 지구.,[solemn][hesitant] 타이탄H… 그리고 그 너머에 — 지구.,231_yisunsin.mp3
-232,이순신,yisunsin,[solemn],"{사령관}. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.","[solemn] {사령관}. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.",232_yisunsin.mp3
-233,이순신,yisunsin,[solemn],"저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.","[solemn] 저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.",233_yisunsin.mp3
-234,이순신,yisunsin,[solemn][hesitant],"아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.","[solemn][hesitant] 아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.",234_yisunsin.mp3
-235,이순신,yisunsin,[solemn],"{사령관}, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.","[solemn] {사령관}, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.",235_yisunsin.mp3
-236,이순신,yisunsin,[solemn],"아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.","[solemn] 아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.",236_yisunsin.mp3
-237,이순신,yisunsin,[solemn],"둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.","[solemn] 둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.",237_yisunsin.mp3
-238,이순신,yisunsin,[solemn],"정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.","[solemn] 정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.",238_yisunsin.mp3
-239,이순신,yisunsin,[solemn],우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.,[solemn] 우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.,239_yisunsin.mp3
-240,이순신,yisunsin,[solemn],은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.,[solemn] 은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.,240_yisunsin.mp3
-241,이순신,yisunsin,[solemn],두 마리 토끼다. 간다.,[solemn] 두 마리 토끼다. 간다.,241_yisunsin.mp3
-242,이순신,yisunsin,[solemn],들어간다.,[solemn] 들어간다.,242_yisunsin.mp3
-243,이순신,yisunsin,[solemn][curious],우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?,[solemn][curious] 우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?,243_yisunsin.mp3
-244,이순신,yisunsin,[solemn][hesitant],"…드디어. 400년을 기다린 배가, 오늘 깨어난다.","[solemn][hesitant] …드디어. 400년을 기다린 배가, 오늘 깨어난다.",244_yisunsin.mp3
-245,이순신,yisunsin,[solemn][hesitant],"빅토리… 옛 지구 최후의 대해전, 그 기함이군.","[solemn][hesitant] 빅토리… 옛 지구 최후의 대해전, 그 기함이군.",245_yisunsin.mp3
-246,이순신,yisunsin,[solemn],넬슨 제독. 나는 이순신이오.,[solemn] 넬슨 제독. 나는 이순신이오.,246_yisunsin.mp3
-247,이순신,yisunsin,[solemn],"학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.","[solemn] 학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.",247_yisunsin.mp3
-248,이순신,yisunsin,[solemn],"{사령관}. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.","[solemn] {사령관}. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.",248_yisunsin.mp3
-249,이순신,yisunsin,[solemn],100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.,[solemn] 100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.,249_yisunsin.mp3
-250,이순신,yisunsin,[solemn],박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.,[solemn] 박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.,250_yisunsin.mp3
-251,이순신,yisunsin,[solemn][hesitant],"(낮게) …저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.","[solemn][hesitant] (낮게) …저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.",251_yisunsin.mp3
-252,이순신,yisunsin,[solemn],이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.,[solemn] 이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.,252_yisunsin.mp3
-253,이순신,yisunsin,[solemn],박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.,[solemn] 박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.,253_yisunsin.mp3
-254,이순신,yisunsin,[solemn],전 함대 — 거북선을 따른다.,[solemn] 전 함대 — 거북선을 따른다.,254_yisunsin.mp3
-255,이순신,yisunsin,[solemn],{사령관}. 아이젠클로에게 전달해. — 이번엔 끝이라고.,[solemn] {사령관}. 아이젠클로에게 전달해. — 이번엔 끝이라고.,255_yisunsin.mp3
-256,이순신,yisunsin,[solemn],"끝났어, 아이젠클로.","[solemn] 끝났어, 아이젠클로.",256_yisunsin.mp3
-257,이순신,yisunsin,[solemn],보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.,[solemn] 보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.,257_yisunsin.mp3
-258,이순신,yisunsin,[solemn],400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.,[solemn] 400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.,258_yisunsin.mp3
-259,이순신,yisunsin,[solemn],좌표 — 제타 레티쿨리. 우르사 메이저 본거지.,[solemn] 좌표 — 제타 레티쿨리. 우르사 메이저 본거지.,259_yisunsin.mp3
-260,이순신,yisunsin,[solemn],"400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.","[solemn] 400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.",260_yisunsin.mp3
-261,이순신,yisunsin,[solemn],그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.,[solemn] 그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.,261_yisunsin.mp3
-262,이순신,yisunsin,[solemn],학익진. 펼친다.,[solemn] 학익진. 펼친다.,262_yisunsin.mp3
-263,이순신,yisunsin,[solemn],우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.,[solemn] 우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.,263_yisunsin.mp3
-264,이순신,yisunsin,[solemn],400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.,[solemn] 400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.,264_yisunsin.mp3
-265,이순신,yisunsin,[solemn][excited],거북선 노포 전탄 — 일점사!,[solemn][excited] 거북선 노포 전탄 — 일점사!,265_yisunsin.mp3
-266,이순신,yisunsin,[solemn][hesitant],... 끝났다. 100년 봉인의 종결이다.,[solemn][hesitant] ... 끝났다. 100년 봉인의 종결이다.,266_yisunsin.mp3
-267,이순신,yisunsin,[solemn],"(지구를 바라보며) 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.","[solemn] (지구를 바라보며) 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.",267_yisunsin.mp3
-268,이순신,yisunsin,[solemn],"보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.","[solemn] 보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.",268_yisunsin.mp3
-269,이순신,yisunsin,[solemn][hesitant],…100년. 내가 100년을 잠들었군.,[solemn][hesitant] …100년. 내가 100년을 잠들었군.,269_yisunsin.mp3
-270,이순신,yisunsin,[solemn][hesitant],그대가 나를 깨웠소? …지구는.,[solemn][hesitant] 그대가 나를 깨웠소? …지구는.,270_yisunsin.mp3
-271,이순신,yisunsin,[solemn],치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.,[solemn] 치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.,271_yisunsin.mp3
-272,이순신,yisunsin,[solemn][curious],이길 수 있는 싸움이오?,[solemn][curious] 이길 수 있는 싸움이오?,272_yisunsin.mp3
-273,이순신,yisunsin,[solemn],말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.,[solemn] 말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.,273_yisunsin.mp3
-274,이순신,yisunsin,[solemn],{사령관}. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.,[solemn] {사령관}. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.,274_yisunsin.mp3
-275,이순신,yisunsin,[solemn],나요. 넬슨. 오래됐소.,[solemn] 나요. 넬슨. 오래됐소.,275_yisunsin.mp3
-276,마르코 폴로,marcopolo,[sly][hesitant],"이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거.","[sly][hesitant] 이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거.",276_marcopolo.mp3
-277,마르코 폴로,marcopolo,[sly],"한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.","[sly] 한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.",277_marcopolo.mp3
-278,마르코 폴로,marcopolo,[sly],"잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.","[sly] 잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.",278_marcopolo.mp3
-279,마르코 폴로,marcopolo,[sly],크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.,[sly] 크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.,279_marcopolo.mp3
-280,마르코 폴로,marcopolo,[sly],봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.,[sly] 봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.,280_marcopolo.mp3
-281,마르코 폴로,marcopolo,[sly],"근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.","[sly] 근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.",281_marcopolo.mp3
-282,마르코 폴로,marcopolo,[sly][hesitant],우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.,[sly][hesitant] 우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.,282_marcopolo.mp3
-283,마르코 폴로,marcopolo,[sly],"{사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.","[sly] {사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.",283_marcopolo.mp3
-284,마르코 폴로,marcopolo,[sly][hesitant],"그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.","[sly][hesitant] 그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.",284_marcopolo.mp3
-285,마르코 폴로,marcopolo,[sly][hesitant],"저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.","[sly][hesitant] 저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.",285_marcopolo.mp3
-286,마르코 폴로,marcopolo,[sly][hesitant],오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.,[sly][hesitant] 오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.,286_marcopolo.mp3
-287,마르코 폴로,marcopolo,[sly],"치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.","[sly] 치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.",287_marcopolo.mp3
-288,마르코 폴로,marcopolo,[sly],LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.,[sly] LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.,288_marcopolo.mp3
-289,마르코 폴로,marcopolo,[sly][hesitant],"노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.","[sly][hesitant] 노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.",289_marcopolo.mp3
-290,마르코 폴로,marcopolo,[sly][hesitant],(씩 웃으며) …내가 누군지 잊었어? 당연하지.,[sly][hesitant] (씩 웃으며) …내가 누군지 잊었어? 당연하지.,290_marcopolo.mp3
-291,마르코 폴로,marcopolo,[sly],전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.,[sly] 전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.,291_marcopolo.mp3
-292,마르코 폴로,marcopolo,[sly],"다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.","[sly] 다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.",292_marcopolo.mp3
-293,마르코 폴로,marcopolo,[sly],저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.,[sly] 저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.,293_marcopolo.mp3
-294,마르코 폴로,marcopolo,[sly][hesitant],뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.,[sly][hesitant] 뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.,294_marcopolo.mp3
-295,마르코 폴로,marcopolo,[sly][hesitant],"저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.","[sly][hesitant] 저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.",295_marcopolo.mp3
-296,마르코 폴로,marcopolo,[sly][hesitant],조용히 스며드는 거? …그건 내 전공이지.,[sly][hesitant] 조용히 스며드는 거? …그건 내 전공이지.,296_marcopolo.mp3
-297,마르코 폴로,marcopolo,[sly],오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.,[sly] 오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.,297_marcopolo.mp3
-298,마르코 폴로,marcopolo,[sly][hesitant],저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.,[sly][hesitant] 저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.,298_marcopolo.mp3
-299,마르코 폴로,marcopolo,[sly],'장영실 2.0'이라고 불려. 기어월드에서 전설이지.,[sly] '장영실 2.0'이라고 불려. 기어월드에서 전설이지.,299_marcopolo.mp3
-300,마르코 폴로,marcopolo,[sly],최대해봐야 8~10개.,[sly] 최대해봐야 8~10개.,300_marcopolo.mp3
-301,마르코 폴로,marcopolo,[sly],잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.,[sly] 잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.,301_marcopolo.mp3
-302,마르코 폴로,marcopolo,[sly],"거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.","[sly] 거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.",302_marcopolo.mp3
-303,마르코 폴로,marcopolo,[sly],볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.,[sly] 볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.,303_marcopolo.mp3
-304,마르코 폴로,marcopolo,[sly],수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.,[sly] 수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.,304_marcopolo.mp3
-305,마르코 폴로,marcopolo,[sly],그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.,[sly] 그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.,305_marcopolo.mp3
-306,마르코 폴로,marcopolo,[sly],"보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.","[sly] 보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.",306_marcopolo.mp3
-307,마르코 폴로,marcopolo,[sly][hesitant],균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.,[sly][hesitant] 균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.,307_marcopolo.mp3
-308,마르코 폴로,marcopolo,[sly][hesitant],저 배... 수퍼비아 주점에서 들은 그 연구선이야.,[sly][hesitant] 저 배... 수퍼비아 주점에서 들은 그 연구선이야.,308_marcopolo.mp3
-309,마르코 폴로,marcopolo,[sly],"백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.","[sly] 백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.",309_marcopolo.mp3
-310,마르코 폴로,marcopolo,[sly],전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.,[sly] 전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.,310_marcopolo.mp3
-311,마르코 폴로,marcopolo,[sly],아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.,[sly] 아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.,311_marcopolo.mp3
-312,마르코 폴로,marcopolo,[sly],레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.,[sly] 레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.,312_marcopolo.mp3
-313,마르코 폴로,marcopolo,[sly],정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.,[sly] 정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.,313_marcopolo.mp3
-314,마르코 폴로,marcopolo,[sly],적 후위 통신 — 차단 완료. 지원 워프 차단했어.,[sly] 적 후위 통신 — 차단 완료. 지원 워프 차단했어.,314_marcopolo.mp3
-315,마르코 폴로,marcopolo,[sly][hesitant],(눈물을 닦으며) ...우리가 진짜 해냈어.,[sly][hesitant] (눈물을 닦으며) ...우리가 진짜 해냈어.,315_marcopolo.mp3
-316,마르코 폴로,marcopolo,[sly][curious],다음 모험은 — 어디로?,[sly][curious] 다음 모험은 — 어디로?,316_marcopolo.mp3
-317,마르코 폴로,marcopolo,[sly],허허. 100년을 기다렸소. 이런 통쾌한 광경을.,[sly] 허허. 100년을 기다렸소. 이런 통쾌한 광경을.,317_marcopolo.mp3
-318,마르코 폴로,marcopolo,[sly],마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.,[sly] 마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.,318_marcopolo.mp3
-319,마르코 폴로,marcopolo,[sly],"치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.","[sly] 치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.",319_marcopolo.mp3
-320,마르코 폴로,marcopolo,[sly],"제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.","[sly] 제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.",320_marcopolo.mp3
-321,마르코 폴로,marcopolo,[sly],"사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.","[sly] 사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.",321_marcopolo.mp3
-322,마르코 폴로,marcopolo,[sly],대신 지구까지 데려다 주시오.,[sly] 대신 지구까지 데려다 주시오.,322_marcopolo.mp3
-323,유리 가가린,gagarin,[confident],칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.,[confident] 칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.,323_gagarin.mp3
-324,유리 가가린,gagarin,[confident],"넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.","[confident] 넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.",324_gagarin.mp3
-325,유리 가가린,gagarin,[confident],"덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.","[confident] 덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.",325_gagarin.mp3
-326,유리 가가린,gagarin,[confident][hesitant],신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.,[confident][hesitant] 신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.,326_gagarin.mp3
-327,유리 가가린,gagarin,[confident],여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.,[confident] 여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.,327_gagarin.mp3
-328,유리 가가린,gagarin,[confident],"서두르자. 좌표만 따면, 다음 행선지가 정해져.","[confident] 서두르자. 좌표만 따면, 다음 행선지가 정해져.",328_gagarin.mp3
-329,유리 가가린,gagarin,[confident],"그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.","[confident] 그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.",329_gagarin.mp3
-330,유리 가가린,gagarin,[confident],"이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'.","[confident] 이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'.",330_gagarin.mp3
-331,유리 가가린,gagarin,[confident],저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.,[confident] 저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.,331_gagarin.mp3
-332,유리 가가린,gagarin,[confident],테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.,[confident] 테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.,332_gagarin.mp3
-333,유리 가가린,gagarin,[confident],저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.,[confident] 저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.,333_gagarin.mp3
-334,유리 가가린,gagarin,[confident][hesitant],그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.,[confident][hesitant] 그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.,334_gagarin.mp3
-335,유리 가가린,gagarin,[confident],"지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.","[confident] 지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.",335_gagarin.mp3
-336,유리 가가린,gagarin,[confident],이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.,[confident] 이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.,336_gagarin.mp3
-337,유리 가가린,gagarin,[confident],먼저 조용히 들어가서 확인해야 해. 소란은 금물.,[confident] 먼저 조용히 들어가서 확인해야 해. 소란은 금물.,337_gagarin.mp3
-338,유리 가가린,gagarin,[confident],글리제. 코르넬리우스 본사가 거기야.,[confident] 글리제. 코르넬리우스 본사가 거기야.,338_gagarin.mp3
-339,유리 가가린,gagarin,[confident],설계는 누가 해? 우리 중에 함선 설계자 없잖아.,[confident] 설계는 누가 해? 우리 중에 함선 설계자 없잖아.,339_gagarin.mp3
-340,유리 가가린,gagarin,[confident][hesitant],지구. (잠시 침묵) …오래 꿈꿨어. 별을 처음 날던 그날부터.,[confident][hesitant] 지구. (잠시 침묵) …오래 꿈꿨어. 별을 처음 날던 그날부터.,340_gagarin.mp3
-341,유리 가가린,gagarin,[confident],복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.,[confident] 복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.,341_gagarin.mp3
-342,유리 가가린,gagarin,[confident],그리고 동료들도 구출한다. 동시에.,[confident] 그리고 동료들도 구출한다. 동시에.,342_gagarin.mp3
-343,유리 가가린,gagarin,[confident],캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—,[confident] 캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—,343_gagarin.mp3
-344,유리 가가린,gagarin,[confident],게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.,[confident] 게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.,344_gagarin.mp3
-345,유리 가가린,gagarin,[confident],사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.,[confident] 사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.,345_gagarin.mp3
-346,유리 가가린,gagarin,[confident],단신으로? 미친 짓이야.,[confident] 단신으로? 미친 짓이야.,346_gagarin.mp3
-347,유리 가가린,gagarin,[confident],지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.,[confident] 지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.,347_gagarin.mp3
-348,유리 가가린,gagarin,[confident],"지구가 — 바로 너머야. 사령관, 결단을 내려.","[confident] 지구가 — 바로 너머야. 사령관, 결단을 내려.",348_gagarin.mp3
-349,유리 가가린,gagarin,[confident],좌익도 깨끗하다. 학익진 — 완성.,[confident] 좌익도 깨끗하다. 학익진 — 완성.,349_gagarin.mp3
-350,유리 가가린,gagarin,[confident],(창밖을 보며) 지구야. 정말 지구야.,[confident] (창밖을 보며) 지구야. 정말 지구야.,350_gagarin.mp3
-351,유리 가가린,gagarin,[confident],1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.,[confident] 1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.,351_gagarin.mp3
-352,유리 가가린,gagarin,[confident][hesitant][curious],"Поехали! 출발합시다! …아, 아직 전쟁 중인가요?","[confident][hesitant][curious] Поехали! 출발합시다! …아, 아직 전쟁 중인가요?",352_gagarin.mp3
-353,유리 가가린,gagarin,[confident],100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.,[confident] 100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.,353_gagarin.mp3
-354,유리 가가린,gagarin,[confident],그래도 우주는 여전히 아름다울 거예요.,[confident] 그래도 우주는 여전히 아름다울 거예요.,354_gagarin.mp3
-355,유리 가가린,gagarin,[confident],이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.,[confident] 이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.,355_gagarin.mp3
-356,유리 가가린,gagarin,[confident],"와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.","[confident] 와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.",356_gagarin.mp3
-357,유리 가가린,gagarin,[confident],"{사령관}이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.","[confident] {사령관}이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.",357_gagarin.mp3
-358,장영실,jangyeongsil,[cheerful][hesitant],"거북선을… 만들겠다고? (잠깐, 흥미가 스친다) 400년 전 그 배를, 지금 재료로.","[cheerful][hesitant] 거북선을… 만들겠다고? (잠깐, 흥미가 스친다) 400년 전 그 배를, 지금 재료로.",358_jangyeongsil.mp3
-359,장영실,jangyeongsil,[cheerful][hesitant],"…중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.","[cheerful][hesitant] …중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.",359_jangyeongsil.mp3
-360,장영실,jangyeongsil,[cheerful][hesitant],거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...,[cheerful][hesitant] 거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...,360_jangyeongsil.mp3
-361,장영실,jangyeongsil,[cheerful],저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.,[cheerful] 저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.,361_jangyeongsil.mp3
-362,장영실,jangyeongsil,[cheerful],그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.,[cheerful] 그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.,362_jangyeongsil.mp3
-363,장영실,jangyeongsil,[cheerful][hesitant],"(도면을 쓸어보며) …재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.","[cheerful][hesitant] (도면을 쓸어보며) …재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.",363_jangyeongsil.mp3
-364,장영실,jangyeongsil,[cheerful],"거북선이 완성되는 날, 그 요새의 벽도 무너져요.","[cheerful] 거북선이 완성되는 날, 그 요새의 벽도 무너져요.",364_jangyeongsil.mp3
-365,장영실,jangyeongsil,[cheerful],데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.,[cheerful] 데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.,365_jangyeongsil.mp3
-366,장영실,jangyeongsil,[cheerful][hesitant],반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.,[cheerful][hesitant] 반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.,366_jangyeongsil.mp3
-367,장영실,jangyeongsil,[cheerful],크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.,[cheerful] 크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.,367_jangyeongsil.mp3
-368,장영실,jangyeongsil,[cheerful],은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.,[cheerful] 은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.,368_jangyeongsil.mp3
-369,장영실,jangyeongsil,[cheerful],항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.,[cheerful] 항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.,369_jangyeongsil.mp3
-370,장영실,jangyeongsil,[cheerful],나한테 있어요.,[cheerful] 나한테 있어요.,370_jangyeongsil.mp3
-371,장영실,jangyeongsil,[cheerful],"크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.","[cheerful] 크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.",371_jangyeongsil.mp3
-372,장영실,jangyeongsil,[cheerful],머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.,[cheerful] 머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.,372_jangyeongsil.mp3
-373,장영실,jangyeongsil,[cheerful],거북선이 균열을 견딘다. 외피가 잘 버티는군.,[cheerful] 거북선이 균열을 견딘다. 외피가 잘 버티는군.,373_jangyeongsil.mp3
-374,장영실,jangyeongsil,[cheerful],거북선 출력 120%. 전류 방어막 — 활성화.,[cheerful] 거북선 출력 120%. 전류 방어막 — 활성화.,374_jangyeongsil.mp3
-375,장영실,jangyeongsil,[cheerful],거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.,[cheerful] 거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.,375_jangyeongsil.mp3
-376,장영실,jangyeongsil,[cheerful],거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.,[cheerful] 거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.,376_jangyeongsil.mp3
-377,장영실,jangyeongsil,[cheerful][excited],호위함 전 화력 — 거북선 패시브 +30% 적용!,[cheerful][excited] 호위함 전 화력 — 거북선 패시브 +30% 적용!,377_jangyeongsil.mp3
-378,장영실,jangyeongsil,[cheerful],"거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.","[cheerful] 거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.",378_jangyeongsil.mp3
-379,장영실,jangyeongsil,[cheerful],거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.,[cheerful] 거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.,379_jangyeongsil.mp3
-380,장영실,jangyeongsil,[cheerful],총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.,[cheerful] 총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.,380_jangyeongsil.mp3
-381,장영실,jangyeongsil,[cheerful],구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.,[cheerful] 구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.,381_jangyeongsil.mp3
-382,장영실,jangyeongsil,[cheerful],내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.,[cheerful] 내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.,382_jangyeongsil.mp3
-383,장영실,jangyeongsil,[cheerful][excited],다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!,[cheerful][excited] 다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!,383_jangyeongsil.mp3
-384,장영실,jangyeongsil,[cheerful],(코일을 살피며 0.3mm 핀 오차를 맨눈으로 잡아낸다) 천 년 전에도 나는 이렇게 했소.,[cheerful] (코일을 살피며 0.3mm 핀 오차를 맨눈으로 잡아낸다) 천 년 전에도 나는 이렇게 했소.,384_jangyeongsil.mp3
-385,광개토대왕,gwanggaeto,[bold][hesitant],(호탕하게) 당신이 {사령관}인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.,[bold][hesitant] (호탕하게) 당신이 {사령관}인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.,385_gwanggaeto.mp3
-386,광개토대왕,gwanggaeto,[bold],소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.,[bold] 소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.,386_gwanggaeto.mp3
-387,광개토대왕,gwanggaeto,[bold],"이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.","[bold] 이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.",387_gwanggaeto.mp3
-388,광개토대왕,gwanggaeto,[bold],우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.,[bold] 우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.,388_gwanggaeto.mp3
-389,광개토대왕,gwanggaeto,[bold],(앞을 가리키며) 저기 — 빛이 새어 나온다.,[bold] (앞을 가리키며) 저기 — 빛이 새어 나온다.,389_gwanggaeto.mp3
-390,광개토대왕,gwanggaeto,[bold],저 요새를 내 눈으로 무너뜨리는 날이 왔군.,[bold] 저 요새를 내 눈으로 무너뜨리는 날이 왔군.,390_gwanggaeto.mp3
-391,광개토대왕,gwanggaeto,[bold],정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.,[bold] 정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.,391_gwanggaeto.mp3
-392,광개토대왕,gwanggaeto,[bold],정복할 시간이다.,[bold] 정복할 시간이다.,392_gwanggaeto.mp3
-393,광개토대왕,gwanggaeto,[bold],우익 — 정리 완료. 호위 친위대 잔존 0.,[bold] 우익 — 정리 완료. 호위 친위대 잔존 0.,393_gwanggaeto.mp3
-394,광개토대왕,gwanggaeto,[bold][excited],정복의 깃발 — 마지막 일격!,[bold][excited] 정복의 깃발 — 마지막 일격!,394_gwanggaeto.mp3
-395,광개토대왕,gwanggaeto,[bold],우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.,[bold] 우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.,395_gwanggaeto.mp3
-396,광개토대왕,gwanggaeto,[bold],정복은 끝. 이제는 — 함께 일구는 시간이다.,[bold] 정복은 끝. 이제는 — 함께 일구는 시간이다.,396_gwanggaeto.mp3
-397,광개토대왕,gwanggaeto,[bold],"1,700년. 내 땅이 다시 내 손에 돌아왔구나.","[bold] 1,700년. 내 땅이 다시 내 손에 돌아왔구나.",397_gwanggaeto.mp3
-398,광개토대왕,gwanggaeto,[bold],{사령관}이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.,[bold] {사령관}이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.,398_gwanggaeto.mp3
-399,광개토대왕,gwanggaeto,[bold],고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.,[bold] 고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.,399_gwanggaeto.mp3
-400,광개토대왕,gwanggaeto,[bold],"{사령관}, 최종 명령권은 그대에게 있소.","[bold] {사령관}, 최종 명령권은 그대에게 있소.",400_gwanggaeto.mp3
-401,니콜라 테슬라,tesla,[manic],"크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. (눈 반짝) 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.","[manic] 크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. (눈 반짝) 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.",401_tesla.mp3
-402,니콜라 테슬라,tesla,[manic],바로 그거야. 그래서 크리그는 죽어도 못 놓지.,[manic] 바로 그거야. 그래서 크리그는 죽어도 못 놓지.,402_tesla.mp3
-403,니콜라 테슬라,tesla,[manic][hesitant],생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.,[manic][hesitant] 생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.,403_tesla.mp3
-404,니콜라 테슬라,tesla,[manic],제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.,[manic] 제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.,404_tesla.mp3
-405,니콜라 테슬라,tesla,[manic],아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.,[manic] 아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.,405_tesla.mp3
-406,니콜라 테슬라,tesla,[manic],그게 그의 방식이지. 이론을 몸으로 증명하는 거.,[manic] 그게 그의 방식이지. 이론을 몸으로 증명하는 거.,406_tesla.mp3
-407,니콜라 테슬라,tesla,[manic],(웃으며) 박사님 — 100년 만에 다시 같이 일하는군요.,[manic] (웃으며) 박사님 — 100년 만에 다시 같이 일하는군요.,407_tesla.mp3
-408,니콜라 테슬라,tesla,[manic],에너지 만충. 거북선 추진 코어 100%.,[manic] 에너지 만충. 거북선 추진 코어 100%.,408_tesla.mp3
-409,니콜라 테슬라,tesla,[manic],(웃으며) 100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.,[manic] (웃으며) 100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.,409_tesla.mp3
-410,니콜라 테슬라,tesla,[manic][excited],테슬라 초공간 — ATT ×5 발동!,[manic][excited] 테슬라 초공간 — ATT ×5 발동!,410_tesla.mp3
-411,니콜라 테슬라,tesla,[manic],(웃으며) 다음엔 무선 전력으로 지구 전체를 깔자.,[manic] (웃으며) 다음엔 무선 전력으로 지구 전체를 깔자.,411_tesla.mp3
-412,니콜라 테슬라,tesla,[manic],무선 전력망 재건. 100년 만에 다시 깔 거야.,[manic] 무선 전력망 재건. 100년 만에 다시 깔 거야.,412_tesla.mp3
-413,니콜라 테슬라,tesla,[manic][excited],들어오지 마세요! 지금 정밀 조정 중이에요!,[manic][excited] 들어오지 마세요! 지금 정밀 조정 중이에요!,413_tesla.mp3
-414,니콜라 테슬라,tesla,[manic][hesitant],"진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.","[manic][hesitant] 진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.",414_tesla.mp3
-415,니콜라 테슬라,tesla,[manic][excited],완성이에요! 100년 만에 완성! 이제 갈 수 있어요!,[manic][excited] 완성이에요! 100년 만에 완성! 이제 갈 수 있어요!,415_tesla.mp3
-416,호레이쇼 넬슨,nelson,[proud][hesitant],"(캡슐에서 깨어나며) …옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.","[proud][hesitant] (캡슐에서 깨어나며) …옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.",416_nelson.mp3
-417,호레이쇼 넬슨,nelson,[proud][hesitant],"동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.","[proud][hesitant] 동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.",417_nelson.mp3
-418,호레이쇼 넬슨,nelson,[proud],그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.,[proud] 그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.,418_nelson.mp3
-419,호레이쇼 넬슨,nelson,[proud],"옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.","[proud] 옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.",419_nelson.mp3
-420,호레이쇼 넬슨,nelson,[proud],"(이순신을 향해) 그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.","[proud] (이순신을 향해) 그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.",420_nelson.mp3
-421,호레이쇼 넬슨,nelson,[proud][hesitant][curious],…이순신. 설마 당신이오?,[proud][hesitant][curious] …이순신. 설마 당신이오?,421_nelson.mp3
-422,호레이쇼 넬슨,nelson,[proud][hesitant],"200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.","[proud][hesitant] 200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.",422_nelson.mp3
-423,호레이쇼 넬슨,nelson,[proud],"England expects— 아니. 이제는 지구가 기대한다. 합시다, {사령관}.","[proud] England expects— 아니. 이제는 지구가 기대한다. 합시다, {사령관}.",423_nelson.mp3
-424,A. 아인슈타인,einstein,[thoughtful],반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.,[thoughtful] 반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.,424_einstein.mp3
-425,A. 아인슈타인,einstein,[thoughtful],우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.,[thoughtful] 우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.,425_einstein.mp3
-426,A. 아인슈타인,einstein,[thoughtful],테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.,[thoughtful] 테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.,426_einstein.mp3
-427,A. 아인슈타인,einstein,[thoughtful],시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.,[thoughtful] 시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.,427_einstein.mp3
-428,A. 아인슈타인,einstein,[thoughtful],시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.,[thoughtful] 시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.,428_einstein.mp3
-429,A. 아인슈타인,einstein,[thoughtful],그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.,[thoughtful] 그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.,429_einstein.mp3
-430,A. 아인슈타인,einstein,[thoughtful],4.7GHz 공명파 — 충전 100%. 발사 명령 대기.,[thoughtful] 4.7GHz 공명파 — 충전 100%. 발사 명령 대기.,430_einstein.mp3
-431,A. 아인슈타인,einstein,[thoughtful],시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.,[thoughtful] 시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.,431_einstein.mp3
-432,A. 아인슈타인,einstein,[thoughtful],가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.,[thoughtful] 가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.,432_einstein.mp3
-433,A. 아인슈타인,einstein,[thoughtful][excited],4.7GHz 공명파 — 발사!,[thoughtful][excited] 4.7GHz 공명파 — 발사!,433_einstein.mp3
-434,A. 아인슈타인,einstein,[thoughtful],(조용히) 시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.,[thoughtful] (조용히) 시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.,434_einstein.mp3
-435,A. 아인슈타인,einstein,[thoughtful],(미소) 우주는 상대적이지만 — 고향은 절대적이군.,[thoughtful] (미소) 우주는 상대적이지만 — 고향은 절대적이군.,435_einstein.mp3
-436,A. 아인슈타인,einstein,[thoughtful],당신이 왔군요. 예상했습니다.,[thoughtful] 당신이 왔군요. 예상했습니다.,436_einstein.mp3
-437,A. 아인슈타인,einstein,[thoughtful],"나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.","[thoughtful] 나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.",437_einstein.mp3
-438,A. 아인슈타인,einstein,[thoughtful],그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.,[thoughtful] 그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.,438_einstein.mp3
-439,A. 아인슈타인,einstein,[thoughtful],"치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. {사령관}의 각성 지점이었습니다.","[thoughtful] 치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. {사령관}의 각성 지점이었습니다.",439_einstein.mp3
-440,A. 아인슈타인,einstein,[thoughtful],당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.,[thoughtful] 당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.,440_einstein.mp3
-441,A. 아인슈타인,einstein,[thoughtful],"치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.","[thoughtful] 치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.",441_einstein.mp3
-442,이휘소,leehwiso,[gentle],누구시오? 이 좌표를 아는 사람이 있다니.,[gentle] 누구시오? 이 좌표를 아는 사람이 있다니.,442_leehwiso.mp3
-443,이휘소,leehwiso,[gentle][hesitant],...방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.,[gentle][hesitant] ...방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.,443_leehwiso.mp3
-444,이휘소,leehwiso,[gentle][hesitant],거북선에 그 에너지를 실을 수 있소? 도면이 있다면...,[gentle][hesitant] 거북선에 그 에너지를 실을 수 있소? 도면이 있다면...,444_leehwiso.mp3
-445,이휘소,leehwiso,[gentle][hesitant],"...여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...","[gentle][hesitant] ...여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...",445_leehwiso.mp3
-446,이휘소,leehwiso,[gentle][hesitant],보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.,[gentle][hesitant] 보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.,446_leehwiso.mp3
-447,우르사 메이저,ursamajor,[menacing][hesitant],... 인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.,[menacing][hesitant] ... 인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.,447_ursamajor.mp3
-448,우르사 메이저,ursamajor,[menacing],"100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나.","[menacing] 100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나.",448_ursamajor.mp3
-449,우르사 메이저,ursamajor,[menacing],이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.,[menacing] 이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.,449_ursamajor.mp3
-450,우르사 메이저,ursamajor,[menacing][hesitant],아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.,[menacing][hesitant] 아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.,450_ursamajor.mp3
-451,우르사 메이저,ursamajor,[menacing],아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.,[menacing] 아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.,451_ursamajor.mp3
-452,우르사 메이저,ursamajor,[menacing][hesitant],... 호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.,[menacing][hesitant] ... 호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.,452_ursamajor.mp3
-453,우르사 메이저,ursamajor,[menacing][hesitant],(처음으로 동요) 그것은... 시공 공명? 불가능하다. 자연 결정체로는...,[menacing][hesitant] (처음으로 동요) 그것은... 시공 공명? 불가능하다. 자연 결정체로는...,453_ursamajor.mp3
-454,우르사 메이저,ursamajor,[menacing][hesitant],(꺼져가는 신호) 인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...,[menacing][hesitant] (꺼져가는 신호) 인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...,454_ursamajor.mp3
-455,아이젠클로,eisenklau,[stern],"기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.","[stern] 기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.",455_eisenklau.mp3
-456,아이젠클로,eisenklau,[stern][angry][hesitant],"이순신?! (분노) 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!","[stern][angry][hesitant] 이순신?! (분노) 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!",456_eisenklau.mp3
-457,아이젠클로,eisenklau,[stern][hesitant],...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.,[stern][hesitant] ...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.,457_eisenklau.mp3
-458,아이젠클로,eisenklau,[stern],우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.,[stern] 우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.,458_eisenklau.mp3
-459,아이젠클로,eisenklau,[stern][angry][hesitant],(이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!,[stern][angry][hesitant] (이를 갈며) 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!,459_eisenklau.mp3
-460,볼프 노인,wolfelder,[weary][trembling][hesitant],"(떨리는 손으로 칩을 내밀며) …당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고.","[weary][trembling][hesitant] (떨리는 손으로 칩을 내밀며) …당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고.",460_wolfelder.mp3
-461,볼프 노인,wolfelder,[weary],그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.,[weary] 그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.,461_wolfelder.mp3
-462,아오리,aori,[gruff],프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.,[gruff] 프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.,462_aori.mp3
-463,아오리,aori,[gruff][curious],허. 뭘 팔 거요?,[gruff][curious] 허. 뭘 팔 거요?,463_aori.mp3
-464,레인저 맥시모프,maximoff,[grave][hesitant],"우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.","[grave][hesitant] 우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.",464_maximoff.mp3
-465,레인저 맥시모프,maximoff,[grave],살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.,[grave] 살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.,465_maximoff.mp3
-466,레인저 맥시모프,maximoff,[grave],연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.,[grave] 연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.,466_maximoff.mp3
-467,레인저 맥시모프,maximoff,[grave],"당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.","[grave] 당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.",467_maximoff.mp3
-468,레인저 맥시모프,maximoff,[grave][hesitant],…그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.,[grave][hesitant] …그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.,468_maximoff.mp3
-469,레인저 맥시모프,maximoff,[grave],크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.,[grave] 크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.,469_maximoff.mp3
-470,레인저 맥시모프,maximoff,[grave],"제작 베이 준비 완료. 장영실 씨, 시작하시죠.","[grave] 제작 베이 준비 완료. 장영실 씨, 시작하시죠.",470_maximoff.mp3
-471,레인저 맥시모프,maximoff,[grave],페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.,[grave] 페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.,471_maximoff.mp3
-472,레인저 맥시모프,maximoff,[grave],사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.,[grave] 사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.,472_maximoff.mp3
-473,레인저 맥시모프,maximoff,[grave],아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.,[grave] 아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.,473_maximoff.mp3
-474,레인저 맥시모프,maximoff,[grave],결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.,[grave] 결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.,474_maximoff.mp3
-475,항법 AI,navai,[flat][hesitant],"아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.","[flat][hesitant] 아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.",475_navai.mp3
-476,항법 AI,navai,[flat],지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.,[flat] 지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.,476_navai.mp3
-477,치크스 전위대,chiks,[cold],이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.,[cold] 이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.,477_chiks.mp3
-478,볼칸,volcan,[gruff],"그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.","[gruff] 그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.",478_volcan.mp3
-479,반란군 리더 \'볼칸\',etc,[neutral],당신들이 저항군과 함께 싸운다는 그 {회사}로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.,[neutral] 당신들이 저항군과 함께 싸운다는 그 {회사}로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.,479_etc.mp3
-480,경보,etc,[neutral],⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.,[neutral] ⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.,480_etc.mp3
-481,경보,etc,[neutral],⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.,[neutral] ⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.,481_etc.mp3
-482,시스템,etc,[neutral],우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.,[neutral] 우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.,482_etc.mp3
-483,Yi Sun-sin,etc,[neutral],{사령관}. I do not fight unnecessary battles. Only wars I can win.,[neutral] {사령관}. I do not fight unnecessary battles. Only wars I can win.,483_etc.mp3
-484,Yuri Gagarin,etc,[neutral],{사령관}. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.,[neutral] {사령관}. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.,484_etc.mp3
-485,Horatio Nelson,etc,[neutral],"England expects— no. Now Earth expects. Let us begin, {사령관}.","[neutral] England expects— no. Now Earth expects. Let us begin, {사령관}.",485_etc.mp3
-486,A. Einstein,etc,[neutral],"A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. {사령관}'s awakening point.","[neutral] A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. {사령관}'s awakening point.",486_etc.mp3
-487,Gwanggaeto the Great,etc,[neutral][curious],"{사령관}, you said? I have waited for one who would reclaim my land. Speak — what is your wish?","[neutral][curious] {사령관}, you said? I have waited for one who would reclaim my land. Speak — what is your wish?",487_etc.mp3
-488,Gwanggaeto the Great,etc,[neutral],{사령관} — the final command is yours.,[neutral] {사령관} — the final command is yours.,488_etc.mp3
-489,철갈고리 보그,borg,[neutral],어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡{X}만 내놓으면 곱게 보내주지.,[neutral] 어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡{X}만 내놓으면 곱게 보내주지.,489_borg.mp3
-490,밀수왕 카림,karim,[neutral],"오, 함선들 좋은데? 흠집 내기 싫으면 ₡{X}만 내. 사업은 사업이니까.","[neutral] 오, 함선들 좋은데? 흠집 내기 싫으면 ₡{X}만 내. 사업은 사업이니까.",490_karim.mp3
-491,치크스 군단장 크라쉬,krash,[neutral],인간 주제에 감히 여기까지. 목숨값으로 ₡{X}를 바쳐라. 그럼 오늘은 살려두마.,[neutral] 인간 주제에 감히 여기까지. 목숨값으로 ₡{X}를 바쳐라. 그럼 오늘은 살려두마.,491_krash.mp3
-492,현상금 사냥꾼 베일,veil,[neutral],"네 목에 걸린 현상금보다 ₡{X}가 싸게 먹히겠지? 자, 선택해.","[neutral] 네 목에 걸린 현상금보다 ₡{X}가 싸게 먹히겠지? 자, 선택해.",492_veil.mp3
-493,약탈자 도르가,dorga,[neutral][hesitant],함선이 아깝지 않냐? ₡{X} 내면 못 본 척 해주마. 거절하면… 후회할걸.,[neutral][hesitant] 함선이 아깝지 않냐? ₡{X} 내면 못 본 척 해주마. 거절하면… 후회할걸.,493_dorga.mp3
+086,백구,baekgu,[matter-of-fact][excited],"검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 척, 신화 설계도 장, 신화 파츠 5종, VC 개, VE 을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!","[matter-of-fact][excited] 검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 척, 신화 설계도 장, 신화 파츠 5종, VC 개, VE 을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!",086_baekgu.mp3
+087,백구,baekgu,[matter-of-fact],신화급 파츠야! . 상점에서는 절대 못 사는 거야.,[matter-of-fact] 신화급 파츠야! . 상점에서는 절대 못 사는 거야.,087_baekgu.mp3
+088,백구,baekgu,[matter-of-fact][excited],설계도 드랍! 설계도야. 재료 모아서 제작소에서 만들어봐!,[matter-of-fact][excited] 설계도 드랍! 설계도야. 재료 모아서 제작소에서 만들어봐!,088_baekgu.mp3
+089,백구,baekgu,[matter-of-fact][excited],"넬슨의 일점사야! 전 함대, 한 척에 화력 집중! ATT 두 배!","[matter-of-fact][excited] 넬슨의 일점사야! 전 함대, 한 척에 화력 집중! ATT 두 배!",089_baekgu.mp3
+090,백구,baekgu,[matter-of-fact],신화 5종 받았어. 정비소에서 장착해.,[matter-of-fact] 신화 5종 받았어. 정비소에서 장착해.,090_baekgu.mp3
+091,백구,baekgu,[matter-of-fact],추가 설계도 — 제작소 가능.,[matter-of-fact] 추가 설계도 — 제작소 가능.,091_baekgu.mp3
+092,백구,baekgu,[matter-of-fact],먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.,[matter-of-fact] 먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.,092_baekgu.mp3
+093,백구,baekgu,[matter-of-fact],"사령관, 은 이미 대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요.","[matter-of-fact] 사령관, 은 이미 대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요.",093_baekgu.mp3
+094,백구,baekgu,[matter-of-fact],치크스 합병 완료. 이제 우리 땅이야.,[matter-of-fact] 치크스 합병 완료. 이제 우리 땅이야.,094_baekgu.mp3
+095,백구,baekgu,[matter-of-fact],낙찰. 세금 ₡ 들어온다.,[matter-of-fact] 낙찰. 세금 ₡ 들어온다.,095_baekgu.mp3
+096,백구,baekgu,[matter-of-fact],구매 완료.,[matter-of-fact] 구매 완료.,096_baekgu.mp3
+097,백구,baekgu,[matter-of-fact],합류. 잘 써.,[matter-of-fact] 합류. 잘 써.,097_baekgu.mp3
+098,백구,baekgu,[matter-of-fact],기함 승격. 전투 시 중앙에 배치돼.,[matter-of-fact] 기함 승격. 전투 시 중앙에 배치돼.,098_baekgu.mp3
+099,백구,baekgu,[matter-of-fact],충성도 야. 곧 이탈할 수도 있어. 빨리 크루 태워.,[matter-of-fact] 충성도 야. 곧 이탈할 수도 있어. 빨리 크루 태워.,099_baekgu.mp3
+100,백구,baekgu,[matter-of-fact][excited],충성도 만렙이야. 이제 한층 더 강해졌어!,[matter-of-fact][excited] 충성도 만렙이야. 이제 한층 더 강해졌어!,100_baekgu.mp3
+101,백구,baekgu,[matter-of-fact],충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.,[matter-of-fact] 충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.,101_baekgu.mp3
+102,백구,baekgu,[matter-of-fact],최고 레벨 보상! 들어왔어.,[matter-of-fact] 최고 레벨 보상! 들어왔어.,102_baekgu.mp3
+103,백구,baekgu,[matter-of-fact],파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.,[matter-of-fact] 파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.,103_baekgu.mp3
+104,백구,baekgu,[matter-of-fact],출격 준비 완료. 즉시 전열에 투입.,[matter-of-fact] 출격 준비 완료. 즉시 전열에 투입.,104_baekgu.mp3
+105,백구,baekgu,[matter-of-fact],출격! 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.,[matter-of-fact] 출격! 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.,105_baekgu.mp3
+106,백구,baekgu,[matter-of-fact],정비소에 ₡에 매각했어. 파츠랑 크루는 잘 챙겨놨고.,[matter-of-fact] 정비소에 ₡에 매각했어. 파츠랑 크루는 잘 챙겨놨고.,106_baekgu.mp3
+107,백구,baekgu,[matter-of-fact],의 홀로그램 외피를 형태로 재구성했어. 능력치는 그대로니까 안심해.,[matter-of-fact] 의 홀로그램 외피를 형태로 재구성했어. 능력치는 그대로니까 안심해.,107_baekgu.mp3
+108,백구,baekgu,[matter-of-fact],의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.,[matter-of-fact] 의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.,108_baekgu.mp3
+109,백구,baekgu,[matter-of-fact][excited],🎉 축하해! 이 + 강화에 성공했어. 능력치가 % 상승!,[matter-of-fact][excited] 🎉 축하해! 이 + 강화에 성공했어. 능력치가 % 상승!,109_baekgu.mp3
+110,백구,baekgu,[matter-of-fact],에 탑승. 함선 성능 올라갔어.,[matter-of-fact] 에 탑승. 함선 성능 올라갔어.,110_baekgu.mp3
+111,백구,baekgu,[matter-of-fact],팔았어. ₡ 들어왔다. 잘 썼네.,[matter-of-fact] 팔았어. ₡ 들어왔다. 잘 썼네.,111_baekgu.mp3
+112,백구,baekgu,[matter-of-fact],으로 이름 바꿨어. 새 출발이네.,[matter-of-fact] 으로 이름 바꿨어. 새 출발이네.,112_baekgu.mp3
+113,백구,baekgu,[matter-of-fact],기함 변경. 주의해서 타.,[matter-of-fact] 기함 변경. 주의해서 타.,113_baekgu.mp3
+114,백구,baekgu,[matter-of-fact],창고 칸으로 확장.,[matter-of-fact] 창고 칸으로 확장.,114_baekgu.mp3
+115,백구,baekgu,[matter-of-fact][excited],이제 최대야!,[matter-of-fact][excited] 이제 최대야!,115_baekgu.mp3
+116,백구,baekgu,[matter-of-fact],다음 확장은 더 비싸질 거야.,[matter-of-fact] 다음 확장은 더 비싸질 거야.,116_baekgu.mp3
+117,백구,baekgu,[matter-of-fact],샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,[matter-of-fact] 샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,117_baekgu.mp3
+118,백구,baekgu,[matter-of-fact],장착! /척 완료. 전 함선 장착하면 순간이동 가능해.,[matter-of-fact] 장착! /척 완료. 전 함선 장착하면 순간이동 가능해.,118_baekgu.mp3
+119,백구,baekgu,[matter-of-fact],합류! 은 하선했어.,[matter-of-fact] 합류! 은 하선했어.,119_baekgu.mp3
+120,백구,baekgu,[matter-of-fact][excited],전설 영웅 등장! 대박이야!,[matter-of-fact][excited] 전설 영웅 등장! 대박이야!,120_baekgu.mp3
+121,백구,baekgu,[matter-of-fact][excited],전설급이야! 대박!,[matter-of-fact][excited] 전설급이야! 대박!,121_baekgu.mp3
+122,백구,baekgu,[matter-of-fact][excited],영웅급 크루 영입!,[matter-of-fact][excited] 영웅급 크루 영입!,122_baekgu.mp3
+123,백구,baekgu,[matter-of-fact],크루 영입 완료. 함선에 탑승시켜봐.,[matter-of-fact] 크루 영입 완료. 함선에 탑승시켜봐.,123_baekgu.mp3
+124,백구,baekgu,[matter-of-fact],상업 레벨 . 세금 ₡ 들어온다.,[matter-of-fact] 상업 레벨 . 세금 ₡ 들어온다.,124_baekgu.mp3
+125,백구,baekgu,[matter-of-fact],가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.,[matter-of-fact] 가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.,125_baekgu.mp3
+126,백구,baekgu,[matter-of-fact],가 합류했어! 전설급이야. 함선에 태워봐.,[matter-of-fact] 가 합류했어! 전설급이야. 함선에 태워봐.,126_baekgu.mp3
+127,백구,baekgu,[matter-of-fact],세트 아이템이야! . 세트 완성하면 추가 보너스가 붙어.,[matter-of-fact] 세트 아이템이야! . 세트 완성하면 추가 보너스가 붙어.,127_baekgu.mp3
+128,백구,baekgu,[matter-of-fact],전설 파츠야! . 상점에서는 못 사는 거야.,[matter-of-fact] 전설 파츠야! . 상점에서는 못 사는 거야.,128_baekgu.mp3
+129,백구,baekgu,[matter-of-fact],퀘스트 보상 지급. 크레딧.,[matter-of-fact] 퀘스트 보상 지급. 크레딧.,129_baekgu.mp3
+130,백구,baekgu,[matter-of-fact][excited],레벨 보너스 ×배!,[matter-of-fact][excited] 레벨 보너스 ×배!,130_baekgu.mp3
+131,백구,baekgu,[matter-of-fact],발견!,[matter-of-fact] 발견!,131_baekgu.mp3
+132,백구,baekgu,[matter-of-fact],전설급이네. 대박이다.,[matter-of-fact] 전설급이네. 대박이다.,132_baekgu.mp3
+133,백구,baekgu,[matter-of-fact],꽤 좋은 파츠야.,[matter-of-fact] 꽤 좋은 파츠야.,133_baekgu.mp3
+134,백구,baekgu,[matter-of-fact],회수 완료. 함대에 추가됐어.,[matter-of-fact] 회수 완료. 함대에 추가됐어.,134_baekgu.mp3
+135,백구,baekgu,[matter-of-fact][excited],대박! 이야. 능력치 +% 상승!,[matter-of-fact][excited] 대박! 이야. 능력치 +% 상승!,135_baekgu.mp3
+136,백구,baekgu,[matter-of-fact],아쉽지만 이 나왔어. 다시 도전해봐.,[matter-of-fact] 아쉽지만 이 나왔어. 다시 도전해봐.,136_baekgu.mp3
+137,백구,baekgu,[matter-of-fact],완성! .,[matter-of-fact] 완성! .,137_baekgu.mp3
+138,백구,baekgu,[matter-of-fact],완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,[matter-of-fact] 완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,138_baekgu.mp3
+139,백구,baekgu,[matter-of-fact][excited],함선 완성! 이야. 편대 확인해봐!,[matter-of-fact][excited] 함선 완성! 이야. 편대 확인해봐!,139_baekgu.mp3
+140,백구,baekgu,[matter-of-fact],완성. .,[matter-of-fact] 완성. .,140_baekgu.mp3
+141,백구,baekgu,[matter-of-fact],탑승. 이제 그 함선 1.2배 강해졌어.,[matter-of-fact] 탑승. 이제 그 함선 1.2배 강해졌어.,141_baekgu.mp3
+142,백구,baekgu,[matter-of-fact],지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!,[matter-of-fact] 지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!,142_baekgu.mp3
+143,백구,baekgu,[matter-of-fact],항로에서 뭔가 잡혔어. 조심해.,[matter-of-fact] 항로에서 뭔가 잡혔어. 조심해.,143_baekgu.mp3
+144,백구,baekgu,[matter-of-fact][excited],⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!,[matter-of-fact][excited] ⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!,144_baekgu.mp3
+145,백구,baekgu,[matter-of-fact][excited],에서 퀘스트 클리어하면 설계도가 5% 확률로 드랍돼. 도전해봐!,[matter-of-fact][excited] 에서 퀘스트 클리어하면 설계도가 5% 확률로 드랍돼. 도전해봐!,145_baekgu.mp3
+146,백구,baekgu,[matter-of-fact],/개. 이 행성 상점에서 살 수 있어. 제작에 필요해.,[matter-of-fact] /개. 이 행성 상점에서 살 수 있어. 제작에 필요해.,146_baekgu.mp3
+147,백구,baekgu,[matter-of-fact],은 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.,[matter-of-fact] 은 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.,147_baekgu.mp3
+148,백구,baekgu,[matter-of-fact],지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.,[matter-of-fact] 지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.,148_baekgu.mp3
+149,백구,baekgu,[matter-of-fact],메가 충전 완료! 다시 빠르게 진행해 봐.,[matter-of-fact] 메가 충전 완료! 다시 빠르게 진행해 봐.,149_baekgu.mp3
+150,백구,baekgu,[matter-of-fact][excited],맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!,[matter-of-fact][excited] 맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!,150_baekgu.mp3
+151,백구,baekgu,[matter-of-fact],응? 뭔가 물어봐야 대답하지.,[matter-of-fact] 응? 뭔가 물어봐야 대답하지.,151_baekgu.mp3
+152,백구,baekgu,[matter-of-fact],크레딧 거의 없어. 무역이나 퀘스트로 충전해.,[matter-of-fact] 크레딧 거의 없어. 무역이나 퀘스트로 충전해.,152_baekgu.mp3
+153,백구,baekgu,[matter-of-fact],해적들이 강해졌어. 조심해.,[matter-of-fact] 해적들이 강해졌어. 조심해.,153_baekgu.mp3
+154,백구,baekgu,[matter-of-fact],해적이 더 강해졌다. 파츠 업그레이드해.,[matter-of-fact] 해적이 더 강해졌다. 파츠 업그레이드해.,154_baekgu.mp3
+155,백구,baekgu,[matter-of-fact],해적 전투력 최대치. 최고 장비 갖춰.,[matter-of-fact] 해적 전투력 최대치. 최고 장비 갖춰.,155_baekgu.mp3
+156,백구,baekgu,[matter-of-fact],같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.,[matter-of-fact] 같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.,156_baekgu.mp3
+157,백구,baekgu,[matter-of-fact],간신히 따돌렸어. 항로 주의해.,[matter-of-fact] 간신히 따돌렸어. 항로 주의해.,157_baekgu.mp3
+158,백구,baekgu,[matter-of-fact],겨우 빠져나왔어. 빨리 이 구역 떠나자.,[matter-of-fact] 겨우 빠져나왔어. 빨리 이 구역 떠나자.,158_baekgu.mp3
+159,백구,baekgu,[matter-of-fact],도망쳤어. 다음엔 일찍 움직여.,[matter-of-fact] 도망쳤어. 다음엔 일찍 움직여.,159_baekgu.mp3
+160,백구,baekgu,[matter-of-fact][excited],전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!,[matter-of-fact][excited] 전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!,160_baekgu.mp3
+161,백구,baekgu,[matter-of-fact],영입 거절. 현재 크루 유지.,[matter-of-fact] 영입 거절. 현재 크루 유지.,161_baekgu.mp3
+162,백구,baekgu,[matter-of-fact][excited],보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!,[matter-of-fact][excited] 보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!,162_baekgu.mp3
+163,백구,baekgu,[matter-of-fact],전설 동료 영입 거절. 현재 크루 유지.,[matter-of-fact] 전설 동료 영입 거절. 현재 크루 유지.,163_baekgu.mp3
+164,백구,baekgu,[matter-of-fact],잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.,[matter-of-fact] 잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.,164_baekgu.mp3
+165,백구,baekgu,[matter-of-fact],탐색 시작. 잔해 구역 접근 중.,[matter-of-fact] 탐색 시작. 잔해 구역 접근 중.,165_baekgu.mp3
+166,백구,baekgu,[matter-of-fact],이번엔 없네. 다시 탐색해봐.,[matter-of-fact] 이번엔 없네. 다시 탐색해봐.,166_baekgu.mp3
+167,백구,baekgu,[matter-of-fact],이번엔 별다른 게 없네. 다시 시도해봐.,[matter-of-fact] 이번엔 별다른 게 없네. 다시 시도해봐.,167_baekgu.mp3
+168,백구,baekgu,[matter-of-fact],잔해 탐색 완료. 퀘스트 보상 받아.,[matter-of-fact] 잔해 탐색 완료. 퀘스트 보상 받아.,168_baekgu.mp3
+169,백구,baekgu,[matter-of-fact][excited],소문 하나 — 전설의 영웅 이 에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!,[matter-of-fact][excited] 소문 하나 — 전설의 영웅 이 에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!,169_baekgu.mp3
+170,백구,baekgu,[matter-of-fact],잔해 일부 발견. 계속 탐색해야 해.,[matter-of-fact] 잔해 일부 발견. 계속 탐색해야 해.,170_baekgu.mp3
+171,백구,baekgu,[matter-of-fact],목적지 도착. 퀘스트 탭에서 보상 받아.,[matter-of-fact] 목적지 도착. 퀘스트 탭에서 보상 받아.,171_baekgu.mp3
+172,백구,baekgu,[matter-of-fact],빌려줄게. 빨리 갚아.,[matter-of-fact] 빌려줄게. 빨리 갚아.,172_baekgu.mp3
+173,백구,baekgu,[matter-of-fact][hesitant],제작 중이야... 잠깐만 기다려.,[matter-of-fact][hesitant] 제작 중이야... 잠깐만 기다려.,173_baekgu.mp3
+174,백구,baekgu,[matter-of-fact],매수 의뢰 보고 완료. 보상 받으러 가자.,[matter-of-fact] 매수 의뢰 보고 완료. 보상 받으러 가자.,174_baekgu.mp3
+175,백구,baekgu,[matter-of-fact],입찰 경쟁에서 졌어. 더 높게 써야 했는데.,[matter-of-fact] 입찰 경쟁에서 졌어. 더 높게 써야 했는데.,175_baekgu.mp3
+176,백구,baekgu,[matter-of-fact],통행세 내고 무사 통과! 안전이 최우선이지~,[matter-of-fact] 통행세 내고 무사 통과! 안전이 최우선이지~,176_baekgu.mp3
+177,백구,baekgu,[matter-of-fact][excited],"소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!","[matter-of-fact][excited] 소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!",177_baekgu.mp3
+178,백구,baekgu,[matter-of-fact],블랙홀로 가는 진입로는 치크스 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.,[matter-of-fact] 블랙홀로 가는 진입로는 치크스 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.,178_baekgu.mp3
+179,백구,baekgu,[matter-of-fact][hesitant],저긴 은하 중심의 블랙홀... 먼저 지구를 해방해야 실마리가 잡힐 거야.,[matter-of-fact][hesitant] 저긴 은하 중심의 블랙홀... 먼저 지구를 해방해야 실마리가 잡힐 거야.,179_baekgu.mp3
+180,백구,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!,[matter-of-fact][excited][hesitant] 지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!,180_baekgu.mp3
+181,백구,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 기다린다. 모든 화력 준비!,[matter-of-fact][excited][hesitant] 지구다... 우르사 메이저가 기다린다. 모든 화력 준비!,181_baekgu.mp3
+182,백구,baekgu,[matter-of-fact],이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.,[matter-of-fact] 이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.,182_baekgu.mp3
+183,백구,baekgu,[matter-of-fact],난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.,[matter-of-fact] 난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.,183_baekgu.mp3
+184,백구,baekgu,[matter-of-fact],한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.,[matter-of-fact] 한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.,184_baekgu.mp3
+185,백구,baekgu,[matter-of-fact],통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.,[matter-of-fact] 통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.,185_baekgu.mp3
+186,백구,baekgu,[matter-of-fact],도망쳤어. 다음엔 더 강해진 다음에 부딪치자.,[matter-of-fact] 도망쳤어. 다음엔 더 강해진 다음에 부딪치자.,186_baekgu.mp3
+187,백구,baekgu,[matter-of-fact][excited],학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!,[matter-of-fact][excited] 학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!,187_baekgu.mp3
+188,백구,baekgu,[matter-of-fact],아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.,[matter-of-fact] 아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.,188_baekgu.mp3
+189,백구,baekgu,[matter-of-fact][excited],테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!,[matter-of-fact][excited] 테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!,189_baekgu.mp3
+190,백구,baekgu,[matter-of-fact],제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.,[matter-of-fact] 제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.,190_baekgu.mp3
+191,백구,baekgu,[matter-of-fact][excited],데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!,[matter-of-fact][excited] 데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!,191_baekgu.mp3
+192,백구,baekgu,[matter-of-fact][excited],보이드 페이즈 강제 해금됨. 제타 레티쿨리로 이동해서 광장 → 제독 의뢰 확인해봐!,[matter-of-fact][excited] 보이드 페이즈 강제 해금됨. 제타 레티쿨리로 이동해서 광장 → 제독 의뢰 확인해봐!,192_baekgu.mp3
+193,백구,baekgu,[matter-of-fact],보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.,[matter-of-fact] 보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.,193_baekgu.mp3
+194,백구,baekgu,[matter-of-fact][excited],"보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!","[matter-of-fact][excited] 보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!",194_baekgu.mp3
+195,백구,baekgu,[matter-of-fact],"8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.","[matter-of-fact] 8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.",195_baekgu.mp3
+196,백구,baekgu,[matter-of-fact],백구의 일기,[matter-of-fact] 백구의 일기,196_baekgu.mp3
+197,백구,baekgu,[matter-of-fact],백구,[matter-of-fact] 백구,197_baekgu.mp3
+198,백구,baekgu,[matter-of-fact][excited],거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!,[matter-of-fact][excited] 거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!,198_baekgu.mp3
+199,백구,baekgu,[matter-of-fact],세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.,[matter-of-fact] 세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.,199_baekgu.mp3
+200,백구,baekgu,[matter-of-fact],이동 완료. 다음 목표 정해.,[matter-of-fact] 이동 완료. 다음 목표 정해.,200_baekgu.mp3
+201,백구,baekgu,[matter-of-fact],워프 성공.,[matter-of-fact] 워프 성공.,201_baekgu.mp3
+202,백구,baekgu,[matter-of-fact],이겼어. 당연한 거 아닌가.,[matter-of-fact] 이겼어. 당연한 거 아닌가.,202_baekgu.mp3
+203,백구,baekgu,[matter-of-fact],크레딧 벌었다.,[matter-of-fact] 크레딧 벌었다.,203_baekgu.mp3
+204,백구,baekgu,[matter-of-fact],졌어. 다시 해.,[matter-of-fact] 졌어. 다시 해.,204_baekgu.mp3
+205,백구,baekgu,[matter-of-fact],포기하면 안 돼.,[matter-of-fact] 포기하면 안 돼.,205_baekgu.mp3
+206,백구,baekgu,[matter-of-fact],영웅 등급! 쓸만하겠는데.,[matter-of-fact] 영웅 등급! 쓸만하겠는데.,206_baekgu.mp3
+207,백구,baekgu,[matter-of-fact][excited],전설 등급이다!,[matter-of-fact][excited] 전설 등급이다!,207_baekgu.mp3
+208,백구,baekgu,[matter-of-fact],크레딧 부족해. 무역해.,[matter-of-fact] 크레딧 부족해. 무역해.,208_baekgu.mp3
+209,백구,baekgu,[matter-of-fact][excited],내가 경고했잖아. 싸워!,[matter-of-fact][excited] 내가 경고했잖아. 싸워!,209_baekgu.mp3
+210,이순신,yisunsin,[solemn][hesitant],"[옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.","[solemn][hesitant] [옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.",210_yisunsin.mp3
+211,이순신,yisunsin,[solemn][hesitant],"100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. …나를 깨운 자가 사령관인가. 빚을 졌다.","[solemn][hesitant] 100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. …나를 깨운 자가 사령관인가. 빚을 졌다.",211_yisunsin.mp3
+212,이순신,yisunsin,[solemn],무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.,[solemn] 무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.,212_yisunsin.mp3
+213,이순신,yisunsin,[solemn][hesitant],"패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.","[solemn][hesitant] 패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.",213_yisunsin.mp3
+214,이순신,yisunsin,[solemn][hesitant],"아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. 다음 단계에서, 반드시 거둘 빚이다.","[solemn][hesitant] 아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. 다음 단계에서, 반드시 거둘 빚이다.",214_yisunsin.mp3
+215,이순신,yisunsin,[solemn],"흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, 사령관.","[solemn] 흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, 사령관.",215_yisunsin.mp3
+216,이순신,yisunsin,[solemn][hesitant],"동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.","[solemn][hesitant] 동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.",216_yisunsin.mp3
+217,이순신,yisunsin,[solemn],외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.,[solemn] 외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.,217_yisunsin.mp3
+218,이순신,yisunsin,[solemn][hesitant],"크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.","[solemn][hesitant] 크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.",218_yisunsin.mp3
+219,이순신,yisunsin,[solemn],"당신들이 살아있었군. 오래, 기다렸겠소.","[solemn] 당신들이 살아있었군. 오래, 기다렸겠소.",219_yisunsin.mp3
+220,이순신,yisunsin,[solemn],내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.,[solemn] 내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.,220_yisunsin.mp3
+221,이순신,yisunsin,[solemn][hesitant],코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.,[solemn][hesitant] 코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.,221_yisunsin.mp3
+222,이순신,yisunsin,[solemn],"증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.","[solemn] 증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.",222_yisunsin.mp3
+223,이순신,yisunsin,[solemn][hesitant],광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.,[solemn][hesitant] 광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.,223_yisunsin.mp3
+224,이순신,yisunsin,[solemn],"거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.","[solemn] 거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.",224_yisunsin.mp3
+225,이순신,yisunsin,[solemn],메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.,[solemn] 메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.,225_yisunsin.mp3
+226,이순신,yisunsin,[solemn],그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.,[solemn] 그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.,226_yisunsin.mp3
+227,이순신,yisunsin,[solemn],그분의 설계도를 갖고 왔소.,[solemn] 그분의 설계도를 갖고 왔소.,227_yisunsin.mp3
+228,이순신,yisunsin,[solemn],필요한 건 뭐든 구해 오겠소.,[solemn] 필요한 건 뭐든 구해 오겠소.,228_yisunsin.mp3
+229,이순신,yisunsin,[solemn][hesitant],타이탄H… 그리고 그 너머에 — 지구.,[solemn][hesitant] 타이탄H… 그리고 그 너머에 — 지구.,229_yisunsin.mp3
+230,이순신,yisunsin,[solemn],"사령관. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.","[solemn] 사령관. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.",230_yisunsin.mp3
+231,이순신,yisunsin,[solemn],"저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.","[solemn] 저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.",231_yisunsin.mp3
+232,이순신,yisunsin,[solemn][hesitant],"아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.","[solemn][hesitant] 아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.",232_yisunsin.mp3
+233,이순신,yisunsin,[solemn],"사령관, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.","[solemn] 사령관, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.",233_yisunsin.mp3
+234,이순신,yisunsin,[solemn],"아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.","[solemn] 아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.",234_yisunsin.mp3
+235,이순신,yisunsin,[solemn],"둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.","[solemn] 둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.",235_yisunsin.mp3
+236,이순신,yisunsin,[solemn],"정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.","[solemn] 정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.",236_yisunsin.mp3
+237,이순신,yisunsin,[solemn],우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.,[solemn] 우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.,237_yisunsin.mp3
+238,이순신,yisunsin,[solemn],은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.,[solemn] 은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.,238_yisunsin.mp3
+239,이순신,yisunsin,[solemn],두 마리 토끼다. 간다.,[solemn] 두 마리 토끼다. 간다.,239_yisunsin.mp3
+240,이순신,yisunsin,[solemn],들어간다.,[solemn] 들어간다.,240_yisunsin.mp3
+241,이순신,yisunsin,[solemn][curious],우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?,[solemn][curious] 우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?,241_yisunsin.mp3
+242,이순신,yisunsin,[solemn][hesitant],"드디어. 400년을 기다린 배가, 오늘 깨어난다.","[solemn][hesitant] 드디어. 400년을 기다린 배가, 오늘 깨어난다.",242_yisunsin.mp3
+243,이순신,yisunsin,[solemn][hesitant],"빅토리… 옛 지구 최후의 대해전, 그 기함이군.","[solemn][hesitant] 빅토리… 옛 지구 최후의 대해전, 그 기함이군.",243_yisunsin.mp3
+244,이순신,yisunsin,[solemn],넬슨 제독. 나는 이순신이오.,[solemn] 넬슨 제독. 나는 이순신이오.,244_yisunsin.mp3
+245,이순신,yisunsin,[solemn],"학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.","[solemn] 학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.",245_yisunsin.mp3
+246,이순신,yisunsin,[solemn],"사령관. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.","[solemn] 사령관. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.",246_yisunsin.mp3
+247,이순신,yisunsin,[solemn],100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.,[solemn] 100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.,247_yisunsin.mp3
+248,이순신,yisunsin,[solemn],박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.,[solemn] 박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.,248_yisunsin.mp3
+249,이순신,yisunsin,[solemn][hesitant],"저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.","[solemn][hesitant] 저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.",249_yisunsin.mp3
+250,이순신,yisunsin,[solemn],이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.,[solemn] 이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.,250_yisunsin.mp3
+251,이순신,yisunsin,[solemn],박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.,[solemn] 박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.,251_yisunsin.mp3
+252,이순신,yisunsin,[solemn],전 함대 — 거북선을 따른다.,[solemn] 전 함대 — 거북선을 따른다.,252_yisunsin.mp3
+253,이순신,yisunsin,[solemn],사령관. 아이젠클로에게 전달해. — 이번엔 끝이라고.,[solemn] 사령관. 아이젠클로에게 전달해. — 이번엔 끝이라고.,253_yisunsin.mp3
+254,이순신,yisunsin,[solemn],"끝났어, 아이젠클로.","[solemn] 끝났어, 아이젠클로.",254_yisunsin.mp3
+255,이순신,yisunsin,[solemn],보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.,[solemn] 보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.,255_yisunsin.mp3
+256,이순신,yisunsin,[solemn],400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.,[solemn] 400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.,256_yisunsin.mp3
+257,이순신,yisunsin,[solemn],좌표 — 제타 레티쿨리. 우르사 메이저 본거지.,[solemn] 좌표 — 제타 레티쿨리. 우르사 메이저 본거지.,257_yisunsin.mp3
+258,이순신,yisunsin,[solemn],"400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.","[solemn] 400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.",258_yisunsin.mp3
+259,이순신,yisunsin,[solemn],그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.,[solemn] 그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.,259_yisunsin.mp3
+260,이순신,yisunsin,[solemn],학익진. 펼친다.,[solemn] 학익진. 펼친다.,260_yisunsin.mp3
+261,이순신,yisunsin,[solemn],우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.,[solemn] 우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.,261_yisunsin.mp3
+262,이순신,yisunsin,[solemn],400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.,[solemn] 400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.,262_yisunsin.mp3
+263,이순신,yisunsin,[solemn][excited],거북선 노포 전탄 — 일점사!,[solemn][excited] 거북선 노포 전탄 — 일점사!,263_yisunsin.mp3
+264,이순신,yisunsin,[solemn][hesitant],끝났다. 100년 봉인의 종결이다.,[solemn][hesitant] 끝났다. 100년 봉인의 종결이다.,264_yisunsin.mp3
+265,이순신,yisunsin,[solemn],"내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.","[solemn] 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.",265_yisunsin.mp3
+266,이순신,yisunsin,[solemn],"보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.","[solemn] 보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.",266_yisunsin.mp3
+267,이순신,yisunsin,[solemn][hesitant],100년. 내가 100년을 잠들었군.,[solemn][hesitant] 100년. 내가 100년을 잠들었군.,267_yisunsin.mp3
+268,이순신,yisunsin,[solemn][hesitant],그대가 나를 깨웠소? …지구는.,[solemn][hesitant] 그대가 나를 깨웠소? …지구는.,268_yisunsin.mp3
+269,이순신,yisunsin,[solemn],치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.,[solemn] 치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.,269_yisunsin.mp3
+270,이순신,yisunsin,[solemn][curious],이길 수 있는 싸움이오?,[solemn][curious] 이길 수 있는 싸움이오?,270_yisunsin.mp3
+271,이순신,yisunsin,[solemn],말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.,[solemn] 말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.,271_yisunsin.mp3
+272,이순신,yisunsin,[solemn],사령관. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.,[solemn] 사령관. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.,272_yisunsin.mp3
+273,이순신,yisunsin,[solemn],나요. 넬슨. 오래됐소.,[solemn] 나요. 넬슨. 오래됐소.,273_yisunsin.mp3
+274,마르코 폴로,marcopolo,[sly][hesitant],"이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거.","[sly][hesitant] 이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거.",274_marcopolo.mp3
+275,마르코 폴로,marcopolo,[sly],"한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.","[sly] 한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.",275_marcopolo.mp3
+276,마르코 폴로,marcopolo,[sly],"잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.","[sly] 잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.",276_marcopolo.mp3
+277,마르코 폴로,marcopolo,[sly],크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.,[sly] 크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.,277_marcopolo.mp3
+278,마르코 폴로,marcopolo,[sly],봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.,[sly] 봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.,278_marcopolo.mp3
+279,마르코 폴로,marcopolo,[sly],"근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.","[sly] 근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.",279_marcopolo.mp3
+280,마르코 폴로,marcopolo,[sly][hesitant],우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.,[sly][hesitant] 우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.,280_marcopolo.mp3
+281,마르코 폴로,marcopolo,[sly],"사령관, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.","[sly] 사령관, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.",281_marcopolo.mp3
+282,마르코 폴로,marcopolo,[sly][hesitant],"그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.","[sly][hesitant] 그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.",282_marcopolo.mp3
+283,마르코 폴로,marcopolo,[sly][hesitant],"저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.","[sly][hesitant] 저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.",283_marcopolo.mp3
+284,마르코 폴로,marcopolo,[sly][hesitant],오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.,[sly][hesitant] 오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.,284_marcopolo.mp3
+285,마르코 폴로,marcopolo,[sly],"치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.","[sly] 치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.",285_marcopolo.mp3
+286,마르코 폴로,marcopolo,[sly],LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.,[sly] LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.,286_marcopolo.mp3
+287,마르코 폴로,marcopolo,[sly][hesitant],"노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.","[sly][hesitant] 노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.",287_marcopolo.mp3
+288,마르코 폴로,marcopolo,[sly][hesitant],내가 누군지 잊었어? 당연하지.,[sly][hesitant] 내가 누군지 잊었어? 당연하지.,288_marcopolo.mp3
+289,마르코 폴로,marcopolo,[sly],전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.,[sly] 전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.,289_marcopolo.mp3
+290,마르코 폴로,marcopolo,[sly],"다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.","[sly] 다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.",290_marcopolo.mp3
+291,마르코 폴로,marcopolo,[sly],저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.,[sly] 저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.,291_marcopolo.mp3
+292,마르코 폴로,marcopolo,[sly][hesitant],뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.,[sly][hesitant] 뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.,292_marcopolo.mp3
+293,마르코 폴로,marcopolo,[sly][hesitant],"저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.","[sly][hesitant] 저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.",293_marcopolo.mp3
+294,마르코 폴로,marcopolo,[sly][hesitant],조용히 스며드는 거? …그건 내 전공이지.,[sly][hesitant] 조용히 스며드는 거? …그건 내 전공이지.,294_marcopolo.mp3
+295,마르코 폴로,marcopolo,[sly],오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.,[sly] 오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.,295_marcopolo.mp3
+296,마르코 폴로,marcopolo,[sly][hesitant],저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.,[sly][hesitant] 저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.,296_marcopolo.mp3
+297,마르코 폴로,marcopolo,[sly],'장영실 2.0'이라고 불려. 기어월드에서 전설이지.,[sly] '장영실 2.0'이라고 불려. 기어월드에서 전설이지.,297_marcopolo.mp3
+298,마르코 폴로,marcopolo,[sly],최대해봐야 8~10개.,[sly] 최대해봐야 8~10개.,298_marcopolo.mp3
+299,마르코 폴로,marcopolo,[sly],잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.,[sly] 잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.,299_marcopolo.mp3
+300,마르코 폴로,marcopolo,[sly],"거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.","[sly] 거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.",300_marcopolo.mp3
+301,마르코 폴로,marcopolo,[sly],볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.,[sly] 볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.,301_marcopolo.mp3
+302,마르코 폴로,marcopolo,[sly],수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.,[sly] 수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.,302_marcopolo.mp3
+303,마르코 폴로,marcopolo,[sly],그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.,[sly] 그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.,303_marcopolo.mp3
+304,마르코 폴로,marcopolo,[sly],"보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.","[sly] 보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.",304_marcopolo.mp3
+305,마르코 폴로,marcopolo,[sly][hesitant],균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.,[sly][hesitant] 균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.,305_marcopolo.mp3
+306,마르코 폴로,marcopolo,[sly][hesitant],저 배... 수퍼비아 주점에서 들은 그 연구선이야.,[sly][hesitant] 저 배... 수퍼비아 주점에서 들은 그 연구선이야.,306_marcopolo.mp3
+307,마르코 폴로,marcopolo,[sly],"백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.","[sly] 백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.",307_marcopolo.mp3
+308,마르코 폴로,marcopolo,[sly],전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.,[sly] 전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.,308_marcopolo.mp3
+309,마르코 폴로,marcopolo,[sly],아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.,[sly] 아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.,309_marcopolo.mp3
+310,마르코 폴로,marcopolo,[sly],레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.,[sly] 레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.,310_marcopolo.mp3
+311,마르코 폴로,marcopolo,[sly],정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.,[sly] 정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.,311_marcopolo.mp3
+312,마르코 폴로,marcopolo,[sly],적 후위 통신 — 차단 완료. 지원 워프 차단했어.,[sly] 적 후위 통신 — 차단 완료. 지원 워프 차단했어.,312_marcopolo.mp3
+313,마르코 폴로,marcopolo,[sly][hesitant],우리가 진짜 해냈어.,[sly][hesitant] 우리가 진짜 해냈어.,313_marcopolo.mp3
+314,마르코 폴로,marcopolo,[sly][curious],다음 모험은 — 어디로?,[sly][curious] 다음 모험은 — 어디로?,314_marcopolo.mp3
+315,마르코 폴로,marcopolo,[sly],허허. 100년을 기다렸소. 이런 통쾌한 광경을.,[sly] 허허. 100년을 기다렸소. 이런 통쾌한 광경을.,315_marcopolo.mp3
+316,마르코 폴로,marcopolo,[sly],마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.,[sly] 마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.,316_marcopolo.mp3
+317,마르코 폴로,marcopolo,[sly],"치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.","[sly] 치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.",317_marcopolo.mp3
+318,마르코 폴로,marcopolo,[sly],"제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.","[sly] 제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.",318_marcopolo.mp3
+319,마르코 폴로,marcopolo,[sly],"사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.","[sly] 사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.",319_marcopolo.mp3
+320,마르코 폴로,marcopolo,[sly],대신 지구까지 데려다 주시오.,[sly] 대신 지구까지 데려다 주시오.,320_marcopolo.mp3
+321,유리 가가린,gagarin,[confident],칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.,[confident] 칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.,321_gagarin.mp3
+322,유리 가가린,gagarin,[confident],"넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.","[confident] 넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.",322_gagarin.mp3
+323,유리 가가린,gagarin,[confident],"덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.","[confident] 덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.",323_gagarin.mp3
+324,유리 가가린,gagarin,[confident][hesitant],신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.,[confident][hesitant] 신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.,324_gagarin.mp3
+325,유리 가가린,gagarin,[confident],여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.,[confident] 여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.,325_gagarin.mp3
+326,유리 가가린,gagarin,[confident],"서두르자. 좌표만 따면, 다음 행선지가 정해져.","[confident] 서두르자. 좌표만 따면, 다음 행선지가 정해져.",326_gagarin.mp3
+327,유리 가가린,gagarin,[confident],"그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.","[confident] 그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.",327_gagarin.mp3
+328,유리 가가린,gagarin,[confident],"이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'.","[confident] 이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'.",328_gagarin.mp3
+329,유리 가가린,gagarin,[confident],저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.,[confident] 저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.,329_gagarin.mp3
+330,유리 가가린,gagarin,[confident],테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.,[confident] 테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.,330_gagarin.mp3
+331,유리 가가린,gagarin,[confident],저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.,[confident] 저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.,331_gagarin.mp3
+332,유리 가가린,gagarin,[confident][hesitant],그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.,[confident][hesitant] 그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.,332_gagarin.mp3
+333,유리 가가린,gagarin,[confident],"지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.","[confident] 지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.",333_gagarin.mp3
+334,유리 가가린,gagarin,[confident],이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.,[confident] 이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.,334_gagarin.mp3
+335,유리 가가린,gagarin,[confident],먼저 조용히 들어가서 확인해야 해. 소란은 금물.,[confident] 먼저 조용히 들어가서 확인해야 해. 소란은 금물.,335_gagarin.mp3
+336,유리 가가린,gagarin,[confident],글리제. 코르넬리우스 본사가 거기야.,[confident] 글리제. 코르넬리우스 본사가 거기야.,336_gagarin.mp3
+337,유리 가가린,gagarin,[confident],설계는 누가 해? 우리 중에 함선 설계자 없잖아.,[confident] 설계는 누가 해? 우리 중에 함선 설계자 없잖아.,337_gagarin.mp3
+338,유리 가가린,gagarin,[confident][hesitant],지구. …오래 꿈꿨어. 별을 처음 날던 그날부터.,[confident][hesitant] 지구. …오래 꿈꿨어. 별을 처음 날던 그날부터.,338_gagarin.mp3
+339,유리 가가린,gagarin,[confident],복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.,[confident] 복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.,339_gagarin.mp3
+340,유리 가가린,gagarin,[confident],그리고 동료들도 구출한다. 동시에.,[confident] 그리고 동료들도 구출한다. 동시에.,340_gagarin.mp3
+341,유리 가가린,gagarin,[confident],캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—,[confident] 캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—,341_gagarin.mp3
+342,유리 가가린,gagarin,[confident],게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.,[confident] 게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.,342_gagarin.mp3
+343,유리 가가린,gagarin,[confident],사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.,[confident] 사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.,343_gagarin.mp3
+344,유리 가가린,gagarin,[confident],단신으로? 미친 짓이야.,[confident] 단신으로? 미친 짓이야.,344_gagarin.mp3
+345,유리 가가린,gagarin,[confident],지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.,[confident] 지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.,345_gagarin.mp3
+346,유리 가가린,gagarin,[confident],"지구가 — 바로 너머야. 사령관, 결단을 내려.","[confident] 지구가 — 바로 너머야. 사령관, 결단을 내려.",346_gagarin.mp3
+347,유리 가가린,gagarin,[confident],좌익도 깨끗하다. 학익진 — 완성.,[confident] 좌익도 깨끗하다. 학익진 — 완성.,347_gagarin.mp3
+348,유리 가가린,gagarin,[confident],지구야. 정말 지구야.,[confident] 지구야. 정말 지구야.,348_gagarin.mp3
+349,유리 가가린,gagarin,[confident],1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.,[confident] 1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.,349_gagarin.mp3
+350,유리 가가린,gagarin,[confident][hesitant][curious],"Поехали! 출발합시다! …아, 아직 전쟁 중인가요?","[confident][hesitant][curious] Поехали! 출발합시다! …아, 아직 전쟁 중인가요?",350_gagarin.mp3
+351,유리 가가린,gagarin,[confident],100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.,[confident] 100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.,351_gagarin.mp3
+352,유리 가가린,gagarin,[confident],그래도 우주는 여전히 아름다울 거예요.,[confident] 그래도 우주는 여전히 아름다울 거예요.,352_gagarin.mp3
+353,유리 가가린,gagarin,[confident],이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.,[confident] 이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.,353_gagarin.mp3
+354,유리 가가린,gagarin,[confident],"와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.","[confident] 와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.",354_gagarin.mp3
+355,유리 가가린,gagarin,[confident],"사령관이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.","[confident] 사령관이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.",355_gagarin.mp3
+356,장영실,jangyeongsil,[cheerful][hesitant],"거북선을… 만들겠다고? 400년 전 그 배를, 지금 재료로.","[cheerful][hesitant] 거북선을… 만들겠다고? 400년 전 그 배를, 지금 재료로.",356_jangyeongsil.mp3
+357,장영실,jangyeongsil,[cheerful][hesitant],"중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.","[cheerful][hesitant] 중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.",357_jangyeongsil.mp3
+358,장영실,jangyeongsil,[cheerful][hesitant],거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...,[cheerful][hesitant] 거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...,358_jangyeongsil.mp3
+359,장영실,jangyeongsil,[cheerful],저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.,[cheerful] 저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.,359_jangyeongsil.mp3
+360,장영실,jangyeongsil,[cheerful],그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.,[cheerful] 그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.,360_jangyeongsil.mp3
+361,장영실,jangyeongsil,[cheerful][hesitant],"재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.","[cheerful][hesitant] 재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.",361_jangyeongsil.mp3
+362,장영실,jangyeongsil,[cheerful],"거북선이 완성되는 날, 그 요새의 벽도 무너져요.","[cheerful] 거북선이 완성되는 날, 그 요새의 벽도 무너져요.",362_jangyeongsil.mp3
+363,장영실,jangyeongsil,[cheerful],데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.,[cheerful] 데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.,363_jangyeongsil.mp3
+364,장영실,jangyeongsil,[cheerful][hesitant],반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.,[cheerful][hesitant] 반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.,364_jangyeongsil.mp3
+365,장영실,jangyeongsil,[cheerful],크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.,[cheerful] 크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.,365_jangyeongsil.mp3
+366,장영실,jangyeongsil,[cheerful],은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.,[cheerful] 은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.,366_jangyeongsil.mp3
+367,장영실,jangyeongsil,[cheerful],항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.,[cheerful] 항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.,367_jangyeongsil.mp3
+368,장영실,jangyeongsil,[cheerful],나한테 있어요.,[cheerful] 나한테 있어요.,368_jangyeongsil.mp3
+369,장영실,jangyeongsil,[cheerful],"크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.","[cheerful] 크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.",369_jangyeongsil.mp3
+370,장영실,jangyeongsil,[cheerful],머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.,[cheerful] 머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.,370_jangyeongsil.mp3
+371,장영실,jangyeongsil,[cheerful],거북선이 균열을 견딘다. 외피가 잘 버티는군.,[cheerful] 거북선이 균열을 견딘다. 외피가 잘 버티는군.,371_jangyeongsil.mp3
+372,장영실,jangyeongsil,[cheerful],거북선 출력 120%. 전류 방어막 — 활성화.,[cheerful] 거북선 출력 120%. 전류 방어막 — 활성화.,372_jangyeongsil.mp3
+373,장영실,jangyeongsil,[cheerful],거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.,[cheerful] 거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.,373_jangyeongsil.mp3
+374,장영실,jangyeongsil,[cheerful],거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.,[cheerful] 거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.,374_jangyeongsil.mp3
+375,장영실,jangyeongsil,[cheerful][excited],호위함 전 화력 — 거북선 패시브 +30% 적용!,[cheerful][excited] 호위함 전 화력 — 거북선 패시브 +30% 적용!,375_jangyeongsil.mp3
+376,장영실,jangyeongsil,[cheerful],"거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.","[cheerful] 거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.",376_jangyeongsil.mp3
+377,장영실,jangyeongsil,[cheerful],거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.,[cheerful] 거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.,377_jangyeongsil.mp3
+378,장영실,jangyeongsil,[cheerful],총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.,[cheerful] 총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.,378_jangyeongsil.mp3
+379,장영실,jangyeongsil,[cheerful],구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.,[cheerful] 구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.,379_jangyeongsil.mp3
+380,장영실,jangyeongsil,[cheerful],내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.,[cheerful] 내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.,380_jangyeongsil.mp3
+381,장영실,jangyeongsil,[cheerful][excited],다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!,[cheerful][excited] 다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!,381_jangyeongsil.mp3
+382,장영실,jangyeongsil,[cheerful],천 년 전에도 나는 이렇게 했소.,[cheerful] 천 년 전에도 나는 이렇게 했소.,382_jangyeongsil.mp3
+383,광개토대왕,gwanggaeto,[bold][hesitant],당신이 사령관인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.,[bold][hesitant] 당신이 사령관인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.,383_gwanggaeto.mp3
+384,광개토대왕,gwanggaeto,[bold],소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.,[bold] 소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.,384_gwanggaeto.mp3
+385,광개토대왕,gwanggaeto,[bold],"이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.","[bold] 이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.",385_gwanggaeto.mp3
+386,광개토대왕,gwanggaeto,[bold],우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.,[bold] 우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.,386_gwanggaeto.mp3
+387,광개토대왕,gwanggaeto,[bold],저기 — 빛이 새어 나온다.,[bold] 저기 — 빛이 새어 나온다.,387_gwanggaeto.mp3
+388,광개토대왕,gwanggaeto,[bold],저 요새를 내 눈으로 무너뜨리는 날이 왔군.,[bold] 저 요새를 내 눈으로 무너뜨리는 날이 왔군.,388_gwanggaeto.mp3
+389,광개토대왕,gwanggaeto,[bold],정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.,[bold] 정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.,389_gwanggaeto.mp3
+390,광개토대왕,gwanggaeto,[bold],정복할 시간이다.,[bold] 정복할 시간이다.,390_gwanggaeto.mp3
+391,광개토대왕,gwanggaeto,[bold],우익 — 정리 완료. 호위 친위대 잔존 0.,[bold] 우익 — 정리 완료. 호위 친위대 잔존 0.,391_gwanggaeto.mp3
+392,광개토대왕,gwanggaeto,[bold][excited],정복의 깃발 — 마지막 일격!,[bold][excited] 정복의 깃발 — 마지막 일격!,392_gwanggaeto.mp3
+393,광개토대왕,gwanggaeto,[bold],우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.,[bold] 우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.,393_gwanggaeto.mp3
+394,광개토대왕,gwanggaeto,[bold],정복은 끝. 이제는 — 함께 일구는 시간이다.,[bold] 정복은 끝. 이제는 — 함께 일구는 시간이다.,394_gwanggaeto.mp3
+395,광개토대왕,gwanggaeto,[bold],"1,700년. 내 땅이 다시 내 손에 돌아왔구나.","[bold] 1,700년. 내 땅이 다시 내 손에 돌아왔구나.",395_gwanggaeto.mp3
+396,광개토대왕,gwanggaeto,[bold],사령관이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.,[bold] 사령관이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.,396_gwanggaeto.mp3
+397,광개토대왕,gwanggaeto,[bold],고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.,[bold] 고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.,397_gwanggaeto.mp3
+398,광개토대왕,gwanggaeto,[bold],"사령관, 최종 명령권은 그대에게 있소.","[bold] 사령관, 최종 명령권은 그대에게 있소.",398_gwanggaeto.mp3
+399,니콜라 테슬라,tesla,[manic],"크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.","[manic] 크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.",399_tesla.mp3
+400,니콜라 테슬라,tesla,[manic],바로 그거야. 그래서 크리그는 죽어도 못 놓지.,[manic] 바로 그거야. 그래서 크리그는 죽어도 못 놓지.,400_tesla.mp3
+401,니콜라 테슬라,tesla,[manic][hesitant],생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.,[manic][hesitant] 생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.,401_tesla.mp3
+402,니콜라 테슬라,tesla,[manic],제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.,[manic] 제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.,402_tesla.mp3
+403,니콜라 테슬라,tesla,[manic],아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.,[manic] 아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.,403_tesla.mp3
+404,니콜라 테슬라,tesla,[manic],그게 그의 방식이지. 이론을 몸으로 증명하는 거.,[manic] 그게 그의 방식이지. 이론을 몸으로 증명하는 거.,404_tesla.mp3
+405,니콜라 테슬라,tesla,[manic],박사님 — 100년 만에 다시 같이 일하는군요.,[manic] 박사님 — 100년 만에 다시 같이 일하는군요.,405_tesla.mp3
+406,니콜라 테슬라,tesla,[manic],에너지 만충. 거북선 추진 코어 100%.,[manic] 에너지 만충. 거북선 추진 코어 100%.,406_tesla.mp3
+407,니콜라 테슬라,tesla,[manic],100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.,[manic] 100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.,407_tesla.mp3
+408,니콜라 테슬라,tesla,[manic][excited],테슬라 초공간 — ATT ×5 발동!,[manic][excited] 테슬라 초공간 — ATT ×5 발동!,408_tesla.mp3
+409,니콜라 테슬라,tesla,[manic],다음엔 무선 전력으로 지구 전체를 깔자.,[manic] 다음엔 무선 전력으로 지구 전체를 깔자.,409_tesla.mp3
+410,니콜라 테슬라,tesla,[manic],무선 전력망 재건. 100년 만에 다시 깔 거야.,[manic] 무선 전력망 재건. 100년 만에 다시 깔 거야.,410_tesla.mp3
+411,니콜라 테슬라,tesla,[manic][excited],들어오지 마세요! 지금 정밀 조정 중이에요!,[manic][excited] 들어오지 마세요! 지금 정밀 조정 중이에요!,411_tesla.mp3
+412,니콜라 테슬라,tesla,[manic][hesitant],"진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.","[manic][hesitant] 진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.",412_tesla.mp3
+413,니콜라 테슬라,tesla,[manic][excited],완성이에요! 100년 만에 완성! 이제 갈 수 있어요!,[manic][excited] 완성이에요! 100년 만에 완성! 이제 갈 수 있어요!,413_tesla.mp3
+414,호레이쇼 넬슨,nelson,[proud][weak][hesitant],"옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.","[proud][weak][hesitant] 옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.",414_nelson.mp3
+415,호레이쇼 넬슨,nelson,[proud][hesitant],"동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.","[proud][hesitant] 동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.",415_nelson.mp3
+416,호레이쇼 넬슨,nelson,[proud],그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.,[proud] 그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.,416_nelson.mp3
+417,호레이쇼 넬슨,nelson,[proud],"옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.","[proud] 옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.",417_nelson.mp3
+418,호레이쇼 넬슨,nelson,[proud],"그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.","[proud] 그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.",418_nelson.mp3
+419,호레이쇼 넬슨,nelson,[proud][hesitant][curious],이순신. 설마 당신이오?,[proud][hesitant][curious] 이순신. 설마 당신이오?,419_nelson.mp3
+420,호레이쇼 넬슨,nelson,[proud][hesitant],"200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.","[proud][hesitant] 200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.",420_nelson.mp3
+421,호레이쇼 넬슨,nelson,[proud],"England expects— 아니. 이제는 지구가 기대한다. 합시다, 사령관.","[proud] England expects— 아니. 이제는 지구가 기대한다. 합시다, 사령관.",421_nelson.mp3
+422,A. 아인슈타인,einstein,[thoughtful],반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.,[thoughtful] 반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.,422_einstein.mp3
+423,A. 아인슈타인,einstein,[thoughtful],우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.,[thoughtful] 우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.,423_einstein.mp3
+424,A. 아인슈타인,einstein,[thoughtful],테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.,[thoughtful] 테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.,424_einstein.mp3
+425,A. 아인슈타인,einstein,[thoughtful],시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.,[thoughtful] 시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.,425_einstein.mp3
+426,A. 아인슈타인,einstein,[thoughtful],시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.,[thoughtful] 시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.,426_einstein.mp3
+427,A. 아인슈타인,einstein,[thoughtful],그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.,[thoughtful] 그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.,427_einstein.mp3
+428,A. 아인슈타인,einstein,[thoughtful],4.7GHz 공명파 — 충전 100%. 발사 명령 대기.,[thoughtful] 4.7GHz 공명파 — 충전 100%. 발사 명령 대기.,428_einstein.mp3
+429,A. 아인슈타인,einstein,[thoughtful],시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.,[thoughtful] 시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.,429_einstein.mp3
+430,A. 아인슈타인,einstein,[thoughtful],가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.,[thoughtful] 가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.,430_einstein.mp3
+431,A. 아인슈타인,einstein,[thoughtful][excited],4.7GHz 공명파 — 발사!,[thoughtful][excited] 4.7GHz 공명파 — 발사!,431_einstein.mp3
+432,A. 아인슈타인,einstein,[thoughtful],시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.,[thoughtful] 시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.,432_einstein.mp3
+433,A. 아인슈타인,einstein,[thoughtful],우주는 상대적이지만 — 고향은 절대적이군.,[thoughtful] 우주는 상대적이지만 — 고향은 절대적이군.,433_einstein.mp3
+434,A. 아인슈타인,einstein,[thoughtful],당신이 왔군요. 예상했습니다.,[thoughtful] 당신이 왔군요. 예상했습니다.,434_einstein.mp3
+435,A. 아인슈타인,einstein,[thoughtful],"나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.","[thoughtful] 나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.",435_einstein.mp3
+436,A. 아인슈타인,einstein,[thoughtful],그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.,[thoughtful] 그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.,436_einstein.mp3
+437,A. 아인슈타인,einstein,[thoughtful],"치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. 사령관의 각성 지점이었습니다.","[thoughtful] 치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. 사령관의 각성 지점이었습니다.",437_einstein.mp3
+438,A. 아인슈타인,einstein,[thoughtful],당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.,[thoughtful] 당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.,438_einstein.mp3
+439,A. 아인슈타인,einstein,[thoughtful],"치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.","[thoughtful] 치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.",439_einstein.mp3
+440,이휘소,leehwiso,[gentle],누구시오? 이 좌표를 아는 사람이 있다니.,[gentle] 누구시오? 이 좌표를 아는 사람이 있다니.,440_leehwiso.mp3
+441,이휘소,leehwiso,[gentle][hesitant],방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.,[gentle][hesitant] 방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.,441_leehwiso.mp3
+442,이휘소,leehwiso,[gentle][hesitant],거북선에 그 에너지를 실을 수 있소? 도면이 있다면...,[gentle][hesitant] 거북선에 그 에너지를 실을 수 있소? 도면이 있다면...,442_leehwiso.mp3
+443,이휘소,leehwiso,[gentle][hesitant],"여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...","[gentle][hesitant] 여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...",443_leehwiso.mp3
+444,이휘소,leehwiso,[gentle][hesitant],보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.,[gentle][hesitant] 보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.,444_leehwiso.mp3
+445,우르사 메이저,ursamajor,[menacing][hesitant],인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.,[menacing][hesitant] 인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.,445_ursamajor.mp3
+446,우르사 메이저,ursamajor,[menacing],"100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나.","[menacing] 100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나.",446_ursamajor.mp3
+447,우르사 메이저,ursamajor,[menacing],이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.,[menacing] 이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.,447_ursamajor.mp3
+448,우르사 메이저,ursamajor,[menacing][hesitant],아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.,[menacing][hesitant] 아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.,448_ursamajor.mp3
+449,우르사 메이저,ursamajor,[menacing],아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.,[menacing] 아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.,449_ursamajor.mp3
+450,우르사 메이저,ursamajor,[menacing][hesitant],호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.,[menacing][hesitant] 호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.,450_ursamajor.mp3
+451,우르사 메이저,ursamajor,[menacing][hesitant],그것은... 시공 공명? 불가능하다. 자연 결정체로는...,[menacing][hesitant] 그것은... 시공 공명? 불가능하다. 자연 결정체로는...,451_ursamajor.mp3
+452,우르사 메이저,ursamajor,[menacing][hesitant],인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...,[menacing][hesitant] 인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...,452_ursamajor.mp3
+453,아이젠클로,eisenklau,[stern],"기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.","[stern] 기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.",453_eisenklau.mp3
+454,아이젠클로,eisenklau,[stern][angry][hesitant],"이순신?! 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!","[stern][angry][hesitant] 이순신?! 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!",454_eisenklau.mp3
+455,아이젠클로,eisenklau,[stern][hesitant],아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.,[stern][hesitant] 아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.,455_eisenklau.mp3
+456,아이젠클로,eisenklau,[stern],우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.,[stern] 우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.,456_eisenklau.mp3
+457,아이젠클로,eisenklau,[stern][angry][hesitant],인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!,[stern][angry][hesitant] 인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!,457_eisenklau.mp3
+458,볼프 노인,wolfelder,[weary][trembling][hesitant],"당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고.","[weary][trembling][hesitant] 당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고.",458_wolfelder.mp3
+459,볼프 노인,wolfelder,[weary],그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.,[weary] 그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.,459_wolfelder.mp3
+460,아오리,aori,[gruff],프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.,[gruff] 프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.,460_aori.mp3
+461,아오리,aori,[gruff][curious],허. 뭘 팔 거요?,[gruff][curious] 허. 뭘 팔 거요?,461_aori.mp3
+462,레인저 맥시모프,maximoff,[grave][hesitant],"우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.","[grave][hesitant] 우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.",462_maximoff.mp3
+463,레인저 맥시모프,maximoff,[grave],살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.,[grave] 살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.,463_maximoff.mp3
+464,레인저 맥시모프,maximoff,[grave],연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.,[grave] 연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.,464_maximoff.mp3
+465,레인저 맥시모프,maximoff,[grave],"당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.","[grave] 당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.",465_maximoff.mp3
+466,레인저 맥시모프,maximoff,[grave][hesitant],그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.,[grave][hesitant] 그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.,466_maximoff.mp3
+467,레인저 맥시모프,maximoff,[grave],크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.,[grave] 크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.,467_maximoff.mp3
+468,레인저 맥시모프,maximoff,[grave],"제작 베이 준비 완료. 장영실 씨, 시작하시죠.","[grave] 제작 베이 준비 완료. 장영실 씨, 시작하시죠.",468_maximoff.mp3
+469,레인저 맥시모프,maximoff,[grave],페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.,[grave] 페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.,469_maximoff.mp3
+470,레인저 맥시모프,maximoff,[grave],사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.,[grave] 사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.,470_maximoff.mp3
+471,레인저 맥시모프,maximoff,[grave],아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.,[grave] 아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.,471_maximoff.mp3
+472,레인저 맥시모프,maximoff,[grave],결의안 채택 완료. 프록시마B부터 글리제 균열까지 — 가 전 은하계 행성 총독권을 경매로 인수한다.,[grave] 결의안 채택 완료. 프록시마B부터 글리제 균열까지 — 가 전 은하계 행성 총독권을 경매로 인수한다.,472_maximoff.mp3
+473,항법 AI,navai,[flat][hesitant],"아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.","[flat][hesitant] 아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.",473_navai.mp3
+474,항법 AI,navai,[flat],지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.,[flat] 지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.,474_navai.mp3
+475,치크스 전위대,chiks,[cold],이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.,[cold] 이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.,475_chiks.mp3
+476,볼칸,volcan,[gruff],"그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.","[gruff] 그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.",476_volcan.mp3
+477,철갈고리 보그,borg,[neutral],어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡만 내놓으면 곱게 보내주지.,[neutral] 어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡만 내놓으면 곱게 보내주지.,477_borg.mp3
+478,밀수왕 카림,karim,[neutral],"오, 함선들 좋은데? 흠집 내기 싫으면 ₡만 내. 사업은 사업이니까.","[neutral] 오, 함선들 좋은데? 흠집 내기 싫으면 ₡만 내. 사업은 사업이니까.",478_karim.mp3
+479,치크스 군단장 크라쉬,krash,[neutral],인간 주제에 감히 여기까지. 목숨값으로 ₡를 바쳐라. 그럼 오늘은 살려두마.,[neutral] 인간 주제에 감히 여기까지. 목숨값으로 ₡를 바쳐라. 그럼 오늘은 살려두마.,479_krash.mp3
+480,현상금 사냥꾼 베일,veil,[neutral],"네 목에 걸린 현상금보다 ₡가 싸게 먹히겠지? 자, 선택해.","[neutral] 네 목에 걸린 현상금보다 ₡가 싸게 먹히겠지? 자, 선택해.",480_veil.mp3
+481,약탈자 도르가,dorga,[neutral][hesitant],함선이 아깝지 않냐? ₡ 내면 못 본 척 해주마. 거절하면… 후회할걸.,[neutral][hesitant] 함선이 아깝지 않냐? ₡ 내면 못 본 척 해주마. 거절하면… 후회할걸.,481_dorga.mp3
+482,반란군 리더 \'볼칸\',etc,[neutral],당신들이 저항군과 함께 싸운다는 그 로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.,[neutral] 당신들이 저항군과 함께 싸운다는 그 로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.,482_etc.mp3
+483,경보,etc,[neutral],⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.,[neutral] ⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.,483_etc.mp3
+484,경보,etc,[neutral],⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.,[neutral] ⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.,484_etc.mp3
+485,시스템,etc,[neutral],우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.,[neutral] 우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.,485_etc.mp3
+486,Yi Sun-sin,etc,[neutral],사령관. I do not fight unnecessary battles. Only wars I can win.,[neutral] 사령관. I do not fight unnecessary battles. Only wars I can win.,486_etc.mp3
+487,Yuri Gagarin,etc,[neutral],사령관. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.,[neutral] 사령관. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.,487_etc.mp3
+488,Horatio Nelson,etc,[neutral],"England expects— no. Now Earth expects. Let us begin, 사령관.","[neutral] England expects— no. Now Earth expects. Let us begin, 사령관.",488_etc.mp3
+489,A. Einstein,etc,[neutral],"A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. 사령관's awakening point.","[neutral] A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. 사령관's awakening point.",489_etc.mp3
+490,Gwanggaeto the Great,etc,[neutral][curious],"사령관, you said? I have waited for one who would reclaim my land. Speak — what is your wish?","[neutral][curious] 사령관, you said? I have waited for one who would reclaim my land. Speak — what is your wish?",490_etc.mp3
+491,Gwanggaeto the Great,etc,[neutral],사령관 — the final command is yours.,[neutral] 사령관 — the final command is yours.,491_etc.mp3
