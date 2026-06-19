@@ -685,6 +685,7 @@ I18N.registerLocale("ko", {
   "combat.enemyLabel": "적",
   "combat.dimRayCharging": "🌑 [블랙팔콘] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!",
   "combat.dimRayFired": "🌑 차원 절단광선! {nm} 함선이 보이드 균열에 흡수되었다...",
+  "combat.ursaSmite": "💥 우르사 메이저의 절멸 일격! {nm}의 쉴드를 꿰뚫고 체력 {dmg}을(를) 도려냈다!",
   "combat.rewardCr": "💰 보상 ₡{cr}{join}",
   "combat.debrisBonus": " (잔해 합류 ×{n})",
   "combat.longBattleBonus": "⏱️ 장기 전투 보너스 +{pct}% ({min}분 경과)",
