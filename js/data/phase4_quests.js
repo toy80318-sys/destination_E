@@ -452,49 +452,49 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH08-A "용골을 세운다" (P15 도착) ───
   p4_ch08a:[
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 제조 중이야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠콕에서 도망쳤던 그 놈이 여기 있군.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'잠깐. 크리그 내부 정보망이 잡혔어. 공장 노동자 중에 반란 움직임이 있다고.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'반란군... 이용할 수 있어. 공장 설비를 가동하면 크리그 마그마 코어도 얻을 수 있고.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'둘 다 잡자. 아이젠클로 추격 + 크리그 마그마 코어 확보.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.'}
   ],
 
     // ─── CH08-B "용골 완성" (Q16-01 완료) ───
   p4_ch08b:[
-    {char:'volcan', name:'반란군 리더 \'볼칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸우는 {회사}야. 우리 스파크는 크리그 공장 노동자들의 자유 민병대야. 요새에 우리 동료들이 감금돼 있어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래 가능하겠네. 우리가 카토닉에 가면 당신 동료를 돕고, 당신들은 크리그 내부 항로 정보를 준다.'},
-    {char:'volcan', name:'볼칸', color:'#9ee7ff', text:'그것뿐만 아니라 — 마그마 코어 비축고. 당신들이 뭘 만들려는지 모르지만, 필요하면 가져가.'}
+    {char:'volcan', name:'반란군 리더 \'볼칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸운다는 그 {회사}로군. 우리 \'스파크\'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.'},
+    {char:'volcan', name:'볼칸', color:'#9ee7ff', text:'그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.'}
   ],
 
     // ─── CH08-C "광개토와 재회" (Q16-05) ───
   p4_ch08c:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'공개 공격은 안 돼. 반란군 채널로 내부로 들어가야 해.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'볼칸이 내부 노선 알려줬어. 비축고는 3층 심층부야.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 3개만 더 있으면... 거북선 용골 재료가 완성돼.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'그리고 동료들을 구출한다. 동시에.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'그리고 동료들도 구출한다. 동시에.'}
   ],
 
     // ─── CH09-A "코어를 잇는다" (P10 도착) ───
   p4_ch09a:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 통치해. 귀족 향수 하나면 회의실 입장도 가능하지.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'우리가 원하는 건 수퍼비아 중력자야. 중력자 채굴 독점 허가가 필요해.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그건 내 분야야. 수퍼비아 상인 의회랑은 전에도 일한 적 있어. 귀족 향수 한 병이면 회의실 문은 열려.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.'}
   ],
 
     // ─── CH09-B "잠복" (P12 도착) ───
   p4_ch09b:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'은하 혼돈 결정. 보이드 균열에서만 얻을 수 있는 자원이야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'보이드 공간은 물리 법칙이 달라. 시간이 느려지고, 공간이 접힌다. 함선 항법이 제대로 작동 안 할 수 있어.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'은하 혼돈 결정 15개. 그것 없이는 거북선 제작이 불가능해.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'거기다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 그 분을 찾아야 해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'두 마리 토끼. 가자.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'두 마리 토끼다. 간다.'}
   ],
 
     // ─── CH09-C "보급선 격파" (Q18-01 완료) ───
   p4_ch09c:[
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'항법 보조가 안 돼. 균열 지도 원석으로 경로를 수동 입력해야 해.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'균열 지도 원석... 이건 보이드 행성에서만 구하는 건데. 운 좋게 외곽에서 좀 샀어.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'들어간다.'}
   ],
 
@@ -510,10 +510,10 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── CH10-A "위조의 기술" (P16 도착) ───
   p4_ch10a:[
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 × 8. 저항군 반물질 × 25. 수퍼비아 중력자 × 10. 은하 혼돈 결정 × 15. 모두 확보됐어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'...드디어.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'…드디어. 400년을 기다린 배가, 오늘 깨어난다.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'제작 베이 준비 완료. 장영실 씨, 시작하시죠.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저건 개가 흥분한 거야, 확실히.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.'}
   ],
 
     // ─── CH10-A2 "트라팔가르의 메아리" (Q19-05 시작 · 넬슨 만남) ───
@@ -568,49 +568,49 @@ const PHASE4_CUTSCENES_EN={
 
   // ─── CH08-A "Lay the Keel" (P15 arrival) ───
   p4_ch08a:[
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'I decrypted the logs with the data decoder — Eisenklaue is personally directing this planet\'s factory. They\'re manufacturing the core for their bio-weapon right here.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So the one who fled from Eisenkock is here.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Wait. I\'ve tapped into Krieg\'s internal network. They say there\'s a rebellion stirring among the factory workers.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Rebels... we can use that. If we get the factory running, we can secure the Krieg Magma Core too.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We take both. Hunt down Eisenklaue, and secure the Krieg Magma Core.'}
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'I decrypted the logs with the data decoder — Eisenklaue is personally directing this planet\'s factory. They\'re stamping out the core for their bio-weapon right here.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So the one who fled from Eisenkock was hiding here.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Wait. I\'ve tapped into Krieg\'s internal network — there\'s a rebellion stirring among the factory workers.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Rebels… we can use that. Get the factory running and the Krieg Magma Core falls into our hands too.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We take both. Hunt Eisenklaue down, and secure the Magma Core.'}
   ],
 
     // ─── CH08-B "Keel Complete" (Q16-01 done) ───
   p4_ch08b:[
-    {char:'volcan', name:'Rebel Leader \'Volcan\'', color:'#9ee7ff', text:'So you\'re the {company} fighting alongside the resistance. Our Spark is the free militia of the Krieg factory workers. Our comrades are locked up inside the fortress.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. When we reach Catonic, we\'ll help free your comrades — and you give us Krieg\'s internal route data.'},
-    {char:'volcan', name:'Volcan', color:'#9ee7ff', text:'And more than that — a magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
+    {char:'volcan', name:'Rebel Leader \'Volcan\'', color:'#9ee7ff', text:'So you\'re that {company} fighting alongside the resistance. Our \'Spark\' is the free militia of the Krieg factory workers. My comrades are locked up inside that fortress.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. We pull your comrades out at Catonic — and you give us Krieg\'s internal route data.'},
+    {char:'volcan', name:'Volcan', color:'#9ee7ff', text:'And more than that — the whole magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
   ],
 
     // ─── CH08-C "Reunion with Gwanggaeto" (Q16-05) ───
   p4_ch08c:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'No open assault. We have to go in through the rebels\' channel.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'No frontal assault. We slip in through the rebels\' channel.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Volcan gave us the internal route. The stockpile is deep on level three.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Just three more Krieg Magma Cores... and the Geobukseon\'s keel material is complete.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And we rescue the comrades. At the same time.'}
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Just three more Krieg Magma Cores — and the Geobukseon\'s keel material is complete.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And we rescue the comrades too. At the same time.'}
   ],
 
     // ─── CH09-A "Link the Cores" (P10 arrival) ───
   p4_ch09a:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'On Superbia, diplomacy is everything. A merchants\' council rules this planet. One bottle of noble perfume gets you into the council chamber.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'On Superbia, diplomacy is everything. A merchants\' council holds this planet. To get in, you dress the part first.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'What we want is the Superbia Graviton. We need an exclusive license to mine it.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s my field. I\'ve worked with the Superbia merchants\' council before. One bottle of noble perfume and the chamber doors swing open.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s my stage. I\'ve dealt with the Superbia merchants\' council before — one bottle of noble perfume and the chamber doors swing open. Leave it to me.'}
   ],
 
     // ─── CH09-B "Infiltration" (P12 arrival) ───
   p4_ch09b:[
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Galactic Chaos Crystals. A resource found only in the Void rifts.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'The Kapteyn-b rift. The most accessible of the Void planets. But—'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Void space follows different physical laws. Time slows, space folds. A ship\'s navigation can stop working properly.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Fifteen Galactic Chaos Crystals. Without them, building the Geobukseon is impossible.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And on top of that — you said Dr. Lee Hwi-so is somewhere near there. We have to find him.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Void space runs on different physical laws. Time stretches, space folds. A ship\'s navigation can go completely dark.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Fifteen Galactic Chaos Crystals. Without them, we can\'t build the Geobukseon.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And on top of that — you said Dr. Lee Hwi-so is somewhere near there. We have to find him, no matter what.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Two birds, one stone. Let\'s move.'}
   ],
 
     // ─── CH09-C "Crush the Supply Line" (Q18-01 done) ───
   p4_ch09c:[
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Navigation assist is down. We\'ll have to enter the route manually using a rift map shard.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'A rift map shard... those only come from the Void planets. Lucky for us, I picked some up out on the frontier.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'A rift map shard… those only come from the Void planets. Lucky for us, I grabbed a few out on the frontier.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We\'re going in.'}
   ],
 
@@ -626,10 +626,10 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── CH10-A "The Art of Forgery" (P16 arrival) ───
   p4_ch10a:[
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Krieg Magma Core ×8. Resistance Antimatter ×25. Superbia Graviton ×10. Galactic Chaos Crystal ×15. All secured.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...At last.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Krieg Magma Core ×8, Resistance Antimatter ×25, Superbia Graviton ×10, Galactic Chaos Crystal ×15. All secured.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'…At last. The ship that waited four hundred years wakes today.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'The construction bay is ready. Jang Yeong-sil, whenever you\'re ready to begin.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s the dog getting excited, no doubt about it.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Look at Baekgu\'s tail — wagging like that means it\'s a good omen.'}
   ],
 
     // ─── CH10-A2 "Echo of Trafalgar" (Q19-05 start · meet Nelson) ───
