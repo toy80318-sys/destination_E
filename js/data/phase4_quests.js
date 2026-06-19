@@ -556,11 +556,11 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
   p4_eisenklau:[
-    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'여기까지 왔군, 인간. 페스작센 — 내 단조 공장의 심장부다. 한 발도 더 들이지 못한다.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로. 100년 봉쇄의 집행관. 오늘 네 함대를 여기 묻겠다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'저 기함 — 다른 함선의 열 배는 단단하다. 정면은 피해. 호위부터 걷어내고 본함을 친다.'},
-    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'(기함 출력 최대) 크리그 전 함대 — 전열 정비! 저 거북선을 갈아버려라!'},
-    {char:'baekgu2_fight', name:'백구', color:'#66ddff', text:'아이젠클로 기함 포착 — 크기 2배, 장갑 이상. 전 함선 전투 준비!'}
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아이젠클로. 100년 봉쇄의 집행관. 오늘, 네 쇠사슬을 여기서 끊는다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'(낮게) …저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.'},
+    {char:'eisenklau', name:'아이젠클로', color:'#ff6644', text:'이순신?! (분노) 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!'},
+    {char:'baekgu2_fight', name:'백구', color:'#66ddff', text:'아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. (으르렁) …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!'}
   ]
 };
 
@@ -672,11 +672,11 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17
   p4_eisenklau:[
-    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'So you reached this far, human. Fessachsen — the heart of my forge. Not one step further.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Eisenklaue. Enforcer of the century-long blockade. Today your fleet is buried here.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That flagship — ten times the hull of the rest. Avoid a head-on. Strip the escorts first, then strike the core.'},
-    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'(flagship to full power) All Krieg ships — form ranks! Grind that Turtle Ship to dust!'},
-    {char:'baekgu2_fight', name:'Baekgu', color:'#66ddff', text:'Eisenklaue flagship detected — double size, abnormal armor. All ships, prepare for battle!'}
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'So the vermin crawled all the way here. Fessachsen — the heart of my forge. The blockade Ursa Major decreed; this is the last link in that chain. Here I\'ll melt you down and beat you back into steel.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Eisenklaue. Enforcer of the century-long blockade. Today, I break your chain right here.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(low) …That flagship — its movements are familiar. He\'s made a shield of my own tactics. But — I am the one who forged that blade. Avoid a head-on. Strip the escorts, then strike the flagship\'s flank.'},
+    {char:'eisenklau', name:'Eisenklaue', color:'#ff6644', text:'Yi Sun-sin?! (enraged) Who woke that sleeping blade?! …No matter. All Krieg ships, form ranks! Grind that rotten turtle shell — to dust!'},
+    {char:'baekgu2_fight', name:'Baekgu', color:'#66ddff', text:'Eisenklaue flagship detected — double size, armor off the scale. (a growl) …This scent — it\'s the enemy\'s leader. All ships, prepare for battle!'}
   ]
 };
 
