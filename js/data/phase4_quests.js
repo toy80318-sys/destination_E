@@ -322,10 +322,10 @@ const PHASE4_QUESTS={
       id:'p4_q1905', type:'story_quest', category:'main', phase:4,
       ic:'⚓', npc:'호레이쇼 넬슨', npcIc:'⚓', npcKey:'hero05',
       nm:{ko:'넬슨 제독과의 조우', en:'Encounter Admiral Nelson'},
-      desc:{ko:'페스작센 외곽 — 영국 해군 제독 호레이쇼 넬슨의 옛 함선 \'빅토리\' 잔해 좌표 입수. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1 소비하여 잔해 깊이 진입.\n넬슨: "트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다."',
-            en:'Find Nelson\'s old flagship Victory wreckage. Aureus Information Chip ×2 + Chiks Brain Fluid ×1. Nelson: "I never thought I\'d catch the wind of Trafalgar again. I join your fleet."'},
+      desc:{ko:'페스작센 외곽 — 옛 지구 해군의 전설, 호레이쇼 넬슨 제독의 옛 함선 \'빅토리\' 잔해 좌표 입수. 아우레우스 정보 칩 ×2 + 치크스 뇌수액 ×1 소비하여 잔해 깊이 진입.\n넬슨: "그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다."',
+            en:'Find Nelson\'s old flagship Victory wreckage. Aureus Information Chip ×2 + Chiks Brain Fluid ×1. Nelson: "I never thought I\'d catch the wind of that last great sea-battle again. I join your fleet."'},
       objectives:[
-        {type:'gather', item:'G24', qty:2, label:{ko:'아우레우스 정보 칩 정보 칩 ×2 좌표 분석', en:'Aureus Information Chip ×2 coord'}},
+        {type:'gather', item:'G24', qty:2, label:{ko:'아우레우스 정보 칩 ×2 좌표 분석', en:'Aureus Information Chip ×2 coord'}},
       ],
       rewardCr:180000, rewardVe:120,
       rewardItems:[],
@@ -336,7 +336,7 @@ const PHASE4_QUESTS={
       id:'p4_q1906', type:'story_quest', category:'sub', phase:4,
       ic:'📜', npc:'호레이쇼 넬슨', npcIc:'⚓', npcKey:'hero05',
       nm:{ko:'빅토리 함의 기록', en:'Victory\'s Log'},
-      desc:{ko:'넬슨의 빅토리 함 항해일지 복원 — 메카니카 자동화 부품 ×3 소비. 영국 해군 진형 데이터 — 학익진과 결합 시 +15% 명중률.\n넬슨: "트라팔가르에서 적의 전열을 가르던 그 진형이오."',
+      desc:{ko:'넬슨의 빅토리 함 항해일지 복원 — 메카니카 자동화 부품 ×3 소비. 옛 지구 해군 진형 데이터 — 학익진과 결합 시 +15% 명중률.\n넬슨: "그 대해전에서 적의 전열을 가르던 그 진형이오."',
             en:'Mechanica Automation Part ×3 → Victory\'s log → +15% accuracy bonus when combined with Crane Wing formation.'},
       objectives:[
         {type:'gather', item:'G25', qty:3, label:{ko:'메카니카 자동화 부품 ×3 일지 복원', en:'Mechanica Automation Part ×3 log restore'}},
@@ -518,20 +518,20 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── CH10-A2 "트라팔가르의 메아리" (Q19-05 시작 · 넬슨 만남) ───
   p4_ch10a2:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 영국 해군 식별 코드 \'HMS Victory\'.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'빅토리... 트라팔가르의 기함.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'영국 넬슨 제독 — 1805년 트라팔가르 해전에서 전사. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아우레우스 정보 칩 정보 칩으로 좌표 분석. 진입한다.'}
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 옛 지구 해군 식별 코드 \'HMS Victory\'.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'빅토리… 옛 지구 최후의 대해전, 그 기함이군.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'아우레우스 정보 칩으로 좌표 분석. 진입한다.'}
   ],
 
   // ─── CH10-A3 "넬슨 합류" (Q19-05 완료) ───
   p4_ch10a3:[
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(캡슐에서 깨어나며) ...영국이었어. 마지막 본 것은 트라팔가르의 안개였소.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(캡슐에서 깨어나며) …옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'넬슨 제독. 나는 이순신이오.'},
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'동방의 거북선 제독... 이름은 들었소. 같은 바다의 영웅을 우주에서 만나다니.'},
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 한다 — 마지막 일전이 어디든.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진과 트라팔가르 진형 — 두 바다의 전술을 하나로 묶으면 우르사도 막을 수 없을 거요.'},
-    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨. 영국 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.'},
+    {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'영웅 합류: 호레이쇼 넬슨. 옛 지구 해군 진형 데이터 입수 → 학익진 명중률 +15%.'}
   ],
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
@@ -634,20 +634,20 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── CH10-A2 "Echo of Trafalgar" (Q19-05 start · meet Nelson) ───
   p4_ch10a2:[
-    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'On the frontier of Schmelz — wreckage signal detected at coordinates roughly 200 years old. Royal Navy identification code \'HMS Victory\'.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Victory... the flagship of Trafalgar.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Admiral Nelson of Britain — fell at the Battle of Trafalgar in 1805. But the Victory, out in space? This — this is a deep-space preservation capsule.'},
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'On the frontier of Schmelz — wreckage signal detected at coordinates roughly 200 years old. Old-Earth navy identification code \'HMS Victory\'.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Victory… the flagship of old Earth\'s last great sea-battle.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The legendary Admiral Nelson — the one who fell in old Earth\'s final great sea-battle. But the Victory, out in space? This — this is a deep-space preservation capsule.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Analyzing the coordinates with the Aureus Information Chip. We\'re going in.'}
   ],
 
   // ─── CH10-A3 "Nelson Joins" (Q19-05 done) ───
   p4_ch10a3:[
-    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(waking from the capsule) ...It was Britain. The last thing I saw was the mist of Trafalgar.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(waking from the capsule) …It was old Earth. The last thing I saw was the mist of that great sea-battle.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Admiral Nelson. I am Yi Sun-sin.'},
-    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'The turtle-ship admiral of the East... I have heard the name. To meet a hero of the same sea, here among the stars.'},
-    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'I never thought I would feel the winds of Trafalgar again. I will stand with your fleet — wherever this last battle may be.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Crane Wing and the Trafalgar line — bind the tactics of two seas into one, and not even Ursa can stop us.'},
-    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Horatio Nelson. Royal Navy formation data acquired → Crane Wing accuracy +15%.'}
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'The turtle-ship admiral of the East… I have heard the name. Truth be told, the only name I ever conceded was the better. To meet a hero of the same sea, here among the stars.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'I never thought I\'d feel the winds of that last sea-battle again. I\'ll stand with your fleet — wherever this final fight may be.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Crane Wing and your great sea-battle line — bind the tactics of two seas into one, and not even Ursa can stop us.'},
+    {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Hero joined: Horatio Nelson. Old-Earth navy formation data acquired → Crane Wing accuracy +15%.'}
   ],
 
   // ─── CH10-B "Break the Fortress" (P14 arrival) ───

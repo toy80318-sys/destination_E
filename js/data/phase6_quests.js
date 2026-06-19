@@ -204,8 +204,8 @@ const PHASE6_CUTSCENES_KO={
   // ─── CH13-A "마지막 항로" (P30 도착) ───
   p6_ch13a:[
     {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'제타 레티쿨리. 우르사 메이저 본거지에 도착했어요. 적함 신호 — 총 30기 식별.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 전 임진왜란. 100년 전 봉인. 그리고 오늘 — 마지막 일전이다.'},
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'트라팔가르 — 영국이 누른 마지막 전투. 오늘은 우리가 누른다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'정복할 시간이다.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'지구가 — 바로 너머야. 사령관, 결단을 내려.'},
@@ -271,8 +271,8 @@ const PHASE6_CUTSCENES_KO={
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'(웃으며) 다음엔 무선 전력으로 지구 전체를 깔자.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(눈물을 닦으며) ...우리가 진짜 해냈어.'},
-    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선이 — 끝까지 버텼어. 임진왜란의 거북선이, 우주에서도.'},
-    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(이순신을 향해) 그대의 거북선 — 트라팔가르의 빅토리 함과 어깨를 나란히 하오.'},
+    {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.'},
+    {char:'hero05', name:'호레이쇼 넬슨', color:'#88ccff', text:'(이순신을 향해) 그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 백구.'},
     {char:'baekgu2_smile2', name:'백구', color:'#66ddff', text:'사령관. 100년 3개월 12일 동안 — 당신을 기다린 보람이 있었어요.'},
     {char:'baekgu2_smile4', name:'백구', color:'#66ddff', text:'좌표 — 지구. 항법 입력 완료. 가시죠.'}
@@ -282,7 +282,7 @@ const PHASE6_CUTSCENES_KO={
   p6_ch14b:[
     {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
     {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 임진왜란 때 보았던 그 하늘이다. 변하지 않았어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'(미소) 우주는 상대적이지만 — 고향은 절대적이군.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 내려간다.'}
@@ -313,8 +313,8 @@ const PHASE6_CUTSCENES_EN={
   // ─── CH13-A "The Final Course" (P30 arrival) ───
   p6_ch13a:[
     {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Zeta Reticuli. We\'ve reached the Ursa Major stronghold. Enemy signatures — thirty hostiles identified.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago, the Imjin War. A hundred years ago, the sealing. And today — the final battle.'},
-    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'Trafalgar — Britain\'s last great victory. Today, the victory is ours.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago, old Earth\'s last great war. A hundred years ago, the sealing. And today — the final battle.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'Old Earth\'s last great sea-battle — the victory we won then. Today, we win it again.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Spacetime stable. The Void barrier analysis array — ready for activation.'},
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'It is time to conquer.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Earth is — just beyond. {commander}, make the call.'},
@@ -380,8 +380,8 @@ const PHASE6_CUTSCENES_EN={
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'We have opened a new land. Not through conquest — but through liberation.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) Next, let\'s blanket the whole Earth in wireless power.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'(wiping away tears) ...We really did it.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'The Geobukseon — held to the very end. The turtle ship of the Imjin War, even out here in space.'},
-    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(to Yi Sun-sin) Your Geobukseon — stands shoulder to shoulder with the Victory of Trafalgar.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'The Geobukseon — held to the very end. The turtle ship of old Earth\'s last war, even out here in space.'},
+    {char:'hero05', name:'Horatio Nelson', color:'#88ccff', text:'(to Yi Sun-sin) Your Geobukseon — stands shoulder to shoulder with the Victory of old Earth\'s last great sea-battle.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Baekgu.'},
     {char:'baekgu2_smile2', name:'Baekgu', color:'#66ddff', text:'Commander. For 100 years, 3 months, and 12 days — waiting for you was worth it.'},
     {char:'baekgu2_smile4', name:'Baekgu', color:'#66ddff', text:'Coordinates — Earth. Navigation entry complete. Let\'s go.'}
@@ -391,7 +391,7 @@ const PHASE6_CUTSCENES_EN={
   p6_ch14b:[
     {char:'system', name:'Navigation AI', color:'#38bdf8', text:'Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.'},
     {char:'delivery_F06', name:'Ranger Maximoff', color:'#88d65b', text:'Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(gazing at Earth) That\'s the same sky I saw during the Imjin War. It hasn\'t changed.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(gazing at Earth) That\'s the very sky I looked up at in the days I lived and fought. It hasn\'t changed.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'April 12th, 1961. The Earth I first saw. Exactly as it was.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'(smiling) The universe is relative — but home is absolute.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'... We\'re going down.'}

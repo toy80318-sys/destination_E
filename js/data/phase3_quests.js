@@ -546,9 +546,9 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH06-C "설계의 명인" (Q13-H 완료) ───
   p3_ch06c:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'거북선 — 내가 임진왜란 때 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'설계는 누가 해? 우리 중에 조선공학자 없잖아.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 조선 시대 장영실의 기술 DNA를 이어받은 복제 기술자야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'설계는 누가 해? 우리 중에 함선 설계자 없잖아.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'\'장영실 2.0\'이라고 불려. 기어월드에서 전설이지.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.'}
   ],
@@ -638,9 +638,9 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH06-C "The Master Engineer" (Q13-H complete) ───
   p3_ch06c:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Geobukseon — the warship I built during the Imjin War. Reproduced with modern materials, it could punch straight through a Krieg fortress.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Who\'s going to design it? None of us is a naval engineer.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Mechanica Gearworld. There\'s an engineer there named Jang Yeong-sil. A cloned engineer who inherited the technical DNA of the Joseon-era Jang Yeong-sil.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Geobukseon — the warship I built on old Earth, in its most desperate war. Reproduced with modern materials, it could punch straight through a Krieg fortress.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Who\'s going to design it? None of us is a ship designer.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Mechanica Gearworld. There\'s an engineer there named Jang Yeong-sil. A cloned engineer who inherited the technical DNA of Jang Yeong-sil, a master maker of old Earth.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'They call him \'Jang Yeong-sil 2.0\'. He\'s a legend in Gearworld.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We have to bring him in. The Geobukseon can\'t be completed without him.'}
   ],
