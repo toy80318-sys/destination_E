@@ -26,9 +26,13 @@ function parseCsvLine(line){
   out.push(cur); return out;
 }
 const CHARS=[
-  {key:'baekgu',    csv:'voice_map_baekgu.csv'},
-  {key:'commander', csv:'voice_map_commander.csv'},
-  {key:'yisunsin',  csv:'voice_map_yisunsin.csv'},
+  {key:'baekgu',       csv:'voice_map_baekgu.csv'},
+  {key:'commander',    csv:'voice_map_commander.csv'},
+  {key:'yisunsin',     csv:'voice_map_yisunsin.csv'},
+  {key:'gagarin',      csv:'voice_map_gagarin.csv'},
+  {key:'marcopolo',    csv:'voice_map_marcopolo.csv'},
+  {key:'jangyeongsil', csv:'voice_map_jangyeongsil.csv'},
+  {key:'gwanggaeto',   csv:'voice_map_gwanggaeto.csv'},
 ];
 const MAP={};
 let total=0, dups=0;

@@ -1119,7 +1119,11 @@ window.AudioMgr=(function(){
     if(!char)return null;
     if(char.indexOf('baekgu')===0)return 'baekgu';
     if(char==='commander')return 'commander';
-    if(char==='hero01')return 'yisunsin';
+    if(char==='hero01')return 'yisunsin';      // 이순신
+    if(char==='hero02')return 'jangyeongsil';   // 장영실
+    if(char==='hero03')return 'gwanggaeto';     // 광개토대왕
+    if(char==='hero04')return 'gagarin';        // 가가린
+    if(char==='hero08')return 'marcopolo';      // 마르코 폴로
     return null;
   }
   // 런타임 정규화 — scripts/gen-voice-map.js 의 _vnorm 과 반드시 동일.
