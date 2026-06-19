@@ -74,6 +74,26 @@ function askBaekgu(){
     {k:['행성','탐험','지도','경로','항로','fog','안개','어둠','planet','planets','explore','exploration','map','route','path'],r:()=>I18N.t('chatbot.travelTip')},
     // 퀘스트
     {k:['퀘스트','임무','quest','수락','보상','quests','mission','missions','accept','reward','rewards'],r:()=>I18N.t('chatbot.questTip')},
+    // 거북선 설계도 단편 위치 (사용자 요청) — 일반 '설계도' 항목보다 먼저 매칭
+    {k:['거북선','거북선 설계도','거북선 도면','설계도 위치','거북선 위치','turtle','geobukseon','turtle ship','turtle blueprint'],r:()=>{
+      try{
+        const G=window.G;
+        const bp=G.geobukseonBP||{p1:0,p2:0,p3:0};
+        const frags=[{key:'p1',item:'turtleBP1'},{key:'p2',item:'turtleBP2'},{key:'p3',item:'turtleBP3'}];
+        const lines=frags.map((f,i)=>{
+          const have=(bp[f.key]||0)>0;
+          let pid=null;
+          for(let ph=1;ph<=6&&!pid;ph++){
+            const Q2=window['PHASE'+ph+'_QUESTS']; if(!Q2)continue;
+            for(const p in Q2){ if((Q2[p]||[]).some(t=>t&&(t.rewardItems||[]).some(r=>r&&r.id===f.item))){pid=p;break;} }
+          }
+          const pnm=pid?I18N.t('planet.'+pid+'.nm'):I18N.t('gate.unknownPlace');
+          return I18N.t('chatbot.turtleBpItem',{n:i+1,planet:pnm,status:have?I18N.t('chatbot.turtleHave'):I18N.t('chatbot.turtleNeed')});
+        });
+        const got=frags.filter(f=>(bp[f.key]||0)>0).length;
+        return I18N.t('chatbot.turtleBpHeader',{got})+'\n'+lines.join('\n');
+      }catch(e){return I18N.t('chatbot.bpTip');}
+    }},
     // 설계도/제작
     {k:['설계도','제작','craft','만들기','전설 아이템','신화 아이템','제작소','blueprint','make','factory','crafting','mythic item','legend item'],r:()=>I18N.t('chatbot.bpTip')},
     // 보이드
@@ -111,6 +131,40 @@ function askBaekgu(){
       setTimeout(()=>baekgu(ans),300);
       found=true;break;
     }
+  }
+  // 시나리오 인물(영웅) 이름으로 직접 질문 시 위치/합류 상태 안내 (사용자 요청: 인물·아이템·함선 물어보면 알려주기)
+  if(!found){
+    try{
+      for(const hid of Object.keys(HEROES||{})){
+        const hnm=(I18N.t('hero.'+hid+'.nm')||'').toLowerCase();
+        if(hnm&&hnm.length>=2&&Q.includes(hnm)){
+          const has=(G.heroes||[]).includes(hid);
+          const pdh=(PLANET_DEF||[]).find(p=>p.hero===hid);
+          const _hNm=I18N.t('hero.'+hid+'.nm');
+          let ans;
+          if(has)ans=I18N.t('chatbot.heroAlreadyJoined',{hero:_hNm});
+          else if(pdh)ans=I18N.t('chatbot.heroWhere',{hero:_hNm,planet:pdh.nm,ring:pdh.ring||'?'});
+          else ans=I18N.t('chatbot.heroWhereEvent',{hero:_hNm});
+          found=true;setTimeout(()=>baekgu(ans),300);break;
+        }
+      }
+    }catch(e){}
+  }
+  // 시나리오 아이템/함선 이름으로 질문 시 산출처 안내 (PHASE 퀘스트 보상 역참조)
+  if(!found){
+    try{
+      const COMMS=(typeof COMMODITIES!=='undefined')?COMMODITIES:[];
+      let hitItem=null;
+      for(const c of COMMS){ const cn=((typeof commDisplayNm==='function'?commDisplayNm(c):c.nm)||'').toLowerCase(); if(cn&&cn.length>=2&&Q.includes(cn)){hitItem=c;break;} }
+      if(hitItem){
+        let pid=null;
+        const _qMatch=t=>t&&((t.rewardItems||[]).some(r=>r&&r.id===hitItem.id)||(t.objectives||[]).some(o=>o&&o.item===hitItem.id));
+        for(let ph=1;ph<=6&&!pid;ph++){ const Q2=window['PHASE'+ph+'_QUESTS']; if(!Q2)continue; for(const p in Q2){ if((Q2[p]||[]).some(_qMatch)){pid=p;break;} } }
+        const _inm=(typeof commDisplayNm==='function')?commDisplayNm(hitItem):hitItem.nm;
+        const ans=pid?I18N.t('chatbot.itemWhere',{item:_inm,planet:I18N.t('planet.'+pid+'.nm')}):I18N.t('chatbot.itemWhereTrade',{item:_inm});
+        found=true;setTimeout(()=>baekgu(ans),300);
+      }
+    }catch(e){}
   }
   if(!found){
     const fallbacks=[
