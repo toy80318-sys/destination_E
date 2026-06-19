@@ -205,7 +205,7 @@ const PHASE5_CUTSCENES_KO={
 
   // ─── CH11-A "균열의 가장자리" (P28 도착) ───
   p5_ch11a:[
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'캅테인 균열 캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'단신으로? 미친 짓이야.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'그게 그의 방식이지. 이론을 몸으로 증명하는 거.'},
@@ -262,7 +262,7 @@ const PHASE5_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#ffd700', text:'지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'좌표 — 제타 레티쿨리. 우르사 메이저 본거지.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 진입한다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 다음 단계 — 최종전 제타 레티쿨리·지구. 우르사 메이저 격파 · 지구 해방.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 이제, 마지막입니다 — 제타 레티쿨리, 그리고 지구. 우르사 메이저를 끝장내고, 지구를 되찾으러 갑니다.'}
   ]
 };
 
@@ -327,7 +327,7 @@ const PHASE5_CUTSCENES_EN={
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Earth is — just beyond. When we finish this — people will look at the sky again.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Coordinates — Zeta Reticuli. Ursa Major\'s stronghold.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'... We\'re going in.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. Next stage — final battle at Zeta Reticuli and Earth. Defeat Ursa Major and liberate Earth.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. This is the last of it now — Zeta Reticuli, and then Earth. We finish Ursa Major, and we go take Earth back.'}
   ]
 };
 
