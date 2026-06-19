@@ -707,6 +707,18 @@
       if(typeof onDone === 'function') onDone();
       return;
     }
+    // 선행조건 게이트 (지시서 2026-06-18): requires 미충족 컷신은 재생하지 않고 유도 멘트 표시
+    try{
+      if(typeof window.sceneGateBlocked === 'function'){
+        var _gate = window.sceneGateBlocked(sceneId);
+        if(_gate && _gate.blocked){
+          console.log('[STORY_SCENES_PC] scene gated — prereq missing:', sceneId, _gate.missing0);
+          if(typeof window.showStoryGateHint === 'function') window.showStoryGateHint(_gate.missing0, 'scene_'+sceneId);
+          return;  // 컷신 차단 — onDone 호출 안 함(완료로 오판 방지)
+        }
+
+      }
+    }catch(e){ console.warn('[STORY_SCENES_PC] gate check failed', e); }
     if(!window.G) window.G = {};
     if(!window.G._scenesSeen) window.G._scenesSeen = {};
     // bugfix 2026-06-11: 컷씬 오버레이가 이미 열려 있으면 재트리거 무시 (onDone 호출 금지)

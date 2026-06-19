@@ -310,6 +310,8 @@ const PHASE3_QUESTS={
       rewardCr:80000, rewardVe:60,
       rewardItems:[{id:'G08', qty:2}],
       rewardFlags:['gearworld_landed'],
+      // 선행조건 게이트(지시서 2026-06-18): 거북선 설계의 핵심 인물 — 이순신(설계도)·마르코(위치) 선영입 필요
+      requires:{ heroes:['H01','H08'] },
       cutscene_pre:'p3_ch06d', cutscene_post:null
     },
     // ── Q14-02 장영실 설득 (메인) ──

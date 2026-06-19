@@ -44,6 +44,123 @@ function _isPhaseUnlocked(n){
 }
 try{ if(typeof window!=='undefined'){ window._phaseClaimedFrac=_phaseClaimedFrac; window._isPhaseUnlocked=_isPhaseUnlocked; } }catch(e){}
 
+// ═══ 선행조건 게이트 + 유도 멘트 (사용자 지시서 2026-06-18) ═══════════════
+//   퀘스트/컷신 템플릿의 선언적 `requires`{heroes,items,blueprints,quests} 를 읽어
+//   미충족 시 컷신을 차단하고 "먼저 {행성}에서 {인물/아이템}을 찾아야 해" 유도 멘트 표시.
+//   보유 판정: G.heroes(영웅) / G.inventory(아이템) / G.blueprints(설계도) / G.quests(선행 퀘 완료).
+function _gateHas(type,id){
+  const G=window.G||{};
+  if(type==='hero')      return !!(G.heroes && G.heroes.indexOf(id)>=0);
+  if(type==='item')      return !!(G.inventory && G.inventory.some(function(i){return i&&i.id===id&&(i.qty||0)>0;}));
+  if(type==='blueprint') return !!(G.blueprints && G.blueprints[id]);
+  if(type==='quest'){
+    for(const pid in (G.quests||{})){
+      const q=(G.quests[pid]||[]).find(function(x){return x&&x.id===id;});
+      if(q) return q.status==='done'||q.status==='claimed';
+    }
+    return false;
+  }
+  return true;
+}
+// 선행조건을 어디서 구하는지 — planet ID 역참조(없으면 null). 코드네임/구지명 금지, planet.<ID>.nm 토큰용.
+function _gateLocate(type,id){
+  try{
+    if(type==='hero'){
+      const HM=(window.STORY_SCENES_PC&&window.STORY_SCENES_PC.HERO_PLANET_MAP)||{};
+      return (HM[id]&&HM[id].planet)||null;
+    }
+    for(let ph=1;ph<=6;ph++){
+      const Q=window['PHASE'+ph+'_QUESTS']; if(!Q)continue;
+      for(const pid in Q){
+        const arr=Q[pid]||[];
+        for(let i=0;i<arr.length;i++){
+          const t=arr[i]; if(!t)continue;
+          if(type==='quest'     && t.id===id) return pid;
+          if(type==='item'      && (t.rewardItems||[]).some(function(r){return r&&r.id===id;})) return pid;
+          if(type==='blueprint' && (t.rewardFlags||[]).indexOf(id)>=0) return pid;
+        }
+      }
+    }
+    if(type==='blueprint' && typeof BLUEPRINT_MAP!=='undefined'){
+      for(const pid in BLUEPRINT_MAP){ if(BLUEPRINT_MAP[pid]===id) return pid; }
+    }
+  }catch(e){}
+  return null;
+}
+// 선행조건 표시명 (i18n, 폴백=id)
+function _gateName(type,id){
+  try{
+    if(type==='hero'){
+      const k='hero.'+id+'.nm', v=I18N.t(k); if(v&&v!==k) return v;
+      if(typeof HEROES!=='undefined'&&HEROES[id]&&HEROES[id].nm) return HEROES[id].nm;
+    }
+    if(type==='item'){      const k='commodity.'+id+'.nm',  v=I18N.t(k); if(v&&v!==k) return v; }
+    if(type==='blueprint'){ const k='reward.bpName.'+id,    v=I18N.t(k); if(v&&v!==k) return v; }
+  }catch(e){}
+  return id;
+}
+// 리졸버: requires 객체(또는 requires를 가진 템플릿) → {ok, missing:[{type,id,planet}]} (미보유만, 우선순위 순)
+function checkPrereqs(reqOrTmpl){
+  const req=(reqOrTmpl&&reqOrTmpl.requires)?reqOrTmpl.requires:reqOrTmpl;
+  if(!req||typeof req!=='object') return {ok:true,missing:[]};
+  const missing=[];
+  // 유도 우선순위: 영웅 → 설계도 → 아이템 → 선행퀘 (배열 내 순서 유지)
+  [['heroes','hero'],['blueprints','blueprint'],['items','item'],['quests','quest']].forEach(function(pair){
+    (req[pair[0]]||[]).forEach(function(id){
+      if(!_gateHas(pair[1],id)) missing.push({type:pair[1],id:id,planet:_gateLocate(pair[1],id)});
+    });
+  });
+  return {ok:missing.length===0,missing:missing};
+}
+// 유도 멘트 텍스트 (첫 미충족 기준) — gate.needX i18n + {planet}/{name} 치환
+function gateHintText(m0){
+  if(!m0) return '';
+  const planetNm = m0.planet ? I18N.t('planet.'+m0.planet+'.nm') : I18N.t('gate.unknownPlace');
+  const nm = _gateName(m0.type,m0.id);
+  const key = {hero:'gate.needHero',item:'gate.needItem',blueprint:'gate.needBlueprint',quest:'gate.needQuest'}[m0.type]||'gate.needItem';
+  return I18N.t(key).replace('{planet}',planetNm).replace('{name}',nm);
+}
+// 씬 ID → 그 씬을 pre/post로 갖는 시나리오 퀘스트 템플릿의 requires (없으면 null)
+function sceneRequires(sid){
+  if(!sid) return null;
+  for(let ph=1;ph<=6;ph++){
+    const Q=window['PHASE'+ph+'_QUESTS']; if(!Q)continue;
+    for(const pid in Q){
+      const arr=Q[pid]||[];
+      for(let i=0;i<arr.length;i++){
+        const t=arr[i];
+        if(t&&(t.cutscene_pre===sid||t.cutscene_post===sid)) return t.requires||null;
+      }
+    }
+  }
+  return null;
+}
+// 씬 게이트 판정 → {blocked, missing0}
+function sceneGateBlocked(sid){
+  const req=sceneRequires(sid);
+  if(!req) return {blocked:false,missing0:null};
+  const r=checkPrereqs(req);
+  return {blocked:!r.ok, missing0:r.missing[0]||null};
+}
+// 유도 팝업 (백구 화자, 풀스크린 컷신 톤). key 지정 시 중복 스팸 방지.
+function showStoryGateHint(m0,key){
+  if(!m0) return;
+  const G=window.G||{}; if(!G._gateHintShown)G._gateHintShown={};
+  if(key){ if(G._gateHintShown[key]) return; G._gateHintShown[key]=true; }
+  const _isEn=(typeof I18N!=='undefined'&&I18N.lang==='en');
+  const scene=[{char:'baekgu2_advice', name:(_isEn?'Baekgu':'백구'), color:'#66ddff', text:gateHintText(m0)}];
+  try{
+    if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
+      window.STORY_SCENES_PC.showCharDialog({scenes:scene});
+    }else if(typeof window.notify==='function'){ window.notify(gateHintText(m0),'gold'); }
+  }catch(e){}
+}
+try{ if(typeof window!=='undefined'){
+  window.checkPrereqs=checkPrereqs; window.gateHintText=gateHintText;
+  window.sceneRequires=sceneRequires; window.sceneGateBlocked=sceneGateBlocked;
+  window.showStoryGateHint=showStoryGateHint;
+} }catch(e){}
+
 function spawnPhasedQuests(pid){
   console.log('[story-quest-engine] spawnPhasedQuests("'+pid+'") 시작');
   if(!pid||!window.G||!window.G.quests){
@@ -95,9 +212,15 @@ function spawnPhasedQuests(pid){
       // 사용자 보고 2026-06-08: 일반 퀘 6개 한도가 시나리오 퀘 등장을 차단해 컷씬·퀘가 안 뜨던 문제.
       const _nm=(typeof template.nm==='object')?(template.nm[_lang]||template.nm.ko||''):template.nm;
       const _desc=(typeof template.desc==='object')?(template.desc[_lang]||template.desc.ko||''):template.desc;
-      const _lockReason=template.lockReason&&typeof template.lockReason==='object'
+      let _lockReason=template.lockReason&&typeof template.lockReason==='object'
         ?(template.lockReason[_lang]||template.lockReason.ko||'')
         :template.lockReason;
+      // 선행조건 게이트: requires 미충족 시 잠금 + 유도 멘트 자동 생성
+      let _locked=!!template.locked;
+      if(template.requires){
+        const _pc=checkPrereqs(template);
+        if(!_pc.ok){ _locked=true; _lockReason=gateHintText(_pc.missing[0]); }
+      }
       // 사용자 요청 2026-06-08: 모든 objective 의 qty 를 50% 로 완화 (delivery 제외)
       const _objs=(template.objectives||[]).map(o=>{
         const _origQty=o.qty||1;
@@ -128,8 +251,9 @@ function spawnPhasedQuests(pid){
         rewardFlags:template.rewardFlags||[],
         cutscene_pre:template.cutscene_pre||null,
         cutscene_post:template.cutscene_post||null,
-        locked:!!template.locked,
+        locked:_locked,
         lockReason:_lockReason||'',
+        requires:template.requires||null,
         status:'available',
         targetId:_firstObj.target||null,
         targetCommId:_firstObj.item||null,
@@ -255,6 +379,12 @@ function tickStoryQuests(){
   if(!G||!G.quests)return;
   Object.keys(G.quests).forEach(function(pid){
     (G.quests[pid]||[]).forEach(function(q){
+      // 선행조건 게이트 자동 해제/갱신: requires 보유한 잠긴 시나리오 퀘 재평가
+      if(q.type==='story_quest' && q.requires){
+        const _pc=checkPrereqs(q.requires);
+        if(_pc.ok){ if(q.locked){ q.locked=false; q.lockReason=''; } }
+        else if(!q.locked){ q.locked=true; q.lockReason=gateHintText(_pc.missing[0]); }
+      }
       if(q.type!=='story_quest'||q.status!=='active')return;
       const _cur=_storyQuestCurrentProgress(q,pid);
       const _need=q.required||((q.objectives&&q.objectives[0]&&q.objectives[0].qty)||1);
