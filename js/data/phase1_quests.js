@@ -466,7 +466,7 @@ const PHASE1_CUTSCENES_KO={
 
   // ─── CH01-A "100년의 잠" (P01 시작) ───
   p1_ch01a:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7% — 이 경보를 울리려고 마지막 전력까지 끌어모았습니다.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'{사령관}. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'...얼마나, 잤지?'},
     {char:'baekgu1', name:'백구', color:'#66ddff', text:'100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지구는... 아직도?'},
@@ -478,78 +478,81 @@ const PHASE1_CUTSCENES_KO={
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'고철로 엔진은 데웠어요. 이제 금고를 채울 차례입니다 — 볼프 교역소, 수퍼비아 내권역의 무역 정거장. 100년이 지났는데도 아직 불이 켜져 있어요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'사람이... 남아 있어?'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'네. 봉쇄 안에서도 사람은 어떻게든 살아가니까요. 수퍼비아 중력수정 — 여기선 헐값이지만 아우레우스에선 40% 더 받습니다. 첫 자금은 거기서 만들죠.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'볼프 교역소예요. 수퍼비아 내권역의 낡은 정거장 — 그런데 사령관님, 불이 켜져 있어요. 100년 만에 처음 보는 \'살아있는\' 신호입니다.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'…사람이? 아직 누가 남아 있다고?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'버티는 거죠, 우리처럼. 저들에게 중력수정을 싸게 사서 아우레우스에 넘기면 40% 차익 — 첫 자금이에요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고작 장사로 봉쇄를 뚫겠다고?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'큰 불도 불씨 하나에서 시작해요. 살아남는 게, 반격의 첫 걸음입니다.'}
   ],
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마B에서 왔다고? 거기서 살아 돌아온 사람은 처음 보는군. 다들 그 차가운 궤도에서 잊혀지는데 말이야.'},
+    {char:'aori', name:'아오리', color:'#d4a574', text:'프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'좀 오래 잠들어 있었습니다. 이제 막 깼고요.'},
     {char:'aori', name:'아오리', color:'#d4a574', text:'허. 뭘 팔 거요?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'고철이요. 하지만 곧, 더 큰 걸 찾을 겁니다.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'(작게) 저 안쪽 노인 — 데이터에 100년 된 흔적이 잡혀요. 한번 말을 붙여 보죠.'}
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지금은 고철뿐입니다. 하지만 곧, 훨씬 큰 걸 들고 오죠.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'(귀를 쫑긋) …사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.'}
   ],
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
   p1_turtle1:[
-    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'(낡은 데이터 칩을 건네며) 자네 눈빛이… 그 사람과 닮았군. 이것도 가져가요. 100년 전, 끝까지 싸우던 어떤 조선인이 두고 갔소. "거북선"이라 했지.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'거북선...?'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'데이터 분석 — 함선 설계도 단편 1/3. 골격 구조도입니다. 봉쇄 이전의 전설급 함선이에요.'},
-    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'그 배가 다시 별로 나가는 날이 오면… 봉쇄도 끝나려나. 늙은이의 헛소리지만.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'나머지 두 조각을 찾으면 복원할 수 있어요. 헛소리인지 아닌지는, 우리가 증명하죠.'}
+    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'(떨리는 손으로 칩을 내밀며) …당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — "언젠가 알아볼 사람이 온다"고.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'거북선…?'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'설계도 단편 1/3, 골격도예요. 사령관님, 이건 단순한 함선이 아닙니다. 우르사 메이저조차 두려워했던 전설이에요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'…그 사람은, 지금 어디 있지?'},
+    {char:'wolf_elder', name:'볼프 노인', color:'#a8b3c0', text:'그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'나머지 두 조각을 모으는 길이, 곧 그 전설을 만나는 길입니다.'}
   ],
 
   // ─── 마르코 폴로 영입 ───
   p1_marco_join:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'이순신이요? 그 이름 오래간만에 듣네. 에리다니 쪽 노인네들이 그 신호를 잡았다고 했거든.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'우리 한 팀 하자. 정보는 내가 맡지.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'마르코 폴로 — 정보 브로커 등록. 신뢰도 추적 시작합니다.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 \'봤어\'. 에리다니 노인들이 잡았다는 그거.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'마르코 폴로 — 정보 브로커 등록. (작게) 허풍인지 진짜인지는, 제가 지켜볼게요.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'잘 부탁해.'}
   ],
 
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 내권역. 세금도 비싸고 규정도 엄격해요. 수퍼비아 중력수정은 여기서 희귀품이라 비싸게 팔 수 있어요.'},
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 봐봐 저기 — 저 탐사선이 해적한테 당하고 있는 거 맞죠?'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구조한다.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'아우레우스 내권역이에요. 세금도 규정도 빡빡해요 — 대신 수퍼비아 중력수정은 여기선 희귀품, 비싸게 팔려요.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'구한다.'}
   ],
 
     // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
   p1_gagarin_join:[
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'내 데이터 칩 돌려줘서 고마워. 보답으로 같이 갈게.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'넥서스 프라임 LHS 광산 방향에서 아주 오래된 통신 패턴이 잡혀. 100년 전 것 같아. 이순신이라는 이름이랑 연결돼 있어.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'그리고 — 데이터 안에 함선 외피 도면도 들어있어. 가시 돌기 구조. 너희가 가지고 있는 골격 단편이랑 짝이 맞아.'},
-    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'거북선 설계도 단편 2/3 확보. 외피 가시 돌기 구조도. 코어 단편 1개만 더 있으면 복원 가능합니다.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.'},
+    {char:'baekgu2_advice', name:'백구', color:'#66ddff', text:'거북선 설계도 단편 2/3 확보 — 외피 가시 돌기 구조도. 코어 단편 하나만 더면 복원됩니다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'간다.'}
   ],
 
   // ─── CH02-B "크리그의 그림자" (P06 도착) ───
   p1_ch02b:[
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'신호 방향은 여기서 더 깊은 곳이야. 근데... 크리그 해적단 표식이 보여.'},
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'크리그가 광산 세금 징수를 빌미로 3주째 점거 중이야. 광부들이 착취당하고 있어.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'크리그 소형 3기, 중형 지휘선 1기 확인됩니다. 광부 민간인 7명 억류 중이에요.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'크리그를 여기서 만날 줄은...'},
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'지구 봉쇄만 하는 게 아니야. 이 구역도 건드리고 있어.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'먼저 사람부터.'}
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'크리그가 \'광산 세금\'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. (낮게 으르렁) …이건, 마음에 안 들어요.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'크리그를, 벌써 여기서 만나는군.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'…사람부터 꺼낸다.'}
   ],
 
     // ─── CH02-C "신호의 근원" (P09 도착) ───
   p1_ch02c:[
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'여기야. 이 안테나가 이순신 신호를 중계해온 거야.'},
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 무법자 해적단이 기지를 장악하고 있어. 안테나 접근하려면 먼저 처리해야 해.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'해적 소형 2기, 지휘선 1기 감지됩니다. 기지 외곽 배치.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'어서. 이순신 좌표 알아내면 다음이 정해져.'}
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'해적 소형 2, 지휘선 1 — 외곽 배치. 제가 먼저 길 열게요.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'서두르자. 좌표만 따면, 다음 행선지가 정해져.'}
   ],
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 (치크스) 외곽... 들어가면 바로 적대 상태 돼. 각오해야 해.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'하지만 이순신이 거기 있어. 크리그를 막을 방법도.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'확률 계산... 생존 가능성 62%. 이순신 구출 시 크리그 전략 정보 획득 가능성 89%.'},
+    {char:'hero08', name:'마르코', color:'#9ee7ff', text:'우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'생존 확률 62%. 이순신 구출 시 크리그 전략 정보 확보 89%.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'백구, 62%면 충분해.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'...그냥이에요.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'…사실은, 사령관님이랑이면 100%라고 적고 싶었어요. (꼬리 흔들 듯) …그냥요.'}
   ],
 
   };
@@ -559,7 +562,7 @@ const PHASE1_CUTSCENES_EN={
 
   // ─── CH01-A "100년의 잠" (P01 시작) ───
   p1_ch01a:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'{commander}. Wake up. Energy at 7% — I burned the last of our reserves just to sound this alarm.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'{commander}. Wake up. Energy at 7% — I scraped together the very last of it just to sound this alarm.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'...How long was I out?'},
     {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'A hundred years, three months, twelve days. I never once shut myself down — I was afraid no one would be left to wake you.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'And Earth... still?'},
@@ -570,78 +573,81 @@ const PHASE1_CUTSCENES_EN={
 
     // ─── CH01-B "볼프로 간다" (P01 outro · Q01-01 완료 후) ───
   p1_ch01b:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The scrap got the engine warm. Now we fill the vault — the Wolf Trading Post, a station in the inner Superbia region. A hundred years on, and its lights are still burning.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'People... still out here?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Yes. Even inside a blockade, people find a way to live. Superbia gravity crystals — dirt cheap here, but Aureus pays 40% more. That\'s where we raise our first funds.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The Wolf Trading Post. An old station in the inner Superbia region — but Commander, the lights are on. First \'living\' signal I\'ve seen in a hundred years.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'…People? Someone\'s still out here?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Holding on, like us. Buy their gravity crystals cheap, sell them on Aureus — 40% margin. That\'s our first funds.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'You mean to break a blockade with trade?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Even a wildfire starts from one ember. Surviving is the first step of the counterattack.'}
   ],
 
     // ─── CH01-C "첫 교역소" (P03 도착) ───
   p1_ch01c:[
-    {char:'aori', name:'Aori', color:'#d4a574', text:'Came from Proxima B? First soul I\'ve met who made it back alive. Everyone else just gets forgotten out in that cold orbit.'},
+    {char:'aori', name:'Aori', color:'#d4a574', text:'From Proxima B? You\'re the first to come back alive from that cold orbit. Everyone else just gets forgotten out there.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'I was asleep a long while. Only just woke.'},
     {char:'aori', name:'Aori', color:'#d4a574', text:'Huh. So what are you selling?'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap. But soon — something bigger.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'(quietly) That old man in the back — my sensors catch a hundred-year-old trace on him. Worth a word.'}
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Scrap, for now. But soon — I\'ll bring back something far bigger.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'(ears perked) …Commander, that old man in the back — I catch a hundred-year-old data scent on him. Let me go first.'}
   ],
 
     // ─── 거북선 설계도 단편 1/3 발견 (P03 Q02-M 직후) ───
   p1_turtle1:[
-    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'(handing over a worn data chip) That look in your eyes… you remind me of him. Take this too. A hundred years ago, some Korean who fought to the very end left it here. Called it the "Turtle Ship."'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'Turtle Ship...?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Data analysis — blueprint fragment, 1 of 3. The skeletal frame. A legend-class ship from before the blockade.'},
-    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'If that ship ever sails the stars again… maybe the blockade ends too. An old man\'s nonsense, I know.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Find the other two fragments and we can restore it. Nonsense or not — we\'ll be the ones to prove it.'}
+    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'(holding out the chip with trembling hands) …That look in your eyes — it\'s his, exactly. A hundred years ago, when everyone else fled, one admiral of old Earth turned his fleet around alone. He left this with me and said — "one day, someone who understands will come."'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'The Turtle Ship…?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Blueprint fragment 1 of 3 — the skeletal frame. Commander, this is no ordinary ship. It\'s the legend that even Ursa Major feared.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'…And that man — where is he now?'},
+    {char:'wolf_elder', name:'Wolf Elder', color:'#a8b3c0', text:'That, I don\'t know. But follow the rest of the schematics — and you\'ll find him.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'The road to the other two fragments is the road to that legend himself.'}
   ],
 
   // ─── 마르코 폴로 영입 ───
   p1_marco_join:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Yi Sun-sin? Haven\'t heard that name in ages. The old-timers out by Eridani said they caught that signal.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Let\'s team up. I\'ll handle the intel.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Marco Polo — registered as information broker. Beginning trust tracking.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Yi Sun-sin? …Now there\'s a name I haven\'t heard in ages. Most write that signal off as noise — but I \'saw\' it. The one the old-timers out by Eridani picked up.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Let\'s team up. Finding routes and digging up intel — nobody in this galaxy does it like me.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Marco Polo — registered as information broker. (quietly) Whether it\'s bluster or the real thing, I\'ll be watching.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Glad to have you.'}
   ],
 
   // ─── CH02-A "황금의 항구" (P05 도착) ───
   p1_ch02a:[
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Inner Aureus region. Taxes are steep and the regulations are strict. Superbia gravity crystals are rare here, so they fetch a high price.'},
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'Hold on, look over there — that survey ship is getting hit by pirates, isn\'t it?'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We move to rescue.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Inner Aureus region. Taxes and rules are tight here — but Superbia gravity crystals are rare, so they sell high.'},
+    {char:'hero08', name:'Marco', color:'#9ee7ff', text:'Wait — does nobody else see it? Past that wreckage, a survey ship\'s being torn apart by pirates.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We save them.'}
   ],
 
     // ─── 가가린 합류 + 거북선 설계도 단편 2/3 ───
   p1_gagarin_join:[
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Thanks for getting my data chip back. I\'ll come along to repay the favor.'},
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'There\'s a very old comms pattern coming from the direction of the Nexus Prime LHS mines. Looks a hundred years old. It\'s tied to a name — Yi Sun-sin.'},
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'And — the data holds a ship hull schematic too. A spiked-ridge structure. It pairs perfectly with that frame fragment you\'re carrying.'},
-    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Turtle Ship blueprint fragment 2 of 3 secured. The hull spiked-ridge schematic. With just one more core fragment, restoration is possible.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Thanks for getting my chip back. I\'ll fly with you to repay it — besides, there\'s no one around here who flies better than me.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Off toward the Nexus Prime LHS mines, there\'s a very old comms pattern. A hundred years old, easy — and tangled up with that name, Yi Sun-sin.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Bonus: the data had a hull schematic too. Spiked-ridge structure — fits your frame fragment exactly.'},
+    {char:'baekgu2_advice', name:'Baekgu', color:'#66ddff', text:'Turtle Ship blueprint fragment 2 of 3 secured — the hull spiked-ridge schematic. One more core fragment and we can restore it.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Let\'s go.'}
   ],
 
   // ─── CH02-B "크리그의 그림자" (P06 도착) ───
   p1_ch02b:[
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'The signal leads deeper in from here. But... I can see Krieg pirate markings.'},
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'Krieg\'s been occupying the place for three weeks now, using mine-tax collection as their excuse. The miners are being exploited.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Confirming three Krieg light craft and one medium command ship. Seven civilian miners held captive.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'To think I\'d run into Krieg here...'},
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'They\'re not just blockading Earth. They\'re reaching into this sector too.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'People first.'}
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'The signal\'s deeper in. But… I\'m seeing Krieg raider markings.'},
+    {char:'hero08', name:'Marco', color:'#9ee7ff', text:'Krieg\'s held the place three weeks now, calling it a \'mine tax.\' The miners are being bled dry.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Three Krieg light craft, one medium command ship. And — seven civilian miners held inside. (a low growl) …I don\'t like this one bit.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'So we meet Krieg already, here.'},
+    {char:'hero08', name:'Marco', color:'#9ee7ff', text:'They don\'t just run the blockade. They\'re reaching all the way out to the frontier.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'…We get the people out first.'}
   ],
 
     // ─── CH02-C "신호의 근원" (P09 도착) ───
   p1_ch02c:[
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This is it. This antenna has been relaying the Yi Sun-sin signal.'},
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'But an outlaw pirate band has seized the base. We\'ll have to deal with them before we can reach the antenna.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Detecting two pirate light craft and one command ship. Deployed around the base perimeter.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Hurry. Once we get the Yi Sun-sin coordinates, our next move is set.'}
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This is it. This antenna\'s been relaying the Yi Sun-sin signal for a hundred years.'},
+    {char:'hero08', name:'Marco', color:'#9ee7ff', text:'But outlaws have made a nest of the base. To reach the antenna, we clear them first.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Two pirate light craft, one command ship — perimeter deployment. I\'ll open the way first.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Move quick. Once we have the coordinates, our next stop is set.'}
   ],
 
     // ─── CH02-D "결단" + 거북선 설계도 단편 3/3 완성 (P09 outro · Q05-M 완료 후 · 페이즈 1 종료) ───
   p1_ch02d:[
-    {char:'system', name:'Marco', color:'#9ee7ff', text:'Ursae Majoris (Chiks) frontier... The moment we enter, we go hostile. We need to be ready.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'But Yi Sun-sin is there. And so is the way to stop Krieg.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Probability calculation... survival odds 62%. Odds of obtaining Krieg strategic intel upon rescuing Yi Sun-sin: 89%.'},
+    {char:'hero08', name:'Marco', color:'#9ee7ff', text:'The Ursae Majoris frontier… the instant we set foot there, we\'re hostile. Brace yourselves.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Still — Yi Sun-sin is there. And so is the key to stopping Krieg.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Survival odds: 62%. Odds of securing Krieg strategic intel if we rescue Yi Sun-sin: 89%.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Baekgu, 62% is enough.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'...If you say so.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'…Honestly, with you I wanted to log it as 100%. (tail wagging) …Just saying.'}
   ],
 
   };
