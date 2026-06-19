@@ -493,11 +493,11 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03 "칩 해독의 열쇠" (P19 도착) ───
   p2_ch03:[
-    {char:'nav_ai', name:'항법 AI', color:'#38bdf8', text:'아우레우스 정보 칩 해독 시도 중 — 암호화 확인. 치크스 변조 주파수 적용. 현재 장비로는 해독 불가.'},
+    {char:'nav_ai', name:'항법 AI', color:'#38bdf8', text:'아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.'},
-    {char:'chiks_vanguard', name:'치크스 전위대', color:'#ef4444', text:'이곳은 치크스 관할 공역이다. 통행 허가 없이 접근은 적대 행위로 간주한다.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'여긴 은하 공용 항로야. 비켜.'},
-    {char:'baekgu2_anger1', name:'백구', color:'#66ddff', text:'전투 모드 전환. 적 3기 포착.'}
+    {char:'chiks_vanguard', name:'치크스 전위대', color:'#ef4444', text:'이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'여긴 은하 공용 항로다. 비켜.'},
+    {char:'baekgu2_anger1', name:'백구', color:'#66ddff', text:'(낮게 으르렁) …말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.'}
   ],
 
   // ─── CH03-A "마르코의 첫 정보" (Q06-M 완료) ───
@@ -581,11 +581,11 @@ const PHASE2_CUTSCENES_EN={
 
   // ─── CH03 "The Key to Decrypting the Chip" (P19 arrival) ───
   p2_ch03:[
-    {char:'nav_ai', name:'Nav AI', color:'#38bdf8', text:'Attempting to decrypt the Aureus data chip — encryption confirmed. Chiks scrambling frequency detected. Decryption impossible with current equipment.'},
+    {char:'nav_ai', name:'Nav AI', color:'#38bdf8', text:'Aureus data-chip decryption attempt — failed. Chiks scrambling frequency detected. Impossible with current equipment. …Log: this cipher, I have only ever seen as data. The real thing — a first.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Marco Polo. They say he\'s an independent broker in this sector. A smuggler who slips past Chiks eyes — he\'ll have the comms gear we need.'},
-    {char:'chiks_vanguard', name:'Chiks Vanguard', color:'#ef4444', text:'This is Chiks-controlled airspace. Approaching without clearance will be treated as a hostile act.'},
+    {char:'chiks_vanguard', name:'Chiks Vanguard', color:'#ef4444', text:'This is Chiks-controlled airspace. Passage by unsanctioned outsiders — is treated as a hostile act.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'This is a galactic public lane. Move.'},
-    {char:'baekgu2_anger1', name:'Baekgu', color:'#66ddff', text:'Switching to combat mode. Three enemy units detected.'}
+    {char:'baekgu2_anger1', name:'Baekgu', color:'#66ddff', text:'(a low growl) …Not the type that listens to words. Switching to combat mode, three enemy units detected.'}
   ],
 
   // ─── CH03-A "Marco\'s First Intel" (Q06-M complete) ───
