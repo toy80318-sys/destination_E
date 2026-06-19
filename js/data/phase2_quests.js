@@ -541,11 +541,11 @@ const PHASE2_CUTSCENES_KO={
 
     // ─── CH04-C "이순신의 이름" (Q09-03 테슬라 구출 후) ───
   p2_ch04c:[
-    {char:'hero07', name:'테슬라', color:'#66ffff', text:'크리그가 이순신 장군 캡슐을 왜 봉인했는지 알아? 이순신 장군은 수백 년 전 — 치크스-우르사 메이저가 지구를 봉쇄하고 크리그 아이젠클로가 항로를 장악할 때 — 끝까지 저항했던 유일한 존재야. 그 전술 데이터를 아이젠클로가 강제 추출해 크리그 방어 알고리즘에 통합했어. 살아있는 방패인 거야. 이순신 장군이 살아서 움직이면 크리그 방어 알고리즘이 스스로 무너질 수도 있어.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE2_QUEST_CARDS L511 원문
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'그분을 꺼내면... 크리그 방어 알고리즘의 약점을 우리가 갖는 건가?'},
-    {char:'hero07', name:'테슬라', color:'#66ffff', text:'정확해. 그래서 크리그는 절대 놓지 않으려는 거야.'},
+    {char:'hero07', name:'테슬라', color:'#66ffff', text:'크리그가 이순신 장군을 \'죽이지 않고\' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 \'살아있는 방패\'지. (눈 반짝) 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE2_QUEST_CARDS L511 원문
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.'},
+    {char:'hero07', name:'테슬라', color:'#66ffff', text:'바로 그거야. 그래서 크리그는 죽어도 못 놓지.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'...당연하지.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'(씩 웃으며) …내가 누군지 잊었어? 당연하지.'}
   ],
 
     // ─── CH04-D "요새 앞에서" (P13 도착) ───
@@ -568,12 +568,12 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH05 "집결" (페이즈 2 결말 · Q10-04 완료) ───
   p2_ch05:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내가 봉인된 이유가 저 자였군. 내 전술 데이터를 방패로 쓰다니. 다음 단계에서 반드시 청산해야 할 빚이 생겼다.'},
-    {char:'hero04', name:'가가린', color:'#ffd700', text:'크리그 방어 알고리즘 약점을 이제 우리가 알아. 이순신 장군의 전술이 거꾸로 그들의 허점을 가리켜.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'다음 루트는 내가 잡겠어. 크리그 보급 거점 — 전부 알고 있어.'},
-    {char:'hero07', name:'테슬라', color:'#ffd700', text:'생체 병기 설계도는 LHS에서 파괴했어. 하지만 백업이 어딘가에 있을 거야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'다음 계획을 세우자. {사령관}.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 이제 다음 항로로 — 저항군과 손을 잡으러 가요.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. (조용히) 다음 단계에서, 반드시 거둘 빚이다.'},
+    {char:'hero04', name:'가가린', color:'#ffd700', text:'이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.'},
+    {char:'hero07', name:'테슬라', color:'#ffd700', text:'생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, {사령관}.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. (꼬리 흔들 듯) 이제, 혼자가 아니에요.'}
   ]
 };
 
@@ -629,11 +629,11 @@ const PHASE2_CUTSCENES_EN={
 
     // ─── CH04-C "The Name Yi Sun-sin" (Q09-03, after rescuing Tesla) ───
   p2_ch04c:[
-    {char:'hero07', name:'Tesla', color:'#66ffff', text:'Do you know why Krieg sealed away General Yi Sun-sin\'s capsule? Centuries ago — when the Chiks and Ursa Major blockaded Earth and Krieg\'s Eisenklaue seized the space lanes — he was the only one who resisted to the very end. Eisenklaue forcibly extracted his tactical data and folded it into the Krieg defense algorithm. He\'s a living shield. If General Yi Sun-sin wakes and moves, the Krieg defense algorithm could collapse on its own.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'So if we get him out... we hold the weakness of the Krieg defense algorithm?'},
-    {char:'hero07', name:'Tesla', color:'#66ffff', text:'Exactly. That\'s why Krieg will never let him go.'},
+    {char:'hero07', name:'Tesla', color:'#66ffff', text:'The reason Krieg sealed General Yi Sun-sin away instead of killing him — that\'s the whole point. Centuries ago, when the Chiks and Ursa Major blockaded Earth and Eisenklaue swallowed the space lanes, he was the one man who never bent. Eisenklaue ripped his tactics out whole and bolted them into the Krieg defense algorithm. A living shield, literally. (eyes gleaming) But — what happens when the original of that shield wakes and moves? The algorithm could eat its own tail and collapse.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'So if we get him out… we hold the weakness of Krieg\'s defense in our hands.'},
+    {char:'hero07', name:'Tesla', color:'#66ffff', text:'Exactly that. Which is why Krieg will never, ever let him go.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'The route into the underground prison — Marco, can you pull up a map of the sector?'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'...Of course I can.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'(with a grin) …Forgotten who you\'re talking to? Of course I can.'}
   ],
 
     // ─── CH04-D "Before the Fortress" (P13 arrival) ───
@@ -656,12 +656,12 @@ const PHASE2_CUTSCENES_EN={
 
   // ─── CH05 "The Gathering" (Phase 2 finale · Q10-04 complete) ───
   p2_ch05:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue... so that is the one behind my sealing. To use my tactical data as a shield. In the next stage, there is a debt I must settle, without fail.'},
-    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Now we know the weakness of the Krieg defense algorithm. General Yi Sun-sin\'s tactics point straight back at their blind spot.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'I\'ll chart the next route. Krieg\'s supply outposts — I know every one of them.'},
-    {char:'hero07', name:'Tesla', color:'#ffd700', text:'I destroyed the bio-weapon blueprints at LHS. But there\'s sure to be a backup somewhere.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Let us lay the next plan. {commander}.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. Next stage — planets 11 through 15 · alliance with the resistance.'}
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue… so it was that one\'s hand that sealed me. To turn my blade into the enemy\'s shield. (quietly) In the next stage, that is a debt I will collect, without fail.'},
+    {char:'hero04', name:'Gagarin', color:'#ffd700', text:'And now the blueprint of that shield is in our hands. The General\'s tactics point straight back at their vital spot.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'I\'ll open the next road. Krieg\'s supply outposts — locations, guards, even the shift changes, it\'s all in my head.'},
+    {char:'hero07', name:'Tesla', color:'#ffd700', text:'I burned the bio-weapon designs at LHS. …But a backup is surely still alive somewhere. No room for complacency.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Scattered blades, gathered, become a formation. Let us lay the next plan, {commander}.'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. Next route — to extend a hand to the resistance. (tail wagging) We\'re not alone anymore.'}
   ]
 };
 
