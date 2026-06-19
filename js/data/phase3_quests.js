@@ -505,10 +505,10 @@ const PHASE3_CUTSCENES_KO={
 
   // ─── CH05-A "첫 연락" (P22 도착) ───
   p3_ch05a:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'동쪽 항로 주파수... 벙커존 지하. 저항군 암호 채널이야. 내가 봉인되기 전에 함께했던 전우들의 후예가 그 기지를 운영하고 있어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저항군? 거기가 얼마나 위험한지 알아? 치크스 사이 외톨이 거점이라고.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'그래서 더 강하다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'...크리그에서 빼낸 물자를 가져가면 믿어줄 거야.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'…크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.'}
   ],
 
     // ─── CH05-B "연대의 뿌리" (Q11-M 완료) ───
@@ -523,18 +523,18 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH05-C "내부의 적" (P23 도착) ───
   p3_ch05c:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저 화물 분류 코드... 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'내부에 침투한 거야. 보급망을 장악해서 물자를 빼돌리고 있어.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'먼저 들어가서 확인해야 해. 조용하게.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그건 내 전공이야.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'먼저 조용히 들어가서 확인해야 해. 소란은 금물.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'조용히 스며드는 거? …그건 내 전공이지.'}
   ],
 
     // ─── CH06-A "기업의 배신" (Q12-03 완료) ───
   p3_ch06a:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 판매하고 있다면... 단순한 이윤 추구가 아니야. 생체 병기 설계도가 거기로 흘러들어간 거야.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'글리제. 코르넬리우스 본사가 거기야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'오그렌이 말한 내부 고발자 — \'닥터 에바\'. 글리제에 있어. 접촉하면 물증을 줄 수 있다고 했어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'증거 없이 아우레우스를 적으로 만들면 안 돼. 먼저 확인해야 해.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'오그렌이 말한 내부 고발자 — \'닥터 에바\'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.'}
   ],
 
     // ─── CH06-B "광개토의 그림자" (Q13-05 완료) ───
@@ -557,10 +557,10 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH06-D "두 개의 이름" (P11 도착) ───
   p3_ch06d:[
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선을 만들겠다고?'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'내 설계도를 갖고 왔어.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'뭐든 구해 오겠어.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'...중수소 배터리 3개. 내 시뮬레이터 연료야. 가져오면 들어줄게.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선을… 만들겠다고? (잠깐, 흥미가 스친다) 400년 전 그 배를, 지금 재료로.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'그분의 설계도를 갖고 왔소.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'필요한 건 뭐든 구해 오겠소.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'…중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.'}
   ],
 
     // ─── CH07-A "귀환" (Q14-M 완료) ───
@@ -568,16 +568,16 @@ const PHASE3_CUTSCENES_KO={
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'최대해봐야 8~10개.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'타이탄H... 그리고. 지구.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'타이탄H… 그리고 그 너머에 — 지구.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'지구. (잠시 침묵) …오래 꿈꿨어. 별을 처음 날던 그날부터.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 방향은 타이탄H이야. 연대를 공식화하고 저항군 반물질을 확보하자.'}
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.'}
   ],
 
     // ─── CH07-B "본부" (P26 도착) ───
   p3_ch07b:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 구입했다면 생각보다 위협이 심각해요.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'그래서 왔어요. 거북선을 만들 거야. 저항군 반물질 25개와 저항군 제작 베이 지원이 필요해요.'},
-    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'...공식 연대 협약을 먼저 체결해야 합니다. 지구의 방식으로.'}
+    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.'},
+    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'…그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.'}
   ],
 
     // ─── CH07-C "전쟁의 시작" (Q15-M 완료 · 페이즈 3 종료) ───
@@ -597,10 +597,10 @@ const PHASE3_CUTSCENES_EN={
 
   // ─── CH05-A "First Contact" (P22 arrival) ───
   p3_ch05a:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eastern shipping-lane frequency... beneath Bunker Zone. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away are running that base.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Resistance? Do you know how dangerous that place is? It\'s a lone outpost surrounded by the Chiks.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'That only makes them stronger.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...If we bring the supplies we pulled out of Krieg, they\'ll trust us.'}
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eastern shipping-lane frequency… beneath Bunker Zone. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away still hold that base.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The Resistance? Do you know how dangerous that place is? A lone outpost right in the middle of the Chiks.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'If they\'ve endured a hundred years alone — that only makes them stronger.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'…If we bring the supplies we pulled out of Krieg, they\'ll trust us.'}
   ],
 
     // ─── CH05-B "Roots of Solidarity" (Q11-M complete) ───
@@ -615,18 +615,18 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH05-C "The Enemy Within" (P23 arrival) ───
   p3_ch05c:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Those cargo-classification codes... they\'re Resistance freight, all right, but the flight pattern is a Krieg distribution routine.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'They\'ve infiltrated. They\'ve seized the supply network and are siphoning off the goods.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'We need to go in first and confirm it. Quietly.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That\'s my specialty.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Those cargo-classification codes… they\'re Resistance freight, all right, but the flight pattern is a Krieg distribution routine. It doesn\'t add up.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'They\'ve infiltrated. They hold the supply network and are siphoning off the goods.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'We go in first and confirm it. Quietly — no noise.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Slipping in unnoticed? …That\'s my specialty.'}
   ],
 
     // ─── CH06-A "The Corporation\'s Betrayal" (Q12-03 complete) ───
   p3_ch06a:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Cornelius. If the Aureus corporation is selling technical blueprints to Krieg... this is more than the pursuit of profit. Bio-weapon schematics have flowed into their hands.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Cornelius. If the Aureus corporation is selling technical blueprints to Krieg… this is more than the pursuit of profit. Bio-weapon schematics passed through their hands.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Gliese. The Cornelius headquarters is there.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The whistleblower Ogren mentioned — \'Doctor Eva\'. She\'s on Gliese. She said if we make contact, she can give us hard evidence.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We can\'t make an enemy of Aureus without proof. We have to confirm it first.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The whistleblower Ogren mentioned — \'Doctor Eva\'. She\'s on Gliese. She said if we make contact, she\'ll hand over hard evidence.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'We can\'t turn Aureus into an enemy without proof. First — we confirm it.'}
   ],
 
     // ─── CH06-B "Gwanggaeto\'s Shadow" (Q13-05 complete) ───
@@ -649,10 +649,10 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH06-D "Two Names" (P11 arrival) ───
   p3_ch06d:[
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'You want to build a Geobukseon?'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'I\'ve brought my blueprints.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'You want to… build a Geobukseon? (a flicker of interest) That ship from four hundred years ago — with today\'s materials.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'I\'ve brought his blueprints.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'I\'ll get you whatever you need.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'...Three Deuterium Batteries. Fuel for my simulator. Bring them and I\'ll do it.'}
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'…Three Deuterium Batteries. Fuel for my simulator. Bring them, and I\'ll hear you out — once.'}
   ],
 
     // ─── CH07-A "The Return" (Q14-M complete) ───
@@ -660,16 +660,16 @@ const PHASE3_CUTSCENES_EN={
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Completing the Geobukseon needs 25 units of Resistance Antimatter. What we have right now is...'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Eight to ten at most.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The Resistance headquarters at Titan H should have a stockpile. We need to get it from the Ranger.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan H... and then. Earth.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan H… and beyond it — Earth.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Earth. (a moment\'s silence) …I\'ve dreamed of it for so long. Ever since the day I first flew among the stars.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our heading is Titan H. Let\'s formalize the alliance and secure the Resistance Antimatter.'}
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our next heading is Titan H. We formalize the alliance and secure the Resistance Antimatter.'}
   ],
 
     // ─── CH07-B "Headquarters" (P26 arrival) ───
   p3_ch07b:[
-    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'So you came in person. The Cornelius affair — we heard about it too. If Eisenklau personally bought that technology, the threat is graver than we thought.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'That\'s why we came. We\'re going to build the Geobukseon. We need 25 units of Resistance Antimatter and the support of a Resistance fabrication bay.'},
-    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'...We must sign a formal alliance pact first. In Earth\'s way.'}
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'So you came in person. The Cornelius affair — we heard about it too. If Eisenklaue bought that technology himself, the threat runs deeper than we feared.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'That\'s why we came. We\'re going to build the Geobukseon. We need 25 units of Resistance Antimatter and the support of a fabrication bay.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'…Then we must sign a formal alliance pact first. In Earth\'s way.'}
   ],
 
     // ─── CH07-C "The War Begins" (Q15-M complete · end of Phase 3) ───
