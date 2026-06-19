@@ -197,8 +197,8 @@ const PHASE2_QUESTS={
       id:'p2_q07m', type:'story_quest', category:'hidden', phase:2,
       ic:'🌟', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'가가린의 비밀 항로', en:'Gagarin\'s Secret Route'},
-      desc:{ko:'티가든에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "Поехали! 내 옛 데이터에 소련 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
-            en:'Gagarin (already joined earlier) recovers old memories from VOSTOK. Energy Core ×2 + Superbia Graviton ×1 → "Soviet covert route to Omicron Persei."'},
+      desc:{ko:'티가든에서 합류한 가가린, VOSTOK 캡슐 발굴로 옛 기억 회복.\n함선 강화 — 에너지 코어 ×2 + 수퍼비아 중력자 ×1 소비(항법 컴퓨터 재가동) → 가가린: "가자, 더 멀리! 내 옛 데이터에 옛 지구의 비밀 항로가 있어. 오미크론 퍼세이 — 크리그 부품이 넘어가는 교점이야."',
+            en:'Gagarin (already joined earlier) recovers old memories from VOSTOK. Energy Core ×2 + Superbia Graviton ×1 → "An old-Earth covert route to Omicron Persei."'},
       objectives:[
         {type:'gather', item:'G02', qty:2, label:{ko:'에너지 코어 ×2 항법 재가동', en:'Energy Core ×2 reactivation'}},
         {type:'gather', item:'R07', qty:1, label:{ko:'수퍼비아 중력자 ×1 중력자', en:'Superbia Graviton ×1 graviton'}},
@@ -213,7 +213,7 @@ const PHASE2_QUESTS={
       id:'p2_q07s1', type:'story_quest', category:'sub', phase:2,
       ic:'🛠️', npc:'가가린', npcIc:'🚀', npcKey:'hero04',
       nm:{ko:'보스토크-1 정찰 모듈', en:'Vostok-1 Scout Module'},
-      desc:{ko:'가가린: "캡슐 안에 소련 설계 도면이 있어. 수퍼비아 조선소 제작 베이를 쓰면 정찰 모듈을 만들 수 있어."\nG01 ×2 + 분열 배터리 ×1 + 수퍼비아 중력자 ×1 소비 → 보스토크-1 제작.\n효과: 잔해 탐색 쿨다운 -2초 · 탐지 범위 +15%.',
+      desc:{ko:'가가린: "캡슐 안에 옛 지구의 설계 도면이 있어. 수퍼비아 조선소 제작 베이를 쓰면 정찰 모듈을 만들 수 있어."\nG01 ×2 + 분열 배터리 ×1 + 수퍼비아 중력자 ×1 소비 → 보스토크-1 제작.\n효과: 잔해 탐색 쿨다운 -2초 · 탐지 범위 +15%.',
             en:'Scrap Frame ×2 + Fission Battery ×1 + Superbia Graviton ×1 → Vostok-1 scout module. Wreck search cooldown -2s, range +15%.'},
       objectives:[
         {type:'gather', item:'G01', qty:2, label:{ko:'고철 프레임 ×2', en:'Scrap Frame ×2'}},
@@ -514,7 +514,7 @@ const PHASE2_CUTSCENES_KO={
 
     // ─── CH03-C "가가린의 항법 데이터" (Q07-M 완료) ───
   p2_ch03c:[
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'이 항로 — 60년대에 소련 우주국이 비밀 분류한 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 \'오르크\'.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 \'오르크\'.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'오르크를 잡으면 다음 경로가 열려. 출발한다.'}
   ],
@@ -557,11 +557,12 @@ const PHASE2_CUTSCENES_KO={
 
     // ─── 이순신 합류 (Q10-M) ───
   p2_yi_join:[
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'[조선어] 이곳이... 얼마나 흘렀느냐.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'우주어 자동 번역 활성화.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'나를 깨운 자가 {사령관}인가. 빚을 졌구나.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'... 무기와 장갑이 함께 봉인되어 있었다. 가져가시오. 내 손이 이미 그대의 손이 되었으니.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'[옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.'},
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'우주어 자동 번역 활성화. (작게) …100년입니다, 장군님.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. (눈을 뜨며) …나를 깨운 자가 {사령관}인가. 빚을 졌다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'장군. 함께 갑시다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'…패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.'},
     {char:'baekgu2_smile1', name:'백구', color:'#66ddff', text:'SW01 무기 세트 + SA01 장갑 세트 자동 장착 완료. 화력 대폭 상승.'}
   ],
 
@@ -601,7 +602,7 @@ const PHASE2_CUTSCENES_EN={
 
     // ─── CH03-C "Gagarin\'s Nav Data" (Q07-M complete) ───
   p2_ch03c:[
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This route — the Soviet space agency classified it back in the sixties. Krieg uses it now. Mechanica parts pass to Krieg at the Gliese 436 basin trading post. The agent\'s codename is \'Ork\'.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'This route — back in old Earth\'s day, a space agency kept it classified. Krieg uses it now. Mechanica parts pass to Krieg at the Gliese 436 basin trading post. The agent\'s codename is \'Ork\'.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Ork... that name\'s come up among the border smugglers. It\'s the Chiks-Mechanica frontier, so jurisdiction is murky there.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Catch Ork and the next route opens up. We move out.'}
   ],
@@ -644,11 +645,12 @@ const PHASE2_CUTSCENES_EN={
 
     // ─── Yi Sun-sin joins (Q10-M) ───
   p2_yi_join:[
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'[in Joseon tongue] This place... how much time has passed?'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Activating automatic translation to the common galactic tongue.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So it is {commander} who woke me. I am in your debt.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'... My weapons and armor were sealed away with me. Take them. My hands have already become your hands.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'[in the old tongue of Earth] …This place. How much… time has passed?'},
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Universal-tongue translation active. (quietly) …A hundred years, Admiral.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'A hundred years. My own tactics, turned into the enemy\'s shield — holding off my own kind all that time. (opening his eyes) …So it is {commander} who woke me. I am in your debt.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'My weapons and armor were sealed away with me. Take them — my hands have already become yours.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'General. Let us go together.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'…One defeat is enough. A second, I will not permit.'},
     {char:'baekgu2_smile1', name:'Baekgu', color:'#66ddff', text:'SW01 weapon set + SA01 armor set auto-equipped. Firepower greatly increased.'}
   ],
 
