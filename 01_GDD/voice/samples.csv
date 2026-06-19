@@ -1,0 +1,25 @@
+﻿num,character,char_slug,emotion,text,input_text,filename,recommended_voice
+01,주인공(사령관),commander,,"사람부터 꺼낸다. 늦으면, 아무것도 못 구해.","사람부터 꺼낸다. 늦으면, 아무것도 못 구해.",sample_01_commander.mp3,Adam
+02,백구,baekgu,,"분석 완료. 적 화력이 우리보다 높아요. 사령관, 제가 먼저 살피죠.","분석 완료. 적 화력이 우리보다 높아요. 사령관, 제가 먼저 살피죠.",sample_02_baekgu.mp3,Sam
+03,이순신,yisunsin,,"패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.","패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.",sample_03_yisunsin.mp3,Arnold
+04,마르코 폴로,marcopolo,,"좋은 게 있어. 이 소문, 공짜로는 못 주지.","좋은 게 있어. 이 소문, 공짜로는 못 주지.",sample_04_marcopolo.mp3,Antoni
+05,유리 가가린,gagarin,,"이 정도 탄막은 산책이지. 자, 적 기함은 어디 있나?","이 정도 탄막은 산책이지. 자, 적 기함은 어디 있나?",sample_05_gagarin.mp3,Liam
+06,장영실,jangyeongsil,,"음, 저 함선 왼쪽 패널이 약하네요. 거기만 노리면 돼요.","음, 저 함선 왼쪽 패널이 약하네요. 거기만 노리면 돼요.",sample_06_jangyeongsil.mp3,Thomas
+07,광개토대왕,gwanggaeto,,"길이 막혔다면, 길을 뚫으면 될 일. 나 때는 말이야.","길이 막혔다면, 길을 뚫으면 될 일. 나 때는 말이야.",sample_07_gwanggaeto.mp3,Bill
+08,니콜라 테슬라,tesla,,보여주지. 번개는 한 번에 열을 친다네!,보여주지. 번개는 한 번에 열을 친다네!,sample_08_tesla.mp3,Jeremy
+09,호레이쇼 넬슨,nelson,,"진형을 좁혀라. 수가 적을수록, 모양이 이긴다.","진형을 좁혀라. 수가 적을수록, 모양이 이긴다.",sample_09_nelson.mp3,James
+10,A. 아인슈타인,einstein,,"음, 어디까지 말했더라. 아, 적은 칠 초 뒤 좌현으로 돕니다.","음, 어디까지 말했더라. 아, 적은 칠 초 뒤 좌현으로 돕니다.",sample_10_einstein.mp3,Daniel
+11,이휘소,leehwiso,,"방정식은 거짓말을 하지 않습니다. 저 궤도, 빗나가지 않아요.","방정식은 거짓말을 하지 않습니다. 저 궤도, 빗나가지 않아요.",sample_11_leehwiso.mp3,Brian
+12,우르사 메이저,ursamajor,,인간이 별을 넘본다? 귀엽군. 짓밟히기 전까진.,인간이 별을 넘본다? 귀엽군. 짓밟히기 전까진.,sample_12_ursamajor.mp3,Callum
+13,아이젠클로,eisenklau,,명령은 명령이다. 명령에 자비란 없다.,명령은 명령이다. 명령에 자비란 없다.,sample_13_eisenklau.mp3,Clyde
+14,블랙팔콘,blackfalcon,,"흥미롭군. 수천 년을 지켜봤지만, 너희 같은 변수는 처음이야.","흥미롭군. 수천 년을 지켜봤지만, 너희 같은 변수는 처음이야.",sample_14_blackfalcon.mp3,Drew
+15,볼프 노인,wolfelder,,"당신 눈빛, 그 사람과 똑같군. 100년 만이오.","당신 눈빛, 그 사람과 똑같군. 100년 만이오.",sample_15_wolfelder.mp3,George
+16,아오리,aori,,프록시마에서 왔다고? 살아 돌아온 사람은 처음 보는군.,프록시마에서 왔다고? 살아 돌아온 사람은 처음 보는군.,sample_16_aori.mp3,Patrick
+17,레인저 맥시모프,maximoff,,살아남은 것만으론 부족해요. 우린 되찾아야 합니다.,살아남은 것만으론 부족해요. 우린 되찾아야 합니다.,sample_17_maximoff.mp3,Paul
+18,항법 AI,navai,,봉쇄 해제. 자유 항해 모드 활성화.,봉쇄 해제. 자유 항해 모드 활성화.,sample_18_navai.mp3,Brian
+19,볼칸,volcan,,"뭘 만들려는진 몰라도, 필요하면 가져가.","뭘 만들려는진 몰라도, 필요하면 가져가.",sample_19_volcan.mp3,Bill
+20,철갈고리 보그,borg,,이 항로는 내 구역이야. 통행료 내놓고 곱게 가.,이 항로는 내 구역이야. 통행료 내놓고 곱게 가.,sample_20_borg.mp3,Clyde
+21,밀수왕 카림,karim,,"함선 좋은데? 흠집 싫으면, 사업은 사업이니까.","함선 좋은데? 흠집 싫으면, 사업은 사업이니까.",sample_21_karim.mp3,Antoni
+22,치크스 군단장 크라쉬,krash,,인간 주제에 감히 여기까지. 목숨값을 바쳐라.,인간 주제에 감히 여기까지. 목숨값을 바쳐라.,sample_22_krash.mp3,Callum
+23,현상금 사냥꾼 베일,veil,,네 목의 현상금보다 이게 싸지. 골라.,네 목의 현상금보다 이게 싸지. 골라.,sample_23_veil.mp3,Daniel
+24,약탈자 도르가,dorga,,"함선이 아깝지 않냐? 거절하면, 후회할걸.","함선이 아깝지 않냐? 거절하면, 후회할걸.",sample_24_dorga.mp3,Clyde

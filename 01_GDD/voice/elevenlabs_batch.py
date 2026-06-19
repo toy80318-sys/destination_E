@@ -17,8 +17,8 @@ except ImportError:
 API_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
 # v3 audio tag([excited] 등)을 인식하는 모델 사용. 사양 변동 시 공식 문서에서 모델 id 확인.
 MODEL_ID = "eleven_v3"          # 태그 미인식이면 "eleven_multilingual_v2"
-OUT_DIR  = "out"
-CSV_PATH = "lines.csv"
+OUT_DIR  = os.environ.get("OUT_DIR", "out")
+CSV_PATH = os.environ.get("CSV_PATH", "lines.csv")
 SLEEP    = 0.7                  # 호출 간 간격(요금/레이트리밋 대비)
 USE_EMOTION_TAGS = False       # True면 [감정]태그 포함 입력(v3). False=깨끗한 대사만(권장: 태그/감탄사 오독 방지)
 
