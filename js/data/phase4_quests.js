@@ -536,9 +536,9 @@ const PHASE4_CUTSCENES_KO={
 
   // ─── CH10-B "요새 돌파" (P14 도착) ───
   p4_ch10b:[
-    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'페스작센은 끝났습니다. 집행관은 격파됐어요. 하지만 크리그 보급 요새 슈멜츠가 아직 살아있습니다.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'아이젠클로는 죽었어도 친위대 잔당이 요새를 붙잡고 있어. 뿌리까지 뽑자.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 거북선으로 슈멜츠를 점령한다. 사령실 데이터에 — 우르사로 가는 길이 있을 거야.'}
+    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.'}
   ],
 
     // ─── CH10-C "도주 좌표" (Q20-03 완료 · 페이즈 4 종료) ───
@@ -652,9 +652,9 @@ const PHASE4_CUTSCENES_EN={
 
   // ─── CH10-B "Break the Fortress" (P14 arrival) ───
   p4_ch10b:[
-    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Fessachsen is finished — the enforcer is dead. But the Krieg supply fort Schmelz still stands.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Eisenklaue may be gone, but his praetorian remnants still hold the fort. Let\'s pull it out by the roots.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. We seize Schmelz with the Geobukseon. The command-room data should hold the road to Ursa.'}
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Fessachsen is finished — the enforcer Eisenklaue is confirmed destroyed. But the Krieg supply fort Schmelz is still breathing.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Cut off the head and the tail still twitches. His praetorian remnants hold the fort — let\'s pull it out by the roots.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Now we have the Geobukseon. We seize Schmelz and open the command-room data — and inside it, the road to Ursa.'}
   ],
 
     // ─── CH10-C "Escape Coordinates" (Q20-03 done · Phase 4 end) ───
