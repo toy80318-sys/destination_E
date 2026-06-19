@@ -522,15 +522,15 @@ const PHASE2_CUTSCENES_KO={
     // ─── CH04 "접경의 이중 거래" (P20 도착) ───
   p2_ch04:[
     {char:'hero04', name:'가가린', color:'#ffd700', text:'저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 \'오르크\'가 여기 담당이야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'치크스 감시선 순찰 중이야. 잠입은 거래자 위장이 최선이야.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'치크스 변이 포자 ×3 있지. 이 구역 화물이야. 써먹자.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'치크스 변이 포자 ×3, 마침 이 구역 화물이다. 위장 미끼로 써먹자.'}
   ],
 
   // ─── CH04-A "다음 목적지" (Q08-05 완료) ───
   p2_ch04a:[
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'테슬라가 납치됐어. 메카니카 최고 설계자야. 크리그가 억지로 생체 병기를 설계하게 만들고 있어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 이야기는 들어봤어.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'병기 설계도를 없애야 해. 테슬라도 구해야 하고.'}
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. (짧게) …사람부터다.'}
   ],
 
     // ─── CH04-B "표면 아래" (P07 도착) ───
@@ -610,15 +610,15 @@ const PHASE2_CUTSCENES_EN={
     // ─── CH04 "Double Dealing at the Frontier" (P20 arrival) ───
   p2_ch04:[
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'That trading post — cargo keeps arriving that\'s on no official manifest. The agent \'Ork\' runs things here.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Chiks surveillance ships are on patrol. Our best bet for infiltration is to pose as traders.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We\'ve got three Chiks mutant spores. That\'s cargo from this sector. Let\'s put it to use.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Chiks surveillance ships are on patrol. A head-on run is suicide — our best bet is to slip in posing as traders. Which, well, happens to be my specialty.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We\'ve got three Chiks mutant spores — cargo from this very sector. Let\'s use them as our cover.'}
   ],
 
   // ─── CH04-A "The Next Destination" (Q08-05 complete) ───
   p2_ch04a:[
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Tesla has been abducted. Mechanica\'s greatest engineer. Krieg is forcing him to design a bio-weapon.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The surface of Mercatus is an LHS crystal mine. I\'ve heard they\'ve dug down as far as seventeen levels underground.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We have to destroy that weapon\'s blueprints. And we have to save Tesla too.'}
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Tesla\'s been abducted. Mechanica\'s greatest engineer — Krieg is forcing him to design a bio-weapon.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The surface of Mercatus is an LHS crystal mine. Word is they\'ve dug seventeen levels down. Perfect place to lock someone away.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We destroy the blueprints. And we pull Tesla out alive. (quietly) …People first.'}
   ],
 
     // ─── CH04-B "Beneath the Surface" (P07 arrival) ───
