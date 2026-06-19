@@ -48,5 +48,8 @@ const NPC_POOL=[
   {_nmKey:'hero.npc.sergeivolkov.nm', nm:I18N.t('hero.npc.sergeivolkov.nm'), cl:'Merch',f:'F03',ic:'🧔'},
   {_nmKey:'hero.npc.diegoramirez.nm', nm:I18N.t('hero.npc.diegoramirez.nm'), cl:'Eng',  f:'F04',ic:'🧑'},
   {_nmKey:'hero.npc.hanminseok.nm',   nm:I18N.t('hero.npc.hanminseok.nm'),   cl:'Eng',  f:'F06',ic:'🧑'},
-  {_nmKey:'hero.npc.choiyoungjun.nm', nm:I18N.t('hero.npc.choiyoungjun.nm'), cl:'Pilot',f:'F06',ic:'🧑'}
+  {_nmKey:'hero.npc.choiyoungjun.nm', nm:I18N.t('hero.npc.choiyoungjun.nm'), cl:'Pilot',f:'F06',ic:'🧑'},
+  // 사용자 추가 신규 크루 (2026-06-18): 이침착(저항군 파일럿)·김버텍스(메카니카 엔지니어)
+  {_nmKey:'hero.npc.leechimchak.nm',  nm:I18N.t('hero.npc.leechimchak.nm'),  cl:'Pilot',f:'F06',ic:'🧑'},
+  {_nmKey:'hero.npc.kimvertex.nm',    nm:I18N.t('hero.npc.kimvertex.nm'),    cl:'Eng',  f:'F03',ic:'🧑'}
 ];

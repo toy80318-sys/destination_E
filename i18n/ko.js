@@ -2194,6 +2194,8 @@ I18N.registerLocale("ko", {
   "hero.npc.diegoramirez.nm": "디에고 라미레스",
   "hero.npc.hanminseok.nm": "한정교",
   "hero.npc.choiyoungjun.nm": "최담대",
+  "hero.npc.leechimchak.nm": "이침착",
+  "hero.npc.kimvertex.nm": "김버텍스",
   "part.W01.nm": "기본 레이저",
   "part.W01.desc": "초급 무기",
   "part.W03.nm": "펄스 캐논",

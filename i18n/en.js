@@ -2194,6 +2194,8 @@ I18N.registerLocale("en", {
   "hero.npc.diegoramirez.nm": "Diego Ramirez",
   "hero.npc.hanminseok.nm": "Han Junggyo",
   "hero.npc.choiyoungjun.nm": "Choi Damdae",
+  "hero.npc.leechimchak.nm": "Lee Chim-chak",
+  "hero.npc.kimvertex.nm": "Kim Vertex",
   "part.W01.nm": "Basic Laser",
   "part.W01.desc": "Entry-level weapon.",
   "part.W03.nm": "Pulse Cannon",
