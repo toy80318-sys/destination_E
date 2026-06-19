@@ -551,7 +551,7 @@ const PHASE4_CUTSCENES_KO={
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.'},
-    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 집행관 격파 · 이휘소(9번째 전설 영웅) 합류. 다음 단계 — 캅테인 균열~지구, 우르사 메이저로.'}
+    {char:'baekgu1', name:'백구', color:'#66ddff', text:'임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다.'}
   ],
 
     // ─── 아이젠클로 대면 (페스작센 P16 중간보스 직전) ─── 사용자 요청 2026-06-17
@@ -667,7 +667,7 @@ const PHASE4_CUTSCENES_EN={
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'One coordinate buried in Eisenklaue\'s data — Zeta Reticuli. Ursa Major\'s home base.'},
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Ursa Major — the true boss. It ends only when we take it down ourselves.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'Before Zeta Reticuli we must pass the Kapteyn rift. Einstein is there — the key to unlocking Ursa\'s Void shield.'},
-    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. The enforcer is down · Dr. Lee Hwi-so (9th legendary hero) joins. Next stage — Kapteyn rift to Earth, on to Ursa Major.'}
+    {char:'baekgu1', name:'Baekgu', color:'#66ddff', text:'Mission complete. The enforcer is down, and Dr. Lee Hwi-so has joined us. Now we pass through the Kapteyn rift — on to Ursa Major\'s stronghold.'}
   ],
 
     // ─── Eisenklaue confrontation (Fessachsen P16, mid-boss lead-in) ─── 2026-06-17
