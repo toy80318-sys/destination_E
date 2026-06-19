@@ -426,6 +426,31 @@ function autoResolveSatisfiedStoryQuests(){
 }
 window.autoResolveSatisfiedStoryQuests=autoResolveSatisfiedStoryQuests;
 
+// 함선/파츠 정비형 시나리오 퀘스트 자동 완료 (사용자 요청 2026-06-20):
+//   보유 함선에 파츠 자동 배치(autoEquipParts*) 실행 시, '파츠 최적화/정비' explore 퀘를 충족 처리.
+//   → 특정 함선·파츠 퀘스트가 별도 트리거 없이 영구 미해결되던 문제 방지. 대상 target: tuning/equip/optim/정비.
+function completeTuningQuests(){
+  const G=window.G; if(!G||!G.quests)return 0;
+  const pid=G.currentPlanet;
+  let done=0;
+  (G.quests[pid]||[]).forEach(function(q){
+    if(q.type!=='story_quest'||q.status!=='active')return;
+    const obj=(q.objectives||[])[0]; if(!obj||obj.type!=='explore')return;
+    const t=String(obj.target||'').toLowerCase();
+    if(t.indexOf('tuning')<0&&t.indexOf('equip')<0&&t.indexOf('optim')<0&&t.indexOf('정비')<0)return;
+    if(!G._storyExploreCount)G._storyExploreCount={};
+    const need=q.required||obj.qty||1;
+    G._storyExploreCount[obj.target]=Math.max(G._storyExploreCount[obj.target]||0,need);
+    done++;
+  });
+  if(done>0){
+    try{ if(typeof tickStoryQuests==='function')tickStoryQuests(); }catch(e){}
+    try{ if(typeof autoResolveSatisfiedStoryQuests==='function')autoResolveSatisfiedStoryQuests(); }catch(e){}
+  }
+  return done;
+}
+window.completeTuningQuests=completeTuningQuests;
+
 // ─── 시나리오 퀘 진행 카운터 증가 (bugfix 2026-06-11) ─────────────
 //   문제: _storyCombatKills / _storyExploreCount 를 읽기만 하고 어디서도 증가시키지 않아
 //         combat/explore 목표 시나리오 퀘스트가 영구히 완료 불가.

@@ -602,6 +602,7 @@ function autoEquipPartsFlagship(){
 
   notify(I18N.t('notify.autoFlagshipV2',{n:nParts,c:nCargo}),'gold');
   rerenderShipOrGarage();saveGame(true);
+  try{ if(typeof window.completeTuningQuests==='function')window.completeTuningQuests(); }catch(_e){}
 }
 // ─── STEP 11: 2×2 파츠 균등 분배 (cap=2 허용) ─────────────────────────
 //   인벤토리 잔여 2×2 파츠(mythic/set/tier≥15)를 2×2 보유 수가 가장 적은 함선부터 1개씩.
@@ -688,6 +689,7 @@ function autoEquipPartsEven(){
   const _force=r13>0?I18N.t('gacha.forceDeploy',{n:r13}):'';
   notify(I18N.t('notify.autoEvenly',{warp:r.warp,core3:r.core3,setBundle:r.setBundle,round:r.round,repair:r.repair,small:r.small,uniq:_uniq,top:_top,big:_big,cargo:_cargo,force:_force}),'gold');
   rerenderShipOrGarage();saveGame(true);
+  try{ if(typeof window.completeTuningQuests==='function')window.completeTuningQuests(); }catch(_e){}
 }
 // ─── 평균 배분 V3 — 사용자 명세 ────────────────────────────────────────
 // STEP 1: 워프엔진(블링크/타키온/테슬라 등) 각 함선 1개씩

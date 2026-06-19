@@ -350,8 +350,8 @@ const PHASE3_QUESTS={
       id:'p3_q1404', type:'story_quest', category:'sub', phase:3,
       ic:'⚙️', npc:'장영실', npcIc:'🔧', npcKey:'hero02',
       nm:{ko:'장영실 함선 정비', en:'Jang\'s Ship Tuning'},
-      desc:{ko:'장영실이 {함선}의 파츠 슬롯과 장착 구성을 전면 재점검 → 자동 정비(autoEquipAll) 실행 → 최적 파츠 자동 매칭.\n장영실: "이 배... 파츠 배치가 비효율적이야. 내가 다시 짜줄게."',
-            en:'Jang tunes the ship — autoEquipAll() runs, optimal parts auto-matched.'},
+      desc:{ko:'정비소에서 \'자동 장착\'(기함 중심 또는 균등 분배)을 한 번 실행하면 장영실이 보유 파츠를 함선에 최적 배치합니다 → 완료.\n장영실: "이 배... 파츠 배치가 비효율적이야. 내가 다시 짜줄게."',
+            en:'Run Auto-Equip (Flagship-focus or Even) once at the dock — Jang places your owned parts optimally → complete.\nJang: "This layout is inefficient. Let me redo it."'},
       objectives:[
         {type:'explore', target:'p11_tuning', qty:1, label:{ko:'파츠 최적화 완료', en:'Parts optimized'}},
       ],

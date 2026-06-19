@@ -854,6 +854,28 @@ function rerenderTab(renderFn){
 // 스토리/퀘스트 텍스트 토큰 치환 ({사령관}/{commander}·{함선}/{ship}·{기함}/{flagship}·{회사}/{company})
 //   → 프로필의 실제 이름·함선명으로 교체 + 중괄호 제거. story-scenes-pc.js 의 rep() 과 동일 규칙.
 //   퀘스트 설명·시나리오 카드·도감 일기 등 컷씬 외 텍스트에서 공용으로 사용.
+// 아이템/파츠 코드네임(G10·R06·MW01 등) → 정확한 이름 치환.
+//  사용자 요청 2026-06-20: 퀘스트 설명에 코드가 그대로 노출되면 무엇을 구해야 할지 몰라 해결 불가.
+//  COMMODITIES·PARTS 의 실제 코드만 단어경계로 치환(현재 언어 기준). P11 같은 행성/기타 토큰은 영향 없음.
+var _codeNameMap=null, _codeNameRe=null, _codeNameLang=null;
+function _buildCodeNameMap(){
+  var m={};
+  try{ if(typeof COMMODITIES!=='undefined')COMMODITIES.forEach(function(c){ if(c&&c.id){ var nm=(typeof commDisplayNm==='function')?commDisplayNm(c):(c.nm||''); if(nm&&nm!==c.id)m[c.id]=nm; } }); }catch(e){}
+  try{ if(typeof PARTS!=='undefined')PARTS.forEach(function(pt){ if(pt&&pt.id&&!m[pt.id]){ var nm=(typeof partDisplayNm==='function')?partDisplayNm(pt):(pt.nm||''); if(nm&&nm!==pt.id)m[pt.id]=nm; } }); }catch(e){}
+  return m;
+}
+function _subItemCodes(s){
+  if(typeof s!=='string'||!s)return s;
+  var lang=(window.I18N&&I18N.getLang)?I18N.getLang():'ko';
+  if(_codeNameMap===null||_codeNameLang!==lang){
+    _codeNameMap=_buildCodeNameMap(); _codeNameLang=lang;
+    var codes=Object.keys(_codeNameMap).sort(function(a,b){return b.length-a.length;});
+    _codeNameRe=codes.length?new RegExp('\\b('+codes.join('|')+')\\b','g'):null;
+  }
+  if(!_codeNameRe)return s;
+  return s.replace(_codeNameRe,function(mm){return _codeNameMap[mm]||mm;});
+}
+window._subItemCodes=_subItemCodes;
 function _subTokens(s){
   if(typeof s!=='string') return s;
   var p=(window.G&&G.profile)||{};
@@ -862,10 +884,11 @@ function _subTokens(s){
   var defCmd=T('ui.commanderDefault'), defShip=T('ui.shipDefault'),
       defFlag=T('ship.flagshipDefault'), defCompany=T('ui.companyDefault'),
       flagSfx=T('ship.mustangSuffix');
-  return s.replace(/\{사령관\}/g,p.name||defCmd).replace(/\{commander\}/gi,p.name||defCmd)
+  s=s.replace(/\{사령관\}/g,p.name||defCmd).replace(/\{commander\}/gi,p.name||defCmd)
     .replace(/\{함선\}/g,p.ship||defShip).replace(/\{ship\}/gi,p.ship||defShip)
     .replace(/\{기함\}/g,p.ship?(p.ship+flagSfx):defFlag).replace(/\{flagship\}/gi,p.ship?(p.ship+flagSfx):defFlag)
     .replace(/\{회사\}/g,p.company||defCompany).replace(/\{company\}/gi,p.company||defCompany);
+  return _subItemCodes(s);
 }
 window._subTokens=_subTokens;
 
