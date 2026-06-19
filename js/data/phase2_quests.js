@@ -502,14 +502,14 @@ const PHASE2_CUTSCENES_KO={
 
   // ─── CH03-A "마르코의 첫 정보" (Q06-M 완료) ───
   p2_ch03a:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했을 거야.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그리고... 이상한 게 하나 더. 그 구역 폐기물 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'{사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.'}
   ],
 
     // ─── CH03-B "고철 더미 속의 비밀" (P04 도착) ───
   p2_ch03b:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저기 폐기 구역 끝... 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 미약하게 잡혀.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'발굴한다.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'발굴한다. 살아있는 거라면, 더더욱.'}
   ],
 
     // ─── CH03-C "가가린의 항법 데이터" (Q07-M 완료) ───
@@ -535,8 +535,8 @@ const PHASE2_CUTSCENES_KO={
 
     // ─── CH04-B "표면 아래" (P07 도착) ───
   p2_ch04b:[
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'저 컨베이어 동선 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고 치고 루트가 너무 깊어.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'노동자들이 겁먹어 있어. 크리그한테 협박당하고 있는 거야.'}
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.'}
   ],
 
     // ─── CH04-C "이순신의 이름" (Q09-03 테슬라 구출 후) ───
@@ -550,9 +550,9 @@ const PHASE2_CUTSCENES_KO={
 
     // ─── CH04-D "요새 앞에서" (P13 도착) ───
   p2_ch04d:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'전면전은 무리야. 외곽 포대만 해도 우리 세 배야.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'지하 감옥 진입 루트가 있어. 자연 균열대 — 셔틀 한 대가 들어갈 수 있는 폭이야.'},
-    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'이순신 장군이 수백 년째 저기 갇혀 있어. 우리가 끝내야 해.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.'},
+    {char:'commander', name:'{사령관}', color:'#00f3ff', text:'이순신 장군이 수백 년째 저기 갇혀 있다. 오늘, 우리가 끝낸다.'}
   ],
 
     // ─── 이순신 합류 (Q10-M) ───
@@ -590,14 +590,14 @@ const PHASE2_CUTSCENES_EN={
 
   // ─── CH03-A "Marco\'s First Intel" (Q06-M complete) ───
   p2_ch03a:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'{commander}, I\'ve got it. Castellum, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'And... one more odd thing. An old capsule that isn\'t on that sector\'s disposal manifest. The design is centuries old.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'{commander}, I\'ve got it. Castellum, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk. But my eyes don\'t miss a thing.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'And… one more odd thing. An old capsule that isn\'t on that sector\'s disposal manifest. The design is centuries old. The kind of thing I never just walk past.'}
   ],
 
     // ─── CH03-B "Secret in the Scrap Heap" (P04 arrival) ───
   p2_ch03b:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'There, at the edge of the disposal zone... an old object that\'s not on any manifest. The design is nothing like ours. I\'m picking up a faint life sign.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We dig it out.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'There, at the edge of the disposal zone… an old object that\'s not on any manifest. The design is nothing like ours. A life sign — faint, but unmistakable.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'We dig it out. All the more if something\'s alive in there.'}
   ],
 
     // ─── CH03-C "Gagarin\'s Nav Data" (Q07-M complete) ───
@@ -624,7 +624,7 @@ const PHASE2_CUTSCENES_EN={
     // ─── CH04-B "Beneath the Surface" (P07 arrival) ───
   p2_ch04b:[
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'That conveyor line is strange. Some of the crystal is being sent underground. The route runs far too deep for a mine warehouse.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The workers are terrified. Krieg is keeping them in line through fear.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Look at the workers\' faces. Terrified — Krieg keeps them in line through fear. …I\'ve seen this far too many times.'}
   ],
 
     // ─── CH04-C "The Name Yi Sun-sin" (Q09-03, after rescuing Tesla) ───
@@ -639,8 +639,8 @@ const PHASE2_CUTSCENES_EN={
     // ─── CH04-D "Before the Fortress" (P13 arrival) ───
   p2_ch04d:[
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'A frontal assault is suicide. The outer batteries alone outnumber us three to one.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'There\'s a route into the underground prison. A natural fissure — wide enough for a single shuttle to slip through.'},
-    {char:'commander', name:'{commander}', color:'#00f3ff', text:'General Yi Sun-sin has been locked in there for centuries. We\'re the ones who end it.'}
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'There\'s a way into the underground prison. A natural fissure — wide enough for a single shuttle. Tight, but doable.'},
+    {char:'commander', name:'{commander}', color:'#00f3ff', text:'General Yi Sun-sin has been locked in there for centuries. Today, we end it.'}
   ],
 
     // ─── Yi Sun-sin joins (Q10-M) ───
