@@ -2292,11 +2292,19 @@ function runCombatTurn(){
     //   50% 확률로 대상의 쉴드를 무시하고 '현재' 체력의 50%를 직격으로 깎는다(맞을수록 데미지 감소).
     //   _ursaBoss/BOSS_MAIN 본체는 보스전에서만 등장하므로 이 식별이 곧 '보스전 한정'.
     const _isUrsaBoss=(e._ursaBoss||e.id==='BOSS_MAIN'||(e.nm||'').toLowerCase().includes('우르사 메이저')||(e.nm||'').toLowerCase().includes('ursa major'));
+    // 블랙 팔콘 히든 보스 특수 공격 (히든 보스전 한정, 사용자 요청 2026-06-20):
+    //   30% 확률로 대상의 '현재' 체력의 70%를 직격으로 깎는다. 보스 기함(VOID_FALCON_1/_isHiddenFalcon/BLACKFALCON)만 — 부대(VOID_FALCON_E*) 제외.
+    const _eId=e.id||'';
+    const _isFalconBoss=!!combatState.isVoidBoss&&(e._isHiddenFalcon||_eId==='VOID_FALCON_1'||(e.catalogId==='BLACKFALCON'&&!/_E\d/.test(_eId)));
     const _ursaSmite=_isUrsaBoss&&Math.random()<0.5;
+    const _falconSmite=!_ursaSmite&&_isFalconBoss&&Math.random()<0.3;
     let shDmg,hpDmg;
     if(_ursaSmite){
       shDmg=0;                                            // 쉴드 무시
       hpDmg=Math.max(1,Math.round((target.hp||1)*0.5));   // 현재 체력의 50% 직격
+    }else if(_falconSmite){
+      shDmg=0;
+      hpDmg=Math.max(1,Math.round((target.hp||1)*0.7));   // 현재 체력의 70% 직격
     }else{
       shDmg=Math.min(target.sh||0,rawDmg);
       hpDmg=rawDmg-shDmg;
@@ -2305,6 +2313,7 @@ function runCombatTurn(){
     target.sh=Math.max(0,(target.sh||0)-shDmg);
     target.hp=Math.max(0,target.hp-hpDmg);
     if(_ursaSmite){ try{ addCombatLog(I18N.t('combat.ursaSmite',{nm:shipDisplayNm(target),dmg:hpDmg.toLocaleString()}),'err'); }catch(_e){} }
+    else if(_falconSmite){ try{ addCombatLog(I18N.t('combat.falconSmite',{nm:shipDisplayNm(target),dmg:hpDmg.toLocaleString()}),'err'); }catch(_e){} }
     const gs=G.fleet.find(s=>s.id===target.id);
     if(gs){gs.hp=target.hp;gs.sh=target.sh;}
     const isDead=target.hp<=0;

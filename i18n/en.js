@@ -689,6 +689,7 @@ I18N.registerLocale("en", {
   "combat.dimRayCharging": "🌑 [Blackfalcon] Dimensional cutting beam charging... Non-flagship ships are in danger!",
   "combat.dimRayFired": "🌑 Dimensional cutting beam! {nm} was absorbed into a Void rift...",
   "combat.ursaSmite": "💥 Ursa Major's annihilation strike! It pierces {nm}'s shield and tears out {dmg} HP!",
+  "combat.falconSmite": "🌑 Black Falcon's dark smite! It rips away {dmg} HP from {nm} in one blow!",
   "combat.rewardCr": "💰 Reward ₡{cr}{join}",
   "combat.debrisBonus": " (debris join ×{n})",
   "combat.longBattleBonus": "⏱️ Long-battle bonus +{pct}% ({min}min elapsed)",
