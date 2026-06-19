@@ -511,9 +511,9 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH05-B "연대의 뿌리" (Q11-M 완료) ───
   p3_ch05b:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손들이죠. 400년 전 이 방공호를 파고, 여기서 태어났어요.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE3_QUEST_CARDS L137 원문
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'당신들이 살아있었군." *(조용히)* "오래 기다렸겠군.'},
-    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'살아남은 것만으로 부족했어요. 지금 크리그가 보급망에 첩자를 심어두고 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.'},
+    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE3_QUEST_CARDS L137 원문
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'(조용히) 당신들이 살아있었군. 오래, 기다렸겠소.'},
+    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'함께 처리하자.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.'}
@@ -537,11 +537,11 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH06-B "광개토의 그림자" (Q13-05 완료) ───
   p3_ch06b:[
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저 배... 본 적 있어. 은하 경매 시장에서 항상 최고가 써내는 자유 상인이야.'},
-    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'당신이 {사령관}인가. 크리그와 싸우고 있다고 들었소.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'...광개토. 이름이 낯설지 않군." *(낮게)* "당신의 상선이 경매 시장 기록을 갖고 있다는 건 알고 있었소.'},
-    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'소문은 정확하군. 나는 이 은하계 어느 팩션에도 속하지 않아. 자유 상인이야. 하지만 크리그와 같이 거래하지는 않소.'},
-    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'이 행성을 내 손에 넣으면 — 당신과 거래하겠소. 단, 경매에서 최고가를 써내야 하오. 내가 합류할 만한 상대인지 보는 거요.'}
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.'},
+    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'(호탕하게) 당신이 {사령관}인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'(낮게) …광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.'},
+    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.'},
+    {char:'hero03', name:'광개토', color:'#9ee7ff', text:'이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.'}
   ],
 
     // ─── CH06-C "설계의 명인" (Q13-H 완료) ───
@@ -567,7 +567,7 @@ const PHASE3_CUTSCENES_KO={
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'최대해봐야 8~10개.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'타이탄H... 그리고. 지구.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'지구." *(잠시 침묵)* "오래 꿈꿨어.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'지구. (잠시 침묵) …오래 꿈꿨어. 별을 처음 날던 그날부터.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}. 방향은 타이탄H이야. 연대를 공식화하고 저항군 반물질을 확보하자.'}
   ],
 
@@ -580,13 +580,13 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH07-C "전쟁의 시작" (Q15-M 완료 · 페이즈 3 종료) ───
   p3_ch07c:[
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'저항군 반물질 재료 목록 완성됐어. 거북선 제작 시작 가능해.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 확보하면 거북선이 완성된다.'},
-    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'크리그가 행성에 새 거점을 짓고 있어요. 아이젠클로가 직접 지휘 중이에요.'},
-    {char:'hero04', name:'가가린', color:'#88ccff', text:'데이터 복호기가 해독한 정보와 일치해. 슈멜츠가 다음 목표야.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로... 내 전술 데이터로 우리를 막으려 하겠지. 하지만 나는 그의 허점도 알고 있어.'},
-    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선이 완성되면 아이젠클로의 요새도 뚫린다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}, 다음 항로로 향하자. 아이젠클로를 추적해, 마침내 거북선을 완성한다.'}
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'(도면을 쓸어보며) …재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.'},
+    {char:'maximov', name:'레인저', color:'#9ee7ff', text:'크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.'},
+    {char:'hero04', name:'가가린', color:'#88ccff', text:'복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.'},
+    {char:'hero02', name:'장영실', color:'#a0d8ef', text:'거북선이 완성되는 날, 그 요새의 벽도 무너져요.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'{사령관}, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.'}
   ],
 
   };
@@ -603,8 +603,8 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH05-B "Roots of Solidarity" (Q11-M complete) ───
   p3_ch05b:[
-    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. Four hundred years ago they dug out this shelter, and here we were born.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'So you survived." *(quietly)* "You must have waited a long time.'},
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. Four hundred years ago they dug out this shelter — here we were born, and here we lost. (low) My wife. Both my children. That\'s why I can\'t stop trying to take Earth back. Because that… is taking my family back.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(quietly) So you survived. You must have waited a long time.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Survival alone wasn\'t enough. Right now Krieg has planted spies in our supply network and is shaking us from within. We desperately need comrades we can trust.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The New Mars... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'Let\'s deal with it together.'},
@@ -629,11 +629,11 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH06-B "Gwanggaeto\'s Shadow" (Q13-05 complete) ───
   p3_ch06b:[
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That ship... I\'ve seen it before. A free merchant who always outbids everyone at the galactic auction market.'},
-    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'So you\'re {commander}. I hear you\'re fighting Krieg.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'...Gwanggaeto. The name isn\'t unfamiliar to me." *(low)* "I knew your merchant fleet held the auction-market records.'},
-    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'The rumors are accurate. I belong to no faction in this galaxy. I am a free merchant. But I do not trade alongside Krieg.'},
-    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'Take this planet into my hands — and I\'ll deal with you. But you must place the highest bid at the auction. I\'m judging whether you\'re worth joining.'}
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'That ship… I\'ve seen it before. A free merchant who always outbids everyone at the galactic auction market. They say he\'s never once lost.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'(with a hearty laugh) So you\'re {commander}. They say you don\'t back down from Krieg? …I like that.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(low) …Gwanggaeto. The name isn\'t unfamiliar to me. Nor that your merchant fleet holds every record of the auction market.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'The rumors are accurate. I bow to no power in this galaxy. I am a free merchant. But — I do not trade with the likes of Krieg.'},
+    {char:'hero03', name:'Gwanggaeto the Great', color:'#9ee7ff', text:'Take this planet into your hands and show me. Place the highest bid at the auction — prove you\'ve earned this land. Then I\'ll ride with you. I\'ll judge with my own eyes whether you\'re an opponent worth conquering beside.'}
   ],
 
     // ─── CH06-C "The Master Engineer" (Q13-H complete) ───
@@ -659,7 +659,7 @@ const PHASE3_CUTSCENES_EN={
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Eight to ten at most.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The Resistance headquarters at Titan H should have a stockpile. We need to get it from the Ranger.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Titan H... and then. Earth.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Earth." *(a moment\'s silence)* "I\'ve dreamed of it for so long.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'Earth. (a moment\'s silence) …I\'ve dreamed of it for so long. Ever since the day I first flew among the stars.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Our heading is Titan H. Let\'s formalize the alliance and secure the Resistance Antimatter.'}
   ],
 
@@ -672,13 +672,13 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH07-C "The War Begins" (Q15-M complete · end of Phase 3) ───
   p3_ch07c:[
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The materials list for the Resistance Antimatter is complete. We can begin building the Geobukseon.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Resistance Antimatter ×25, Galactic Chaos Crystal ×15, Superbia Graviton ×10, Krieg Magma Core ×8. Secure them all and the Geobukseon is complete.'},
-    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Krieg is building a new stronghold on a planet. Eisenklau is commanding it in person.'},
-    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches the intel the data decoder cracked. Schmelz is the next target.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklau... he\'ll try to stop us with my own tactical data. But I know his weaknesses too.'},
-    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Once the Geobukseon is complete, even Eisenklau\'s fortress can be breached.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}. Next stage — planets 16~20. Hunt Eisenklau. Complete the Geobukseon.'}
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'(running a hand over the blueprints) …Materials list, complete. To the design he drew four hundred years ago, I add my own hands. The Geobukseon can sail again.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Resistance Antimatter ×25, Galactic Chaos Crystal ×15, Superbia Graviton ×10, Krieg Magma Core ×8. Gather them all — and the Geobukseon awakens.'},
+    {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Krieg is raising a new stronghold. Eisenklaue commands it in person.'},
+    {char:'hero04', name:'Gagarin', color:'#88ccff', text:'It matches what the decoder pulled. Schmelz — that\'s the next target.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Eisenklaue… he\'ll use my own tactics to stop us. But the weakness of a blade is known best by the one who forged it.'},
+    {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'The day the Geobukseon is complete, the walls of that fortress fall too.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'{commander}, to the next route. We hunt Eisenklaue — and at last, complete the Geobukseon.'}
   ],
 
   };
