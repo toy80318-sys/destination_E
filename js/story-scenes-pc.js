@@ -269,8 +269,11 @@
       textBox.textContent = rep(s.text || '');
       hintLeft.textContent = getHint();
       counterRight.textContent = (sceneIdx+1) + ' / ' + scenes.length;
-      // 대사 보이스 재생 (vid 매핑 — 음성_적용_가이드.md). 원문 text(토큰 {사령관} 포함)로 매칭, 직전 보이스 자동 정지.
-      try{ if(window.AudioMgr && typeof window.AudioMgr.playVoice==='function') window.AudioMgr.playVoice(s.char||'', s.text||''); }catch(e){}
+      // 대사 보이스 재생 (음성연동 §3·4): vid(num) → VOICE_MANIFEST 우선, 없으면 char+text 텍스트매칭 폴백. 직전 보이스 자동 정지.
+      try{
+        if(window.VoicePlayer && typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:s.vid, char:s.char||'', text:s.text||''});
+        else if(window.AudioMgr && typeof window.AudioMgr.playVoice==='function') window.AudioMgr.playVoice(s.char||'', s.text||'');
+      }catch(e){}
     }
 
     function next(){
@@ -286,6 +289,7 @@
     function closeOverlay(){
       if(_closed)return;
       _closed = true;
+      try{ if(window.VoicePlayer && typeof window.VoicePlayer.stopVoice==='function') window.VoicePlayer.stopVoice(); }catch(e){}
       try{ if(window.AudioMgr && typeof window.AudioMgr.stopVoice==='function') window.AudioMgr.stopVoice(); }catch(e){}
       document.removeEventListener('keydown', onKey);
       ov.style.transition = 'opacity 0.3s';
