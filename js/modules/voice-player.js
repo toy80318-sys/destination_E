@@ -19,7 +19,7 @@
     commander:'commander',
     hero01:'yisunsin', hero02:'jangyeongsil', hero03:'gwanggaeto', hero04:'gagarin', hero05:'nelson',
     hero06:'einstein', hero07:'tesla', hero08:'marcopolo', hero09:'leehwiso',
-    eisenklau:'eisenklau', ursa:'ursamajor', nav_ai:'navai', aori:'aori', wolf_elder:'wolfelder', chiks_vanguard:'chiks',
+    eisenklau:'eisenklau', ursa:'ursamajor', nav_ai:'navai', system:'navai', aori:'aori', wolf_elder:'wolfelder', chiks_vanguard:'chiks',
     gather_F06:'maximoff', delivery_F06:'maximoff', maximov:'maximoff', volcan:'volcan'
   };
   function _voiceKey(ch){ if(!ch)return null; if(ch.indexOf('baekgu')===0)return 'baekgu'; return _CHAR2SLUG[ch]||null; }

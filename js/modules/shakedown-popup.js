@@ -11,11 +11,11 @@
   if(typeof window==='undefined')return;
 
   const _SHAKEDOWN_NPCS=[
-    {get nm(){return window.I18N.t('toll.boss.hook');},ic:'🏴‍☠️',col:'#ff8844',get line(){return window.I18N.t('toll.boss.hookLine');}},
-    {get nm(){return window.I18N.t('toll.boss.karim');},ic:'🦂',col:'#ffaa44',get line(){return window.I18N.t('toll.boss.karimLine');}},
-    {get nm(){return window.I18N.t('toll.boss.krash');},ic:'👾',col:'#cc66ff',get line(){return window.I18N.t('toll.boss.krashLine');}},
-    {get nm(){return window.I18N.t('toll.boss.veil');},ic:'🎯',col:'#ff6688',get line(){return window.I18N.t('toll.boss.veilLine');}},
-    {get nm(){return window.I18N.t('toll.boss.dorga');},ic:'💀',col:'#ff5555',get line(){return window.I18N.t('toll.boss.dorgaLine');}}
+    {vid:'477',get nm(){return window.I18N.t('toll.boss.hook');},ic:'🏴‍☠️',col:'#ff8844',get line(){return window.I18N.t('toll.boss.hookLine');}},
+    {vid:'478',get nm(){return window.I18N.t('toll.boss.karim');},ic:'🦂',col:'#ffaa44',get line(){return window.I18N.t('toll.boss.karimLine');}},
+    {vid:'479',get nm(){return window.I18N.t('toll.boss.krash');},ic:'👾',col:'#cc66ff',get line(){return window.I18N.t('toll.boss.krashLine');}},
+    {vid:'480',get nm(){return window.I18N.t('toll.boss.veil');},ic:'🎯',col:'#ff6688',get line(){return window.I18N.t('toll.boss.veilLine');}},
+    {vid:'481',get nm(){return window.I18N.t('toll.boss.dorga');},ic:'💀',col:'#ff5555',get line(){return window.I18N.t('toll.boss.dorgaLine');}}
   ];
 
   function _showShakedownPopup(planetDef,proceed){
@@ -67,7 +67,7 @@
     const btns=[];
     if(canPay){
       btns.push({txt:I18N.t('ui.payToAvoid',{p:demand.toLocaleString()}),cls:'btn-gold',fn:()=>{
-        window.closeModal();
+        window.closeModal(); _stopTollVoice();
         G.credits=Math.max(0,(G.credits||0)-demand);
         try{window.updateHUD&&window.updateHUD();}catch(e){}
         window.notify&&window.notify(I18N.t('notify.tollPaidAvoid',{cost:demand.toLocaleString()}),'gold');
@@ -75,7 +75,7 @@
         try{window.saveGame&&window.saveGame(true);}catch(e){}
       }});
     }
-    btns.push({txt:I18N.t('toll.refuseBtn'),cls:'btn-red',fn:()=>{window.closeModal();if(typeof proceed==='function')proceed();}});
+    btns.push({txt:I18N.t('toll.refuseBtn'),cls:'btn-red',fn:()=>{window.closeModal();_stopTollVoice();if(typeof proceed==='function')proceed();}});
     window.openModal(`${npc.ic} ${npc.nm}`,
       `<div style="padding:12px">
         <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;padding:14px;background:linear-gradient(135deg,${npc.col}22,rgba(10,10,20,.85));border:1px solid ${npc.col}88;border-radius:12px">
@@ -88,7 +88,10 @@
         </div>
       </div>`,
       btns,{wide:true});
+    // 통행료 두목 음성 재생 (음성연동 §3 — 컷신 외 팝업). 닫힘 시 정지(버튼 핸들러).
+    try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playVoice==='function'&&npc.vid)window.VoicePlayer.playVoice(npc.vid); }catch(e){}
   }
+  function _stopTollVoice(){ try{ if(window.VoicePlayer&&typeof window.VoicePlayer.stopVoice==='function')window.VoicePlayer.stopVoice(); }catch(e){} }
 
   window._showShakedownPopup=_showShakedownPopup;
   window._SHAKEDOWN_NPCS=_SHAKEDOWN_NPCS;
