@@ -2885,7 +2885,7 @@ I18N.registerLocale("ko", {
   "npc.peddler": "정거장 행상",
   "npc.corvinus": "코르비누스",
   "npc.navAi": "항법 AI",
-  "npc.volcan": "반란군 리더 볼칸",
+  "npc.volcan": "반란군 리더 불칸",
   "npc.chiksVanguard": "치크스 전위대",
   "npcLore.aori.role": "트레이딩 포스트 상인",
   "npcLore.aori.desc": "100년 만에 깨어난 사령관의 첫 거래를 트게 해준 P03 볼프 교역소의 늙은 상인. 고철이든 무엇이든 사고판다.",

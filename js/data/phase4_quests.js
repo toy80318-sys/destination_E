@@ -461,15 +461,15 @@ const PHASE4_CUTSCENES_KO={
 
     // ─── CH08-B "용골 완성" (Q16-01 완료) ───
   p4_ch08b:[
-    {char:'volcan', name:'반란군 리더 \'볼칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸운다는 그 {회사}로군. 우리 \'스파크\'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.'},
+    {char:'volcan', name:'반란군 리더 \'불칸\'', color:'#9ee7ff', text:'당신들이 저항군과 함께 싸운다는 그 {회사}로군. 우리 \'스파크\'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.'},
-    {char:'volcan', name:'볼칸', color:'#9ee7ff', text:'그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.'}
+    {char:'volcan', name:'불칸', color:'#9ee7ff', text:'그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.'}
   ],
 
     // ─── CH08-C "광개토와 재회" (Q16-05) ───
   p4_ch08c:[
     {char:'hero01', name:'이순신', color:'#c0a060', text:'정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.'},
-    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'볼칸이 내부 노선을 줬어. 비축고는 3층 심층부야.'},
+    {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'불칸이 내부 노선을 줬어. 비축고는 3층 심층부야.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.'},
     {char:'hero04', name:'가가린', color:'#88ccff', text:'그리고 동료들도 구출한다. 동시에.'}
   ],
@@ -586,15 +586,15 @@ const PHASE4_CUTSCENES_EN={
 
     // ─── CH08-B "Keel Complete" (Q16-01 done) ───
   p4_ch08b:[
-    {char:'volcan', name:'Rebel Leader \'Volcan\'', color:'#9ee7ff', text:'So you\'re that {company} fighting alongside the resistance. Our \'Spark\' is the free militia of the Krieg factory workers. My comrades are locked up inside that fortress.'},
+    {char:'volcan', name:'Rebel Leader \'Bulkan\'', color:'#9ee7ff', text:'So you\'re that {company} fighting alongside the resistance. Our \'Spark\' is the free militia of the Krieg factory workers. My comrades are locked up inside that fortress.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'We can deal. We pull your comrades out at Catonic — and you give us Krieg\'s internal route data.'},
-    {char:'volcan', name:'Volcan', color:'#9ee7ff', text:'And more than that — the whole magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
+    {char:'volcan', name:'Bulkan', color:'#9ee7ff', text:'And more than that — the whole magma core stockpile. I don\'t know what you\'re building, but take it if you need it.'}
   ],
 
     // ─── CH08-C "Reunion with Gwanggaeto" (Q16-05) ───
   p4_ch08c:[
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'No frontal assault. We slip in through the rebels\' channel.'},
-    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Volcan gave us the internal route. The stockpile is deep on level three.'},
+    {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Bulkan gave us the internal route. The stockpile is deep on level three.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Just three more Krieg Magma Cores — and the Geobukseon\'s keel material is complete.'},
     {char:'hero04', name:'Gagarin', color:'#88ccff', text:'And we rescue the comrades too. At the same time.'}
   ],

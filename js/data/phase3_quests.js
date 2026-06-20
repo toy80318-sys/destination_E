@@ -149,8 +149,8 @@ const PHASE3_QUESTS={
       id:'p3_q1203', type:'story_quest', category:'main', phase:3,
       ic:'⚔️', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'오그렌 격퇴·포획', en:'Defeat & Capture Ogren'},
-      desc:{ko:'오그렌의 크리그 연락 함선 차단 → 오딧세이 외곽 전투.\n격퇴 후 심문: "코르넬리우스 CEO \'발테르\'가 아우레우스 글리제에서 크리그에 기술 설계도를 팔고 있어. 아이젠클로 직속 거래야."',
-            en:'Defeat & capture Ogren. Interrogation: "Cornelius CEO Walter sells tech to Krieg via Eisenklaue direct."'},
+      desc:{ko:'오그렌의 크리그 연락 함선 차단 → 오딧세이 외곽 전투.\n격퇴 후 심문: "코르넬리우스 CEO \'발레리아\'가 아우레우스 글리제에서 크리그에 기술 설계도를 팔고 있어. 아이젠클로 직속 거래야."',
+            en:'Defeat & capture Ogren. Interrogation: "Cornelius CEO Valeria sells tech to Krieg via Eisenklaue direct."'},
       objectives:[
         {type:'combat', target:'ogren_boss', qty:1, label:{ko:'오그렌 포획', en:'Capture Ogren'}},
       ],
@@ -202,8 +202,8 @@ const PHASE3_QUESTS={
       id:'p3_q1301', type:'story_quest', category:'main', phase:3,
       ic:'📡', npc:'닥터 에바', npcIc:'👩‍🔬', npcKey:'gather_F02',
       nm:{ko:'닥터 에바 접선', en:'Contact Dr. Eva'},
-      desc:{ko:'글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\n아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발테르 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
-            en:'Aureus Gold Ingot ×2 → meet Eva. "Walter sends data to Eisenklaue. Warehouse server has transfer logs."'},
+      desc:{ko:'글리제 항구 도착. 암호 통신으로 닥터 에바 접선.\n아우레우스 금괴 ×2 소비(접선 비용) → 에바: "코르넬리우스 발레리아 CEO가 아이젠클로에게 기술 자료를 넘기고 있어요. 창고 서버에 이전 로그가 있어요."',
+            en:'Aureus Gold Ingot ×2 → meet Eva. "Valeria sends data to Eisenklaue. Warehouse server has transfer logs."'},
       objectives:[
         {type:'gather', item:'G04', qty:2, label:{ko:'아우레우스 금괴 ×2 접선 비용', en:'Aureus Gold Ingot ×2 contact fee'}},
       ],
@@ -233,8 +233,8 @@ const PHASE3_QUESTS={
       id:'p3_q1303', type:'story_quest', category:'main', phase:3,
       ic:'⚔️', npc:'{사령관}', npcIc:'🧑‍🚀', npcKey:'commander',
       nm:{ko:'코르넬리우스 보안팀 격퇴', en:'Defeat Cornelius Security'},
-      desc:{ko:'증거 탈취 직후 코르넬리우스 사설 보안함대 3기 출격 → 전투.\n에바: "이제 발테르가 아이젠클로에게 알릴 거예요. 시간이 없어요."',
-            en:'Defeat 3 Cornelius security ships. Eva: "Walter will alert Eisenklaue. Hurry."'},
+      desc:{ko:'증거 탈취 직후 코르넬리우스 사설 보안함대 3기 출격 → 전투.\n에바: "이제 발레리아가 아이젠클로에게 알릴 거예요. 시간이 없어요."',
+            en:'Defeat 3 Cornelius security ships. Eva: "Valeria will alert Eisenklaue. Hurry."'},
       objectives:[
         {type:'combat', target:'cornelius_security', qty:3, label:{ko:'보안함대 ×3 격퇴', en:'Defeat security ×3'}},
       ],

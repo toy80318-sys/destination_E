@@ -2885,7 +2885,7 @@ I18N.registerLocale("en", {
   "npc.peddler": "Station Peddler",
   "npc.corvinus": "Corvinus",
   "npc.navAi": "Nav AI",
-  "npc.volcan": "Rebel Leader Volcan",
+  "npc.volcan": "Rebel Leader Bulkan",
   "npc.chiksVanguard": "Chiks Vanguard",
   "npcLore.aori.role": "Trading Post Merchant",
   "npcLore.aori.desc": "The old merchant at the Wolf Trading Post (P03) who gave the Commander their first trade after a 100-year sleep. Buys and sells anything — scrap included.",
