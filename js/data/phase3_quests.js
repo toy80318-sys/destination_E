@@ -513,7 +513,7 @@ const PHASE3_CUTSCENES_KO={
 
     // ─── CH05-B "연대의 뿌리" (Q11-M 완료) ───
   p3_ch05b:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE3_QUEST_CARDS L137 원문
+    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 100년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.'},  // 수정 2026-06-11: 지구 봉쇄 주체 치크스-우르사 메이저로 정정 — GDD PHASE3_QUEST_CARDS L137 원문
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(조용히) 당신들이 살아있었군. 오래, 기다렸겠소.'},
     {char:'maximov', name:'레인저', color:'#9ee7ff', text:'살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.'},
@@ -605,7 +605,7 @@ const PHASE3_CUTSCENES_EN={
 
     // ─── CH05-B "Roots of Solidarity" (Q11-M complete) ───
   p3_ch05b:[
-    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. Four hundred years ago they dug out this shelter — here we were born, and here we lost. (low) My wife. Both my children. That\'s why I can\'t stop trying to take Earth back. Because that… is taking my family back.'},
+    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. A hundred years ago they dug out this shelter — here we were born, and here we lost. (low) My wife. Both my children. That\'s why I can\'t stop trying to take Earth back. Because that… is taking my family back.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(quietly) So you survived. You must have waited a long time.'},
     {char:'maximov', name:'Ranger', color:'#9ee7ff', text:'Survival alone wasn\'t enough. Right now Krieg has planted spies in our supply network and is shaking us from within. We desperately need comrades we can trust.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'The New Mars... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.'},
