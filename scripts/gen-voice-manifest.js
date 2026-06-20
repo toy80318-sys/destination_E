@@ -14,22 +14,33 @@ function parseCsvLine(line){
   }
   out.push(cur); return out;
 }
+// §7 미확정/구버전 — 음성 자동연결 제외(자막만): 마르코 301(텍스트 불칸 vs 구버전 음성 볼칸, 재녹음 대기)
+const EXCLUDE_NUM=new Set(['301']);
+// 런타임 텍스트 정규화 (voice-player._vnorm 과 동일)
+function _vnorm(t){ if(!t)return '';
+  return String(t).replace(/\([^)]*\)/g,'')
+    .replace(/\{[^}]*\}/g,function(m){var k=m.slice(1,-1).toLowerCase();return (k==='commander'||k==='사령관')?'사령관':k==='함선'?'함선':k==='회사'?'회사':'';})
+    .replace(/[^가-힣a-zA-Z0-9]/g,'').toLowerCase(); }
 const raw=fs.readFileSync(CSV,'utf8').replace(/^﻿/,'');
 const lines=raw.split(/\r?\n/).filter(Boolean);
-const MAN={};
-let n=0, dup=0, badPath=0;
+const MAN={}, T2N={};
+let n=0, dup=0, badPath=0, t2nN=0, t2nDup=0, excl=0;
 for(let i=1;i<lines.length;i++){ // 0=헤더 (num,char,slug,clip,lang,text)
   const c=parseCsvLine(lines[i]);
-  const num=(c[0]||'').trim(), slug=(c[2]||'').trim(), clip=(c[3]||'').trim(), lang=(c[4]||'ko').trim();
+  const num=(c[0]||'').trim(), slug=(c[2]||'').trim(), clip=(c[3]||'').trim(), lang=(c[4]||'ko').trim(), text=(c[5]||'').trim();
   if(!num||!clip)continue;
   if(MAN[num])dup++;
-  // 빌드 경로 검증: clip 은 02_Assets/audio/voice/ 하위여야 함
-  if(clip.indexOf('02_Assets/audio/voice/')!==0)badPath++;
+  if(clip.indexOf('02_Assets/audio/voice/')!==0)badPath++;   // 빌드 경로 검증
   MAN[num]={slug, clip, lang};
   n++;
+  // 텍스트→num 맵 (slug별) — vid 미주입 대사를 자막 원문으로 자동 매칭
+  if(EXCLUDE_NUM.has(num)){ excl++; continue; }
+  const norm=_vnorm(text);
+  if(slug&&norm){ if(!T2N[slug])T2N[slug]={}; if(T2N[slug][norm]&&T2N[slug][norm]!==num)t2nDup++; T2N[slug][norm]=num; t2nN++; }
 }
 const out='// 자동 생성 — scripts/gen-voice-manifest.js (편집 금지). SSOT: 01_GDD/voice/voice_manifest.csv\n'
-  +'// 대사번호(num) → {slug, clip(02_Assets 상대경로), lang}. voice-player.playVoice(num) 가 조회.\n'
-  +'window.VOICE_MANIFEST='+JSON.stringify(MAN)+';\n';
+  +'// VOICE_MANIFEST[num]={slug,clip,lang} · VOICE_TEXT2NUM[slug][정규화텍스트]=num (vid 미주입 대사 자동 매칭)\n'
+  +'window.VOICE_MANIFEST='+JSON.stringify(MAN)+';\n'
+  +'window.VOICE_TEXT2NUM='+JSON.stringify(T2N)+';\n';
 fs.writeFileSync(path.join(ROOT,'js','data','voice-manifest.js'),out,'utf8');
-console.log('생성: js/data/voice-manifest.js — '+n+'개 (중복 num '+dup+', 비표준 경로 '+badPath+')');
+console.log('생성: voice-manifest.js — manifest '+n+'개(중복 '+dup+', 비표준경로 '+badPath+') · text2num '+t2nN+'개(중복 '+t2nDup+', 제외 '+excl+')');

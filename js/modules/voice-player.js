@@ -14,13 +14,15 @@
 
   function _lang(){ return (window.I18N&&window.I18N.getLang)?window.I18N.getLang():'ko'; }
   function _settings(){ var A=window.AudioMgr; return { off:A?A.voiceOff:false, vol:(A&&typeof A.voice==='number')?A.voice:0.95, master:(A&&typeof A.master==='number')?A.master:0.7 }; }
-  // VOICE_MAP 폴백 — 화자 char → 폴더, 텍스트 정규화 (gen-voice-map.js _vnorm 과 동일)
-  function _voiceKey(ch){ if(!ch)return null;
-    if(ch.indexOf('baekgu')===0)return 'baekgu';
-    if(ch==='commander')return 'commander';
-    if(ch==='hero01')return 'yisunsin'; if(ch==='hero02')return 'jangyeongsil'; if(ch==='hero03')return 'gwanggaeto';
-    if(ch==='hero04')return 'gagarin';  if(ch==='hero08')return 'marcopolo';
-    return null; }
+  // 화자 char 키 → slug(매니페스트/폴더). 컷신 전 화자 매핑.
+  var _CHAR2SLUG={
+    commander:'commander',
+    hero01:'yisunsin', hero02:'jangyeongsil', hero03:'gwanggaeto', hero04:'gagarin', hero05:'nelson',
+    hero06:'einstein', hero07:'tesla', hero08:'marcopolo', hero09:'leehwiso',
+    eisenklau:'eisenklau', ursa:'ursamajor', nav_ai:'navai', aori:'aori', wolf_elder:'wolfelder', chiks_vanguard:'chiks',
+    gather_F06:'maximoff', delivery_F06:'maximoff', maximov:'maximoff'
+  };
+  function _voiceKey(ch){ if(!ch)return null; if(ch.indexOf('baekgu')===0)return 'baekgu'; return _CHAR2SLUG[ch]||null; }
   function _vnorm(t){ if(!t)return '';
     return String(t).replace(/\([^)]*\)/g,'')
       .replace(/\{[^}]*\}/g,function(m){var k=m.slice(1,-1).toLowerCase();return (k==='commander'||k==='사령관')?'사령관':k==='함선'?'함선':k==='회사'?'회사':'';})
@@ -35,10 +37,12 @@
       var man=window.VOICE_MANIFEST[String(opts.vid)];
       if(man&&man.clip)return {src:man.clip, lang:man.lang||'ko'};
     }
+    // 폴백 — slug별 텍스트→num(VOICE_TEXT2NUM) → 매니페스트 clip (SSOT 기반, 전 화자)
     var vk=_voiceKey(opts.char);
-    if(vk && window.VOICE_MAP && window.VOICE_MAP[vk]){
-      var clip=window.VOICE_MAP[vk][_vnorm(opts.text)];
-      if(clip)return {src:VOICE_BASE+vk+'/'+clip+'.mp3', lang:'ko'};
+    if(vk && window.VOICE_TEXT2NUM && window.VOICE_TEXT2NUM[vk] && window.VOICE_MANIFEST){
+      var num=window.VOICE_TEXT2NUM[vk][_vnorm(opts.text)];
+      var m=num&&window.VOICE_MANIFEST[num];
+      if(m&&m.clip)return {src:m.clip, lang:m.lang||'ko'};
     }
     return null;
   }
