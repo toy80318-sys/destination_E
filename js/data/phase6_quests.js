@@ -281,7 +281,7 @@ const PHASE6_CUTSCENES_KO={
   // ─── CH14-B "지구 착륙" (P31 도착) ───
   p6_ch14b:[
     {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
-    {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'(미소) 우주는 상대적이지만 — 고향은 절대적이군.'},
@@ -290,7 +290,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH14-C "재건의 시작" (Q24-02 완료) ───
   p6_ch14c:[
-    {char:'delivery_F06', name:'레인저 맥시모프', color:'#88d65b', text:'아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#88d65b', text:'아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.'},
     {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'무선 전력망 재건. 100년 만에 다시 깔 거야.'},
     {char:'hero03', name:'광개토대왕', color:'#ff9d52', text:'정복은 끝. 이제는 — 함께 일구는 시간이다.'},
@@ -300,7 +300,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH15-A "명예의 전당" (Q24-05 완료 · 엔딩) ───
   p6_ch15a:[
-    {char:'gather_F06', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
+    {char:'maximov', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.'},
     {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.'}
@@ -390,7 +390,7 @@ const PHASE6_CUTSCENES_EN={
   // ─── CH14-B "Landing on Earth" (P31 arrival) ───
   p6_ch14b:[
     {char:'system', name:'Navigation AI', color:'#38bdf8', text:'Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.'},
-    {char:'delivery_F06', name:'Ranger Maximoff', color:'#88d65b', text:'Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.'},
+    {char:'maximov', name:'Ranger Maximoff', color:'#88d65b', text:'Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(gazing at Earth) That\'s the very sky I looked up at in the days I lived and fought. It hasn\'t changed.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'April 12th, 1961. The Earth I first saw. Exactly as it was.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'(smiling) The universe is relative — but home is absolute.'},
@@ -399,7 +399,7 @@ const PHASE6_CUTSCENES_EN={
 
   // ─── CH14-C "The Reconstruction Begins" (Q24-02 complete) ───
   p6_ch14c:[
-    {char:'delivery_F06', name:'Ranger Maximoff', color:'#88d65b', text:'Eisenklaue\'s hand-written surrender — dedicated to the Council. The end of the century-long blockade — officially declared.'},
+    {char:'maximov', name:'Ranger Maximoff', color:'#88d65b', text:'Eisenklaue\'s hand-written surrender — dedicated to the Council. The end of the century-long blockade — officially declared.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'I\'ll build a Geobukseon shipyard right here. Together with Earth\'s engineers.'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'Rebuilding the wireless power grid. We\'ll lay it down again after a hundred years.'},
     {char:'hero03', name:'Gwanggaeto the Great', color:'#ff9d52', text:'Conquest is over. Now — it is time to build, together.'},
@@ -409,7 +409,7 @@ const PHASE6_CUTSCENES_EN={
 
   // ─── CH15-A "Hall of Fame" (Q24-05 complete · ending) ───
   p6_ch15a:[
-    {char:'gather_F06', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima B to the Gliese Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
+    {char:'maximov', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima B to the Gliese Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Only once the governorship auctions are won and the defense fleets deployed will the galaxy be stable.'},
     {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'The Void planets are... going to be different somehow. They were the worlds that lay beneath Ursa Major, after all.'}

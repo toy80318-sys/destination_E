@@ -503,7 +503,8 @@
           ${recvSlot}
           <span style="color:#ffcc66;font-weight:bold;font-size:16px;flex-shrink:0">=</span>
           ${giveSlots}
-          <button class="btn" onclick="exchangeMaterials()" style="font-size:12px;padding:8px 12px;background:rgba(255,200,80,.15);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;margin-left:auto;align-self:stretch">${I18N.t('bm.barterBtn')}</button>
+          <button class="btn" onclick="exchangeMaterials(10)" style="font-size:12px;padding:8px 10px;background:rgba(255,200,80,.10);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;margin-left:auto;align-self:stretch">${I18N.t('bm.barterBtn10')}</button>
+          <button class="btn" onclick="exchangeMaterials()" style="font-size:12px;padding:8px 12px;background:rgba(255,200,80,.15);border-color:#ffcc66;color:#ffcc66;font-weight:bold;flex-shrink:0;align-self:stretch">${I18N.t('bm.barterBtn')}</button>
         </div>
       </div>`;
     }
@@ -806,24 +807,30 @@
   }
   // 제작 재료 1:3 맞교환 — 줄 재료 3개 소비 → 받을 재료 1개 획득 (사용자 요청 2026-06-17)
   //   선택은 window._bmBarterRecv / window._bmBarterGive[] 에 보존 → 교환을 연속해 눌러도 슬롯 선택 유지.
-  function exchangeMaterials(){
+  //   times: 생성할 받을 재료 개수(기본 1). '10개 교환' 버튼은 exchangeMaterials(10).
+  //   보유가 부족하면 가능한 만큼만 교환(최대 times개) — 받을 재료 기준.
+  function exchangeMaterials(times){
+    times=Math.max(1,(times|0)||1);
     try{
       const recvId=window._bmBarterRecv;
       const gives=(Array.isArray(window._bmBarterGive)?window._bmBarterGive:[]).filter(Boolean);
       if(!recvId||gives.length<3){notify(I18N.t('bm.barterPick'),'warn');return;}
-      // 줄 재료 수량 집계 후 보유량 검증 (중복 선택 포함)
+      // 줄 재료 수량 집계 (1회 교환당 소요, 중복 선택 포함)
       const need={};gives.forEach(id=>{need[id]=(need[id]||0)+1;});
-      for(const id in need){ if(((G.materials&&G.materials[id])||0)<need[id]){notify(I18N.t('bm.barterShort'),'err');return;} }
-      // 3개 소비 → 1개 획득
-      gives.forEach(id=>{ if(typeof consumeMaterialQty==='function')consumeMaterialQty(id,1); });
+      // 실제 교환 횟수 = min(요청, 각 재료 보유/소요) — 받을 재료 기준 최대 times개
+      let canTimes=times;
+      for(const id in need){ canTimes=Math.min(canTimes,Math.floor(((G.materials&&G.materials[id])||0)/need[id])); }
+      if(canTimes<=0){notify(I18N.t('bm.barterShort'),'err');return;}
+      // (3×canTimes)개 소비 → canTimes개 획득
+      for(const id in need){ if(typeof consumeMaterialQty==='function')consumeMaterialQty(id,need[id]*canTimes); }
       if(!G.materials)G.materials={};
-      G.materials[recvId]=(G.materials[recvId]||0)+1;
+      G.materials[recvId]=(G.materials[recvId]||0)+canTimes;
       if(typeof _validateCargoIntegrity==='function')_validateCargoIntegrity();
       try{saveGame(true);}catch(e){}
       try{updateHUD();}catch(e){}
       const _comm=(typeof COMMODITIES!=='undefined')?COMMODITIES.find(c=>c.id===recvId):null;
       const _nm=(_comm&&typeof commDisplayNm==='function')?commDisplayNm(_comm):(recvId);
-      notify(I18N.t('bm.barterDone',{nm:_nm}),'ok');
+      notify(canTimes>1?I18N.t('bm.barterDoneN',{nm:_nm,n:canTimes}):I18N.t('bm.barterDone',{nm:_nm}),'ok');
       try{if(typeof AudioMgr!=='undefined')AudioMgr.playSfx('UI_click',{cooldown:0});}catch(e){}
       rerenderTab(renderTavernView);  // 선택 상태는 window._bmBarter* 에 유지 → 슬롯 그대로 남음
     }catch(e){console.warn('[barter]',e);}

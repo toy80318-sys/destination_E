@@ -2461,6 +2461,7 @@ function sellAllPartsBulk(){
   });
   try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:I18N.t('sell.bulkPartLabel',{n:totalQty})});}catch(e){}
   updateHUD();
+  try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
   notify(I18N.t('notify.partsBulkSell',{n:totalQty,cr:totalCr.toLocaleString()}),'gold');
   baekgu(I18N.t('baekgu.scrapSold',{cr:totalCr.toLocaleString()}));
   saveGame(true);

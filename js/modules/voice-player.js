@@ -1,84 +1,129 @@
-// ══════════════════════════════════════════════════════════════════
-// VOICE PLAYER — 대사 음성 재생 (지시서 음성연동 §4, 2026-06-20)
-//   playLine({vid,char,text}) : ① vid(num) → VOICE_MANIFEST 매핑 우선
-//                               ② 폴백 → VOICE_MAP 텍스트매칭(기존 7화자)
-//   · 동시 1개(직전 정지 후 재생), 언어 게이트(클립 lang≠현재 언어면 생략), 무음 폴백(에러로 안 죽음)
-//   · 설정/볼륨은 AudioMgr 보이스 채널(voiceOff/voice/master) 재사용 → 기존 설정 토글이 그대로 제어
-//   · 일반 스크립트(전역). 정적 <script> 로드. 경로 베이스 상수 분리.
-// ══════════════════════════════════════════════════════════════════
-(function(){
-  if(typeof window==='undefined')return;
-  if(window._VOICE_PLAYER_LOADED)return; window._VOICE_PLAYER_LOADED=true;
-  var VOICE_BASE='02_Assets/audio/voice/';   // VOICE_MAP 폴백용 베이스 (매니페스트 clip 은 전체경로)
-  var _cur=null;                             // 현재 재생 HTMLAudioElement (동시 1개)
+// ─────────────────────────────────────────────────────────────────────────
+// voice-player.js — 대사 음성 자동 재생 (KO/EN · 남/여 분기)
+// 데이터: js/data/voice-manifest.js (window.VOICE_MANIFEST / window.VOICE_BYTEXT)
+// 정적 로드: index.html 에서 voice-manifest.js → voice-player.js 순.
+// 자동재생: 화면 대사 텍스트를 매니페스트와 매칭해 재생(지문/괄호·{사령관} 토큰 보정).
+// 명시재생: window.VoicePlayer.playVoice(num[,{female}]) / playLine({vid,char,name,text,female})
+// ⚠ 타이핑 효과·요소 구조에 맞춰 디바운스/셀렉터 검증 필요 → Coder.
+// ─────────────────────────────────────────────────────────────────────────
+(function () {
+  'use strict';
+  var LS_ON = 'voiceOn', LS_VOL = 'voiceVol';
+  var audio = null, lastKey = '', lastAt = 0, suppressUntil = 0;
 
-  function _lang(){ return (window.I18N&&window.I18N.getLang)?window.I18N.getLang():'ko'; }
-  function _settings(){ var A=window.AudioMgr; return { off:A?A.voiceOff:false, vol:(A&&typeof A.voice==='number')?A.voice:0.95, master:(A&&typeof A.master==='number')?A.master:0.7 }; }
-  // 화자 char 키 → slug(매니페스트/폴더). 컷신 전 화자 매핑.
-  var _CHAR2SLUG={
-    commander:'commander',
-    hero01:'yisunsin', hero02:'jangyeongsil', hero03:'gwanggaeto', hero04:'gagarin', hero05:'nelson',
-    hero06:'einstein', hero07:'tesla', hero08:'marcopolo', hero09:'leehwiso',
-    eisenklau:'eisenklau', ursa:'ursamajor', nav_ai:'navai', system:'navai', aori:'aori', wolf_elder:'wolfelder', chiks_vanguard:'chiks',
-    gather_F06:'maximoff', delivery_F06:'maximoff', maximov:'maximoff', volcan:'volcan'
-  };
-  // char='system' 등 공용 화자키는 name 으로 slug 분기 (우르사/아이젠클로/경보/시스템 등이 같은 char:'system' 사용)
-  var _NAME2SLUG={'우르사 메이저':'ursamajor','ursa major':'ursamajor','아이젠클로':'eisenklau','eisenklaue':'eisenklau','항법 ai':'navai','nav ai':'navai','경보':'etc','alert':'etc','시스템':'etc','system':'etc'};
-  function _voiceKey(ch,name){
-    if(ch&&ch.indexOf('baekgu')===0)return 'baekgu';
-    var s=_CHAR2SLUG[ch];
-    if(s&&ch!=='system')return s;            // 전용 char 는 그대로
-    var nm=String(name||'').toLowerCase().trim();   // system/미매핑 → 이름으로 결정
-    if(_NAME2SLUG[nm])return _NAME2SLUG[nm];
-    return s||null;                          // system 기본 = 'navai'
+  // 보이스 ON/OFF·볼륨은 게임 사운드 설정(AudioMgr=combat.js, de_audio_settings)을 단일 소스로 따른다.
+  // 설정 UI는 AudioMgr.setVoiceOff/setVoiceVol 만 제어하므로, 여기서도 그 값을 읽어야
+  // 설정 토글이 컷신/통행료 음성에 실제로 적용된다. AudioMgr 미로드 시 자체 localStorage 폴백.
+  function on()  {
+    try { if (window.AudioMgr && typeof AudioMgr.voiceOff !== 'undefined') return !AudioMgr.voiceOff; } catch (e) {}
+    var v = localStorage.getItem(LS_ON);  return v === null ? true : v === '1';
   }
-  function _vnorm(t){ if(!t)return '';
-    return String(t).replace(/\([^)]*\)/g,'')
-      .replace(/\{[^}]*\}/g,function(m){var k=m.slice(1,-1).toLowerCase();return (k==='commander'||k==='사령관')?'사령관':k==='함선'?'함선':k==='회사'?'회사':'';})
-      .replace(/[^가-힣a-zA-Z0-9]/g,'').toLowerCase(); }
+  function vol() {
+    try { if (window.AudioMgr && typeof AudioMgr.voice === 'number') {
+      var m = (typeof AudioMgr.master === 'number') ? AudioMgr.master : 1;
+      return Math.min(1, m * AudioMgr.voice);
+    } } catch (e) {}
+    var v = parseFloat(localStorage.getItem(LS_VOL)); return isNaN(v) ? 0.9 : v;
+  }
+  function setOn(b){ localStorage.setItem(LS_ON, b ? '1' : '0'); if (!b) stop(); }
+  function setVol(x){ localStorage.setItem(LS_VOL, String(x)); if (audio) audio.volume = x; }
 
-  function stopVoice(){ if(_cur){ try{_cur.pause();_cur.src='';}catch(e){} _cur=null; } }
-
-  // 여성 사령관이면 clip_f(여성 음성) 우선
-  function _isFemaleCmd(){ var p=(window.G&&window.G.profile)||{}; return p.gender==='female'||p.gender==='f'; }
-  function _entrySrc(man){ return (man.clip_f && _isFemaleCmd()) ? man.clip_f : man.clip; }
-  // src + lang 결정 (vid 우선, 없으면 텍스트매칭 폴백)
-  function _resolve(opts){
-    opts=opts||{};
-    if(opts.vid!=null && window.VOICE_MANIFEST){
-      var man=window.VOICE_MANIFEST[String(opts.vid)];
-      if(man&&man.clip)return {src:_entrySrc(man), lang:man.lang||'ko'};
-    }
-    // 폴백 — slug별 텍스트→num(VOICE_TEXT2NUM) → 매니페스트 clip (SSOT 기반, 전 화자). system 화자는 name 으로 분기.
-    var vk=_voiceKey(opts.char, opts.name);
-    if(vk && window.VOICE_TEXT2NUM && window.VOICE_TEXT2NUM[vk] && window.VOICE_MANIFEST){
-      var num=window.VOICE_TEXT2NUM[vk][_vnorm(opts.text)];
-      var m=num&&window.VOICE_MANIFEST[num];
-      if(m&&m.clip)return {src:_entrySrc(m), lang:m.lang||'ko'};
-    }
-    return null;
+  function norm(t){
+    t = (t || '').replace(/\{\s*(사령관|commander)\s*\}/gi, '사령관');
+    t = t.replace(/[\(\[\{][^\)\]\}]*[\)\]\}]/g, '');   // 지문/잔여 토큰 제거
+    return t.replace(/[^가-힣A-Za-z0-9]/g, '');
   }
 
+  function lang(){
+    try {
+      if (window.I18N && I18N.lang) return I18N.lang;
+      if (window.G && G.lang) return G.lang;
+      if (window.GAME_LANG) return window.GAME_LANG;
+    } catch (e) {}
+    return (document.documentElement.lang || 'ko').slice(0, 2);
+  }
+  function female(){
+    try {
+      var g = (window.G && (G.commanderGender || G.gender || G.protagonistGender || (G.profile && G.profile.gender)));
+      if (g) return /f|female|여/i.test(String(g));
+    } catch (e) {}
+    return false;
+  }
+  // femOverride: true/false 면 그 성별 강제(통행료 포트레이트 성별 등), 미지정이면 주인공 성별 따름.
+  function pick(e, femOverride){
+    if (!e) return null;
+    var en = lang() === 'en';
+    var f = (femOverride === undefined || femOverride === null) ? female() : !!femOverride;
+    if (en && f && e.clip_en_f) return e.clip_en_f;
+    if (en && e.clip_en)        return e.clip_en;
+    if (f && e.clip_f)          return e.clip_f;
+    return e.clip || e.clip_en || e.clip_en_f || e.clip_f || null;
+  }
+  function stop(){ if (audio){ try { audio.pause(); } catch (e) {} audio = null; } }
+  // §7 재녹음 대기 — 구버전 발음 클립은 자막과 불일치하므로 재생 제외(자막만):
+  //   마르코 301 = marcopolo_028 (구 '볼칸' 발음 / 현재 자막은 '불칸'). 교체 후 이 항목 제거.
+  var _EXCLUDE_RE = /\/marcopolo_028\.[a-z0-9]+$/i;
+  function playPath(p){
+    if (!p || !on()) return;
+    if (_EXCLUDE_RE.test(p)) return;   // 구버전 음성 무음 폴백(자막 유지)
+    stop();
+    audio = new Audio(p);
+    audio.volume = vol();
+    audio.play().catch(function(){ /* 파일없음/차단 → 무음 폴백 */ });
+  }
+  // 명시 재생(playVoice/playLine) 직후, 같은 자막이 DOM에 떠 MutationObserver 자동매칭으로
+  // 중복 재생(특히 성별 override 무시한 클립)되는 것을 막는 억제 창.
+  function _markExplicit(){ suppressUntil = Date.now() + 1800; }
+  function playVoice(num, opts){
+    var e = window.VOICE_MANIFEST && window.VOICE_MANIFEST[num];
+    if (!e) return;
+    _markExplicit();
+    var fem = (opts && ('female' in opts)) ? opts.female : undefined;
+    playPath(pick(e, fem));
+  }
+  // 컷신/팝업 라인 재생: vid 우선, 없으면 자막 텍스트 매칭 폴백. {vid,char,name,text,female} 허용.
   function playLine(opts){
-    stopVoice();
-    var r=_resolve(opts);
-    if(!r)return false;                                   // 매핑 없음 → 자막만
-    if(r.lang && r.lang!==_lang())return false;            // 언어 불일치 → 자막만(음성 생략)
-    var s=_settings();
-    if(s.off||s.master<=0||s.vol<=0)return false;          // 보이스 OFF/무음
-    try{
-      var ver=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
-      var a=new Audio(r.src+ver);
-      a.volume=Math.min(1, s.master*s.vol);
-      _cur=a;
-      a.play().catch(function(){});                        // 자동재생 차단/파일 누락 → 무음 폴백
-      return true;
-    }catch(e){ return false; }
+    opts = opts || {};
+    if (opts.vid !== undefined && opts.vid !== null && opts.vid !== '') { playVoice(opts.vid, opts); return; }
+    var n = norm(opts.text || '');
+    if (!n || n.length < 2) return;
+    var e = window.VOICE_BYTEXT && window.VOICE_BYTEXT[n];
+    if (!e) return;
+    _markExplicit();
+    var fem = (opts && ('female' in opts)) ? opts.female : undefined;
+    playPath(pick(e, fem));
   }
-  // 단순 vid 재생 (지시서 §4 명칭 호환)
-  function playVoice(vid){ return playLine({vid:vid}); }
+  function playByText(text){
+    if (Date.now() < suppressUntil) return;   // 명시 재생 직후 자동매칭 중복 방지
+    var n = norm(text);
+    if (!n || n.length < 2) return;
+    var e = window.VOICE_BYTEXT && window.VOICE_BYTEXT[n];
+    if (!e) return;
+    var now = Date.now();
+    if (n === lastKey && now - lastAt < 1500) return;
+    lastKey = n; lastAt = now;
+    playPath(pick(e));
+  }
+  function observe(){
+    if (!('MutationObserver' in window)) return;
+    var mo = new MutationObserver(function (muts){
+      for (var i = 0; i < muts.length; i++){
+        var m = muts[i];
+        for (var j = 0; j < m.addedNodes.length; j++){
+          var nd = m.addedNodes[j];
+          var txt = (nd.textContent || '').trim();
+          if (txt && txt.length >= 4 && txt.length <= 400) playByText(txt);
+        }
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.readyState !== 'loading') observe();
+  else document.addEventListener('DOMContentLoaded', observe);
 
-  window.VoicePlayer={ playLine:playLine, playVoice:playVoice, stopVoice:stopVoice, VOICE_BASE:VOICE_BASE };
-  window.playVoice=playVoice;     // 전역 단축
-  window.stopVoiceLine=stopVoice;
+  window.VoicePlayer = {
+    playVoice: playVoice, playLine: playLine, playByText: playByText,
+    stop: stop, stopVoice: stop,
+    isOn: on, setOn: setOn, getVol: vol, setVol: setVol
+  };
 })();

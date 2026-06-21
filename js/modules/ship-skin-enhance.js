@@ -1043,6 +1043,7 @@ function sellShip(idx){
   // 판매가 계산
   const sp=getShipSellPrice(s);
   G.credits+=sp.total;
+  try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
   // 기함 판매시 다음 함선이 기함으로
   G.fleet.splice(idx,1);
   if(idx===0&&G.fleet.length>0){/* index 0 제거 → 자동으로 다음 함선이 기함 */}

@@ -55,6 +55,10 @@
       }catch(e){}
     }
     if(!_pf)_pf='F0'+(1+Math.floor(Math.random()*7));
+    // §4-D 음성연동: 표시 포트레이트(combat_<faction>)가 여성인 세력이면 여성 음성(clip_f/clip_en_f) 재생.
+    //   combat_F0X 7종 중 여성 초상은 F02(아우레우스 사령관)뿐 — 나머지는 남성/무성.
+    const _FEMALE_FACTIONS=['F02'];
+    const _femPortrait=_FEMALE_FACTIONS.indexOf(_pf)>=0;
     const _pIdx=1+Math.floor(Math.random()*3);
     const _gv=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
     const _pSrc1='img/pirates/'+_pf+'_'+_pIdx+'.png'+_gv;
@@ -89,7 +93,7 @@
       </div>`,
       btns,{wide:true});
     // 통행료 두목 음성 재생 (음성연동 §3 — 컷신 외 팝업). 닫힘 시 정지(버튼 핸들러).
-    try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playVoice==='function'&&npc.vid)window.VoicePlayer.playVoice(npc.vid); }catch(e){}
+    try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playVoice==='function'&&npc.vid)window.VoicePlayer.playVoice(npc.vid,{female:_femPortrait}); }catch(e){}
   }
   function _stopTollVoice(){ try{ if(window.VoicePlayer&&typeof window.VoicePlayer.stopVoice==='function')window.VoicePlayer.stopVoice(); }catch(e){} }
 

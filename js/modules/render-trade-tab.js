@@ -708,6 +708,7 @@ function sellInventoryItem(id, qty){
   const total=unitPrice*sellable;
   inv.qty-=sellable;
   G.credits=(G.credits||0)+total;
+  try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
   notify(I18N.t('notify.commSellWithReserve',{nm:commDisplayNm(comm),n:sellable,cr:total.toLocaleString(),keep:inv.qty}),'gold');
   try{updateHUD();saveGame(true);rerenderTab(renderTradeTab);}catch(e){}
 }
@@ -741,6 +742,7 @@ function sellComm(idx,qty){
       if(G.materials&&G.materials[slot.id]){G.materials[slot.id]=Math.max(0,(G.materials[slot.id]||0)-sellQty);}
       slot.qty-=sellQty;if(slot.qty<=0)G.cargo.splice(idx,1);
       G.credits+=sellPriceRaw*sellQty;
+      try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
       updateHUD();notify(I18N.t('notify.materialSold',{nm:commDisplayNm(commDef),n:sellQty,cr:(sellPriceRaw*sellQty).toLocaleString(),label:_label}),'gold');
       rerenderTab(renderTradeTab);saveGame(true);return;
     }
@@ -758,6 +760,7 @@ function sellComm(idx,qty){
     const _gain=_unit*_sellable;
     slot.qty-=_sellable;if(slot.qty<=0)G.cargo.splice(idx,1);
     G.credits=(G.credits||0)+_gain;
+    try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
     notify(I18N.t('notify.sellPartial',{nm:commDisplayNm(commDef),n:_sellable,cr:_gain.toLocaleString(),rem:_total-_sellable}),'gold');
     updateHUD();rerenderTab(renderTradeTab);saveGame(true);return;
   }
@@ -766,6 +769,7 @@ function sellComm(idx,qty){
   const _cargoSnap=JSON.parse(JSON.stringify(G.cargo));
   const _commLabel=I18N.t('shop.commQtyLabel',{nm:commDef?commDisplayNm(commDef):slot.id,qty});
   G.credits+=sp*qty;slot.qty-=qty;if(slot.qty===0)G.cargo.splice(idx,1);
+  try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
   try{_recordSell({type:'cargoSnap',cargoSnap:_cargoSnap,credits:sp*qty,label:_commLabel});}catch(e){}
   // 상점 거래 수익 10만 이상 시 명성 +1 (상거래 평판 보상)
   let _repBonusMsg='';

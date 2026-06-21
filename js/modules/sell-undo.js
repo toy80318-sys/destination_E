@@ -115,6 +115,7 @@ function sellPartFromInventory(partId){
     [{txt:I18N.t('ui.sellVal',{p:sellVal.toLocaleString()}),fn:()=>{
       inv.qty--;if(inv.qty<=0)G.inventory.splice(G.inventory.indexOf(inv),1);
       G.credits+=sellVal;
+      try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
       try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:partDisplayNm(p)||p.nm});}catch(e){}
       updateHUD();notify(I18N.t('notify.partSold',{nm:partDisplayNm(p)||p.nm,cr:sellVal.toLocaleString()}),'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
@@ -231,6 +232,7 @@ function _promptSellLowestReserve(){
         if(c.from==='reserve'){G.reserveFleet.splice(c.i,1);}
         else{G.fleet.splice(c.i,1);_promoteReserveIfRoom();}
         G.credits=(G.credits||0)+price;
+        try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
         notify(I18N.t('notify.shipSoldSimple',{nm:shipDisplayNm(c.s),cr:price.toLocaleString()}),'gold');
         closeModal();saveGame(true);
         if(typeof rerenderShipOrGarage==='function')rerenderShipOrGarage();
@@ -348,6 +350,7 @@ function discardReserveShip(reserveIdx){
         // 매각 취소용 깊은 복사 (파츠 회수 전 상태로 복원)
         const _undoShip=JSON.parse(JSON.stringify(ship));
         G.credits+=sellPrice;
+        try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
         G.reserveFleet.splice(reserveIdx,1);
         try{_recordSell({type:'ship',ship:_undoShip,credits:sellPrice,label:I18N.t('ship.sellCandidate',{nm:shipDisplayNm(ship)})});}catch(e){}
         notify(I18N.t('notify.shipSoldRecovered',{nm:shipDisplayNm(ship),cr:sellPrice.toLocaleString(),parts:returnedParts,crew:returnedCrew,cargo:returnedCargo>0?I18N.t('notify.fleetCargoRecovered',{n:returnedCargo}):''}),'gold');
