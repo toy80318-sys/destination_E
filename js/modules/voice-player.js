@@ -39,19 +39,22 @@
 
   function stopVoice(){ if(_cur){ try{_cur.pause();_cur.src='';}catch(e){} _cur=null; } }
 
+  // 여성 사령관이면 clip_f(여성 음성) 우선
+  function _isFemaleCmd(){ var p=(window.G&&window.G.profile)||{}; return p.gender==='female'||p.gender==='f'; }
+  function _entrySrc(man){ return (man.clip_f && _isFemaleCmd()) ? man.clip_f : man.clip; }
   // src + lang 결정 (vid 우선, 없으면 텍스트매칭 폴백)
   function _resolve(opts){
     opts=opts||{};
     if(opts.vid!=null && window.VOICE_MANIFEST){
       var man=window.VOICE_MANIFEST[String(opts.vid)];
-      if(man&&man.clip)return {src:man.clip, lang:man.lang||'ko'};
+      if(man&&man.clip)return {src:_entrySrc(man), lang:man.lang||'ko'};
     }
     // 폴백 — slug별 텍스트→num(VOICE_TEXT2NUM) → 매니페스트 clip (SSOT 기반, 전 화자). system 화자는 name 으로 분기.
     var vk=_voiceKey(opts.char, opts.name);
     if(vk && window.VOICE_TEXT2NUM && window.VOICE_TEXT2NUM[vk] && window.VOICE_MANIFEST){
       var num=window.VOICE_TEXT2NUM[vk][_vnorm(opts.text)];
       var m=num&&window.VOICE_MANIFEST[num];
-      if(m&&m.clip)return {src:m.clip, lang:m.lang||'ko'};
+      if(m&&m.clip)return {src:_entrySrc(m), lang:m.lang||'ko'};
     }
     return null;
   }

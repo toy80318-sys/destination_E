@@ -148,7 +148,9 @@ function showStoryGateHint(m0,key){
   const G=window.G||{}; if(!G._gateHintShown)G._gateHintShown={};
   if(key){ if(G._gateHintShown[key]) return; G._gateHintShown[key]=true; }
   const _isEn=(typeof I18N!=='undefined'&&I18N.lang==='en');
-  const scene=[{char:'baekgu2_advice', name:(_isEn?'Baekgu':'백구'), color:'#66ddff', text:gateHintText(m0)}];
+  // 게이트 멘트 전용 음성(백구) — 타입별 vid (gate.needHero 등). showCharDialog 훅이 vid 재생.
+  const _gvid={hero:'gate.needHero',item:'gate.needItem',blueprint:'gate.needBlueprint',quest:'gate.needQuest'}[m0.type]||null;
+  const scene=[{char:'baekgu2_advice', vid:_gvid, name:(_isEn?'Baekgu':'백구'), color:'#66ddff', text:gateHintText(m0)}];
   try{
     if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
       window.STORY_SCENES_PC.showCharDialog({scenes:scene});

@@ -25,13 +25,17 @@ const raw=fs.readFileSync(CSV,'utf8').replace(/^﻿/,'');
 const lines=raw.split(/\r?\n/).filter(Boolean);
 const MAN={}, T2N={};
 let n=0, dup=0, badPath=0, t2nN=0, t2nDup=0, excl=0;
-for(let i=1;i<lines.length;i++){ // 0=헤더 (num,char,slug,clip,lang,text)
+// 컬럼: num,char,slug,clip,clip_f[,clip_en],lang,text — clip_en 유무로 행마다 컬럼수가 달라
+// → lang=뒤에서 2번째, text=마지막으로 고정 파싱(clip_f=4 고정).
+for(let i=1;i<lines.length;i++){
   const c=parseCsvLine(lines[i]);
-  const num=(c[0]||'').trim(), slug=(c[2]||'').trim(), clip=(c[3]||'').trim(), lang=(c[4]||'ko').trim(), text=(c[5]||'').trim();
+  if(c.length<6)continue;
+  const num=(c[0]||'').trim(), slug=(c[2]||'').trim(), clip=(c[3]||'').trim(), clip_f=(c[4]||'').trim();
+  const lang=(c[c.length-2]||'ko').trim(), text=(c[c.length-1]||'').trim();
   if(!num||!clip)continue;
   if(MAN[num])dup++;
   if(clip.indexOf('02_Assets/audio/voice/')!==0)badPath++;   // 빌드 경로 검증
-  MAN[num]={slug, clip, lang};
+  MAN[num]= clip_f ? {slug, clip, clip_f, lang} : {slug, clip, lang};   // clip_f=여성 사령관 변형
   n++;
   // 텍스트→num 맵 (slug별) — vid 미주입 대사를 자막 원문으로 자동 매칭
   if(EXCLUDE_NUM.has(num)){ excl++; continue; }
@@ -39,7 +43,7 @@ for(let i=1;i<lines.length;i++){ // 0=헤더 (num,char,slug,clip,lang,text)
   if(slug&&norm){ if(!T2N[slug])T2N[slug]={}; if(T2N[slug][norm]&&T2N[slug][norm]!==num)t2nDup++; T2N[slug][norm]=num; t2nN++; }
 }
 const out='// 자동 생성 — scripts/gen-voice-manifest.js (편집 금지). SSOT: 01_GDD/voice/voice_manifest.csv\n'
-  +'// VOICE_MANIFEST[num]={slug,clip,lang} · VOICE_TEXT2NUM[slug][정규화텍스트]=num (vid 미주입 대사 자동 매칭)\n'
+  +'// VOICE_MANIFEST[num]={slug,clip,clip_f?,lang}(clip_f=여성 사령관) · VOICE_TEXT2NUM[slug][정규화텍스트]=num\n'
   +'window.VOICE_MANIFEST='+JSON.stringify(MAN)+';\n'
   +'window.VOICE_TEXT2NUM='+JSON.stringify(T2N)+';\n';
 fs.writeFileSync(path.join(ROOT,'js','data','voice-manifest.js'),out,'utf8');
