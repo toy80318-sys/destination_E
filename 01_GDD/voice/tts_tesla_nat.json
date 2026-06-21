@@ -1,0 +1,5 @@
+[
+ {"out":"clips/_sample_tesla/tesla_v2_hunmin.mp3","voice":"MpbDJfQJUYUnp0i1QvOZ","model":"eleven_multilingual_v2","text":"완성이에요! 백 년 만에 완성! 이제 갈 수 있어요! 들어오지 마세요, 지금 정밀 조정 중이에요!"},
+ {"out":"clips/_sample_tesla/tesla_v2_joonho.mp3","voice":"NpneagLVR101ytYGxUPX","model":"eleven_multilingual_v2","text":"완성이에요! 백 년 만에 완성! 이제 갈 수 있어요! 들어오지 마세요, 지금 정밀 조정 중이에요!"},
+ {"out":"clips/_sample_tesla/tesla_v3nat_manbo.mp3","voice":"ZZ4xhVcc83kZBfNIlIIz","model":"eleven_v3","stability":0.5,"text":"완성이에요! 백 년 만에 완성! 이제 갈 수 있어요! 들어오지 마세요, 지금 정밀 조정 중이에요!"}
+]

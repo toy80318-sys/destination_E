@@ -1,0 +1,14 @@
+[
+ {"slug":"veil","name":"현상금 사냥꾼 베일",
+  "description":"A late-30s androgynous low voice. Emotionless, calm, calculating bounty hunter. Quiet, near-whisper delivery with a cold, chilling edge. Speaks Korean.",
+  "sample":"네 목에 걸린 현상금보다 크레딧이 싸게 먹히겠지? 자, 선택해. 나는 서두르지 않아. 도망쳐도 좋아, 추적은 내 특기니까. 결국 너는 같은 자리로 돌아오게 될 거야. 그러니 지금 현명하게 굴어. 괜한 피를 보고 싶지는 않으니까. 어차피 답은 정해져 있잖아.",
+  "line":"네 목에 걸린 현상금보다 크레딧이 싸게 먹히겠지? 자, 선택해."},
+ {"slug":"dorga","name":"약탈자 도르가",
+  "description":"A rough, sleazy male raider in his 40s. Threatening but visibly hesitant, with an unsteady, wavering edge toward the end of sentences. Speaks Korean.",
+  "sample":"함선이 아깝지 않냐? 크레딧 내면 못 본 척 해주마. 거절하면 후회할걸. 나도 이런 거 좋아서 하는 건 아니야. 그냥 조용히 넘어가자고. 응? 괜히 일 키우지 말자. 서로 피곤해지는 건 싫잖아. 빨리 결정해, 시간 없어. 나도 위에서 쪼인단 말이야.",
+  "line":"함선이 아깝지 않냐? 크레딧 내면 못 본 척 해주마. 거절하면… 후회할걸."},
+ {"slug":"rebel","name":"반란군 리더 볼칸",
+  "description":"A resolute factory-worker-turned-rebel leader in his 30s-40s. Firm and determined with comradely warmth, clear and trustworthy mid voice. Speaks Korean.",
+  "sample":"당신들이 저항군과 함께 싸운다는 그분이로군. 우리 스파크는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어. 함께 싸워준다면 우리도 목숨 걸고 돕겠다. 백 년을 버텨온 우리다. 이번엔 반드시 저들을 몰아내자. 당신만 믿겠다, 사령관.",
+  "line":"당신들이 저항군과 함께 싸운다는 그분이로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어."}
+]

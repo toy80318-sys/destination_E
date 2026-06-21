@@ -3,9 +3,13 @@
 import os, json, urllib.request, sys
 import os as _os
 def _load_key():
-    k=_os.environ.get("ELEVENLABS_API_KEY","")
-    if not k and _os.path.exists("el_key.txt"):
-        k=open("el_key.txt",encoding="utf-8").read().strip()
+    import os
+    k=os.environ.get("ELEVENLABS_API_KEY","").strip()
+    if not k and os.path.exists("el_key.txt"):
+        for ln in open("el_key.txt",encoding="utf-8-sig"):
+            s=ln.strip().strip('"').strip("'").strip()
+            if s.lower().startswith("elevenlabs_api_key="): s=s.split("=",1)[1].strip()
+            if s: k=s; break
     return k
 API=_load_key()
 if not API: sys.exit("ELEVENLABS_API_KEY 없음")

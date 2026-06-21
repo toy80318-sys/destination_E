@@ -1,0 +1,180 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Destination Earth — 사이버펑크 글래스 레이아웃 시안</title>
+<style>
+:root{
+  --cy:#36e3ff; --gr:#42f5b0; --go:#ffd25a; --rd:#ff5d6c; --gy:#9fb4c8; --mg:#ff5cf0;
+  --ink:#eaf6ff; --dim:#8fa9c2; --glass:rgba(13,24,40,.82);
+  --rad:7px; --cut:11px; --line:1.6px;
+}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Segoe UI","Malgun Gothic",sans-serif;color:var(--ink);min-height:100vh;
+  background:radial-gradient(1400px 800px at 75% -10%,#102742,#0a1626 50%,#04070e 100%);
+  background-attachment:fixed;padding:14px 16px;font-size:14px}
+.t-dim{color:var(--dim)} .neon{color:var(--cy);text-shadow:0 0 8px #36e3ff88}
+
+/* ── 노치 글래스 공통(2중 레이어: 바깥 네온라인 + 안쪽 글래스) ── */
+.holo,.panel,.chip,.qcard,.scard,.pop{
+  position:relative;isolation:isolate;border:0;
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
+}
+.panel,.qcard,.scard,.pop,.chip{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c,var(--cy)) 70%,white),var(--c,var(--cy)) 55%,color-mix(in srgb,var(--c,var(--cy)) 55%,black));
+}
+.panel::before,.qcard::before,.scard::before,.pop::before,.chip::before{
+  content:"";position:absolute;inset:var(--line);z-index:-1;
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
+  background:linear-gradient(150deg,color-mix(in srgb,var(--c,var(--cy)) 14%,transparent),transparent 60%),var(--glass);
+  -webkit-backdrop-filter:blur(10px) saturate(150%);backdrop-filter:blur(10px) saturate(150%);}
+
+/* 버튼(키트와 동일) */
+.btn{--c:var(--cy);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 18px;cursor:pointer;white-space:nowrap;font:700 14px/1 inherit;letter-spacing:.04em;color:var(--ink);border:0;
+  text-shadow:0 0 8px color-mix(in srgb,var(--c) 60%,transparent);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 95%,white),var(--c) 55%,color-mix(in srgb,var(--c) 60%,black));
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 16px color-mix(in srgb,var(--c) 30%,transparent);transition:.12s}
+.btn::before{content:"";position:absolute;inset:1.4px;z-index:-1;clip-path:inherit;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 18%,transparent),transparent 55%),var(--glass);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.btn.cy{--c:var(--cy)}.btn.gr{--c:var(--gr)}.btn.go{--c:var(--go)}.btn.rd{--c:var(--rd)}.btn.gy{--c:var(--gy);color:#dbe7f2;text-shadow:none}.btn.mg{--c:var(--mg)}
+.btn.sm{padding:6px 12px;font-size:12px}
+
+/* 상단 상태바 칩 */
+.topbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.chip{--c:var(--cy);padding:7px 14px;font-weight:700;font-size:13px;display:inline-flex;gap:7px;align-items:center;--cut:7px}
+.chip .v{color:#fff;text-shadow:0 0 8px currentColor}
+.brand{font-weight:800;letter-spacing:.08em;font-size:16px;margin-right:6px}
+
+/* 레이아웃 그리드 */
+.wrap{display:grid;grid-template-columns:240px 1fr 300px;gap:14px;align-items:start}
+@media(max-width:1100px){.wrap{grid-template-columns:1fr}}
+.panel{--c:var(--cy);padding:0}
+.panel .hd{padding:11px 16px;font-weight:800;letter-spacing:.06em;font-size:13px;text-transform:uppercase;
+  color:var(--cy);border-bottom:1px solid #36e3ff33;display:flex;align-items:center;gap:8px}
+.panel .bd{padding:14px 16px}
+
+/* 포트레이트 프레임 */
+.portrait{--c:var(--cy);position:relative;isolation:isolate;width:100%;aspect-ratio:1;border:0;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+  background:linear-gradient(135deg,var(--cy),#0a1626);display:flex;align-items:center;justify-content:center;font-size:54px}
+.portrait::before{content:"";position:absolute;inset:2px;z-index:-1;clip-path:inherit;background:#0c1a2c}
+
+/* 게이지 */
+.bar{height:9px;border-radius:5px;background:#0c1a2c;border:1px solid #ffffff14;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--c,var(--gr)),color-mix(in srgb,var(--c,var(--gr)) 60%,white));box-shadow:0 0 12px var(--c,var(--gr))}
+
+/* 퀘스트 카드 */
+.qcard{--c:var(--go);padding:0;margin-bottom:12px}
+.qcard .qh{padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #ffffff12;font-weight:800;color:var(--go)}
+.qcard .qb{padding:12px 14px;color:var(--dim);font-size:13px;line-height:1.5}
+.qcard .qf{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #ffffff12}
+.reward{color:var(--gr);font-weight:700}
+
+/* 함선 카드 */
+.scard{--c:var(--cy);padding:12px 14px;margin-bottom:10px}
+.scard .sn{font-weight:800;letter-spacing:.04em;margin-bottom:4px}
+.stat{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-top:3px}
+
+/* 대화 팝업 오버레이 */
+.stage{position:relative;margin-top:16px;min-height:300px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(180deg,#0a1626,#070d18);border:1px solid #ffffff12;
+  display:flex;align-items:center;justify-content:center;padding:28px}
+.pop{--c:var(--cy);max-width:680px;width:100%;padding:0}
+.pop .ph{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid #36e3ff2b}
+.pop .pp{--c:var(--cy);width:84px;height:84px;flex:0 0 84px;font-size:40px;
+  position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  background:linear-gradient(135deg,var(--cy),#0a1626)}
+.pop .pp::before{content:"";position:absolute;inset:2px;z-index:-1;clip-path:inherit;background:#0c1a2c}
+.pop .nm{font-weight:800;font-size:20px;color:var(--cy);text-shadow:0 0 10px #36e3ff66}
+.pop .line{padding:20px 22px;font-size:18px;line-height:1.6}
+.pop .pf{display:flex;gap:12px;justify-content:flex-end;padding:0 20px 18px}
+</style>
+
+<div class="topbar">
+  <span class="brand neon">🛰️ 빅 픽처 스페이스</span>
+  <span class="chip cy">💰 <span class="v">99,959,983,367</span></span>
+  <span class="chip" style="--c:var(--mg)">VE <span class="v">151</span></span>
+  <span class="chip" style="--c:var(--go)">★ <span class="v">1,103</span></span>
+  <span class="chip" style="--c:var(--gr)">ACT 1 · TURN 16</span>
+  <span class="chip rd">⚔ 전투력 <span class="v">948</span></span>
+  <span style="flex:1"></span>
+  <button class="btn gy sm">⚙</button>
+  <button class="btn rd sm">닫기</button>
+</div>
+
+<div class="wrap">
+  <!-- 좌: 사령관 / 백구 -->
+  <div class="panel" style="--c:var(--cy)">
+    <div class="hd">👤 사령관</div>
+    <div class="bd">
+      <div class="portrait">🧑‍🚀</div>
+      <div style="margin-top:12px;font-weight:800">데스티네이션 사령관</div>
+      <div class="t-dim" style="font-size:12px;margin-top:2px">옛 지구 귀환 작전 · 전사</div>
+      <div class="t-dim" style="font-size:12px;margin-top:12px">함대 전투력</div>
+      <div class="bar" style="--c:var(--cy)"><i style="width:78%"></i></div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <span class="chip" style="--c:var(--gy)">🐕 백구</span>
+        <span class="t-dim" style="font-size:12px;align-self:center">조언자 AI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 중: 퀘스트 -->
+  <div>
+    <div class="panel" style="--c:var(--go)">
+      <div class="hd" style="color:var(--go);border-color:#ffd25a33">🎖️ 행성 퀘스트 — 수락 가능</div>
+      <div class="bd" style="padding:14px">
+        <div class="qcard" style="--c:var(--go)">
+          <div class="qh">🛸 치크스 정찰대 격퇴 <span class="t-dim" style="font-weight:400;font-size:12px">· P09</span></div>
+          <div class="qb">치크스 정찰대가 보급선을 노리고 있다. 강하 전에 요격하라.</div>
+          <div class="qf"><span class="reward">+💰5,400 · VE+27</span><button class="btn go sm">✓ 수락</button></div>
+        </div>
+        <div class="qcard" style="--c:var(--cy)">
+          <div class="qh" style="color:var(--cy)">🛡️ 벙커존 행성 디펜스 <span class="t-dim" style="font-weight:400;font-size:12px">· P22</span></div>
+          <div class="qb">저항군 거점을 4웨이브 동안 방어하라. 성공 시 ×2 지구저항군 함선 획득.</div>
+          <div class="qf"><span class="reward">+💰10,000 · 전설 파츠</span><button class="btn cy sm">▶ 시작</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 우: 함대 -->
+  <div class="panel" style="--c:var(--cy)">
+    <div class="hd">🚀 함대</div>
+    <div class="bd" style="padding:12px">
+      <div class="scard" style="--c:var(--go)">
+        <div class="sn neon" style="color:var(--go)">🐢 거북선 <span class="chip" style="--c:var(--go);--cut:5px;padding:2px 8px;font-size:11px">신화</span></div>
+        <div class="stat"><span>ATT 3946</span><span>ENG 2113</span></div>
+        <div class="bar" style="--c:var(--go)"><i style="width:92%"></i></div>
+      </div>
+      <div class="scard">
+        <div class="sn">거북선 II</div>
+        <div class="stat"><span>ATT 2668</span><span>ENG 1302</span></div>
+        <div class="bar" style="--c:var(--cy)"><i style="width:64%"></i></div>
+      </div>
+      <div class="scard">
+        <div class="sn">거북선 III</div>
+        <div class="stat"><span>ATT 2484</span><span>ENG 1219</span></div>
+        <div class="bar" style="--c:var(--cy)"><i style="width:58%"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 대화 팝업 시안 -->
+<div class="stage">
+  <div class="pop" style="--c:var(--cy)">
+    <div class="ph">
+      <div class="pp">🐕</div>
+      <div><div class="nm">백구</div><div class="t-dim" style="font-size:12px">조언자 AI</div></div>
+    </div>
+    <div class="line">사령관, 순서가 있어요. 먼저 만나야 할 사람이 있습니다. 그 사람 없이는 다음으로 못 가요.</div>
+    <div class="pf">
+      <button class="btn gy">⏭ 건너뛰기</button>
+      <button class="btn cy">다음 ▶</button>
+    </div>
+  </div>
+</div>

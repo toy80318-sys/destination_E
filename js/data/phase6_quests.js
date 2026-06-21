@@ -235,7 +235,7 @@ const PHASE6_CUTSCENES_KO={
     {char:'hero04', name:'가가린', color:'#ffd700', text:'좌익도 깨끗하다. 학익진 — 완성.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'4.7GHz 공명파 — 충전 100%. 발사 명령 대기.'},
-    {char:'system', name:'우르사 메이저', color:'#ff3366', text:'... 호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.'},
+    {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'... 호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.'},
     {char:'hero07', name:'테슬라', color:'#ffd700', text:'(웃으며) 100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.'}
   ],
 
@@ -244,7 +244,7 @@ const PHASE6_CUTSCENES_KO={
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.'},
     {char:'hero02', name:'장영실', color:'#80e8c0', text:'거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.'},
     {char:'hero08', name:'마르코 폴로', color:'#ffd700', text:'적 후위 통신 — 차단 완료. 지원 워프 차단했어.'},
-    {char:'system', name:'우르사 메이저', color:'#ff3366', text:'(처음으로 동요) 그것은... 시공 공명? 불가능하다. 자연 결정체로는...'},
+    {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'(처음으로 동요) 그것은... 시공 공명? 불가능하다. 자연 결정체로는...'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.'},
     {char:'commander', name:'{사령관}', color:'#00f3ff', text:'... 발사.'}
@@ -264,7 +264,7 @@ const PHASE6_CUTSCENES_KO={
   // ─── CH14-A "400년의 끝" (Q23-06 완료 · 우르사 격파) ───
   p6_ch14a:[
     {char:'system', name:'시스템', color:'#38bdf8', text:'우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.'},
-    {char:'system', name:'우르사 메이저', color:'#ff3366', text:'(꺼져가는 신호) 인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...'},
+    {char:'ursa', name:'우르사 메이저', color:'#ff3366', text:'(꺼져가는 신호) 인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'... 끝났다. 100년 봉인의 종결이다.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'(창밖을 보며) 지구야. 정말 지구야.'},
     {char:'hero06', name:'A. 아인슈타인', color:'#cc99ff', text:'(조용히) 시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.'},
@@ -280,7 +280,7 @@ const PHASE6_CUTSCENES_KO={
 
   // ─── CH14-B "지구 착륙" (P31 도착) ───
   p6_ch14b:[
-    {char:'system', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
+    {char:'nav_ai', name:'항법 AI', color:'#38bdf8', text:'지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.'},
     {char:'maximov', name:'레인저 맥시모프', color:'#88d65b', text:'사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'(지구를 바라보며) 내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.'},
     {char:'hero04', name:'가가린', color:'#ffd700', text:'1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.'},
@@ -301,7 +301,7 @@ const PHASE6_CUTSCENES_KO={
   // ─── CH15-A "명예의 전당" (Q24-05 완료 · 엔딩) ───
   p6_ch15a:[
     {char:'maximov', name:'레인저 맥시모프', color:'#9ee7ff', text:'결의안 채택 완료. 프록시마B부터 글리제 균열까지 — {회사}가 전 은하계 행성 총독권을 경매로 인수한다.'},
-    {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
+    {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 구역 3행성 — 캅테인 균열, 오리온 균열, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.'},
     {char:'hero02', name:'장영실', color:'#a0d8ef', text:'총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.'},
     {char:'hero09', name:'이휘소 박사', color:'#9ee7ff', text:'보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.'}
   ],
@@ -344,7 +344,7 @@ const PHASE6_CUTSCENES_EN={
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'Left flank is clean too. Crane Wing — complete.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Ursa Major core — exposed. The Void barrier is still active.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'4.7GHz resonance wave — charge at 100%. Awaiting the order to fire.'},
-    {char:'system', name:'Ursa Major', color:'#ff3366', text:'... My escort has fallen. But my core barrier cannot be pierced by any weapon. What is it — that you possess?'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'... My escort has fallen. But my core barrier cannot be pierced by any weapon. What is it — that you possess?'},
     {char:'hero07', name:'Tesla', color:'#ffd700', text:'(smiling) The old scholar you threw into the rift a hundred years ago — it\'s his theory.'}
   ],
 
@@ -353,7 +353,7 @@ const PHASE6_CUTSCENES_EN={
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'Spacetime crystal calibration — applied. Void barrier resonance frequency locked on.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#80e8c0', text:'Geobukseon ballistae — full firepower charged to 100%. Crane Wing focus-fire formation aligned.'},
     {char:'hero08', name:'Marco Polo', color:'#ffd700', text:'Enemy rear comms — fully jammed. Reinforcement warps are cut off.'},
-    {char:'system', name:'Ursa Major', color:'#ff3366', text:'(shaken for the first time) That is... spacetime resonance? Impossible. With natural crystals, you cannot...'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'(shaken for the first time) That is... spacetime resonance? Impossible. With natural crystals, you cannot...'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'It was possible. For a hundred years inside the rift — I cultivated the crystals without you ever knowing.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'Four hundred years ago — I held off 133 ships with twelve. Today, nine will be enough.'},
     {char:'commander', name:'{commander}', color:'#00f3ff', text:'... Fire.'}
@@ -373,7 +373,7 @@ const PHASE6_CUTSCENES_EN={
   // ─── CH14-A "The End of Four Hundred Years" (Q23-06 complete · Ursa defeated) ───
   p6_ch14a:[
     {char:'system', name:'System', color:'#38bdf8', text:'Ursa Major destruction confirmed. Commander Eisenklaue\'s ship destroyed simultaneously. Enemy fleet — zero remaining. Void rift — closing.'},
-    {char:'system', name:'Ursa Major', color:'#ff3366', text:'(signal fading) Humanity... you... have risen... again... The blockade... could never... have been... eternal...'},
+    {char:'ursa', name:'Ursa Major', color:'#ff3366', text:'(signal fading) Humanity... you... have risen... again... The blockade... could never... have been... eternal...'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'... It\'s over. The end of a century-long seal.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'(gazing out the window) Earth. It\'s really Earth.'},
     {char:'hero06', name:'A. Einstein', color:'#cc99ff', text:'(quietly) Spacetime has come undone. The rift is closing. Returning — to its natural state.'},
@@ -389,7 +389,7 @@ const PHASE6_CUTSCENES_EN={
 
   // ─── CH14-B "Landing on Earth" (P31 arrival) ───
   p6_ch14b:[
-    {char:'system', name:'Navigation AI', color:'#38bdf8', text:'Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.'},
+    {char:'nav_ai', name:'Navigation AI', color:'#38bdf8', text:'Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.'},
     {char:'maximov', name:'Ranger Maximoff', color:'#88d65b', text:'Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'(gazing at Earth) That\'s the very sky I looked up at in the days I lived and fought. It hasn\'t changed.'},
     {char:'hero04', name:'Gagarin', color:'#ffd700', text:'April 12th, 1961. The Earth I first saw. Exactly as it was.'},
@@ -410,7 +410,7 @@ const PHASE6_CUTSCENES_EN={
   // ─── CH15-A "Hall of Fame" (Q24-05 complete · ending) ───
   p6_ch15a:[
     {char:'maximov', name:'Ranger Maximoff', color:'#9ee7ff', text:'The resolution has passed. From Proxima B to the Gliese Rift — {company} acquires governorship of every planet in the galaxy by auction.'},
-    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
+    {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The three Void-zone planets — the Kapteyn Rift, the Orion Rift, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry.'},
     {char:'hero02', name:'Jang Yeong-sil', color:'#a0d8ef', text:'Only once the governorship auctions are won and the defense fleets deployed will the galaxy be stable.'},
     {char:'hero09', name:'Dr. Lee Hwi-so', color:'#9ee7ff', text:'The Void planets are... going to be different somehow. They were the worlds that lay beneath Ursa Major, after all.'}
   ],

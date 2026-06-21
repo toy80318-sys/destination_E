@@ -254,6 +254,8 @@ function _shipImgSrcRaw(ship){
   const nm=(ship.nm||'').toLowerCase();
   // 캐시 버스터: Firebase hosting 이 png 24h 캐시 → 이미지 갱신 시 _GAME_VER 변경으로 강제 새로고침
   const _ver=(typeof window!=='undefined'&&window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+  // 디스트로이 스타(히든 유니크) — 볼티움(P09) 행성 이미지를 함선 이미지로 사용. img/planets/ 경로라 HD(img/ships/H/) 라우팅 자동 우회. 사용자 요청 2026-06-22.
+  if((ship.catalogId||ship.catId||ship.id||'').toString().toUpperCase().indexOf('DESTROYER_STAR')>-1||ship._destroyerStar)return 'img/planets/P09.png'+_ver;
   // 스킨(홀로그램) 외관 우선 — 능력치는 그대로, 이미지만 다른 함선의 것을 사용
   if(ship._skinCatId){
     const _sk=String(ship._skinCatId).toUpperCase();

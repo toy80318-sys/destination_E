@@ -398,7 +398,7 @@ function _formationUnlocked(){
 // 6열(0=전방)×8행(0~7) 그리드의 [col,row] 셀 목록(우선순위 순, 첫 셀=기함). slot=col*8+row
 const FORMATION_PRESETS={
   arrow:  [[0,3],[0,4],[1,2],[1,5],[2,1],[2,6],[3,0],[3,7],[2,3],[2,4],[3,3],[3,4],[1,3],[1,4],[2,2],[2,5]],
-  crane:  [[0,0],[0,7],[0,1],[0,6],[1,1],[1,6],[1,2],[1,5],[2,2],[2,5],[2,3],[2,4],[3,3],[3,4],[4,3],[4,4]],
+  crane:  [[0,3],[0,4],[3,3],[3,4],[3,2],[3,5],[4,3],[4,4],[2,1],[2,6],[3,1],[3,6],[2,0],[2,7],[1,0],[1,7]],
   square: [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,2],[2,3],[2,4],[2,5],[3,2],[3,3],[3,4],[3,5]],
   diamond:[[0,3],[0,4],[1,2],[1,5],[2,1],[2,6],[3,1],[3,6],[4,2],[4,5],[5,3],[5,4],[2,3],[2,4],[3,3],[3,4]]
 };
@@ -1108,8 +1108,9 @@ function upgradeCargoSlot(shipIdx, fromModal){
     s.cargoSlots=({소형:5,중형:10,대형:20,전설기함:30,신화:40})[s.tier]||5;
   }
   const cur=s.cargoSlots;
-  if(cur>=100){
-    // 최대 100칸 경고창
+  const _cap=(typeof _cargoCap==='function')?_cargoCap(s):100;
+  if(cur>=_cap){
+    // 최대칸 경고창
     const warnModal=document.createElement('div');
     warnModal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center';
     warnModal.innerHTML=`<div style="background:#0a1628;border:2px solid var(--red);border-radius:14px;padding:28px 32px;max-width:360px;text-align:center;box-shadow:0 0 40px rgba(255,60,60,.4)">
@@ -1124,12 +1125,12 @@ function upgradeCargoSlot(shipIdx, fromModal){
     document.body.appendChild(warnModal);
     return;
   }
-  if(cur+2>100){notify(I18N.t('notify.cargoMax80',{add:100-cur}),'err');return;}
+  if(cur+2>_cap){notify(I18N.t('notify.cargoMax80',{add:_cap-cur}),'err');return;}
   const cost=getCargoUpgradePrice(s);
   if(G.credits<cost){notify(I18N.t('notify.needCreditsCost',{cost:cost.toLocaleString()}),'err');return;}
-  G.credits-=cost;s.cargoSlots=Math.min(100,cur+2);
+  G.credits-=cost;s.cargoSlots=Math.min(_cap,cur+2);
   updateHUD();notify(I18N.t('notify.holdExpanded',{nm:shipDisplayNm(s),n:s.cargoSlots,cr:cost.toLocaleString()}),'ok');
-  baekgu(I18N.t('baekgu.holdExpanded',{nm:shipDisplayNm(s),n:s.cargoSlots,note:s.cargoSlots>=100?I18N.t('baekgu.holdMaxReached'):I18N.t('baekgu.holdNextExpensive')}));
+  baekgu(I18N.t('baekgu.holdExpanded',{nm:shipDisplayNm(s),n:s.cargoSlots,note:s.cargoSlots>=_cap?I18N.t('baekgu.holdMaxReached'):I18N.t('baekgu.holdNextExpensive')}));
   if(fromModal){showShipDetailModal(shipIdx);}else{rerenderShipOrGarage();}
   saveGame(true);
 }

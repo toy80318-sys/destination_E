@@ -35,6 +35,7 @@ NATIVE_CNT="기|명|척|배|번|대|권|종|칸|단편|발|함|살|마리|군데
 SINO_UNIT="퍼센트|％|%|년|개월|일|인|초|분|시간|크레딧|단계|레벨|등급|미터|광년|만|천|억|개"  # 개월 우선
 
 def convert(t):
+    import re as _re; t=_re.sub(r'(?<=\d),(?=\d)','',t)
     # 분수 A/B -> B분의 A
     t=re.sub(r'(\d+)\s*/\s*(\d+)', lambda m: sino(m.group(2))+"분의 "+sino(m.group(1)), t)
     # ± 기호

@@ -242,7 +242,7 @@ const PHASE5_CUTSCENES_KO={
     // ─── CH12-B "방어막 해석" (Q22-02 완료) ───
   p5_ch12b:[
     {char:'hero01', name:'이순신', color:'#c0a060', text:'끝났어, 아이젠클로.'},
-    {char:'system', name:'아이젠클로', color:'#9ee7ff', text:'...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.'},
+    {char:'eisenklau', name:'아이젠클로', color:'#9ee7ff', text:'...아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.'},
     {char:'hero01', name:'이순신', color:'#c0a060', text:'보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.'}
   ],
 
@@ -307,7 +307,7 @@ const PHASE5_CUTSCENES_EN={
     // ─── CH12-B "Decoding the Shield" (Q22-02 complete) ───
   p5_ch12b:[
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'It\'s over, Eisenklau.'},
-    {char:'system', name:'Eisenklau', color:'#9ee7ff', text:'...No. The will of the Void Lord — it is not me alone. Ursa Major is merely one of his hands and feet.'},
+    {char:'eisenklau', name:'Eisenklau', color:'#9ee7ff', text:'...No. The will of the Void Lord — it is not me alone. Ursa Major is merely one of his hands and feet.'},
     {char:'hero01', name:'Yi Sun-sin', color:'#c0a060', text:'The Void Lord. So that was the one behind Krieg.'}
   ],
 

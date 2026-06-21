@@ -1,0 +1,10 @@
+[
+ {"out":"clips/baekgu/get_legendPart.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 전설급 파츠예요! 정비소에서 장착하면 함선이 확 달라질 거예요."},
+ {"out":"clips/baekgu/get_mythicPart.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 신화급 파츠라니…! 이건 정말 귀한 거예요, 사령관. 최고의 한 방이 되겠어요."},
+ {"out":"clips/baekgu/get_legendShip.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 전설급 함선을 손에 넣었어요! 함대의 핵심이 될 거예요."},
+ {"out":"clips/baekgu/get_mythicShip.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 신화급 함선…! 믿기지 않아요, 사령관. 이 정도면 전설을 새로 쓰는 거예요."},
+ {"out":"clips_en/baekgu/get_legendPart.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] A legendary part! Equip it at the workshop and your ship will feel completely different."},
+ {"out":"clips_en/baekgu/get_mythicPart.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] A mythic part...! This is truly rare, Commander. It'll be your finishing blow."},
+ {"out":"clips_en/baekgu/get_legendShip.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] We've got a legendary ship! It'll be the core of the fleet."},
+ {"out":"clips_en/baekgu/get_mythicShip.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] A mythic ship...! I can't believe it, Commander. This rewrites the legends."}
+]

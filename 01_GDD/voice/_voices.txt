@@ -1,0 +1,63 @@
+총 보이스: 54
+============================================================
+Roger - Laid-Back, Casual, Resonant | id=CwhRBWXzGAHq8TQ4Fs17 | male en 
+Sarah - Mature, Reassuring, Confident | id=EXAVITQu4vr4xnSDxMaL | female en 
+Laura - Enthusiast, Quirky Attitude | id=FGY2WhTYpPnrIDTdsKH5 | female en 
+Charlie - Deep, Confident, Energetic | id=IKne3meq5aSn9XLyUdCD | male en 
+George - Warm, Captivating Storyteller | id=JBFqnCBsd6RMkjVDRZzb | male en 
+Callum - Husky Trickster | id=N2lVS1w4EtoT3dr4eOWO | male en 
+River - Relaxed, Neutral, Informative | id=SAz9YHcvj6GT2YYXdXww | neutral en 
+Harry - Fierce Warrior | id=SOYHLrjzK2X1ezoPC6cr | male en 
+Liam - Energetic, Social Media Creator | id=TX3LPaxmHKxFdv7VOQHJ | male en 
+Alice - Clear, Engaging Educator | id=Xb7hH8MSUJpSbSDYk0k2 | female en 
+Matilda - Knowledgable, Professional | id=XrExE9yKIg1WjnnlVkGX | female en 
+Will - Relaxed Optimist | id=bIHbv24MWmeRgasZH58o | male en 
+Jessica - Playful, Bright, Warm | id=cgSgspJ2msm6clMCkdW9 | female en 
+Eric - Smooth, Trustworthy | id=cjVigY5qzO86Huf0OWal | male en 
+Bella - Professional, Bright, Warm | id=hpp4J3VqNfWAUOO0d1Us | female en 
+Chris - Charming, Down-to-Earth | id=iP95p4xoKVk53GoZ742B | male en 
+Brian - Deep, Resonant and Comforting | id=nPczCjzI2devNBz1zQrb | male en 
+Daniel - Steady Broadcaster | id=onwK4e9ZLuTAKqWW03F9 | male en 
+Lily - Velvety Actress | id=pFZP5JQG7iQjIQuC4Bku | female en 
+Adam - Dominant, Firm | id=pNInz6obpgDQGcFmaJgB | male en 
+Bill - Wise, Mature, Balanced | id=pqHfZKP75CvOlQylNhV4 | male en 
+데스티네이션 사령관           | id=vIbBcWXLhhY2phsmwv5o |   
+Marty McFly          | id=godK6kuNyI25S07q9oyq | male en 
+광개토대왕2               | id=aNCmpyCEfBhqUdsqtWWA |   
+Ursa Major EN (boss) | id=HtX6ldi13wWkUMIZD7Xq |   
+레인저 맥시모프             | id=yQS6ogcqBodS20VEtbSK |   
+Joon-ho - Warm and Grounded | id=NpneagLVR101ytYGxUPX | male ko 
+Bryan - Solemn, Dramatic, and Informed | id=ESNrF6xSj96uiykXXT1f | male en 
+Marty McFly          | id=9ds4MRacs4hpqV5NAE6Z | male en 
+Gaby - Cute & Shy    | id=n4GNpJP6Y2Nd09pDtetA | female es 
+Hunmin - Calm, Soft and Clear | id=MpbDJfQJUYUnp0i1QvOZ | male ko 
+Anna Kim             | id=uyVNoMrnUku1dZyVEXwD | female ko 
+Manbo - Encouraging, Clear and Measured | id=ZZ4xhVcc83kZBfNIlIIz | male ko 
+Piper - Positive, Wise and Direct | id=DtsPFCrhbCbbJkwZsb3d | female en 
+Bay Bilici           | id=9lIABAlZV9P1hzdONTgy | male tr 
+Yuna - Cheerful, Clear and Natural | id=xi3rF0t7dg7uN2M0WUhr | female ko 
+니콜라 테슬라2             | id=32POHZEbXT9AL1vChR5E |   
+볼칸                   | id=v0NATpDD8kVC0K6C8N3F |   
+볼프노인                 | id=WI4NnfaCSltICc9QRdwS |   
+마르코폴로                | id=SemkNvit9UmCD1SWtpuf |   
+아이젠 클로               | id=pyPk875kUhi61JhqMlUF |   
+아우레우스 보스             | id=zRbLPQon2rGAD2Gt6PqO |   
+조언자 어린친구             | id=m8ZvjfA66O7ipbXTTQ4Y |   
+항법 AI                | id=eoYFTLfVKpYRP0YjMbBD |   
+치크스 전위대              | id=7oe0OWBW5nIs3dtP5fSG |   
+유리 가가린               | id=n0nuW8q6LQbO03kukmtW |   
+장영실5                 | id=RRx1ltP9XWOSY0lDSJ8B |   
+이순신 아이돌1             | id=Uzazy4zhKPfGGeuptGj0 |   
+이휘소 박사               | id=rvYBddlOBIYvVQkeCoB2 |   
+호레이쇼 넬슨              | id=Fp7sLM0EmhNS10FiC0bu |   
+아인슈타인2               | id=vnknFHabbOKNs4gZbbqQ |   
+아오리                  | id=4kYouJcMYDOPVQVD9ykh |   
+우르사 메이저              | id=CAKds35J8i23lmagRYAo |   
+아인슈타인                | id=1NGQGTqHdK7GFd6tAfXJ |   
+
+[한국어 후보]
+  ★ Joon-ho - Warm and Grounded NpneagLVR101ytYGxUPX
+  ★ Hunmin - Calm, Soft and Clear MpbDJfQJUYUnp0i1QvOZ
+  ★ Anna Kim uyVNoMrnUku1dZyVEXwD
+  ★ Manbo - Encouraging, Clear and Measured ZZ4xhVcc83kZBfNIlIIz
+  ★ Yuna - Cheerful, Clear and Natural xi3rF0t7dg7uN2M0WUhr

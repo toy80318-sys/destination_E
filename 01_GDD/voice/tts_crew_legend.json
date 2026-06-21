@@ -1,0 +1,6 @@
+[
+ {"out":"clips/baekgu/crew_legendary_1.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 사령관, 전설급 크루예요! 이런 인재는 좀처럼 만나기 힘들어요 — 꼭 영입하세요!"},
+ {"out":"clips/baekgu/crew_legendary_2.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[excited] 전설의 크루가 우리 함대에 합류했어요! 사령관, 큰 전력이 될 거예요."},
+ {"out":"clips_en/baekgu/crew_legendary_1.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] Commander, a legendary crew member! You rarely meet talent like this — recruit them, no question!"},
+ {"out":"clips_en/baekgu/crew_legendary_2.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"[excited] A legendary crew member has joined our fleet! Commander, they'll be a huge asset."}
+]

@@ -41,6 +41,8 @@ const SHIP_CATALOG=[
   {id:'LGD01_SP',catalogId:'LGD01_SP',nm:I18N.t('ship.LGD01_SP.nm'),tier:'신화',price:0,maxHP:1300000,maxSH:325000,ATT:1225,INT:1175,TEC:1050,LOY:100,ic:'✦',desc:I18N.t('ship.LGD01_SP.desc'),_turtleSpecial:true},
   {id:'LGD02',nm:I18N.t('ship.LGD02.nm'),tier:'신화',price:22500000,maxHP:175000,maxSH:160000,ATT:323,INT:265,TEC:230,LOY:80,ic:'✦',desc:I18N.t('ship.LGD02.desc')},
   {id:'LGD03',nm:I18N.t('ship.LGD03.nm'),tier:'신화',price:30000000,maxHP:245000,maxSH:90000,ATT:306,INT:295,TEC:255,LOY:80,ic:'✦',desc:I18N.t('ship.LGD03.desc')},
+  // 히든 유니크 — 메카니카(F03) 전 행성 commerce LV10 달성 보상. 볼티움(P09) 이미지 사용 / 전투 시 거북선 1.5배 크기·체력, 렐러티비티 2배 공격력 / 슬링샷 발진(코어드론) + 10초마다 적 1척 즉사 레이저. 사용자 요청 2026-06-22. price:0 → 상점 자동 제외.
+  {id:'DESTROYER_STAR',catalogId:'DESTROYER_STAR',nm:I18N.t('ship.DESTROYER_STAR.nm'),tier:'신화',price:0,maxHP:1950000,maxSH:487500,ATT:612,INT:590,TEC:510,LOY:100,ic:'✦',desc:I18N.t('ship.DESTROYER_STAR.desc'),_destroyerStar:true},
   // ── 우르사 메이저 — 격파 후 나포 시 등장하는 최종 보스 함선 ────────────
   {id:'URSA',catalogId:'URSA',nm:I18N.t('ship.URSA.nm'),tier:'신화',price:0,maxHP:1000000,maxSH:120000,ATT:580,INT:340,TEC:220,LOY:0,ic:'✦',desc:I18N.t('ship.URSA.desc')},
   // ── 블랙팔콘 — 히든 보스 (보이드의 사자, 신화 최고 등급) ──────────────

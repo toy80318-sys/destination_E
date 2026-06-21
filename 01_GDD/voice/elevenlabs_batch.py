@@ -16,9 +16,13 @@ except ImportError:
 
 import os as _os
 def _load_key():
-    k=_os.environ.get("ELEVENLABS_API_KEY","")
-    if not k and _os.path.exists("el_key.txt"):
-        k=open("el_key.txt",encoding="utf-8").read().strip()
+    import os
+    k=os.environ.get("ELEVENLABS_API_KEY","").strip()
+    if not k and os.path.exists("el_key.txt"):
+        for ln in open("el_key.txt",encoding="utf-8-sig"):
+            s=ln.strip().strip('"').strip("'").strip()
+            if s.lower().startswith("elevenlabs_api_key="): s=s.split("=",1)[1].strip()
+            if s: k=s; break
     return k
 API_KEY=_load_key()
 # v3 audio tag([excited] 등)을 인식하는 모델 사용. 사양 변동 시 공식 문서에서 모델 id 확인.

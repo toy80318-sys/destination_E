@@ -256,6 +256,8 @@ function spawnPhasedQuests(pid){
         locked:_locked,
         lockReason:_lockReason||'',
         requires:template.requires||null,
+        _midBoss:template._midBoss||null,   // 중간보스 트리거 플래그 보존 (아이젠클로 등) — 누락 시 보스전 미발생 버그. 수정 2026-06-22.
+        heroId:template.heroId||null,        // 영웅 합류 퀘스트 식별자 보존
         status:'available',
         targetId:_firstObj.target||null,
         targetCommId:_firstObj.item||null,
@@ -369,6 +371,10 @@ function _storyQuestCurrentProgress(q,pid){
       if(/auction/.test(_t)&&_pl.owned)return obj.qty||1;
       if(/commerce/.test(_t)&&(_pl.commerce||_pl.owned))return obj.qty||1;
     }
+    // 서사형 1회 액션(안테나 신호 증폭/스캔/송신 등) — 전용 버튼이 없어 영구 미완 방지.
+    //   선행조건(전투 등)이 끝나 퀘가 active이고 해당 행성에 도착해 있으면 자동 충족.
+    //   (사용자 보고 2026-06-21: '안테나 신호 증폭 가동 0/1' 미완 — 거북선 설계도 최종 단편)
+    if(pid&&pid===G.currentPlanet&&/antenna|signal|broadcast|relay|_amp\b|^amp/.test(_t))return obj.qty||1;
     return q.progress||0;
   }
   if(obj.type==='delivery'&&obj.target) return (G.currentPlanet===obj.target)?obj.qty||1:0;
@@ -464,7 +470,7 @@ window.completeTuningQuests=completeTuningQuests;
 //         | 'combat_generic'(일반 전투 승리)
 //   (구버전 호환: 'explore'→gather, 'combat'→combat_generic)
 var _EXPLORE_ROUTE={
-  auction:['auction'], repair:['repair'], install:['install','tuning','amp'], commerce:['commerce'],
+  auction:['auction'], repair:['repair'], install:['install','tuning'], commerce:['commerce'],
   gather:['wreck','box','ruin','canyon','shaft','ejecta','crystal','core','capsule','archive','arrival','deep']
 };
 function _exploreActionMatches(action, target){

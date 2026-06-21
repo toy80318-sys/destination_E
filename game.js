@@ -43,9 +43,11 @@ window.addEventListener('unhandledrejection',function(e){
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}                                       // 범위 제한 [min,max]
 function sumQtyById(arr,id){return (arr||[]).filter(x=>x&&x.id===id).reduce((s,x)=>s+(x.qty||0),0);} // id 일치 항목 qty 합산
 function stringToSeed(str){return String(str||'').split('').reduce((a,c)=>a+c.charCodeAt(0),0);}      // 문자열→결정론적 시드
-function clampCargoSlots(slots,bonus){return Math.min(100,(slots||4)+(bonus||0));}                    // 화물칸 100 상한 클램프
+// 화물칸 최대치 — 전설기함·신화 함선만 120칸, 그 외 100칸 (사용자 요청 2026-06-21)
+function _cargoCap(ship){const t=ship&&ship.tier;return (t==='전설기함'||t==='신화')?120:100;}
+function clampCargoSlots(slots,bonus,cap){return Math.min(cap||100,(slots||4)+(bonus||0));}            // 화물칸 상한 클램프(cap 미지정 시 100)
 function getTotalCargoQty(){return (G.cargo||[]).reduce((s,c)=>s+(c.qty||0),0);}                      // 현재 적재 화물 총량
-try{if(typeof window!=='undefined'){window.clamp=clamp;window.sumQtyById=sumQtyById;window.stringToSeed=stringToSeed;window.clampCargoSlots=clampCargoSlots;window.getTotalCargoQty=getTotalCargoQty;}}catch(e){}
+try{if(typeof window!=='undefined'){window.clamp=clamp;window.sumQtyById=sumQtyById;window.stringToSeed=stringToSeed;window.clampCargoSlots=clampCargoSlots;window._cargoCap=_cargoCap;window.getTotalCargoQty=getTotalCargoQty;}}catch(e){}
 // ═══ DATA ═══════════════════════════════════════════════════════
 // 데이터 정의는 도메인별로 분리되어 js/data/ 폴더에 있습니다.
 // index.html이 game.js보다 먼저 다음 파일들을 로드하므로
@@ -2444,28 +2446,34 @@ function sellAllPartsBulk(){
   if(sellable.length===0){notify(I18N.t('notify.noSellableParts'),'warn');return;}
   const totalQty=sellable.reduce((s,i)=>s+i.qty,0);
   const totalCr=sellable.reduce((s,i)=>{const p=PARTS.find(x=>x.id===i.id);return s+Math.floor((p.price||0)*0.5*_mul)*i.qty;},0);
-  if(!confirm(I18N.t('ui.bulkSellParts',{n:totalQty,cr:totalCr.toLocaleString(),marco:hasMarco?I18N.t('ui.marcoBonusSuffix'):''})))return;
-  // 매각 실행 + 되돌리기용 스냅샷 (개수까지 깊은 복사)
-  const _undoParts=sellable.map(i=>({id:i.id,qty:i.qty}));
-  sellable.forEach(i=>{
-    const p=PARTS.find(x=>x.id===i.id);if(!p)return;
-    const unit=Math.floor((p.price||0)*0.5*_mul);
-    G.credits+=unit*i.qty;
-  });
-  // 인벤토리에서 제거
-  G.inventory=G.inventory.filter(i=>{
-    if(i.qty<=0)return false;
-    const p=PARTS.find(x=>x.id===i.id);
-    if(!p)return false;
-    return ['legend','mythic','set','hero'].includes(p.rarity);
-  });
-  try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:I18N.t('sell.bulkPartLabel',{n:totalQty})});}catch(e){}
-  updateHUD();
-  try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
-  notify(I18N.t('notify.partsBulkSell',{n:totalQty,cr:totalCr.toLocaleString()}),'gold');
-  baekgu(I18N.t('baekgu.scrapSold',{cr:totalCr.toLocaleString()}));
-  saveGame(true);
-  rerenderShipOrGarage();
+  // 실제 매각 실행 (확인 버튼 콜백에서 호출)
+  const _doBulkSell=()=>{
+    const _undoParts=sellable.map(i=>({id:i.id,qty:i.qty}));   // 되돌리기 스냅샷
+    sellable.forEach(i=>{
+      const p=PARTS.find(x=>x.id===i.id);if(!p)return;
+      const unit=Math.floor((p.price||0)*0.5*_mul);
+      G.credits+=unit*i.qty;
+    });
+    G.inventory=G.inventory.filter(i=>{   // 매각분 제거(전설/신화/세트/영웅만 잔류)
+      if(i.qty<=0)return false;
+      const p=PARTS.find(x=>x.id===i.id);
+      if(!p)return false;
+      return ['legend','mythic','set','hero'].includes(p.rarity);
+    });
+    try{_recordSell({type:'bulkPart',parts:_undoParts,credits:totalCr,label:I18N.t('sell.bulkPartLabel',{n:totalQty})});}catch(e){}
+    updateHUD();
+    try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
+    notify(I18N.t('notify.partsBulkSell',{n:totalQty,cr:totalCr.toLocaleString()}),'gold');
+    baekgu(I18N.t('baekgu.scrapSold',{cr:totalCr.toLocaleString()}));
+    saveGame(true);
+    rerenderShipOrGarage();
+  };
+  // 네이티브 confirm() → 게임 팝업(openModal)으로 교체 (사용자 요청 2026-06-22)
+  openModal(I18N.t('modal.partsSale'),
+    `<div style="text-align:center;padding:12px 10px;font-size:14px;line-height:1.75;color:var(--txt);white-space:pre-line">${I18N.t('ui.bulkSellParts',{n:totalQty,cr:totalCr.toLocaleString(),marco:hasMarco?I18N.t('ui.marcoBonusSuffix'):''})}</div>`,
+    [{txt:I18N.t('ui.confirm'),cls:'btn-gold',fn:()=>{closeModal();_doBulkSell();}},
+     {txt:I18N.t('btn.cancel'),cls:'btn-sm',fn:closeModal}]
+  );
 }
 
 // ── 매각 취소(되돌리기) 시스템 → js/modules/sell-undo.js 로 분할 (2026-06-13, 사용자 요청: 긴 코드 분할)
@@ -2834,6 +2842,8 @@ function investPlanet(pid){
   G.credits-=cost;st.commerce=lv+1;
   // 시나리오 탐사 퀘 연동 2026-06-11: 행성 투자(commerce 태그) 진행 — 투자한 행성 기준
   try{if(typeof bumpStoryQuestProgress==='function')bumpStoryQuestProgress('commerce',1,pid);}catch(e){}
+  // 디스트로이 스타 해금 체크 — 메카니카(F03) 전 행성 LV10 달성 시 지급. 사용자 요청 2026-06-22.
+  try{if(typeof checkDestroyerStarUnlock==='function')checkDestroyerStarUnlock();}catch(e){}
   updateHUD();notify(I18N.t('notify.planetUpgrade',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}),'gold');
   baekgu(I18N.t('baekgu.commerceLevel',{nm:pd.nm,lv:lv+1,tax:calcTaxFor(pid).toLocaleString()}));
   saveGame(true);
@@ -3018,9 +3028,14 @@ function grantSpecialTurtle(){
     try{if(typeof rerenderShipOrGarage==='function')rerenderShipOrGarage();}catch(e){}
     try{saveGame(true);}catch(e){}
     if(typeof openModal==='function'){
-      const _img=(typeof shipImgSrc==='function')?shipImgSrc({id:'LGD01_SP',catId:'LGD01_SP',catalogId:'LGD01_SP',tier:'신화',_turtleSpecial:true}):'';
+      // 거북선 함선 이미지 표시 (사용자 요청 2026-06-22). HD(img/ships/H/)·모바일(img/ships/m/) 폴더엔 LGD01_SP 가 없어
+      // shipImgSrc 라우팅이 404 나므로, PC·모바일·웹 모두 존재하는 기본 경로(img/ships/LGD01_SP.png)를 직접 사용. 실패 시 ✦ 폴백.
+      const _turtleImg='img/ships/LGD01_SP.png';
+      const _imgHtml=(typeof imgOrEmoji==='function')
+        ? imgOrEmoji(_turtleImg,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin-bottom:8px')
+        : '<img src="'+_turtleImg+'" alt="" style="width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin-bottom:8px" onerror="this.outerHTML=\'<div style=\\\'font-size:110px\\\'>✦</div>\'">';
       const _body='<div style="text-align:center;padding:8px">'+
-        '<img src="'+_img+'" alt="" style="width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin-bottom:8px" onerror="this.outerHTML=\'<div style=\\\'font-size:110px\\\'>✦</div>\'">'+
+        _imgHtml+
         '<div style="font-size:24px;color:#ffd700;font-weight:bold">✦ '+(_isEn?'Special Geobukseon Restored':'특수 거북선 복원 완료')+'</div>'+
         '<div style="font-size:16px;font-weight:bold;color:#ff88ff;margin-top:6px">'+((typeof shipDisplayNm==='function'?shipDisplayNm(_def):'')||_def.nm)+'</div>'+
         '<div style="font-size:12px;color:var(--dim);margin-top:6px">'+(_isEn?'5× the mythic Geobukseon — 2× size in battle':'신화 거북선의 5배 성능 · 전투 시 2배 크기')+'</div>'+
@@ -3031,6 +3046,60 @@ function grantSpecialTurtle(){
   }catch(e){console.warn('[turtle] grantSpecialTurtle fail',e);}
 }
 try{if(typeof window!=='undefined')window.grantSpecialTurtle=grantSpecialTurtle;}catch(e){}
+
+// ─── 디스트로이 스타(히든 유니크) — 메카니카(F03) 전 행성 commerce LV10 달성 시 1회 지급. 사용자 요청 2026-06-22. ───
+const DESTROYER_STAR_PLANETS=['P09','P10','P11','P12'];   // 메카니카 지역(F03): 볼티움·페르세틴·펙토라움·기가툼
+function checkDestroyerStarUnlock(){
+  try{
+    if(!G||G._destroyerStarGranted)return;
+    const allMax=DESTROYER_STAR_PLANETS.every(function(pid){
+      const st=G.planets&&G.planets[pid];
+      return st&&st.owned&&(st.commerce||0)>=10;
+    });
+    if(allMax)grantDestroyerStar();
+  }catch(e){console.warn('[destroyerStar] unlock check fail',e);}
+}
+function grantDestroyerStar(){
+  try{
+    if(!G)return;
+    const _isEn=(typeof I18N!=='undefined'&&I18N.getLang&&I18N.getLang()==='en');
+    if(G._destroyerStarGranted){ if(typeof closeModal==='function')closeModal(); return; }
+    const _def=(typeof SHIP_CATALOG!=='undefined')?SHIP_CATALOG.find(s=>s.id==='DESTROYER_STAR'):null;
+    if(!_def){ try{notify(_isEn?'Ship data error':'함선 데이터 오류','err');}catch(e){} return; }
+    const newShip={
+      id:'DESTROYER_STAR_'+Date.now(),catalogId:'DESTROYER_STAR',catId:'DESTROYER_STAR',
+      nm:_def.nm,tier:'신화',_destroyerStar:true,
+      maxHP:_def.maxHP,hp:_def.maxHP,
+      maxSH:_def.maxSH||0,sh:_def.maxSH||0,
+      ATT:_def.ATT||0,INT:_def.INT||0,TEC:_def.TEC||0,
+      HP:_def.maxHP,LOY:_def.LOY||100,DEF:_def.DEF||0,
+      cargoSlots:(typeof _def.cargoStart==='number'?_def.cargoStart:30),
+      parts:[],crewIds:[]
+    };
+    const _addRes=(typeof addShipToFleet==='function')?addShipToFleet(newShip):null;
+    G._destroyerStarGranted=true;
+    try{notify(I18N.t('notify.destroyerStarGained'),'pur');}catch(e){}
+    try{if(typeof baekgu==='function')baekgu(I18N.t('baekgu.destroyerStarGained'));}catch(e){}
+    try{if(typeof updateHUD==='function')updateHUD();}catch(e){}
+    try{if(typeof rerenderShipOrGarage==='function')rerenderShipOrGarage();}catch(e){}
+    try{saveGame(true);}catch(e){}
+    if(typeof openModal==='function'){
+      const _img='img/planets/P09.png';   // 볼티움 행성 이미지 = 함선 이미지
+      const _imgHtml=(typeof imgOrEmoji==='function')
+        ? imgOrEmoji(_img,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 24px #ff66cc);margin-bottom:8px')
+        : '<img src="'+_img+'" alt="" style="width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 24px #ff66cc);margin-bottom:8px" onerror="this.outerHTML=\'<div style=\\\'font-size:110px\\\'>✦</div>\'">';
+      const _body='<div style="text-align:center;padding:8px">'+
+        _imgHtml+
+        '<div style="font-size:24px;color:#ff66cc;font-weight:bold">✦ '+(_isEn?'Destroy Star Online':'디스트로이 스타 가동')+'</div>'+
+        '<div style="font-size:16px;font-weight:bold;color:#ff88ff;margin-top:6px">'+((typeof shipDisplayNm==='function'?shipDisplayNm(_def):'')||_def.nm)+'</div>'+
+        '<div style="font-size:12px;color:var(--dim);margin-top:6px">'+(_isEn?'Mechanica fully developed — Voltium weaponized. Colossal in battle · Core Drone launch · annihilates 1 enemy / 10s':'메카니카 전 행성 개발 완료 — 볼티움 무기화. 전투 시 거대 출현 · 코어드론 발진 · 10초마다 적 1척 완전 격파')+'</div>'+
+        (_addRes&&_addRes.added==='reserve'?'<div style="font-size:12px;color:var(--cyan);margin-top:4px">'+I18N.t('craft.reserveStored')+'</div>':'')+
+      '</div>';
+      openModal(_isEn?'Destroy Star':'디스트로이 스타', _body, [{txt:_isEn?'Great!':'좋아!',cls:'btn-gold',fn:closeModal}]);
+    }
+  }catch(e){console.warn('[destroyerStar] grant fail',e);}
+}
+try{if(typeof window!=='undefined'){window.grantDestroyerStar=grantDestroyerStar;window.checkDestroyerStarUnlock=checkDestroyerStarUnlock;}}catch(e){}
 
 // spawnPhasedQuests — js/story-quest-engine.js 로 이관 (사용자 요청 2026-06-07: 페이즈 모듈 분리)
 // window.spawnPhasedQuests 로 글로벌 노출되어 기존 호출처 그대로 동작

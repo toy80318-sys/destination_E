@@ -64,7 +64,7 @@
     const _pSrc1='img/pirates/'+_pf+'_'+_pIdx+'.png'+_gv;
     const _pSrc2='img/pirates/'+_pf+'.png'+_gv;
     const _pSrc3='img/quests/combat_'+_pf+'.png'+_gv;
-    const portrait=`<div style="width:240px;height:240px;border-radius:50%;background:rgba(0,0,0,.5);border:3px solid ${npc.col};box-shadow:0 0 32px ${npc.col}aa;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+    const portrait=`<div class="holo-portrait" style="width:240px;height:240px;border-radius:50%;background:rgba(0,0,0,.5);border:3px solid ${npc.col};box-shadow:0 0 32px ${npc.col}aa;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center">
       <img src="${_pSrc1}" data-fb2="${_pSrc2}" data-fb3="${_pSrc3}" alt="${npc.nm}" style="width:100%;height:100%;object-fit:cover" onerror="var f2=this.dataset.fb2,f3=this.dataset.fb3;if(f2&&!this.src.endsWith(f2)){this.src=f2}else if(f3&&!this.src.endsWith(f3)){this.src=f3}else{this.outerHTML='<span style=&quot;font-size:128px&quot;>${npc.ic}</span>'}">
     </div>`;
     const line=npc.line.replace('{X}','<b style="color:var(--gold)">'+demand.toLocaleString()+'</b>');
@@ -82,7 +82,7 @@
     btns.push({txt:I18N.t('toll.refuseBtn'),cls:'btn-red',fn:()=>{window.closeModal();_stopTollVoice();if(typeof proceed==='function')proceed();}});
     window.openModal(`${npc.ic} ${npc.nm}`,
       `<div style="padding:12px">
-        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;padding:14px;background:linear-gradient(135deg,${npc.col}22,rgba(10,10,20,.85));border:1px solid ${npc.col}88;border-radius:12px">
+        <div class="holo-panel c-red" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;padding:14px;background:linear-gradient(135deg,${npc.col}22,rgba(10,10,20,.85));border:1px solid ${npc.col}88;border-radius:12px">
           ${portrait}
           <div style="flex:1;min-width:200px">
             <div style="font-size:13px;color:${npc.col};font-weight:bold;margin-bottom:6px;letter-spacing:1px">${npc.nm}</div>

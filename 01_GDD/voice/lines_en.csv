@@ -1,0 +1,492 @@
+﻿num,char_slug,emotion,text_ko,text_en
+001,commander,[resolute][hesitant][curious],"얼마나, 잤지?",...How long was I out?
+002,commander,[resolute][hesitant][curious],지구는... 아직도?,And Earth... still?
+003,commander,[resolute][hesitant],"고향이, 아직 저 위에 있군.",...So home is still up there.
+004,commander,[resolute][hesitant][curious],사람이? 아직 누가 남아 있다고?,…People? Someone's still out here?
+005,commander,[resolute][curious],고작 장사로 봉쇄를 뚫겠다고?,You mean to break a blockade with trade?
+006,commander,[resolute],좀 오래 잠들어 있었습니다. 이제 막 깼고요.,I was asleep a long while. Only just woke.
+007,commander,[resolute],"지금은 고철뿐입니다. 하지만 곧, 훨씬 큰 걸 들고 오죠.","Scrap, for now. But soon — I'll bring back something far bigger."
+008,commander,[resolute][hesitant][curious],거북선…?,Geobukseon
+009,commander,[resolute][hesitant][curious],"그 사람은, 지금 어디 있지?",That person — where are they now?
+010,commander,[resolute],잘 부탁해.,I'm counting on you.
+011,commander,[resolute],구한다.,We save them.
+012,commander,[resolute],간다.,Here we go.
+013,commander,[resolute],"크리그를, 벌써 여기서 만나는군.","So we meet Krieg already, here."
+014,commander,[resolute][hesitant],사람부터 꺼낸다.,…We get the people out first.
+015,commander,[resolute],"백구, 62%면 충분해.","Baekgu, 62% is enough."
+016,commander,[resolute],마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.,Marco Polo. They say he's an independent broker in this sector. A smuggler who slips past Chiks eyes — he'll have the comms gear we need.
+017,commander,[resolute],여긴 은하 공용 항로다. 비켜.,This is a galactic public lane. Move.
+018,commander,[resolute],"발굴한다. 살아있는 거라면, 더더욱.",We dig it out. All the more if something's alive in there.
+019,commander,[resolute],오르크를 잡으면 다음 경로가 열려. 출발한다.,Catch Ork and the next route opens up. We move out.
+020,commander,[resolute],"치크스 변이 포자 ×3, 마침 이 구역 화물이다. 위장 미끼로 써먹자.",We've got three Chiks mutant spores — cargo from this very sector. Let's use them as our cover.
+021,commander,[resolute][hesitant],설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. …사람부터다.,We destroy the blueprints. And we pull Tesla out alive. (quietly) …People first.
+022,commander,[resolute][curious],"지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?","The route into the underground prison — Marco, can you pull up a map of the sector?"
+023,commander,[resolute],"이순신 장군이 수백 년째 저기 갇혀 있다. 오늘, 우리가 끝낸다.","General Yi Sun-sin has been locked in there for centuries. Today, we end it."
+024,commander,[resolute],장군. 함께 갑시다.,Admiral. Let's go together.
+025,commander,[resolute],함께 처리하자.,Let's deal with it together.
+026,commander,[resolute],아우레우스 정보 칩으로 좌표 분석. 진입한다.,Analyzing the coordinates with the Aureus Information Chip. We're going in.
+027,commander,[resolute],"아이젠클로. 100년 봉쇄의 집행관. 오늘, 네 쇠사슬을 여기서 끊는다.","Eisenklau. Enforcer of the hundred-year blockade. Today, I cut your chains right here."
+028,commander,[resolute],"들어간다. 아우레우스 태양핵 셋, 메카니카 양자칩 셋 — 충분해.","We're going in. Three Aureus Solar Cores, three Mechanica quantum chips — that's enough."
+029,commander,[resolute][hesitant],진입한다.,... We're going in.
+030,commander,[resolute],전 함대. 진형 학익진. 거북선 중앙. 진입한다.,All ships. Crane Wing Formation. Geobukseon at center. We're going in.
+031,commander,[resolute],아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.,Eisenklaue. The crime of caging humanity for a hundred years — ends today.
+032,commander,[resolute][hesitant],발사.,... Fire.
+033,commander,[resolute][hesitant],모두. 발사.,... Everyone. Fire.
+034,commander,[resolute][hesitant],백구.,... Baekgu.
+035,commander,[resolute][hesitant],내려간다.,... We're going down.
+036,commander,[resolute][hesitant],어디든. 우리는 함께다.,... Anywhere. We go together.
+037,commander,[resolute],이순신 제독님.,Admiral Yi Sun-sin.
+038,commander,[resolute],아직 봉쇄 중입니다.,The blockade still holds.
+039,commander,[resolute],네. 100년이 지났습니다.,Yes. A hundred years have passed.
+040,commander,[resolute][hesitant][curious],당신은…?,You're...?
+041,commander,[resolute],찾았습니다. 설계도 1권을 가지고 있습니다.,Found it. I have one of the blueprints.
+042,commander,[resolute][curious],예상했다고요?,You expected this?
+043,commander,[resolute],광개토대왕.,Gwanggaeto the Great
+044,baekgu,[matter-of-fact],"사령관. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요.",{commander}. Wake up. Energy at 7% — I scraped together the very last of it just to sound this alarm.
+045,baekgu,[matter-of-fact],"100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요.","A hundred years, three months, twelve days. I never once shut myself down — I was afraid no one would be left to wake you."
+046,baekgu,[matter-of-fact],"우르사 메이저의 봉쇄, 그대로입니다. 떠날 때보다 오히려 더 조여졌어요.",Ursa Major's blockade holds. Tighter now than the day we left.
+047,baekgu,[matter-of-fact],네. 그러니 감상은 나중에 하세요 — 일단 살아야 그 고향에 갑니다. 격납고에 고철 프레임이 흩어져 있어요. 수거하면 멈춘 엔진에 다시 불을 붙일 수 있습니다.,"It is. So save the sentiment for later — we survive first, then we reach it. The hangar's littered with Scrap Frames. Salvage them and we can light the dead engine again."
+048,baekgu,[matter-of-fact],"볼프 교역소예요. 수퍼비아 내권역의 낡은 정거장 — 그런데 사령관님, 불이 켜져 있어요. 100년 만에 처음 보는 '살아있는' 신호입니다.","The Wolf Trading Post. An old station in the inner Superbia region — but Commander, the lights are on. First 'living' signal I've seen in a hundred years."
+049,baekgu,[matter-of-fact],"버티는 거죠, 우리처럼. 저들에게 중력수정을 싸게 사서 아우레우스에 넘기면 40% 차익 — 첫 자금이에요.","Holding on, like us. Buy their gravity crystals cheap, sell them on Aureus — 40% margin. That's our first funds."
+050,baekgu,[matter-of-fact],"큰 불도 불씨 하나에서 시작해요. 살아남는 게, 반격의 첫 걸음입니다.",Even a wildfire starts from one ember. Surviving is the first step of the counterattack.
+051,baekgu,[matter-of-fact][alert][hesitant],"사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요.","(ears perked) …Commander, that old man in the back — I catch a hundred-year-old data scent on him. Let me go first."
+052,baekgu,[matter-of-fact],"설계도 단편 1/3, 골격도예요. 사령관님, 이건 단순한 함선이 아닙니다. 우르사 메이저조차 두려워했던 전설이에요.","Blueprint fragment one of three — the frame schematic. Commander, this is no ordinary ship. It's a legend that even Ursa Major feared."
+053,baekgu,[matter-of-fact],"나머지 두 조각을 모으는 길이, 곧 그 전설을 만나는 길입니다.",The path to gathering the other two pieces is the path to meeting that legend.
+054,baekgu,[matter-of-fact][whispers],"마르코 폴로 — 정보 브로커 등록. 허풍인지 진짜인지는, 제가 지켜볼게요.","Marco Polo — registered as an information broker. Whether it's bluster or the real thing, I'll be watching."
+055,baekgu,[matter-of-fact],"아우레우스 내권역이에요. 세금도 규정도 빡빡해요 — 대신 수퍼비아 중력수정은 여기선 희귀품, 비싸게 팔려요.","Inner Aureus region. Taxes and rules are tight here — but Superbia gravity crystals are rare, so they sell high."
+056,baekgu,[matter-of-fact],거북선 설계도 단편 2/3 확보 — 외피 가시 돌기 구조도. 코어 단편 하나만 더면 복원됩니다.,Turtle Ship blueprint fragment two of three secured — the hull spike schematic. Just one more core fragment and it's restored.
+057,baekgu,[matter-of-fact][growls][hesitant],"크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. …이건, 마음에 안 들어요.","Three Krieg light craft, one medium command ship. And — seven civilian miners held inside. (a low growl) …I don't like this one bit."
+058,baekgu,[matter-of-fact],"해적 소형 2, 지휘선 1 — 외곽 배치. 제가 먼저 길 열게요.","Two pirate light craft, one command ship — perimeter deployment. I'll open the way first."
+059,baekgu,[matter-of-fact],생존 확률 62%. 이순신 구출 시 크리그 전략 정보 확보 89%.,Survival odds: 62%. Odds of securing Krieg strategic intel if we rescue Yi Sun-sin: 89%.
+060,baekgu,[matter-of-fact][warm][hesitant],"사실은, 사령관님이랑이면 100%라고 적고 싶었어요. …그냥요.","…Honestly, with you I wanted to log it as 100%. (tail wagging) …Just saying."
+061,baekgu,[matter-of-fact][growls][hesitant],"말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착.","(a low growl) …Not the type that listens to words. Switching to combat mode, three enemy units detected."
+062,baekgu,[matter-of-fact][whispers][hesitant],"우주어 자동 번역 활성화. …100년입니다, 장군님.","Auto-translation of the star tongue is active. ...It's been a hundred years, Admiral."
+063,baekgu,[matter-of-fact],SW01 무기 세트 + SA01 장갑 세트 자동 장착 완료. 화력 대폭 상승.,Legendary weapon set and armor set auto-equipped. Firepower sharply up.
+064,baekgu,[matter-of-fact][warm],"임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. 이제, 혼자가 아니에요.",Mission complete. Next route — to extend a hand to the resistance. (tail wagging) We're not alone anymore.
+065,baekgu,[matter-of-fact],페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 옛 지구 해군 식별 코드 'HMS Victory'.,On the frontier of Schmelz — wreckage signal detected at coordinates roughly 200 years old. Old-Earth navy identification code 'HMS Victory'.
+066,baekgu,[matter-of-fact],영웅 합류: 호레이쇼 넬슨. 옛 지구 해군 진형 데이터 입수 → 학익진 명중률 +15%.,Hero joined: Horatio Nelson. Old-Earth navy formation data acquired → Crane Wing accuracy +15%.
+067,baekgu,[matter-of-fact],공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.,Found a preservation capsule in the factory's underground lab — a biosign! Someone's alive.
+068,baekgu,[matter-of-fact],"임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다.","Mission complete. The enforcer is down, and Dr. Lee Hwi-so has joined us. Now we pass through the Kapteyn rift — on to Ursa Major's stronghold."
+069,baekgu,[matter-of-fact][growls][excited][hesitant],"아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!","Eisenklau's flagship spotted — twice the size, armor off the charts. ...This scent — it's the enemy's chief. All ships, battle stations!"
+070,baekgu,[matter-of-fact],캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.,"Captain b a rift, Captain b a rift. Spacetime is warped here. Without an Aureus Solar Core stabilizer, the fleet will be torn apart."
+071,baekgu,[matter-of-fact],⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.,(spacetime distortion) ⚠ Lateral spacetime axis fluctuating ±0.3. Correcting fleet attitude.
+072,baekgu,[matter-of-fact],영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.,Hero joined: A. Einstein. All eight heroes complete — fleet at maximum reinforcement.
+073,baekgu,[matter-of-fact],거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.,Turtle Ship + 8 heroes + Void-shield decoding gear + spacetime-correction algorithm — all preparations complete.
+074,baekgu,[matter-of-fact],"임무 완료. 이제, 마지막입니다 — 제타 레티쿨리, 그리고 지구. 우르사 메이저를 끝장내고, 지구를 되찾으러 갑니다.","Mission complete. This is the last of it now — Zeta Reticuli, and then Earth. We finish Ursa Major, and we go take Earth back."
+075,baekgu,[matter-of-fact],제타 레티쿨리. 우르사 메이저 본거지에 도착했어요. 적함 신호 — 총 30기 식별.,Zeta Reticuli. We've reached the Ursa Major stronghold. Enemy signatures — thirty hostiles identified.
+076,baekgu,[matter-of-fact],전투력 1천만 단위! 하지만 — 거북선과 8영웅이 함께라면 못할 게 없어요.,"Combat ratings in the tens of millions! But — with the Geobukseon and the eight heroes together, there's nothing we can't do."
+077,baekgu,[matter-of-fact],사령관. 100년 3개월 12일 동안 — 당신을 기다린 보람이 있었어요.,"Commander. For 100 years, 3 months, and 12 days — waiting for you was worth it."
+078,baekgu,[matter-of-fact],좌표 — 지구. 항법 입력 완료. 가시죠.,Coordinates — Earth. Navigation entry complete. Let's go.
+079,baekgu,[matter-of-fact],이겨야 하는 싸움입니다.,This is a fight we have to win.
+080,baekgu,[matter-of-fact][hesitant],사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.,Commander... now I understand too. I was a program designed to wait a hundred years for you.
+081,baekgu,[matter-of-fact],10만 크레딧 무역 실적 보유 팀이 왔습니다.,A team with a hundred thousand credits in trade has arrived.
+082,baekgu,[matter-of-fact],지금 위치: . 행성 광장에서 퀘스트·상점·주점 이용 가능.,"Here we are. At the planet plaza you can use quests, the shop, and the tavern."
+083,baekgu,[matter-of-fact],잡파츠 정리 완료. 크레딧 들어왔어.,Scrap parts cleared. Received {cr} credits.
+084,baekgu,[matter-of-fact][hesitant],강화 실패... 이 단계 후퇴해서 +이 됐어. 재료를 더 모아서 다시 도전해.,Enhancement failed... it slipped back a stage. Gather more materials and try again.
+085,baekgu,[matter-of-fact][hesitant],강화 실패... 다음엔 운이 따르길.,Enhance failed... better luck next time.
+086,baekgu,[matter-of-fact][excited],"검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 척, 신화 설계도 장, 신화 파츠 5종, VC 개, VE 을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!","The encounter with the black ship is done. The Void left Falcons ×{cap}{luck}, {bp} mythic blueprints, 5 mythic parts, VC {vc}, VE {ve}. Invest 100% in Void planets to open the final trial!"
+087,baekgu,[matter-of-fact],신화급 파츠야! . 상점에서는 절대 못 사는 거야.,A mythic part! {nm}. Never sold at any shop.
+088,baekgu,[matter-of-fact][excited],설계도 드랍! 설계도야. 재료 모아서 제작소에서 만들어봐!,Blueprint drop! {nm} blueprint. Gather materials and craft it at the Workshop!
+089,baekgu,[matter-of-fact][excited],"넬슨의 일점사야! 전 함대, 한 척에 화력 집중! ATT 두 배!",Nelson’s focus fire! Concentrate all firepower on {nm}! ATT ×2!
+090,baekgu,[matter-of-fact],신화 5종 받았어. 정비소에서 장착해.,Got five mythic items. Equip them at the workshop.
+091,baekgu,[matter-of-fact],추가 설계도 — 제작소 가능.,An extra blueprint — craftable at the workshop.
+092,baekgu,[matter-of-fact],먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.,You must finish this battle first. No retreat mid-combat.
+093,baekgu,[matter-of-fact],"사령관, 은 이미 대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요.","Commander, you already operate {max} {nm} vessels. Adding more of the same hurts fleet diversity — variety in escort types lets you exploit every enemy weakness. Recruit a different ship class into the fleet instead."
+094,baekgu,[matter-of-fact],치크스 합병 완료. 이제 우리 땅이야.,Chiks {nm} merger complete. Our territory now.
+095,baekgu,[matter-of-fact],낙찰. 세금 ₡ 들어온다.,Sold. The tax credits are coming in.
+096,baekgu,[matter-of-fact],구매 완료.,Purchase complete.
+097,baekgu,[matter-of-fact],합류. 잘 써.,They've joined. Put them to good use.
+098,baekgu,[matter-of-fact],기함 승격. 전투 시 중앙에 배치돼.,{nm} promoted to flagship. Placed at center in battle.
+099,baekgu,[matter-of-fact],충성도 야. 곧 이탈할 수도 있어. 빨리 크루 태워.,{nm} loyalty {loy}. May defect soon. Assign crew quickly.
+100,baekgu,[matter-of-fact][excited],충성도 만렙이야. 이제 한층 더 강해졌어!,{nm} loyalty maxed. Even stronger now!
+101,baekgu,[matter-of-fact],충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.,{nm} loyalty too low — defected to the enemy. Care for the crew.
+102,baekgu,[matter-of-fact],최고 레벨 보상! 들어왔어.,Top-level reward! It's in.
+103,baekgu,[matter-of-fact],파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.,{nm} parts slots added. Stronger armament possible.
+104,baekgu,[matter-of-fact],출격 준비 완료. 즉시 전열에 투입.,{nm} ready for sortie. Deploying to the front line.
+105,baekgu,[matter-of-fact],출격! 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.,{rs} sortie! Auto-recovered {ac} parts/crew. Re-deploy on the new ship.
+106,baekgu,[matter-of-fact],정비소에 ₡에 매각했어. 파츠랑 크루는 잘 챙겨놨고.,Sold {nm} at the Garage for ₡{cr}. Parts and crew secured.
+107,baekgu,[matter-of-fact],의 홀로그램 외피를 형태로 재구성했어. 능력치는 그대로니까 안심해.,"Reconfigured {nm} hologram skin to {skin}. Stats unchanged, no worries."
+108,baekgu,[matter-of-fact],의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.,{nm} hologram skin removed. Returned to original appearance.
+109,baekgu,[matter-of-fact][excited],🎉 축하해! 이 + 강화에 성공했어. 능력치가 % 상승!,Congratulations! The enhancement succeeded. Stats are up!
+110,baekgu,[matter-of-fact],에 탑승. 함선 성능 올라갔어.,Boarded. Ship performance is up.
+111,baekgu,[matter-of-fact],팔았어. ₡ 들어왔다. 잘 썼네.,Sold. The credits are in. Money well spent.
+112,baekgu,[matter-of-fact],으로 이름 바꿨어. 새 출발이네.,Renamed to {nm}. Fresh start.
+113,baekgu,[matter-of-fact],기함 변경. 주의해서 타.,{nm} flagship changed. Take care.
+114,baekgu,[matter-of-fact],창고 칸으로 확장.,Expanded the cargo hold.
+115,baekgu,[matter-of-fact][excited],이제 최대야!,At the maximum now!
+116,baekgu,[matter-of-fact],다음 확장은 더 비싸질 거야.,Next expansion will cost more.
+117,baekgu,[matter-of-fact],샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,"Bought {nm}. At Garage → Parts → right Hold-expansion slot, equip to add +{bonus} cargo to that ship."
+118,baekgu,[matter-of-fact],장착! /척 완료. 전 함선 장착하면 순간이동 가능해.,Equipped! Outfit the whole fleet and you'll be able to warp-jump.
+119,baekgu,[matter-of-fact],합류! 은 하선했어.,They've joined! The other one has disembarked.
+120,baekgu,[matter-of-fact][excited],전설 영웅 등장! 대박이야!,Legendary Hero appeared! Jackpot!
+121,baekgu,[matter-of-fact][excited],전설급이야! 대박!,Legend-tier! Jackpot!
+122,baekgu,[matter-of-fact][excited],영웅급 크루 영입!,Hero-tier crew recruited!
+123,baekgu,[matter-of-fact],크루 영입 완료. 함선에 탑승시켜봐.,Crew recruited. Assign them to a ship.
+124,baekgu,[matter-of-fact],상업 레벨 . 세금 ₡ 들어온다.,Commerce level up. Tax credits coming in.
+125,baekgu,[matter-of-fact],가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.,{nm} wants to join! Legend-tier. Pick a crew to swap.
+126,baekgu,[matter-of-fact],가 합류했어! 전설급이야. 함선에 태워봐.,{nm} joined! Legend-tier. Assign to a ship.
+127,baekgu,[matter-of-fact],세트 아이템이야! . 세트 완성하면 추가 보너스가 붙어.,A set item! {nm}. Complete the set for extra bonuses.
+128,baekgu,[matter-of-fact],전설 파츠야! . 상점에서는 못 사는 거야.,A legend part! {nm}. Not available at shops.
+129,baekgu,[matter-of-fact],퀘스트 보상 지급. 크레딧.,Quest reward paid out. Credits in.
+130,baekgu,[matter-of-fact][excited],레벨 보너스 ×배!,"Level bonus, multiplied!"
+131,baekgu,[matter-of-fact],발견!,Discovered
+132,baekgu,[matter-of-fact],전설급이네. 대박이다.,Legend-tier. Jackpot.
+133,baekgu,[matter-of-fact],꽤 좋은 파츠야.,A pretty good part.
+134,baekgu,[matter-of-fact],회수 완료. 함대에 추가됐어.,{nm} salvaged. Added to the fleet.
+135,baekgu,[matter-of-fact][excited],대박! 이야. 능력치 +% 상승!,Jackpot! Stats are up!
+136,baekgu,[matter-of-fact],아쉽지만 이 나왔어. 다시 도전해봐.,"Ah, that's what came out. Give it another try."
+137,baekgu,[matter-of-fact],완성! .,Done!
+138,baekgu,[matter-of-fact],완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.,{nm} crafted! Equip at Garage parts panel right Hold-expansion slot for +{bonus} cargo.
+139,baekgu,[matter-of-fact][excited],함선 완성! 이야. 편대 확인해봐!,Ship complete! Go check your formation!
+140,baekgu,[matter-of-fact],완성. .,Complete.
+141,baekgu,[matter-of-fact],탑승. 이제 그 함선 1.2배 강해졌어.,{nm} boarded. The ship is now 1.2× stronger.
+142,baekgu,[matter-of-fact],지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!,Earth is blockaded. You must reach ACT 3 to enter!
+143,baekgu,[matter-of-fact],항로에서 뭔가 잡혔어. 조심해.,Picked up something on the route. Careful.
+144,baekgu,[matter-of-fact][excited],⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!,⚠️ This planet is not unlocked yet. Defeat pirates to access facilities!
+145,baekgu,[matter-of-fact][excited],에서 퀘스트 클리어하면 설계도가 5% 확률로 드랍돼. 도전해봐!,Clearing quests at {nm} drops the {bp} blueprint at 5%. Try it!
+146,baekgu,[matter-of-fact],/개. 이 행성 상점에서 살 수 있어. 제작에 필요해.,You can buy this at the planet's shop. It's needed for crafting.
+147,baekgu,[matter-of-fact],은 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.,{nm} is the source of {mat}. Available at the shop. Used as a craft material.
+148,baekgu,[matter-of-fact],지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.,"{nm}, Earth is free. A new era begins — the stars are our friends. Sail freely."
+149,baekgu,[matter-of-fact],메가 충전 완료! 다시 빠르게 진행해 봐.,"{nm}, mega charge complete! Speed ahead again."
+150,baekgu,[matter-of-fact][excited],맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!,"{nm}, max cheat applied! Everything is unlocked — enjoy!"
+151,baekgu,[matter-of-fact],응? 뭔가 물어봐야 대답하지.,Hm? You have to ask something for me to answer.
+152,baekgu,[matter-of-fact],크레딧 거의 없어. 무역이나 퀘스트로 충전해.,We're low on credits. Run trades or quests to refill.
+153,baekgu,[matter-of-fact],해적들이 강해졌어. 조심해.,Pirates have gotten stronger. Be careful.
+154,baekgu,[matter-of-fact],해적이 더 강해졌다. 파츠 업그레이드해.,Pirates are even stronger now. Upgrade your parts.
+155,baekgu,[matter-of-fact],해적 전투력 최대치. 최고 장비 갖춰.,Pirate power is maxed out. Get top-tier gear.
+156,baekgu,[matter-of-fact],같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.,Stay too long and pirates will sniff us out. Move next turn.
+157,baekgu,[matter-of-fact],간신히 따돌렸어. 항로 주의해.,Barely shook them off. Watch the route.
+158,baekgu,[matter-of-fact],겨우 빠져나왔어. 빨리 이 구역 떠나자.,We just made it out. Let’s leave this sector fast.
+159,baekgu,[matter-of-fact],도망쳤어. 다음엔 일찍 움직여.,We ran. Next time move earlier.
+160,baekgu,[matter-of-fact][excited],전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!,Warp engines installed across the fleet! We can jump anywhere in the galaxy now. Open the galaxy map!
+161,baekgu,[matter-of-fact],영입 거절. 현재 크루 유지.,Recruit declined. Keeping the current crew.
+162,baekgu,[matter-of-fact][excited],보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!,A Void Crystal! Key to the Ursa Major boss fight. One more attempt unlocked!
+163,baekgu,[matter-of-fact],전설 동료 영입 거절. 현재 크루 유지.,Legendary companion declined. Keeping the current crew.
+164,baekgu,[matter-of-fact],잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.,Pirates picked up the wreckage signal and swarmed in! Stay alert.
+165,baekgu,[matter-of-fact],탐색 시작. 잔해 구역 접근 중.,Beginning search. Approaching the debris zone.
+166,baekgu,[matter-of-fact],이번엔 없네. 다시 탐색해봐.,Nothing this time. Try searching again.
+167,baekgu,[matter-of-fact],이번엔 별다른 게 없네. 다시 시도해봐.,Nothing special this time. Try again.
+168,baekgu,[matter-of-fact],잔해 탐색 완료. 퀘스트 보상 받아.,Debris search complete. Claim your quest reward.
+169,baekgu,[matter-of-fact][excited],소문 하나 — 전설의 영웅 이 에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!,A little rumor — a legendary hero was sighted out there. Take that planet's quest and you just might meet them!
+170,baekgu,[matter-of-fact],잔해 일부 발견. 계속 탐색해야 해.,Found partial debris. Keep searching.
+171,baekgu,[matter-of-fact],목적지 도착. 퀘스트 탭에서 보상 받아.,Arrived at destination. Claim the reward in the Quest tab.
+172,baekgu,[matter-of-fact],빌려줄게. 빨리 갚아.,I'll lend it. Pay it back soon.
+173,baekgu,[matter-of-fact][hesitant],제작 중이야... 잠깐만 기다려.,Crafting in progress... Hold on a moment.
+174,baekgu,[matter-of-fact],매수 의뢰 보고 완료. 보상 받으러 가자.,Buy commission reported. Time to collect the reward.
+175,baekgu,[matter-of-fact],입찰 경쟁에서 졌어. 더 높게 써야 했는데.,Lost the bid war. Should have bid higher.
+176,baekgu,[matter-of-fact],통행세 내고 무사 통과! 안전이 최우선이지~,Paid the toll and passed safely! Safety first~
+177,baekgu,[matter-of-fact][excited],"소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!","Asteroid belt breach! Dodge with arrow keys or mouse, Shift for lasers, Ctrl for missiles! Hold out 50 seconds!"
+178,baekgu,[matter-of-fact],블랙홀로 가는 진입로는 치크스 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.,The black-hole entry only opens near hostile Chiks planets. Move to a Chiks planet or an adjacent one and try again.
+179,baekgu,[matter-of-fact][hesitant],저긴 은하 중심의 블랙홀... 먼저 지구를 해방해야 실마리가 잡힐 거야.,That is the black hole at the galactic core... You need to liberate Earth (defeat Ursa Major) first to get a lead.
+180,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!,Earth ahead... Ursa Major is waiting for us. Ready all firepower!
+181,baekgu,[matter-of-fact][excited][hesitant],지구다... 우르사 메이저가 기다린다. 모든 화력 준비!,Earth ahead... Ursa Major awaits. Ready all firepower!
+182,baekgu,[matter-of-fact],이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.,This sector is Earth Resistance territory. Buy a copy of Nanjung Ilgi at the shop to recruit Yi Sun-shin.
+183,baekgu,[matter-of-fact],난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.,"You have Nanjung Ilgi. If Yi Sun-shin is on this planet, you can recruit him."
+184,baekgu,[matter-of-fact],한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.,Backed off a step. You can challenge again once strong enough.
+185,baekgu,[matter-of-fact],통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.,"Paid the toll. Pride hurts, but at least the ship is intact. Next time we crush them."
+186,baekgu,[matter-of-fact],도망쳤어. 다음엔 더 강해진 다음에 부딪치자.,We fled. Let's hit them after we get stronger.
+187,baekgu,[matter-of-fact][excited],학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!,Crane Wing Formation! Fleet flanks both wings! Drive the enemy to the center. Triple firepower barrage!
+188,baekgu,[matter-of-fact],아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.,Einstein's Relativity! Time bends! Enemies hit once while we strike four times.
+189,baekgu,[matter-of-fact][excited],테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!,Tesla's electromagnetic hyperspace! Ship weapons turn to lightning! The burst-damage begins!
+190,baekgu,[matter-of-fact],제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.,Genesis Impact! The heroes' wills converge on one point! Enemies vanish from space-time.
+191,baekgu,[matter-of-fact][excited],데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!,Destination Earth!! The will of 8 heroes + the fury of humanity that broke a century of blockade! 10× firepower! The enemy is gone — show them the justice of the cosmos!
+192,baekgu,[matter-of-fact][excited],보이드 페이즈 강제 해금됨. 제타 레티쿨리로 이동해서 광장 → 제독 의뢰 확인해봐!,"Void phase force-unlocked. Travel to Zeta Reticuli (P30), then check the Plaza → Admiral commission!"
+193,baekgu,[matter-of-fact],보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.,The Void left ✦ the Void Spear for the final trial. Mount it at the garage — it lets you instantly destroy one enemy at a time in the final showdown.
+194,baekgu,[matter-of-fact][excited],"보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!","The Void has awakened the five greatest ships in human history! Same stats, double HP. Our tactics are the answer — start with focus-fire!"
+195,baekgu,[matter-of-fact],"8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다.","All eight legends have gathered, Commander! Now we're ready to set course for Earth."
+196,baekgu,[matter-of-fact],백구의 일기,Baekgu's Diary
+197,baekgu,[matter-of-fact],백구,... Baekgu.
+198,baekgu,[matter-of-fact][excited],거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!,A Turtle Ship! Yi Sun-sin's legendary ship! Earth Liberation boss-fight entry requirement met!
+199,baekgu,[matter-of-fact],세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.,Three fragments made one! This isn't just any Geobukseon — it's the Immortal one! Even Ursa Major would tremble.
+200,baekgu,[matter-of-fact],이동 완료. 다음 목표 정해.,Move complete. Set the next destination.
+201,baekgu,[matter-of-fact],워프 성공.,Warp succeeded.
+202,baekgu,[matter-of-fact],이겼어. 당연한 거 아닌가.,We won. Of course we did.
+203,baekgu,[matter-of-fact],크레딧 벌었다.,Credits earned.
+204,baekgu,[matter-of-fact],졌어. 다시 해.,We lost. Try again.
+205,baekgu,[matter-of-fact],포기하면 안 돼.,Don't give up.
+206,baekgu,[matter-of-fact],영웅 등급! 쓸만하겠는데.,Hero tier! Could be useful.
+207,baekgu,[matter-of-fact][excited],전설 등급이다!,Legendary tier!
+208,baekgu,[matter-of-fact],크레딧 부족해. 무역해.,Credits low — go trade.
+209,baekgu,[matter-of-fact][excited],내가 경고했잖아. 싸워!,I warned you. Fight!
+210,yisunsin,[solemn][hesitant],"[옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐.",[old Earth tongue] ...So this is the place. How long... has it been?
+211,yisunsin,[solemn][hesitant],"100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. …나를 깨운 자가 사령관인가. 빚을 졌다.","A hundred years. So my tactics became the enemy's shield, holding back my comrades all that time. ...Is it you, Commander, who woke me? I am in your debt."
+212,yisunsin,[solemn],무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.,The weapons and armor were sealed with me. Take them — my hand is already yours.
+213,yisunsin,[solemn][hesitant],"패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다.","One defeat is enough. A second, I will not allow."
+214,yisunsin,[solemn][hesitant],"아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. 다음 단계에서, 반드시 거둘 빚이다.","Eisenklaue… so it was that one's hand that sealed me. To turn my blade into the enemy's shield. (quietly) In the next stage, that is a debt I will collect, without fail."
+215,yisunsin,[solemn],"흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, 사령관.","Scattered blades, gathered, become a formation. Let us lay the next plan, {commander}."
+216,yisunsin,[solemn][hesitant],"동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어.",Eastern shipping-lane frequency… beneath Bunker Zone. A Resistance cipher channel. The descendants of the comrades who fought beside me before I was sealed away still hold that base.
+217,yisunsin,[solemn],외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.,If they've endured a hundred years alone — that only makes them stronger.
+218,yisunsin,[solemn][hesitant],"크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다.","…If we bring the supplies we pulled out of Krieg, they'll trust us."
+219,yisunsin,[solemn],"당신들이 살아있었군. 오래, 기다렸겠소.",(quietly) So you survived. You must have waited a long time.
+220,yisunsin,[solemn],내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.,They've infiltrated. They hold the supply network and are siphoning off the goods.
+221,yisunsin,[solemn][hesitant],코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.,Cornelius. If the Aureus corporation is selling technical blueprints to Krieg… this is more than the pursuit of profit. Bio-weapon schematics passed through their hands.
+222,yisunsin,[solemn],"증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다.",We can't turn Aureus into an enemy without proof. First — we confirm it.
+223,yisunsin,[solemn][hesitant],광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.,(low) …Gwanggaeto. The name isn't unfamiliar to me. Nor that your merchant fleet holds every record of the auction market.
+224,yisunsin,[solemn],"거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어.","The Geobukseon — the warship I built on old Earth, in its most desperate war. Reproduced with modern materials, it could punch straight through a Krieg fortress."
+225,yisunsin,[solemn],메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.,"Mechanica Gearworld. There's an engineer there named Jang Yeong-sil. A cloned engineer who inherited the technical DNA of Jang Yeong-sil, a master maker of old Earth."
+226,yisunsin,[solemn],그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.,We have to bring him in. The Geobukseon can't be completed without him.
+227,yisunsin,[solemn],그분의 설계도를 갖고 왔소.,I've brought his blueprints.
+228,yisunsin,[solemn],필요한 건 뭐든 구해 오겠소.,I'll get you whatever you need.
+229,yisunsin,[solemn][hesitant],타이탄H… 그리고 그 너머에 — 지구.,Titan H… and beyond it — Earth.
+230,yisunsin,[solemn],"사령관. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다.",{commander}. Our next heading is Titan H. We formalize the alliance and secure the Resistance Antimatter.
+231,yisunsin,[solemn],"저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다.","Resistance Antimatter ×25, Galactic Chaos Crystal ×15, Superbia Graviton ×10, Krieg Magma Core ×8. Gather them all — and the Geobukseon awakens."
+232,yisunsin,[solemn][hesitant],"아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다.",Eisenklaue… he'll use my own tactics to stop us. But the weakness of a blade is known best by the one who forged it.
+233,yisunsin,[solemn],"사령관, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다.","{commander}, to the next route. We hunt Eisenklaue — and at last, complete the Geobukseon."
+234,yisunsin,[solemn],"아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군.",So the one who fled from Eisenkock was hiding here.
+235,yisunsin,[solemn],"둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어.","We take both. Hunt Eisenklaue down, and secure the Magma Core."
+236,yisunsin,[solemn],"정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다.",No frontal assault. We slip in through the rebels' channel.
+237,yisunsin,[solemn],우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.,What we want is the Superbia Graviton. We need an exclusive license to mine it.
+238,yisunsin,[solemn],은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.,Galactic Chaos Crystals. A resource found only in the Void rifts.
+239,yisunsin,[solemn],두 마리 토끼다. 간다.,"Two birds, one stone. Let's move."
+240,yisunsin,[solemn],들어간다.,We're going in.
+241,yisunsin,[solemn][curious],우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?,We fight Eisenklaue alongside the resistance. Are you Dr. Lee Hwi-so?
+242,yisunsin,[solemn][hesitant],"드디어. 400년을 기다린 배가, 오늘 깨어난다.",…At last. The ship that waited four hundred years wakes today.
+243,yisunsin,[solemn][hesitant],"빅토리… 옛 지구 최후의 대해전, 그 기함이군.",Victory… the flagship of old Earth's last great sea-battle.
+244,yisunsin,[solemn],넬슨 제독. 나는 이순신이오.,Admiral Nelson. I am Yi Sun-sin.
+245,yisunsin,[solemn],"학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요.","The Crane Wing and your great sea-battle line — bind the tactics of two seas into one, and not even Ursa can stop us."
+246,yisunsin,[solemn],"사령관. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다.","{commander}. Now we have the Geobukseon. We seize Schmelz and open the command-room data — and inside it, the road to Ursa."
+247,yisunsin,[solemn],100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.,We severed one hand of the century-long blockade. But the head still remains.
+248,yisunsin,[solemn],박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.,"The doctor's equations led us here, a hundred years on. Let's go together."
+249,yisunsin,[solemn][hesitant],"저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다.","That flagship — its movements are familiar. It made a shield of my tactics. But — I am the one who forged that blade. Avoid the front. Strip the escorts, then strike the flagship's flank."
+250,yisunsin,[solemn],이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.,This is — like a storm at sea. Read the currents and we can pass through.
+251,yisunsin,[solemn],박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.,Doctor. We are going to take down Ursa Major. We need your theory.
+252,yisunsin,[solemn],전 함대 — 거북선을 따른다.,All ships — follow the Turtle Ship.
+253,yisunsin,[solemn],사령관. 아이젠클로에게 전달해. — 이번엔 끝이라고.,{commander}. Send word to Eisenklau. — Tell him this is the end.
+254,yisunsin,[solemn],"끝났어, 아이젠클로.","It's over, Eisenklau."
+255,yisunsin,[solemn],보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.,The Void Lord. So that was the one behind Krieg.
+256,yisunsin,[solemn],400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.,"Four hundred years ago the Turtle Ship — broke 133 ships with twelve. Today's Turtle Ship — with eight heroes, can do far greater things."
+257,yisunsin,[solemn],좌표 — 제타 레티쿨리. 우르사 메이저 본거지.,Coordinates — Zeta Reticuli. Ursa Major's stronghold.
+258,yisunsin,[solemn],"400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다.","Four hundred years ago, old Earth's last great war. A hundred years ago, the sealing. And today — the final battle."
+259,yisunsin,[solemn],그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.,That capsule — was me. The one you sealed has come today to bring you your end.
+260,yisunsin,[solemn],학익진. 펼친다.,Crane Wing. Deploy.
+261,yisunsin,[solemn],우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.,The Ursa Major core — exposed. The Void barrier is still active.
+262,yisunsin,[solemn],400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.,"Four hundred years ago — I held off 133 ships with twelve. Today, nine will be enough."
+263,yisunsin,[solemn][excited],거북선 노포 전탄 — 일점사!,"Geobukseon ballistae, every round — focus fire!"
+264,yisunsin,[solemn][hesitant],끝났다. 100년 봉인의 종결이다.,... It's over. The end of a century-long seal.
+265,yisunsin,[solemn],"내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어.",(gazing at Earth) That's the very sky I looked up at in the days I lived and fought. It hasn't changed.
+266,yisunsin,[solemn],"보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해.","The three Void-zone planets — the Kapteyn Rift, WASP-12 b, and Zeta Reticuli. The remnants of Ursa Major are still unstable. We must hurry."
+267,yisunsin,[solemn][hesitant],100년. 내가 100년을 잠들었군.,A hundred years. So I slept a hundred years.
+268,yisunsin,[solemn][hesitant],그대가 나를 깨웠소? …지구는.,You woke me? ...And Earth.
+269,yisunsin,[solemn],치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.,The Chiks still stand. Then there is still reason to fight.
+270,yisunsin,[solemn][curious],이길 수 있는 싸움이오?,Is this a fight we can win?
+271,yisunsin,[solemn],말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.,Your words differ. You didn't say you'll win — you said you must win. That's the more honest answer. I'll join you.
+272,yisunsin,[solemn],사령관. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.,Commander. I do not fight unnecessary battles. Only wars I can win.
+273,yisunsin,[solemn],나요. 넬슨. 오래됐소.,It's me. Nelson. It's been a long time.
+274,marcopolo,[sly][hesitant],"이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거.","Yi Sun-sin? ...That name, it's been a while. Others let that signal pass as noise — but I saw it. The one the Eridani elders picked up."
+275,marcopolo,[sly],"한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든.","Let's team up. When it comes to finding routes and digging up intel, no one in this galaxy beats me."
+276,marcopolo,[sly],"잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어.","Wait — does nobody else see it? Past that wreckage, a survey ship's being torn apart by pirates."
+277,marcopolo,[sly],크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.,"Krieg's held the place three weeks now, calling it a 'mine tax.' The miners are being bled dry."
+278,marcopolo,[sly],봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.,They don't just run the blockade. They're reaching all the way out to the frontier.
+279,marcopolo,[sly],"근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해.","But outlaws have made a nest of the base. To reach the antenna, we clear them first."
+280,marcopolo,[sly][hesitant],우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.,"The Ursae Majoris frontier… the instant we set foot there, we're hostile. Brace yourselves."
+281,marcopolo,[sly],"사령관, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여.","{commander}, I've got it. Castellum, the Superbia depot — Sector 32. A Krieg spy hid the intel inside a scrap frame to smuggle it out. The Superbia crew probably just processed it as junk. But my eyes don't miss a thing."
+282,marcopolo,[sly][hesitant],"그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지.",And… one more odd thing. An old capsule that isn't on that sector's disposal manifest. The design is centuries old. The kind of thing I never just walk past.
+283,marcopolo,[sly][hesitant],"저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀.","There, at the edge of the disposal zone… an old object that's not on any manifest. The design is nothing like ours. A life sign — faint, but unmistakable."
+284,marcopolo,[sly][hesitant],오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.,"Ork... that name's come up among the border smugglers. It's the Chiks-Mechanica frontier, so jurisdiction is murky there."
+285,marcopolo,[sly],"치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고.","Chiks surveillance ships are on patrol. A head-on run is suicide — our best bet is to slip in posing as traders. Which, well, happens to be my specialty."
+286,marcopolo,[sly],LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.,The surface of Mercatus is an LHS crystal mine. Word is they've dug seventeen levels down. Perfect place to lock someone away.
+287,marcopolo,[sly][hesitant],"노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어.",Look at the workers' faces. Terrified — Krieg keeps them in line through fear. …I've seen this far too many times.
+288,marcopolo,[sly][hesitant],내가 누군지 잊었어? 당연하지.,Forgot who I am? Of course you did.
+289,marcopolo,[sly],전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.,A frontal assault is suicide. The outer batteries alone outnumber us three to one.
+290,marcopolo,[sly],"다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든.","I'll open the next road. Krieg's supply outposts — locations, guards, even the shift changes, it's all in my head."
+291,marcopolo,[sly],저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.,The Resistance? Do you know how dangerous that place is? A lone outpost right in the middle of the Chiks.
+292,marcopolo,[sly][hesitant],뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.,The New Mars... the Odyssey Base. I know that route too. I passed through it a couple of times hauling cargo.
+293,marcopolo,[sly][hesitant],"저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아.","Those cargo-classification codes… they're Resistance freight, all right, but the flight pattern is a Krieg distribution routine. It doesn't add up."
+294,marcopolo,[sly][hesitant],조용히 스며드는 거? …그건 내 전공이지.,Slipping in unnoticed? …That's my specialty.
+295,marcopolo,[sly],오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.,"The whistleblower Ogren mentioned — 'Doctor Eva'. She's on Gliese. She said if we make contact, she'll hand over hard evidence."
+296,marcopolo,[sly][hesitant],저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.,That ship… I've seen it before. A free merchant who always outbids everyone at the galactic auction market. They say he's never once lost.
+297,marcopolo,[sly],'장영실 2.0'이라고 불려. 기어월드에서 전설이지.,They call him 'Jang Yeong-sil 2.0'. He's a legend in Gearworld.
+298,marcopolo,[sly],최대해봐야 8~10개.,Eight to ten at most.
+299,marcopolo,[sly],잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.,Wait. I've tapped into Krieg's internal network — there's a rebellion stirring among the factory workers.
+300,marcopolo,[sly],"거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다.",We can deal. We pull your comrades out at Catonic — and you give us Krieg's internal route data.
+301,marcopolo,[sly],불칸이 내부 노선을 줬어. 비축고는 3층 심층부야.,Bulkan gave us the internal route. The stockpile is deep on level three.
+302,marcopolo,[sly],수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.,"On Superbia, diplomacy is everything. A merchants' council holds this planet. To get in, you dress the part first."
+303,marcopolo,[sly],그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.,That's my stage. I've dealt with the Superbia merchants' council before — one bottle of noble perfume and the chamber doors swing open. Leave it to me.
+304,marcopolo,[sly],"보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어.","Void space runs on different physical laws. Time stretches, space folds. A ship's navigation can go completely dark."
+305,marcopolo,[sly][hesitant],균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.,"A rift map shard… those only come from the Void planets. Lucky for us, I grabbed a few out on the frontier."
+306,marcopolo,[sly][hesitant],저 배... 수퍼비아 주점에서 들은 그 연구선이야.,That ship... it's the research vessel I heard about in the Superbia tavern.
+307,marcopolo,[sly],"백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지.",Look at Baekgu's tail — wagging like that means it's a good omen.
+308,marcopolo,[sly],전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.,"The legendary Admiral Nelson — the one who fell in old Earth's final great sea-battle. But the Victory, out in space? This — this is a deep-space preservation capsule."
+309,marcopolo,[sly],아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.,One coordinate buried in Eisenklaue's data — Zeta Reticuli. Ursa Major's home base.
+310,marcopolo,[sly],레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.,The Ranger's signal is in. The entire resistance fleet — ready for battle.
+311,marcopolo,[sly],정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.,I've gathered all the intel. Nothing left to scout. Now — it's the fight.
+312,marcopolo,[sly],적 후위 통신 — 차단 완료. 지원 워프 차단했어.,Enemy rear comms — fully jammed. Reinforcement warps are cut off.
+313,marcopolo,[sly][hesitant],우리가 진짜 해냈어.,We actually did it.
+314,marcopolo,[sly][curious],다음 모험은 — 어디로?,And the next adventure — where to?
+315,marcopolo,[sly],허허. 100년을 기다렸소. 이런 통쾌한 광경을.,Hah. A hundred years I waited — for a sight this satisfying.
+316,marcopolo,[sly],마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.,Marco Polo. The Marco Polo of the Genesis Protocol.
+317,marcopolo,[sly],"치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소.","The Chiks held me and tried to pry the trade-route data out of this ship. I didn't give it, of course. I have never been forced into a deal."
+318,marcopolo,[sly],"제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.",So the Admiral recognizes me. Now — let's make a deal. I'll give you every route and trade network I have.
+319,marcopolo,[sly],"사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소.","Commander, are you the master of this ship? You've got a good eye. Now — let's deal. I'll hand over all my routes and my whole trade network."
+320,marcopolo,[sly],대신 지구까지 데려다 주시오.,"In return, take me to Earth."
+321,gagarin,[confident],칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.,Thanks for getting my chip back. I'll tag along as payback — there's no one around here who flies better than me anyway.
+322,gagarin,[confident],"넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어.","Near the Nexus Prime LHS mines, there's a very old comm pattern. A hundred years old — and it's tied to that name, Yi Sun-sin."
+323,gagarin,[confident],"덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아.",And a bonus — there was a hull schematic in the data. A spike structure — a perfect fit for your frame fragment.
+324,gagarin,[confident][hesitant],신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.,The signal's deeper in. But… I'm seeing Krieg raider markings.
+325,gagarin,[confident],여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.,This is it. This antenna's been relaying the Yi Sun-sin signal for a hundred years.
+326,gagarin,[confident],"서두르자. 좌표만 따면, 다음 행선지가 정해져.","Move quick. Once we have the coordinates, our next stop is set."
+327,gagarin,[confident],"그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고.",Still — Yi Sun-sin is there. And so is the key to stopping Krieg.
+328,gagarin,[confident],"이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'.","This route — back in old Earth's day, a space agency kept it classified. Krieg uses it now. Mechanica parts pass to Krieg at the Gliese 436 basin trading post. The agent's codename is 'Ork'."
+329,gagarin,[confident],저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.,That trading post — cargo keeps arriving that's on no official manifest. The agent 'Ork' runs things here.
+330,gagarin,[confident],테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.,Tesla's been abducted. Mechanica's greatest engineer — Krieg is forcing him to design a bio-weapon.
+331,gagarin,[confident],저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.,That conveyor line is strange. Some of the crystal is being sent underground. The route runs far too deep for a mine warehouse.
+332,gagarin,[confident][hesitant],그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.,So if we get him out… we hold the weakness of Krieg's defense in our hands.
+333,gagarin,[confident],"지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해.","There's a way into the underground prison. A natural fissure — wide enough for a single shuttle. Tight, but doable."
+334,gagarin,[confident],이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.,And now the blueprint of that shield is in our hands. The General's tactics point straight back at their vital spot.
+335,gagarin,[confident],먼저 조용히 들어가서 확인해야 해. 소란은 금물.,We go in first and confirm it. Quietly — no noise.
+336,gagarin,[confident],글리제. 코르넬리우스 본사가 거기야.,Gliese. The Cornelius headquarters is there.
+337,gagarin,[confident],설계는 누가 해? 우리 중에 함선 설계자 없잖아.,Who's going to design it? None of us is a ship designer.
+338,gagarin,[confident][hesitant],지구. …오래 꿈꿨어. 별을 처음 날던 그날부터.,Earth. (a moment's silence) …I've dreamed of it for so long. Ever since the day I first flew among the stars.
+339,gagarin,[confident],복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.,It matches what the decoder pulled. Schmelz — that's the next target.
+340,gagarin,[confident],그리고 동료들도 구출한다. 동시에.,And we rescue the comrades too. At the same time.
+341,gagarin,[confident],캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—,The Kapteyn-b rift. The most accessible of the Void planets. But—
+342,gagarin,[confident],게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.,"And on top of that — you said Dr. Lee Hwi-so is somewhere near there. We have to find him, no matter what."
+343,gagarin,[confident],사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.,Command-room data recovered. Eisenklaue — confirmed destroyed. The blockade's enforcer met his end at Fessachsen.
+344,gagarin,[confident],단신으로? 미친 짓이야.,Alone? That's insane.
+345,gagarin,[confident],지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.,Earth is — just beyond. When we finish this — people will look at the sky again.
+346,gagarin,[confident],"지구가 — 바로 너머야. 사령관, 결단을 내려.","Earth is — just beyond. {commander}, make the call."
+347,gagarin,[confident],좌익도 깨끗하다. 학익진 — 완성.,Left flank is clean too. Crane Wing — complete.
+348,gagarin,[confident],지구야. 정말 지구야.,It's Earth. It's really Earth.
+349,gagarin,[confident],1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.,"April 12th, 1961. The Earth I first saw. Exactly as it was."
+350,gagarin,[confident][hesitant][curious],"Поехали! 출발합시다! …아, 아직 전쟁 중인가요?",Poyekhali! Let's go! ...Ah — are we still at war?
+351,gagarin,[confident],100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.,A hundred years? Then it's been over a hundred and seventy since I first went to space. Time really is a strange thing.
+352,gagarin,[confident],그래도 우주는 여전히 아름다울 거예요.,"Even so, space must still be beautiful."
+353,gagarin,[confident],이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.,You're Admiral Yi Sun-sin! I once studied your Battle of Hansan. Small craft are my specialty.
+354,gagarin,[confident],"와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다.","Wow, Marco Polo too! Two new comrades at once after a hundred years. Small craft are my specialty — you can count on me."
+355,gagarin,[confident],"사령관이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠.",You're the Commander. To be your first comrade in a hundred years — it's an honor. Small craft are my specialty; I'll take you anywhere.
+356,jangyeongsil,[cheerful][hesitant],"거북선을… 만들겠다고? 400년 전 그 배를, 지금 재료로.","Build... the Turtle Ship? That ship from four hundred years ago, with today's materials."
+357,jangyeongsil,[cheerful][hesitant],"중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지.","…Three Deuterium Batteries. Fuel for my simulator. Bring them, and I'll hear you out — once."
+358,jangyeongsil,[cheerful][hesitant],거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...,Completing the Geobukseon needs 25 units of Resistance Antimatter. What we have right now is...
+359,jangyeongsil,[cheerful],저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.,The Resistance headquarters at Titan H should have a stockpile. We need to get it from the Ranger.
+360,jangyeongsil,[cheerful],그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.,That's why we came. We're going to build the Geobukseon. We need 25 units of Resistance Antimatter and the support of a fabrication bay.
+361,jangyeongsil,[cheerful][hesitant],"재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어.","(running a hand over the blueprints) …Materials list, complete. To the design he drew four hundred years ago, I add my own hands. The Geobukseon can sail again."
+362,jangyeongsil,[cheerful],"거북선이 완성되는 날, 그 요새의 벽도 무너져요.","The day the Geobukseon is complete, the walls of that fortress fall too."
+363,jangyeongsil,[cheerful],데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.,I decrypted the logs with the data decoder — Eisenklaue is personally directing this planet's factory. They're stamping out the core for their bio-weapon right here.
+364,jangyeongsil,[cheerful][hesitant],반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.,Rebels… we can use that. Get the factory running and the Krieg Magma Core falls into our hands too.
+365,jangyeongsil,[cheerful],크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.,Just three more Krieg Magma Cores — and the Geobukseon's keel material is complete.
+366,jangyeongsil,[cheerful],은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.,"Fifteen Galactic Chaos Crystals. Without them, we can't build the Geobukseon."
+367,jangyeongsil,[cheerful],항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.,Navigation assist is down. We'll have to enter the route manually using a rift map shard.
+368,jangyeongsil,[cheerful],나한테 있어요.,I have them.
+369,jangyeongsil,[cheerful],"크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어.","Krieg Magma Core ×8, Resistance Antimatter ×25, Superbia Graviton ×10, Galactic Chaos Crystal ×15. All secured."
+370,jangyeongsil,[cheerful],머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.,Cut off the head and the tail still twitches. His praetorian remnants hold the fort — let's pull it out by the roots.
+371,jangyeongsil,[cheerful],거북선이 균열을 견딘다. 외피가 잘 버티는군.,The Turtle Ship is holding against the rift. The hull is taking it well.
+372,jangyeongsil,[cheerful],거북선 출력 120%. 전류 방어막 — 활성화.,Turtle Ship output at 120%. Electric shield — activated.
+373,jangyeongsil,[cheerful],거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.,Turtle Ship — final upgrade complete. Void-shield decoding gear integrated. ATT and INT passives raised to +50%.
+374,jangyeongsil,[cheerful],거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.,Geobukseon ballistae — full firepower charged to 100%. Crane Wing focus-fire formation aligned.
+375,jangyeongsil,[cheerful][excited],호위함 전 화력 — 거북선 패시브 +30% 적용!,All escort firepower — Geobukseon passive +30% applied!
+376,jangyeongsil,[cheerful],"거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도.","The Geobukseon — held to the very end. The turtle ship of old Earth's last war, even out here in space."
+377,jangyeongsil,[cheerful],거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.,I'll build a Geobukseon shipyard right here. Together with Earth's engineers.
+378,jangyeongsil,[cheerful],총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.,Only once the governorship auctions are won and the defense fleets deployed will the galaxy be stable.
+379,jangyeongsil,[cheerful],구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.,Rescue? The ones who locked me up stole my blueprints. A hundred years ago. What rescue is there without those?
+380,jangyeongsil,[cheerful],내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.,I'll finish it with my own hands. There's no one left who can carry on the spirit of Na Dae-yong — my dear friend and the true designer of the Turtle Ship.
+381,jangyeongsil,[cheerful][excited],다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!,A Turtle Ship built by anyone else won't do. I'll restore it with my own hands!
+382,jangyeongsil,[cheerful],천 년 전에도 나는 이렇게 했소.,"A thousand years ago, I did it just like this."
+383,gwanggaeto,[bold][hesitant],당신이 사령관인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.,(with a hearty laugh) So you're {commander}. They say you don't back down from Krieg? …I like that.
+384,gwanggaeto,[bold],소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.,The rumors are accurate. I bow to no power in this galaxy. I am a free merchant. But — I do not trade with the likes of Krieg.
+385,gwanggaeto,[bold],"이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다.",Take this planet into your hands and show me. Place the highest bid at the auction — prove you've earned this land. Then I'll ride with you. I'll judge with my own eyes whether you're an opponent worth conquering beside.
+386,gwanggaeto,[bold],우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.,Ursa Major — the true boss. It ends only when we take it down ourselves.
+387,gwanggaeto,[bold],저기 — 빛이 새어 나온다.,There — light is leaking through.
+388,gwanggaeto,[bold],저 요새를 내 눈으로 무너뜨리는 날이 왔군.,The day has come to tear down that fortress with my own eyes.
+389,gwanggaeto,[bold],정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.,Conquest — must stop when the hand begins to tremble. Right now our hands — do not tremble.
+390,gwanggaeto,[bold],정복할 시간이다.,It is time to conquer.
+391,gwanggaeto,[bold],우익 — 정리 완료. 호위 친위대 잔존 0.,Right flank — cleared. Escort praetorians remaining: zero.
+392,gwanggaeto,[bold][excited],정복의 깃발 — 마지막 일격!,Banner of conquest — the final strike!
+393,gwanggaeto,[bold],우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.,We have opened a new land. Not through conquest — but through liberation.
+394,gwanggaeto,[bold],정복은 끝. 이제는 — 함께 일구는 시간이다.,"Conquest is over. Now — it is time to build, together."
+395,gwanggaeto,[bold],"1,700년. 내 땅이 다시 내 손에 돌아왔구나.",Seventeen hundred years. My land has returned to my hands at last.
+396,gwanggaeto,[bold],사령관이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.,"Commander, was it? I waited for one who would reclaim my land. Tell me what you wish."
+397,gwanggaeto,[bold],고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.,Would a conqueror of Goguryeo leave Earth conquered? I'll take the vanguard.
+398,gwanggaeto,[bold],"사령관, 최종 명령권은 그대에게 있소.","Commander, the final command is yours."
+399,tesla,[manic],"크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어.","The reason Krieg sealed General Yi Sun-sin away instead of killing him — that's the whole point. Centuries ago, when the Chiks and Ursa Major blockaded Earth and Eisenklaue swallowed the space lanes, he was the one man who never bent. Eisenklaue ripped his tactics out whole and bolted them into the Krieg defense algorithm. A living shield, literally. (eyes gleaming) But — what happens when the original of that shield wakes and moves? The algorithm could eat its own tail and collapse."
+400,tesla,[manic],바로 그거야. 그래서 크리그는 죽어도 못 놓지.,"Exactly that. Which is why Krieg will never, ever let him go."
+401,tesla,[manic][hesitant],생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.,I burned the bio-weapon designs at LHS. …But a backup is surely still alive somewhere. No room for complacency.
+402,tesla,[manic],제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.,Before Zeta Reticuli we must pass the Kapteyn rift. Einstein is there — the key to unlocking Ursa's Void shield.
+403,tesla,[manic],아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.,Dr. Einstein is in there. He went in alone to prove his Void stabilization theory.
+404,tesla,[manic],그게 그의 방식이지. 이론을 몸으로 증명하는 거.,That's his way. Proving a theory with his own body.
+405,tesla,[manic],박사님 — 100년 만에 다시 같이 일하는군요.,(smiling) Doctor — working together again after a hundred years.
+406,tesla,[manic],에너지 만충. 거북선 추진 코어 100%.,Energy fully charged. Turtle Ship propulsion core at 100%.
+407,tesla,[manic],100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.,(smiling) The old scholar you threw into the rift a hundred years ago — it's his theory.
+408,tesla,[manic][excited],테슬라 초공간 — ATT ×5 발동!,Tesla Hyperspace — ATT ×5 engaged!
+409,tesla,[manic],다음엔 무선 전력으로 지구 전체를 깔자.,"(smiling) Next, let's blanket the whole Earth in wireless power."
+410,tesla,[manic],무선 전력망 재건. 100년 만에 다시 깔 거야.,Rebuilding the wireless power grid. We'll lay it down again after a hundred years.
+411,tesla,[manic][excited],들어오지 마세요! 지금 정밀 조정 중이에요!,Don't come in! I'm in the middle of fine calibration!
+412,tesla,[manic][hesitant],"진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다.",Really? Let me check. Scanning the data. ...Right. Exactly one hundred thousand two hundred forty-seven credits. Good.
+413,tesla,[manic][excited],완성이에요! 100년 만에 완성! 이제 갈 수 있어요!,It's finished! Finished after a hundred years! Now we can go!
+414,nelson,[proud][weak][hesitant],"옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소.",It was old Earth. The last thing I saw was the fog of that great sea battle.
+415,nelson,[proud][hesitant],"동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니.","The turtle-ship admiral of the East… I have heard the name. Truth be told, the only name I ever conceded was the better. To meet a hero of the same sea, here among the stars."
+416,nelson,[proud],그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.,I never thought I'd feel the winds of that last sea-battle again. I'll stand with your fleet — wherever this final fight may be.
+417,nelson,[proud],"옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다.","Old Earth's last great sea-battle — the victory we won then. Today, we win it again."
+418,nelson,[proud],"그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오.",(to Yi Sun-sin) Your Geobukseon — stands shoulder to shoulder with the Victory of old Earth's last great sea-battle.
+419,nelson,[proud][hesitant][curious],이순신. 설마 당신이오?,Yi Sun-sin. Could it really be you?
+420,nelson,[proud][hesitant],"200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려.","Two centuries apart, two continents between us... and this palm bridges it all."
+421,nelson,[proud],"England expects— 아니. 이제는 지구가 기대한다. 합시다, 사령관.","England expects— no. Now Earth expects. Let us begin, Commander."
+422,einstein,[thoughtful],반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.,Well met. I have waited a hundred years inside this rift. But spacetime is relative — to me it was not so long.
+423,einstein,[thoughtful],우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.,Ursa's Void shield — strike it at the right frequency and it resonates loose in 0.3 seconds. I will run the calculations for you.
+424,einstein,[thoughtful],테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.,Tesla. Your wireless power was right all along. Time has proven it.
+425,einstein,[thoughtful],시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.,Spacetime-correction algorithm — applied across the whole fleet. Accuracy +20%. We can even predict Ursa's evasion patterns.
+426,einstein,[thoughtful],시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.,Spacetime stable. The Void barrier analysis array — ready for activation.
+427,einstein,[thoughtful],그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.,That algorithm — General Yi's tactics now point straight back at your blind spots. Once the seal breaks — the shield becomes the sword.
+428,einstein,[thoughtful],4.7GHz 공명파 — 충전 100%. 발사 명령 대기.,4.7GHz resonance wave — charge at 100%. Awaiting the order to fire.
+429,einstein,[thoughtful],시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.,Spacetime crystal calibration — applied. Void barrier resonance frequency locked on.
+430,einstein,[thoughtful],가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.,It was possible. For a hundred years inside the rift — I cultivated the crystals without you ever knowing.
+431,einstein,[thoughtful][excited],4.7GHz 공명파 — 발사!,4.7GHz resonance wave — firing!
+432,einstein,[thoughtful],시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.,(quietly) Spacetime has come undone. The rift is closing. Returning — to its natural state.
+433,einstein,[thoughtful],우주는 상대적이지만 — 고향은 절대적이군.,(smiling) The universe is relative — but home is absolute.
+434,einstein,[thoughtful],당신이 왔군요. 예상했습니다.,So you've come. I expected it.
+435,einstein,[thoughtful],"나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%.","A hundred years ago I calculated this moment. That you would come to these coordinates, down to the very hour. Margin of error, zero point three percent."
+436,einstein,[thoughtful],그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.,And Baekgu. Dr. Lee Hwi-so and I designed it — with a reverse-time transmission equation.
+437,einstein,[thoughtful],"치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. 사령관의 각성 지점이었습니다.","A spot even the Chiks couldn't find: Proxima B, disturbed by the Gliese rift. Your awakening point, Commander."
+438,einstein,[thoughtful],당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.,"Because you alone held both at once. Wrath, and mercy."
+439,einstein,[thoughtful],"치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요.","The wrath to bring down the Chiks, and the mercy to understand them. Wrath alone only creates another Ursa Major."
+440,leehwiso,[gentle],누구시오? 이 좌표를 아는 사람이 있다니.,Who are you? I can't believe anyone knows these coordinates.
+441,leehwiso,[gentle][hesitant],방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.,...The equation is complete. Combine Void energy with antimatter and you get a weapon energy this universe has never seen.
+442,leehwiso,[gentle][hesitant],거북선에 그 에너지를 실을 수 있소? 도면이 있다면...,Can the Geobukseon carry that energy? If you have the blueprints...
+443,leehwiso,[gentle][hesitant],"여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니...","Where is this? I'm Lee Hwi-so, I was a particle physicist. A hundred years asleep...?"
+444,leehwiso,[gentle][hesitant],보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.,"The Void planets are... going to be different somehow. They were the worlds that lay beneath Ursa Major, after all."
+445,ursamajor,[menacing][hesitant],인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.,... So humanity's little fleet has finally come this far. Breaking a century of silence.
+446,ursamajor,[menacing],"100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나.","A hundred years ago, I sealed your star. I believed your species' silence would be eternal. And yet — one capsule has awoken again."
+447,ursamajor,[menacing],이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.,Yi Sun-sin. Your tactical data was the heart of my defensive algorithm. I sealed you — to strip away the strongest weapon.
+448,ursamajor,[menacing][hesitant],아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.,"Einstein, too... The old scholar I cast into the rift a century ago, still alive. How intriguing."
+449,ursamajor,[menacing],아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.,Eisenklaue. Your duty was the blockade. And you failed the blockade. Excuses — I do not accept.
+450,ursamajor,[menacing][hesitant],호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.,... My escort has fallen. But my core barrier cannot be pierced by any weapon. What is it — that you possess?
+451,ursamajor,[menacing][hesitant],그것은... 시공 공명? 불가능하다. 자연 결정체로는...,"(shaken for the first time) That is... spacetime resonance? Impossible. With natural crystals, you cannot..."
+452,ursamajor,[menacing][hesitant],인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...,(signal fading) Humanity... you... have risen... again... The blockade... could never... have been... eternal...
+453,eisenklau,[stern],"기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마.","So you crawled all the way here, vermin. Fessachsen — the heart of my forge. The blockade Lord Ursa Major decreed, the last link in that chain. Here I'll melt you down and forge you back into steel."
+454,eisenklau,[stern][angry][hesitant],"이순신?! 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!","Yi Sun-sin?! Who woke that sleeping blade?! ...No matter. All Krieg ships, form ranks! That old turtle shell — grind it to dust!"
+455,eisenklau,[stern][hesitant],아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.,...No. The will of the Void Lord — it is not me alone. Ursa Major is merely one of his hands and feet.
+456,eisenklau,[stern],우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.,Lord Ursa. The humans have built something they call the Geobukseon. A reinforced warship — running Yi Sun-sin's tactical data.
+457,eisenklau,[stern][angry][hesitant],인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!,"(grinding his teeth) Mere humans... Praetorians, Alpha through Epsilon! Form ranks! Concentrate all fire — on the Geobukseon!"
+458,wolfelder,[weary][trembling][hesitant],"당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고.","Your eyes — they're just like his. A hundred years ago, when everyone fled, there was an admiral of old Earth who turned his fleet around alone. He left me this, and said — 'Someday, the one who recognizes it will come.'"
+459,wolfelder,[weary],그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.,"That, even I don't know. But follow the rest of the schematic — and you'll meet him."
+460,aori,[gruff],프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.,From Proxima B? You're the first to come back alive from that cold orbit. Everyone else just gets forgotten out there.
+461,aori,[gruff][curious],허. 뭘 팔 거요?,Huh. So what are you selling?
+462,maximoff,[grave][hesitant],"우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까.","We of the Resistance are the people driven from Earth. Before the Chiks and Ursa Major blockaded Earth and Krieg seized the shipping lanes, our ancestors stood and fought alongside General Yi Sun-sin. We are their descendants. A hundred years ago they dug out this shelter — here we were born, and here we lost. (low) My wife. Both my children. That's why I can't stop trying to take Earth back. Because that… is taking my family back."
+463,maximoff,[grave],살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.,Survival alone wasn't enough. Right now Krieg has planted spies in our supply network and is shaking us from within. We desperately need comrades we can trust.
+464,maximoff,[grave],연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.,A token of solidarity first. Earth Iron Ore — it's our tradition to swear our oath on something that came from Earth's own soil.
+465,maximoff,[grave],"당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요.","So you came in person. The Cornelius affair — we heard about it too. If Eisenklaue bought that technology himself, the threat runs deeper than we feared."
+466,maximoff,[grave][hesitant],그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.,…Then we must sign a formal alliance pact first. In Earth's way.
+467,maximoff,[grave],크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.,Krieg is raising a new stronghold. Eisenklaue commands it in person.
+468,maximoff,[grave],"제작 베이 준비 완료. 장영실 씨, 시작하시죠.","The construction bay is ready. Jang Yeong-sil, whenever you're ready to begin."
+469,maximoff,[grave],페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.,Fessachsen is finished — the enforcer Eisenklaue is confirmed destroyed. But the Krieg supply fort Schmelz is still breathing.
+470,maximoff,[grave],사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.,Commander. Earth has — after a hundred years — opened again. The Council is waiting for you.
+471,maximoff,[grave],아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.,Eisenklaue's hand-written surrender — dedicated to the Council. The end of the century-long blockade — officially declared.
+472,maximoff,[grave],결의안 채택 완료. 프록시마B부터 글리제 균열까지 — 가 전 은하계 행성 총독권을 경매로 인수한다.,The resolution has passed. From Proxima B to the Gliese Rift — {company} acquires governorship of every planet in the galaxy by auction.
+473,navai,[flat][hesitant],"아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음.","Aureus data-chip decryption attempt — failed. Chiks scrambling frequency detected. Impossible with current equipment. …Log: this cipher, I have only ever seen as data. The real thing — a first."
+474,navai,[flat],지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.,Entering Earth. Blockade lifted — free-navigation mode active. First human fleet landing in a hundred years.
+475,chiks,[cold],이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.,This is Chiks-controlled airspace. Passage by unsanctioned outsiders — is treated as a hostile act.
+476,volcan,[gruff],"그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라.","And more than that — the whole magma core stockpile. I don't know what you're building, but take it if you need it."
+477,borg,[neutral],어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡만 내놓으면 곱게 보내주지.,"Hey, fleet! This route is my turf. Pay a toll of ₡{X} and I'll let you pass."
+478,karim,[neutral],"오, 함선들 좋은데? 흠집 내기 싫으면 ₡만 내. 사업은 사업이니까.","Oh, nice ships. If you don't want scratches, pay ₡{X}. Business is business."
+479,krash,[neutral],인간 주제에 감히 여기까지. 목숨값으로 ₡를 바쳐라. 그럼 오늘은 살려두마.,Humans daring to come this far. Pay ₡{X} for your lives — I'll spare you today.
+480,veil,[neutral],"네 목에 걸린 현상금보다 ₡가 싸게 먹히겠지? 자, 선택해.","₡{X} is cheaper than the bounty on your head, isn't it? Choose."
+481,dorga,[neutral][hesitant],함선이 아깝지 않냐? ₡ 내면 못 본 척 해주마. 거절하면… 후회할걸.,Don't you care about your ships? Pay ₡{X} and I look away. Refuse... you'll regret it.
+482,etc,[neutral],당신들이 저항군과 함께 싸운다는 그 로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.,당신들이 저항군과 함께 싸운다는 그 로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.
+483,etc,[neutral],⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.,⚠ Warp signatures confirmed. Ursa Major core + 15 praetorian ships + 14 Chiks scouts. Thirty hostiles total.
+484,etc,[neutral],⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.,⚠ Ursa Major Void barrier — 0.3-second window confirmed. Focus-fire viable.
+485,etc,[neutral],우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.,Ursa Major destruction confirmed. Commander Eisenklaue's ship destroyed simultaneously. Enemy fleet — zero remaining. Void rift — closing.
+486,etc,[neutral],사령관. I do not fight unnecessary battles. Only wars I can win.,사령관. I do not fight unnecessary battles. Only wars I can win.
+487,etc,[neutral],사령관. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.,사령관. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.
+488,etc,[neutral],"England expects— no. Now Earth expects. Let us begin, 사령관.","England expects— no. Now Earth expects. Let us begin, 사령관."
+489,etc,[neutral],"A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. 사령관's awakening point.","A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. 사령관's awakening point."
+490,etc,[neutral][curious],"사령관, you said? I have waited for one who would reclaim my land. Speak — what is your wish?","사령관, you said? I have waited for one who would reclaim my land. Speak — what is your wish?"
+491,etc,[neutral],사령관 — the final command is yours.,사령관 — the final command is yours.

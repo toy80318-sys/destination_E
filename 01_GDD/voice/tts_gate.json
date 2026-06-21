@@ -1,0 +1,6 @@
+[
+ {"out":"clips/baekgu/gate_needHero.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[matter-of-fact] 사령관, 순서가 있어요. 먼저 만나야 할 사람이 있습니다. 그 사람 없이는 다음으로 못 가요."},
+ {"out":"clips/baekgu/gate_needItem.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[matter-of-fact] 아직 일러요. 먼저 구해 와야 할 게 있습니다."},
+ {"out":"clips/baekgu/gate_needBlueprint.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[matter-of-fact] 준비가 덜 됐어요. 먼저 찾아야 할 설계도가 있습니다."},
+ {"out":"clips/baekgu/gate_needQuest.mp3","voice":"m8ZvjfA66O7ipbXTTQ4Y","model":"eleven_v3","stability":0.0,"text":"[matter-of-fact] 선행 임무가 남았어요. 먼저 끝내야 할 일이 있습니다."}
+]

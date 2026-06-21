@@ -59,6 +59,8 @@
     const _descFs=_many?10:11;
     const itemRows=items.map(it=>{
       const rc=it.color||RARITY_COLOR[it.rarity]||'var(--txt)';
+      // 등급 클래스(홀로 테마 색 분기용) — 이름/뱃지 색은 인라인 rc 유지(원본 무영향)
+      const _crCls={L:'cr-L',legend:'cr-L',H:'cr-H',hero:'cr-H',mythic:'cr-H',set:'cr-H',R:'cr-R'}[it.rarity]||'';
       const rl=I18N.rarity(it.rarity)||'';
       const badge=it.badge||(rl?`<span style="font-size:9px;color:${rc};border:1px solid ${rc};border-radius:3px;padding:0 5px;margin-left:5px">${rl}</span>`:'');
       const ic=it.ic||'📦';
@@ -68,7 +70,7 @@
       const imgHtml=it.img
         ? `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(it.img,ic,_imgVar,_imgVar,'object-fit:contain')}</div>`
         : `<div style="width:${_imgVar};height:${_imgVar};border-radius:6px;border:1.5px solid ${rc};display:flex;align-items:center;justify-content:center;font-size:${_icFont}px;flex-shrink:0;background:rgba(0,0,0,.3)">${ic}</div>`;
-      return `<div style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
+      return `<div class="holo-card ${_crCls}" style="display:flex;gap:${_gapRow};align-items:flex-start;padding:${_padRow};background:rgba(255,255,255,.03);border:1px solid ${rc};border-radius:6px">
         ${imgHtml}
         <div style="flex:1;min-width:0">
           <div style="font-size:${_nmFs}px;font-weight:bold;color:${rc};line-height:1.3;word-break:keep-all;overflow-wrap:break-word">${escapeHtml(it.nm)}${badge}</div>
@@ -80,7 +82,7 @@
     }).join('');
     // 이미지 2배 확대에 맞춰 그리드 자동조정: 카드 최소폭 확보 → 화면 폭에 따라 1~2열 자동 전환
     const _gridStyle='display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px;width:100%;margin:0 auto';
-    const congratsHtml=congrats?`<div style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
+    const congratsHtml=congrats?`<div class="holo-card" style="margin-bottom:8px;padding:6px 12px;background:linear-gradient(90deg,rgba(255,215,0,.08),rgba(255,136,255,.08));border:1px solid ${headerColor};border-radius:6px;text-align:center;font-size:13px;color:${headerColor};font-weight:bold">🎉 ${escapeHtml(congrats)} 🎉</div>`:'';
     const subtitleHtml=subtitle?`<div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">${escapeHtml(subtitle)}</div>`:'';
     // 획득 경로 몰입 멘트 (한 줄)
     const acqLineHtml=opts.acqLine?`<div style="margin:2px auto 9px;padding:8px 16px;max-width:600px;background:linear-gradient(90deg,rgba(255,215,0,.07),rgba(120,180,255,.05));border-left:3px solid ${headerColor};border-radius:6px;text-align:center;font-size:14px;color:#ffe6a8;font-style:italic;line-height:1.55;word-break:keep-all">${escapeHtml(opts.acqLine)}</div>`:'';
@@ -88,7 +90,7 @@
     // 사용자 요청: 패배 멘트 좌측에 해적/적군 이미지 표시(opts.enemyImg). 이미지 있으면 좌측 정렬 + 💬 생략, 없으면 기존 가운데+💬.
     const _eImg=opts.enemyImg;
     const _eImgHtml=_eImg?`<div style="width:62px;height:62px;border-radius:8px;border:2px solid #ff6a6a;overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.45);box-shadow:0 0 12px rgba(255,60,60,.4);display:flex;align-items:center;justify-content:center">${window.imgOrEmoji(_eImg,'☠️','62px','62px','object-fit:cover')}</div>`:'';
-    const enemyMentHtml=opts.enemyMent?`<div style="display:flex;align-items:center;gap:13px;margin:2px auto 11px;padding:11px 16px;max-width:640px;background:linear-gradient(135deg,rgba(255,60,60,.10),rgba(10,5,5,.55));border-left:3px solid #ff6a6a;border-radius:8px;text-shadow:0 0 6px rgba(255,60,60,.3)">${_eImgHtml}<div style="flex:1;text-align:${_eImg?'left':'center'};font-size:21px;color:#ffb3b3;line-height:1.5;word-break:keep-all">${_eImg?'':'💬 '}"${escapeHtml(opts.enemyMent)}"</div></div>`:'';
+    const enemyMentHtml=opts.enemyMent?`<div class="holo-panel c-red" style="display:flex;align-items:center;gap:13px;margin:2px auto 11px;padding:11px 16px;max-width:640px;background:linear-gradient(135deg,rgba(255,60,60,.10),rgba(10,5,5,.55));border-left:3px solid #ff6a6a;border-radius:8px;text-shadow:0 0 6px rgba(255,60,60,.3)">${_eImgHtml}<div style="flex:1;text-align:${_eImg?'left':'center'};font-size:21px;color:#ffb3b3;line-height:1.5;word-break:keep-all">${_eImg?'':'💬 '}"${escapeHtml(opts.enemyMent)}"</div></div>`:'';
     const html=`<div style="padding:2px 2px">
       ${congratsHtml}
       ${enemyMentHtml}

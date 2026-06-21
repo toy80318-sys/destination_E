@@ -1,0 +1,8 @@
+[
+ {"out":"clips/combat/enemyRegret_1.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[bitter] 이 함대를… 얕봤군. 빌어먹을…"},
+ {"out":"clips/combat/enemyRegret_2.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[shocked] 말도 안 돼… 우리 함대가, 고작 이런 곳에서…?!"},
+ {"out":"clips/combat/enemyRegret_3.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[menacing] 기억해두마. 이 굴욕은… 반드시 갚아주지."},
+ {"out":"clips/combat/enemyFlee_1.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[panicked] 퇴각! 전부 퇴각하라! 오늘은 여기까지다!"},
+ {"out":"clips/combat/enemyFlee_2.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[defiant] 물러난다! 이건 후퇴지 패배가 아니야!"},
+ {"out":"clips/combat/enemyFlee_3.mp3","voice":"pyPk875kUhi61JhqMlUF","model":"eleven_v3","stability":0.0,"text":"[urgent] 함장님 명령이다 — 워프! 당장 이 구역을 벗어나!"}
+]

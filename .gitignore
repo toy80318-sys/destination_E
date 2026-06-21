@@ -42,3 +42,11 @@ release/
 
 # ElevenLabs API 키(로컬 전용, 커밋 금지)
 01_GDD/voice/el_key.txt
+
+# 음성 클립 산출물(커밋 금지)
+01_GDD/voice/clips/
+samples*_out/
+01_GDD/voice/*_out/
+build-log.txt
+__pycache__/
+*.pyc

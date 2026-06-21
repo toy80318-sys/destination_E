@@ -351,7 +351,7 @@ function renderShipTab(body){
         ${G._garageMode?(()=>{
           // ── 정비소 모드: 좌=함선정보, 우=서브탭 내용 ──────────────────
           const _cargoData=(()=>{
-            const slots=Math.min(s.cargoSlots||4,100);
+            const slots=Math.min(s.cargoSlots||4,_cargoCap(s));
             let cargoOffset=0;
             for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}
             const cargoFlat=[];
@@ -367,11 +367,11 @@ function renderShipTab(body){
             const _innerSz=_cgCell-4;
             for(let i=0;i<slots;i++){
               if(i<myCargo.length){const ci=myCargo[i];grid+='<div style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n'+I18N.t('shop.buyPriceTooltip',{cr:ci.price.toLocaleString()})+'"><img src="'+ci.img+'" style="width:'+_innerSz+'px;height:'+_innerSz+'px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:'+(_cgCell>=36?16:13)+'px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}
-              else{const isMax=(slots>=100);grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
+              else{const isMax=(slots>=_cargoCap(s));grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
             }
             grid+='</div>';
             let btn;
-            if(slots<100){const cp=getCargoUpgradePrice(s);btn='';}
+            if(slots<_cargoCap(s)){const cp=getCargoUpgradePrice(s);btn='';}
             else{btn='<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxFull')+'</span>';}
             return {grid,btn};
           })();
@@ -459,7 +459,7 @@ function renderShipTab(body){
           // 화물칸: margin-left 제거 (overlap 방지), padding-left 최소화
           // 버튼은 우측 정렬로 함선실 버튼과 충돌 회피
           const _cargoCol=`<div style="flex:1;min-width:0;padding-left:8px;margin-left:-10%;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}/100칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
+            <div style="font-size:10px;color:var(--dim);margin-bottom:6px;flex-shrink:0">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}/${_cargoCap(s)}칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
             <div style="flex-shrink:0;overflow-x:auto;max-width:100%">${_cargoData.grid}</div>
             <div style="flex:1;min-height:8px"></div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;justify-content:flex-end;align-self:flex-end">${_cargoData.btn}</div>
@@ -514,8 +514,8 @@ function renderShipTab(body){
           </div>
           <!-- Col 4: Cargo 그리드 -->
           <div style="flex:1;padding:8px 10px;min-width:196px;">
-            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}칸 / 최대100칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
-            ${(()=>{const slots=Math.min(s.cargoSlots||4,100);let cargoOffset=0;for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}const cargoFlat=[];G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);const _dnm=commDisplayNm(c);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:_dnm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);let h='<div style="display:grid;grid-template-rows:repeat(5,42px);grid-auto-flow:column;grid-auto-columns:42px;gap:3px;">';for(let i=0;i<slots;i++){if(i<myCargo.length){const ci=myCargo[i];h+='<div style="width:42px;height:42px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n구매가: ₡'+ci.price.toLocaleString()+'"><img src="'+ci.img+'" style="width:38px;height:38px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:18px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}else{const isMax=(slots>=100);h+='<div '+''+' style="width:42px;height:42px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}}h+='</div>';return h;})()}
+            <div style="font-size:10px;color:var(--dim);margin-bottom:5px">📦 <b style="color:var(--cyan)">${I18N.t('ui.cargoBayShort')}</b> ${s.cargoSlots||4}칸 / 최대${_cargoCap(s)}칸 <span style="opacity:.45;font-size:9px">${I18N.t('ui.hintEmptyExpand')}</span></div>
+            ${(()=>{const slots=Math.min(s.cargoSlots||4,_cargoCap(s));let cargoOffset=0;for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}const cargoFlat=[];G.cargo.forEach(function(c){const imgSrcC=commImgSrc(c.id);const _dnm=commDisplayNm(c);for(let q=0;q<(c.qty||1);q++){cargoFlat.push({nm:_dnm,ic:c.ic||'📦',img:imgSrcC,price:c.buyPrice,id:c.id});}});const myCargo=cargoFlat.slice(cargoOffset,cargoOffset+slots);let h='<div style="display:grid;grid-template-rows:repeat(5,42px);grid-auto-flow:column;grid-auto-columns:42px;gap:3px;">';for(let i=0;i<slots;i++){if(i<myCargo.length){const ci=myCargo[i];h+='<div style="width:42px;height:42px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative" title="'+ci.nm+'\n구매가: ₡'+ci.price.toLocaleString()+'"><img src="'+ci.img+'" style="width:38px;height:38px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:18px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}else{const isMax=(slots>=_cargoCap(s));h+='<div '+''+' style="width:42px;height:42px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}}h+='</div>';return h;})()}
           </div>
         </div>`}
 
@@ -532,7 +532,7 @@ function renderShipTab(body){
 
           <!-- 함선 관리 버튼 -->
           <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-            ${(()=>{if((s.cargoSlots||5)>=100)return'<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxShort')+'</span>';const cp=getCargoUpgradePrice(s);return'';})()}
+            ${(()=>{if((s.cargoSlots||5)>=_cargoCap(s))return'<span style="font-size:11px;color:var(--cyan)">'+I18N.t('ship.cargoMaxShort')+'</span>';const cp=getCargoUpgradePrice(s);return'';})()}
             <span style="color:var(--bdr);margin:0 2px">|</span>
             ${!isFlagship?`<button class="btn btn-sm btn-gold" style="font-size:11px;padding:3px 8px" onclick="setFlagship(${idx})">${I18N.t('ui.flagshipSetGoldBtn')}</button>`:`<span style="font-size:11px;color:var(--cyan)">${I18N.t('ui.flagshipCurrentBadge')}</span>`}
             <button class="btn btn-sm" style="font-size:11px;padding:3px 8px;border-color:var(--cyan);color:var(--cyan)" onclick="renameShip(${idx})">${I18N.t('ui.renameShipBtn')}</button>

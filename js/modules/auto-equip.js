@@ -288,7 +288,7 @@ function _distributeCargoExtParts(){
     const sc=SPECIAL_CARGO_PARTS.find(c=>c.id===inv.id);
     inv.qty--; if(inv.qty<=0)G.inventory=G.inventory.filter(i=>i!==inv);
     s.cargoExtParts.push(inv.id);
-    s.cargoSlots=clampCargoSlots(s.cargoSlots,sc?sc.cargoBonus:0);
+    s.cargoSlots=clampCargoSlots(s.cargoSlots,sc?sc.cargoBonus:0,(typeof _cargoCap==='function'?_cargoCap(s):100));
     return true;
   }
   // ⓪ 기존 장착 창고 파츠 전량 회수 → 인벤토리 풀링 (균등 재분배 위해)
@@ -514,7 +514,7 @@ function autoEquipPartsFlagship(){
     const sc=SCARGO.find(c=>c.id===inv.id);
     inv.qty--; if(inv.qty<=0)G.inventory=G.inventory.filter(x=>x!==inv);
     s.cargoExtParts.push(sc?sc.id:inv.id);
-    s.cargoSlots=clampCargoSlots(s.cargoSlots,sc?sc.cargoBonus:0);
+    s.cargoSlots=clampCargoSlots(s.cargoSlots,sc?sc.cargoBonus:0,(typeof _cargoCap==='function'?_cargoCap(s):100));
     return true;
   }
 

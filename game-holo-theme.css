@@ -1,0 +1,99 @@
+/* ════════════════════════════════════════════════════════════════════
+   DESTINATION EARTH — 사이버펑크 글래스 테마 오버레이
+   · game.css 뒤에 로드하면 실제 게임 UI(.btn / .modal / 카드 등)를 리스킨.
+   · 원본 game.css는 건드리지 않음. 빼면 원래 디자인으로 복귀.
+   · index-holo.html 에서 game.css → 이 파일 순서로 포함됨.
+   ════════════════════════════════════════════════════════════════════ */
+:root{ --holo-cut:10px; --holo-line:1.6px; --holo-glass:rgba(13,24,40,.85); }
+
+/* ── 버튼: 노치 글래스 + 끊기지 않는 네온 라인(2중 레이어) ── */
+.btn{
+  --c:var(--cyan);
+  position:relative; isolation:isolate; border:0!important; border-radius:6px;
+  color:var(--txt)!important; text-shadow:0 0 8px color-mix(in srgb,var(--c) 55%,transparent);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 92%,white),var(--c) 55%,color-mix(in srgb,var(--c) 60%,black))!important;
+  clip-path:polygon(var(--holo-cut) 0,100% 0,100% calc(100% - var(--holo-cut)),calc(100% - var(--holo-cut)) 100%,0 100%,0 var(--holo-cut));
+  box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 16px color-mix(in srgb,var(--c) 30%,transparent);
+  /* rest 상태에도 합성 레이어 강제 — clip-path 노치가 hover(transform) 전에 깨져 보이던 리페인트 글리치 방지. 사용자 보고 2026-06-22. */
+  transform:translateZ(0);
+  transition:transform .12s ease, filter .2s ease, box-shadow .2s ease;
+}
+.btn::before{
+  content:""; position:absolute; inset:var(--holo-line); z-index:-1; clip-path:inherit;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 16%,transparent),transparent 55%),var(--holo-glass);
+  /* backdrop-filter 제거: clip-path + z-index:-1 pseudo 와 결합 시 노치가 깨져 렌더되던 글리치 원인. 글래스 배경(--holo-glass)만 유지 — 시각 차이 미미. */
+}
+.btn::after{
+  content:""; position:absolute; top:0; left:-60%; width:50%; height:100%; z-index:1; pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent); transform:skewX(-18deg); transition:left .5s ease;
+}
+.btn:hover{ filter:brightness(1.14); transform:translateY(-2px) translateZ(0); box-shadow:0 10px 26px rgba(0,0,0,.5),0 0 30px color-mix(in srgb,var(--c) 55%,transparent); }
+.btn:hover::after{ left:120%; }
+.btn:active{ transform:translateY(0) scale(.97) translateZ(0); }
+.btn-gold{--c:var(--gold)} .btn-red{--c:var(--red)} .btn-green{--c:var(--green)} .btn-purple{--c:var(--purple)}
+/* 잘린 모서리 때문에 코너가 비지 않도록(컷이 패딩보다 크지 않게) */
+.btn-sm{--holo-cut:7px} .btn-lg{--holo-cut:13px}
+
+/* ── 모달: 노치 글래스 패널 ── */
+.modal{
+  position:relative; isolation:isolate; border:0!important;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 70%,white),var(--cyan) 55%,color-mix(in srgb,var(--cyan) 55%,black))!important;
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);
+}
+.modal::before{
+  content:""; position:absolute; inset:1.8px; z-index:-1; clip-path:inherit;
+  background:linear-gradient(160deg,rgba(0,243,255,.06),transparent 55%),rgba(9,18,32,.96);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+}
+#modal-bg{ background:rgba(2,6,14,.78)!important; -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); }
+.modal-t{ color:var(--cyan)!important; text-shadow:0 0 10px rgba(0,243,255,.4); border-bottom-color:rgba(0,243,255,.28)!important; }
+
+/* ── 카드/칩: 반투명 글래스 + 네온 테두리(테두리 유지) ── */
+.ic,.ship-c,.gc-card,.gc-char,.pl-item,.crew-c{
+  background:var(--holo-glass)!important;
+  border:1px solid rgba(0,243,255,.32)!important;
+  -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px);
+  box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 14px rgba(0,243,255,.12);
+}
+.gc-card.cr-L,.gc-char.rL{ border-color:var(--gold)!important; box-shadow:0 0 16px rgba(212,175,55,.35)!important; }
+.gc-card.cr-H,.gc-char.rH{ border-color:var(--purple)!important; box-shadow:0 0 16px rgba(139,0,255,.32)!important; }
+.gc-card.cr-R,.gc-char.rR{ border-color:var(--blue)!important; }
+
+/* ── 정보칩/배지 살짝 컷 ── */
+.ic{ clip-path:polygon(6px 0,100% 0,100% 100%,0 100%,0 6px); }
+.badge{ box-shadow:0 0 10px color-mix(in srgb,currentColor 35%,transparent); }
+
+/* ── 상단 HUD / 사이드바 — 글래스 + 네온 라인 ── */
+#hud{ background:rgba(6,14,28,.82)!important; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-bottom:1px solid rgba(0,243,255,.35)!important; box-shadow:0 2px 18px rgba(0,243,255,.1); }
+.hub-side{ background:rgba(10,20,34,.9)!important; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-right:1px solid rgba(0,243,255,.3)!important; }
+.hn-btn.on,.hn-folder-btn.on{ box-shadow:inset 3px 0 12px rgba(0,243,255,.18); }
+
+/* ── 백구 하단 다이얼로그 — 글래스 강화 ── */
+#bkdialog{ border-color:rgba(0,243,255,.45)!important; box-shadow:0 -4px 28px rgba(0,243,255,.14),0 -4px 24px rgba(0,0,0,.6)!important; }
+
+/* ── 게이지 네온 글로우 ── */
+.bar-fi{ box-shadow:0 0 10px currentColor; }
+
+/* ════════════════════════════════════════════════════════════════════
+   재사용 홀로 클래스 — JS 인라인 스타일 팝업/카드에 "클래스만 부착"하면 적용
+   (Coder: shakedown-popup.js / combat.js / report-popup.js 의 컨테이너에 부여)
+   ════════════════════════════════════════════════════════════════════ */
+.holo-overlay{ position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:12px;
+  background:rgba(2,6,14,.78); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); }
+.holo-panel{ --c:var(--cyan); position:relative; isolation:isolate; border:0!important; color:var(--txt);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 70%,white),var(--c) 55%,color-mix(in srgb,var(--c) 55%,black))!important;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px); }
+.holo-panel::before{ content:""; position:absolute; inset:1.8px; z-index:-1; clip-path:inherit;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--c) 7%,transparent),transparent 55%),rgba(9,18,32,.96);
+  -webkit-backdrop-filter:blur(8px) saturate(150%); backdrop-filter:blur(8px) saturate(150%); }
+.holo-panel.c-red{--c:var(--red)} .holo-panel.c-gold{--c:var(--gold)} .holo-panel.c-green{--c:var(--green)} .holo-panel.c-purple{--c:var(--purple)}
+.holo-card{ position:relative; isolation:isolate; background:var(--holo-glass)!important; border:1px solid rgba(0,243,255,.3)!important;
+  -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px); box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 14px rgba(0,243,255,.12);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px); }
+.holo-chip{ background:var(--holo-glass)!important; border:1px solid rgba(0,243,255,.35)!important; border-radius:6px;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+.holo-portrait{ position:relative; isolation:isolate; border:0!important;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  box-shadow:0 0 18px rgba(0,243,255,.4); }
+/* 추가 카드류 자동 적용 */
+.bp-card,.ab-ship-card{ background:var(--holo-glass)!important; border:1px solid rgba(0,243,255,.3)!important; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px) }

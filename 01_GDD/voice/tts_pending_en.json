@@ -1,0 +1,9 @@
+[
+ {"out":"clips_en/baekgu/gate_needHero.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"Commander, there's an order to things. We have to meet someone first — we can't move on without them."},
+ {"out":"clips_en/baekgu/gate_needItem.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"Not yet. There's something we need to get first."},
+ {"out":"clips_en/baekgu/gate_needBlueprint.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"We're not ready. There's a blueprint we need to find first."},
+ {"out":"clips_en/baekgu/gate_needQuest.mp3","voice":"cjVigY5qzO86Huf0OWal","model":"eleven_v3","stability":0.0,"text":"There's a prerequisite mission left. We have to finish something first."},
+ {"out":"clips_en/aureusboss/aureusboss_001.mp3","voice":"EXAVITQu4vr4xnSDxMaL","model":"eleven_v3","stability":0.0,"text":"[haughty] My — what poor manners for a guest. The toll for this sector belongs to my company. Pay... or be liquidated."},
+ {"out":"clips_en/aureusboss/aureusboss_002.mp3","voice":"EXAVITQu4vr4xnSDxMaL","model":"eleven_v3","stability":0.0,"text":"[cold] War is just another transaction, Commander. I'll log your fleet as a liability in my ledger."},
+ {"out":"clips_en/aureusboss/aureusboss_003.mp3","voice":"EXAVITQu4vr4xnSDxMaL","model":"eleven_v3","stability":0.0,"text":"[bitter] This... is a loss my ledger didn't account for. Next quarter, I will collect it — without fail."}
+]

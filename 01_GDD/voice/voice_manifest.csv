@@ -1,0 +1,517 @@
+﻿num,char,slug,clip,clip_f,clip_en,clip_en_f,lang,text
+001,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_001.mp3,02_Assets/audio/voice/commander_f/commander_f_001.mp3,02_Assets/audio/voice_en/commander/commander_001.mp3,02_Assets/audio/voice_en/commander_f/commander_f_001.mp3,ko,"얼마나, 잤지?"
+002,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_002.mp3,02_Assets/audio/voice/commander_f/commander_f_002.mp3,02_Assets/audio/voice_en/commander/commander_002.mp3,02_Assets/audio/voice_en/commander_f/commander_f_002.mp3,ko,지구는... 아직도?
+003,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_003.mp3,02_Assets/audio/voice/commander_f/commander_f_003.mp3,02_Assets/audio/voice_en/commander/commander_003.mp3,02_Assets/audio/voice_en/commander_f/commander_f_003.mp3,ko,"고향이, 아직 저 위에 있군."
+004,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_004.mp3,02_Assets/audio/voice/commander_f/commander_f_004.mp3,02_Assets/audio/voice_en/commander/commander_004.mp3,02_Assets/audio/voice_en/commander_f/commander_f_004.mp3,ko,사람이? 아직 누가 남아 있다고?
+005,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_005.mp3,02_Assets/audio/voice/commander_f/commander_f_005.mp3,02_Assets/audio/voice_en/commander/commander_005.mp3,02_Assets/audio/voice_en/commander_f/commander_f_005.mp3,ko,고작 장사로 봉쇄를 뚫겠다고?
+006,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_006.mp3,02_Assets/audio/voice/commander_f/commander_f_006.mp3,02_Assets/audio/voice_en/commander/commander_006.mp3,02_Assets/audio/voice_en/commander_f/commander_f_006.mp3,ko,좀 오래 잠들어 있었습니다. 이제 막 깼고요.
+007,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_007.mp3,02_Assets/audio/voice/commander_f/commander_f_007.mp3,02_Assets/audio/voice_en/commander/commander_007.mp3,02_Assets/audio/voice_en/commander_f/commander_f_007.mp3,ko,"지금은 고철뿐입니다. 하지만 곧, 훨씬 큰 걸 들고 오죠."
+008,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_008.mp3,02_Assets/audio/voice/commander_f/commander_f_008.mp3,02_Assets/audio/voice_en/commander/commander_008.mp3,02_Assets/audio/voice_en/commander_f/commander_f_008.mp3,ko,거북선…?
+009,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_009.mp3,02_Assets/audio/voice/commander_f/commander_f_009.mp3,02_Assets/audio/voice_en/commander/commander_009.mp3,02_Assets/audio/voice_en/commander_f/commander_f_009.mp3,ko,"그 사람은, 지금 어디 있지?"
+010,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_010.mp3,02_Assets/audio/voice/commander_f/commander_f_010.mp3,02_Assets/audio/voice_en/commander/commander_010.mp3,02_Assets/audio/voice_en/commander_f/commander_f_010.mp3,ko,잘 부탁해.
+011,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_011.mp3,02_Assets/audio/voice/commander_f/commander_f_011.mp3,02_Assets/audio/voice_en/commander/commander_011.mp3,02_Assets/audio/voice_en/commander_f/commander_f_011.mp3,ko,구한다.
+012,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_012.mp3,02_Assets/audio/voice/commander_f/commander_f_012.mp3,02_Assets/audio/voice_en/commander/commander_012.mp3,02_Assets/audio/voice_en/commander_f/commander_f_012.mp3,ko,간다.
+013,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_013.mp3,02_Assets/audio/voice/commander_f/commander_f_013.mp3,02_Assets/audio/voice_en/commander/commander_013.mp3,02_Assets/audio/voice_en/commander_f/commander_f_013.mp3,ko,"크리그를, 벌써 여기서 만나는군."
+014,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_014.mp3,02_Assets/audio/voice/commander_f/commander_f_014.mp3,02_Assets/audio/voice_en/commander/commander_014.mp3,02_Assets/audio/voice_en/commander_f/commander_f_014.mp3,ko,사람부터 꺼낸다.
+015,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_015.mp3,02_Assets/audio/voice/commander_f/commander_f_015.mp3,02_Assets/audio/voice_en/commander/commander_015.mp3,02_Assets/audio/voice_en/commander_f/commander_f_015.mp3,ko,"백구, 62%면 충분해."
+016,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_016.mp3,02_Assets/audio/voice/commander_f/commander_f_016.mp3,02_Assets/audio/voice_en/commander/commander_016.mp3,02_Assets/audio/voice_en/commander_f/commander_f_016.mp3,ko,마르코 폴로. 이 구역 독립 중개상이라고 했어. 치크스 눈 피해 밀무역하는 사람 — 그가 통신 장비를 갖고 있을 거야.
+017,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_017.mp3,02_Assets/audio/voice/commander_f/commander_f_017.mp3,02_Assets/audio/voice_en/commander/commander_017.mp3,02_Assets/audio/voice_en/commander_f/commander_f_017.mp3,ko,여긴 은하 공용 항로다. 비켜.
+018,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_018.mp3,02_Assets/audio/voice/commander_f/commander_f_018.mp3,02_Assets/audio/voice_en/commander/commander_018.mp3,02_Assets/audio/voice_en/commander_f/commander_f_018.mp3,ko,"발굴한다. 살아있는 거라면, 더더욱."
+019,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_019.mp3,02_Assets/audio/voice/commander_f/commander_f_019.mp3,02_Assets/audio/voice_en/commander/commander_019.mp3,02_Assets/audio/voice_en/commander_f/commander_f_019.mp3,ko,오르크를 잡으면 다음 경로가 열려. 출발한다.
+020,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_020.mp3,02_Assets/audio/voice/commander_f/commander_f_020.mp3,02_Assets/audio/voice_en/commander/commander_020.mp3,02_Assets/audio/voice_en/commander_f/commander_f_020.mp3,ko,"치크스 변이 포자 ×3, 마침 이 구역 화물이다. 위장 미끼로 써먹자."
+021,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_021.mp3,02_Assets/audio/voice/commander_f/commander_f_021.mp3,02_Assets/audio/voice_en/commander/commander_021.mp3,02_Assets/audio/voice_en/commander_f/commander_f_021.mp3,ko,설계도를 없앤다. 그리고 테슬라도 산 채로 꺼낸다. …사람부터다.
+022,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_022.mp3,02_Assets/audio/voice/commander_f/commander_f_022.mp3,02_Assets/audio/voice_en/commander/commander_022.mp3,02_Assets/audio/voice_en/commander_f/commander_f_022.mp3,ko,"지하 감옥 진입 루트 — 마르코, 구역 지도 뽑을 수 있어?"
+023,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_023.mp3,02_Assets/audio/voice/commander_f/commander_f_023.mp3,02_Assets/audio/voice_en/commander/commander_023.mp3,02_Assets/audio/voice_en/commander_f/commander_f_023.mp3,ko,"이순신 장군이 수백 년째 저기 갇혀 있다. 오늘, 우리가 끝낸다."
+024,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_024.mp3,02_Assets/audio/voice/commander_f/commander_f_024.mp3,02_Assets/audio/voice_en/commander/commander_024.mp3,02_Assets/audio/voice_en/commander_f/commander_f_024.mp3,ko,장군. 함께 갑시다.
+025,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_025.mp3,02_Assets/audio/voice/commander_f/commander_f_025.mp3,02_Assets/audio/voice_en/commander/commander_025.mp3,02_Assets/audio/voice_en/commander_f/commander_f_025.mp3,ko,함께 처리하자.
+026,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_026.mp3,02_Assets/audio/voice/commander_f/commander_f_026.mp3,02_Assets/audio/voice_en/commander/commander_026.mp3,02_Assets/audio/voice_en/commander_f/commander_f_026.mp3,ko,아우레우스 정보 칩으로 좌표 분석. 진입한다.
+027,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_027.mp3,02_Assets/audio/voice/commander_f/commander_f_027.mp3,02_Assets/audio/voice_en/commander/commander_027.mp3,02_Assets/audio/voice_en/commander_f/commander_f_027.mp3,ko,"아이젠클로. 100년 봉쇄의 집행관. 오늘, 네 쇠사슬을 여기서 끊는다."
+028,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_028.mp3,02_Assets/audio/voice/commander_f/commander_f_028.mp3,02_Assets/audio/voice_en/commander/commander_028.mp3,02_Assets/audio/voice_en/commander_f/commander_f_028.mp3,ko,"들어간다. 아우레우스 태양핵 셋, 메카니카 양자칩 셋 — 충분해."
+029,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_029.mp3,02_Assets/audio/voice/commander_f/commander_f_029.mp3,02_Assets/audio/voice_en/commander/commander_029.mp3,02_Assets/audio/voice_en/commander_f/commander_f_029.mp3,ko,진입한다.
+030,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_030.mp3,02_Assets/audio/voice/commander_f/commander_f_030.mp3,02_Assets/audio/voice_en/commander/commander_030.mp3,02_Assets/audio/voice_en/commander_f/commander_f_030.mp3,ko,전 함대. 진형 학익진. 거북선 중앙. 진입한다.
+031,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_031.mp3,02_Assets/audio/voice/commander_f/commander_f_031.mp3,02_Assets/audio/voice_en/commander/commander_031.mp3,02_Assets/audio/voice_en/commander_f/commander_f_031.mp3,ko,아이젠클로. 100년 동안 인류를 가뒀던 책임 — 오늘 끝낸다.
+032,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_032.mp3,02_Assets/audio/voice/commander_f/commander_f_032.mp3,02_Assets/audio/voice_en/commander/commander_032.mp3,02_Assets/audio/voice_en/commander_f/commander_f_032.mp3,ko,발사.
+033,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_033.mp3,02_Assets/audio/voice/commander_f/commander_f_033.mp3,02_Assets/audio/voice_en/commander/commander_033.mp3,02_Assets/audio/voice_en/commander_f/commander_f_033.mp3,ko,모두. 발사.
+034,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_034.mp3,02_Assets/audio/voice/commander_f/commander_f_034.mp3,02_Assets/audio/voice_en/commander/commander_034.mp3,02_Assets/audio/voice_en/commander_f/commander_f_034.mp3,ko,백구.
+035,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_035.mp3,02_Assets/audio/voice/commander_f/commander_f_035.mp3,02_Assets/audio/voice_en/commander/commander_035.mp3,02_Assets/audio/voice_en/commander_f/commander_f_035.mp3,ko,내려간다.
+036,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_036.mp3,02_Assets/audio/voice/commander_f/commander_f_036.mp3,02_Assets/audio/voice_en/commander/commander_036.mp3,02_Assets/audio/voice_en/commander_f/commander_f_036.mp3,ko,어디든. 우리는 함께다.
+037,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_037.mp3,02_Assets/audio/voice/commander_f/commander_f_037.mp3,02_Assets/audio/voice_en/commander/commander_037.mp3,02_Assets/audio/voice_en/commander_f/commander_f_037.mp3,ko,이순신 제독님.
+038,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_038.mp3,02_Assets/audio/voice/commander_f/commander_f_038.mp3,02_Assets/audio/voice_en/commander/commander_038.mp3,02_Assets/audio/voice_en/commander_f/commander_f_038.mp3,ko,아직 봉쇄 중입니다.
+039,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_039.mp3,02_Assets/audio/voice/commander_f/commander_f_039.mp3,02_Assets/audio/voice_en/commander/commander_039.mp3,02_Assets/audio/voice_en/commander_f/commander_f_039.mp3,ko,네. 100년이 지났습니다.
+040,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_040.mp3,02_Assets/audio/voice/commander_f/commander_f_040.mp3,02_Assets/audio/voice_en/commander/commander_040.mp3,02_Assets/audio/voice_en/commander_f/commander_f_040.mp3,ko,당신은…?
+041,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_041.mp3,02_Assets/audio/voice/commander_f/commander_f_041.mp3,02_Assets/audio/voice_en/commander/commander_041.mp3,02_Assets/audio/voice_en/commander_f/commander_f_041.mp3,ko,찾았습니다. 설계도 1권을 가지고 있습니다.
+042,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_042.mp3,02_Assets/audio/voice/commander_f/commander_f_042.mp3,02_Assets/audio/voice_en/commander/commander_042.mp3,02_Assets/audio/voice_en/commander_f/commander_f_042.mp3,ko,예상했다고요?
+043,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_043.mp3,02_Assets/audio/voice/commander_f/commander_f_043.mp3,02_Assets/audio/voice_en/commander/commander_043.mp3,02_Assets/audio/voice_en/commander_f/commander_f_043.mp3,ko,광개토대왕.
+044,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_001.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_001.mp3,,ko,"사령관. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요."
+045,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_002.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_002.mp3,,ko,"100년 3개월 12일. 그동안 저는 한 번도 전원을 끄지 않았어요. 끄면, 깨워 줄 사람이 없을 것 같아서요."
+046,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_003.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_003.mp3,,ko,"우르사 메이저의 봉쇄, 그대로입니다. 떠날 때보다 오히려 더 조여졌어요."
+047,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_004.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_004.mp3,,ko,네. 그러니 감상은 나중에 하세요 — 일단 살아야 그 고향에 갑니다. 격납고에 고철 프레임이 흩어져 있어요. 수거하면 멈춘 엔진에 다시 불을 붙일 수 있습니다.
+048,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_005.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_005.mp3,,ko,"볼프 교역소예요. 수퍼비아 내권역의 낡은 정거장 — 그런데 사령관님, 불이 켜져 있어요. 100년 만에 처음 보는 '살아있는' 신호입니다."
+049,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_006.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_006.mp3,,ko,"버티는 거죠, 우리처럼. 저들에게 중력수정을 싸게 사서 아우레우스에 넘기면 40% 차익 — 첫 자금이에요."
+050,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_007.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_007.mp3,,ko,"큰 불도 불씨 하나에서 시작해요. 살아남는 게, 반격의 첫 걸음입니다."
+051,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_008.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_008.mp3,,ko,"사령관님, 저 안쪽 노인한테서 100년 묵은 데이터 냄새가 나요. 제가 먼저 가볼게요."
+052,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_009.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_009.mp3,,ko,"설계도 단편 1/3, 골격도예요. 사령관님, 이건 단순한 함선이 아닙니다. 우르사 메이저조차 두려워했던 전설이에요."
+053,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_010.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_010.mp3,,ko,"나머지 두 조각을 모으는 길이, 곧 그 전설을 만나는 길입니다."
+054,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_011.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_011.mp3,,ko,"마르코 폴로 — 정보 브로커 등록. 허풍인지 진짜인지는, 제가 지켜볼게요."
+055,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_012.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_012.mp3,,ko,"아우레우스 내권역이에요. 세금도 규정도 빡빡해요 — 대신 수퍼비아 중력수정은 여기선 희귀품, 비싸게 팔려요."
+056,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_013.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_013.mp3,,ko,거북선 설계도 단편 2/3 확보 — 외피 가시 돌기 구조도. 코어 단편 하나만 더면 복원됩니다.
+057,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_014.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_014.mp3,,ko,"크리그 소형 3, 중형 지휘선 1. 그리고 — 민간 광부 7명이 안에 잡혀 있어요. …이건, 마음에 안 들어요."
+058,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_015.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_015.mp3,,ko,"해적 소형 2, 지휘선 1 — 외곽 배치. 제가 먼저 길 열게요."
+059,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_016.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_016.mp3,,ko,생존 확률 62%. 이순신 구출 시 크리그 전략 정보 확보 89%.
+060,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_017.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_017.mp3,,ko,"사실은, 사령관님이랑이면 100%라고 적고 싶었어요. …그냥요."
+061,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_018.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_018.mp3,,ko,"말로 통할 상대가 아니에요. 전투 모드 전환, 적 3기 포착."
+062,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_019.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_019.mp3,,ko,"우주어 자동 번역 활성화. …100년입니다, 장군님."
+063,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_020.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_020.mp3,,ko,SW01 무기 세트 + SA01 장갑 세트 자동 장착 완료. 화력 대폭 상승.
+064,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_021.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_021.mp3,,ko,"임무 완료. 다음 항로 — 저항군에게 손을 내밀러 갑니다. 이제, 혼자가 아니에요."
+065,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_022.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_022.mp3,,ko,페스작센 외곽 — 약 200년 전 좌표의 잔해 신호 감지. 옛 지구 해군 식별 코드 'HMS Victory'.
+066,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_023.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_023.mp3,,ko,영웅 합류: 호레이쇼 넬슨. 옛 지구 해군 진형 데이터 입수 → 학익진 명중률 +15%.
+067,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_024.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_024.mp3,,ko,공장 지하 연구동에서 보존 캡슐 발견 — 생체 반응! 살아있어요.
+068,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_025.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_025.mp3,,ko,"임무 완료. 집행관 격파, 이휘소 박사 합류. 이제 캅테인 균열을 지나 — 우르사 메이저의 본거지로 향합니다."
+069,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_026.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_026.mp3,,ko,"아이젠클로 기함 포착 — 크기 2배, 장갑 등급 이상. …이 냄새, 적의 우두머리예요. 전 함선, 전투 준비!"
+070,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_027.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_027.mp3,,ko,캅테인b 균열. 시공이 뒤틀려 있어요. 아우레우스 태양핵 안정화 코어가 없으면 함대가 분해돼요.
+071,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_028.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_028.mp3,,ko,⚠ 좌우 시공축 ±0.3 변동. 함대 자세 보정 중.
+072,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_029.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_029.mp3,,ko,영웅 합류: A. 아인슈타인. 8영웅 완전체 — 함대 최종 강화 상태.
+073,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_030.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_030.mp3,,ko,거북선 + 8영웅 + 보이드 방어막 해석 장비 + 시공 보정 알고리즘 — 모든 준비 완료.
+074,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_031.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_031.mp3,,ko,"임무 완료. 이제, 마지막입니다 — 제타 레티쿨리, 그리고 지구. 우르사 메이저를 끝장내고, 지구를 되찾으러 갑니다."
+075,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_032.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_032.mp3,,ko,제타 레티쿨리. 우르사 메이저 본거지에 도착했어요. 적함 신호 — 총 30기 식별.
+076,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_033.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_033.mp3,,ko,전투력 1천만 단위! 하지만 — 거북선과 8영웅이 함께라면 못할 게 없어요.
+077,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_034.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_034.mp3,,ko,사령관. 100년 3개월 12일 동안 — 당신을 기다린 보람이 있었어요.
+078,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_035.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_035.mp3,,ko,좌표 — 지구. 항법 입력 완료. 가시죠.
+079,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_036.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_036.mp3,,ko,이겨야 하는 싸움입니다.
+080,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_037.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_037.mp3,,ko,사령관… 저도 이제 알겠습니다. 저는 100년간 당신을 기다리도록 설계된 프로그램이었습니다.
+081,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_038.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_038.mp3,,ko,10만 크레딧 무역 실적 보유 팀이 왔습니다.
+082,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_039.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_039.mp3,,ko,지금 위치: . 행성 광장에서 퀘스트·상점·주점 이용 가능.
+083,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_040.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_040.mp3,,ko,잡파츠 정리 완료. 크레딧 들어왔어.
+084,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_041.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_041.mp3,,ko,강화 실패... 이 단계 후퇴해서 +이 됐어. 재료를 더 모아서 다시 도전해.
+085,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_042.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_042.mp3,,ko,강화 실패... 다음엔 운이 따르길.
+086,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_043.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_043.mp3,,ko,"검은 함선과의 만남 끝났어. 보이드가 선물로 팔콘 척, 신화 설계도 장, 신화 파츠 5종, VC 개, VE 을 남겼어. 보이드 행성 100% 투자하면 마지막 시험 열려!"
+087,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_044.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_044.mp3,,ko,신화급 파츠야! . 상점에서는 절대 못 사는 거야.
+088,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_045.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_045.mp3,,ko,설계도 드랍! 설계도야. 재료 모아서 제작소에서 만들어봐!
+089,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_046.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_046.mp3,,ko,"넬슨의 일점사야! 전 함대, 한 척에 화력 집중! ATT 두 배!"
+090,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_047.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_047.mp3,,ko,신화 5종 받았어. 정비소에서 장착해.
+091,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_048.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_048.mp3,,ko,추가 설계도 — 제작소 가능.
+092,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_049.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_049.mp3,,ko,먼저 이 전투부터 끝내야 합니다. 끝나기 전에 도망갈 수도 없어요.
+093,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_050.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_050.mp3,,ko,"사령관, 은 이미 대를 보유 중입니다. 같은 함선을 더 늘려도 함대 다양성이 떨어져 전술적으로 손해예요. 다른 함선을 합류시켜 시너지를 노려야 합니다 — 호위 함선의 특성·무장이 다양해야 적의 약점을 모두 찌를 수 있어요. 다른 함선을 함대에 넣어보세요."
+094,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_051.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_051.mp3,,ko,치크스 합병 완료. 이제 우리 땅이야.
+095,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_052.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_052.mp3,,ko,낙찰. 세금 ₡ 들어온다.
+096,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_053.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_053.mp3,,ko,구매 완료.
+097,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_054.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_054.mp3,,ko,합류. 잘 써.
+098,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_055.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_055.mp3,,ko,기함 승격. 전투 시 중앙에 배치돼.
+099,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_056.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_056.mp3,,ko,충성도 야. 곧 이탈할 수도 있어. 빨리 크루 태워.
+100,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_057.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_057.mp3,,ko,충성도 만렙이야. 이제 한층 더 강해졌어!
+101,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_058.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_058.mp3,,ko,충성도가 너무 낮아서 적에게 넘어갔어. 크루를 신경 써야 해.
+102,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_059.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_059.mp3,,ko,최고 레벨 보상! 들어왔어.
+103,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_060.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_060.mp3,,ko,파츠 슬롯 추가 완료. 더 강력하게 무장할 수 있어.
+104,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_061.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_061.mp3,,ko,출격 준비 완료. 즉시 전열에 투입.
+105,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_062.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_062.mp3,,ko,출격! 파츠/크루는 자동 회수했어. 새 함선에 다시 배치해줘.
+106,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_063.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_063.mp3,,ko,정비소에 ₡에 매각했어. 파츠랑 크루는 잘 챙겨놨고.
+107,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_064.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_064.mp3,,ko,의 홀로그램 외피를 형태로 재구성했어. 능력치는 그대로니까 안심해.
+108,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_065.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_065.mp3,,ko,의 홀로그램 외피 해제. 원본 외관으로 돌아왔어.
+109,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_066.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_066.mp3,,ko,🎉 축하해! 이 + 강화에 성공했어. 능력치가 % 상승!
+110,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_067.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_067.mp3,,ko,에 탑승. 함선 성능 올라갔어.
+111,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_068.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_068.mp3,,ko,팔았어. ₡ 들어왔다. 잘 썼네.
+112,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_069.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_069.mp3,,ko,으로 이름 바꿨어. 새 출발이네.
+113,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_070.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_070.mp3,,ko,기함 변경. 주의해서 타.
+114,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_071.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_071.mp3,,ko,창고 칸으로 확장.
+115,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_072.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_072.mp3,,ko,이제 최대야!
+116,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_073.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_073.mp3,,ko,다음 확장은 더 비싸질 거야.
+117,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_074.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_074.mp3,,ko,샀어. 정비소 → 파츠 → 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.
+118,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_075.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_075.mp3,,ko,장착! /척 완료. 전 함선 장착하면 순간이동 가능해.
+119,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_076.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_076.mp3,,ko,합류! 은 하선했어.
+120,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_077.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_077.mp3,,ko,전설 영웅 등장! 대박이야!
+121,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_078.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_078.mp3,,ko,전설급이야! 대박!
+122,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_079.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_079.mp3,,ko,영웅급 크루 영입!
+123,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_080.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_080.mp3,,ko,크루 영입 완료. 함선에 탑승시켜봐.
+124,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_081.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_081.mp3,,ko,상업 레벨 . 세금 ₡ 들어온다.
+125,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_082.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_082.mp3,,ko,가 합류하려 해! 전설급이야. 교체할 크루를 골라봐.
+126,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_083.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_083.mp3,,ko,가 합류했어! 전설급이야. 함선에 태워봐.
+127,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_084.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_084.mp3,,ko,세트 아이템이야! . 세트 완성하면 추가 보너스가 붙어.
+128,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_085.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_085.mp3,,ko,전설 파츠야! . 상점에서는 못 사는 거야.
+129,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_086.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_086.mp3,,ko,퀘스트 보상 지급. 크레딧.
+130,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_087.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_087.mp3,,ko,레벨 보너스 ×배!
+131,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_088.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_088.mp3,,ko,발견!
+132,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_089.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_089.mp3,,ko,전설급이네. 대박이다.
+133,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_090.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_090.mp3,,ko,꽤 좋은 파츠야.
+134,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_091.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_091.mp3,,ko,회수 완료. 함대에 추가됐어.
+135,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_092.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_092.mp3,,ko,대박! 이야. 능력치 +% 상승!
+136,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_093.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_093.mp3,,ko,아쉽지만 이 나왔어. 다시 도전해봐.
+137,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_094.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_094.mp3,,ko,완성! .
+138,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_095.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_095.mp3,,ko,완성! 정비소 파츠창 오른쪽 창고 확장 슬롯에 장착하면 그 함선 화물칸이 + 늘어나.
+139,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_096.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_096.mp3,,ko,함선 완성! 이야. 편대 확인해봐!
+140,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_097.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_097.mp3,,ko,완성. .
+141,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_098.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_098.mp3,,ko,탑승. 이제 그 함선 1.2배 강해졌어.
+142,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_099.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_099.mp3,,ko,지구는 봉쇄됐어. ACT 3에 도달해야 진입할 수 있어!
+143,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_100.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_100.mp3,,ko,항로에서 뭔가 잡혔어. 조심해.
+144,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_101.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_101.mp3,,ko,⚠️ 이 행성은 아직 해금되지 않았어. 해적을 퇴치해야 시설을 이용할 수 있어!
+145,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_102.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_102.mp3,,ko,에서 퀘스트 클리어하면 설계도가 5% 확률로 드랍돼. 도전해봐!
+146,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_103.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_103.mp3,,ko,/개. 이 행성 상점에서 살 수 있어. 제작에 필요해.
+147,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_104.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_104.mp3,,ko,은 산지야. 상점에서 구할 수 있어. 제작소 재료로 쓰여.
+148,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_105.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_105.mp3,,ko,지구는 자유야. 이제부터는 새로운 시대 — 별들이 우리의 친구야. 자유롭게 항해해도 좋아.
+149,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_106.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_106.mp3,,ko,메가 충전 완료! 다시 빠르게 진행해 봐.
+150,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_107.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_107.mp3,,ko,맥스 치트 적용! 모든 게 풀렸어 — 즐겁게 플레이해!
+151,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_108.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_108.mp3,,ko,응? 뭔가 물어봐야 대답하지.
+152,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_109.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_109.mp3,,ko,크레딧 거의 없어. 무역이나 퀘스트로 충전해.
+153,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_110.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_110.mp3,,ko,해적들이 강해졌어. 조심해.
+154,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_111.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_111.mp3,,ko,해적이 더 강해졌다. 파츠 업그레이드해.
+155,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_112.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_112.mp3,,ko,해적 전투력 최대치. 최고 장비 갖춰.
+156,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_113.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_113.mp3,,ko,같은 자리에 너무 오래 있으면 해적들이 냄새 맡는다. 다음 턴엔 이동해.
+157,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_114.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_114.mp3,,ko,간신히 따돌렸어. 항로 주의해.
+158,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_115.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_115.mp3,,ko,겨우 빠져나왔어. 빨리 이 구역 떠나자.
+159,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_116.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_116.mp3,,ko,도망쳤어. 다음엔 일찍 움직여.
+160,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_117.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_117.mp3,,ko,전 함대 워프 엔진 장착 완료! 이제 은하계 어디든 순간이동할 수 있어. 은하계 경로 열어봐!
+161,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_118.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_118.mp3,,ko,영입 거절. 현재 크루 유지.
+162,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_119.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_119.mp3,,ko,보이드 크리스탈이야! 우르사 메이저 보스전 진입 재료. 이걸로 한 번 더 도전 가능!
+163,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_120.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_120.mp3,,ko,전설 동료 영입 거절. 현재 크루 유지.
+164,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_121.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_121.mp3,,ko,잔해 신호 듣고 해적들이 추가로 몰려왔다! 조심해.
+165,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_122.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_122.mp3,,ko,탐색 시작. 잔해 구역 접근 중.
+166,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_123.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_123.mp3,,ko,이번엔 없네. 다시 탐색해봐.
+167,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_124.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_124.mp3,,ko,이번엔 별다른 게 없네. 다시 시도해봐.
+168,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_125.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_125.mp3,,ko,잔해 탐색 완료. 퀘스트 보상 받아.
+169,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_126.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_126.mp3,,ko,소문 하나 — 전설의 영웅 이 에서 목격됐대요. 그 행성 퀘스트를 진행하면 만날 수 있을 거예요!
+170,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_127.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_127.mp3,,ko,잔해 일부 발견. 계속 탐색해야 해.
+171,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_128.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_128.mp3,,ko,목적지 도착. 퀘스트 탭에서 보상 받아.
+172,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_129.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_129.mp3,,ko,빌려줄게. 빨리 갚아.
+173,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_130.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_130.mp3,,ko,제작 중이야... 잠깐만 기다려.
+174,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_131.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_131.mp3,,ko,매수 의뢰 보고 완료. 보상 받으러 가자.
+175,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_132.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_132.mp3,,ko,입찰 경쟁에서 졌어. 더 높게 써야 했는데.
+176,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_133.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_133.mp3,,ko,통행세 내고 무사 통과! 안전이 최우선이지~
+177,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_134.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_134.mp3,,ko,"소행성대 돌파야! 방향키나 마우스로 회피, Shift로 레이저, Ctrl로 미사일! 50초 버텨!"
+178,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_135.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_135.mp3,,ko,블랙홀로 가는 진입로는 치크스 행성 근처에서만 열려. 치크스 행성이나 그 인접 행성으로 이동한 뒤 다시 시도해.
+179,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_136.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_136.mp3,,ko,저긴 은하 중심의 블랙홀... 먼저 지구를 해방해야 실마리가 잡힐 거야.
+180,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_137.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_137.mp3,,ko,지구다... 우르사 메이저가 우리를 기다리고 있어. 모든 화력 준비!
+181,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_138.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_138.mp3,,ko,지구다... 우르사 메이저가 기다린다. 모든 화력 준비!
+182,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_139.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_139.mp3,,ko,이 구역은 지구 저항군 지역이야. 상점에서 난중일기 영인본 구입하면 이순신 영입 가능해.
+183,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_140.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_140.mp3,,ko,난중일기 있어. 이 행성에 이순신이 있으면 영입 가능해.
+184,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_141.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_141.mp3,,ko,한발 물러섰어. 충분히 강해진 후 다시 도전해도 돼.
+185,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_142.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_142.mp3,,ko,통행료 냈어. 자존심은 상하지만 함선은 멀쩡하잖아. 다음엔 박살내자.
+186,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_143.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_143.mp3,,ko,도망쳤어. 다음엔 더 강해진 다음에 부딪치자.
+187,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_144.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_144.mp3,,ko,학익진이다! 함대가 양 날개로 포위! 적을 가운데로 몰아넣어. 화력 3배 폭격!
+188,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_145.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_145.mp3,,ko,아인슈타인의 상대성 이론! 시간축이 휘어진다! 적은 한 번 맞는데 우린 네 번 친다.
+189,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_146.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_146.mp3,,ko,테슬라의 전자기 초공간! 함선 무기가 번개로 변했어! 폭딜의 시작!
+190,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_147.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_147.mp3,,ko,제네시스 임펙트! 영웅들의 의지가 한 점에 모였어! 적은 시공간에서 사라진다.
+191,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_148.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_148.mp3,,ko,데스티네이션 어스!! 8명 영웅의 의지 + 100년 봉쇄를 깬 인류의 분노! 화력 10배! 적은 사라진다 — 우주의 정의를 보여줘!
+192,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_149.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_149.mp3,,ko,보이드 페이즈 강제 해금됨. 제타 레티쿨리로 이동해서 광장 → 제독 의뢰 확인해봐!
+193,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_150.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_150.mp3,,ko,보이드가 마지막 시험을 위해 ✦ 보이드의 창을 남겼어. 정비소에서 함선에 장착해 — 최종 결전에서 1대씩 즉시 파괴 가능해.
+194,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_151.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_151.mp3,,ko,"보이드가 인류 역사상 가장 위대한 5척을 깨워냈어! 능력치는 동일, HP는 두 배. 우리 전술이 답이다 — 일점사부터!"
+195,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_152.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_152.mp3,,ko,"8인의 전설이 모두 모였어요, 사령관! 이제 지구로 향할 준비가 됐습니다."
+196,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_153.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_153.mp3,,ko,백구의 일기
+197,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_154.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_154.mp3,,ko,백구
+198,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_155.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_155.mp3,,ko,거북선이다! 이순신의 그 함선! 지구 해방 보스전 입장 조건 충족이야!
+199,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_156.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_156.mp3,,ko,세 단편이 하나로! 이건 그냥 거북선이 아니야 — 불멸의 거북선이라고! 우르사 메이저도 이걸 보면 떨걸.
+200,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_157.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_157.mp3,,ko,이동 완료. 다음 목표 정해.
+201,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_158.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_158.mp3,,ko,워프 성공.
+202,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_159.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_159.mp3,,ko,이겼어. 당연한 거 아닌가.
+203,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_160.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_160.mp3,,ko,크레딧 벌었다.
+204,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_161.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_161.mp3,,ko,졌어. 다시 해.
+205,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_162.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_162.mp3,,ko,포기하면 안 돼.
+206,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_163.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_163.mp3,,ko,영웅 등급! 쓸만하겠는데.
+207,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_164.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_164.mp3,,ko,전설 등급이다!
+208,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_165.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_165.mp3,,ko,크레딧 부족해. 무역해.
+209,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_166.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_166.mp3,,ko,내가 경고했잖아. 싸워!
+210,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_001.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_001.mp3,,ko,"[옛 지구의 언어] …이곳이. 얼마나, 흘렀느냐."
+211,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_002.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_002.mp3,,ko,"100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. …나를 깨운 자가 사령관인가. 빚을 졌다."
+212,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_003.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_003.mp3,,ko,무기와 장갑이 함께 봉인돼 있었다. 가져가시오 — 내 손은 이미 그대의 손이 되었으니.
+213,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_004.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_004.mp3,,ko,"패배는 한 번으로 족하다. 두 번은, 내가 허락하지 않는다."
+214,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_005.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_005.mp3,,ko,"아이젠클로… 나를 봉인한 손이 저자였군. 내 검을 적의 방패로 삼다니. 다음 단계에서, 반드시 거둘 빚이다."
+215,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_006.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_006.mp3,,ko,"흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, 사령관."
+216,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_007.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_007.mp3,,ko,"동쪽 항로 주파수… 벙커존 지하. 저항군 암호 채널이다. 내가 봉인되기 전, 함께 싸운 전우들의 후예가 그 기지를 지키고 있어."
+217,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_008.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_008.mp3,,ko,외톨이로 100년을 버텼다면 — 그래서 더 강한 거다.
+218,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_009.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_009.mp3,,ko,"크리그에서 빼낸 물자를 들고 가면, 우리를 믿어줄 거다."
+219,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_010.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_010.mp3,,ko,"당신들이 살아있었군. 오래, 기다렸겠소."
+220,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_011.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_011.mp3,,ko,내부에 침투했군. 보급망을 손에 쥐고 물자를 빼돌리고 있어.
+221,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_012.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_012.mp3,,ko,코르넬리우스. 아우레우스 기업이 크리그에 기술 설계도를 팔고 있다면… 단순한 이윤이 아니다. 생체 병기 설계도가 그 손을 거쳐 넘어간 거야.
+222,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_013.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_013.mp3,,ko,"증거 없이 아우레우스를 적으로 돌려선 안 된다. 먼저, 확인한다."
+223,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_014.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_014.mp3,,ko,광개토. 그 이름이 낯설지 않군. 당신 상선이 경매 시장의 모든 기록을 쥐고 있다는 것도.
+224,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_015.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_015.mp3,,ko,"거북선 — 내가 옛 지구에서, 가장 절박했던 전쟁에서 만든 함선이야. 현대 재료로 재현하면 크리그 요새를 정면 돌파할 수 있어."
+225,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_016.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_016.mp3,,ko,메카니카 기어월드. 그곳에 장영실이라는 기술자가 있어. 옛 지구의 명장 장영실의 기술 DNA를 이어받은 복제 기술자야.
+226,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_017.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_017.mp3,,ko,그를 데려와야 해. 거북선은 그 없이는 완성할 수 없어.
+227,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_018.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_018.mp3,,ko,그분의 설계도를 갖고 왔소.
+228,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_019.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_019.mp3,,ko,필요한 건 뭐든 구해 오겠소.
+229,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_020.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_020.mp3,,ko,타이탄H… 그리고 그 너머에 — 지구.
+230,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_021.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_021.mp3,,ko,"사령관. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다."
+231,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_022.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_022.mp3,,ko,"저항군 반물질 ×25, 은하 혼돈 결정 ×15, 수퍼비아 중력자 ×10, 크리그 마그마 코어 ×8. 모두 모으면 — 거북선이 깨어난다."
+232,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_023.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_023.mp3,,ko,"아이젠클로… 내 전술로 우리를 막겠지. 허나 제 검의 약점은, 그 검을 벼린 자가 가장 잘 아는 법이다."
+233,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_024.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_024.mp3,,ko,"사령관, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다."
+234,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_025.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_025.mp3,,ko,"아이젠콕에서 달아났던 그 자가, 여기 숨어 있었군."
+235,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_026.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_026.mp3,,ko,"둘 다 잡는다. 아이젠클로 추격, 그리고 마그마 코어."
+236,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_027.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_027.mp3,,ko,"정면 공격은 안 된다. 반란군 채널로, 내부에 스며든다."
+237,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_028.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_028.mp3,,ko,우리가 원하는 건 수퍼비아 중력자. 채굴 독점 허가가 필요하다.
+238,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_029.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_029.mp3,,ko,은하 혼돈 결정. 보이드 균열에서만 나오는 자원이다.
+239,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_030.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_030.mp3,,ko,두 마리 토끼다. 간다.
+240,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_031.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_031.mp3,,ko,들어간다.
+241,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_032.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_032.mp3,,ko,우리는 저항군과 함께 아이젠클로와 싸우고 있어요. 당신이 이휘소 박사인가요?
+242,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_033.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_033.mp3,,ko,"드디어. 400년을 기다린 배가, 오늘 깨어난다."
+243,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_034.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_034.mp3,,ko,"빅토리… 옛 지구 최후의 대해전, 그 기함이군."
+244,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_035.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_035.mp3,,ko,넬슨 제독. 나는 이순신이오.
+245,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_036.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_036.mp3,,ko,"학익진과 그대의 대해전 진형 — 두 바다의 전술을 하나로 묶으면, 우르사도 막을 수 없을 거요."
+246,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_037.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_037.mp3,,ko,"사령관. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다."
+247,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_038.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_038.mp3,,ko,100년 봉쇄의 손발 하나를 잘랐다. 하지만 머리는 아직 남아 있다.
+248,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_039.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_039.mp3,,ko,박사님의 방정식이 100년 뒤 우리를 여기로 이끌었습니다. 함께 가시죠.
+249,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_040.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_040.mp3,,ko,"저 기함, 움직임이 익숙하다. 내 전술을 방패 삼았구나. 허나 — 그 검을 벼린 건 나다. 정면은 피해라. 호위를 걷어내고, 본함의 옆구리를 친다."
+250,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_041.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_041.mp3,,ko,이건 — 바다의 폭풍과 같다. 흐름을 읽으면 통과할 수 있어.
+251,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_042.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_042.mp3,,ko,박사. 우리는 우르사 메이저를 잡으러 갑니다. 박사의 이론이 필요하오.
+252,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_043.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_043.mp3,,ko,전 함대 — 거북선을 따른다.
+253,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_044.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_044.mp3,,ko,사령관. 아이젠클로에게 전달해. — 이번엔 끝이라고.
+254,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_045.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_045.mp3,,ko,"끝났어, 아이젠클로."
+255,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_046.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_046.mp3,,ko,보이드 군주. 크리그 뒤에 그 존재가 있었던 거군.
+256,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_047.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_047.mp3,,ko,400년 전 거북선 — 12척으로 133척을 깼다. 오늘의 거북선 — 8영웅과 함께라면 더 큰 일도 한다.
+257,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_048.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_048.mp3,,ko,좌표 — 제타 레티쿨리. 우르사 메이저 본거지.
+258,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_049.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_049.mp3,,ko,"400년 전, 옛 지구의 마지막 전쟁. 100년 전, 봉인. 그리고 오늘 — 마지막 일전이다."
+259,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_050.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_050.mp3,,ko,그 캡슐 — 나였다. 네가 봉인한 자가 오늘 너의 끝을 가져왔다.
+260,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_051.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_051.mp3,,ko,학익진. 펼친다.
+261,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_052.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_052.mp3,,ko,우르사 메이저 본체 — 노출. 보이드 방어막은 아직 활성.
+262,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_053.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_053.mp3,,ko,400년 전 — 나는 12척으로 133척을 막았다. 오늘은 9척이면 충분하다.
+263,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_054.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_054.mp3,,ko,거북선 노포 전탄 — 일점사!
+264,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_055.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_055.mp3,,ko,끝났다. 100년 봉인의 종결이다.
+265,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_056.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_056.mp3,,ko,"내가 살아 싸우던 그 시절, 올려다보던 바로 그 하늘이다. 변하지 않았어."
+266,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_057.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_057.mp3,,ko,"보이드 구역 3행성 — 캅테인 균열, WASP-12 b, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해."
+267,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_058.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_058.mp3,,ko,100년. 내가 100년을 잠들었군.
+268,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_059.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_059.mp3,,ko,그대가 나를 깨웠소? …지구는.
+269,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_060.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_060.mp3,,ko,치크스는 아직 있소. 그렇다면 아직 싸워야 할 이유가 있군.
+270,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_061.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_061.mp3,,ko,이길 수 있는 싸움이오?
+271,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_062.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_062.mp3,,ko,말이 다르군. 이기겠다고 하지 않고 이겨야 한다고 했소. 그것이 더 정직한 대답이오. 합류하겠소.
+272,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_063.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_063.mp3,,ko,사령관. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.
+273,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_064.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_064.mp3,,ko,나요. 넬슨. 오래됐소.
+274,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_001.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_001.mp3,,ko,"이순신? …그 이름, 오랜만이군. 남들은 잡음으로 흘리지만 — 난 그 신호를 '봤어'. 에리다니 노인들이 잡았다는 그거."
+275,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_002.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_002.mp3,,ko,"한 팀 하자. 길 찾고 정보 캐는 건, 이 은하에 나만 한 사람이 없거든."
+276,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_003.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_003.mp3,,ko,"잠깐 — 다들 못 봤지? 저 잔해 너머, 탐사선 하나가 해적한테 뜯기고 있어."
+277,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_004.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_004.mp3,,ko,크리그가 '광산 세금'을 빌미로 3주째 점거 중이야. 광부들은 착취당하고.
+278,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_005.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_005.mp3,,ko,봉쇄만 하는 놈들이 아니야. 변방까지 손을 뻗고 있어.
+279,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_006.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_006.mp3,,ko,"근데 무법자들이 기지를 끼고 앉았어. 안테나에 닿으려면, 먼저 치워야 해."
+280,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_007.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_007.mp3,,ko,우르사이 마요리스 외곽… 발 들이는 순간 바로 적대야. 각오해.
+281,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_008.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_008.mp3,,ko,"사령관, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여."
+282,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_009.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_009.mp3,,ko,"그리고… 이상한 게 하나 더. 그 구역 폐기 목록에 없는 구형 캡슐 하나. 수백 년 전 설계야. 이런 건, 그냥 지나치는 법이 없지."
+283,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_010.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_010.mp3,,ko,"저기 폐기 구역 끝… 목록에 없는 구형 물체야. 설계가 지금과 전혀 달라. 생명 반응이 — 미약하지만, 분명히 잡혀."
+284,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_011.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_011.mp3,,ko,오르크... 접경지 밀수꾼들 사이에서 이름이 나왔어. 치크스-메카니카 접경이라 단속이 애매한 구역이야.
+285,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_012.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_012.mp3,,ko,"치크스 감시선이 순찰 중이야. 정면은 자살이고 — 잠입은 거래자 위장이 최선이지. 뭐, 이런 건 내 전문이고."
+286,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_013.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_013.mp3,,ko,LHS1140-b 표면은 LHS 크리스탈 광산이야. 지하 17층까지 굴착했다는 소문이 있어. 사람을 가두기엔 딱이지.
+287,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_014.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_014.mp3,,ko,"노동자들 표정 봐. 겁에 질려 있어 — 크리그한테 협박당하는 거야. …이런 건, 너무 많이 봤어."
+288,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_015.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_015.mp3,,ko,내가 누군지 잊었어? 당연하지.
+289,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_016.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_016.mp3,,ko,전면전은 무리야. 외곽 포대만 해도 우리 세 배라고.
+290,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_017.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_017.mp3,,ko,"다음 길은 내가 연다. 크리그 보급 거점 — 위치, 경비, 교대 시간까지 전부 머릿속에 있거든."
+291,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_018.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_018.mp3,,ko,저항군? 거기가 얼마나 위험한지 알아? 치크스 한복판의 외톨이 거점이라고.
+292,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_019.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_019.mp3,,ko,뉴 마스... 오딧세이 기지. 나도 그쪽 루트 알아. 화물 운반하다 두어 번 거쳤어.
+293,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_020.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_020.mp3,,ko,"저 화물 분류 코드… 저항군 화물이 맞는데, 운항 패턴이 크리그 배급 루틴이야. 안 맞아."
+294,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_021.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_021.mp3,,ko,조용히 스며드는 거? …그건 내 전공이지.
+295,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_022.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_022.mp3,,ko,오그렌이 말한 내부 고발자 — '닥터 에바'. 글리제에 있어. 접촉하면 물증을 넘겨준다고 했어.
+296,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_023.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_023.mp3,,ko,저 배… 본 적 있어. 은하 경매 시장에서 늘 최고가를 부르는 자유 상인이야. 한 번도 진 적이 없다더군.
+297,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_024.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_024.mp3,,ko,'장영실 2.0'이라고 불려. 기어월드에서 전설이지.
+298,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_025.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_025.mp3,,ko,최대해봐야 8~10개.
+299,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_026.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_026.mp3,,ko,잠깐. 크리그 내부 정보망이 잡혔어 — 공장 노동자들 사이에 반란 기미가 있대.
+300,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_027.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_027.mp3,,ko,"거래가 되겠군. 우리가 카토닉에서 당신 동료를 빼내고, 당신들은 크리그 내부 항로 정보를 준다."
+301,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_028.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_028.mp3,,ko,불칸이 내부 노선을 줬어. 비축고는 3층 심층부야.
+302,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_029.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_029.mp3,,ko,수퍼비아는 외교가 전부야. 상인 의회가 이 행성을 쥐고 있지. 들어가려면 격식부터 갖춰야 해.
+303,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_030.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_030.mp3,,ko,그건 내 무대지. 수퍼비아 상인 의회랑은 전에도 거래해봤거든 — 귀족 향수 한 병이면 회의실 문은 열려. 맡겨둬.
+304,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_031.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_031.mp3,,ko,"보이드 공간은 물리 법칙부터 달라. 시간이 늘어지고, 공간이 접혀. 함선 항법이 통째로 먹통이 될 수도 있어."
+305,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_032.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_032.mp3,,ko,균열 지도 원석이라… 보이드 행성에서만 나오는 건데. 운 좋게 외곽에서 몇 개 챙겨놨지.
+306,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_033.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_033.mp3,,ko,저 배... 수퍼비아 주점에서 들은 그 연구선이야.
+307,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_034.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_034.mp3,,ko,"백구 녀석 꼬리 봐 — 저렇게 흔드는 건, 좋은 징조라는 뜻이지."
+308,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_035.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_035.mp3,,ko,전설의 제독 넬슨 — 옛 지구 최후의 대해전에서 스러진 자야. 그런데 우주에 빅토리가? 이건 — 우주 보존 캡슐이군.
+309,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_036.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_036.mp3,,ko,아이젠클로 데이터에 좌표 하나 — 제타 레티쿨리. 우르사 메이저 본거지야.
+310,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_037.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_037.mp3,,ko,레인저의 신호가 왔어. 저항군 전 함대 — 전투 준비 완료.
+311,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_038.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_038.mp3,,ko,정보는 다 모았어. 더 살펴볼 게 없어. 이제 — 싸움이야.
+312,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_039.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_039.mp3,,ko,적 후위 통신 — 차단 완료. 지원 워프 차단했어.
+313,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_040.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_040.mp3,,ko,우리가 진짜 해냈어.
+314,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_041.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_041.mp3,,ko,다음 모험은 — 어디로?
+315,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_042.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_042.mp3,,ko,허허. 100년을 기다렸소. 이런 통쾌한 광경을.
+316,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_043.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_043.mp3,,ko,마르코 폴로요. 제네시스 프로토콜의 마르코 폴로.
+317,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_044.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_044.mp3,,ko,"치크스가 날 붙잡아 놓더니만, 이 함선의 무역 경로 데이터를 빼내려고 했소. 물론 안 줬지요. 나는 거래를 강요당한 적이 없소."
+318,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_045.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_045.mp3,,ko,"제독께서 알아봐주시는구먼. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소."
+319,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_046.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_046.mp3,,ko,"사령관 양반, 이 함선의 주인이오? 마음에 드는 눈을 가졌소. 자, 이제 거래합시다. 내가 가진 모든 항로 정보와 무역 네트워크를 드리겠소."
+320,마르코 폴로,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_047.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_047.mp3,,ko,대신 지구까지 데려다 주시오.
+321,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_001.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_001.mp3,,ko,칩 돌려줘서 고맙다. 보답으로 같이 가주지 — 어차피 이 근방에 나보다 잘 나는 녀석도 없으니까.
+322,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_002.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_002.mp3,,ko,"넥서스 프라임 LHS 광산 쪽, 아주 오래된 통신 패턴이 잡혀. 100년은 묵었고 — 이순신, 그 이름과 엮여 있어."
+323,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_003.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_003.mp3,,ko,"덤으로, 데이터 안에 외피 도면도 있더군. 가시 돌기 구조 — 너희 골격 단편이랑 딱 맞아."
+324,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_004.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_004.mp3,,ko,신호는 더 깊은 곳이야. 근데… 크리그 해적단 표식이 보여.
+325,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_005.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_005.mp3,,ko,여기야. 이 안테나가 100년간 이순신 신호를 중계해온 거지.
+326,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_006.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_006.mp3,,ko,"서두르자. 좌표만 따면, 다음 행선지가 정해져."
+327,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_007.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_007.mp3,,ko,"그래도 이순신이 거기 있어. 크리그를 멈출 열쇠도, 거기 있고."
+328,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_008.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_008.mp3,,ko,"이 항로 — 옛 지구 시절, 한 우주국이 비밀 분류해 둔 경로야. 지금은 크리그가 쓰고 있어. 메카니카 부품이 글리제 436 분지 교역소에서 크리그로 넘어가. 에이전트 코드명 '오르크'."
+329,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_009.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_009.mp3,,ko,저 교역소 — 공식 목록에 없는 화물이 계속 들어와. 에이전트 '오르크'가 여기 담당이야.
+330,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_010.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_010.mp3,,ko,테슬라가 납치됐어. 메카니카 최고 설계자 — 크리그가 억지로 생체 병기를 설계하게 만들고 있어.
+331,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_011.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_011.mp3,,ko,저 컨베이어 동선이 이상해. 크리스탈 일부가 지하로 내려가고 있어. 광산 창고치고 루트가 너무 깊어.
+332,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_012.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_012.mp3,,ko,그분을 꺼내면… 크리그 방어의 약점을 우리가 손에 쥐는 거군.
+333,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_013.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_013.mp3,,ko,"지하 감옥으로 드는 길이 있어. 자연 균열대 — 셔틀 한 대 들어갈 폭이야. 좁지만, 가능해."
+334,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_014.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_014.mp3,,ko,이제 그 방패의 설계도가 우리 손에 있어. 장군의 전술이 거꾸로 놈들의 급소를 가리켜.
+335,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_015.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_015.mp3,,ko,먼저 조용히 들어가서 확인해야 해. 소란은 금물.
+336,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_016.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_016.mp3,,ko,글리제. 코르넬리우스 본사가 거기야.
+337,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_017.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_017.mp3,,ko,설계는 누가 해? 우리 중에 함선 설계자 없잖아.
+338,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_018.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_018.mp3,,ko,지구. …오래 꿈꿨어. 별을 처음 날던 그날부터.
+339,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_019.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_019.mp3,,ko,복호기 정보와 일치해. 슈멜츠 — 거기가 다음 목표다.
+340,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_020.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_020.mp3,,ko,그리고 동료들도 구출한다. 동시에.
+341,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_021.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_021.mp3,,ko,캅테인b 균열. 보이드 행성 중 가장 접근성이 좋아. 하지만—
+342,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_022.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_022.mp3,,ko,게다가 — 이휘소 박사가 그 근처에 있다고 했잖아. 반드시 찾아야 해.
+343,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_023.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_023.mp3,,ko,사령실 데이터 회수. 아이젠클로 — 격파 확인. 봉쇄 집행관이 페스작센에서 끝났어.
+344,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_024.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_024.mp3,,ko,단신으로? 미친 짓이야.
+345,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_025.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_025.mp3,,ko,지구가 — 바로 너머야. 우리가 끝내면 — 사람들이 다시 하늘을 본다.
+346,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_026.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_026.mp3,,ko,"지구가 — 바로 너머야. 사령관, 결단을 내려."
+347,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_027.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_027.mp3,,ko,좌익도 깨끗하다. 학익진 — 완성.
+348,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_028.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_028.mp3,,ko,지구야. 정말 지구야.
+349,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_029.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_029.mp3,,ko,1961년 4월 12일. 내가 처음 본 지구. 그때 그대로야.
+350,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_030.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_030.mp3,,ko,"Поехали! 출발합시다! …아, 아직 전쟁 중인가요?"
+351,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_031.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_031.mp3,,ko,100년이요? 그러면 제가 처음 우주에 갔을 때가 170년도 더 됐겠네요. 시간은 정말 이상한 것 같아요.
+352,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_032.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_032.mp3,,ko,그래도 우주는 여전히 아름다울 거예요.
+353,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_033.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_033.mp3,,ko,이순신 제독이시군요! 당신의 한산도 해전을 공부한 적이 있어요. 소형 함선은 내 전문이에요.
+354,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_034.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_034.mp3,,ko,"와, 마르코 폴로 선생까지! 100년 만의 새 동료가 한꺼번에 둘이라니. 소형 함선은 제 전문이에요 — 기대하셔도 좋습니다."
+355,유리 가가린,gagarin,02_Assets/audio/voice/gagarin/gagarin_035.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_035.mp3,,ko,"사령관이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠."
+356,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_001.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_001.mp3,,ko,"거북선을… 만들겠다고? 400년 전 그 배를, 지금 재료로."
+357,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_002.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_002.mp3,,ko,"중수소 배터리 3개. 내 시뮬레이터 연료다. 그걸 가져오면 — 한번, 들어주지."
+358,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_003.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_003.mp3,,ko,거북선 완성에 저항군 반물질이 25개 필요해. 지금 우리한테 있는 건...
+359,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_004.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_004.mp3,,ko,저항군 본부 타이탄H에 비축이 있을 거야. 레인저한테 받아야 해.
+360,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_005.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_005.mp3,,ko,그래서 왔어요. 거북선을 만들 겁니다. 저항군 반물질 25개와 제작 베이 지원이 필요해요.
+361,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_006.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_006.mp3,,ko,"재료 목록, 완성. 400년 전 그분의 설계에, 내 손을 더한다. 거북선, 다시 바다로 나갈 수 있어."
+362,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_007.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_007.mp3,,ko,"거북선이 완성되는 날, 그 요새의 벽도 무너져요."
+363,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_008.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_008.mp3,,ko,데이터 복호기로 해독한 로그 — 아이젠클로가 직접 이 행성 공장을 지휘하고 있어. 생체 병기 핵심 코어를 여기서 찍어내는 중이야.
+364,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_009.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_009.mp3,,ko,반란군이라… 이용할 수 있어. 설비를 가동하면 크리그 마그마 코어도 손에 들어오고.
+365,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_010.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_010.mp3,,ko,크리그 마그마 코어 3개만 더 있으면 — 거북선 용골 재료가 완성돼.
+366,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_011.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_011.mp3,,ko,은하 혼돈 결정 15개. 그것 없이는 거북선을 못 만들어.
+367,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_012.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_012.mp3,,ko,항법 보조가 안 먹혀. 균열 지도 원석으로 경로를 수동 입력해야 해.
+368,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_013.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_013.mp3,,ko,나한테 있어요.
+369,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_014.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_014.mp3,,ko,"크리그 마그마 코어 ×8, 저항군 반물질 ×25, 수퍼비아 중력자 ×10, 은하 혼돈 결정 ×15. 전부 확보됐어."
+370,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_015.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_015.mp3,,ko,머리를 베어도 꼬리가 남았네. 친위대 잔당이 요새를 붙들고 있어 — 뿌리까지 뽑자.
+371,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_016.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_016.mp3,,ko,거북선이 균열을 견딘다. 외피가 잘 버티는군.
+372,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_017.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_017.mp3,,ko,거북선 출력 120%. 전류 방어막 — 활성화.
+373,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_018.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_018.mp3,,ko,거북선 — 최종 강화 완료. 보이드 방어막 해석 장비 통합. ATT·INT 패시브 +50%로 상향.
+374,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_019.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_019.mp3,,ko,거북선 노포 — 전 화력 충전 100%. 학익진 일점사 진형 정렬.
+375,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_020.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_020.mp3,,ko,호위함 전 화력 — 거북선 패시브 +30% 적용!
+376,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_021.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_021.mp3,,ko,"거북선이 — 끝까지 버텼어. 옛 지구의 그 거북선이, 우주에서도."
+377,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_022.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_022.mp3,,ko,거북선 제작소를 여기 세우겠어요. 지구의 기술자들과 함께.
+378,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_023.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_023.mp3,,ko,총독 경매 낙찰 후 방위군 배치까지 마쳐야 은하계가 안정돼.
+379,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_024.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_024.mp3,,ko,구출? 나를 가두고 있던 놈들이 내 설계도를 빼앗아 갔소. 100년 전에. 그것도 없이 무슨 구출이오.
+380,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_025.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_025.mp3,,ko,내 손으로 직접 완성해야지. 나의 절친이자 거북선의 본 설계자 나대용의 정신을 이을 수 있는 자는 이제 없소.
+381,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_026.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_026.mp3,,ko,다른 사람이 만든 거북선은 안 됩니다. 내 손으로 복원해보겠소!
+382,장영실,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_027.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_027.mp3,,ko,천 년 전에도 나는 이렇게 했소.
+383,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_001.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_001.mp3,,ko,당신이 사령관인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.
+384,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_002.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_002.mp3,,ko,소문은 정확하군. 나는 이 은하 어느 세력에도 무릎 꿇지 않아. 자유 상인이지. 허나 — 크리그 같은 것들과는 거래하지 않는다.
+385,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_003.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_003.mp3,,ko,"이 행성을 내 손에 넣어 보여라. 경매에서 최고가를 불러, 이 땅을 가질 자격을 증명해. 그러면 당신과 함께 가지. 정복할 가치가 있는 상대인지 — 내 눈으로 보겠다."
+386,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_004.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_004.mp3,,ko,우르사 메이저 — 진짜 보스다. 직접 잡아야 끝난다.
+387,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_005.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_005.mp3,,ko,저기 — 빛이 새어 나온다.
+388,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_006.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_006.mp3,,ko,저 요새를 내 눈으로 무너뜨리는 날이 왔군.
+389,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_007.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_007.mp3,,ko,정복은 — 손이 떨릴 때 멈춰야 한다. 지금 우리 손은 — 떨리지 않는다.
+390,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_008.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_008.mp3,,ko,정복할 시간이다.
+391,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_009.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_009.mp3,,ko,우익 — 정리 완료. 호위 친위대 잔존 0.
+392,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_010.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_010.mp3,,ko,정복의 깃발 — 마지막 일격!
+393,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_011.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_011.mp3,,ko,우리가 새 땅을 열었다. 정복이 아닌 — 해방으로.
+394,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_012.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_012.mp3,,ko,정복은 끝. 이제는 — 함께 일구는 시간이다.
+395,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_013.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_013.mp3,,ko,"1,700년. 내 땅이 다시 내 손에 돌아왔구나."
+396,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_014.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_014.mp3,,ko,사령관이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.
+397,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_015.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_015.mp3,,ko,고구려 정복자가 지구를 정복당한 채 두겠느냐. 내가 선봉에 선다.
+398,광개토대왕,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_016.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_016.mp3,,ko,"사령관, 최종 명령권은 그대에게 있소."
+399,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_001.mp3,,02_Assets/audio/voice_en/tesla/tesla_001.mp3,,ko,"크리그가 이순신 장군을 '죽이지 않고' 봉인한 이유 — 그게 핵심이야. 수백 년 전, 치크스와 우르사 메이저가 지구를 봉쇄하고 아이젠클로가 항로를 집어삼킬 때, 끝까지 굽히지 않은 단 한 사람. 아이젠클로는 그 전술을 통째로 뽑아내 크리그 방어 알고리즘에 박아 넣었어. 말 그대로 '살아있는 방패'지. 그런데 — 방패의 원본이 깨어나 움직이면? 알고리즘이 제 꼬리를 물고 무너질 수도 있어."
+400,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_002.mp3,,02_Assets/audio/voice_en/tesla/tesla_002.mp3,,ko,바로 그거야. 그래서 크리그는 죽어도 못 놓지.
+401,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_003.mp3,,02_Assets/audio/voice_en/tesla/tesla_003.mp3,,ko,생체 병기 도면은 LHS에서 태워버렸어. …하지만 백업이 어딘가 살아 있을 거야. 방심은 금물.
+402,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_004.mp3,,02_Assets/audio/voice_en/tesla/tesla_004.mp3,,ko,제타 레티쿨리 전에 캅테인 균열을 거쳐야 해. 거기 아인슈타인이 있어 — 우르사의 보이드 방어막을 풀 열쇠야.
+403,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_005.mp3,,02_Assets/audio/voice_en/tesla/tesla_005.mp3,,ko,아인슈타인 박사가 이 안에 있어. 보이드 안정화 이론을 실증하려고 단신으로 들어갔지.
+404,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_006.mp3,,02_Assets/audio/voice_en/tesla/tesla_006.mp3,,ko,그게 그의 방식이지. 이론을 몸으로 증명하는 거.
+405,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_007.mp3,,02_Assets/audio/voice_en/tesla/tesla_007.mp3,,ko,박사님 — 100년 만에 다시 같이 일하는군요.
+406,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_008.mp3,,02_Assets/audio/voice_en/tesla/tesla_008.mp3,,ko,에너지 만충. 거북선 추진 코어 100%.
+407,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_009.mp3,,02_Assets/audio/voice_en/tesla/tesla_009.mp3,,ko,100년 전 너희가 균열에 던진 노학자 — 그의 이론이다.
+408,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_010.mp3,,02_Assets/audio/voice_en/tesla/tesla_010.mp3,,ko,테슬라 초공간 — ATT ×5 발동!
+409,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_011.mp3,,02_Assets/audio/voice_en/tesla/tesla_011.mp3,,ko,다음엔 무선 전력으로 지구 전체를 깔자.
+410,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_012.mp3,,02_Assets/audio/voice_en/tesla/tesla_012.mp3,,ko,무선 전력망 재건. 100년 만에 다시 깔 거야.
+411,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_013.mp3,,02_Assets/audio/voice_en/tesla/tesla_013.mp3,,ko,들어오지 마세요! 지금 정밀 조정 중이에요!
+412,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_014.mp3,,02_Assets/audio/voice_en/tesla/tesla_014.mp3,,ko,"진짜요? 확인해볼게요. 데이터 스캔. …맞네요. 정확히 100,247 크레딧. 좋습니다."
+413,니콜라 테슬라,tesla,02_Assets/audio/voice/tesla/tesla_015.mp3,,02_Assets/audio/voice_en/tesla/tesla_015.mp3,,ko,완성이에요! 100년 만에 완성! 이제 갈 수 있어요!
+414,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_001.mp3,,02_Assets/audio/voice_en/nelson/nelson_001.mp3,,ko,"옛 지구였지. 마지막으로 본 것은, 그 대해전의 안개였소."
+415,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_002.mp3,,02_Assets/audio/voice_en/nelson/nelson_002.mp3,,ko,"동방의 거북선 제독… 이름은 들었소. 솔직히, 한 수 위라 인정한 유일한 이름이지. 같은 바다의 영웅을 우주에서 만나다니."
+416,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_003.mp3,,02_Assets/audio/voice_en/nelson/nelson_003.mp3,,ko,그 마지막 대해전의 바람을 다시 맞을 줄은 몰랐소. 그대들의 함대에 함께 하지 — 마지막 일전이 어디든.
+417,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_004.mp3,,02_Assets/audio/voice_en/nelson/nelson_004.mp3,,ko,"옛 지구 최후의 대해전 — 그때 우리가 거둔 마지막 승리. 오늘, 다시 우리가 거둔다."
+418,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_005.mp3,,02_Assets/audio/voice_en/nelson/nelson_005.mp3,,ko,"그대의 거북선 — 옛 지구 최후의 대해전, 그 빅토리와 어깨를 나란히 하오."
+419,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_006.mp3,,02_Assets/audio/voice_en/nelson/nelson_006.mp3,,ko,이순신. 설마 당신이오?
+420,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_007.mp3,,02_Assets/audio/voice_en/nelson/nelson_007.mp3,,ko,"200년의 시차, 두 대륙의 거리… 그것을 이 손바닥이 메우는구려."
+421,호레이쇼 넬슨,nelson,02_Assets/audio/voice/nelson/nelson_008.mp3,,02_Assets/audio/voice_en/nelson/nelson_008.mp3,,ko,"England expects— 아니. 이제는 지구가 기대한다. 합시다, 사령관."
+422,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_001.mp3,,02_Assets/audio/voice_en/einstein/einstein_001.mp3,,ko,반갑소. 이 균열 안에서 백 년을 기다렸지. 시공은 상대적이니 — 나에게는 그리 길지 않았소.
+423,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_002.mp3,,02_Assets/audio/voice_en/einstein/einstein_002.mp3,,ko,우르사의 보이드 방어막 — 일정 주파수에서 공명을 일으키면 0.3초만에 풀리오. 내가 계산을 해주지.
+424,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_003.mp3,,02_Assets/audio/voice_en/einstein/einstein_003.mp3,,ko,테슬라. 자네의 무선 전력은 결국 옳았어. 시간이 증명했지.
+425,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_004.mp3,,02_Assets/audio/voice_en/einstein/einstein_004.mp3,,ko,시공 보정 알고리즘 — 전 함대에 적용 완료. 명중률 +20%. 우르사의 회피 패턴까지 예측 가능.
+426,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_005.mp3,,02_Assets/audio/voice_en/einstein/einstein_005.mp3,,ko,시공 안정. 보이드 방어막 해석 장비 — 활성화 가능 상태.
+427,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_006.mp3,,02_Assets/audio/voice_en/einstein/einstein_006.mp3,,ko,그 알고리즘 — 이순신 장군의 전술이 거꾸로 너의 허점을 가리킨다. 봉인이 풀리면 — 방패가 칼이 되지.
+428,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_007.mp3,,02_Assets/audio/voice_en/einstein/einstein_007.mp3,,ko,4.7GHz 공명파 — 충전 100%. 발사 명령 대기.
+429,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_008.mp3,,02_Assets/audio/voice_en/einstein/einstein_008.mp3,,ko,시공 결정체 보정 — 적용. 보이드 방어막 공명 주파수 락온.
+430,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_009.mp3,,02_Assets/audio/voice_en/einstein/einstein_009.mp3,,ko,가능했지. 100년 동안 균열 안에서 — 자네들 모르게 결정체를 길러왔거든.
+431,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_010.mp3,,02_Assets/audio/voice_en/einstein/einstein_010.mp3,,ko,4.7GHz 공명파 — 발사!
+432,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_011.mp3,,02_Assets/audio/voice_en/einstein/einstein_011.mp3,,ko,시공이 풀렸군. 균열이 닫히고 있어. 자연 상태로 — 돌아간다.
+433,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_012.mp3,,02_Assets/audio/voice_en/einstein/einstein_012.mp3,,ko,우주는 상대적이지만 — 고향은 절대적이군.
+434,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_013.mp3,,02_Assets/audio/voice_en/einstein/einstein_013.mp3,,ko,당신이 왔군요. 예상했습니다.
+435,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_014.mp3,,02_Assets/audio/voice_en/einstein/einstein_014.mp3,,ko,"나는 100년 전에 이 순간을 계산했습니다. 당신이 이 좌표에 올 것을, 그 시각까지. 오차 범위 0.3%."
+436,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_015.mp3,,02_Assets/audio/voice_en/einstein/einstein_015.mp3,,ko,그리고 백구. 이휘소 박사와 내가 설계했습니다. 역시간 전송 방정식으로.
+437,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_016.mp3,,02_Assets/audio/voice_en/einstein/einstein_016.mp3,,ko,"치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. 사령관의 각성 지점이었습니다."
+438,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_017.mp3,,02_Assets/audio/voice_en/einstein/einstein_017.mp3,,ko,당신이 유일하게 이 두 가지를 동시에 가졌기 때문입니다. 분노와 자비.
+439,A. 아인슈타인,einstein,02_Assets/audio/voice/einstein/einstein_018.mp3,,02_Assets/audio/voice_en/einstein/einstein_018.mp3,,ko,"치크스를 쓰러뜨릴 분노, 그리고 치크스를 이해할 자비. 분노만 있으면 또 다른 우르사 메이저를 만들 뿐이에요."
+440,이휘소,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_001.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_001.mp3,,ko,누구시오? 이 좌표를 아는 사람이 있다니.
+441,이휘소,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_002.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_002.mp3,,ko,방정식이 완성됐소. 보이드 에너지와 반물질을 결합하면 — 지금껏 이 우주에 없던 무기 에너지가 나와.
+442,이휘소,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_003.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_003.mp3,,ko,거북선에 그 에너지를 실을 수 있소? 도면이 있다면...
+443,이휘소,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_004.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_004.mp3,,ko,"여기가 어디요. 나는 이휘소요, 입자물리학자였소. 100년을 잤다니..."
+444,이휘소,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_005.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_005.mp3,,ko,보이드 행성들은... 뭔가 다를 거야. 우르사 메이저 아래에 있던 행성들이니까.
+445,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_001.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_001.mp3,,ko,인류의 작은 함대가 마침내 여기까지 왔는가. 100년의 침묵을 깨고.
+446,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_002.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_002.mp3,,ko,"100년 전, 나는 너희 별을 봉인했다. 너희 종족의 침묵은 영원할 줄 알았지. 그러나 — 한 캡슐이 다시 깨어났구나."
+447,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_003.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_003.mp3,,ko,이순신. 너의 전술 데이터는 내 방어 알고리즘의 핵심이었다. 너를 봉인한 것은 — 가장 강한 무기를 빼앗기 위함이었다.
+448,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_004.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_004.mp3,,ko,아인슈타인까지... 100년 전 균열에 던져버렸던 노학자가 살아있었다니. 흥미롭군.
+449,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_005.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_005.mp3,,ko,아이젠클로. 너의 임무는 봉쇄였다. 그러나 너는 봉쇄에 실패했다. 변명은 — 받지 않는다.
+450,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_006.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_006.mp3,,ko,호위가 무너졌다. 그러나 나의 본체 방어막은 그 어떤 무기로도 뚫지 못한다. 너희가 가진 것은 — 무엇이냐.
+451,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_007.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_007.mp3,,ko,그것은... 시공 공명? 불가능하다. 자연 결정체로는...
+452,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_008.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_008.mp3,,ko,인류... 너희가... 다시... 일어났구나... 봉쇄는... 영원할 수 없었던... 가...
+453,아이젠클로,eisenklau,02_Assets/audio/voice/eisenklau/eisenklau_001.mp3,,02_Assets/audio/voice_en/eisenklau/eisenklau_001.mp3,,ko,"기어이 여기까지 기어왔군, 벌레들. 페스작센 — 내 단조로의 심장이다. 우르사 메이저께서 내리신 봉쇄, 그 쇠사슬의 마지막 고리지. 여기서 네놈들을 녹여, 다시 강철로 벼려주마."
+454,아이젠클로,eisenklau,02_Assets/audio/voice/eisenklau/eisenklau_002.mp3,,02_Assets/audio/voice_en/eisenklau/eisenklau_002.mp3,,ko,"이순신?! 그 잠든 칼을 누가 깨웠나! …상관없다. 크리그 전 함대, 전열 정비! 저 낡은 거북 껍데기를 — 갈아 부숴라!"
+455,아이젠클로,eisenklau,02_Assets/audio/voice/eisenklau/eisenklau_003.mp3,,02_Assets/audio/voice_en/eisenklau/eisenklau_003.mp3,,ko,아니야. 보이드 군주의 의지는 — 나 하나가 아니야. 우르사 메이저는 그분의 손발 중 하나에 불과해.
+456,아이젠클로,eisenklau,02_Assets/audio/voice/eisenklau/eisenklau_004.mp3,,02_Assets/audio/voice_en/eisenklau/eisenklau_004.mp3,,ko,우르사 님. 인간들이 거북선이라는 것을 만들었습니다. 거기 — 이순신의 전술 데이터가 적용된 강화 함선입니다.
+457,아이젠클로,eisenklau,02_Assets/audio/voice/eisenklau/eisenklau_005.mp3,,02_Assets/audio/voice_en/eisenklau/eisenklau_005.mp3,,ko,인간 따위가... 친위대 알파부터 엡실론까지! 전열 정비! 일점사 — 거북선!
+458,볼프 노인,wolfelder,02_Assets/audio/voice/wolfelder/wolfelder_001.mp3,,02_Assets/audio/voice_en/wolfelder/wolfelder_001.mp3,,ko,"당신 눈빛, 그 사람과 똑같군. 100년 전, 모두가 도망칠 때 혼자 함대를 돌려세운 옛 지구의 한 제독이 있었소. 이걸 맡기며 그랬지 — ""언젠가 알아볼 사람이 온다""고."
+459,볼프 노인,wolfelder,02_Assets/audio/voice/wolfelder/wolfelder_002.mp3,,02_Assets/audio/voice_en/wolfelder/wolfelder_002.mp3,,ko,그건 나도 모르오. 허나 나머지 도면을 따라가면 — 그를 만나게 될 거요.
+460,아오리,aori,02_Assets/audio/voice/aori/aori_001.mp3,,02_Assets/audio/voice_en/aori/aori_001.mp3,,ko,프록시마B에서? 그 차가운 궤도에서 살아 돌아온 사람은 네가 처음이야. 다들 거기서 잊혀지는데.
+461,아오리,aori,02_Assets/audio/voice/aori/aori_002.mp3,,02_Assets/audio/voice_en/aori/aori_002.mp3,,ko,허. 뭘 팔 거요?
+462,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_001.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_001.mp3,,ko,"우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 400년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까."
+463,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_002.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_002.mp3,,ko,살아남은 것만으론 부족했어요. 지금 크리그가 보급망에 첩자를 심어 우리 내부를 흔들고 있어요. 믿을 수 있는 동료가 절실해요.
+464,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_003.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_003.mp3,,ko,연대의 증표를 먼저. 지구 철광석 — 지구의 땅에서 온 것으로 서약하는 게 우리 전통이에요.
+465,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_004.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_004.mp3,,ko,"당신들이 직접 왔군요. 코르넬리우스 사건 — 우리도 들었어요. 아이젠클로가 직접 기술을 사들였다면, 위협은 우리 예상보다 깊어요."
+466,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_005.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_005.mp3,,ko,그렇다면 공식 연대 협약을 먼저 맺어야 합니다. 지구의 방식으로.
+467,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_006.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_006.mp3,,ko,크리그가 새 거점을 올리고 있어요. 아이젠클로가 직접 지휘 중이에요.
+468,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_007.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_007.mp3,,ko,"제작 베이 준비 완료. 장영실 씨, 시작하시죠."
+469,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_008.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_008.mp3,,ko,페스작센은 끝났습니다. 집행관 아이젠클로 — 격파 확인. 허나 크리그 보급 요새 슈멜츠가 아직 숨 쉬고 있어요.
+470,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_009.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_009.mp3,,ko,사령관. 지구가 — 100년 만에 — 다시 열렸어요. 의회가 당신을 기다리고 있습니다.
+471,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_010.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_010.mp3,,ko,아이젠클로의 친필 항복서 — 의회에 헌정합니다. 100년 봉쇄의 종결 — 공식 선포.
+472,레인저 맥시모프,maximoff,02_Assets/audio/voice/maximoff/maximoff_011.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_011.mp3,,ko,결의안 채택 완료. 프록시마B부터 글리제 균열까지 — 가 전 은하계 행성 총독권을 경매로 인수한다.
+473,항법 AI,navai,02_Assets/audio/voice/navai/navai_001.mp3,,02_Assets/audio/voice_en/navai/navai_001.mp3,,ko,"아우레우스 정보 칩 해독 시도 — 실패. 치크스 변조 주파수 감지. 현재 장비로는 불가. …기록: 이 암호, 데이터로만 본 적 있음. 실물은, 처음."
+474,항법 AI,navai,02_Assets/audio/voice/navai/navai_002.mp3,,02_Assets/audio/voice_en/navai/navai_002.mp3,,ko,지구 진입. 봉쇄 해제 — 자유 항해 모드 활성화. 100년 만의 첫 인류 함대 착륙.
+475,치크스 전위대,chiks,02_Assets/audio/voice/chiks/chiks_001.mp3,,02_Assets/audio/voice_en/chiks/chiks_001.mp3,,ko,이곳은 치크스 관할 공역. 허가 없는 외래종의 통행은 — 적대 행위로 간주한다.
+476,불칸,volcan,02_Assets/audio/voice/volcan/volcan_001.mp3,,02_Assets/audio/voice_en/volcan/volcan_001.mp3,,ko,"그뿐만이 아니다 — 마그마 코어 비축고도 통째로. 당신들이 뭘 만들든, 필요하면 가져가라."
+477,철갈고리 보그,borg,02_Assets/audio/voice/borg/borg_001.mp3,02_Assets/audio/voice/borg/borg_f.mp3,02_Assets/audio/voice_en/borg/borg_001.mp3,02_Assets/audio/voice_en/borg/borg_f.mp3,ko,어이 거기 함대. 이 항로는 내 구역이야. 통행료 ₡만 내놓으면 곱게 보내주지.
+478,밀수왕 카림,karim,02_Assets/audio/voice/karim/karim_001.mp3,02_Assets/audio/voice/karim/karim_f.mp3,02_Assets/audio/voice_en/karim/karim_001.mp3,02_Assets/audio/voice_en/karim/karim_f.mp3,ko,"오, 함선들 좋은데? 흠집 내기 싫으면 ₡만 내. 사업은 사업이니까."
+479,치크스 군단장 크라쉬,krash,02_Assets/audio/voice/krash/krash_001.mp3,02_Assets/audio/voice/krash/krash_f.mp3,02_Assets/audio/voice_en/krash/krash_001.mp3,02_Assets/audio/voice_en/krash/krash_f.mp3,ko,인간 주제에 감히 여기까지. 목숨값으로 ₡를 바쳐라. 그럼 오늘은 살려두마.
+480,현상금 사냥꾼 베일,veil,02_Assets/audio/voice/veil/veil_001.mp3,02_Assets/audio/voice/veil/veil_f.mp3,02_Assets/audio/voice_en/veil/veil_001.mp3,02_Assets/audio/voice_en/veil/veil_f.mp3,ko,"네 목에 걸린 현상금보다 ₡가 싸게 먹히겠지? 자, 선택해."
+481,약탈자 도르가,dorga,02_Assets/audio/voice/dorga/dorga_001.mp3,02_Assets/audio/voice/dorga/dorga_f.mp3,02_Assets/audio/voice_en/dorga/dorga_001.mp3,02_Assets/audio/voice_en/dorga/dorga_f.mp3,ko,함선이 아깝지 않냐? ₡ 내면 못 본 척 해주마. 거절하면… 후회할걸.
+482,반란군 리더 \'볼칸\',etc,02_Assets/audio/voice/rebel/rebel_001.mp3,,02_Assets/audio/voice_en/etc/etc_482.mp3,,ko,당신들이 저항군과 함께 싸운다는 그 로군. 우리 '스파크'는 크리그 공장 노동자들의 자유 민병대다. 요새 안에 내 동료들이 갇혀 있어.
+483,경보,etc,02_Assets/audio/voice/navai/navai_483.mp3,,02_Assets/audio/voice_en/etc/etc_483.mp3,,ko,⚠ 워프 신호 확인. 우르사 메이저 본체 + 친위대 15척 + 치크스 정찰대 14척. 총 30기.
+484,경보,etc,02_Assets/audio/voice/navai/navai_484.mp3,,02_Assets/audio/voice_en/etc/etc_484.mp3,,ko,⚠ 우르사 메이저 보이드 방어막 — 0.3초 윈도우 확인. 일점사 가능.
+485,시스템,etc,02_Assets/audio/voice/navai/navai_485.mp3,,02_Assets/audio/voice_en/etc/etc_485.mp3,,ko,우르사 메이저 격파 확인. 아이젠클로 사령관 함선 동시 파괴. 적 함대 — 잔존 0. 보이드 균열 — 폐쇄 중.
+486,Yi Sun-sin,etc,02_Assets/audio/voice/etc/etc_486.mp3,,02_Assets/audio/voice/etc/etc_486.mp3,,en,사령관. I do not fight unnecessary battles. Only wars I can win.
+487,Yuri Gagarin,etc,02_Assets/audio/voice/etc/etc_487.mp3,,02_Assets/audio/voice/etc/etc_487.mp3,,en,사령관. So I am the first comrade in a hundred years — what an honor. Small craft are my specialty — I'll take you anywhere.
+488,Horatio Nelson,etc,02_Assets/audio/voice/etc/etc_488.mp3,,02_Assets/audio/voice/etc/etc_488.mp3,,en,"England expects— no. Now Earth expects. Let us begin, 사령관."
+489,A. Einstein,etc,02_Assets/audio/voice/etc/etc_489.mp3,,02_Assets/audio/voice/etc/etc_489.mp3,,en,"A location even the Cheeks could not find — Proxima B, perturbed by the 글리제 균열 Rift. 사령관's awakening point."
+490,Gwanggaeto the Great,etc,02_Assets/audio/voice/etc/etc_490.mp3,,02_Assets/audio/voice/etc/etc_490.mp3,,en,"사령관, you said? I have waited for one who would reclaim my land. Speak — what is your wish?"
+491,Gwanggaeto the Great,etc,02_Assets/audio/voice/etc/etc_491.mp3,,02_Assets/audio/voice/etc/etc_491.mp3,,en,사령관 — the final command is yours.
+gate.needHero,백구,baekgu,02_Assets/audio/voice/baekgu/gate_needHero.mp3,,02_Assets/audio/voice_en/baekgu/gate_needHero.mp3,,ko,"사령관, 순서가 있어요. 먼저 만나야 할 사람이 있습니다. 그 사람 없이는 다음으로 못 가요."
+gate.needItem,백구,baekgu,02_Assets/audio/voice/baekgu/gate_needItem.mp3,,02_Assets/audio/voice_en/baekgu/gate_needItem.mp3,,ko,아직 일러요. 먼저 구해 와야 할 게 있습니다.
+gate.needBlueprint,백구,baekgu,02_Assets/audio/voice/baekgu/gate_needBlueprint.mp3,,02_Assets/audio/voice_en/baekgu/gate_needBlueprint.mp3,,ko,준비가 덜 됐어요. 먼저 찾아야 할 설계도가 있습니다.
+gate.needQuest,백구,baekgu,02_Assets/audio/voice/baekgu/gate_needQuest.mp3,,02_Assets/audio/voice_en/baekgu/gate_needQuest.mp3,,ko,선행 임무가 남았어요. 먼저 끝내야 할 일이 있습니다.
+aureus.001,아우레우스 보스,aureusboss,02_Assets/audio/voice/aureusboss/aureusboss_001.mp3,,02_Assets/audio/voice_en/aureusboss/aureusboss_001.mp3,,ko,"어머… 손님치고는 매너가 없으시네요. 이 공역의 통행권은, 제 회사 소유랍니다. 값을 치르시거나 — 청산되시거나."
+aureus.002,아우레우스 보스,aureusboss,02_Assets/audio/voice/aureusboss/aureusboss_002.mp3,,02_Assets/audio/voice_en/aureusboss/aureusboss_002.mp3,,ko,"전쟁도 결국 거래예요, 사령관. 당신의 함대는… 제 장부에 부채로 적어두죠."
+aureus.003,아우레우스 보스,aureusboss,02_Assets/audio/voice/aureusboss/aureusboss_003.mp3,,02_Assets/audio/voice_en/aureusboss/aureusboss_003.mp3,,ko,"이건… 제 장부에 없던 손실이군요. 다음 분기엔, 반드시 회수하겠어요."
+combat.enemyRegret1,적군/해적,combat,02_Assets/audio/voice/combat/enemyRegret_1.mp3,,02_Assets/audio/voice_en/combat/enemyRegret_1.mp3,,ko,이 함대를… 얕봤군. 빌어먹을…
+combat.enemyRegret2,적군/해적,combat,02_Assets/audio/voice/combat/enemyRegret_2.mp3,,02_Assets/audio/voice_en/combat/enemyRegret_2.mp3,,ko,"말도 안 돼… 우리 함대가, 고작 이런 곳에서…?!"
+combat.enemyRegret3,적군/해적,combat,02_Assets/audio/voice/combat/enemyRegret_3.mp3,,02_Assets/audio/voice_en/combat/enemyRegret_3.mp3,,ko,기억해두마. 이 굴욕은… 반드시 갚아주지.
+combat.enemyFlee1,적군/해적,combat,02_Assets/audio/voice/combat/enemyFlee_1.mp3,,02_Assets/audio/voice_en/combat/enemyFlee_1.mp3,,ko,퇴각! 전부 퇴각하라! 오늘은 여기까지다!
+combat.enemyFlee2,적군/해적,combat,02_Assets/audio/voice/combat/enemyFlee_2.mp3,,02_Assets/audio/voice_en/combat/enemyFlee_2.mp3,,ko,물러난다! 이건 후퇴지 패배가 아니야!
+combat.enemyFlee3,적군/해적,combat,02_Assets/audio/voice/combat/enemyFlee_3.mp3,,02_Assets/audio/voice_en/combat/enemyFlee_3.mp3,,ko,함장님 명령이다 — 워프! 당장 이 구역을 벗어나!
+combat.merchantThanks1,상인/과학자,combat,02_Assets/audio/voice/combat/merchantThanks_1.mp3,,02_Assets/audio/voice_en/combat/merchantThanks_1.mp3,,ko,사령관님 아니었으면 저놈들 화물칸에서 끝날 뻔했소. 이 은혜 잊지 않겠습니다.
+combat.merchantThanks2,상인/과학자,combat,02_Assets/audio/voice/combat/merchantThanks_2.mp3,,02_Assets/audio/voice_en/combat/merchantThanks_2.mp3,,ko,살았다… 정말 살았어! 다음에 좋은 물건 들어오면 제일 먼저 연락드리리다.
+combat.merchantThanks3,상인/과학자,combat,02_Assets/audio/voice/combat/merchantThanks_3.mp3,,02_Assets/audio/voice_en/combat/merchantThanks_3.mp3,,ko,당신 같은 분이 아직 이 우주에 남아 있다니. 상인 길드에 소문내 두겠소.
+combat.scientistThanks1,상인/과학자,combat,02_Assets/audio/voice/combat/scientistThanks_1.mp3,,02_Assets/audio/voice_en/combat/scientistThanks_1.mp3,,ko,당신들이 와줄 줄… 데이터를 지켜냈습니다. 함께 가겠습니다.
+combat.scientistThanks2,상인/과학자,combat,02_Assets/audio/voice/combat/scientistThanks_2.mp3,,02_Assets/audio/voice_en/combat/scientistThanks_2.mp3,,ko,"내 연구가 헛되지 않았군요. 이 두뇌, 당신 함대에 보태겠습니다."
+combat.scientistThanks3,상인/과학자,combat,02_Assets/audio/voice/combat/scientistThanks_3.mp3,,02_Assets/audio/voice_en/combat/scientistThanks_3.mp3,,ko,갇혀 있는 동안 방정식 하나를 완성했습니다 — 보여드리고 싶군요.
+crew.legendaryRecruit1,백구,baekgu,02_Assets/audio/voice/baekgu/crew_legendary_1.mp3,,02_Assets/audio/voice_en/baekgu/crew_legendary_1.mp3,,ko,"사령관, 전설급 크루예요! 이런 인재는 좀처럼 만나기 힘들어요 — 꼭 영입하세요!"
+crew.legendaryRecruit2,백구,baekgu,02_Assets/audio/voice/baekgu/crew_legendary_2.mp3,,02_Assets/audio/voice_en/baekgu/crew_legendary_2.mp3,,ko,"전설의 크루가 우리 함대에 합류했어요! 사령관, 큰 전력이 될 거예요."
+item.legendaryPart,백구,baekgu,02_Assets/audio/voice/baekgu/get_legendPart.mp3,,02_Assets/audio/voice_en/baekgu/get_legendPart.mp3,,ko,전설급 파츠예요! 정비소에서 장착하면 함선이 확 달라질 거예요.
+item.mythicPart,백구,baekgu,02_Assets/audio/voice/baekgu/get_mythicPart.mp3,,02_Assets/audio/voice_en/baekgu/get_mythicPart.mp3,,ko,"신화급 파츠라니…! 이건 정말 귀한 거예요, 사령관. 최고의 한 방이 되겠어요."
+ship.legendary,백구,baekgu,02_Assets/audio/voice/baekgu/get_legendShip.mp3,,02_Assets/audio/voice_en/baekgu/get_legendShip.mp3,,ko,전설급 함선을 손에 넣었어요! 함대의 핵심이 될 거예요.
+ship.mythic,백구,baekgu,02_Assets/audio/voice/baekgu/get_mythicShip.mp3,,02_Assets/audio/voice_en/baekgu/get_mythicShip.mp3,,ko,"신화급 함선…! 믿기지 않아요, 사령관. 이 정도면 전설을 새로 쓰는 거예요."

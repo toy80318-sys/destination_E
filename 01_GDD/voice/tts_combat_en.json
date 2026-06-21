@@ -1,0 +1,8 @@
+[
+ {"out":"clips_en/combat/enemyRegret_1.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[bitter] I... underestimated this fleet. Damn it..."},
+ {"out":"clips_en/combat/enemyRegret_2.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[shocked] Impossible... our fleet, brought down in a place like this?!"},
+ {"out":"clips_en/combat/enemyRegret_3.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[menacing] I'll remember this. This humiliation... I will repay it."},
+ {"out":"clips_en/combat/enemyFlee_1.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[panicked] Retreat! All ships, retreat! That's enough for today!"},
+ {"out":"clips_en/combat/enemyFlee_2.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[defiant] Fall back! This is a withdrawal, not a defeat!"},
+ {"out":"clips_en/combat/enemyFlee_3.mp3","voice":"SOYHLrjzK2X1ezoPC6cr","model":"eleven_v3","stability":0.0,"text":"[urgent] Captain's orders — warp! Get out of this sector, now!"}
+]

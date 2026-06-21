@@ -1,0 +1,136 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Destination Earth — Cyberpunk Glass Button Kit</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   DESTINATION EARTH — 사이버펑크 글래스 버튼 (라운딩 절반 + 코너 컷)
+   ✦ 테두리 라인이 잘린 모서리까지 끊김 없이 이어짐(2중 레이어)
+   사용:  <button class="holo-btn holo-cyan holo-lg">전투 시작</button>
+   색:    holo-cyan / holo-green / holo-gold / holo-red / holo-gray / holo-magenta
+   크기:  holo-lg / holo-md / holo-sm     아이콘: holo-icon
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --holo-cyan:#36e3ff; --holo-green:#42f5b0; --holo-gold:#ffd25a;
+  --holo-red:#ff5d6c;  --holo-gray:#9fb4c8; --holo-magenta:#ff5cf0;
+  --holo-ink:#eaf6ff;  --holo-glass:rgba(14,26,42,.78);
+  --holo-radius:7px;            /* 14 → 7 (절반) */
+  --cut:11px;                    /* 코너 컷 크기 */
+  --line:1.6px;                  /* 네온 테두리 두께 */
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 700px at 70% -10%,#102742 0%,#0a1626 45%,#05080f 100%);
+  color:var(--holo-ink);font-family:"Segoe UI","Malgun Gothic",sans-serif;min-height:100vh;padding:40px 32px 80px}
+h1{font-weight:700;letter-spacing:.04em;margin:0 0 4px;font-size:24px}
+.sub{color:#7d96b0;margin:0 0 28px;font-size:13px}
+h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#6fd6ff;margin:30px 0 14px;border-left:3px solid var(--holo-cyan);padding-left:10px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.card{background:rgba(10,20,34,.4);border:1px solid rgba(80,120,160,.18);border-radius:10px;padding:22px 24px;margin-bottom:18px}
+.lab{color:#6b8299;font-size:12px}
+
+/* ── 베이스: 바깥=네온 라인(클립), 안쪽 ::before=글래스 채움(클립) ── */
+.holo-btn{
+  --c:var(--holo-cyan);
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 28px;cursor:pointer;white-space:nowrap;isolation:isolate;
+  font:700 16px/1 "Segoe UI","Malgun Gothic",sans-serif;letter-spacing:.06em;
+  color:var(--holo-ink);text-shadow:0 0 8px color-mix(in srgb,var(--c) 60%,transparent);
+  /* 바깥 레이어 = 끊기지 않는 네온 테두리 라인 */
+  background:linear-gradient(135deg, color-mix(in srgb,var(--c) 95%,white) 0%, var(--c) 55%, color-mix(in srgb,var(--c) 60%,black) 100%);
+  border:0;border-radius:var(--holo-radius);
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
+  box-shadow:0 8px 22px rgba(0,0,0,.45),0 0 20px color-mix(in srgb,var(--c) 32%,transparent);
+  transition:transform .1s ease,box-shadow .2s ease,filter .2s ease;
+}
+/* 안쪽 글래스 채움 — 라인 두께(--line)만큼 안쪽으로, 같은 컷이라 라인이 균일하게 둘러짐 */
+.holo-btn::before{content:"";position:absolute;inset:var(--line);z-index:-1;
+  border-radius:calc(var(--holo-radius) - 1px);
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
+  background:linear-gradient(135deg, color-mix(in srgb,var(--c) 20%,transparent) 0%, transparent 55%), var(--holo-glass);
+  -webkit-backdrop-filter:blur(9px) saturate(150%);backdrop-filter:blur(9px) saturate(150%);}
+/* 호버 광택 스윕 */
+.holo-btn::after{content:"";position:absolute;top:0;left:-60%;width:50%;height:100%;z-index:1;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);transition:left .5s ease;pointer-events:none;}
+.holo-btn:hover{transform:translateY(-2px);filter:brightness(1.12);
+  box-shadow:0 10px 26px rgba(0,0,0,.5),0 0 34px color-mix(in srgb,var(--c) 60%,transparent);}
+.holo-btn:hover::after{left:120%;}
+.holo-btn:active{transform:translateY(0) scale(.97);}
+.holo-btn:focus-visible{outline:2px solid color-mix(in srgb,var(--c) 80%,transparent);outline-offset:3px}
+.holo-btn[disabled]{opacity:.4;cursor:not-allowed;filter:grayscale(.4);transform:none;box-shadow:none}
+.holo-btn[disabled]::after{display:none}
+
+.holo-cyan{--c:var(--holo-cyan)} .holo-green{--c:var(--holo-green)} .holo-gold{--c:var(--holo-gold)}
+.holo-red{--c:var(--holo-red)} .holo-magenta{--c:var(--holo-magenta)}
+.holo-gray{--c:var(--holo-gray);color:#dbe7f2;text-shadow:none}
+
+.holo-lg{padding:16px 36px;font-size:18px;--holo-radius:8px;--cut:13px}
+.holo-md{padding:13px 28px;font-size:16px}
+.holo-sm{padding:8px 18px;font-size:13px;--holo-radius:5px;--cut:8px}
+
+/* 아이콘 */
+.holo-icon{--c:var(--holo-cyan);position:relative;width:48px;height:48px;padding:0;display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;color:var(--holo-ink);isolation:isolate;border:0;border-radius:6px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 95%,white),var(--c) 60%,color-mix(in srgb,var(--c) 60%,black));
+  box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 16px color-mix(in srgb,var(--c) 30%,transparent);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+  transition:transform .1s,box-shadow .2s,filter .2s}
+.holo-icon::before{content:"";position:absolute;inset:var(--line);z-index:-1;
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 20%,transparent),transparent 60%),var(--holo-glass);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
+.holo-icon:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 8px 20px rgba(0,0,0,.5),0 0 28px color-mix(in srgb,var(--c) 60%,transparent)}
+.holo-icon:active{transform:scale(.93)}
+
+.holo-toggle{position:relative;width:58px;height:28px;border-radius:4px;cursor:pointer;border:1px solid rgba(120,150,180,.4);
+  background:var(--holo-glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:.25s}
+.holo-toggle::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:3px;background:#8aa3bd;transition:.25s}
+.holo-toggle[aria-checked="true"]{border-color:var(--holo-cyan);box-shadow:0 0 18px color-mix(in srgb,var(--holo-cyan) 45%,transparent)}
+.holo-toggle[aria-checked="true"]::after{left:35px;background:var(--holo-cyan);box-shadow:0 0 12px var(--holo-cyan)}
+</style>
+
+<h1>🛰️ DESTINATION EARTH — 사이버펑크 글래스 버튼 (테두리 끊김 수정)</h1>
+<p class="sub">코너 컷 + 끊기지 않는 네온 라인 · radius 14→7 · 호버/액티브/비활성 포함</p>
+
+<div class="card"><h2>공통 액션</h2><div class="row">
+  <button class="holo-btn holo-cyan">확인</button>
+  <button class="holo-btn holo-green">✔ 수락</button>
+  <button class="holo-btn holo-gray">취소</button>
+  <button class="holo-btn holo-red">✖ 거절</button>
+  <button class="holo-btn holo-gold">★ 특별</button>
+  <button class="holo-btn holo-magenta">◆ 강조</button>
+  <button class="holo-btn holo-cyan" disabled>비활성</button>
+</div></div>
+
+<div class="card"><h2>전투 / 통행료</h2><div class="row">
+  <button class="holo-btn holo-red holo-lg">⚔ 거부 — 전투 시작!</button>
+  <button class="holo-btn holo-gold holo-lg">💰 크레딧 지불 (전투 회피)</button>
+  <button class="holo-btn holo-cyan holo-md">⏸ 일시정지</button>
+  <button class="holo-btn holo-gray holo-md">🏃 도망가기</button>
+</div></div>
+
+<div class="card"><h2>메인 메뉴</h2><div class="row">
+  <button class="holo-btn holo-cyan holo-lg">▶ 새 게임</button>
+  <button class="holo-btn holo-green holo-lg">⟳ 이어하기</button>
+  <button class="holo-btn holo-gray holo-lg">⚙ 설정</button>
+</div></div>
+
+<div class="card"><h2>벙커존 (예시 적용)</h2><div class="row">
+  <button class="holo-btn holo-green holo-md">▶ 방어 시작</button>
+  <button class="holo-btn holo-cyan holo-sm">레이저</button>
+  <button class="holo-btn holo-magenta holo-sm">미사일</button>
+  <button class="holo-btn holo-gold holo-sm">T1</button>
+  <button class="holo-btn holo-gray holo-sm" disabled>T7</button>
+  <button class="holo-btn holo-red holo-sm">닫기</button>
+</div></div>
+
+<div class="card"><h2>아이콘 / 크기 / 토글</h2><div class="row">
+  <button class="holo-icon holo-cyan" title="설정">⚙</button>
+  <button class="holo-icon holo-gray" title="닫기">✕</button>
+  <button class="holo-icon holo-green" title="소리">🔊</button>
+  <button class="holo-icon holo-gold" title="도움말">?</button>
+  <span style="width:16px"></span>
+  <button class="holo-btn holo-cyan holo-lg">L</button>
+  <button class="holo-btn holo-cyan holo-md">M</button>
+  <button class="holo-btn holo-cyan holo-sm">S</button>
+  <span style="width:16px"></span><span class="lab">보이스 ON</span>
+  <button class="holo-toggle" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')==='true'?'false':'true')"></button>
+</div></div>

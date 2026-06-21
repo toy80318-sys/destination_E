@@ -1,0 +1,202 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Destination Earth — UI 클론 (사이버펑크 글래스)</title>
+<style>
+:root{--cy:#36e3ff;--gr:#42f5b0;--go:#ffd25a;--rd:#ff5d6c;--gy:#9fb4c8;--mg:#ff5cf0;
+  --ink:#eaf6ff;--dim:#8fa9c2;--glass:rgba(13,24,40,.85);--cut:11px;--line:1.6px}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Segoe UI","Malgun Gothic",sans-serif;color:var(--ink);min-height:100vh;font-size:14px;
+  background:radial-gradient(1400px 800px at 75% -10%,#102742,#0a1626 50%,#04070e 100%) fixed;padding:14px 16px}
+.dim{color:var(--dim)}.neon{color:var(--cy);text-shadow:0 0 8px #36e3ff88}
+.cut{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+/* 노치 글래스 2중 레이어 */
+.gl{position:relative;isolation:isolate;border:0;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c,var(--cy)) 70%,white),var(--c,var(--cy)) 55%,color-mix(in srgb,var(--c,var(--cy)) 55%,black))}
+.gl,.gl::before{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+.gl::before{content:"";position:absolute;inset:var(--line);z-index:-1;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--c,var(--cy)) 14%,transparent),transparent 60%),var(--glass);
+  -webkit-backdrop-filter:blur(10px) saturate(150%);backdrop-filter:blur(10px) saturate(150%)}
+/* 버튼 */
+.btn{--c:var(--cy);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 18px;cursor:pointer;white-space:nowrap;font:700 14px/1 inherit;letter-spacing:.04em;color:var(--ink);border:0;
+  text-shadow:0 0 8px color-mix(in srgb,var(--c) 60%,transparent);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 95%,white),var(--c) 55%,color-mix(in srgb,var(--c) 60%,black));
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 16px color-mix(in srgb,var(--c) 30%,transparent);transition:.12s}
+.btn::before{content:"";position:absolute;inset:1.4px;z-index:-1;clip-path:inherit;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 18%,transparent),transparent 55%),var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.12)}.btn:active{transform:scale(.97)}
+.cy{--c:var(--cy)}.gr{--c:var(--gr)}.go{--c:var(--go)}.rd{--c:var(--rd)}.gy{--c:var(--gy);color:#dbe7f2;text-shadow:none}.mg{--c:var(--mg)}
+.sm{padding:6px 12px;font-size:12px}.lg{padding:14px 28px;font-size:16px}
+/* 칩/상태바 */
+.topbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.chip{--c:var(--cy);position:relative;isolation:isolate;padding:7px 14px;font-weight:700;font-size:13px;display:inline-flex;gap:7px;align-items:center;border:0;
+  clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 80%,white),var(--c),color-mix(in srgb,var(--c) 55%,black))}
+.chip::before{content:"";position:absolute;inset:1.4px;z-index:-1;clip-path:inherit;background:var(--glass)}
+.chip .v{color:#fff;text-shadow:0 0 8px currentColor}.brand{font-weight:800;letter-spacing:.08em;font-size:16px;margin-right:4px}
+/* 탭 */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{cursor:pointer;padding:9px 16px;font-weight:700;font-size:13px;color:var(--dim);background:rgba(20,34,54,.5);
+  border:1px solid #ffffff14;clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px);transition:.15s}
+.tab.on{color:#04121f;background:linear-gradient(135deg,#aef0ff,var(--cy));border-color:var(--cy);box-shadow:0 0 18px #36e3ff66}
+/* 패널/카드 */
+.panel{--c:var(--cy)}.panel .hd{padding:11px 16px;font-weight:800;letter-spacing:.05em;font-size:13px;text-transform:uppercase;color:var(--cy);border-bottom:1px solid #36e3ff33;display:flex;gap:8px;align-items:center}
+.panel .bd{padding:14px 16px}
+.grid{display:grid;gap:14px;align-items:start}
+.bar{height:9px;border-radius:5px;background:#0c1a2c;border:1px solid #ffffff14;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--c,var(--gr)),color-mix(in srgb,var(--c,var(--gr)) 55%,white));box-shadow:0 0 12px var(--c,var(--gr))}
+.portrait{--c:var(--cy);position:relative;isolation:isolate;width:100%;aspect-ratio:1;border:0;display:flex;align-items:center;justify-content:center;font-size:48px;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);background:linear-gradient(135deg,var(--cy),#0a1626)}
+.portrait::before{content:"";position:absolute;inset:2px;z-index:-1;clip-path:inherit;background:#0c1a2c}
+.scard{--c:var(--cy);padding:12px 14px}.stat{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-top:3px}
+.reward{color:var(--gr);font-weight:700}
+.screen{display:none}.screen.on{display:block}
+/* 벙커존 */
+.bz-hud{display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding:10px 14px;margin-bottom:10px}
+.bz-field{position:relative;height:300px;border-radius:10px;border:1px solid #ffffff12;overflow:hidden;
+  background:linear-gradient(180deg,#060d18 0%,#081427 60%,#0a1b34 100%)}
+.horizon{position:absolute;left:0;right:0;top:46%;height:54%;border-top:2px solid #36e3ff44;background:linear-gradient(180deg,#0d2murl,#0a1b34)}
+.slots{position:absolute;left:0;right:0;top:50%;display:grid;grid-template-columns:repeat(8,1fr);gap:6px 0;padding:0 16px}
+.slot{justify-self:center;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
+  border:1.5px solid var(--c,var(--cy));color:var(--c,var(--cy));background:rgba(10,22,40,.6);box-shadow:0 0 10px color-mix(in srgb,var(--c,var(--cy)) 40%,transparent)}
+.bunker{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:42px;border-radius:6px 6px 2px 2px;
+  background:linear-gradient(180deg,#2a4straa,#16314f);border:1.5px solid #36e3ff66;box-shadow:0 0 18px #36e3ff55}
+.buildbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.tier{--c:var(--rd);position:relative;isolation:isolate;padding:7px 10px;text-align:center;border:0;cursor:pointer;font-weight:800;font-size:12px;color:var(--ink);
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 80%,white),var(--c),color-mix(in srgb,var(--c) 55%,black))}
+.tier::before{content:"";position:absolute;inset:1.4px;z-index:-1;clip-path:inherit;background:var(--glass)}
+.tier small{display:block;color:var(--go);font-weight:700;margin-top:2px}
+.tier[disabled]{opacity:.4;cursor:not-allowed}
+/* 오버레이 팝업 */
+.overlay{position:relative;min-height:340px;border-radius:12px;margin-top:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:26px;
+  background:linear-gradient(180deg,#0a1626,#070d18);border:1px solid #ffffff12}
+.pop{--c:var(--cy);max-width:680px;width:100%}
+.pop .ph{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid #36e3ff2b}
+.pp{--c:var(--cy);position:relative;isolation:isolate;width:84px;height:84px;flex:0 0 84px;font-size:38px;display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);background:linear-gradient(135deg,var(--c),#0a1626)}
+.pp::before{content:"";position:absolute;inset:2px;z-index:-1;clip-path:inherit;background:#0c1a2c}
+.pop .nm{font-weight:800;font-size:20px;color:var(--c);text-shadow:0 0 10px #36e3ff66}
+.pop .line{padding:20px 22px;font-size:18px;line-height:1.6}
+.pop .pf{display:flex;gap:12px;justify-content:flex-end;padding:0 20px 18px;flex-wrap:wrap}
+</style>
+
+<div class="topbar">
+  <span class="brand neon">🛰️ 빅 픽처 스페이스</span>
+  <span class="chip cy">💰 <span class="v">99,959,983,367</span></span>
+  <span class="chip mg">VE <span class="v">151</span></span>
+  <span class="chip go">★ <span class="v">1,103</span></span>
+  <span class="chip gr">ACT 1 · T16</span>
+  <span class="chip rd">⚔ <span class="v">948</span></span>
+  <span style="flex:1"></span><button class="btn gy sm">⚙</button>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab on" data-s="hub">허브</div>
+  <div class="tab" data-s="quest">퀘스트</div>
+  <div class="tab" data-s="fleet">함대</div>
+  <div class="tab" data-s="bunker">벙커존 디펜스</div>
+  <div class="tab" data-s="combat">전투 팝업</div>
+  <div class="tab" data-s="talk">대화</div>
+</div>
+
+<!-- 허브 -->
+<section class="screen on" data-s="hub">
+  <div class="grid" style="grid-template-columns:240px 1fr 300px">
+    <div class="gl cut panel"><div class="hd">👤 사령관</div><div class="bd">
+      <div class="portrait">🧑‍🚀</div>
+      <div style="margin-top:12px;font-weight:800">데스티네이션 사령관</div>
+      <div class="dim" style="font-size:12px">옛 지구 귀환 작전 · 전사</div>
+      <div class="dim" style="font-size:12px;margin-top:12px">함대 전투력</div>
+      <div class="bar cy"><i style="width:78%"></i></div>
+      <div style="margin-top:12px"><span class="chip gy">🐕 백구</span></div>
+    </div></div>
+    <div class="gl cut panel" style="--c:var(--go)"><div class="hd" style="color:var(--go);border-color:#ffd25a33">📜 다음 할 일</div><div class="bd dim" style="line-height:1.7">
+      치크스(보라색 1링) 행성에서 정찰대를 격퇴하고, 벙커존 방어 퀘스트로 ×2 지구저항군 함선을 확보하세요.
+      <div style="margin-top:14px;display:flex;gap:10px"><button class="btn go" onclick="go('quest')">퀘스트 보기</button><button class="btn cy" onclick="go('bunker')">벙커존 가기</button></div>
+    </div></div>
+    <div class="gl cut panel"><div class="hd">🚀 함대 요약</div><div class="bd">
+      <div class="dim" style="font-size:12px">기함 · 거북선(신화)</div>
+      <div class="bar go"><i style="width:92%"></i></div>
+      <div class="dim" style="font-size:12px;margin-top:10px">편대 16/20 · 전투력 948</div>
+      <button class="btn cy sm" style="margin-top:12px" onclick="go('fleet')">함대 관리</button>
+    </div></div>
+  </div>
+</section>
+
+<!-- 퀘스트 -->
+<section class="screen" data-s="quest">
+  <div class="gl cut panel" style="--c:var(--go)"><div class="hd" style="color:var(--go);border-color:#ffd25a33">🎖️ 행성 퀘스트</div><div class="bd grid" style="grid-template-columns:1fr 1fr">
+    <div class="gl cut" style="--c:var(--go);padding:0">
+      <div style="padding:10px 14px;font-weight:800;color:var(--go);border-bottom:1px solid #fff1">🛸 치크스 정찰대 격퇴 · P09</div>
+      <div style="padding:12px 14px" class="dim">정찰대가 보급선을 노린다. 강하 전에 요격하라.</div>
+      <div style="padding:10px 14px;display:flex;justify-content:space-between;border-top:1px solid #fff1"><span class="reward">+💰5,400 · VE+27</span><button class="btn go sm">✓ 수락</button></div>
+    </div>
+    <div class="gl cut" style="--c:var(--cy);padding:0">
+      <div style="padding:10px 14px;font-weight:800;color:var(--cy);border-bottom:1px solid #fff1">🛡️ 벙커존 행성 디펜스 · P22</div>
+      <div style="padding:12px 14px" class="dim">거점을 4웨이브 방어. 성공 시 ×2 지구저항군 함선.</div>
+      <div style="padding:10px 14px;display:flex;justify-content:space-between;border-top:1px solid #fff1"><span class="reward">+💰10,000 · 전설 파츠</span><button class="btn cy sm" onclick="go('bunker')">▶ 시작</button></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- 함대 -->
+<section class="screen" data-s="fleet">
+  <div class="gl cut panel"><div class="hd">🚀 함대 (16/20)</div><div class="bd grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+    <div class="gl cut scard" style="--c:var(--go)"><div class="neon" style="color:var(--go);font-weight:800">🐢 거북선 <span style="font-size:11px">신화</span></div><div class="stat"><span>ATT 3946</span><span>ENG 2113</span></div><div class="bar go"><i style="width:92%"></i></div></div>
+    <div class="gl cut scard"><div style="font-weight:800">거북선 II</div><div class="stat"><span>ATT 2668</span><span>ENG 1302</span></div><div class="bar cy"><i style="width:64%"></i></div></div>
+    <div class="gl cut scard"><div style="font-weight:800">거북선 III</div><div class="stat"><span>ATT 2484</span><span>ENG 1219</span></div><div class="bar cy"><i style="width:58%"></i></div></div>
+    <div class="gl cut scard" style="--c:var(--mg)"><div style="font-weight:800;color:var(--mg)">블랙 팔콘 <span style="font-size:11px">신화</span></div><div class="stat"><span>ATT 3515</span><span>ENG 1707</span></div><div class="bar mg"><i style="width:84%"></i></div></div>
+  </div></div>
+</section>
+
+<!-- 벙커존 디펜스 -->
+<section class="screen" data-s="bunker">
+  <div class="gl cut panel"><div class="hd">🛰️ 벙커존 행성 디펜스</div><div class="bd">
+    <div class="gl cut bz-hud"><span class="dim">웨이브 <b style="color:#fff">0/4</b></span><span class="dim">⏱ <b style="color:#fff">80s</b></span><span class="dim">💰 <b style="color:var(--go)">478</b></span><span class="dim">🏰 벙커 HP <b style="color:#fff">1,000</b></span><span style="flex:1"></span><button class="btn rd sm">닫기</button></div>
+    <div class="bz-field">
+      <div class="slots" id="slots"></div>
+      <div class="bunker"></div>
+    </div>
+    <div class="buildbar">
+      <button class="btn cy sm">🔫 레이저</button><button class="btn mg sm">🚀 미사일</button>
+      <span style="width:8px"></span>
+      <button class="tier go">T1<small>💰100</small></button>
+      <button class="tier" style="--c:var(--cy)">T2<small>💰500</small></button>
+      <button class="tier" style="--c:var(--cy)">T3<small>💰1,000</small></button>
+      <button class="tier" style="--c:var(--mg)">T4<small>💰5,000</small></button>
+      <button class="tier gy" disabled>T5<small>💰10,000</small></button>
+      <span style="flex:1"></span><button class="btn gr lg">▶ 방어 시작</button>
+    </div>
+    <div class="dim" style="color:var(--rd);font-size:12px;margin-top:8px">자금이 부족합니다 (💰5,000)</div>
+  </div></div>
+</section>
+
+<!-- 전투 팝업 -->
+<section class="screen" data-s="combat">
+  <div class="overlay"><div class="gl cut pop" style="--c:var(--rd)">
+    <div class="ph"><div class="pp" style="--c:var(--rd)">👾</div><div><div class="nm" style="color:var(--rd)">치크스 군단장 크라쉬</div><div class="dim" style="font-size:12px">적 함대 · 중형 3 · 위협도 +20%</div></div></div>
+    <div class="line">인간 주제에 감히 여기까지. 목숨값으로 크레딧을 바쳐라. 그럼 오늘은 살려두마.</div>
+    <div style="padding:0 22px 6px"><div class="dim" style="font-size:12px">아군 대비 위협도</div><div class="bar rd"><i style="width:62%"></i></div></div>
+    <div class="pf"><button class="btn go">💰 크레딧 지불 (회피)</button><button class="btn rd">⚔ 거부 — 전투 시작!</button></div>
+  </div></div>
+</section>
+
+<!-- 대화 -->
+<section class="screen" data-s="talk">
+  <div class="overlay"><div class="gl cut pop" style="--c:var(--cy)">
+    <div class="ph"><div class="pp">🐕</div><div><div class="nm">백구</div><div class="dim" style="font-size:12px">조언자 AI · 3/5</div></div></div>
+    <div class="line">사령관, 순서가 있어요. 먼저 만나야 할 사람이 있습니다. 그 사람 없이는 다음으로 못 가요.</div>
+    <div class="pf"><button class="btn gy">⏭ 건너뛰기</button><button class="btn cy">다음 ▶</button></div>
+  </div></div>
+</section>
+
+<script>
+function go(s){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.s===s));
+  document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('on',x.dataset.s===s));window.scrollTo(0,0)}
+document.getElementById('tabs').addEventListener('click',e=>{if(e.target.dataset.s)go(e.target.dataset.s)});
+/* 벙커존 슬롯 채우기 */
+var sl=document.getElementById('slots'),tiers=['T1','T3','T3','T2','T4','T3','T3','T5'],cols=['var(--go)','var(--cy)','var(--cy)','var(--go)','var(--mg)','var(--cy)','var(--cy)','var(--mg)'];
+for(var r=0;r<4;r++)for(var c=0;c<8;c++){var d=document.createElement('div');d.className='slot';d.style.setProperty('--c',cols[c]);d.textContent=tiers[(c+r)%8];sl.appendChild(d)}
+</script>

@@ -60,50 +60,62 @@
     return e.clip || e.clip_en || e.clip_en_f || e.clip_f || null;
   }
   function stop(){ if (audio){ try { audio.pause(); } catch (e) {} audio = null; } }
+
   // §7 재녹음 대기 — 구버전 발음 클립은 자막과 불일치하므로 재생 제외(자막만):
   //   마르코 301 = marcopolo_028 (구 '볼칸' 발음 / 현재 자막은 '불칸'). 교체 후 이 항목 제거.
   var _EXCLUDE_RE = /\/marcopolo_028\.[a-z0-9]+$/i;
+
+  // 자동재생 잠금 해제: 브라우저/Electron은 첫 사용자 입력 전 오디오 재생을 막는다.
+  // 첫 입력에서 무음 워밍업으로 잠금을 풀어, 이후 컷신/통행료 음성이 정상 재생되게 한다.
+  var _unlocked = false;
+  function _unlock(){
+    if (_unlocked) return; _unlocked = true;
+    try { var a = new Audio(); a.muted = true; var p = a.play(); if (p && p.catch) p.catch(function(){}); } catch (e) {}
+    ['pointerdown','keydown','touchstart','click'].forEach(function(ev){ document.removeEventListener(ev, _unlock, true); });
+  }
+  ['pointerdown','keydown','touchstart','click'].forEach(function(ev){ document.addEventListener(ev, _unlock, true); });
+
   function playPath(p){
     if (!p || !on()) return;
-    if (_EXCLUDE_RE.test(p)) return;   // 구버전 음성 무음 폴백(자막 유지)
+    if (_EXCLUDE_RE.test(p)) return;   // 구버전 발음 제외
     stop();
     audio = new Audio(p);
     audio.volume = vol();
-    audio.play().catch(function(){ /* 파일없음/차단 → 무음 폴백 */ });
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function(){ /* 파일없음/자동재생 차단 → 무음 폴백 */ });
   }
-  // 명시 재생(playVoice/playLine) 직후, 같은 자막이 DOM에 떠 MutationObserver 자동매칭으로
-  // 중복 재생(특히 성별 override 무시한 클립)되는 것을 막는 억제 창.
-  function _markExplicit(){ suppressUntil = Date.now() + 1800; }
+
+  // vid(num) 직접 재생. opts.female 로 성별 강제 가능.
   function playVoice(num, opts){
     var e = window.VOICE_MANIFEST && window.VOICE_MANIFEST[num];
-    if (!e) return;
-    _markExplicit();
-    var fem = (opts && ('female' in opts)) ? opts.female : undefined;
+    var fem = opts && ('female' in opts) ? opts.female : undefined;
     playPath(pick(e, fem));
   }
-  // 컷신/팝업 라인 재생: vid 우선, 없으면 자막 텍스트 매칭 폴백. {vid,char,name,text,female} 허용.
-  function playLine(opts){
-    opts = opts || {};
-    if (opts.vid !== undefined && opts.vid !== null && opts.vid !== '') { playVoice(opts.vid, opts); return; }
-    var n = norm(opts.text || '');
-    if (!n || n.length < 2) return;
-    var e = window.VOICE_BYTEXT && window.VOICE_BYTEXT[n];
-    if (!e) return;
-    _markExplicit();
-    var fem = (opts && ('female' in opts)) ? opts.female : undefined;
-    playPath(pick(e, fem));
-  }
-  function playByText(text){
-    if (Date.now() < suppressUntil) return;   // 명시 재생 직후 자동매칭 중복 방지
+  // 텍스트로 매칭 재생. femOverride 로 성별 강제 가능.
+  function playByText(text, femOverride){
+    if (Date.now() < suppressUntil) return;
     var n = norm(text);
     if (!n || n.length < 2) return;
-    var e = window.VOICE_BYTEXT && window.VOICE_BYTEXT[n];
+    var e = (window.VOICE_BYTEXT && window.VOICE_BYTEXT[n]) || (window.VOICE_BYTEXT_EN && window.VOICE_BYTEXT_EN[n]);  // EN 자막 폴백(영문 컷신 음성)
     if (!e) return;
     var now = Date.now();
-    if (n === lastKey && now - lastAt < 1500) return;
+    if (n === lastKey && now - lastAt < 1500) return;   // 중복(타이핑 효과) 방지
     lastKey = n; lastAt = now;
-    playPath(pick(e));
+    playPath(pick(e, femOverride));
   }
+  // 통합 호출: {vid, char, name, text, female} — vid 우선, 없으면 text 매칭.
+  function playLine(o){
+    if (!o) return;
+    if (o.vid != null && window.VOICE_MANIFEST && window.VOICE_MANIFEST[o.vid]) {
+      return playVoice(o.vid, { female: o.female });
+    }
+    if (o.text) return playByText(o.text, o.female);
+  }
+  // 자동매칭을 잠시 끄기(중복 재생 방지용; 명시 재생 직후 등)
+  function suppress(ms){ suppressUntil = Date.now() + (ms || 1200); }
+
+  // DOM 자동재생: 대사 텍스트가 나타나면 매칭 재생(지문/토큰 보정).
+  // ⚠ 타이핑 효과가 있으면 라인 완성 시점에 1회만 매칭되도록 Coder가 셀렉터/디바운스 보정.
   function observe(){
     if (!('MutationObserver' in window)) return;
     var mo = new MutationObserver(function (muts){
@@ -122,8 +134,8 @@
   else document.addEventListener('DOMContentLoaded', observe);
 
   window.VoicePlayer = {
-    playVoice: playVoice, playLine: playLine, playByText: playByText,
-    stop: stop, stopVoice: stop,
+    playVoice: playVoice, playByText: playByText, playLine: playLine,
+    stop: stop, suppress: suppress,
     isOn: on, setOn: setOn, getVol: vol, setVol: setVol
   };
 })();

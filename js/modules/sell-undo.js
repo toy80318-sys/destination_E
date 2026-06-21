@@ -105,21 +105,40 @@ function sellPartFromInventory(partId){
   const baseVal=Math.floor(p.price*0.5);
   const sellVal=Math.floor(baseVal*marcoMult);
   const marcoNote=marcoMult>1?' (🧭+10%)':'';
-  openModal(I18N.t('modal.partsSale'),
-    `<div style="text-align:center;padding:10px">
-      <div style="font-size:34px;margin-bottom:6px">${{weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡'}[p.cat]||'⚙️'}</div>
-      <div style="font-size:18px;font-weight:bold;margin-bottom:8px">${partDisplayNm(p)}</div>
-      <div style="font-size:16px;color:var(--gold)">${I18N.t('ui.sellPrice',{cr:sellVal.toLocaleString(),marco:marcoNote})}</div>
-      <div style="font-size:12px;color:var(--dim);margin-top:4px">${I18N.t('ui.buy50Percent',{marco:marcoMult>1?' × 1.1':''})}</div>
-    </div>`,
-    [{txt:I18N.t('ui.sellVal',{p:sellVal.toLocaleString()}),fn:()=>{
+  const _emoji={weapon:'⚔️',shield:'🛡️',armor:'🛡',engine:'⚡'}[p.cat]||'⚙️';
+  const _qty=inv.qty;
+  const _imgHtml=(typeof imgOrEmoji==='function')
+    ? imgOrEmoji('img/parts/'+p.id+'.png',_emoji,88,88,'object-fit:contain;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08)','part_'+p.id)
+    : ('<span style="font-size:54px">'+_emoji+'</span>');
+  const _btns=[{txt:I18N.t('ui.sellVal',{p:sellVal.toLocaleString()}),fn:()=>{
       inv.qty--;if(inv.qty<=0)G.inventory.splice(G.inventory.indexOf(inv),1);
       G.credits+=sellVal;
       try{AudioMgr.playSfx('coin',{vol:0.7,cooldown:150});}catch(e){}
       try{_recordSell({type:'part',partId:p.id,credits:sellVal,label:partDisplayNm(p)||p.nm});}catch(e){}
       updateHUD();notify(I18N.t('notify.partSold',{nm:partDisplayNm(p)||p.nm,cr:sellVal.toLocaleString()}),'gold');
       closeModal();rerenderShipOrGarage();saveGame(true);
-    },cls:'btn-gold'},{txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'}]
+    },cls:'btn-gold'}];
+  // 같은 아이템 전부 매각 (보유 2개 이상일 때만 노출)
+  if(_qty>1){
+    _btns.push({txt:I18N.t('ui.sellAllQty',{n:_qty,cr:(sellVal*_qty).toLocaleString()}),fn:()=>{
+      const total=sellVal*_qty;
+      const _ix=G.inventory.indexOf(inv); if(_ix>=0)G.inventory.splice(_ix,1);
+      G.credits+=total;
+      try{AudioMgr.playSfx('coin',{vol:0.8,cooldown:0});}catch(e){}
+      try{_recordSell({type:'bulkPart',parts:[{id:p.id,qty:_qty}],credits:total,label:partDisplayNm(p)||p.nm});}catch(e){}
+      updateHUD();notify(I18N.t('notify.partsBulkSell',{n:_qty,cr:total.toLocaleString()}),'gold');
+      closeModal();rerenderShipOrGarage();saveGame(true);
+    },cls:'btn-gold'});
+  }
+  _btns.push({txt:I18N.t('btn.cancel'),fn:closeModal,cls:'btn-sm'});
+  openModal(I18N.t('modal.partsSale'),
+    `<div style="text-align:center;padding:10px">
+      <div style="margin-bottom:8px;display:flex;justify-content:center">${_imgHtml}</div>
+      <div style="font-size:18px;font-weight:bold;margin-bottom:6px">${partDisplayNm(p)} <span style="font-size:13px;color:var(--dim);font-weight:normal">×${_qty}</span></div>
+      <div style="font-size:16px;color:var(--gold)">${I18N.t('ui.sellPrice',{cr:sellVal.toLocaleString(),marco:marcoNote})}</div>
+      <div style="font-size:12px;color:var(--dim);margin-top:4px">${I18N.t('ui.buy50Percent',{marco:marcoMult>1?' × 1.1':''})}</div>
+    </div>`,
+    _btns
   );
 }
 function switchShipTab(tab){_shipTab=tab;rerenderTab(renderShipTab);}
@@ -385,7 +404,7 @@ function renderCargoOnlyTab(body){
   const totalValue=G.cargo.reduce((s,c)=>s+((c.buyPrice||0)*(c.qty||0)),0);
   // 각 함선 화물칸 카드 (간소화)
   const shipCards=G.fleet.map((s,idx)=>{
-    const slots=Math.min(s.cargoSlots||4,100);
+    const slots=Math.min(s.cargoSlots||4,(typeof _cargoCap==='function'?_cargoCap(s):100));
     let cargoOffset=0;
     for(let fi=0;fi<G.fleet.length;fi++){if(G.fleet[fi].id===s.id)break;cargoOffset+=G.fleet[fi].cargoSlots||4;}
     const cargoFlat=[];
@@ -397,7 +416,7 @@ function renderCargoOnlyTab(body){
     const _inner=_cgCell-4;
     for(let i=0;i<slots;i++){
       if(i<myCargo.length){const ci=myCargo[i];grid+='<div style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);display:flex;align-items:center;justify-content:center;overflow:hidden" title="'+ci.nm+'"><img src="'+ci.img+'" style="width:'+_inner+'px;height:'+_inner+'px;object-fit:cover;border-radius:2px" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><span style="font-size:'+(_cgCell>=36?16:13)+'px;display:none;width:100%;height:100%;align-items:center;justify-content:center">'+ci.ic+'</span></div>';}
-      else{const isMax=(slots>=100);grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
+      else{const isMax=(slots>=(typeof _cargoCap==='function'?_cargoCap(s):100));grid+='<div '+''+' style="width:'+_cgCell+'px;height:'+_cgCell+'px;border-radius:4px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);'+''+'" title="'+(isMax?I18N.t('ui.cargoMaxTooltip'):I18N.t('ui.emptyCargoCell'))+'"></div>';}
     }
     grid+='</div>';
     const fc=s.tier==='신화'?'#cc66ff':s.tier==='대형'?'#d4af37':s.tier==='중형'?'#00f3ff':'#88ccff';

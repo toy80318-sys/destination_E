@@ -102,7 +102,7 @@ function showHostilePlanetBriefing(planetDef){
         <span style="color:${advisor.c};font-weight:bold">${I18N.t('ui.powerAssessment',{t:advisor.t})}</span>
       </div>
     </div>
-    <div style="margin:6px auto 2px;max-width:560px;padding:8px 12px;background:rgba(255,60,60,.06);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;color:var(--txt);text-align:center;line-height:1.75">${I18N.t('ui.enemyStatSummary',{n:_eN,hp:_eHP.toLocaleString(),sh:_eSH.toLocaleString(),att:_eAvgAtt.toLocaleString(),threat:_eThreat})}</div>
+    <div class="holo-card" style="margin:6px auto 2px;max-width:560px;padding:8px 12px;background:rgba(255,60,60,.06);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;color:var(--txt);text-align:center;line-height:1.75">${I18N.t('ui.enemyStatSummary',{n:_eN,hp:_eHP.toLocaleString(),sh:_eSH.toLocaleString(),att:_eAvgAtt.toLocaleString(),threat:_eThreat})}</div>
     ${_formatEnemyPreview(enemies)}
     <div style="text-align:center;font-size:12px;color:var(--yellow);margin-top:6px">${I18N.t('ui.winConquerLoseCr')}</div>
     <div style="text-align:center;font-size:12px;color:var(--cyan);margin-top:4px">${_baekguIcon(18)} ${I18N.t('ui.baekguShort')}: "${I18N.t('advisor.bkPreCombat')}${advisor.lvl==='win'?I18N.t('advisor.bkPush'):advisor.lvl==='mid'?I18N.t('advisor.bkCareful'):I18N.t('advisor.bkComeLater')}"</div>`,
@@ -213,6 +213,8 @@ function startCombat(planetDef){
   renderCombatView(document.getElementById('hub-body'));
   setHubNav('combat');updateHUD();
   _cbEffects=[];_unitPos={};if(_cbAnimReq){cancelAnimationFrame(_cbAnimReq);_cbAnimReq=null;}
+  _slingshots.length=0;_slingTierCounter=0;_slingLastTs=0;  // 슬링샷 풀 초기화(새 전투)
+  _dsLaserLast=0;  // 디스트로이 스타 절멸 레이저 타이머 초기화(새 전투)
   combatState._sunsinUsed=false;
   combatState._paused=false;window._cbPaused=false;  // 새 전투는 항상 진행 상태로 시작
   // 함선 즉시 등장 (애니메이션 없음)
@@ -539,6 +541,8 @@ function _combatShipImgSrcRaw(u){
   const cid=String(u.catalogId||u.catId||u.id||'').replace(/(?:_\d+|_main)$/,'').toUpperCase();
   // 특수 거북선 — 전투에서도 단일 이미지(img/ships/LGD01_SP.png) 사용 (별도 combat 에셋 없음)
   if(cid==='LGD01_SP'||u._turtleSpecial)return 'img/ships/LGD01_SP.png'+_ver;
+  // 디스트로이 스타 — 볼티움(P09) 행성 이미지를 전투 함선 이미지로 사용. 사용자 요청 2026-06-22.
+  if(cid==='DESTROYER_STAR'||u._destroyerStar)return 'img/planets/P09.png'+_ver;
   if(cid==='URSA'||sid.startsWith('BOSS_URSA')||cid==='BOSS'||sid==='BOSS_MAIN')return 'img/combat/ships/Boss.png'+_ver;
   // 나포 함선 (CAP_<ts>_<rand>) — id에 timestamp가 붙어 cid가 'CAP'과 정확히 일치하지 않으므로 prefix로 감지
   if(sid.startsWith('CAP_')||cid==='CAP'||cid.startsWith('CAP_')){
@@ -616,6 +620,9 @@ function _loadCombatImg(src,onLoad){
 // 함선 등급에 따른 표시 크기 (소형→전설 시각적 차이를 크게)
 function _shipDrawSize(u){
   const tier=u.tier||(u.isEnemy?'소형':'소형');
+  // 디스트로이 스타(히든 유니크) — 특수 거북선(492×304)의 1.5배 크기. 사용자 요청 2026-06-22.
+  if((u.catalogId||u.catId||u.id||'').toString().toUpperCase().indexOf('DESTROYER_STAR')>-1||u._destroyerStar)
+    return{w:738,h:456,bar:792,label:20,gap:1100};
   // 특수 거북선 — 신화 기본(246×152)의 2배 크기로 전투 표시 (사용자 요청)
   if((u.catalogId||u.catId||u.id||'').toString().toUpperCase().indexOf('LGD01_SP')>-1||u._turtleSpecial)
     return{w:492,h:304,bar:528,label:18,gap:1100};
@@ -801,6 +808,62 @@ let _cbEffects=[];  // [{type,...}] beam / exp / shard / shockwave / muzzle
 let _unitPos={};    // {unitId: {x,y}}
 let _cbAnimReq=null;
 
+// ── 슬링샷(렐러티비티 LGD03) 발진 공격 연출 — 상수/풀 ────────────────────
+//   기획서: 01_GDD/CLAUDE_CODE_지시_렐러티비티_슬링샷공격.md
+//   ⚠ 연출(VFX) 전용. 데미지·밸런스 불변(피해는 기존 로직이 이미 적용, 슬링샷은 시각 레이어).
+const SLINGSHOT_SHIPS=['LGD03','DESTROYER_STAR'];   // 이 함선(baseId)만 슬링샷 연출. 그 외 기존 연출 유지. (DESTROYER_STAR=디스트로이 스타, 코어드론 발진)
+
+// ── 디스트로이 스타 절멸 레이저 — 10초마다 적 함선 1척 완전 격파(데스티네이션 두께 핑크 빔). 사용자 요청 2026-06-22. ──
+//   runCombatTurn 시작부에서 호출(턴 기반 벽시계 쿨다운 10s). 기존 격파/승리 처리(턴 종료 체크)를 그대로 재사용 → 안전.
+let _dsLaserLast=0;
+function _isDestroyerStar(u){ if(!u)return false; if(u._destroyerStar)return true; return String(u.catalogId||u.catId||u.id||'').toUpperCase().indexOf('DESTROYER_STAR')>-1; }
+function _destroyerStarLaserTick(pl,en){
+  if(!combatState||combatState.done)return;
+  if(window._cbPaused)return;
+  const ds=(pl||[]).find(p=>p&&p.hp>0&&_isDestroyerStar(p));
+  if(!ds)return;
+  const now=(typeof performance!=='undefined'&&performance.now)?performance.now():Date.now();
+  // 첫 진입/새 전투(turn≤1)는 타이머만 시작 — 최초 발사는 10초 뒤. (모든 전투 진입 경로 자동 리셋)
+  if(!_dsLaserLast || (combatState.turn||0)<=1){_dsLaserLast=now;return;}
+  if((now-_dsLaserLast)<10000)return;              // 10초 쿨다운
+  const targets=(en||[]).filter(e=>e&&e.hp>0);
+  if(!targets.length)return;
+  _dsLaserLast=now;
+  // 보스 우선, 그 외 HP 최대 적 1척 선택
+  const tgt=targets.find(e=>e._eisenklauBoss||e.id==='BOSS_MAIN'||e._ursaBoss)||targets.slice().sort((a,b)=>(b.hp||0)-(a.hp||0))[0];
+  if(!tgt)return;
+  tgt.sh=0; tgt.shield=0; tgt.hp=0;                // 완전 격파 (턴 종료 체크가 격파/승리 처리)
+  // VFX — 데스티네이션 두께(×11.39)·핑크 빔 + 폭발
+  try{
+    const ap=_unitPos[ds.id], ep=_unitPos[tgt.id];
+    if(ap&&ep){
+      const a1=_txPos(ap), a2=_txPos(ep);
+      _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:'#ff44ff',r:32,life:12,maxLife:12,delay:0});
+      _cbEffects.push({type:'beam',x1:a1.x,y1:a1.y,x2:a2.x,y2:a2.y,col:'#ff44ff',life:24,maxLife:24,delay:0,thickMul:11.39});
+      _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ff3300',r:36,life:42,maxLife:42,delay:4});
+    }
+    if(!combatState.done){try{AudioMgr.playSfx('explosion',{vol:0.85,cooldown:80});}catch(e){}}
+  }catch(e){}
+  try{addCombatLog(I18N.t('combat.dsLaser',{nm:shipDisplayNm(tgt)||I18N.t('ui.enemyShort')}),'gold');}catch(e){}
+}
+const SLINGSHOT={
+  scale:0.125,               // 본체 대비 슬링샷 크기 (사용자 요청: 추가 50%↓ → 0.25의 절반)
+  shotsPerCycle:4,           // 1사이클 = 2회 공격치(=레이저 2발 효과) → 4타 분할(피해 합계 불변)
+  weapons:['laser','missile','laser','missile'],  // 4타 혼합(레이저2·미사일2 = 2볼리)
+  cycles:1,                  // 1회 출격 = 2회 공격치 발사 후 귀환
+  tLaunch:360, tDash:900, tStrafe:2100, tReturn:900,  // 이동 추가 50% 느림(×1.5) + 선회 천천히 2회전
+  arc:40,                    // 돌격 곡선 높이(px)
+  orbitTurns:2,              // 적 주위 회전 바퀴 수 (천천히 2회전)
+  img:'img/ships/slingshot.png',  // 전용 슬링샷 스프라이트(우선). 추가 시 자동 적용.
+  imgFallback:'img/ships/F03_S.png',// 코아드론(코어 드론, 메카니카 자율 드론) 소형함 이미지로 표시.
+  beamColor:'#bfefff', missileColor:'#ffd25a',
+  // 다중 슬링샷 궤도 겹침 방지(3중) + 반경 2배(적함 주위 더 멀리)
+  tiers:3, tierRadius:[160,264,368], tierY:[-20,0,20], tierDir:[1,-1,1], tierPhase:[0,120,240]
+};
+let _slingshots=[];        // 액터 풀(재사용)
+let _slingTierCounter=0;   // 동시 발진 시 tier 순환 배정
+let _slingLastTs=0;        // deltaTime 계산(애니루프 한 곳에서)
+
 // 전투 중이거나 이펙트가 살아있는 동안 60fps 루프로 캔버스 재그리기.
 // (쉴드 오라 펄스 + 이펙트 페이드를 위해 전투 중에는 계속 돌림.)
 function _cbStartAnimLoop(){
@@ -814,22 +877,27 @@ function _cbStartAnimLoop(){
   // 이펙트가 50개 미만이고 모든 이펙트가 페이드 단계(life<maxLife/2)일 때만 적용.
   // 다이내믹한 폭발·번개가 살아 있을 땐 60fps 유지 → 시각 품질 보존.
   let _skipToggle=false;
-  const tick=()=>{
+  const tick=(ts)=>{
     if(!cbCtx||!cbCV){_cbAnimReq=null;return;}
-    if(window._cbPaused){_cbAnimReq=requestAnimationFrame(tick);return;}  // 일시정지: 마지막 프레임 고정, 루프는 유지
+    if(window._cbPaused){_slingLastTs=ts||0;_cbAnimReq=requestAnimationFrame(tick);return;}  // 일시정지: 슬링샷·이펙트 정지, 루프 유지
+    // 슬링샷 deltaTime 진행 (애니루프 한 곳·별도 타이머 없음). 일시정지/탭전환 점프 클램프.
+    let _dt=(ts&&_slingLastTs)?(ts-_slingLastTs):16; if(_dt<0||_dt>50)_dt=16; _slingLastTs=ts||0;
+    const _slingActive=_slingshots.some(s=>!s.dead);
+    if(_slingActive)_updateSlingshots(_dt);
     const _effs=_cbEffects||[];
-    const _calm=_effs.length<50&&_effs.every(e=>!e||(e.life||0)<((e.maxLife||1)/2));
+    const _calm=!_slingActive&&_effs.length<50&&_effs.every(e=>!e||(e.life||0)<((e.maxLife||1)/2));
     if(_calm){
       _skipToggle=!_skipToggle;
       if(_skipToggle){_cbAnimReq=requestAnimationFrame(tick);return;}
     }
     drawCombatFrame();
-    if((combatState&&!combatState.done)||(_cbEffects||[]).length>0){
+    if((combatState&&!combatState.done)||(_cbEffects||[]).length>0||_slingshots.some(s=>!s.dead)){
       _cbAnimReq=requestAnimationFrame(tick);
     } else {
       _cbAnimReq=null;
     }
   };
+  _slingLastTs=0;
   _cbAnimReq=requestAnimationFrame(tick);
 }
 
@@ -947,19 +1015,137 @@ function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,si
     const _archBase=70+i*10+_archBoost; // 미사일마다 호 높이 다르게 (전설+는 더 큰 호)
     const _jx=(Math.random()-0.5)*16;   // 가로 지터 ±8
     const _jy=(Math.random()-0.5)*20;   // 세로 지터 ±10
-    const midx=(a1.x+a2.x)/2 + spread + _jx;
-    const midy=(a1.y+a2.y)/2 + _archDir*(_archBase+Math.abs(spread)*0.3) + _jy;
+    // 미사일 궤도: 1.5배 큰 S곡선 (3차 Bezier·제어점 2개). 1/3 지점은 +방향, 2/3 지점은 반대 → S자.
+    //   사용자 요청 2026-06-21: 곡선 진폭 ×1.5 + S커브.
+    const _dx=a2.x-a1.x, _dy=a2.y-a1.y, _len=Math.hypot(_dx,_dy)||1;
+    const _perpx=-_dy/_len, _perpy=_dx/_len;            // 단위 수직 벡터
+    const _amp=(_archBase+Math.abs(spread)*0.3)*1.5;    // S곡선 진폭 (기존 호 ×1.5)
+    const _c1x=a1.x+_dx*0.33 + _perpx*_amp*_archDir + spread*0.5 + _jx;
+    const _c1y=a1.y+_dy*0.33 + _perpy*_amp*_archDir + _jy;
+    const _c2x=a1.x+_dx*0.66 - _perpx*_amp*_archDir + spread*0.5 + _jx;  // 반대 방향(-) → S
+    const _c2y=a1.y+_dy*0.66 - _perpy*_amp*_archDir + _jy;
     const isLast=(i===count-1);
     _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:salvoCol,r:(highRarity?9:6)*sizeMul,life:highRarity?9:6,maxLife:highRarity?9:6,delay:stagger});
     _cbEffects.push({
-      type:'missile', x1:a1.x,y1:a1.y, x2:a2.x,y2:a2.y, ctrlx:midx,ctrly:midy,
+      type:'missile', x1:a1.x,y1:a1.y, x2:a2.x,y2:a2.y,
+      c1x:_c1x,c1y:_c1y, c2x:_c2x,c2y:_c2y, ctrlx:_c1x,ctrly:_c1y,  // ctrlx=구버전 폴백
       t:0, speed:0.045, col:salvoCol, life:60, maxLife:60, delay:stagger,
       isLastInSalvo:isLast, isDead:isDead, wasShielded:wasShielded, sizeMul:sizeMul
     });
-    // 전설·신화: 궤적 중간에 발광 트레일 한 점 추가 (더 화려한 곡선 느낌)
-    if(highRarity)_cbEffects.push({type:'muzzle',x:midx,y:midy,col:salvoCol,r:5*sizeMul,life:11,maxLife:11,delay:stagger+6});
+    // 전설·신화: 궤적 중간(S 변곡점)에 발광 트레일 한 점 추가
+    if(highRarity)_cbEffects.push({type:'muzzle',x:(_c1x+_c2x)/2,y:(_c1y+_c2y)/2,col:salvoCol,r:5*sizeMul,life:11,maxLife:11,delay:stagger+6});
   }
   _cbStartAnimLoop();
+}
+
+// ── 슬링샷(LGD03) 액터: 생성 / 업데이트(상태머신) / 렌더 ──────────────────
+//   연출 전용. 피해는 호출부에서 이미 적용됨. 4타는 시각 분할(_cbAddDmgText 합계 불변).
+function spawnSlingshot(src, tgt, dmg){
+  try{
+    if(!src||!tgt)return false;
+    const sp=_unitPos[src.id], tp=_unitPos[tgt.id];
+    if(!sp||!tp)return false;                 // 위치 없으면 false → 호출부가 기존 연출 폴백
+    const home=_txPos(sp), tcen=_txPos(tp);
+    const tier=(_slingTierCounter++)%SLINGSHOT.tiers;
+    let s=null;
+    for(let i=0;i<_slingshots.length;i++){ if(_slingshots[i].dead){s=_slingshots[i];break;} }
+    if(!s){ s={}; _slingshots.push(s); }
+    s.dead=false; s.src=src; s.srcId=src.id; s.tgtId=tgt.id;
+    s.homeX=home.x; s.homeY=home.y; s.tcx=tcen.x; s.tcy=tcen.y;
+    s.x=home.x; s.y=home.y; s.px=home.x; s.py=home.y; s.angle=0;
+    s.tier=tier; s.dir=SLINGSHOT.tierDir[tier]; s.radius=SLINGSHOT.tierRadius[tier];
+    s.yOff=SLINGSHOT.tierY[tier]; s.phase=SLINGSHOT.tierPhase[tier]*Math.PI/180;
+    s.state='LAUNCH'; s.t=0; s.shotIdx=0; s.cyclesLeft=SLINGSHOT.cycles;
+    s.stagger=(_slingTierCounter%3)*80;       // 동시 발진 ±스태거(ms)
+    const raw=Math.max(0,Math.round((dmg&&dmg.rawDmg)||0)), n=SLINGSHOT.shotsPerCycle;
+    s.dmgParts=[]; let acc=0;                  // 4타 분할(합계=raw 보존)
+    for(let i=0;i<n;i++){ const q=(i<n-1)?Math.round(raw/n):(raw-acc); acc+=q; s.dmgParts.push(q); }
+    s.isDead=!!(dmg&&dmg.isDead);
+    return true;
+  }catch(e){ return false; }
+}
+function _slingTargetPos(s){ const tp=s.tgtId&&_unitPos[s.tgtId]; if(tp){const t=_txPos(tp);s.tcx=t.x;s.tcy=t.y;} return {x:s.tcx,y:s.tcy}; }
+function _slingHomePos(s){ const sp=s.srcId&&_unitPos[s.srcId]; if(sp){const h=_txPos(sp);s.homeX=h.x;s.homeY=h.y;} return {x:s.homeX,y:s.homeY}; }
+function _slingFireShot(s,i){
+  const tc=_slingTargetPos(s);
+  const a1={x:s.x,y:s.y}, a2={x:tc.x,y:tc.y};
+  const wpn=SLINGSHOT.weapons[i%SLINGSHOT.weapons.length];
+  const isDead=(i===SLINGSHOT.shotsPerCycle-1)&&s.isDead;   // 마지막 타에 격침 폭발
+  if(wpn==='missile') _cbAddMissileSalvo(a1,a2,SLINGSHOT.missileColor,isDead,1,0,false,1);
+  else                _cbAddBeamAndHit(a1,a2,SLINGSHOT.beamColor,isDead,0,false);
+  const dpart=s.dmgParts[i]||0;
+  if(dpart>0)_cbAddDmgText(a2,dpart,0,wpn==='missile'?50:4);
+}
+function _updateSlingshots(dt){
+  if(!_slingshots.length)return;
+  const alive=combatState&&!combatState.done;
+  for(let i=0;i<_slingshots.length;i++){
+    const s=_slingshots[i]; if(s.dead)continue;
+    if(!alive){ s.dead=true; continue; }       // 전투 종료 → 정리
+    if(s.stagger>0){ s.stagger-=dt; if(s.stagger>0)continue; }
+    s.t+=dt; s.px=s.x; s.py=s.y;
+    const home=_slingHomePos(s), tc=_slingTargetPos(s);
+    const dx=tc.x-home.x, dy=tc.y-home.y, dist=Math.hypot(dx,dy)||1, nx=dx/dist, ny=dy/dist;
+    if(s.state==='LAUNCH'){
+      const k=Math.min(1,s.t/SLINGSHOT.tLaunch);
+      s.x=home.x+nx*18*k; s.y=home.y+ny*18*k;
+      if(s.t>=SLINGSHOT.tLaunch){ s.state='DASH'; s.t=0; }
+    } else if(s.state==='DASH'){
+      const k=Math.min(1,s.t/SLINGSHOT.tDash), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      const ox=Math.cos(s.phase)*s.radius, oy=Math.sin(s.phase)*s.radius*0.6+s.yOff;
+      const sx=tc.x+ox, sy=tc.y+oy, perpx=-ny, perpy=nx;
+      // 출격 비행 = S자 곡선 — sin(2π·e) 한 주기로 좌우 두 굽이(↗↘). 진폭 ×1.5.
+      const _sWave=Math.sin(Math.PI*2*e)*SLINGSHOT.arc*1.5;
+      s.x=home.x+(sx-home.x)*e + perpx*_sWave;
+      s.y=home.y+(sy-home.y)*e + perpy*_sWave;
+      if(s.t>=SLINGSHOT.tDash){ s.state='STRAFE'; s.t=0; s.shotIdx=0; }
+    } else if(s.state==='STRAFE'){
+      const k=Math.min(1,s.t/SLINGSHOT.tStrafe), ang=s.phase + s.dir*Math.PI*2*(SLINGSHOT.orbitTurns||1)*k;
+      s.x=tc.x+Math.cos(ang)*s.radius; s.y=tc.y+Math.sin(ang)*s.radius*0.6+s.yOff;
+      const want=Math.min(SLINGSHOT.shotsPerCycle, Math.floor(k*SLINGSHOT.shotsPerCycle)+1);
+      while(s.shotIdx<want){ _slingFireShot(s,s.shotIdx); s.shotIdx++; }
+      if(s.t>=SLINGSHOT.tStrafe){
+        while(s.shotIdx<SLINGSHOT.shotsPerCycle){ _slingFireShot(s,s.shotIdx); s.shotIdx++; }
+        s.state='RETURN'; s.t=0; s.retX=s.x; s.retY=s.y;
+      }
+    } else if(s.state==='RETURN'){
+      const k=Math.min(1,s.t/SLINGSHOT.tReturn), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      s.x=s.retX+(home.x-s.retX)*e; s.y=s.retY+(home.y-s.retY)*e;
+      if(s.t>=SLINGSHOT.tReturn){ s.cyclesLeft--; if(s.cyclesLeft>0){ s.state='LAUNCH'; s.t=0; s.shotIdx=0; } else { s.dead=true; } }
+    }
+    const mvx=s.x-s.px, mvy=s.y-s.py;
+    if(mvx*mvx+mvy*mvy>0.5)s.angle=Math.atan2(mvy,mvx);
+  }
+}
+function _drawSlingshots(ctx){
+  if(!_slingshots.length||!ctx)return;
+  for(let i=0;i<_slingshots.length;i++){
+    const s=_slingshots[i]; if(s.dead||s.stagger>0||!s.src)continue;
+    const dsz=_shipDrawSize(s.src), dh=dsz.h*2*SLINGSHOT.scale;  // _drawShipUnit 기준(×2)×0.5
+    let img=null;
+    // 전용 슬링샷 함선 이미지(우선) → 없으면 임시 소형함(S05) → 둘 다 없으면 벡터. LGD03 축소 아님.
+    try{
+      const _v=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
+      const cands=[SLINGSHOT.img+_v, (SLINGSHOT.imgFallback||'')+_v];
+      for(const isrc of cands){ if(!isrc)continue;
+        const c=_cbImgCache[isrc];
+        if(c===undefined){ if(typeof _loadCombatImg==='function')_loadCombatImg(isrc,function(){if(typeof drawCombatFrame==='function')drawCombatFrame();}); continue; }
+        if(c&&c!=='ERR'&&c.complete&&c.naturalWidth>0){ img=c; break; }
+      }
+    }catch(e){}
+    ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.angle);
+    const gl=ctx.createRadialGradient(-dh*0.5,0,1,-dh*0.5,0,dh*0.9);
+    gl.addColorStop(0,'rgba(120,230,255,.5)'); gl.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(-dh*0.5,0,dh*0.9,0,Math.PI*2); ctx.fill();
+    if(img){
+      const nat=img.naturalWidth/Math.max(1,img.naturalHeight);
+      const dw=Math.min(dsz.w*2.8*SLINGSHOT.scale, dh*nat);
+      ctx.drawImage(img,-dw/2,-dh/2,dw,dh);
+    } else {
+      _drawShipVector(ctx,0,0,{w:dh*0.5,h:dh*0.32},false,'#9fe6ff',1);  // 이미지 없으면 벡터 폴백
+    }
+    ctx.restore();
+  }
 }
 
 // ── 전투 로그 ────────────────────────────────────────────────────
@@ -1233,7 +1419,13 @@ function drawCombatFrame(){
     const sizes=units.map(u=>isEnemy?_enemySize(u):_shipDrawSize(u));
     // 보스 본 함은 호위함보다 ~3배 크지만 셀 간격은 호위함 기준으로 계산해야 격자가 너무 벌어지지 않음.
     // (보스는 자기 셀보다 시각적으로 크게 그려져 호위함을 약간 가리며 압도감 연출)
-    const nonBossSizes=units.map((u,i)=>({u,s:sizes[i]})).filter(({u})=>{const _nm=(u.nm||'').toLowerCase();return !(isEnemy&&(u.id==='BOSS_MAIN'||_nm.includes('우르사')||_nm.includes('ursa')));});
+    const nonBossSizes=units.map((u,i)=>({u,s:sizes[i]})).filter(({u})=>{
+      const _nm=(u.nm||'').toLowerCase();
+      // 특수 거북선·디스트로이 스타: 거대 크기여도 셀 간격 계산엔 제외 → 일반 함선 기준 간격 유지(겹침 허용). 사용자 요청 2026-06-22.
+      {const _ub=(u.catalogId||u.catId||u.id||'').toString().toUpperCase();
+       if(_ub.indexOf('LGD01_SP')>-1||u._turtleSpecial||_ub.indexOf('DESTROYER_STAR')>-1||u._destroyerStar)return false;}
+      return !(isEnemy&&(u.id==='BOSS_MAIN'||_nm.includes('우르사')||_nm.includes('ursa')));
+    });
     const baseSizes=nonBossSizes.length?nonBossSizes.map(x=>x.s):sizes;
     const maxW=Math.max(...baseSizes.map(s=>s.w));
     const maxH=Math.max(...baseSizes.map(s=>s.h));
@@ -1430,7 +1622,8 @@ function drawCombatFrame(){
       for(let a=0;a<_resolved.length;a++){
         for(let b=a+1;b<_resolved.length;b++){
           const A=_resolved[a],B=_resolved[b];
-          // 자기 자신 또는 같은 객체 스킵
+          // 특수 거북선 등 겹침 허용 대상은 충돌 해소에서 제외 (간격 유지 + 겹침 허용)
+          if(A._overlapOk||B._overlapOk)continue;
           const minDx=(A.w+B.w)*0.5*0.30;  // 최소 X 간격 (70% 겹침 허용)
           const minDy=(A.h+B.h)*0.5*0.30;
           const dx=B.x-A.x, dy=B.y-A.y;
@@ -1466,7 +1659,10 @@ function drawCombatFrame(){
       u._curY+=(y-u._curY)*T;
     }
     const sz=_shipDrawSize(u);
-    _resolved.push({u,x:u._curX,y:u._curY,w:sz.w*2,h:sz.h*2,isEnemy:false,sz});
+    // 특수 거북선·디스트로이 스타: 충돌 해소에서 제외 → 큰 크기로 이웃을 밀어내지 않고 겹쳐도 됨. 사용자 요청 2026-06-22.
+    const _ovB=(u.catalogId||u.catId||u.id||'').toString().toUpperCase();
+    const _overlapOk=_ovB.indexOf('LGD01_SP')>-1||u._turtleSpecial||_ovB.indexOf('DESTROYER_STAR')>-1||u._destroyerStar;
+    _resolved.push({u,x:u._curX,y:u._curY,w:sz.w*2,h:sz.h*2,isEnemy:false,sz,_overlapOk});
   });
   // 적 함선 — 사용자 요청: 동일 10배 빠르게 (회전은 _drawShipUnit에서 처리)
   //   · 적도 아군 향해 회전 — _drawShipUnit이 isEnemy 분기로 가장 가까운 아군 좌표를 타겟으로 atan2 사용
@@ -1488,6 +1684,8 @@ function drawCombatFrame(){
     _drawShipUnit(cbCtx,r.u,r.x,r.y,null);
     _drawHealthBar(cbCtx,r.u,r.x,r.y,r.sz,r.isEnemy);
   });
+  // 슬링샷(LGD03) 소형정 — 함선 위 레이어로 렌더(빔/미사일 이펙트는 아래 이펙트 패스에서)
+  _drawSlingshots(cbCtx);
   // 이펙트 렌더링
   // 타입: beam(레이저 빔) / exp(폭발) / shockwave(충격파 링) / shard(파편)
   //        muzzle(발사 섬광) / missile(곡선 궤적 미사일) / shieldHit(헥사 임팩트)
@@ -1509,13 +1707,15 @@ function drawCombatFrame(){
       cbCtx.save();
       const _msz=ef.sizeMul||1;
       if(ef.t<1){
-        // 2차 Bezier로 위치 계산
+        // 3차 Bezier(S곡선)로 위치 계산 — 제어점 2개(c1,c2). 구버전(c1 없음)은 ctrlx 폴백.
         const T=ef.t,U=1-T;
-        const px=U*U*ef.x1+2*U*T*ef.ctrlx+T*T*ef.x2;
-        const py=U*U*ef.y1+2*U*T*ef.ctrly+T*T*ef.y2;
+        const _c1x=(ef.c1x!=null?ef.c1x:ef.ctrlx),_c1y=(ef.c1y!=null?ef.c1y:ef.ctrly);
+        const _c2x=(ef.c2x!=null?ef.c2x:ef.ctrlx),_c2y=(ef.c2y!=null?ef.c2y:ef.ctrly);
+        const px=U*U*U*ef.x1+3*U*U*T*_c1x+3*U*T*T*_c2x+T*T*T*ef.x2;
+        const py=U*U*U*ef.y1+3*U*U*T*_c1y+3*U*T*T*_c2y+T*T*T*ef.y2;
         const Tp=Math.max(0,T-0.12),Up=1-Tp;
-        const ppx=Up*Up*ef.x1+2*Up*Tp*ef.ctrlx+Tp*Tp*ef.x2;
-        const ppy=Up*Up*ef.y1+2*Up*Tp*ef.ctrly+Tp*Tp*ef.y2;
+        const ppx=Up*Up*Up*ef.x1+3*Up*Up*Tp*_c1x+3*Up*Tp*Tp*_c2x+Tp*Tp*Tp*ef.x2;
+        const ppy=Up*Up*Up*ef.y1+3*Up*Up*Tp*_c1y+3*Up*Tp*Tp*_c2y+Tp*Tp*Tp*ef.y2;
         // 꼬리 (연료 분사) — 크기 배율 적용
         cbCtx.strokeStyle=ef.col;cbCtx.lineWidth=3*_msz;
         cbCtx.shadowColor=ef.col;cbCtx.shadowBlur=10*Math.min(3,Math.sqrt(_msz));
@@ -1860,6 +2060,8 @@ function runCombatTurn(){
   const pl=combatState.players.filter(u=>u.hp>0);
   const en=combatState.enemies.filter(u=>u.hp>0);
   if(!pl.length||!en.length){combatState._turnInProgress=false;_finishCombat();return;}
+  // 디스트로이 스타(히든 유니크) — 10초마다 적 함선 1척 완전 격파 레이저. 사용자 요청 2026-06-22.
+  try{ _destroyerStarLaserTick(pl,en); }catch(_e){}
 
   // ── 우르사 최종전: 호위(치크스·친위대) 전멸 → 2페이즈 전환 ──
   //   보스 무적 해제 + 대사 팝업 + 본체 공격력 ×3
@@ -2183,7 +2385,12 @@ function runCombatTurn(){
       const a1=_txPos(ap), a2=_txPos(ep);
       // 흡혈 회복 시 발사 함선 위로 파란 +N 표시 (사용자 요청 2026-06-06)
       if(_healHP+_healSH>0) _cbAddHealText(a1, _healHP+_healSH, _fireDelay+5);
-      if(usesMissile){
+      // LGD03(렐러티비티) — 슬링샷 발진 연출로 대체(VFX 전용·피해 합계 불변). 그 외 함선은 기존 연출 유지.
+      const _slBase=String(p.catalogId||p.catId||p.id||'').replace(/(?:_\d+|_main)$/,'').toUpperCase();
+      const _useSling=SLINGSHOT_SHIPS.indexOf(_slBase)>=0 && spawnSlingshot(p,target,{rawDmg:rawDmg,shDmg:shDmg,isDead:isDead,usesMissile:usesMissile});
+      if(_useSling){
+        _fireDelay+=18;   // 슬링샷이 빔/미사일·데미지텍스트 담당(4타 분할)
+      } else if(usesMissile){
         // 사용자 명세: 기본 1발, 전설(set/legend)·신화(mythic) 미사일 장착 시 최대 4발
         const _bestR=_wc.missileBestRarity;
         const _isHighRarity=(_bestR==='mythic'||_bestR==='set'||_bestR==='legend');
@@ -3002,7 +3209,7 @@ function _setupHaikjinFormation(){
   //   crane: 6열(0=전방)×8행 그리드의 [col,row] 셀 목록(우선순위 순, 첫 셀=기함).
   //   좌표는 _haikjinTarget(x,y)에 저장 → drawCombatFrame이 lerp 보간(현재의 50% 속도)으로 천천히 수렴.
   const CRANE=(typeof window!=='undefined'&&window.FORMATION_PRESETS&&window.FORMATION_PRESETS.crane)
-    ||[[0,0],[0,7],[0,1],[0,6],[1,1],[1,6],[1,2],[1,5],[2,2],[2,5],[2,3],[2,4],[3,3],[3,4],[4,3],[4,4]];
+    ||[[0,3],[0,4],[3,3],[3,4],[3,2],[3,5],[4,3],[4,4],[2,1],[2,6],[3,1],[3,6],[2,0],[2,7],[1,0],[1,7]];
   // 적군 중심/분산 — _unitPos는 drawCombatFrame이 매 프레임 갱신(=_curX/_curY와 동일 로컬 좌표계)
   const _up=_unitPos||{};
   const _eposx=en.map(u=>_up[u.id]?_up[u.id].x:0);
