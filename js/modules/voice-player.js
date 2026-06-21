@@ -22,7 +22,16 @@
     eisenklau:'eisenklau', ursa:'ursamajor', nav_ai:'navai', system:'navai', aori:'aori', wolf_elder:'wolfelder', chiks_vanguard:'chiks',
     gather_F06:'maximoff', delivery_F06:'maximoff', maximov:'maximoff', volcan:'volcan'
   };
-  function _voiceKey(ch){ if(!ch)return null; if(ch.indexOf('baekgu')===0)return 'baekgu'; return _CHAR2SLUG[ch]||null; }
+  // char='system' 등 공용 화자키는 name 으로 slug 분기 (우르사/아이젠클로/경보/시스템 등이 같은 char:'system' 사용)
+  var _NAME2SLUG={'우르사 메이저':'ursamajor','ursa major':'ursamajor','아이젠클로':'eisenklau','eisenklaue':'eisenklau','항법 ai':'navai','nav ai':'navai','경보':'etc','alert':'etc','시스템':'etc','system':'etc'};
+  function _voiceKey(ch,name){
+    if(ch&&ch.indexOf('baekgu')===0)return 'baekgu';
+    var s=_CHAR2SLUG[ch];
+    if(s&&ch!=='system')return s;            // 전용 char 는 그대로
+    var nm=String(name||'').toLowerCase().trim();   // system/미매핑 → 이름으로 결정
+    if(_NAME2SLUG[nm])return _NAME2SLUG[nm];
+    return s||null;                          // system 기본 = 'navai'
+  }
   function _vnorm(t){ if(!t)return '';
     return String(t).replace(/\([^)]*\)/g,'')
       .replace(/\{[^}]*\}/g,function(m){var k=m.slice(1,-1).toLowerCase();return (k==='commander'||k==='사령관')?'사령관':k==='함선'?'함선':k==='회사'?'회사':'';})
@@ -37,8 +46,8 @@
       var man=window.VOICE_MANIFEST[String(opts.vid)];
       if(man&&man.clip)return {src:man.clip, lang:man.lang||'ko'};
     }
-    // 폴백 — slug별 텍스트→num(VOICE_TEXT2NUM) → 매니페스트 clip (SSOT 기반, 전 화자)
-    var vk=_voiceKey(opts.char);
+    // 폴백 — slug별 텍스트→num(VOICE_TEXT2NUM) → 매니페스트 clip (SSOT 기반, 전 화자). system 화자는 name 으로 분기.
+    var vk=_voiceKey(opts.char, opts.name);
     if(vk && window.VOICE_TEXT2NUM && window.VOICE_TEXT2NUM[vk] && window.VOICE_MANIFEST){
       var num=window.VOICE_TEXT2NUM[vk][_vnorm(opts.text)];
       var m=num&&window.VOICE_MANIFEST[num];

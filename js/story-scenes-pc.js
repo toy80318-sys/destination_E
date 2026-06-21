@@ -271,7 +271,7 @@
       counterRight.textContent = (sceneIdx+1) + ' / ' + scenes.length;
       // 대사 보이스 재생 (음성연동 §3·4): vid(num) → VOICE_MANIFEST 우선, 없으면 char+text 텍스트매칭 폴백. 직전 보이스 자동 정지.
       try{
-        if(window.VoicePlayer && typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:s.vid, char:s.char||'', text:s.text||''});
+        if(window.VoicePlayer && typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:s.vid, char:s.char||'', name:s.name||'', text:s.text||''});
         else if(window.AudioMgr && typeof window.AudioMgr.playVoice==='function') window.AudioMgr.playVoice(s.char||'', s.text||'');
       }catch(e){}
     }
