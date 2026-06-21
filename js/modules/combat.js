@@ -513,7 +513,8 @@ function _combatShipImgSrcRaw(u){
     if(catId==='HIDDEN'||catId==='VOID'||catId==='FALCON'||catId==='BLACKFALCON'||catId==='VOIDFALCON')return true;
     if(sid.startsWith('HIDDEN_FALCON')||sid.startsWith('CAP_BLACKFALCON')||sid.startsWith('CAP_VOIDFALCON')||sid.startsWith('BLACKFALCON')||sid.startsWith('VOID_FALCON'))return true;
     if(u._isHiddenFalcon||u._isVoidFalconCaptured||u.voidBoss)return true;
-    if(nmLow.includes('팔콘')||nmLow.includes('블랙')||nmLow.includes('검은 팔콘')||nmLow.includes('다크팔콘')||nmLow.includes('falcon')||nmLow.includes('black falcon')||nmLow.includes('dark falcon')||nmLow.includes('blackfalcon'))return true;
+    // 이름 매칭은 보스 함선(catId 'S10')에 한정 — '팔콘 스카우트'(S05 일반 소형함)가 '팔콘' 때문에 블랙팔콘 이미지로 오인식되던 문제 수정(사용자 보고 2026-06-21). png-image.js shipImgSrc 와 동일 게이팅.
+    if(catId==='S10'&&(nmLow.includes('팔콘')||nmLow.includes('블랙')||nmLow.includes('검은 팔콘')||nmLow.includes('다크팔콘')||nmLow.includes('falcon')||nmLow.includes('black falcon')||nmLow.includes('dark falcon')||nmLow.includes('blackfalcon')))return true;
     return false;
   })();
   if(_isFalcon)return 'img/ships/S10.png'+_ver;
