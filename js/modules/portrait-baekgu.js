@@ -294,6 +294,8 @@ function baekgu(text,mood){
   msgs.appendChild(el);
   while(msgs.children.length>10)msgs.removeChild(msgs.firstChild);
   msgs.scrollTop=msgs.scrollHeight;
+  // 백구 버블 멘트 음성 (음성연동 §3) — 정적 대사는 텍스트매칭으로 재생, 동적/미녹음은 자막만(무음 폴백).
+  try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({char:'baekgu1', text:text}); }catch(e){}
   // 무드별 백구 초상화 자동 교체 (텍스트 키워드 자동 감지)
   // ★ 전술 초상 락이 활성화된 동안에는 mood swap 건너뜀 — 화자 얼굴이 그대로 노출되도록
   if(window._tacticPortraitUntil&&Date.now()<window._tacticPortraitUntil)return;
