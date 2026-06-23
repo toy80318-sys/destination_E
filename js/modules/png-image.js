@@ -263,6 +263,8 @@ function _shipImgSrcRaw(ship){
     // URSA → Boss.png 별칭 매핑 (실제 파일명이 다름)
     if(_sk==='URSA'||_sk==='BOSS')return 'img/ships/Boss.png'+_ver;
     if(_sk==='BLACKFALCON'||_sk==='VOIDFALCON'||_sk==='HIDDEN_FALCON')return 'img/ships/S10.png'+_ver;
+    if(_sk==='DESTROYER_STAR')return 'img/planets/P09.png'+_ver;  // 디스트로이 스타 스킨 — P09 별칭(전용 함선 에셋 없음). 버그수정 2026-06-24.
+    if(_sk==='LGD01_SP')return 'img/ships/LGD01_SP.png'+_ver;     // 불멸의 거북선 스킨 — 전용 이미지 별칭.
     return 'img/ships/'+ship._skinCatId+'.png'+_ver;
   }
   // 치크스 함선은 티어별 이미지(CHIX_S/M/L)만 존재 → 티어 접미사 자동 부여

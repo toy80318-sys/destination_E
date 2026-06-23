@@ -496,6 +496,8 @@ function _combatShipImgSrcRaw(u){
     const _sk=String(u._skinCatId).toUpperCase();
     if(_sk==='URSA'||_sk==='BOSS')return 'img/combat/ships/Boss.png'+_ver;
     if(_sk==='BLACKFALCON'||_sk==='VOIDFALCON'||_sk==='HIDDEN_FALCON')return 'img/ships/S10.png'+_ver;
+    if(_sk==='DESTROYER_STAR')return 'img/planets/P09.png'+_ver;  // 디스트로이 스타 스킨 — P09 별칭(전용 함선 에셋 없음). 버그수정 2026-06-24.
+    if(_sk==='LGD01_SP')return 'img/ships/LGD01_SP.png'+_ver;     // 불멸의 거북선 스킨 — 전용 이미지 별칭.
     return 'img/combat/ships/'+u._skinCatId+'.png'+_ver;
   }
   const isEnemy=!!u.isEnemy;
