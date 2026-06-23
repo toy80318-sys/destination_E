@@ -543,6 +543,75 @@
     H08: H08_EN_dyn
   };
 
+  // ═══════════════════════════════════════════════════════════════════
+  // 첫 만남 멘트 (기획서_첫만남멘트_컷신인사 §2) — 각 캐릭터 첫 등장 씬 맨 앞에
+  //   1줄 prepend. G._metChars(1회 가드)로 이미 만난 캐릭터면 prepend 안 함.
+  //   영웅=story-scenes-pc 영입 씬 / leehwiso·maximoff=phase 컷신(아래 prependFirstMeet 공용).
+  //   적 NPC 제외. 음성 vid 622~630·632. 문구는 기획서 표 그대로.
+  // ═══════════════════════════════════════════════════════════════════
+  var FIRST_MEET = {
+    H01:{char:'hero01',name:'이순신',name_en:'Yi Sun-sin',color:'#ffd700',vid:'622',
+      ko:'…그대가 나를 깨운 사령관인가. 이순신이라 하오. 손을 빌려주겠소.',
+      en:'...So you are the one who woke me, Commander. I am Yi Sun-sin. I lend you my hand.'},
+    H02:{char:'hero02',name:'장영실',name_en:'Jang Yeong-sil',color:'#9ee7ff',vid:'623',
+      ko:'오, 처음 뵙네요. 장영실이에요. 손에 잡히는 건 뭐든 더 낫게 만들죠.',
+      en:'Oh, we meet at last. I\'m Jang Yeong-sil — I make anything I touch better.'},
+    H03:{char:'hero03',name:'광개토대왕',name_en:'Gwanggaeto the Great',color:'#ff6644',vid:'624',
+      ko:'(호탕하게) 반갑소, 사령관! 나 광개토, 그대의 깃발 아래 땅을 넓혀주지.',
+      en:'(heartily) Well met, Commander! I am Gwanggaeto — I\'ll widen your lands under your banner.'},
+    H04:{char:'hero04',name:'유리 가가린',name_en:'Yuri Gagarin',color:'#66ddff',vid:'625',
+      ko:'안녕하세요, 사령관! 가가린입니다. 100년 만의 첫 동료라니 — 영광이에요.',
+      en:'Hello, Commander! Gagarin here. The first comrade in a hundred years — what an honor.'},
+    H05:{char:'hero05',name:'호레이쇼 넬슨',name_en:'Horatio Nelson',color:'#aaffaa',vid:'626',
+      ko:'처음 뵙겠소, 사령관. 호레이쇼 넬슨. 바다를 지키던 손, 이제 그대 곁에 두겠소.',
+      en:'A pleasure, Commander. Horatio Nelson. The hand that guarded the sea now stands with you.'},
+    H06:{char:'hero06',name:'A. 아인슈타인',name_en:'A. Einstein',color:'#cc99ff',vid:'627',
+      ko:'반갑네, 사령관. 아인슈타인일세. 시간조차… 우리 편으로 돌려보지.',
+      en:'Good to meet you, Commander. Einstein. Let us turn even time… to our side.'},
+    H07:{char:'hero07',name:'니콜라 테슬라',name_en:'Nikola Tesla',color:'#66ffff',vid:'628',
+      ko:'(씩 웃으며) 만나서 반가워, 사령관. 테슬라야. 번개 한 줄기면 충분하지.',
+      en:'(grinning) Nice to meet you, Commander. Tesla. One bolt of lightning is all I need.'},
+    H08:{char:'hero08',name:'마르코 폴로',name_en:'Marco Polo',color:'#ffcc66',vid:'629',
+      ko:'하, 드디어 만났군. 마르코 폴로요. 이 우주의 길은 내가 제일 잘 알지.',
+      en:'Ha, we finally meet. Marco Polo. No one knows the roads of this cosmos better than I.'},
+    // leehwiso(이휘소) — phase4 컷신 p4_leehwiso_join (char:hero09)
+    leehwiso:{char:'hero09',name:'이휘소',name_en:'Dr. Lee Hwi-so',color:'#9ee7ff',vid:'630',
+      ko:'…날 깨운 게 당신이오? 이휘소요. 내 방정식이 쓰일 곳을 찾은 것 같군.',
+      en:'...You woke me? I\'m Dr. Lee Hwi-so. It seems my equations have found their purpose.'},
+    // maximoff(레인저 맥시모프) — phase3 컷신 p3_ch05b (char:maximov)
+    maximoff:{char:'maximov',name:'레인저 맥시모프',name_en:'Maximoff',color:'#9ee7ff',vid:'632',
+      ko:'낯선 함대로군… 적이오, 아군이오? (잠시) …좋소, 믿어보지. 저항군 레인저, 맥시모프요.',
+      en:'An unfamiliar fleet… foe or friend? (a beat) …Fine, I\'ll trust you. Maximoff, Ranger of the Resistance.'}
+  };
+  // phase 컷신 sceneId → 첫만남 키 매핑(영웅 영입 씬 외 phase 컷신용).
+  //   leehwiso 는 p4_ch09d(균열에서 첫 조우)·p4_leehwiso_join(아이젠클로 후 합류) 두 경로 모두
+  //   매핑 — 둘 중 먼저 재생되는 쪽에만 멘트 출력(_metChars 1회 가드로 중복 방지).
+  var _SCENE_FIRSTMEET = {
+    'p4_ch09d':'leehwiso',
+    'p4_leehwiso_join':'leehwiso',
+    'p3_ch05b':'maximoff'
+  };
+  function _met(key){
+    try{ return !!(window.G && window.G._metChars && window.G._metChars[key]); }catch(e){ return false; }
+  }
+  function _markMet(key){
+    try{ if(!window.G) window.G={}; if(!window.G._metChars) window.G._metChars={}; window.G._metChars[key]=true; }catch(e){}
+  }
+  // 첫 만남 1줄 라인 객체 생성(언어별 텍스트·vid). 이미 만났으면 null.
+  function _firstMeetLine(key){
+    if(!key || !FIRST_MEET[key] || _met(key)) return null;
+    var m = FIRST_MEET[key];
+    var en = (window.I18N && window.I18N.getLang && window.I18N.getLang()==='en');
+    return {char:m.char, name:(en?m.name_en:m.name), color:m.color, text:(en?m.en:m.ko), vid:m.vid};
+  }
+  // phase 컷신 등 외부 씬 배열에 첫 만남 멘트 prepend(공용). 반환: 새 배열(또는 원본).
+  //   markMet 은 호출부의 onDone 에서 별도 처리(중간 종료 시 미마킹). 여기선 prepend 만.
+  function prependFirstMeet(key, scenes){
+    var ln = _firstMeetLine(key);
+    if(!ln || !Array.isArray(scenes)) return scenes;
+    return [ln].concat(scenes);
+  }
+
   function getScenes(hid){
     var lang = (window.I18N && window.I18N.getLang) ? window.I18N.getLang() : 'ko';
     var src = (lang === 'en' && HERO_RECRUIT_SCENES_EN[hid])
@@ -550,7 +619,9 @@
       : HERO_RECRUIT_SCENES_KO[hid];
     if(!src) return null;
     // 함수면 호출해서 동적 분기 적용, 배열이면 그대로
-    return (typeof src === 'function') ? src() : src;
+    var arr = (typeof src === 'function') ? src() : src;
+    // 첫 만남 멘트 1줄 prepend(영웅 첫 등장 = 영입 컷신). 이미 만났으면 그대로.
+    return prependFirstMeet(hid, arr);
   }
 
   // ═══════════════════════════════════════════════════════════════════
@@ -668,6 +739,7 @@
     console.log('[STORY_SCENES_PC] opening cutscene for', hid, '— scene count:', scenes.length);
     showCharDialog({ scenes: scenes, onDone: function(){
       window.G._scenesSeen[key] = true;
+      _markMet(hid);   // 첫 만남 멘트 1회 가드 — 끝까지 본 경우에만 마킹
       if(typeof window.saveGame === 'function'){
         try{ window.saveGame(true); }catch(e){}
       }
@@ -714,6 +786,10 @@
       if(typeof onDone === 'function') onDone();
       return;
     }
+    // 첫 만남 멘트(phase 컷신) — 해당 캐릭터 첫 등장 씬이면 1줄 prepend(1회 가드).
+    //   leehwiso=phase4 p4_leehwiso_join / maximoff=phase3 p3_ch05b. 적 NPC 제외.
+    var _fmKey = _SCENE_FIRSTMEET[sceneId] || null;
+    if(_fmKey) scenes = prependFirstMeet(_fmKey, scenes);
     // 선행조건 게이트 (지시서 2026-06-18): requires 미충족 컷신은 재생하지 않고 유도 멘트 표시
     try{
       if(typeof window.sceneGateBlocked === 'function'){
@@ -752,6 +828,7 @@
     console.log('[STORY_SCENES_PC] opening scene:', sceneId, '— lines:', scenes.length);
     showCharDialog({ scenes: scenes, onDone: function(){
       window.G._scenesSeen['scene_' + sceneId] = true;
+      if(_fmKey) _markMet(_fmKey);   // 첫 만남 멘트 1회 가드 — 끝까지 본 경우에만 마킹
       if(typeof window.saveGame === 'function'){
         try{ window.saveGame(true); }catch(e){}
       }
@@ -815,6 +892,8 @@
     forceReplay: forceReplay,
     forceReplayScene: forceReplayScene,
     canHeroAppear: canHeroAppear,
+    prependFirstMeet: prependFirstMeet,   // 첫 만남 멘트 prepend(외부 컷신용)
+    FIRST_MEET: FIRST_MEET,
     nextStoryHero: nextStoryHero,
     nextHeroAtPlanet: nextHeroAtPlanet,
     SCENARIO_ORDER: SCENARIO_ORDER,

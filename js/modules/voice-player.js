@@ -75,21 +75,32 @@
   }
   ['pointerdown','keydown','touchstart','click'].forEach(function(ev){ document.addEventListener(ev, _unlock, true); });
 
-  function playPath(p){
-    if (!p || !on()) return;
-    if (_EXCLUDE_RE.test(p)) return;   // 구버전 발음 제외
+  // playPath: 경로 재생. opts.onended(콜백) 지원 → 재생이 끝나면 1회 호출.
+  //   재생을 시작하지 못한 경우(보이스 OFF·파일없음·자동재생 차단·제외클립)에도
+  //   onended 를 호출해(폴백) 호출부가 멈추지 않게 한다. 반환: Audio 객체(또는 null).
+  function playPath(p, opts){
+    var onended = opts && opts.onended;
+    var _fired = false;
+    function _fire(){ if(_fired) return; _fired = true; if(typeof onended==='function'){ try{ onended(); }catch(e){} } }
+    if (!p || !on()) { _fire(); return null; }
+    if (_EXCLUDE_RE.test(p)) { _fire(); return null; }   // 구버전 발음 제외
     stop();
     audio = new Audio(p);
     audio.volume = vol();
+    if (onended){
+      audio.addEventListener('ended', _fire, { once:true });
+      audio.addEventListener('error', _fire, { once:true });
+    }
     var pr = audio.play();
-    if (pr && pr.catch) pr.catch(function(){ /* 파일없음/자동재생 차단 → 무음 폴백 */ });
+    if (pr && pr.catch) pr.catch(function(){ /* 파일없음/자동재생 차단 → 무음 폴백 */ _fire(); });
+    return audio;
   }
 
-  // vid(num) 직접 재생. opts.female 로 성별 강제 가능.
+  // vid(num) 직접 재생. opts.female 로 성별 강제 가능. opts.onended 지원. 반환: Audio|null.
   function playVoice(num, opts){
     var e = window.VOICE_MANIFEST && window.VOICE_MANIFEST[num];
     var fem = opts && ('female' in opts) ? opts.female : undefined;
-    playPath(pick(e, fem));
+    return playPath(pick(e, fem), opts);
   }
   // 텍스트로 매칭 재생. femOverride 로 성별 강제 가능.
   function playByText(text, femOverride){

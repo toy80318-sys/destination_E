@@ -367,16 +367,43 @@ function showEndingCredits(onDone){
         //   전역 MutationObserver(playByText)가 잡아 오재생/반복(백구 일기·"광개토대왕")하던
         //   문제를 막는다. 텍스트 주입 직전부터 다음 대사 전환까지 자동매칭을 억제하고,
         //   고정 대사(vid 보유분)만 playLine({vid})로 명시 재생한다.
-        try{ if(window.VoicePlayer&&typeof window.VoicePlayer.suppress==='function') window.VoicePlayer.suppress(((l.tx||'').length>=60?5000:3600)+2000); }catch(e){}
+        //   vid 라인은 음성 길이만큼 대기하므로 자동매칭 억제창도 넉넉히(클립 상한 고려).
+        try{ if(window.VoicePlayer&&typeof window.VoicePlayer.suppress==='function') window.VoicePlayer.suppress(((l.tx||'').length>=60?5000:3600)+(l.vid?15000:2000)); }catch(e){}
         speakerEl.style.color=l.col||'#aaa';
         speakerEl.textContent=(l.ic?l.ic+' ':'')+l.sp;
         textEl.style.color=l.col||'#fff';
         textEl.textContent=`"${l.tx}"`;
         lineBox.style.opacity='1';
+        // 대사 가독 시간 — 한 줄짜리는 3.6초, 긴 문장(60자+)은 5.0초
+        const _readMs=(l.tx||'').length>=60?5000:3600;
+        // 다음 라인 진행 — 음성 라인은 클립이 끝날 때까지 대기(빨리 넘어감 버그 수정 2026-06-24).
+        //   음성 없는 라인(자막만)은 기존 _readMs 타이머 유지.
+        //   _advance 는 1회만 실행(onended·안전타이머 중 먼저 오는 쪽). 음성이 _readMs 보다
+        //   짧으면 최소 _readMs 는 보장(텍스트 페이드/가독), 길면 onended 까지 대기.
+        let _advanced=false;
+        const _advance=()=>{ if(_advanced||!_alive())return; _advanced=true; showLine(); };
         // 고정 대사만 음성 명시 재생(이름 포함 일기/타이틀/영웅카드는 vid 없음=무음 자막).
-        try{ if(l.vid&&window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:l.vid}); }catch(e){}
+        let _audio=null;
+        try{
+          if(l.vid&&window.VoicePlayer&&typeof window.VoicePlayer.playVoice==='function'){
+            const _startedAt=Date.now();
+            _audio=window.VoicePlayer.playVoice(l.vid,{onended:()=>{
+              // 음성이 끝나면 다음 라인 — 단, 최소 가독시간(_readMs)은 보장.
+              const _elapsed=Date.now()-_startedAt;
+              const _wait=Math.max(0,_readMs-_elapsed);
+              setTimeout(_advance,_wait+600);
+            }});
+          } else if(l.vid&&window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function'){
+            window.VoicePlayer.playLine({vid:l.vid});
+          }
+        }catch(e){}
+        // 안전 타이머: 음성이 없거나(또는 onended 미발화 시) — 음성 라인은 넉넉한 상한,
+        //   자막 라인은 기존 _readMs 그대로.
+        const _fallbackMs=(l.vid&&_audio)?(_readMs+12000):_readMs;
+        setTimeout(_advance,_fallbackMs);
+        return;   // (아래 공통 타이머 분기로 떨어지지 않음 — 진행은 _advance 가 전담)
       }catch(e){console.warn('[ending] showLine',e.message);}
-      // 대사 가독 시간 — 한 줄짜리는 3.6초, 긴 문장(60자+)은 5.0초
+      // (예외 발생 시 폴백) 음성 연동 실패해도 진행 보장 — 고정 가독 타이머
       const _readMs=(l.tx||'').length>=60?5000:3600;
       setTimeout(showLine,_readMs);
     },850);
