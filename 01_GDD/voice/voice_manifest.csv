@@ -602,3 +602,13 @@ combat.defeatGeneric3,적군/해적,combat,02_Assets/audio/voice/combat/defeatGe
 merchant.thanks1,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_1.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_1.mp3,,ko,"휴— 살았다! 해적들이 막 화물칸을 뜯어내려던 참이었소. 정말 고맙소, 사령관."
 merchant.thanks2,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_2.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_2.mp3,,ko,당신이 아니었으면 우주 먼지가 될 뻔했지. 변변찮지만 사례로 받아주시오.
 merchant.thanks3,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_3.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_3.mp3,,ko,이 은하에 아직 의로운 이가 남아있었군. 이 신세는 잊지 않으리다.
+622,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_622.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_622.mp3,,ko,…그대가 나를 깨운 사령관인가. 이순신이라 하오. 손을 빌려주겠소.
+623,jangyeongsil,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_623.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_623.mp3,,ko,"오, 처음 뵙네요. 장영실이에요. 손에 잡히는 건 뭐든 더 낫게 만들죠."
+624,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_624.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_624.mp3,,ko,"반갑소, 사령관! 나 광개토, 그대의 깃발 아래 땅을 넓혀주지."
+625,gagarin,gagarin,02_Assets/audio/voice/gagarin/gagarin_625.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_625.mp3,,ko,"안녕하세요, 사령관! 가가린입니다. 100년 만의 첫 동료라니 — 영광이에요."
+626,nelson,nelson,02_Assets/audio/voice/nelson/nelson_626.mp3,,02_Assets/audio/voice_en/nelson/nelson_626.mp3,,ko,"처음 뵙겠소, 사령관. 호레이쇼 넬슨. 바다를 지키던 손, 이제 그대 곁에 두겠소."
+627,einstein,einstein,02_Assets/audio/voice/einstein/einstein_627.mp3,,02_Assets/audio/voice_en/einstein/einstein_627.mp3,,ko,"반갑네, 사령관. 아인슈타인일세. 시간조차… 우리 편으로 돌려보지."
+628,tesla,tesla,02_Assets/audio/voice/tesla/tesla_628.mp3,,02_Assets/audio/voice_en/tesla/tesla_628.mp3,,ko,"만나서 반가워, 사령관. 테슬라야. 번개 한 줄기면 충분하지."
+629,marcopolo,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_629.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_629.mp3,,ko,"하, 드디어 만났군. 마르코 폴로요. 이 우주의 길은 내가 제일 잘 알지."
+630,leehwiso,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_630.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_630.mp3,,ko,…날 깨운 게 당신이오? 이휘소요. 내 방정식이 쓰일 곳을 찾은 것 같군.
+632,maximoff,maximoff,02_Assets/audio/voice/maximoff/maximoff_632.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_632.mp3,,ko,"낯선 함대로군… 적이오, 아군이오? …좋소, 믿어보지. 저항군 레인저, 맥시모프요."
