@@ -58,9 +58,10 @@
   }
 
   // ── 블랙팔콘 히든전 2페이즈 (호위 전멸 → 본체 각성) ────────────────
+  //   afterUrsa = vid 548 (블랙팔콘 본체 각성 대사).
   function blackfalconPhase2(){
     var m=_spc('void');
-    return [{char:m.char, name:_i18n('falcon.bossNameStory'), color:m.color, text:_i18n('falcon.afterUrsa')}];
+    return [{char:m.char, name:_i18n('falcon.bossNameStory'), color:m.color, text:_i18n('falcon.afterUrsa'), vid:'548'}];
   }
 
   // ── 보이드(히든) 보스 인트로 — 호러+글리치+영웅 반응+위트 마무리 ───────
@@ -72,34 +73,36 @@
     var sigNm = _i18n('ui.signalReceived');
     var hl = ownedHeroes||[];
     // 영입한 영웅 반응 자동 삽입 (있는 영웅만) — 기존 순서/조건 보존
+    // vid 매핑(생성기록 §E): h01=536, h03=537, h04=538, h06=539, h07=540, h08=541
     var heroOrder=[
-      ['H01','voidQ.h01.line'],['H03','voidQ.h03.line'],['H06','voidQ.h06.line'],
-      ['H07','voidQ.h07.line'],['H04','voidQ.h04.line'],['H08','voidQ.h08.line']
+      ['H01','voidQ.h01.line','536'],['H03','voidQ.h03.line','537'],['H06','voidQ.h06.line','539'],
+      ['H07','voidQ.h07.line','540'],['H04','voidQ.h04.line','538'],['H08','voidQ.h08.line','541']
     ];
     var heroLines=[];
     heroOrder.forEach(function(p){
-      if(hl.indexOf(p[0])>=0) heroLines.push({sp:p[0], name:_i18n('hero.'+p[0]+'.nm'), text:_i18n(p[1])});
+      if(hl.indexOf(p[0])>=0) heroLines.push({sp:p[0], name:_i18n('hero.'+p[0]+'.nm'), text:_i18n(p[1]), vid:p[2]});
     });
-    if(heroLines.length===0) heroLines.push({sp:'commander', name:cmdName, text:_i18n('voidQ.cmdNoHero')});
+    if(heroLines.length===0) heroLines.push({sp:'commander', name:cmdName, text:_i18n('voidQ.cmdNoHero'), vid:'534'});
 
+    // vid 매핑: voidGovernorReact=530, bkHorrorJoke=531, cmdAccept=532, cmdBkScold=533, unknown1~3=542~544.
+    //   이름변수/효과음 3줄(blackShipApprox{nm}, staticNoise, allFleetWaiting{cmdName})은 vid 없음(자막).
     var raw=[
       {sp:'baekgu', name:bkNm,  text:_i18n('ui.blackShipApprox',{nm:cmdName}), fx:'baekgu'},
       {sp:'void',   name:sigNm, text:_i18n('voidQ.staticNoise'),              fx:'static'},
-      {sp:'void',   name:'???', text:_i18n('voidQ.unknown1'),                 fx:'glitch'},
-      {sp:'void',   name:'???', text:_i18n('voidQ.unknown2'),                 fx:'glitch'},
-      {sp:'void',   name:'???', text:_i18n('voidQ.unknown3'),                 fx:'glitch'},
-      {sp:'baekgu', name:bkNm,  text:_i18n('ui.voidGovernorReact'),           fx:'baekgu'}
+      {sp:'void',   name:'???', text:_i18n('voidQ.unknown1'),                 fx:'glitch', vid:'542'},
+      {sp:'void',   name:'???', text:_i18n('voidQ.unknown2'),                 fx:'glitch', vid:'543'},
+      {sp:'void',   name:'???', text:_i18n('voidQ.unknown3'),                 fx:'glitch', vid:'544'},
+      {sp:'baekgu', name:bkNm,  text:_i18n('ui.voidGovernorReact'),           fx:'baekgu', vid:'530'}
     ].concat(heroLines).concat([
-      {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdAccept')},
-      {sp:'baekgu',    name:bkNm,    text:_i18n('voidQ.bkHorrorJoke')},
-      {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdBkScold')},
+      {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdAccept'),    vid:'532'},
+      {sp:'baekgu',    name:bkNm,    text:_i18n('voidQ.bkHorrorJoke'), vid:'531'},
+      {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdBkScold'),   vid:'533'},
       {sp:'baekgu',    name:bkNm,    text:_i18n('ui.allFleetWaiting',{cmdName:cmdName})}
     ]);
-    // ※ 기존 출력은 fx 를 scene 에 포함하지 않으므로(원본 .map 이 char/name/color/text 만 반환)
-    //   byte-identity 보존을 위해 fx 는 raw 주석용으로만 두고 scene 에는 넣지 않는다.
+    // ※ fx 는 scene 에 포함하지 않는다(원본 동작 보존). vid 는 EN 자동재생·정확도용으로 전달.
     return raw.map(function(l){
       var m=_spc(l.sp);
-      return {char:m.char, name:l.name, color:m.color, text:l.text};
+      return {char:m.char, name:l.name, color:m.color, text:l.text, vid:l.vid};
     });
   }
 
@@ -109,18 +112,20 @@
     var bkNm = _i18n('speaker.baekgu');
     var falconNm = _i18n('speaker.blackfalcon');
     var sigNm = _i18n('ui.signalReceived');
+    // vid 매핑: falconEnd.l1=545, l2=546, l3=547, falconEnd.cmd=535.
+    //   효과음(staticShort/staticEnd)·이름변수(victoryLine3{nm})는 vid 없음(자막).
     var raw=[
       {sp:'void',      name:sigNm,    text:_i18n('voidQ.staticShort'),            fx:'static'},
-      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l1')},
-      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l2')},
-      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l3')},
+      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l1'),                 vid:'545'},
+      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l2'),                 vid:'546'},
+      {sp:'void',      name:falconNm, text:_i18n('falconEnd.l3'),                 vid:'547'},
       {sp:'void',      name:sigNm,    text:_i18n('voidQ.staticEnd'),              fx:'static'},
       {sp:'baekgu',    name:bkNm,     text:_i18n('ui.victoryLine3',{nm:cmdName})},
-      {sp:'commander', name:cmdName,  text:_i18n('falconEnd.cmd')}
+      {sp:'commander', name:cmdName,  text:_i18n('falconEnd.cmd'),                vid:'535'}
     ];
     return raw.map(function(l){
       var m=_spc(l.sp);
-      return {char:m.char, name:l.name, color:m.color, text:l.text};
+      return {char:m.char, name:l.name, color:m.color, text:l.text, vid:l.vid};
     });
   }
 
@@ -138,56 +143,63 @@
     function _bgPage(tx){ return Object.assign({tx:tx}, BG); }
     // 영입한 영웅별 마무리 대사 + 백구의 일기 페어 (영입 영웅만, 기존 순서 보존)
     var heroBlocks=[];
+    // 영웅 한마디(vid 610~616)·백구 일기(vid 617~621) 음성 주입. 이름변수 포함분
+    //   (h06.text·h02/h03/h08.diary)은 자막만 — vid 없음.
     if(hl.indexOf('H01')>=0){
-      heroBlocks.push({sp:_i18n('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:_i18n('ending.h01.text')});
-      heroBlocks.push(_bgPage(_i18n('ending.h01.diary')));
+      heroBlocks.push({sp:_i18n('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:_i18n('ending.h01.text'),vid:'610'});
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h01.diary')),{vid:'617'}));
     }
     if(hl.indexOf('H02')>=0){
-      heroBlocks.push({sp:_i18n('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:_i18n('ending.h02.text')});
+      heroBlocks.push({sp:_i18n('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:_i18n('ending.h02.text'),vid:'611'});
       heroBlocks.push(_bgPage(_i18n('ending.h02.diary',{flagshipName:flagshipName})));
     }
     if(hl.indexOf('H03')>=0){
-      heroBlocks.push({sp:_i18n('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:_i18n('ending.h03.text')});
+      heroBlocks.push({sp:_i18n('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:_i18n('ending.h03.text'),vid:'612'});
       heroBlocks.push(_bgPage(_i18n('ending.h03.diary',{cmdName:cmdName})));
     }
     if(hl.indexOf('H04')>=0){
-      heroBlocks.push({sp:_i18n('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:_i18n('ending.h04.text')});
-      heroBlocks.push(_bgPage(_i18n('ending.h04.diary')));
+      heroBlocks.push({sp:_i18n('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:_i18n('ending.h04.text'),vid:'613'});
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h04.diary')),{vid:'618'}));
     }
     if(hl.indexOf('H05')>=0){
-      heroBlocks.push({sp:_i18n('hero.H05.nm'),col:'#aaffaa',ic:'⚓',tx:_i18n('ending.h05.text')});
-      heroBlocks.push(_bgPage(_i18n('ending.h05.diary')));
+      heroBlocks.push({sp:_i18n('hero.H05.nm'),col:'#aaffaa',ic:'⚓',tx:_i18n('ending.h05.text'),vid:'614'});
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h05.diary')),{vid:'619'}));
     }
     if(hl.indexOf('H06')>=0){
       heroBlocks.push({sp:_i18n('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:_i18n('ending.h06.text',{cmdName:cmdName})});
-      heroBlocks.push(_bgPage(_i18n('ending.h06.diary')));
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h06.diary')),{vid:'620'}));
     }
     if(hl.indexOf('H07')>=0){
-      heroBlocks.push({sp:_i18n('hero.H07.nm'),col:'#66ffff',ic:'⚡',tx:_i18n('ending.h07.text')});
-      heroBlocks.push(_bgPage(_i18n('ending.h07.diary')));
+      heroBlocks.push({sp:_i18n('hero.H07.nm'),col:'#66ffff',ic:'⚡',tx:_i18n('ending.h07.text'),vid:'615'});
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h07.diary')),{vid:'621'}));
     }
     if(hl.indexOf('H08')>=0){
-      heroBlocks.push({sp:_i18n('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:_i18n('ending.h08.text')});
+      heroBlocks.push({sp:_i18n('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:_i18n('ending.h08.text'),vid:'616'});
       heroBlocks.push(_bgPage(_i18n('ending.h08.diary',{shipName:shipName})));
     }
     // 대사 시퀀스 — 백구의 일기 회상 + 영웅 한마디 + 시퀄 훅 (원본 순서/필드 그대로)
+    //   vid: 이름변수 없는 고정 대사만 음성화(sys1=492, sys2=493, diary6Chain=497,
+    //        cmdTogether=495, diaryLand412=498, bg100Final=496, liberationDone=494).
+    //   이름 포함 일기/타이틀(diaryWake1·firstFlight·cheeksTruth·predeparture·ursaPost·
+    //        lastWarpHome·dontWakeMe·titleLine)은 vid 없음(자막만).
+    //   heroBlocks: 영웅 한마디 7(610~616)·백구 일기 5(617~621)에 vid 주입(위 참조).
     return [
-      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys1')},
-      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys2')},
+      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys1'), vid:'492'},
+      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys2'), vid:'493'},
       Object.assign({tx:_i18n('ui.diaryWake1',{cmdName:cmdName})},BG),
       Object.assign({tx:_i18n('ui.firstFlightDiary',{shipName:shipName,cmdName:cmdName})},BG),
       ...heroBlocks,
       Object.assign({tx:_i18n('ui.cheeksTruthDiary',{cmdName:cmdName})},BG),
       Object.assign({tx:_i18n('ui.predepartureDiary',{flagshipName:flagshipName,cmdName:cmdName})},BG),
-      Object.assign({tx:_i18n('ui.diary6Chain')},BG),
+      Object.assign({tx:_i18n('ui.diary6Chain'), vid:'497'},BG),
       Object.assign({tx:_i18n('ui.ursaPostLine',{cmdName:cmdName})},BG),
-      {sp:cmdName,col:'#ffd700',tx:_i18n('ending.cmdTogether')},
+      {sp:cmdName,col:'#ffd700',tx:_i18n('ending.cmdTogether'), vid:'495'},
       {sp:cmdName,col:'#ffd700',tx:_i18n('ui.lastWarpHome',{flagshipName:flagshipName})},
-      Object.assign({tx:_i18n('ui.diaryLand412')},BG),
-      Object.assign({tx:_i18n('ending.bg100Final')},BG),
+      Object.assign({tx:_i18n('ui.diaryLand412'), vid:'498'},BG),
+      Object.assign({tx:_i18n('ending.bg100Final'), vid:'496'},BG),
       {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:_i18n('ui.dontWakeMe',{nm:cmdName})},
       {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.titleLine')},
-      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.liberationDone')}
+      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.liberationDone'), vid:'494'}
     ];
   }
 

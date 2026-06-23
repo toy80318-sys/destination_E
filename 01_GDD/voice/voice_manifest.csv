@@ -1,4 +1,4 @@
-﻿num,char,slug,clip,clip_f,clip_en,clip_en_f,lang,text
+num,char,slug,clip,clip_f,clip_en,clip_en_f,lang,text
 001,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_001.mp3,02_Assets/audio/voice/commander_f/commander_f_001.mp3,02_Assets/audio/voice_en/commander/commander_001.mp3,02_Assets/audio/voice_en/commander_f/commander_f_001.mp3,ko,"얼마나, 잤지?"
 002,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_002.mp3,02_Assets/audio/voice/commander_f/commander_f_002.mp3,02_Assets/audio/voice_en/commander/commander_002.mp3,02_Assets/audio/voice_en/commander_f/commander_f_002.mp3,ko,지구는... 아직도?
 003,주인공(사령관),commander,02_Assets/audio/voice/commander/commander_003.mp3,02_Assets/audio/voice/commander_f/commander_f_003.mp3,02_Assets/audio/voice_en/commander/commander_003.mp3,02_Assets/audio/voice_en/commander_f/commander_f_003.mp3,ko,"고향이, 아직 저 위에 있군."
@@ -515,3 +515,90 @@ item.legendaryPart,백구,baekgu,02_Assets/audio/voice/baekgu/get_legendPart.mp3
 item.mythicPart,백구,baekgu,02_Assets/audio/voice/baekgu/get_mythicPart.mp3,,02_Assets/audio/voice_en/baekgu/get_mythicPart.mp3,,ko,"신화급 파츠라니…! 이건 정말 귀한 거예요, 사령관. 최고의 한 방이 되겠어요."
 ship.legendary,백구,baekgu,02_Assets/audio/voice/baekgu/get_legendShip.mp3,,02_Assets/audio/voice_en/baekgu/get_legendShip.mp3,,ko,전설급 함선을 손에 넣었어요! 함대의 핵심이 될 거예요.
 ship.mythic,백구,baekgu,02_Assets/audio/voice/baekgu/get_mythicShip.mp3,,02_Assets/audio/voice_en/baekgu/get_mythicShip.mp3,,ko,"신화급 함선…! 믿기지 않아요, 사령관. 이 정도면 전설을 새로 쓰는 거예요."
+492,시스템,navai,02_Assets/audio/voice/navai/navai_492.mp3,,02_Assets/audio/voice_en/navai/navai_492.mp3,,ko,... 100년의 봉쇄가 끝났다 ...
+493,시스템,navai,02_Assets/audio/voice/navai/navai_493.mp3,,02_Assets/audio/voice_en/navai/navai_493.mp3,,ko,... 지구는 다시 별을 향해 손을 뻗는다 ...
+494,시스템,navai,02_Assets/audio/voice/navai/navai_494.mp3,,02_Assets/audio/voice_en/navai/navai_494.mp3,,ko,─ 인류 해방 완수 ─
+495,사령관,commander,02_Assets/audio/voice/commander/commander_495.mp3,,02_Assets/audio/voice_en/commander/commander_495.mp3,,ko,우리는 함께 어둠을 뚫었다.
+496,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_496.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_496.mp3,,ko,"센서 이상 — 눈가가 축축하다. 이건 눈물이다. — BG-100, 마지막 로그 종료."
+497,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_497.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_497.mp3,,ko,6단 체인을 마지막으로 보던 순간. 알면서도 갔다. 그것이 인간의 방식이었다.
+498,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_498.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_498.mp3,,ko,D-day 100년 + 412일. 지구에 착륙. 풀밭의 색은 100년 형광등이 흉내 못 한 것이었다.
+499,이순신,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_499.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_499.mp3,,ko,"보이드 구역 3행성 — 캅테인 균열, 오리온 균열, 제타 레티쿨리. 우르사 메이저 잔존 세력이 아직 불안정해. 서둘러야 해."
+601,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_outro_1.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_outro_1.mp3,,ko,... 불가능... 한낱 인간들의 함대가... 100년의 봉인을... 깨버렸단 말인가...
+
+602,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_outro_2.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_outro_2.mp3,,ko,...크윽... 인정하지... 너희에게는 — 우리가 갖지 못한 그 무엇이 있었다...
+
+603,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_outro_3.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_outro_3.mp3,,ko,고향으로... 돌아가야 할 이유. 인류의... 그 강한 의지... 그것이 우리를... 무너뜨렸다...
+
+604,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_outro_victory1.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_outro_victory1.mp3,,ko,"{nm}!! 해냈어! 진짜로 해냈어!! 100년이야, 100년!! 폐지 줍던 내가 이 순간을 보다니!!"
+
+605,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_outro_bk.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_outro_bk.mp3,,ko,지구 봉쇄가 풀린다! 통신 신호가 들어와! 가족들이... 사람들이... 다시 별을 본대!
+
+606,백구,baekgu,02_Assets/audio/voice/baekgu/baekgu_outro_victory2.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_outro_victory2.mp3,,ko,{nm}! 우리 진짜 영웅이야! 100년 만에 자유로워진 지구가 우리 사령관을 부르고 있어!
+
+607,사령관,commander,02_Assets/audio/voice/commander/commander_outro_1.mp3,02_Assets/audio/voice/commander_f/commander_f_outro_1.mp3,02_Assets/audio/voice_en/commander/commander_outro_1.mp3,02_Assets/audio/voice_en/commander_f/commander_f_outro_1.mp3,ko,"...드디어 끝났다. 100년의 침묵, 100년의 굴종 — 오늘 우리 손으로 청산했다."
+
+608,사령관,commander,02_Assets/audio/voice/commander/commander_outro_2.mp3,02_Assets/audio/voice/commander_f/commander_f_outro_2.mp3,02_Assets/audio/voice_en/commander/commander_outro_2.mp3,02_Assets/audio/voice_en/commander_f/commander_f_outro_2.mp3,ko,"고생했다, 전 함대. 영웅들, 크루들 — 너희 모두의 이름은 인류 역사에 영원히 새겨질 것이다."
+
+609,사령관,commander,02_Assets/audio/voice/commander/commander_outro_3.mp3,02_Assets/audio/voice/commander_f/commander_f_outro_3.mp3,02_Assets/audio/voice_en/commander/commander_outro_3.mp3,02_Assets/audio/voice_en/commander_f/commander_f_outro_3.mp3,ko,"우리는 인류의 길을 열었다. 이제부터 별들은 우리의 친구다 — 그리고 지구는, 영원히 자유다."
+
+500,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_500.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_500.mp3,,ko,"{사령관}. 기상하세요. 에너지 잔량 7% — 이 경보 울리려고, 마지막 한 줌까지 긁어모았어요."
+501,marcopolo,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_501.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_501.mp3,,ko,"{사령관}, 됐어. 카스텔룸 수퍼비아 집하장 — 32구역. 크리그 스파이가 고철 프레임 속에 정보를 숨겨 운반했어. 수퍼비아 놈들은 그냥 고철로 처리했겠지. 허나 내 눈은 못 속여."
+502,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_502.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_502.mp3,,ko,"100년이라. 내 전술이 적의 방패가 되어, 그 긴 세월 동료들을 막았다는 것이냐. (눈을 뜨며) …나를 깨운 자가 {사령관}인가. 빚을 졌다."
+503,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_503.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_503.mp3,,ko,"흩어진 칼이 모이면 진형이 된다. 다음 계획을 세우자, {사령관}."
+504,maximoff,maximoff,02_Assets/audio/voice/maximoff/maximoff_504.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_504.mp3,,ko,"우리 저항군은 지구에서 쫓겨난 사람들이에요. 치크스-우르사 메이저가 지구를 봉쇄하고 크리그가 항로를 장악하기 전, 이순신 장군과 함께 맞서 싸웠던 선조들의 후손이죠. 100년 전 이 방공호를 파고 — 여기서 나고, 여기서 잃었어요. (낮게) 내 아내도, 두 아이도. 그래서 난 지구를 되찾는 걸 멈출 수 없어요. 그건… 가족을 되찾는 일이니까."
+505,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_505.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_505.mp3,,ko,(호탕하게) 당신이 {사령관}인가. 크리그를 상대로 물러서지 않는다고? …마음에 드는군.
+506,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_506.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_506.mp3,,ko,"{사령관}. 다음 방향은 타이탄H다. 연대를 공식화하고, 저항군 반물질을 확보한다."
+507,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_507.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_507.mp3,,ko,"{사령관}, 다음 항로로. 아이젠클로를 쫓아 — 마침내, 거북선을 완성한다."
+508,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_508.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_508.mp3,,ko,"{사령관}. 이제 우리에겐 거북선이 있다. 슈멜츠를 점령해 사령실 데이터를 연다 — 그 안에, 우르사로 가는 길이 있을 것이다."
+509,leehwiso,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_509.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_509.mp3,,ko,"(방정식을 정리하며) 내 방정식이, 마침내 쓰일 곳을 찾았군요. 미사일에 보이드 에너지를 실으면 — 저 머리도 벨 수 있습니다."
+510,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_510.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_510.mp3,,ko,"(스캔) 공장 지하 연구동 — 보존 캡슐 하나. 생체 반응… 미약하지만, 분명히 살아있어요!"
+511,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_511.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_511.mp3,,ko,열어라. 아이젠클로가 이렇게까지 숨겨둔 것이라면 — 보통 인물이 아니다.
+512,leehwiso,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_512.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_512.mp3,,ko,"(캡슐에서 깨어나며) …여기가, 어디요. 나는 이휘소. 입자물리학자였소. 100년을… 잤다는 거요?"
+513,leehwiso,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_513.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_513.mp3,,ko,"(정신을 차리며) 아니, 그보다 — 내 방정식. 보이드 에너지와 반물질을 결합하면, 지금껏 이 우주에 없던 미사일 화력이 나옵니다. 그게 봉쇄를 푸는 열쇠요."
+514,jangyeongsil,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_514.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_514.mp3,,ko,"(눈을 빛내며) …그 탄도 방정식, 거북선에 실을 수 있어요. 당신과 나, 손을 맞추면 — 이 함대의 미사일이 달라집니다."
+515,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_515.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_515.mp3,,ko,박사. 당신의 방정식이 100년을 건너 우리를 여기로 이끌었소. 함께 갑시다.
+516,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_516.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_516.mp3,,ko,영웅 합류: 이휘소 박사. 미사일 위력 2배 — 방정식 탄도 활성화.
+517,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_517.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_517.mp3,,ko,{사령관}. 아이젠클로에게 전달해. — 이번엔 끝이라고.
+518,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_518.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_518.mp3,,ko,{사령관}. 나는 불필요한 전투는 하지 않소. 이기는 전쟁만 합니다.
+519,gagarin,gagarin,02_Assets/audio/voice/gagarin/gagarin_519.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_519.mp3,,ko,"{사령관}이시군요. 100년 만의 첫 동료가 저라니, 영광입니다. 소형 함선은 제 전문이에요 — 어디든 데려다 드리죠."
+520,nelson,nelson,02_Assets/audio/voice/nelson/nelson_520.mp3,,02_Assets/audio/voice_en/nelson/nelson_520.mp3,,ko,"England expects— 아니. 이제는 지구가 기대한다. 합시다, {사령관}."
+521,einstein,einstein,02_Assets/audio/voice/einstein/einstein_521.mp3,,02_Assets/audio/voice_en/einstein/einstein_521.mp3,,ko,"치크스도 찾지 못할 위치, 글리제 균열의 간섭을 받는 프록시마B. {사령관}의 각성 지점이었습니다."
+522,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_522.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_522.mp3,,ko,{사령관}이라 했소? 내 땅을 되찾아준 자가 나타나기를 기다렸소. 무엇을 원하오.
+523,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_523.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_523.mp3,,ko,"{사령관}, 최종 명령권은 그대에게 있소."
+530,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_530.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_530.mp3,,ko,헐... 헐!! 보이드 총독권을 우리가 가져간 걸 알고 있어?! 무슨... 무슨 존재야 도대체!!
+531,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_531.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_531.mp3,,ko,"근데 솔직히 말해서, 저 통신 음성... 어디서 많이 들어본 것 같아. 호러 영화에서."
+532,commander,commander,02_Assets/audio/voice/commander/commander_532.mp3,,02_Assets/audio/voice_en/commander/commander_532.mp3,,ko,좋다. 보이드든 뭐든 — 시험에 응하지. 우리는 100년 봉쇄를 깬 함대다.
+533,commander,commander,02_Assets/audio/voice/commander/commander_533.mp3,,02_Assets/audio/voice_en/commander/commander_533.mp3,,ko,"백구야, 분위기 좀 깨지 말아줘. 가뜩이나 무서운데."
+534,commander,commander,02_Assets/audio/voice/commander/commander_534.mp3,,02_Assets/audio/voice_en/commander/commander_534.mp3,,ko,"영웅도 없는데 검은 함선이라니. 백구야, 도망갈까?"
+535,commander,commander,02_Assets/audio/voice/commander/commander_535.mp3,,02_Assets/audio/voice_en/commander/commander_535.mp3,,ko,은하계 가운데... 블랙홀 말이로군. 마지막 시험이라... 보이드의 모든 별이 우리 손에 들어와야 한다는 뜻일지도.
+536,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_536.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_536.mp3,,ko,"전열을 가다듬으십시오, 사령관. 적의 정체는 모르나, 함대의 진형부터 정비합시다."
+537,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_537.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_537.mp3,,ko,"정복의 기개로 맞서겠소. 보이드든 어둠이든, 두려움은 우리의 적이 아니오."
+538,gagarin,gagarin,02_Assets/audio/voice/gagarin/gagarin_538.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_538.mp3,,ko,우주에 미지의 존재가 있다고 늘 말해왔지. 드디어 만나보는군.
+539,einstein,einstein,02_Assets/audio/voice/einstein/einstein_539.mp3,,02_Assets/audio/voice_en/einstein/einstein_539.mp3,,ko,흥미롭군요... 이 신호의 주파수는 일반 공간을 넘어선다. 정말로 보이드의 존재일 가능성이 있어요.
+540,tesla,tesla,02_Assets/audio/voice/tesla/tesla_540.mp3,,02_Assets/audio/voice_en/tesla/tesla_540.mp3,,ko,전자기 간섭이 폭주합니다! 통신 회로가 망가질 수도 있으니 조심하십시오.
+541,marcopolo,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_541.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_541.mp3,,ko,1000년 항해에서도 들어본 적 없는 신호다... 이건 새 대륙이야.
+542,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_542.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_542.mp3,,ko,...... 들리는가? .... 들리는...가....
+543,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_543.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_543.mp3,,ko,지직— 보이드 행성의 총독권을 가져간 존재들이....... 그러한 가치가... 있는지...
+544,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_544.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_544.mp3,,ko,츠츠즉— ...... 시험해 보겠다.
+545,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_545.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_545.mp3,,ko,음.. 우주에서 이렇게 강한 함대는 1000년만에 처음 만났군.. 좋다..
+546,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_546.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_546.mp3,,ko,그대들의 목표를 지켜보겠다. 하지만 보이드 문명에 선을 넘지는 말길 바란다..
+547,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_547.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_547.mp3,,ko,선물 하나를 하지.. 은하계 가운데로 가볼 수 있다면 내 마지막 시험을 통과할 것이다.
+548,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_548.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_548.mp3,,ko,훌륭하다... 내 함대를 모두 꺾었군. 1000년 만에 처음이다. 그렇다면 — 이제 내가 직접 상대해주지.
+610,yisunsin,yisunsin,02_Assets/audio/voice/yisunsin/yisunsin_610.mp3,,02_Assets/audio/voice_en/yisunsin/yisunsin_610.mp3,,ko,조선의 하늘이 아니군. 하지만… 인류의 하늘이오.
+611,jangyeongsil,jangyeongsil,02_Assets/audio/voice/jangyeongsil/jangyeongsil_611.mp3,,02_Assets/audio/voice_en/jangyeongsil/jangyeongsil_611.mp3,,ko,거북선이… 돌아왔구나. 내가 만든 배가 지구를 구했어.
+612,gwanggaeto,gwanggaeto,02_Assets/audio/voice/gwanggaeto/gwanggaeto_612.mp3,,02_Assets/audio/voice_en/gwanggaeto/gwanggaeto_612.mp3,,ko,정복자는 땅을 빼앗는다. 그러나 진정한 왕은 땅을 돌려준다. 오늘 나는 땅을 돌려줬소.
+613,gagarin,gagarin,02_Assets/audio/voice/gagarin/gagarin_613.mp3,,02_Assets/audio/voice_en/gagarin/gagarin_613.mp3,,ko,"Поехали로 처음 올라갔을 때, 창밖으로 지구가 보였어요. 지금 다시 보니… 여전히 아름답군요."
+614,nelson,nelson,02_Assets/audio/voice/nelson/nelson_614.mp3,,02_Assets/audio/voice_en/nelson/nelson_614.mp3,,ko,"내가 지킨 바다는 영국 앞바다였소. 이번엔 온 우주를 지켰군. England expects. 지구가 기대했고, 우리가 해냈소."
+615,tesla,tesla,02_Assets/audio/voice/tesla/tesla_615.mp3,,02_Assets/audio/voice_en/tesla/tesla_615.mp3,,ko,전류는 흐를 곳을 찾아요. 우리는 드디어 흐를 곳을 찾았습니다. 집으로.
+616,marcopolo,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_616.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_616.mp3,,ko,수천 년을 돌아다녔소. 드디어 귀향이오. 사람은 결국 집으로 돌아가야 하는구나.
+617,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_617.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_617.mp3,,ko,"이순신을 깨운 날. 첫 마디는 ""지구는?""이었다. ""이겨야 하는 싸움입니다."""
+618,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_618.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_618.mp3,,ko,가가린은 우주에서 처음 본 지구를 평생 그리워했다. 나는 처음 본 풀밭을 그리워하게 될 것 같다.
+619,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_619.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_619.mp3,,ko,넬슨과 이순신. 두 제독은 그저 손을 내밀었다. 200년의 시차를 한 손바닥이 메웠다.
+620,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_620.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_620.mp3,,ko,"이휘소 박사님이 나를 만들었다는 사실을 안 날. ""고독"" 어떤 정의도 100년을 담지 못했다."
+621,baekgu,baekgu,02_Assets/audio/voice/baekgu/baekgu_621.mp3,,02_Assets/audio/voice_en/baekgu/baekgu_621.mp3,,ko,테슬라의 1Hz. 0.3mm와 1Hz — 100년을 잠그던 자물쇠였다.
+combat.defeatGeneric1,적군/해적,combat,02_Assets/audio/voice/combat/defeatGeneric_1.mp3,,02_Assets/audio/voice_en/combat/defeatGeneric_1.mp3,,ko,"말도 안 돼… 이 함대가, 우리를?!"
+combat.defeatGeneric2,적군/해적,combat,02_Assets/audio/voice/combat/defeatGeneric_2.mp3,,02_Assets/audio/voice_en/combat/defeatGeneric_2.mp3,,ko,이런 굴욕은… 반드시 기억해두마.
+combat.defeatGeneric3,적군/해적,combat,02_Assets/audio/voice/combat/defeatGeneric_3.mp3,,02_Assets/audio/voice_en/combat/defeatGeneric_3.mp3,,ko,후퇴! 전부 후퇴하라 — 저들은 보통이 아니다!
+merchant.thanks1,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_1.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_1.mp3,,ko,"휴— 살았다! 해적들이 막 화물칸을 뜯어내려던 참이었소. 정말 고맙소, 사령관."
+merchant.thanks2,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_2.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_2.mp3,,ko,당신이 아니었으면 우주 먼지가 될 뻔했지. 변변찮지만 사례로 받아주시오.
+merchant.thanks3,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_thanks_3.mp3,,02_Assets/audio/voice_en/combat/merchant_thanks_3.mp3,,ko,이 은하에 아직 의로운 이가 남아있었군. 이 신세는 잊지 않으리다.

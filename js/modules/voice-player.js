@@ -135,7 +135,7 @@
 
   window.VoicePlayer = {
     playVoice: playVoice, playByText: playByText, playLine: playLine,
-    stop: stop, suppress: suppress,
+    stop: stop, stopVoice: stop, suppress: suppress,
     isOn: on, setOn: setOn, getVol: vol, setVol: setVol
   };
 })();

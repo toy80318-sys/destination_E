@@ -181,44 +181,46 @@ function showEndingCredits(onDone){
   const heroBlocks=[];    // (대사 + 일기 페어 — 화면 시퀀스용)
   const BG={sp:I18N.t('baekgu.diaryTitle'),col:'#9ee7ff',ic:'📓'};
   function _bgPage(tx){return Object.assign({tx},BG);}
+  // 영웅 한마디(vid 610~616)·백구 일기(vid 617~621) 음성 주입. 이름변수 포함분
+  //   (h06.text·h02/h03/h08.diary)은 자막만 — vid 없음.
   if(_hl.includes('H01')){
     heroEndings.push({id:'H01',nm:I18N.t('hero.H01.nm'),ic:'⚔️',col:'#ffd700',tx:I18N.t('ending.h01.text')});
-    heroBlocks.push({sp:I18N.t('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text')});
-    heroBlocks.push(_bgPage(I18N.t('ending.h01.diary')));
+    heroBlocks.push({sp:I18N.t('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:I18N.t('ending.h01.text'),vid:'610'});
+    heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h01.diary')),{vid:'617'}));
   }
   if(_hl.includes('H02')){
     heroEndings.push({id:'H02',nm:I18N.t('hero.H02.nm'),ic:'⚙️',col:'#9ee7ff',tx:I18N.t('ending.h02.text')});
-    heroBlocks.push({sp:I18N.t('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text')});
+    heroBlocks.push({sp:I18N.t('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:I18N.t('ending.h02.text'),vid:'611'});
     heroBlocks.push(_bgPage(I18N.t('ending.h02.diary',{flagshipName})));
   }
   if(_hl.includes('H03')){
     heroEndings.push({id:'H03',nm:I18N.t('hero.H03.nm'),ic:'⚔️',col:'#ff6644',tx:I18N.t('ending.h03.text')});
-    heroBlocks.push({sp:I18N.t('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text')});
+    heroBlocks.push({sp:I18N.t('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:I18N.t('ending.h03.text'),vid:'612'});
     heroBlocks.push(_bgPage(I18N.t('ending.h03.diary',{cmdName})));
   }
   if(_hl.includes('H04')){
     heroEndings.push({id:'H04',nm:I18N.t('hero.H04.nm'),ic:'🚀',col:'#66ddff',tx:I18N.t('ending.h04.text')});
-    heroBlocks.push({sp:I18N.t('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text')});
-    heroBlocks.push(_bgPage(I18N.t('ending.h04.diary')));
+    heroBlocks.push({sp:I18N.t('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:I18N.t('ending.h04.text'),vid:'613'});
+    heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h04.diary')),{vid:'618'}));
   }
   if(_hl.includes('H05')){
     heroEndings.push({id:'H05',nm:I18N.t('hero.H05.nm'),ic:'⚓',col:'#aaffaa',tx:I18N.t('ending.h05.text')});
-    heroBlocks.push({sp:I18N.t('hero.H05.nm'),col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text')});
-    heroBlocks.push(_bgPage(I18N.t('ending.h05.diary')));
+    heroBlocks.push({sp:I18N.t('hero.H05.nm'),col:'#aaffaa',ic:'⚓',tx:I18N.t('ending.h05.text'),vid:'614'});
+    heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h05.diary')),{vid:'619'}));
   }
   if(_hl.includes('H06')){
     heroEndings.push({id:'H06',nm:I18N.t('hero.H06.nm'),ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
     heroBlocks.push({sp:I18N.t('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
-    heroBlocks.push(_bgPage(I18N.t('ending.h06.diary')));
+    heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h06.diary')),{vid:'620'}));
   }
   if(_hl.includes('H07')){
     heroEndings.push({id:'H07',nm:I18N.t('hero.H07.nm'),ic:'⚡',col:'#66ffff',tx:I18N.t('ending.h07.text')});
-    heroBlocks.push({sp:I18N.t('hero.H07.nm'),col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text')});
-    heroBlocks.push(_bgPage(I18N.t('ending.h07.diary')));
+    heroBlocks.push({sp:I18N.t('hero.H07.nm'),col:'#66ffff',ic:'⚡',tx:I18N.t('ending.h07.text'),vid:'615'});
+    heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h07.diary')),{vid:'621'}));
   }
   if(_hl.includes('H08')){
     heroEndings.push({id:'H08',nm:I18N.t('hero.H08.nm'),ic:'🧭',col:'#ffcc66',tx:I18N.t('ending.h08.text')});
-    heroBlocks.push({sp:I18N.t('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text')});
+    heroBlocks.push({sp:I18N.t('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:I18N.t('ending.h08.text'),vid:'616'});
     heroBlocks.push(_bgPage(I18N.t('ending.h08.diary',{shipName})));
   }
 
@@ -294,31 +296,31 @@ function showEndingCredits(onDone){
   } else {
     // 폴백: 공통 모듈 미로드 시에도 기존 정의로 엔딩 보장 (byte-identical)
     lines=[
-      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys1')},
-      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys2')},
-      // 일기 첫 페이지 (D-day 100년 + 1일)
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys1'),vid:'492'},
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys2'),vid:'493'},
+      // 일기 첫 페이지 (D-day 100년 + 1일) — 이름 포함, 자막만
       Object.assign({tx:I18N.t('ui.diaryWake1',{cmdName})},BG),
-      // 일기 두 번째 페이지 (첫 출항)
+      // 일기 두 번째 페이지 (첫 출항) — 이름 포함, 자막만
       Object.assign({tx:I18N.t('ui.firstFlightDiary',{shipName,cmdName})},BG),
-      // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨)
+      // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨) — 자막만
       ...heroBlocks,
-      // 치크스 진실 회상
+      // 치크스 진실 회상 — 이름 포함, 자막만
       Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
-      // 기함 출항 전야
+      // 기함 출항 전야 — 이름 포함, 자막만
       Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName})},BG),
-      // 6단 체인 회상
-      Object.assign({tx:I18N.t('ui.diary6Chain')},BG),
-      // 우르사 메이저 마지막 말
+      // 6단 체인 회상 — 고정 대사, vid 497
+      Object.assign({tx:I18N.t('ui.diary6Chain'),vid:'497'},BG),
+      // 우르사 메이저 마지막 말 — 이름 포함, 자막만
       Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
-      // 사령관 짧은 호흡
-      {sp:cmdName,col:'#ffd700',tx:I18N.t('ending.cmdTogether')},
+      // 사령관 짧은 호흡 — 고정 대사, vid 495
+      {sp:cmdName,col:'#ffd700',tx:I18N.t('ending.cmdTogether'),vid:'495'},
       {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName})},
-      // 일기 마지막 페이지 (D-day 100년 + 412일)
-      Object.assign({tx:I18N.t('ui.diaryLand412')},BG),
-      Object.assign({tx:I18N.t('ending.bg100Final')},BG),
+      // 일기 마지막 페이지 (D-day 100년 + 412일) — 고정 대사, vid 498
+      Object.assign({tx:I18N.t('ui.diaryLand412'),vid:'498'},BG),
+      Object.assign({tx:I18N.t('ending.bg100Final'),vid:'496'},BG),
       {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName})},
       {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.titleLine')},
-      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.liberationDone')}
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.liberationDone'),vid:'494'}
     ];
   }
 
@@ -361,11 +363,18 @@ function showEndingCredits(onDone){
           portraitEl.style.display='block';
           textColEl.style.textAlign='left';
         }
+        // 자동매칭 차단(음성연동 §0-B·4): 엔딩 오버레이의 화자 이름표·일기 본문을
+        //   전역 MutationObserver(playByText)가 잡아 오재생/반복(백구 일기·"광개토대왕")하던
+        //   문제를 막는다. 텍스트 주입 직전부터 다음 대사 전환까지 자동매칭을 억제하고,
+        //   고정 대사(vid 보유분)만 playLine({vid})로 명시 재생한다.
+        try{ if(window.VoicePlayer&&typeof window.VoicePlayer.suppress==='function') window.VoicePlayer.suppress(((l.tx||'').length>=60?5000:3600)+2000); }catch(e){}
         speakerEl.style.color=l.col||'#aaa';
         speakerEl.textContent=(l.ic?l.ic+' ':'')+l.sp;
         textEl.style.color=l.col||'#fff';
         textEl.textContent=`"${l.tx}"`;
         lineBox.style.opacity='1';
+        // 고정 대사만 음성 명시 재생(이름 포함 일기/타이틀/영웅카드는 vid 없음=무음 자막).
+        try{ if(l.vid&&window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:l.vid}); }catch(e){}
       }catch(e){console.warn('[ending] showLine',e.message);}
       // 대사 가독 시간 — 한 줄짜리는 3.6초, 긴 문장(60자+)은 5.0초
       const _readMs=(l.tx||'').length>=60?5000:3600;
