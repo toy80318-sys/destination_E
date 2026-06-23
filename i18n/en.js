@@ -1175,7 +1175,7 @@ I18N.registerLocale("en", {
   "ui.slotSwapHint": "💡 Click a slot to <b>move/swap</b> ships between slots. You can pick a ship card first.",
   "ui.cargoBayReachedMax": "<b style=\"color:var(--cyan)\">{nm}</b> cargo bay<br>reached the cap of <b style=\"color:var(--gold)\">100</b> slots.",
   "ui.swapRecruitConfirm": "Dismiss <b style=\"color:var(--red)\">{old}</b> and recruit <b style=\"color:var(--cyan)\">{new}</b>.",
-  "ui.swapLegendConfirm": "Dismiss <b style=\"color:var(--red)\">{old}</b> and recruit <b style=\"color:var(--gold)\">{new}</b>?",
+  "ui.swapLegendConfirm": "Dismiss <b style=\"color:var(--red)\">{old}</b> and<br>recruit <b style=\"color:var(--gold)\">{new}</b>?",
   "ui.civUnknown": "??? Civilization",
   "ui.miniGameControls": "<b style=\"color:#66ddff\">Arrow/WASD</b> or <b style=\"color:#66ddff\">{mouse}</b> · <b style=\"color:#ffcc66\">RShift/click</b> laser · <b style=\"color:#ff99cc\">Ctrl/Enter</b> missile · <b style=\"color:#ff44ff\">LShift</b> ultimate (lightning, 10s)",
   "ui.youWereDifferent": "... But you were different.",
