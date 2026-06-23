@@ -129,7 +129,7 @@ function generateQuests(pid){
   //    └ 보상 outro 가 'claimed' 로 마무리할 시간이 필요하므로 status 변경 자체를 안 함
   //  · 미승리 + 'active' + 전투 중도 아님 → 패배로 간주, 'available' 로 재활성화
   if(G.quests[pid]&&G.quests[pid].length&&!G._voidFalconDefeated){
-    const _voidCombatInProgress=!!(window.combatState&&combatState.isVoidBoss);
+    const _voidCombatInProgress=!!(typeof combatState!=='undefined'&&combatState&&combatState.isVoidBoss);   // combatState 는 전역 lexical(window 아님) — 직접 참조 (starmap.js 선례와 동일 패턴)
     if(!_voidCombatInProgress){
       G.quests[pid].forEach(q=>{
         if(q&&q.type==='void_boss'&&q.status==='active'){

@@ -3576,7 +3576,7 @@ function forceUrsaBoss(){
 try{if(typeof window!=='undefined')window.forceUrsaBoss=forceUrsaBoss;}catch(e){}
 function tryBossEntry(){
   // 사용자 요청 2026-06-09: 전투 중 보스전 진입도 차단 (이중 안전망)
-  if(window.combatState&&!window.combatState.done){
+  if(typeof combatState!=='undefined'&&combatState&&!combatState.done){   // combatState 는 전역 lexical(window 아님) — 직접 참조 (starmap.js 선례와 동일 패턴)
     try{notify(I18N.t('notify.combatTravelBlocked')||'⚔️ 전투 중에는 보스전에 진입할 수 없습니다.','err');}catch(e){}
     return;
   }
