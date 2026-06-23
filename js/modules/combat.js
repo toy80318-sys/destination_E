@@ -620,9 +620,9 @@ function _loadCombatImg(src,onLoad){
 // 함선 등급에 따른 표시 크기 (소형→전설 시각적 차이를 크게)
 function _shipDrawSize(u){
   const tier=u.tier||(u.isEnemy?'소형':'소형');
-  // 디스트로이 스타(히든 유니크) — 특수 거북선(492×304)의 1.5배 크기. 사용자 요청 2026-06-22.
+  // 디스트로이 스타(히든 유니크) — 전투 시 50% 축소(기존 738×456 → 369×228). 사용자 요청 2026-06-24.
   if((u.catalogId||u.catId||u.id||'').toString().toUpperCase().indexOf('DESTROYER_STAR')>-1||u._destroyerStar)
-    return{w:738,h:456,bar:792,label:20,gap:1100};
+    return{w:369,h:228,bar:396,label:20,gap:1100};
   // 특수 거북선 — 신화 기본(246×152)의 2배 크기로 전투 표시 (사용자 요청)
   if((u.catalogId||u.catId||u.id||'').toString().toUpperCase().indexOf('LGD01_SP')>-1||u._turtleSpecial)
     return{w:492,h:304,bar:528,label:18,gap:1100};
@@ -987,11 +987,70 @@ function _cbAddBeamAndHit(a1,a2,beamCol,isDead,delay,wasShielded){
   _cbStartAnimLoop();
 }
 
+// ── 전기(번개) 살보 — 워덴클리프(LGD02) 전용 VFX. ──────────────────────────
+//   ⚠ 연출(VFX) 전용. 데미지·명중·밸런스 불변(피해는 호출부의 _cbAddDmgText 1회만).
+//   _teslaUsed 무관하게 항상 번개로 시각화하며, 한 번에 count(기본 4)발을 다양하게 발사.
+//   각 번개는 seed/끝점 yOff/타겟 가로 오프셋/딜레이를 i별로 변주해 "다양한" 발사를 표현.
+//   _cbAddBeamAndHit 의 비-빔(머즐/피격/폭발/쉴드/SFX) 처리를 재사용하되, 빔 대신 lightning 다발을 push.
+function _cbAddElectricSalvo(a1,a2,col,isDead,delay,wasShielded,count){
+  delay=delay||0;
+  count=clamp(count|0,1,8);
+  // 클로저로 현재 combatState 캡처 — 전투 종료 후엔 SFX 발화 안 함 (_cbAddBeamAndHit 와 동일 패턴)
+  const _cs=combatState;
+  const _sfxOk=()=>_cs&&!_cs.done;
+  // 발사 사운드 (살보 1회)
+  setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('laser_fire',{vol:0.55,cooldown:40});}catch(e){}},delay*16);
+  // 마지막 번개가 도달하는 시점(첫 발 delay + (count-1)*2 + 3프레임)에 피격/폭발 SFX
+  const _lastDelay=delay+(count-1)*2;
+  const hitMs=(_lastDelay+3)*16;
+  if(wasShielded){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('shield_hit',{vol:0.55,cooldown:40});}catch(e){}},hitMs);}
+  if(isDead){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('explosion',{vol:0.75,cooldown:80});}catch(e){}},(_lastDelay+5)*16);}
+  // 아군 빔 두께 배율 — _cbAddBeamAndHit 와 동일하게 전술 단계마다 ×1.5 누적
+  const _isPlayerBeam=combatState&&(col==='#00f3ff'||col==='#ff44ff');
+  let thickMul=1;
+  if(_isPlayerBeam){
+    if(combatState._sunsinUsed)     thickMul*=1.5;
+    if(combatState._haikjinUsed)    thickMul*=1.5;
+    if(combatState._einsteinUsed)   thickMul*=1.5;
+    if(combatState._teslaUsed)      thickMul*=1.5;
+    if(combatState._genesisUsed)    thickMul*=1.5;
+    if(combatState._destinationUsed)thickMul*=1.5;
+  }
+  for(let i=0;i<count;i++){
+    const d=delay+i*2;                          // i별 staggered (2프레임 간격)
+    const yOff=(i-(count-1)/2)*10;              // 끝점 세로 오프셋 — 부채꼴 다양성
+    const xOff=(Math.random()-0.5)*14;          // 타겟 가로 미세 변주
+    const ex=a2.x+xOff, ey=a2.y+yOff;
+    // 1) 머즐 플래시
+    _cbEffects.push({type:'muzzle',x:a1.x,y:a1.y,col:col,r:7*Math.min(4,Math.sqrt(thickMul)),life:7,maxLife:7,delay:d});
+    // 2) 번개 — 끝점/seed/딜레이 변주로 제각각
+    _cbEffects.push({type:'lightning',x1:a1.x,y1:a1.y,x2:ex,y2:ey,col:col,life:14,maxLife:14,delay:d,thickMul:thickMul,seed:Math.random()*9999});
+  }
+  // 3) 쉴드 피격 헥사 플래시 (쉴드 생존 시) — 살보 마지막 도달 시점
+  if(wasShielded){
+    _cbEffects.push({type:'shieldHit',x:a2.x,y:a2.y,col:'#66ddff',r:26,life:16,maxLife:16,delay:_lastDelay+3});
+  }
+  // 4) 선체 피격 폭발 (_cbAddBeamAndHit 와 동일 강도)
+  const expCol=isDead?'#ff3300':(wasShielded?'#ffaa66':'#ff7755');
+  const expR=isDead?28:(wasShielded?12:18);
+  _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:expCol,r:expR,life:isDead?36:24,maxLife:isDead?36:24,delay:_lastDelay+4});
+  if(isDead){
+    _cbEffects.push({type:'shockwave',x:a2.x,y:a2.y,col:'#ffaa44',r:50,life:30,maxLife:30,delay:_lastDelay+4});
+    _cbEffects.push({type:'exp',x:a2.x,y:a2.y,col:'#ffffff',r:14,life:14,maxLife:14,delay:_lastDelay+4});
+    for(let i=0;i<10;i++){
+      const ang=(Math.PI*2*i)/10 + Math.random()*0.3;
+      _cbEffects.push({type:'shard',x:a2.x,y:a2.y,vx:Math.cos(ang)*3.8,vy:Math.sin(ang)*3.8,col:'#ffcc66',life:42,maxLife:42,delay:_lastDelay+4});
+    }
+  }
+  _cbStartAnimLoop();
+}
+
 // 미사일 살보 (최대 13발). 각 미사일은 곡선 궤적으로 날아가 타겟에서 폭발.
 // count: 1~13, 자동으로 클램프됨
 function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,sizeMul,highRarity){
   // 사용자 명세: 기본 1발, 전설·신화 미사일은 최대 4발까지 다양한 곡선으로 발사
-  count=clamp(count|0,1,4);
+  // (상한을 16으로 상향 — LGD01 8발/LGD01_SP 16발 VFX 전용. 일반 호출부는 count≤4라 영향 없음)
+  count=clamp(count|0,1,16);
   baseDelay=baseDelay||0;
   sizeMul=Math.max(1,sizeMul||1);
   // Doc#5: 전설·신화 미사일 — 더 큰 탄·더 넓은 곡선·발광 트레일 (발사 수는 그대로, VFX만 강화)
@@ -1003,12 +1062,15 @@ function _cbAddMissileSalvo(a1,a2,salvoCol,isDead,count,baseDelay,wasShielded,si
   const _sfxOk=()=>_cs&&!_cs.done;
   // 살보 발사 사운드 (한 번)
   setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('missile',{vol:0.6,cooldown:60});}catch(e){}},baseDelay*16);
+  // 미사일 사이 발사 텀: 기본 4프레임. 단 8발 이상(거북선 VFX)은 전투가 길어지지 않게 2프레임으로 단축.
+  // (count≤4 인 기존 호출부는 4프레임 그대로 — 회귀 없음)
+  const _stagStep=(count>4)?2:4;
   // 미사일은 약 60프레임에 걸쳐 도달 → 살보의 마지막이 도착하는 시점에 충돌 sfx
-  const lastImpactMs=(baseDelay + (count-1)*3 + 50)*16;
+  const lastImpactMs=(baseDelay + (count-1)*_stagStep + 50)*16;
   if(wasShielded){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('shield_hit',{vol:0.6,cooldown:80});}catch(e){}},lastImpactMs);}
   if(isDead){setTimeout(()=>{if(!_sfxOk())return;try{AudioMgr.playSfx('explosion',{vol:0.8,cooldown:80});}catch(e){}},lastImpactMs+50);}
   for(let i=0;i<count;i++){
-    const stagger=baseDelay + i*4; // 미사일 사이 4프레임 (살짝 더 분명한 발사 텀)
+    const stagger=baseDelay + i*_stagStep; // 미사일 사이 발사 텀(_stagStep: 기본 4·8발↑ 2프레임)
     // 다양한 곡선 (사용자 요청) — 부채꼴 + 위/아래 교차 호 + 약간 랜덤 지터
     const spread=(i-(count-1)/2)*22*_spreadBoost;  // 직전 8 → 22 (3배 더 넓게 퍼짐). 전설+는 더 넓게.
     const _archDir=(i%2===0)?-1:1;     // 짝수 미사일은 위 호, 홀수는 아래 호 — 시각적 다양성
@@ -2388,8 +2450,34 @@ function runCombatTurn(){
       // LGD03(렐러티비티) — 슬링샷 발진 연출로 대체(VFX 전용·피해 합계 불변). 그 외 함선은 기존 연출 유지.
       const _slBase=String(p.catalogId||p.catId||p.id||'').replace(/(?:_\d+|_main)$/,'').toUpperCase();
       const _useSling=SLINGSHOT_SHIPS.indexOf(_slBase)>=0 && spawnSlingshot(p,target,{rawDmg:rawDmg,shDmg:shDmg,isDead:isDead,usesMissile:usesMissile});
+      // ── 함선별 강제 VFX (장착 무기 무관·VFX 전용·피해 합계 불변) ──────────
+      //   데미지/명중은 위에서 이미 계산된 rawDmg/shDmg 그대로. 여기선 시각효과만 교체하고
+      //   _cbAddDmgText 는 정확히 1회만 호출(밸런스 불변). 적(enemy)에는 영향 없음 — 플레이어 사격 분기.
+      const _isTurtleSP=(_slBase==='LGD01_SP'||p._turtleSpecial);   // 불멸의 거북선
+      const _isTurtle=(_slBase==='LGD01');                          // 거북선
+      const _isWardencliffe=(_slBase==='LGD02');                    // 워덴클리프(전기)
       if(_useSling){
         _fireDelay+=18;   // 슬링샷이 빔/미사일·데미지텍스트 담당(4타 분할)
+      } else if(_isWardencliffe){
+        // LGD02 — 전기(번개) 4발 다양 발사. _teslaUsed 무관하게 항상 전기.
+        const _laserCol=combatState._destinationUsed?'#ff44ff':'#00f3ff';
+        _cbAddElectricSalvo(a1,a2,_laserCol,isDead,_fireDelay,wasShielded,4);
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+4);   // 데미지 1회 표시(불변)
+        _fireDelay+=14;
+      } else if(_isTurtle||_isTurtleSP){
+        // LGD01 — 미사일 S자 8발 / LGD01_SP(불멸) — 제각각 곡선 16발.
+        const _mcnt=_isTurtleSP?16:8;
+        // 전술 단계마다 미사일 크기 ×1.1 누적 + 시간차공격부터 색 변화 (기존 미사일 분기와 동일 규칙)
+        let _mSize=1, _mCol='#ffcc66';
+        if(combatState._sunsinUsed)      _mSize*=1.1;
+        if(combatState._haikjinUsed)     _mSize*=1.1;
+        if(combatState._einsteinUsed){   _mSize*=1.1; _mCol='#ff9933';}
+        if(combatState._teslaUsed){      _mSize*=1.1; _mCol='#ff8822';}
+        if(combatState._genesisUsed){    _mSize*=1.1; _mCol='#ff6633';}
+        if(combatState._destinationUsed){_mSize*=1.1; _mCol='#ff3333';}
+        _cbAddMissileSalvo(a1,a2,_mCol,isDead,_mcnt,_fireDelay,wasShielded,_mSize,true);  // highRarity=true → VFX 강화
+        _cbAddDmgText(a2,rawDmg,shDmg,_fireDelay+50);  // 미사일 도달 시점 데미지 1회 표시(불변)
+        _fireDelay+=18+_mcnt*2;
       } else if(usesMissile){
         // 사용자 명세: 기본 1발, 전설(set/legend)·신화(mythic) 미사일 장착 시 최대 4발
         const _bestR=_wc.missileBestRarity;
@@ -2995,7 +3083,10 @@ function _finishCombat(){
         const _mVer=(window._GAME_VER)?('?v='+encodeURIComponent(window._GAME_VER)):'';
         const _mFac=(/^F0[1-7]$/.test((pd&&pd.f)||''))?pd.f:'F05';
         const _mentImg='img/quests/combat_'+_mFac+'.png'+_mVer;
-        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',enemyMent:I18N.t('combat.defeatGeneric'+(1+Math.floor(Math.random()*3))),enemyImg:_mentImg,congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
+        // 해적 격파 후 적 멘트(랜덤1) — 자막과 동일 인덱스로 음성 명시 재생(vid=combat.defeatGeneric1~3)
+        const _defeatIdx=1+Math.floor(Math.random()*3);
+        try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:'combat.defeatGeneric'+_defeatIdx}); }catch(e){}
+        showAcquisitionReport({title:I18N.t('report.victoryTitle'),subtitle:I18N.t('ui.areaTurn',{nm:pd.nm||I18N.t('ui.unknownArea'),turn:G.turn}),items:_buildReport(),color:'var(--gold)',sfx:null,imgScale:0.5,acqLine:(typeof window._acqFlavorLine==='function')?window._acqFlavorLine(_acqCtx,_acqNm,_acqRar):'',enemyMent:I18N.t('combat.defeatGeneric'+_defeatIdx),enemyImg:_mentImg,congrats:_capturedShips.length>0?I18N.t('report.allWinCaptured',{n:_capturedShips.length}):I18N.t('report.allWin'),onClose:_merchant?(()=>{try{_showMerchantRescue(_merchant);}catch(e){}}):undefined});
       },900);
     }
     checkQuestCombatDone();
@@ -3098,6 +3189,8 @@ function _showMerchantRescue(d){
       <div style="color:var(--green);font-size:15px;font-weight:bold">🎁 ${_rewardLine}</div>
     </div>`;
     openModal(I18N.t('merchant.title'),html,[{txt:I18N.t('merchant.btnReceive'),fn:()=>{_grantMerchantReward(d);closeModal();},cls:'btn-gold'}],{});
+    // 구출 상인 감사 음성(자막과 동일 인덱스로 명시 재생, vid=merchant.thanks1~3)
+    try{ if(window.VoicePlayer&&typeof window.VoicePlayer.playLine==='function') window.VoicePlayer.playLine({vid:'merchant.thanks'+d.thanksIdx}); }catch(e){}
     try{AudioMgr.playSfx('coin',{vol:0.8,cooldown:0});}catch(e){}
   }catch(e){console.warn('[merchant modal]',e);}
 }
