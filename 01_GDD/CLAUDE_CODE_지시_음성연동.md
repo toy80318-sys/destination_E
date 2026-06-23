@@ -4,6 +4,38 @@
 > 목적: 제작 완료된 491개 음성 클립을 게임 컷신·팝업·퀘스트 대사에 연결(자동 재생) + 설정 토글.
 > ⭐ 한/영 정합성, 하드코딩 금지, 단위별 구현, 변경 .js마다 `node --check` 원칙 준수.
 
+## 0-B. ⚠ 우르사 보스전 직후 + 최종 엔딩 음성 (2026-06-23) — 신규 클립 + 매칭 버그 수정
+
+증상(사용자 보고): 우르사 메이저 보스전 이후 컷신과 **최종 엔딩**에서 우르사/백구/사령관/시스템 대사가 음성으로 안 나옴. 엔딩에선 엉뚱하게 **영웅 이름표("광개토대왕")** 와 **백구 일기 본문이 반복** 재생됨.
+
+진단:
+- **보스후 컷신(phase6 CH13~CH15):** 69개 대사 중 68개가 이미 매니페스트+클립 보유(ursa 8줄 포함). 누락은 이순신 1줄뿐 → **신규 생성 완료**(아래).
+- **최종 엔딩(`js/modules/ending-credits.js` `showLine()`):** 대사가 컷신 사전이 아니라 **i18n 템플릿 텍스트**로 그려지고, 일기 대사엔 **플레이어가 지은 사령관/함선 이름(`{cmdName}`/`{shipName}`/`{flagshipName}`)** 이 들어감 → 사전 녹음 음성과 자막이 매칭 불가. 또한 전역 `MutationObserver` 자동매칭이 엔딩 오버레이의 **화자 이름표·일기 본문**을 텍스트로 잡아 오재생/반복.
+- **결정(사람 승인):** 엔딩은 **이름 없는 고정 대사만 음성화**, 이름 들어가는 일기 페이지는 **자막만**. 오작동 자동매칭은 차단.
+
+Cowork에서 이미 완료한 것(자산·데이터):
+- 신규 클립 16개 생성·배포(KO+EN) → `02_Assets/audio/voice(_en)/`. 매니페스트 SSOT(`voice_manifest.csv`)에 **num 492~499** 행 추가:
+  - `492` navai(시스템): `ending.sys1` "…100년의 봉쇄가 끝났다…"
+  - `493` navai: `ending.sys2` "…지구는 다시 별을 향해 손을 뻗는다…"
+  - `494` navai: `ending.liberationDone` "─ 인류 해방 완수 ─"
+  - `495` commander: `ending.cmdTogether` "우리는 함께 어둠을 뚫었다."
+  - `496` baekgu: `ending.bg100Final` (BG-100 마지막 로그)
+  - `497` baekgu: `ui.diary6Chain`
+  - `498` baekgu: `ui.diaryLand412`
+  - `499` yisunsin: phase6 컷신 누락분 "보이드 구역 3행성 — 캅테인/오리온/제타 레티쿨리…"
+  - 캐스팅 voice ID 전체표·생성 파라미터는 **`01_GDD/voice/생성기록_2026-06-23.md`** 참고(재생성 시 동일 보이스 유지용).
+  - 시스템 KO = 계정 "항법 AI"(`eoYFTLfVKpYRP0YjMbBD`), EN = River(`SAz9YHcvj6GT2YYXdXww`). 사령관·백구는 기존 확정 보이스. **이순신 KO = `Uzazy4zhKPfGGeuptGj0`("이순신 아이돌1")**, EN = George(`JBFqnCBsd6RMkjVDRZzb`).
+  - ⚠ `yisunsin_499`는 초기에 잘못된 보이스(`ZZ4xhVcc83kZBfNIlIIz`="Manbo")로 생성됐다가 **이순신 보이스로 재생성·재배포 완료.** Manbo는 이순신 아님 — 사용 금지.
+
+**Coder 작업(단위별):**
+1. **매니페스트 재빌드:** 갱신된 `01_GDD/voice/voice_manifest.csv` 로 `js/data/voice-manifest.js` 재생성(리치 포맷: `VOICE_MANIFEST`/`VOICE_BYTEXT`, num 키 + `clip/clip_f/clip_en/clip_en_f/lang`). 그다음 `node scripts/gen-voice-bytext-en.js` 로 EN 브리지 갱신. → 499(이순신) 컷신 줄은 phase6 KO/EN 병렬 구조라 자동 연결됨.
+2. **엔딩 명시 재생 배선:** `ending-credits.js` `showLine()` 의 **고정 대사(이름 변수 없음)** 항목에 한해 `VoicePlayer.playLine({vid})` 를 명시 호출(매핑: sys1→492, sys2→493, liberationDone→494, cmdTogether→495, bg100Final→496, diary6Chain→497, diaryLand412→498). `ending.titleLine`(타이틀 텍스트)는 음성 없음.
+3. **이름 포함 일기 페이지는 자막만:** `ui.diaryWake1/firstFlightDiary/cheeksTruthDiary/predepartureDiary/ursaPostLine/lastWarpHome/dontWakeMe` 및 heroBlocks의 이름 포함 일기 — **음성 호출하지 않음**.
+4. **오작동 자동매칭 차단:** 엔딩/일기 오버레이가 떠 있는 동안 `voice-player` 의 전역 `MutationObserver` 자동매칭(`playByText`)이 **화자 이름표·일기 본문**을 잡지 않도록 가드. (예: 엔딩 오버레이 표시 동안 `VoicePlayer.suppress()` 유지, 또는 자동매칭 셀렉터를 실제 대사 텍스트 요소로 한정하고 이름표/제목 요소는 제외.) 백구 일기 반복재생 제거가 핵심.
+5. **보스후 컷신(CH13~15):** phase6 컷신은 매니페스트 보유분이라, 컷신 렌더가 라인 전환 시 자동매칭으로 1회만 재생되는지 확인(중복/누락 시 라인 전환부에서 `playLine({vid})` 명시 호출로 보강).
+
+검증(Tester→Director): 보스 격파 → CH14-A부터 엔딩까지 진행하며 (a) 시스템/사령관/백구 고정 대사가 해당 음성으로 1회씩 재생, (b) 이름 포함 일기는 무음+자막, (c) 이름표("광개토대왕")·일기 반복 오재생이 사라졌는지 확인. KO/EN 양쪽. 실패는 "입력+기대+실제"로 보고.
+
 ## 0. 산출물 (이미 제작 완료)
 - 클립: `01_GDD/voice/clips/<slug>/<slug>_NNN.mp3` — **총 491개 / 25 화자**.
 - 매핑: `01_GDD/voice/voice_manifest.csv` (num, char, slug, clip, lang, text) — **대사번호 ↔ 클립 ↔ 원문**의 단일 진실원본(SSOT).

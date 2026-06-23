@@ -3693,7 +3693,10 @@ function showUrsaMajorIntro(){
 // ─── 우르사 메이저 2페이즈 진입 팝업 (호위 전멸 → 본체 각성) ───
 function _showUrsaPhase2Popup(onClose){
   // Doc#3 #2: 페이즈2 각성 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC) 전환. 화자=우르사 메이저.
-  const scenes=[{char:'ursa',name:I18N.t('ursa.bossNameStory'),color:'#ff3366',text:I18N.t('ursa.phase2Line')}];
+  // 컷신 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조 (CUTSCENE_STRUCTURE_STANDARD §6-1).
+  const scenes=(window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.ursaPhase2==='function')
+    ? window.BOSS_CUTSCENES.ursaPhase2()
+    : [{char:'ursa',name:I18N.t('ursa.bossNameStory'),color:'#ff3366',text:I18N.t('ursa.phase2Line')}];
   if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
     window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onClose==='function')onClose();}});
   } else {
@@ -3703,7 +3706,10 @@ function _showUrsaPhase2Popup(onClose){
 // ─── 블랙팔콘 히든전: 호위 전멸 → 본체 각성 팝업 ───
 function _showBlackfalconPhase2Popup(onClose){
   // Doc#3 #2: 본체 각성 팝업(openModal) → 풀스크린 컷신 전환. 화자=블랙팔콘(void_hiden).
-  const scenes=[{char:'void_hiden',name:I18N.t('falcon.bossNameStory'),color:'#cc66ff',text:I18N.t('falcon.afterUrsa')}];
+  // 컷신 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조 (CUTSCENE_STRUCTURE_STANDARD §6-1).
+  const scenes=(window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.blackfalconPhase2==='function')
+    ? window.BOSS_CUTSCENES.blackfalconPhase2()
+    : [{char:'void_hiden',name:I18N.t('falcon.bossNameStory'),color:'#cc66ff',text:I18N.t('falcon.afterUrsa')}];
   if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
     window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onClose==='function')onClose();}});
   } else {
@@ -3715,34 +3721,39 @@ function _showBlackfalconPhase2Popup(onClose){
 // ※ 보이드/추가 컨텐츠 언급 제거 — 우르사 메이저 격파가 진정한 엔딩
 function showBossVictoryEpilogue(onDone){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
-  // 사용자 요청 (2026-06-06): 영문판 화자명 한글 잔재 제거 — i18n 라우팅
-  const _spUrsa=I18N.t('speaker.ursaMajor');
-  const _spBk=I18N.t('speaker.baekgu');
-  const _spSys=I18N.t('actTrans.2.sysSp');
-  const _raw=[
-    {sp:_spUrsa,tx:I18N.t('ursa.outro.1')},
-    {sp:_spUrsa,tx:I18N.t('ursa.outro.2')},
-    {sp:_spUrsa,tx:I18N.t('ursa.outro.3')},
-    {sp:_spSys,tx:I18N.t('ursa.outro.sys1')},
-    {sp:_spBk,tx:I18N.t('ui.victoryLine1',{nm:cmdName})},
-    {sp:_spBk,tx:I18N.t('ursa.outro.bk')},
-    {sp:_spSys,tx:I18N.t('ursa.outro.sys2')},
-    {sp:cmdName,tx:I18N.t('ursa.outro.cmd1')},
-    {sp:cmdName,tx:I18N.t('ursa.outro.cmd2')},
-    {sp:_spBk,tx:I18N.t('ui.victoryLine2',{nm:cmdName})},
-    {sp:cmdName,tx:I18N.t('ursa.outro.cmd3')},
-    {sp:_spSys,tx:I18N.t('ursa.outro.sys3')}
-  ];
-  // 사용자 요청 2026-06-17: 에필로그 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC)으로 변경.
-  //   화자별 char(초상)·color 매핑 — 우르사='ursa', 시스템='system', 백구='baekgu1', 사령관='commander'.
-  const scenes=_raw.map(function(l){
-    let _char,_color;
-    if(l.sp===_spUrsa){_char='ursa';_color='#ff3366';}
-    else if(l.sp===_spSys){_char='system';_color='#66ffcc';}
-    else if(l.sp===_spBk){_char='baekgu1';_color='#66ddff';}
-    else {_char='commander';_color='#00f3ff';}
-    return {char:_char,name:l.sp,color:_color,text:l.tx};
-  });
+  // 컷신 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조 (CUTSCENE_STRUCTURE_STANDARD §6-1).
+  //   vid 601~609 음성 배선·화자 char/color 매핑은 모듈 내부에서 보존된다.
+  let scenes;
+  if(window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.ursaEpilogue==='function'){
+    scenes=window.BOSS_CUTSCENES.ursaEpilogue(cmdName);
+  } else {
+    // 폴백: 공통 모듈 미로드 시에도 기존 정의로 컷신 보장 (vid 601~609 유지)
+    const _spUrsa=I18N.t('speaker.ursaMajor');
+    const _spBk=I18N.t('speaker.baekgu');
+    const _spSys=I18N.t('actTrans.2.sysSp');
+    const _raw=[
+      {sp:_spUrsa,tx:I18N.t('ursa.outro.1'),vid:'601'},
+      {sp:_spUrsa,tx:I18N.t('ursa.outro.2'),vid:'602'},
+      {sp:_spUrsa,tx:I18N.t('ursa.outro.3'),vid:'603'},
+      {sp:_spSys,tx:I18N.t('ursa.outro.sys1')},
+      {sp:_spBk,tx:I18N.t('ui.victoryLine1',{nm:cmdName}),vid:'604'},
+      {sp:_spBk,tx:I18N.t('ursa.outro.bk'),vid:'605'},
+      {sp:_spSys,tx:I18N.t('ursa.outro.sys2')},
+      {sp:cmdName,tx:I18N.t('ursa.outro.cmd1'),vid:'607'},
+      {sp:cmdName,tx:I18N.t('ursa.outro.cmd2'),vid:'608'},
+      {sp:_spBk,tx:I18N.t('ui.victoryLine2',{nm:cmdName}),vid:'606'},
+      {sp:cmdName,tx:I18N.t('ursa.outro.cmd3'),vid:'609'},
+      {sp:_spSys,tx:I18N.t('ursa.outro.sys3')}
+    ];
+    scenes=_raw.map(function(l){
+      let _char,_color;
+      if(l.sp===_spUrsa){_char='ursa';_color='#ff3366';}
+      else if(l.sp===_spSys){_char='system';_color='#66ffcc';}
+      else if(l.sp===_spBk){_char='baekgu1';_color='#66ddff';}
+      else {_char='commander';_color='#00f3ff';}
+      return {char:_char,name:l.sp,color:_color,text:l.tx,vid:l.vid};
+    });
+  }
   if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
     window.STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){if(typeof onDone==='function')onDone();}});
   } else {

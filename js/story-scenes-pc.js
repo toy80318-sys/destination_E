@@ -774,11 +774,42 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════
+  // 화자 → {char, color} 매핑 헬퍼 (CUTSCENE_STRUCTURE_STANDARD §4)
+  //   기존 레지스트리(HEROES, STORY_NPCS)를 사용해 컷신 화자의 초상 키(char)와
+  //   화자명 색상(color)을 일원화한다. 호출부의 if-문자열 비교를 대체.
+  //   인자는 화자 id(예 'baekgu','commander','ursa','void','H01') 또는 영웅 표시명.
+  //   ※ 반환 char/color 는 기존 인라인 매핑과 byte-identical (기능 변화 0).
+  // ═══════════════════════════════════════════════════════════════════
+  function speakerToChar(id){
+    // 1) 고정 화자 (스토리 컷신 공용) — 기존 인라인 값 보존
+    switch(id){
+      case 'baekgu':    return {char:'baekgu1',   color:'#66ddff'};
+      case 'commander': return {char:'commander', color:'#00f3ff'};
+      case 'ursa':      return {char:'ursa',      color:'#ff3366'};
+      case 'void':
+      case 'void_hiden':
+      case 'blackfalcon': return {char:'void_hiden', color:'#cc66ff'};
+      case 'system':    return {char:'system',    color:'#66ffcc'};
+    }
+    // 2) 영웅 — id('H0X') 또는 표시명(HEROES[*].nm) 으로 hero0X 해석
+    try{
+      var H = window.HEROES;
+      if(H){
+        if(H[id]) return {char:'hero'+String(id).slice(1), color:'#ffaa44'};
+        for(var hid in H){ if(H[hid] && H[hid].nm===id) return {char:'hero'+hid.slice(1), color:'#ffaa44'}; }
+      }
+    }catch(e){}
+    // 3) 폴백 — 기존 _heroChar 미스 시 'system'
+    return {char:'system', color:'#ffaa44'};
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
   // 전역 노출
   // ═══════════════════════════════════════════════════════════════════
   window.STORY_SCENES_PC = {
     version: '1.2.0',
     showCharDialog: showCharDialog,
+    speakerToChar: speakerToChar,
     triggerHeroRecruitScene: triggerHeroRecruitScene,
     triggerScene: triggerScene,
     forceReplay: forceReplay,

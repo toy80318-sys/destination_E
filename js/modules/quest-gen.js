@@ -175,53 +175,53 @@ function generateQuests(pid){
 // 호러 + 글리치 + 영웅 반응 + 위트있는 마무리
 function showVoidBossIntro(questRef){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
-  // 사용자 요청 (2026-06-06): 영문판에서 화자명/효과음 텍스트 한글 잔재 제거 — i18n 라우팅
-  const _spBk=I18N.t('speaker.baekgu');
-  // 영입한 영웅 반응 자동 삽입 (있는 영웅만)
-  const _hl=G.heroes||[];
-  const heroLines=[];
-  if(_hl.includes('H01'))heroLines.push({sp:I18N.t('hero.H01.nm'),tx:I18N.t('voidQ.h01.line')});
-  if(_hl.includes('H03'))heroLines.push({sp:I18N.t('hero.H03.nm'),tx:I18N.t('voidQ.h03.line')});
-  if(_hl.includes('H06'))heroLines.push({sp:I18N.t('hero.H06.nm'),tx:I18N.t('voidQ.h06.line')});
-  if(_hl.includes('H07'))heroLines.push({sp:I18N.t('hero.H07.nm'),tx:I18N.t('voidQ.h07.line')});
-  if(_hl.includes('H04'))heroLines.push({sp:I18N.t('hero.H04.nm'),tx:I18N.t('voidQ.h04.line')});
-  if(_hl.includes('H08'))heroLines.push({sp:I18N.t('hero.H08.nm'),tx:I18N.t('voidQ.h08.line')});
-  // 영웅이 없으면 위트있는 폴백
-  if(heroLines.length===0)heroLines.push({sp:cmdName,tx:I18N.t('voidQ.cmdNoHero')});
-
-  const lines=[
-    // 1) 백구의 다급한 외침
-    {sp:_spBk,tx:I18N.t('ui.blackShipApprox',{nm:cmdName}),fx:'baekgu'},
-    // 2~5) 호러풍 글리치 통신 — '치지직' 사운드 텍스트도 i18n 키화 (voidQ.staticNoise)
-    {sp:I18N.t('ui.signalReceived'),tx:I18N.t('voidQ.staticNoise'),fx:'static'},
-    {sp:'???',tx:I18N.t('voidQ.unknown1'),fx:'glitch'},
-    {sp:'???',tx:I18N.t('voidQ.unknown2'),fx:'glitch'},
-    {sp:'???',tx:I18N.t('voidQ.unknown3'),fx:'glitch'},
-    // 6) 백구의 놀란 반응
-    {sp:_spBk,tx:I18N.t('ui.voidGovernorReact'),fx:'baekgu'},
-    // 7~N) 영웅들의 반응 (영입한 영웅들만)
-    ...heroLines,
-    // 마지막 위트 있는 마무리들
-    {sp:cmdName,tx:I18N.t('voidQ.cmdAccept')},
-    {sp:_spBk,tx:I18N.t('voidQ.bkHorrorJoke')},
-    {sp:cmdName,tx:I18N.t('voidQ.cmdBkScold')},
-    {sp:_spBk,tx:I18N.t('ui.allFleetWaiting',{cmdName})}
-  ];
-  // 사용자 요청 2026-06-17: 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC.showCharDialog).
-  //   화자 char 매핑 — 보이드/???='void_hiden', 백구='baekgu1', 사령관='commander', 영웅=hero0X(이름 매칭).
+  // 컷신 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조 (CUTSCENE_STRUCTURE_STANDARD §6-1).
+  //   화자 char/color 매핑·영웅 반응·표준 scene 변환은 모듈 내부에서 보존된다.
   //   컷신 종료 후 '전투 시작 / 나중에' 선택 모달로 기존 선택지를 보존한다.
-  const _heroChar=function(sp){if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';};
-  const scenes=lines.map(function(l){
-    const isVoid=l.sp==='???'||l.sp===I18N.t('ui.signalReceived');
-    const isBaekgu=(l.sp==='백구'||l.sp==='Baekgu'||l.sp===_spBk);
-    const isCmd=l.sp===cmdName;
-    let ch,col;
-    if(isVoid){ch='void_hiden';col='#cc66ff';}
-    else if(isBaekgu){ch='baekgu1';col='#66ddff';}
-    else if(isCmd){ch='commander';col='#00f3ff';}
-    else {ch=_heroChar(l.sp);col='#ffaa44';}
-    return {char:ch,name:l.sp,color:col,text:l.tx};
-  });
+  let scenes;
+  if(typeof window!=='undefined'&&window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.voidIntro==='function'){
+    scenes=window.BOSS_CUTSCENES.voidIntro(cmdName, G.heroes||[]);
+  } else {
+    // 폴백: 공통 모듈 미로드 시에도 기존 정의로 컷신 보장
+    const _spBk=I18N.t('speaker.baekgu');
+    const _hl=G.heroes||[];
+    const heroLines=[];
+    if(_hl.includes('H01'))heroLines.push({sp:I18N.t('hero.H01.nm'),tx:I18N.t('voidQ.h01.line')});
+    if(_hl.includes('H03'))heroLines.push({sp:I18N.t('hero.H03.nm'),tx:I18N.t('voidQ.h03.line')});
+    if(_hl.includes('H06'))heroLines.push({sp:I18N.t('hero.H06.nm'),tx:I18N.t('voidQ.h06.line')});
+    if(_hl.includes('H07'))heroLines.push({sp:I18N.t('hero.H07.nm'),tx:I18N.t('voidQ.h07.line')});
+    if(_hl.includes('H04'))heroLines.push({sp:I18N.t('hero.H04.nm'),tx:I18N.t('voidQ.h04.line')});
+    if(_hl.includes('H08'))heroLines.push({sp:I18N.t('hero.H08.nm'),tx:I18N.t('voidQ.h08.line')});
+    if(heroLines.length===0)heroLines.push({sp:cmdName,tx:I18N.t('voidQ.cmdNoHero')});
+    const lines=[
+      {sp:_spBk,tx:I18N.t('ui.blackShipApprox',{nm:cmdName}),fx:'baekgu'},
+      {sp:I18N.t('ui.signalReceived'),tx:I18N.t('voidQ.staticNoise'),fx:'static'},
+      {sp:'???',tx:I18N.t('voidQ.unknown1'),fx:'glitch'},
+      {sp:'???',tx:I18N.t('voidQ.unknown2'),fx:'glitch'},
+      {sp:'???',tx:I18N.t('voidQ.unknown3'),fx:'glitch'},
+      {sp:_spBk,tx:I18N.t('ui.voidGovernorReact'),fx:'baekgu'},
+      ...heroLines,
+      {sp:cmdName,tx:I18N.t('voidQ.cmdAccept')},
+      {sp:_spBk,tx:I18N.t('voidQ.bkHorrorJoke')},
+      {sp:cmdName,tx:I18N.t('voidQ.cmdBkScold')},
+      {sp:_spBk,tx:I18N.t('ui.allFleetWaiting',{cmdName})}
+    ];
+    const _heroChar=function(sp){
+      if(typeof window!=='undefined'&&window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.speakerToChar==='function') return window.STORY_SCENES_PC.speakerToChar(sp).char;
+      if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';
+    };
+    scenes=lines.map(function(l){
+      const isVoid=l.sp==='???'||l.sp===I18N.t('ui.signalReceived');
+      const isBaekgu=(l.sp==='백구'||l.sp==='Baekgu'||l.sp===_spBk);
+      const isCmd=l.sp===cmdName;
+      let ch,col;
+      if(isVoid){ch='void_hiden';col='#cc66ff';}
+      else if(isBaekgu){ch='baekgu1';col='#66ddff';}
+      else if(isCmd){ch='commander';col='#00f3ff';}
+      else {ch=_heroChar(l.sp);col='#ffaa44';}
+      return {char:ch,name:l.sp,color:col,text:l.tx};
+    });
+  }
   function _engageChoice(){
     openModal(I18N.t('modal.zetaSignal'),
       `<div style="padding:10px 6px;text-align:center">${(typeof _formatEnemyPreview==='function'?_formatEnemyPreview([{...VOID_BOSS}]):'')}</div>`,
@@ -241,7 +241,12 @@ function showVoidBossIntro(questRef){
 // 히든 보스 격파/철수 시 — 작별 메시지 + 함대 복구 + 보상 수령
 function showVoidBossOutro(){
   const cmdName=G.profile?.name||I18N.t('ui.commander');
-  // 사용자 요청 (2026-06-06): 영문판 화자명/효과음 한글 잔재 제거
+  // 컷신 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조 (CUTSCENE_STRUCTURE_STANDARD §6-1).
+  let scenes;
+  if(typeof window!=='undefined'&&window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.voidOutro==='function'){
+    scenes=window.BOSS_CUTSCENES.voidOutro(cmdName);
+  } else {
+  // 폴백: 공통 모듈 미로드 시에도 기존 정의로 컷신 보장
   const _spBk=I18N.t('speaker.baekgu');
   const _spFalcon=I18N.t('speaker.blackfalcon');
   const lines=[
@@ -253,10 +258,11 @@ function showVoidBossOutro(){
     {sp:_spBk,tx:I18N.t('ui.victoryLine3',{nm:cmdName})},
     {sp:cmdName,tx:I18N.t('falconEnd.cmd')}
   ];
-  // 사용자 요청 2026-06-17: 팝업(openModal) → 풀스크린 컷신(STORY_SCENES_PC.showCharDialog).
-  //   화자 char 매핑 — 보이드/팔콘='void_hiden', 백구='baekgu1', 사령관='commander'.
-  const _heroChar=function(sp){if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';};
-  const scenes=lines.map(function(l){
+  const _heroChar=function(sp){
+    if(typeof window!=='undefined'&&window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.speakerToChar==='function') return window.STORY_SCENES_PC.speakerToChar(sp).char;
+    if(typeof HEROES!=='undefined'){for(const id in HEROES){if(HEROES[id].nm===sp)return 'hero'+id.slice(1);}}return 'system';
+  };
+  scenes=lines.map(function(l){
     const isVoid=l.sp==='팔콘 스카우트'||l.sp==='Falcon Scout'||l.sp==='블랙팔콘'||l.sp==='Blackfalcon'||l.sp==='Black Falcon'||l.sp===_spFalcon||l.sp===I18N.t('ui.signalReceived');
     const isBaekgu=(l.sp==='백구'||l.sp==='Baekgu'||l.sp===_spBk);
     const isCmd=l.sp===cmdName;
@@ -267,6 +273,7 @@ function showVoidBossOutro(){
     else {ch=_heroChar(l.sp);col='#ffaa44';}
     return {char:ch,name:l.sp,color:col,text:l.tx};
   });
+  }
   if(typeof window!=='undefined'&&window.STORY_SCENES_PC&&typeof STORY_SCENES_PC.showCharDialog==='function'){
     STORY_SCENES_PC.showCharDialog({scenes:scenes,onDone:function(){try{_grantVoidBossRewards();}catch(e){}}});
   } else {

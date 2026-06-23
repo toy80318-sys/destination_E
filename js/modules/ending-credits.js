@@ -285,33 +285,42 @@ function showEndingCredits(onDone){
   try{AudioMgr.playBgm('P31');}catch(e){}
 
   // 대사 시퀀스 — 백구의 일기 회상 + 영웅 한마디 + 시퀄 훅
-  const lines=[
-    {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys1')},
-    {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys2')},
-    // 일기 첫 페이지 (D-day 100년 + 1일)
-    Object.assign({tx:I18N.t('ui.diaryWake1',{cmdName})},BG),
-    // 일기 두 번째 페이지 (첫 출항)
-    Object.assign({tx:I18N.t('ui.firstFlightDiary',{shipName,cmdName})},BG),
-    // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨)
-    ...heroBlocks,
-    // 치크스 진실 회상
-    Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
-    // 기함 출항 전야
-    Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName})},BG),
-    // 6단 체인 회상
-    Object.assign({tx:I18N.t('ui.diary6Chain')},BG),
-    // 우르사 메이저 마지막 말
-    Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
-    // 사령관 짧은 호흡
-    {sp:cmdName,col:'#ffd700',tx:I18N.t('ending.cmdTogether')},
-    {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName})},
-    // 일기 마지막 페이지 (D-day 100년 + 412일)
-    Object.assign({tx:I18N.t('ui.diaryLand412')},BG),
-    Object.assign({tx:I18N.t('ending.bg100Final')},BG),
-    {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName})},
-    {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.titleLine')},
-    {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.liberationDone')}
-  ];
+  //   대사 데이터는 공통 모듈(js/data/boss-cutscenes.js)에서 참조
+  //   (CUTSCENE_STRUCTURE_STANDARD §6-1). 고유 렌더러 R3(자동롤·크레딧·레이아웃)는
+  //   아래 그대로 유지하며, {sp,col,tx,ic} 스키마·필드·순서도 보존된다.
+  let lines;
+  if(window.BOSS_CUTSCENES&&typeof window.BOSS_CUTSCENES.earthLiberationEnding==='function'){
+    lines=window.BOSS_CUTSCENES.earthLiberationEnding(cmdName,shipName,flagshipName,_hl);
+  } else {
+    // 폴백: 공통 모듈 미로드 시에도 기존 정의로 엔딩 보장 (byte-identical)
+    lines=[
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys1')},
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys2')},
+      // 일기 첫 페이지 (D-day 100년 + 1일)
+      Object.assign({tx:I18N.t('ui.diaryWake1',{cmdName})},BG),
+      // 일기 두 번째 페이지 (첫 출항)
+      Object.assign({tx:I18N.t('ui.firstFlightDiary',{shipName,cmdName})},BG),
+      // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨)
+      ...heroBlocks,
+      // 치크스 진실 회상
+      Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
+      // 기함 출항 전야
+      Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName})},BG),
+      // 6단 체인 회상
+      Object.assign({tx:I18N.t('ui.diary6Chain')},BG),
+      // 우르사 메이저 마지막 말
+      Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
+      // 사령관 짧은 호흡
+      {sp:cmdName,col:'#ffd700',tx:I18N.t('ending.cmdTogether')},
+      {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName})},
+      // 일기 마지막 페이지 (D-day 100년 + 412일)
+      Object.assign({tx:I18N.t('ui.diaryLand412')},BG),
+      Object.assign({tx:I18N.t('ending.bg100Final')},BG),
+      {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName})},
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.titleLine')},
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.liberationDone')}
+    ];
+  }
 
   const speakerEl=overlay.querySelector('#_end-speaker');
   const textEl=overlay.querySelector('#_end-text');
