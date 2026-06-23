@@ -622,7 +622,7 @@ function renderShipTab(body){
       </div>
       <div data-scroll-id="ship-fleet" style="flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent">
         ${G.fleet.length>0
-          ? `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">${myFleetCards}</div>`
+          ? `<div style="display:grid;grid-template-columns:1fr;gap:10px">${myFleetCards}</div>`
           : `<div style="color:var(--dim);font-size:12px;text-align:center;padding:14px">${I18N.t('ui.noOwnedShips')}</div>`}
         ${_reserveSectionHtml}
       </div>
@@ -666,7 +666,7 @@ function renderShipTab(body){
         var tierCol={'신화':'var(--purple)','전설기함':'#d4af37','대형':'var(--gold)','중형':'var(--blue)','소형':'var(--dim)'};
 
         // bugfix 2026-06-11: minmax(0,1fr) — 내용(긴 금액 등)과 무관하게 모든 카드 동일 폭 강제
-        return '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px">'+
+        return '<div style="display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-bottom:14px">'+
           allSorted.map(function(s){
             var tc=tierCol[s.tier]||'var(--dim)';
             var actualPrice=iSunsin?Math.floor(s.price*0.85):s.price;
