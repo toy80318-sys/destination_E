@@ -63,10 +63,10 @@
 ## 🔲 남은 작업 (출시까지)
 
 ### A. 코드 정리 (Claude Code 담당)
-- [ ] **C1 전투 분리 런타임 검증** — `npm run electron:dev`로 전투 1회 트리거, 콘솔 에러 확인 후 커밋·버전 bump
-- [ ] **C2** 엔딩 시퀀스 → `combat-endings.js`
-- [ ] **C3** 크루/퀘스트 처리 → `crew-quests.js`
-- [ ] **C4** ECONOMY → `economy.js`
+- [x] **C1 전투 분리** — `combat.js` 분리·커밋 완료. 정적/구조 회귀 검증 통과(2026-06-23). 런타임(GUI) 1회 확인은 사람 확인 항목으로 잔존.
+- [x] **C2** 엔딩 시퀀스 — `combat-endings.js`가 아니라 **`ending-credits.js`로 이미 분리됨**(2026-06-10). 신규 파일 생성 금지.
+- [ ] **C3** 크루/퀘스트 처리 → `crew-quests.js` — ⚠️ 보류. 라인범위 stale·`combatState`(4342) 포함·함수 파편화. 함수단위 추출 필요.
+- [ ] **C4** ECONOMY → `economy.js` — 🔄 진행 중. `game.js:1604` ECONOMY 마커 기준 추출.
 > 상세 지시는 루트 `CLAUDE_CODE_지시서.md` 참조.
 
 ### B. Steam 출시 마감

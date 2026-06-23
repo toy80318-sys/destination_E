@@ -19,6 +19,12 @@ Cowork에서 분석·분리·정리 작업을 진행했고, **실행 검증·커
 
 ---
 
+> **[2026-06-23 갱신]** C1(전투 분리)·C2(엔딩 분리)는 **완료**로 확인됨. 아래 1·2는 이미 처리된 작업의 기록이다.
+> - **C1**: `js/modules/combat.js`로 분리 + 커밋 완료. 정적/구조 회귀 검증 통과(node --check, 경계 심볼 누락 0, 중복 정의 0, combatState는 game.js 잔류). window.combatState 가드 버그 2건(combat.js, quest-gen.js)은 별도 수정·커밋함.
+> - **C2**: 엔딩 시퀀스는 지시서가 명명한 `combat-endings.js`가 아니라 **`js/modules/ending-credits.js`로 이미 분리·출시됨**(2026-06-10, index.html:454 로드). `combat-endings.js`를 새로 만들면 이중 정의로 깨지므로 **생성 금지**.
+> - **C3**: 아래 §3의 라인범위(3021~4450)는 **stale/위험**. 그 안에 `let combatState=null;`(game.js:4342, combat.js 243회 참조)가 포함되어 통째 이동 시 깨짐. 크루/퀘스트 함수는 3개 클러스터로 파편화. 진행하려면 라인범위가 아닌 **함수 단위 cherry-pick + window.X export** 필요. 현재 사람 결정으로 **보류**.
+> - **C4**: ECONOMY 분리 진행 중. §3의 라인범위(2158~2683) 무시, `game.js:1604`의 `// ═══ ECONOMY ═══` 마커 기준으로 추출.
+
 ## 1. [필수] 전투 분리 실행 검증
 
 정적 검증은 끝났으나 **런타임 검증은 미완**. 반드시 실제 실행으로 확인할 것.
@@ -53,9 +59,9 @@ git commit -m "refactor(split): C1 — 전투 엔진 combat.js 분리 + 손상 �
 
 C1과 동일 패턴(전역 함수 이동, `let/const` 경계 변수만 `window` 호환 주의, 단계마다 검증):
 
-- **C2** — 엔딩 시퀀스 → `js/modules/combat-endings.js` (보스 에필로그/엔딩 ~400줄)
-- **C3** — 크루/퀘스트 처리 (game.js 구 3021~4450, ~1,400줄) → `js/modules/crew-quests.js`
-- **C4** — ECONOMY (game.js 구 2158~2683, ~525줄) → `js/modules/economy.js`
+- **C2** — ~~엔딩 시퀀스 → `js/modules/combat-endings.js`~~ ✅ **완료**: 실제로는 `js/modules/ending-credits.js`로 이미 분리됨(2026-06-10). `combat-endings.js` 생성 금지.
+- **C3** — ~~크루/퀘스트 처리 (game.js 구 3021~4450, ~1,400줄)~~ ⚠️ **stale/위험·보류**: 라인범위 안에 `let combatState=null;`(4342, combat.js 243회 참조) 포함 → 통째 이동 금지. 함수가 3개 클러스터로 파편화. 진행 시 함수 단위 cherry-pick + `window.X` export 필수. 현재 보류.
+- **C4** — ECONOMY → `js/modules/economy.js`. ~~라인범위(구 2158~2683)~~ stale → `game.js:1604`의 `// ═══ ECONOMY ═══` 마커 기준으로 추출. 🔄 **진행 중**.
 
 각 단계: 추출 → `node --check` → `npm run electron`으로 해당 기능 흐름 확인 → 커밋.
 
