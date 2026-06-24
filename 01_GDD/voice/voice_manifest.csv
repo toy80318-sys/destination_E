@@ -612,3 +612,7 @@ merchant.thanks3,구출된 상인,combat,02_Assets/audio/voice/combat/merchant_t
 629,marcopolo,marcopolo,02_Assets/audio/voice/marcopolo/marcopolo_629.mp3,,02_Assets/audio/voice_en/marcopolo/marcopolo_629.mp3,,ko,"하, 드디어 만났군. 마르코 폴로요. 이 우주의 길은 내가 제일 잘 알지."
 630,leehwiso,leehwiso,02_Assets/audio/voice/leehwiso/leehwiso_630.mp3,,02_Assets/audio/voice_en/leehwiso/leehwiso_630.mp3,,ko,…날 깨운 게 당신이오? 이휘소요. 내 방정식이 쓰일 곳을 찾은 것 같군.
 632,maximoff,maximoff,02_Assets/audio/voice/maximoff/maximoff_632.mp3,,02_Assets/audio/voice_en/maximoff/maximoff_632.mp3,,ko,"낯선 함대로군… 적이오, 아군이오? …좋소, 믿어보지. 저항군 레인저, 맥시모프요."
+650,우르사 메이저,ursamajor,02_Assets/audio/voice/ursamajor/ursamajor_650.mp3,,02_Assets/audio/voice_en/ursamajor/ursamajor_650.mp3,,ko,호위는 끝났다. 이제… 내가 직접 상대해주마.
+651,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_651.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_651.mp3,,ko,호위 따위… 시험에 불과했다. 이제 진짜 어둠을 보여주지.
+652,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_652.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_652.mp3,,ko,💬 [블랙팔콘] 통신 신호 수신... 보이드 함대가 어둠 속으로 사라진다...
+653,블랙팔콘,blackfalcon,02_Assets/audio/voice/blackfalcon/blackfalcon_653.mp3,,02_Assets/audio/voice_en/blackfalcon/blackfalcon_653.mp3,,ko,🌑 [블랙팔콘] 차원 절단광선 충전... 함대 비기함 함선이 위험합니다!

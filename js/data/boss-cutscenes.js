@@ -54,7 +54,8 @@
   // ── 우르사 메이저 2페이즈 진입 (호위 전멸 → 본체 각성) ──────────────
   function ursaPhase2(){
     var m=_spc('ursa');
-    return [{char:m.char, name:_i18n('ursa.bossNameStory'), color:m.color, text:_i18n('ursa.phase2Line')}];
+    // 2페이즈 각성 음성 vid 650 (호위 전멸 → 본체 직접 상대). 음성업데이트 §0-Z 2026-06-25.
+    return [{char:m.char, name:_i18n('ursa.bossNameStory'), color:m.color, text:_i18n('ursa.phase2Line'), vid:'650'}];
   }
 
   // ── 블랙팔콘 히든전 2페이즈 (호위 전멸 → 본체 각성) ────────────────
