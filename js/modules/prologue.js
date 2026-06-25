@@ -19,7 +19,7 @@
 (function () {
   'use strict';
 
-  var IMG_BASE = '02_Assets/img/prologue/';
+  var IMG_BASE = 'img/prologue/';   // 배경 키아트 scene01~10 (루트 img/ — build.files img/**/* 포함). 2026-06-26.
   var SFX_BASE = '02_Assets/audio/sfx/';
 
   function ver() {
