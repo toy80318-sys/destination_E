@@ -62,6 +62,7 @@
       "i18n/**/*",
       "js/**/*",
       "img/**/*",
+      "02_Assets/img/prologue/**",
       "02_Assets/audio/**/*",
       "!img_backup/**",
       "!.screens/**",

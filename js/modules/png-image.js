@@ -608,8 +608,27 @@ function startGame(){
   //   슬롯 1을 기본으로 할당. 이후 사용자가 다른 슬롯에 저장하면 그것으로 갱신.
   G._activeSlot=1;
   err.textContent='';initGame();
+  // ── 신규 전체화면 프롤로그 "봉쇄된 하늘" (js/modules/prologue.js) ──────────
+  //   캐릭터 생성 직후·첫 허브 진입 전 1회 재생. G._prologueSeen 가드(재플레이 미재생).
+  //   프롤로그(20비트)가 baekgu 기상 서사(beat 13~19)를 담으므로,
+  //   P01 첫 도착 인트로 컷씬 p1_ch01a("100년의 잠")은 중복 → intro_P01 을 미리 seen 마킹해 억제.
+  if(!G._prologueSeen && typeof window.showPrologue==='function'){
+    G._prologueSeen=true;
+    try{ if(!G._phasedIntroSeen)G._phasedIntroSeen={}; G._phasedIntroSeen['intro_P01']=true; }catch(e){}
+    try{ if(typeof saveGame==='function')saveGame(true); }catch(e){}
+    try{ window.showPrologue(function(){
+      // 프롤로그 종료/스킵 → 행성(허브) BGM 복귀
+      try{
+        if(window.AudioMgr && AudioMgr.playBgm){
+          var _bn=(typeof _planetBgmName==='function')?_planetBgmName(G.currentPlanet||'P01'):'hub';
+          AudioMgr.playBgm(_bn);
+        }
+      }catch(e2){}
+    }); }catch(e){ console.warn('[startGame] prologue fail:',e); }
+  }
   // 사용자 요청 2026-06-07: 게임 시작 백구 멘트 프롤로그 제거
   // → FTUE 직후 바로 허브 진입. showHub()의 spawnPhasedQuests가 p1_ch01a("100년의 잠") 컷씬을 자동 재생함
+  //   (프롤로그를 본 경우 intro_P01 은 위에서 seen 마킹돼 자동 재생되지 않음)
   showHub();
   // 사용자 요청 2026-06-09: 게임 시작 즉시 컷씬 — RAF 의존 없이 직접 호출
   //   showHub 내부 RAF spawn 이 어떤 이유로 실패해도 여기서 한 번 더 보장.
