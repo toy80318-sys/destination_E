@@ -86,9 +86,9 @@
     if(heroLines.length===0) heroLines.push({sp:'commander', name:cmdName, text:_i18n('voidQ.cmdNoHero'), vid:'534'});
 
     // vid 매핑: voidGovernorReact=530, bkHorrorJoke=531, cmdAccept=532, cmdBkScold=533, unknown1~3=542~544.
-    //   이름변수/효과음 3줄(blackShipApprox{nm}, staticNoise, allFleetWaiting{cmdName})은 vid 없음(자막).
+    //   blackShipApprox=683, allFleetWaiting=684 (이름변수는 음성용으로 '사령관' 일반화). staticNoise만 효과음이라 vid 없음.
     var raw=[
-      {sp:'baekgu', name:bkNm,  text:_i18n('ui.blackShipApprox',{nm:cmdName}), fx:'baekgu'},
+      {sp:'baekgu', name:bkNm,  text:_i18n('ui.blackShipApprox',{nm:cmdName}), fx:'baekgu', vid:'683'},
       {sp:'void',   name:sigNm, text:_i18n('voidQ.staticNoise'),              fx:'static'},
       {sp:'void',   name:'???', text:_i18n('voidQ.unknown1'),                 fx:'glitch', vid:'542'},
       {sp:'void',   name:'???', text:_i18n('voidQ.unknown2'),                 fx:'glitch', vid:'543'},
@@ -98,7 +98,7 @@
       {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdAccept'),    vid:'532'},
       {sp:'baekgu',    name:bkNm,    text:_i18n('voidQ.bkHorrorJoke'), vid:'531'},
       {sp:'commander', name:cmdName, text:_i18n('voidQ.cmdBkScold'),   vid:'533'},
-      {sp:'baekgu',    name:bkNm,    text:_i18n('ui.allFleetWaiting',{cmdName:cmdName})}
+      {sp:'baekgu',    name:bkNm,    text:_i18n('ui.allFleetWaiting',{cmdName:cmdName}), vid:'684'}
     ]);
     // ※ fx 는 scene 에 포함하지 않는다(원본 동작 보존). vid 는 EN 자동재생·정확도용으로 전달.
     return raw.map(function(l){

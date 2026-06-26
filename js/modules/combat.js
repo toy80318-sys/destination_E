@@ -56,7 +56,10 @@ function _buildHostilePlanetEnemies(planetDef){
   const _rawTEC=Math.round(fp.atk*dangerMult*0.70*dm*egm);
   const _clamped=clampEnemyStats(_rawHP,_rawATK,_rawINT,_rawTEC,fp);
   const eHP=_clamped.eHP,eATK=_clamped.eATK,eINT=_clamped.eINT,eTEC=_clamped.eTEC;
-  const tierFn=(i)=>_enemyTierBoost(i===0&&plv>=60?'대형':i<2&&plv>=30?'중형':'소형');
+  // 전투력(plv) 500 초과 시 적 함대도 대형 함선 위주로 등장 (사용자 요청) — 70% 대형, 나머지 중형.
+  const tierFn=(i)=> plv>500
+    ? (i<Math.ceil(eCount*0.7)?'대형':'중형')
+    : _enemyTierBoost(i===0&&plv>=60?'대형':i<2&&plv>=30?'중형':'소형');
   return Array.from({length:eCount},(_,i)=>({
     id:`E${i}`,nm:I18N.t('ui.cheeksShipFmt',{nm:I18N.t('ui.cheeksShipNames').split('|')[i%6]}),
     tier:tierFn(i),isEnemy:true,
