@@ -10,6 +10,9 @@
 .btn{
   --c:var(--cyan);
   position:relative; isolation:isolate; border:0!important; border-radius:6px;
+  /* overflow:hidden — ::after 샤인(호버 시 left:120%로 버튼 밖 이동)이 스크롤 컨테이너 가로폭을 늘려
+     하단에 가로 스크롤바가 생기던 문제 차단. 샤인은 버튼 내부로 클립되어 스윕 효과는 유지. 사용자 보고 2026-06-26. */
+  overflow:hidden;
   color:var(--txt)!important; text-shadow:0 0 8px color-mix(in srgb,var(--c) 55%,transparent);
   background:linear-gradient(135deg,color-mix(in srgb,var(--c) 92%,white),var(--c) 55%,color-mix(in srgb,var(--c) 60%,black))!important;
   clip-path:polygon(var(--holo-cut) 0,100% 0,100% calc(100% - var(--holo-cut)),calc(100% - var(--holo-cut)) 100%,0 100%,0 var(--holo-cut));

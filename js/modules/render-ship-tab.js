@@ -715,7 +715,7 @@ function renderShipTab(body){
                   '</div>'+
                   (lvLock
                     ?'<span style="font-size:10px;color:var(--purple)">🔒</span>'
-                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;white-space:nowrap;flex-shrink:0;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?I18N.t('ui.outOfStock'):G.credits<actualPrice?I18N.t('ui.noCreditsShort'):I18N.t('ui.buy'))+'</button>')+
+                    :'<button class="btn btn-gold" style="padding:3px 8px;font-size:11px;white-space:nowrap;flex-shrink:0;min-width:88px;'+(canBuyFinal?'':'opacity:.5')+'" onclick="buyShip(\''+s.id+'\')" '+(canBuyFinal?'':'disabled')+'>'+(qty===0?I18N.t('ui.outOfStock'):G.credits<actualPrice?I18N.t('ui.noCreditsShort'):I18N.t('ui.buy'))+'</button>')+
                 '</div>'+
               '</div>'+
               // ── 오른쪽: 이미지 ──
@@ -784,7 +784,7 @@ function renderShipTab(body){
                 <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;display:flex;align-items:center">
                   ${iSunsin?`<span style="color:var(--dim);font-size:10px;text-decoration:line-through">₡${p.price.toLocaleString()}</span>`:''}
                   <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${fp.toLocaleString()}</span>
-                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
+                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;min-width:88px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
                 </div>
               </div>
               <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
@@ -823,7 +823,7 @@ function renderShipTab(body){
                 <div style="padding-top:6px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
                   ${iSunsin?`<span style="color:var(--dim);font-size:10px;text-decoration:line-through">₡${p.price.toLocaleString()}</span>`:''}
                   <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${partFinalPrice.toLocaleString()}</span>
-                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<partFinalPrice?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
+                  <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;min-width:88px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<partFinalPrice?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
                 </div>
               </div>
               <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
@@ -858,7 +858,7 @@ function renderShipTab(body){
             <div style="font-size:10px;color:var(--dim)">${p.desc}</div>
             <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;display:flex;align-items:center">
               <span style="color:var(--gold);font-size:13px;font-weight:bold">₡${fp.toLocaleString()}</span>
-              <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyCargoExtPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
+              <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;min-width:88px;margin-left:auto;${!canBuy?'opacity:.5':''}" onclick="buyCargoExtPart('${p.id}')" ${canBuy?'':'disabled'}>${qty===0?I18N.t('ui.noStock'):G.credits<fp?I18N.t('ui.noCredits'):I18N.t('ui.buy')}</button>
             </div>
           </div>`;
         }).join('');
@@ -921,7 +921,7 @@ function renderShipTab(body){
             <div style="font-size:10px;color:var(--dim);line-height:1.4;flex:1">${p2.desc.slice(0,60)}${p2.desc.length>60?'…':''}</div>
             <div style="padding-top:6px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
               <span style="color:var(--gold);font-size:14px;font-weight:bold">₡${sv.toLocaleString()}</span>
-              <button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 10px;margin-left:auto" id="${btnId}" onclick="sellPartFromInventory('${i.id}')">${I18N.t('ui.partSell')}</button>
+              <button class="btn btn-sm btn-gold" style="font-size:11px;padding:4px 10px;min-width:88px;margin-left:auto" id="${btnId}" onclick="sellPartFromInventory('${i.id}')">${I18N.t('ui.partSell')}</button>
             </div>
           </div>
           <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center">
