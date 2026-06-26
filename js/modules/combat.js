@@ -2603,12 +2603,16 @@ function runCombatTurn(){
     const _eId=e.id||'';
     const _isFalconBoss=!!combatState.isVoidBoss&&(e._isHiddenFalcon||_eId==='VOID_FALCON_1'||(e.catalogId==='BLACKFALCON'&&!/_E\d/.test(_eId)));
     const _falconExtreme=_isFalconBoss&&G.difficulty==='extreme';
-    const _ursaSmite=_isUrsaBoss&&Math.random()<0.5;
+    // 우르사 메이저: 극악(extreme) 난이도 한정(사용자 요청 2026-06-27) 30% 확률로 함선 1대를 1방에 완전 파괴.
+    //   그 외 난이도는 기존대로 50% 확률·현재 체력 50% 직격.
+    const _ursaExtreme=_isUrsaBoss&&G.difficulty==='extreme';
+    const _ursaSmite=_isUrsaBoss&&Math.random()<(_ursaExtreme?0.3:0.5);
     const _falconSmite=!_ursaSmite&&_isFalconBoss&&Math.random()<(_falconExtreme?0.5:0.3);
     let shDmg,hpDmg;
     if(_ursaSmite){
       shDmg=0;                                            // 쉴드 무시
-      hpDmg=Math.max(1,Math.round((target.hp||1)*0.5));   // 현재 체력의 50% 직격
+      hpDmg=_ursaExtreme ? (target.hp||1)                 // 극악: 30% 확률 1방 즉시 완전 파괴
+                         : Math.max(1,Math.round((target.hp||1)*0.5));   // 그 외: 현재 체력의 50% 직격
     }else if(_falconSmite){
       shDmg=0;
       hpDmg=_falconExtreme ? (target.hp||1)               // 극악: 1방 즉시 완전 파괴
