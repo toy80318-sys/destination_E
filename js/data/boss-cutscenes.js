@@ -114,14 +114,14 @@
     var falconNm = _i18n('speaker.blackfalcon');
     var sigNm = _i18n('ui.signalReceived');
     // vid 매핑: falconEnd.l1=545, l2=546, l3=547, falconEnd.cmd=535.
-    //   효과음(staticShort/staticEnd)·이름변수(victoryLine3{nm})는 vid 없음(자막).
+    //   victoryLine3=710('사령관' 일반화 음성). 효과음(staticShort/staticEnd)만 vid 없음.
     var raw=[
       {sp:'void',      name:sigNm,    text:_i18n('voidQ.staticShort'),            fx:'static'},
       {sp:'void',      name:falconNm, text:_i18n('falconEnd.l1'),                 vid:'545'},
       {sp:'void',      name:falconNm, text:_i18n('falconEnd.l2'),                 vid:'546'},
       {sp:'void',      name:falconNm, text:_i18n('falconEnd.l3'),                 vid:'547'},
       {sp:'void',      name:sigNm,    text:_i18n('voidQ.staticEnd'),              fx:'static'},
-      {sp:'baekgu',    name:bkNm,     text:_i18n('ui.victoryLine3',{nm:cmdName})},
+      {sp:'baekgu',    name:bkNm,     text:_i18n('ui.victoryLine3',{nm:cmdName}), vid:'710'},
       {sp:'commander', name:cmdName,  text:_i18n('falconEnd.cmd'),                vid:'535'}
     ];
     return raw.map(function(l){

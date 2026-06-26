@@ -29,7 +29,10 @@
   function setVol(x){ localStorage.setItem(LS_VOL, String(x)); if (audio) audio.volume = x; }
 
   function norm(t){
-    t = (t || '').replace(/\{\s*(사령관|commander)\s*\}/gi, '사령관');
+    t = (t || '');
+    // 플레이어 커스텀 사령관 이름 → '사령관' 정규화 (변형 이름 때문에 bytext 매칭이 깨지던 문제, 사용자 요청 2026-06-27)
+    try{ var _pn=window.G&&G.profile&&G.profile.name; if(_pn&&_pn!=='사령관') t=t.split(_pn).join('사령관'); }catch(e){}
+    t = t.replace(/\{\s*(사령관|commander)\s*\}/gi, '사령관');
     t = t.replace(/[\(\[\{][^\)\]\}]*[\)\]\}]/g, '');   // 지문/잔여 토큰 제거
     return t.replace(/[^가-힣A-Za-z0-9]/g, '');
   }
@@ -102,9 +105,42 @@
     var fem = opts && ('female' in opts) ? opts.female : undefined;
     return playPath(pick(e, fem), opts);
   }
+  // 백구 동적 버블 대사(이름/수치 변수 포함) → vid 매핑 (사용자 요청 2026-06-27).
+  //   bytext 는 변수값이 매번 달라 매칭 불가 → i18n 템플릿({x})을 와일드카드 정규식으로 만들어 매칭.
+  //   클립은 변형 이름을 일반화해 녹음(예: '{nm} 발견!'→'새로운 파츠를 발견했어!').
+  var BAEKGU_DYN = [
+    ['baekgu.focusFireOn','685'],['baekgu.haikjin','686'],['baekgu.einsteinRelativity','687'],
+    ['baekgu.genesisImpact','688'],['baekgu.destinationEarth','689'],['baekgu.mirrorFleetAwoken','690'],
+    ['baekgu.destroyerStarGained','691'],['baekgu.asteroidBelt','692'],['baekgu.heroJoined','693'],
+    ['baekgu.heroBoarded','694'],['baekgu.blueprintDrop','695'],['baekgu.partFound','696'],
+    ['baekgu.mythicPart','697'],['baekgu.flagshipPromoted','698'],['baekgu.flagshipChanged','699'],
+    ['baekgu.questReward','700'],['baekgu.crewBoardedShip','701'],['baekgu.commerceLevel','702'],
+    ['baekgu.chixMerged','703'],['baekgu.enhanceCongrats','704'],['baekgu.enhanceFailSimple','705'],
+    ['baekgu.allHeroesReward','706'],['baekgu.earthFreeNewEra','707'],['baekgu.loyaltyWarn','708'],
+    ['baekgu.partSlotsAdded','709']
+  ];
+  function _tmplRe(tmpl){
+    if(!tmpl||typeof tmpl!=='string')return null;
+    try{
+      var esc=tmpl.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');   // 정규식 이스케이프({,}→\{,\})
+      esc=esc.replace(/\\\{[^}]*\\\}/g,'[\\s\\S]*?');        // {x} → 와일드카드
+      return new RegExp('^'+esc+'$');
+    }catch(e){return null;}
+  }
+  var _dynRe=null,_dynReLang=null;
+  function _matchBaekguDyn(text){
+    if(!text||!window.I18N||typeof I18N.t!=='function')return null;
+    var lg=lang();
+    if(_dynRe===null||_dynReLang!==lg){ _dynReLang=lg; _dynRe=BAEKGU_DYN.map(function(p){return [_tmplRe(I18N.t(p[0])),p[1]];}); }
+    for(var i=0;i<_dynRe.length;i++){ var r=_dynRe[i][0]; if(r&&r.test(text))return _dynRe[i][1]; }
+    return null;
+  }
   // 텍스트로 매칭 재생. femOverride 로 성별 강제 가능.
   function playByText(text, femOverride){
     if (Date.now() < suppressUntil) return;
+    // 백구 동적 대사 우선 매칭(템플릿→vid) — bytext 보다 먼저
+    var _dv=_matchBaekguDyn(text);
+    if(_dv){ var _now=Date.now(),_dk='dv'+_dv; if(_dk===lastKey&&_now-lastAt<1500)return; lastKey=_dk; lastAt=_now; return playVoice(_dv,{female:femOverride}); }
     var n = norm(text);
     if (!n || n.length < 2) return;
     var e = (window.VOICE_BYTEXT && window.VOICE_BYTEXT[n]) || (window.VOICE_BYTEXT_EN && window.VOICE_BYTEXT_EN[n]);  // EN 자막 폴백(영문 컷신 음성)
