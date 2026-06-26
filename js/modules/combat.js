@@ -1713,8 +1713,8 @@ function drawCombatFrame(){
     // 위치 lerp 보간 (학익진/일반 무관 모두 부드러운 이동)
     if(u._curX==null){u._curX=x;u._curY=y;}
     if(_hjOn&&u._haikjinTargetX!=null){
-      // 학익진 진형 수렴(이동) 속도 — 사용자 요청 2026-06-17: 일반 이동(0.0008)의 50% 속도로 천천히 수렴.
-      const T=0.0004;
+      // 학익진 진형 수렴(이동) 속도 — 사용자 요청 2026-06-26: 기존(0.0004)의 2배(=일반 이동과 동일 0.0008)로 빠르게 수렴.
+      const T=0.0008;
       u._curX+=(u._haikjinTargetX-u._curX)*T;
       u._curY+=(u._haikjinTargetY-u._curY)*T;
     } else {
