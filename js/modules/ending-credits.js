@@ -210,7 +210,7 @@ function showEndingCredits(onDone){
   }
   if(_hl.includes('H06')){
     heroEndings.push({id:'H06',nm:I18N.t('hero.H06.nm'),ic:'🧠',col:'#cc99ff',tx:I18N.t('ending.h06.text',{cmdName})});
-    heroBlocks.push({sp:I18N.t('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName})});
+    heroBlocks.push({sp:I18N.t('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:I18N.t('ending.h06.text',{cmdName}),vid:'674'});
     heroBlocks.push(Object.assign(_bgPage(I18N.t('ending.h06.diary')),{vid:'620'}));
   }
   if(_hl.includes('H07')){
@@ -299,27 +299,27 @@ function showEndingCredits(onDone){
       {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys1'),vid:'492'},
       {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.sys2'),vid:'493'},
       // 일기 첫 페이지 (D-day 100년 + 1일) — 이름 포함, 자막만
-      Object.assign({tx:I18N.t('ui.diaryWake1',{cmdName})},BG),
+      Object.assign({tx:I18N.t('ui.diaryWake1',{cmdName}),vid:'675'},BG),
       // 일기 두 번째 페이지 (첫 출항) — 이름 포함, 자막만
-      Object.assign({tx:I18N.t('ui.firstFlightDiary',{shipName,cmdName})},BG),
+      Object.assign({tx:I18N.t('ui.firstFlightDiary',{shipName,cmdName}),vid:'676'},BG),
       // 영웅 카드 + 그에 딸린 일기 페어 (영입한 영웅만 표시됨) — 자막만
       ...heroBlocks,
       // 치크스 진실 회상 — 이름 포함, 자막만
-      Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName})},BG),
+      Object.assign({tx:I18N.t('ui.cheeksTruthDiary',{cmdName}),vid:'677'},BG),
       // 기함 출항 전야 — 이름 포함, 자막만
-      Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName})},BG),
+      Object.assign({tx:I18N.t('ui.predepartureDiary',{flagshipName,cmdName}),vid:'678'},BG),
       // 6단 체인 회상 — 고정 대사, vid 497
       Object.assign({tx:I18N.t('ui.diary6Chain'),vid:'497'},BG),
       // 우르사 메이저 마지막 말 — 이름 포함, 자막만
-      Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName})},BG),
+      Object.assign({tx:I18N.t('ui.ursaPostLine',{cmdName}),vid:'679'},BG),
       // 사령관 짧은 호흡 — 고정 대사, vid 495
       {sp:cmdName,col:'#ffd700',tx:I18N.t('ending.cmdTogether'),vid:'495'},
-      {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName})},
+      {sp:cmdName,col:'#ffd700',tx:I18N.t('ui.lastWarpHome',{flagshipName}),vid:'680'},
       // 일기 마지막 페이지 (D-day 100년 + 412일) — 고정 대사, vid 498
       Object.assign({tx:I18N.t('ui.diaryLand412'),vid:'498'},BG),
       Object.assign({tx:I18N.t('ending.bg100Final'),vid:'496'},BG),
-      {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName})},
-      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.titleLine')},
+      {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:I18N.t('ui.dontWakeMe',{nm:cmdName}),vid:'681'},
+      {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.titleLine'),vid:'682'},
       {sp:I18N.t('actTrans.2.sysSp'),col:'#66ffcc',tx:I18N.t('ending.liberationDone'),vid:'494'}
     ];
   }
