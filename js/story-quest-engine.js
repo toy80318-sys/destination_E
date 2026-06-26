@@ -150,11 +150,15 @@ function showStoryGateHint(m0,key){
   const _isEn=(typeof I18N!=='undefined'&&I18N.lang==='en');
   // 게이트 멘트 전용 음성(백구) — 타입별 vid (gate.needHero 등). showCharDialog 훅이 vid 재생.
   const _gvid={hero:'gate.needHero',item:'gate.needItem',blueprint:'gate.needBlueprint',quest:'gate.needQuest'}[m0.type]||null;
-  const scene=[{char:'baekgu2_advice', vid:_gvid, name:(_isEn?'Baekgu':'백구'), color:'#66ddff', text:gateHintText(m0)}];
+  // 버그수정 2026-06-26: 게이트 힌트를 풀스크린 컷신(showCharDialog)으로 띄우면 새 게임/허브 진입 시
+  //   게이트된 씬이 자동 트리거되며 게임을 덮는 "갑작스런 컷신" 현상 발생. → 비침습적 토스트(notify)로 표시.
+  //   (showCharDialog 는 notify 불가 환경에서만 폴백.)
+  const _txt=gateHintText(m0);
   try{
-    if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
-      window.STORY_SCENES_PC.showCharDialog({scenes:scene});
-    }else if(typeof window.notify==='function'){ window.notify(gateHintText(m0),'gold'); }
+    if(typeof window.notify==='function'){ window.notify(_txt,'gold'); }
+    else if(window.STORY_SCENES_PC&&typeof window.STORY_SCENES_PC.showCharDialog==='function'){
+      window.STORY_SCENES_PC.showCharDialog({scenes:[{char:'baekgu2_advice', vid:_gvid, name:(_isEn?'Baekgu':'백구'), color:'#66ddff', text:_txt}]});
+    }
   }catch(e){}
 }
 try{ if(typeof window!=='undefined'){

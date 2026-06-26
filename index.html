@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -9,23 +9,23 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DESTINATION">
 <meta name="theme-color" content="#00f3ff">
-<meta name="description" content="DESTINATION EARTH ??A space trade & combat RPG. Lead your fleet to save Earth. (?곗뒪?곕꽕?댁뀡 ?댁뒪 ???먯? 以띾뜕 ?щ졊愿???⑤?瑜??대걣怨?吏援щ? 援ы븯??媛???곗＜ 臾댁뿭쨌?꾪닾 RPG.)">
+<meta name="description" content="DESTINATION EARTH — A space trade & combat RPG. Lead your fleet to save Earth. (데스티네이션 어스 — 폐지 줍던 사령관이 함대를 이끌고 지구를 구하러 가는 우주 무역·전투 RPG.)">
 <title>DESTINATION EARTH</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="img/icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="img/icons/icon-512.png">
 <link rel="apple-touch-icon" href="img/icons/icon-192.png">
-<link rel="stylesheet" href="game.css?v=20260626006">
-<link rel="stylesheet" href="game-holo-theme.css?v=20260626006">
+<link rel="stylesheet" href="game.css?v=20260626002">
+<link rel="stylesheet" href="game-holo-theme.css?v=20260626002">
 </head>
 <body>
-<!-- ?먥븧???몄뼱 ?좉? 踰꾪듉 (floating ?곗긽?? 紐⑤뱺 ?붾㈃ 怨듯넻) ?먥븧??-->
+<!-- ═══ 언어 토글 버튼 (floating 우상단, 모든 화면 공통) ═══ -->
 <div id="lang-toggle" style="position:fixed;bottom:6px;right:6px;z-index:100000;display:flex;gap:0;background:rgba(0,0,0,.5);border:1px solid rgba(0,243,255,.4);border-radius:6px;overflow:hidden;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;backdrop-filter:blur(4px);box-shadow:0 2px 6px rgba(0,0,0,.4)">
   <button id="lang-ko" onclick="(window.I18N&&window.I18N.setLang)?window.I18N.setLang('ko'):null" style="background:transparent;color:#9ee7ff;border:0;padding:4px 9px;cursor:pointer;font:inherit;letter-spacing:1px">KO</button>
   <button id="lang-en" onclick="(window.I18N&&window.I18N.setLang)?window.I18N.setLang('en'):null" style="background:transparent;color:#9ee7ff;border:0;padding:4px 9px;cursor:pointer;font:inherit;letter-spacing:1px;border-left:1px solid rgba(0,243,255,.3)">EN</button>
 </div>
 <script>
-// ?꾩옱 ?몄뼱 踰꾪듉??媛뺤“ (?섏씠吏 濡쒕뱶 ??利됱떆 ?ㅽ뻾)
+// 현재 언어 버튼을 강조 (페이지 로드 후 즉시 실행)
 (function(){try{
   function _markLang(){
     var L=(window.I18N&&window.I18N.getLang)?window.I18N.getLang():'ko';
@@ -36,13 +36,13 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_markLang);else _markLang();
 }catch(e){}})();
 </script>
-<!-- ?먥븧??BOOT SPLASH ??PWA/Electron 遺????寃? ?붾㈃ ????쒖떆 ?먥븧??-->
+<!-- ═══ BOOT SPLASH — PWA/Electron 부팅 시 검은 화면 대신 표시 ═══ -->
 <div id="boot-splash" aria-hidden="false">
   <div class="bs-stars"></div>
   <div class="bs-content">
     <img src="img/icons/icon-512.png" alt="" class="bs-icon" draggable="false">
     <div class="bs-title">DESTINATION EARTH</div>
-    <div class="bs-subtitle" id="bs-msg" data-i18n="boot.preparing">?곗＜瑜?以鍮꾪븯??以?..</div>
+    <div class="bs-subtitle" id="bs-msg" data-i18n="boot.preparing">우주를 준비하는 중...</div>
     <div class="bs-spinner"></div>
   </div>
 </div>
@@ -64,14 +64,14 @@
 }
 </style>
 <script>
-// game.js쨌?대?吏 濡쒕뵫 ?꾨즺 ???먮룞 ?섏씠?쒖븘?? game.js 遺???⑥닔?먯꽌 hideBootSplash() ?몄텧 媛??
+// game.js·이미지 로딩 완료 후 자동 페이드아웃. game.js 부팅 함수에서 hideBootSplash() 호출 가능.
 window.hideBootSplash=function(){var el=document.getElementById('boot-splash');if(el)el.classList.add('hidden');};
 window.addEventListener('load',function(){
-  // window.IS_DESKTOP(Electron)?대㈃ 諛깆뾽 蹂듦뎄 ?쒓컙 ?뺣낫瑜??꾪빐 ?쎄컙 湲멸쾶
+  // window.IS_DESKTOP(Electron)이면 백업 복구 시간 확보를 위해 약간 길게
   var d=(window.desktopAPI?2200:1500);
   setTimeout(window.hideBootSplash,d);
 });
-// 諛깆뾽 蹂듦뎄 ?꾨즺 ??濡쒕뵫 硫붿떆吏 媛깆떊
+// 백업 복구 완료 시 로딩 메시지 갱신
 window.addEventListener('desktop-save-restored',function(e){
   var m=document.getElementById('bs-msg');
   if(m){var _n=(e.detail&&e.detail.count||0);m.textContent=(window.I18N&&window.I18N.t)?window.I18N.t('boot.saveRestored',{n:_n}):('Save restored ('+_n+')');}
@@ -85,18 +85,18 @@ window.addEventListener('desktop-save-restored',function(e){
 <!-- HUD -->
 <div id="hud">
   <div style="display:flex;gap:8px;align-items:center">
-    <span style="color:var(--yellow);font-size:16px;font-weight:bold" id="h-co" data-i18n="ui.companyName">鍮??쎌쿂 ?ㅽ럹?댁뒪</span>
+    <span style="color:var(--yellow);font-size:16px;font-weight:bold" id="h-co" data-i18n="ui.companyName">빅 픽처 스페이스</span>
     <span style="color:var(--dim);font-size:13px" id="h-pl">| P01</span>
   </div>
   <div id="h-resource-bar" style="display:flex;gap:16px;font-size:14px">
-    <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px"><img src="img/ui/credit.png?v=20260626006" alt="?? style="width:18px;height:18px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='??"><span id="h-cr">50,000</span></span>
+    <span style="color:var(--gold);display:inline-flex;align-items:center;gap:4px"><img src="img/ui/credit.png?v=20260626002" alt="₡" style="width:18px;height:18px;object-fit:contain;vertical-align:middle" onerror="this.outerHTML='₡'"><span id="h-cr">50,000</span></span>
     <span style="color:var(--cyan)">VE <span id="h-ve">0</span></span>
     <span style="color:var(--purple)">VC <span id="h-vc">3</span></span>
-    <span style="color:var(--gold);font-weight:bold">狩?<span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle" data-i18n="ui.rankAnonymous">臾대챸</span></span>
+    <span style="color:var(--gold);font-weight:bold">⭐ <span id="h-rep">0</span> <span id="h-rep-rank" style="font-size:11px;font-weight:normal;padding:1px 6px;border-radius:8px;border:1px solid currentColor;vertical-align:middle" data-i18n="ui.rankAnonymous">무명</span></span>
   </div>
   <div id="h-status-bar" style="display:flex;flex-direction:row;align-items:center;gap:10px;flex-wrap:nowrap">
-    <div style="color:var(--dim);font-size:13px;white-space:nowrap">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold" data-i18n="hud.combatPower1">?꾪닾??1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)" data-i18n="ui.rankNovice">?좎갭</span></div>
-    <button id="h-resume-combat" onclick="resumeCombat()" disabled style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3);opacity:.35;transition:opacity .2s,box-shadow .2s" data-i18n-title="hud.noCombatActive" data-i18n="hud.resumeCombatBtn" title="吏꾪뻾 以묒씤 ?꾪닾媛 ?놁뒿?덈떎">?뷂툘 ?꾪닾?붾㈃</button>
+    <div style="color:var(--dim);font-size:13px;white-space:nowrap">ACT <span id="h-act">1</span> | TURN <span id="h-tn">0</span> | <span id="h-lv" style="font-weight:bold" data-i18n="hud.combatPower1">전투력 1</span> <span id="h-lv-rank" style="font-size:12px;color:var(--dim)" data-i18n="ui.rankNovice">신참</span></div>
+    <button id="h-resume-combat" onclick="resumeCombat()" disabled style="background:rgba(231,76,60,.18);border:1.5px solid rgba(255,80,80,.6);color:#ff9999;font-family:inherit;font-size:13px;font-weight:bold;padding:8px 18px;border-radius:6px;cursor:pointer;letter-spacing:2px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3);opacity:.35;transition:opacity .2s,box-shadow .2s" data-i18n-title="hud.noCombatActive" data-i18n="hud.resumeCombatBtn" title="진행 중인 전투가 없습니다">⚔️ 전투화면</button>
   </div>
 </div>
 <div id="notif"></div>
@@ -111,99 +111,99 @@ window.addEventListener('desktop-save-restored',function(e){
     <img src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu"
       style="width:220px;height:220px;object-fit:contain;animation:pulse 2s infinite;filter:drop-shadow(0 0 18px rgba(0,243,255,.55))"
       onerror="this.style.display='none';document.getElementById('ld-bk-emoji').style.display='block'">
-    <div id="ld-bk-emoji" style="display:none;font-size:100px;line-height:220px;text-align:center;animation:pulse 2s infinite">?릷</div>
+    <div id="ld-bk-emoji" style="display:none;font-size:100px;line-height:220px;text-align:center;animation:pulse 2s infinite">🐕</div>
   </div>
   <div style="color:var(--yellow);font-size:29px;letter-spacing:6px;margin-top:4px">DESTINATION EARTH</div>
-  <div style="color:var(--dim);font-size:14px;margin:8px 0 20px" data-i18n="boot.subtitleSub">?곗뒪?곕꽕?댁뀡 ?댁뒪 | BIG PICTURE SPACE</div>
+  <div style="color:var(--dim);font-size:14px;margin:8px 0 20px" data-i18n="boot.subtitleSub">데스티네이션 어스 | BIG PICTURE SPACE</div>
   <div style="width:240px;height:3px;background:var(--card);border-radius:2px"><div id="ld-fill" style="height:100%;background:var(--cyan);border-radius:2px;width:0;transition:width .4s"></div></div>
-  <div id="ld-msg" style="color:var(--dim);font-size:13px;margin-top:8px" data-i18n="boot.initializing">珥덇린??以?..</div>
+  <div id="ld-msg" style="color:var(--dim);font-size:13px;margin-top:8px" data-i18n="boot.initializing">초기화 중...</div>
 </div>
 
 <!-- TITLE -->
 <div class="scr" id="s-title" style="z-index:1;justify-content:flex-start;align-items:flex-start;background:linear-gradient(100deg,rgba(0,0,0,.32),rgba(0,0,0,.10) 45%,rgba(0,0,0,.62)),url('img/ui/title-bg.png') center/cover no-repeat">
-  <!-- ?ъ슜???붿껌 2026-06-14: 硫붿씤 諛곌꼍=?ㅼ븘??title-bg), 硫붾돱=?곗륫 ?곷떒 遺덊닾紐??⑤꼸(踰꾪듉 ?щ챸 諛⑹?) -->
-  <!-- ?ъ슜???붿껌 2026-06-14: 3?깅텇 踰뺤튃 醫뚯륫 ?곷떒 援먯감??媛濡?1/3쨌?몃줈 1/3)??硫붾돱 諛곗튂 -->
-  <!-- ?ъ슜???붿껌 2026-06-17: ??댄? 硫붿씤硫붾돱瑜?manu01.png ?⑤꼸 ??諛뺤뒪 ?ㅻ쾭?덉씠濡? ?몃쾭 ???낆껜媛??곸듅+湲濡쒖슦). -->
-  <!-- 諛뺤뒪 留ㅽ븨: ?곷떒4=?쒖씠??/ 以묒븰 ?곕컯????寃뚯엫 / ?볦? 諛??댁뼱?섍린 / ?섎떒4=?ㅼ젙쨌?щ젅?㎳룸챸?덉쟾?뮤룹쥌猷?鍮④컯) -->
-  <div id="title-menu-panel" class="tmenu-panel" style="position:absolute;left:66.66%;top:50%;transform:translate(-50%,-50%);width:min(440px,46vw);aspect-ratio:1/1;background:url('img/ui/manu01.png?v=20260626006') center/contain no-repeat">
-    <div id="title-menu-grip" style="position:absolute;left:6%;top:2%;width:88%;height:16%;cursor:move;user-select:none;-webkit-user-select:none;z-index:6" title="?쒕옒洹명븯??硫붾돱 ?꾩튂 ?대룞 / Drag to move"></div>
-    <!-- ?곷떒 4諛뺤뒪 = ?쒖씠???좏깮 (醫뚰몴: pngjs 諛뺤뒪 寃異?湲곗?) -->
-    <button id="tdf-easy"    onclick="titleSetDiff('easy')"    class="tmenu-box" style="left:18.7%;top:21%;width:14.09%;height:15.91%;box-sizing:border-box;transform:translate(2px,0)" data-i18n-html="title.diffEasy">?삃<br>?ъ?</button>
-    <button id="tdf-normal"  onclick="titleSetDiff('normal')"  class="tmenu-box" style="left:34.8%;top:21%;width:13.64%;height:15.91%;box-sizing:border-box;transform:translate(3px,0)" data-i18n-html="title.diffNormal">?뷂툘<br>蹂댄넻</button>
-    <button id="tdf-hard"    onclick="titleSetDiff('hard')"    class="tmenu-box" style="left:50.9%;top:21%;width:13.64%;height:15.91%;box-sizing:border-box;transform:translate(1px,0)" data-i18n-html="title.diffHard">??<br>?대젮?</button>
-    <button id="tdf-extreme" onclick="titleSetDiff('extreme')" class="tmenu-box" style="left:67.0%;top:21%;width:14.55%;height:15.91%;box-sizing:border-box;transform:translate(-2px,0)" data-i18n-html="title.diffExtreme">?좑툘<br>洹뱀븙</button>
-    <!-- 以묒븰 ??諛뺤뒪 = ??寃뚯엫 -->
-    <button onclick="goAgeGate()" class="tmenu-box tmenu-main" style="left:18.7%;top:40%;width:62.6%;height:23.5%" data-i18n="title.btnNewGame">?? ??寃뚯엫</button>
-    <!-- ?볦? 諛?= 遺덈윭?ㅺ린 -->
-    <button onclick="showLoadSlots()" class="tmenu-box tmenu-wide" style="left:18.7%;top:66.5%;width:62.6%;height:9%" data-i18n="title.btnContinue">遺덈윭?ㅺ린</button>
-    <!-- ?섎떒 4諛뺤뒪 = ?ㅼ젙 / ?щ젅??/ 紐낆삁?꾨떦 / 醫낅즺(鍮④컯) -->
-    <button onclick="showSettingsModal()" class="tmenu-box" style="left:18.7%;top:78.3%;width:13.64%;height:9.09%;box-sizing:border-box;transform:translate(4px,-1px)" data-i18n-html="title.btnSettings">?숋툘<br>?ㅼ젙</button>
-    <button onclick="showCredits()" class="tmenu-box" style="left:34.8%;top:78.3%;width:14.09%;height:9.09%;box-sizing:border-box;transform:translate(1px,0)" data-i18n-html="title.btnCredits">?렗<br>?щ젅??/button>
-    <button onclick="showHallOfFame()" class="tmenu-box" style="left:50.9%;top:78.3%;width:14.09%;height:9.09%;box-sizing:border-box" data-i18n-html="title.btnHallOfFame">?룇<br>紐낆삁?꾨떦</button>
-    <button onclick="exitFromTitle()" class="tmenu-box tmenu-exit" style="left:67.0%;top:78.3%;width:13.6%;height:9%" data-i18n-html="title.btnExit">?슞<br>醫낅즺</button>
+  <!-- 사용자 요청 2026-06-14: 메인 배경=키아트(title-bg), 메뉴=우측 상단 불투명 패널(버튼 투명 방지) -->
+  <!-- 사용자 요청 2026-06-14: 3등분 법칙 좌측 상단 교차점(가로 1/3·세로 1/3)에 메뉴 배치 -->
+  <!-- 사용자 요청 2026-06-17: 타이틀 메인메뉴를 manu01.png 패널 위 박스 오버레이로. 호버 시 입체감(상승+글로우). -->
+  <!-- 박스 매핑: 상단4=난이도 / 중앙 큰박스=새 게임 / 넓은 바=이어하기 / 하단4=설정·크레딧·명예전당·종료(빨강) -->
+  <div id="title-menu-panel" class="tmenu-panel" style="position:absolute;left:66.66%;top:50%;transform:translate(-50%,-50%);width:min(440px,46vw);aspect-ratio:1/1;background:url('img/ui/manu01.png?v=20260626002') center/contain no-repeat">
+    <div id="title-menu-grip" style="position:absolute;left:6%;top:2%;width:88%;height:16%;cursor:move;user-select:none;-webkit-user-select:none;z-index:6" title="드래그하여 메뉴 위치 이동 / Drag to move"></div>
+    <!-- 상단 4박스 = 난이도 선택 (좌표: pngjs 박스 검출 기준) -->
+    <button id="tdf-easy"    onclick="titleSetDiff('easy')"    class="tmenu-box" style="left:18.7%;top:21%;width:14.09%;height:15.91%;box-sizing:border-box;transform:translate(2px,0)" data-i18n-html="title.diffEasy">😊<br>쉬움</button>
+    <button id="tdf-normal"  onclick="titleSetDiff('normal')"  class="tmenu-box" style="left:34.8%;top:21%;width:13.64%;height:15.91%;box-sizing:border-box;transform:translate(3px,0)" data-i18n-html="title.diffNormal">⚔️<br>보통</button>
+    <button id="tdf-hard"    onclick="titleSetDiff('hard')"    class="tmenu-box" style="left:50.9%;top:21%;width:13.64%;height:15.91%;box-sizing:border-box;transform:translate(1px,0)" data-i18n-html="title.diffHard">💀<br>어려움</button>
+    <button id="tdf-extreme" onclick="titleSetDiff('extreme')" class="tmenu-box" style="left:67.0%;top:21%;width:14.55%;height:15.91%;box-sizing:border-box;transform:translate(-2px,0)" data-i18n-html="title.diffExtreme">☠️<br>극악</button>
+    <!-- 중앙 큰 박스 = 새 게임 -->
+    <button onclick="goAgeGate()" class="tmenu-box tmenu-main" style="left:18.7%;top:40%;width:62.6%;height:23.5%" data-i18n="title.btnNewGame">🚀 새 게임</button>
+    <!-- 넓은 바 = 불러오기 -->
+    <button onclick="showLoadSlots()" class="tmenu-box tmenu-wide" style="left:18.7%;top:66.5%;width:62.6%;height:9%" data-i18n="title.btnContinue">불러오기</button>
+    <!-- 하단 4박스 = 설정 / 크레딧 / 명예전당 / 종료(빨강) -->
+    <button onclick="showSettingsModal()" class="tmenu-box" style="left:18.7%;top:78.3%;width:13.64%;height:9.09%;box-sizing:border-box;transform:translate(4px,-1px)" data-i18n-html="title.btnSettings">⚙️<br>설정</button>
+    <button onclick="showCredits()" class="tmenu-box" style="left:34.8%;top:78.3%;width:14.09%;height:9.09%;box-sizing:border-box;transform:translate(1px,0)" data-i18n-html="title.btnCredits">🎬<br>크레딧</button>
+    <button onclick="showHallOfFame()" class="tmenu-box" style="left:50.9%;top:78.3%;width:14.09%;height:9.09%;box-sizing:border-box" data-i18n-html="title.btnHallOfFame">🏆<br>명예전당</button>
+    <button onclick="exitFromTitle()" class="tmenu-box tmenu-exit" style="left:67.0%;top:78.3%;width:13.6%;height:9%" data-i18n-html="title.btnExit">🚪<br>종료</button>
   </div>
   <div style="position:fixed;bottom:8px;left:0;right:0;color:var(--muted);font-size:11px;text-align:center;line-height:1.65;padding:0 14px;word-break:keep-all">
-    <div style="opacity:.78;margin-bottom:2px" data-i18n="title.disclaimer">??蹂?寃뚯엫???깆옣?섎뒗 紐⑤뱺 ?몃Ъ쨌?⑥껜쨌?ш굔? ?묎????곸긽?쇰줈 留뚮뱾?댁쭊 ?쎌뀡?대ŉ, ?ㅼ〈 ?몃Ъ 諛??⑥껜????꾪? 愿?⑥씠 ?놁뒿?덈떎.</div>
-    <div data-i18n="title.ratingLine">?댁슜?깃툒: 12???댁긽 | 媛李??뺣쪧: ?꾩꽕 0.5% / ?곸썒 5.5% / ?ш? 24% / ?쇰컲 70%</div>
+    <div style="opacity:.78;margin-bottom:2px" data-i18n="title.disclaimer">※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.</div>
+    <div data-i18n="title.ratingLine">이용등급: 12세 이상 | 가차 확률: 전설 0.5% / 영웅 5.5% / 희귀 24% / 일반 70%</div>
   </div>
 </div>
 
 <!-- AGE GATE -->
 <div class="scr" id="s-agegate">
   <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:24px;max-width:380px;width:90%">
-    <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px" data-i18n="ui.ageCheck">?곕졊 ?뺤씤</div>
-    <div style="color:var(--dim);font-size:14px;text-align:center;margin-bottom:20px;word-break:keep-all;overflow-wrap:break-word;line-height:1.6" data-i18n="agegate.notice">DESTINATION EARTH??留?12???댁긽 ?댁슜 媛?ν빀?덈떎.</div>
+    <div style="color:var(--yellow);font-size:24px;text-align:center;margin-bottom:16px" data-i18n="ui.ageCheck">연령 확인</div>
+    <div style="color:var(--dim);font-size:14px;text-align:center;margin-bottom:20px;word-break:keep-all;overflow-wrap:break-word;line-height:1.6" data-i18n="agegate.notice">DESTINATION EARTH는 만 12세 이상 이용 가능합니다.</div>
     <div style="display:flex;gap:8px;margin-bottom:8px">
-      <input class="inp" id="ag-y" type="number" data-i18n-placeholder="agegate.placeholderYear" placeholder="?꾨룄(YYYY)" min="1900" max="2015" value="2000" style="flex:2">
-      <input class="inp" id="ag-m" type="number" data-i18n-placeholder="agegate.placeholderMonth" placeholder="?? min="1" max="12" value="1" style="flex:1">
-      <input class="inp" id="ag-d" type="number" data-i18n-placeholder="agegate.placeholderDay" placeholder="?? min="1" max="31" value="1" style="flex:1">
+      <input class="inp" id="ag-y" type="number" data-i18n-placeholder="agegate.placeholderYear" placeholder="년도(YYYY)" min="1900" max="2015" value="2000" style="flex:2">
+      <input class="inp" id="ag-m" type="number" data-i18n-placeholder="agegate.placeholderMonth" placeholder="월" min="1" max="12" value="1" style="flex:1">
+      <input class="inp" id="ag-d" type="number" data-i18n-placeholder="agegate.placeholderDay" placeholder="일" min="1" max="31" value="1" style="flex:1">
     </div>
     <div id="ag-err" style="color:var(--red);font-size:13px;min-height:16px;margin-bottom:10px"></div>
-    <button class="btn" style="width:100%" onclick="checkAge()" data-i18n="ui.confirm">?뺤씤</button>
+    <button class="btn" style="width:100%" onclick="checkAge()" data-i18n="ui.confirm">확인</button>
   </div>
 </div>
 
 <!-- FTUE -->
 <div class="scr" id="s-ftue">
   <div style="background:var(--panel);border:1px solid var(--bdr);border-radius:8px;padding:16px 18px;max-width:420px;width:92%;max-height:94vh;overflow-y:auto">
-    <div style="color:var(--yellow);font-size:20px;text-align:center;margin-bottom:10px" data-i18n="ui.commanderRegister">?щ졊愿 ?깅줉</div>
+    <div style="color:var(--yellow);font-size:20px;text-align:center;margin-bottom:10px" data-i18n="ui.commanderRegister">사령관 등록</div>
     <div style="display:flex;gap:10px;margin-bottom:12px;padding:10px;background:var(--card);border:1px solid var(--cyan);border-radius:8px;align-items:flex-start">
-      <img src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu" style="width:84px;height:84px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:2px solid var(--cyan)" onerror="this.outerHTML='<div style=\'font-size:56px;flex-shrink:0;line-height:1\'>?릷</div>'">
+      <img src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu" style="width:84px;height:84px;border-radius:50%;flex-shrink:0;object-fit:cover;background:rgba(0,0,0,.3);border:2px solid var(--cyan)" onerror="this.outerHTML='<div style=\'font-size:56px;flex-shrink:0;line-height:1\'>🐕</div>'">
       <div style="color:var(--yellow);font-size:13px;line-height:1.55;word-break:keep-all">
-        <div style="color:var(--cyan);font-size:10px;font-weight:bold;margin-bottom:2px;letter-spacing:1px" data-i18n="speaker.baekgu">諛깃뎄</div>
-        <span data-i18n-html="ftue.baekguGreeting">?덈뀞! ???щ졊愿???붽뎄??<br>
-        ?⑤? ?댁쁺 ?먯옣 留뚮뱾?ㅻ㈃ ?곗씠???⑤뱶??br>?대쫫?대옉 ?뺣낫 醫 ?낅젰?댁쨾. ?댁꽌!</span>
+        <div style="color:var(--cyan);font-size:10px;font-weight:bold;margin-bottom:2px;letter-spacing:1px" data-i18n="speaker.baekgu">백구</div>
+        <span data-i18n-html="ftue.baekguGreeting">안녕! 새 사령관이 왔구나.<br>
+        함대 운영 원장 만들려면 데이터 패드에<br>이름이랑 정보 좀 입력해줘. 어서!</span>
       </div>
     </div>
     <div style="margin-bottom:9px">
-      <div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ui.gender">?깅퀎</div>
-      <!-- ?ъ슜???붿껌 2026-06-12: ?깅퀎 ?좏깮 ???щ졊愿 ????珥덈컲 罹먮┃???대?吏 ?쒖떆 -->
+      <div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ui.gender">성별</div>
+      <!-- 사용자 요청 2026-06-12: 성별 선택 시 사령관 남/여 초반 캐릭터 이미지 표시 -->
       <div style="display:flex;gap:6px">
-        <button id="gb-m" onclick="setGender('male')" style="flex:1;padding:8px 6px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:6px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:5px">
-          <img id="gb-m-img" src="img/chars/commander_m1.png" alt="?⑥꽦 ?щ졊愿" style="width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--cyan);background:rgba(0,0,0,.4)" onerror="this.style.display='none'">
-          <span data-i18n="ftue.genderMale">?뫅 ?⑥꽦</span>
+        <button id="gb-m" onclick="setGender('male')" style="flex:1;padding:8px 6px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:6px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:5px">
+          <img id="gb-m-img" src="img/chars/commander_m1.png" alt="남성 사령관" style="width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--cyan);background:rgba(0,0,0,.4)" onerror="this.style.display='none'">
+          <span data-i18n="ftue.genderMale">👨 남성</span>
         </button>
-        <button id="gb-f" onclick="setGender('female')" style="flex:1;padding:8px 6px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:6px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:5px">
-          <img id="gb-f-img" src="img/chars/commander_f1.png" alt="?ъ꽦 ?щ졊愿" style="width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--bdr);background:rgba(0,0,0,.4);opacity:.55;filter:grayscale(.4)" onerror="this.style.display='none'">
-          <span data-i18n="ftue.genderFemale">?뫆 ?ъ꽦</span>
+        <button id="gb-f" onclick="setGender('female')" style="flex:1;padding:8px 6px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:6px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:5px">
+          <img id="gb-f-img" src="img/chars/commander_f1.png" alt="여성 사령관" style="width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--bdr);background:rgba(0,0,0,.4);opacity:.55;filter:grayscale(.4)" onerror="this.style.display='none'">
+          <span data-i18n="ftue.genderFemale">👩 여성</span>
         </button>
       </div>
     </div>
-    <div style="margin-bottom:9px"><div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ftue.commanderNameLabel">?щ졊愿紐?*</div><input class="inp" id="ft-nm" data-i18n-placeholder="ftue.namePlaceholder" data-i18n-value="ui.commanderDefault" placeholder="?대쫫???낅젰?섏꽭?? value="?щ졊愿" maxlength="12" style="padding:5px 8px;font-size:13px"></div>
-    <div style="margin-bottom:9px"><div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ftue.companyNameLabel">臾댁뿭 ?곷떒紐?*</div><input class="inp" id="ft-co" data-i18n-value="ui.companyDefault" value="鍮??쎌쿂 ?ㅽ럹?댁뒪" maxlength="20" style="padding:5px 8px;font-size:13px"></div>
+    <div style="margin-bottom:9px"><div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ftue.commanderNameLabel">사령관명 *</div><input class="inp" id="ft-nm" data-i18n-placeholder="ftue.namePlaceholder" data-i18n-value="ui.commanderDefault" placeholder="이름을 입력하세요" value="사령관" maxlength="12" style="padding:5px 8px;font-size:13px"></div>
+    <div style="margin-bottom:9px"><div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ftue.companyNameLabel">무역 상단명 *</div><input class="inp" id="ft-co" data-i18n-value="ui.companyDefault" value="빅 픽처 스페이스" maxlength="20" style="padding:5px 8px;font-size:13px"></div>
     <div style="margin-bottom:9px"><div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ui.initialShipName">초기 함선명</div><input class="inp" id="ft-sh" data-i18n-value="ui.shipDefault" value="머스탱" maxlength="16" style="padding:5px 8px;font-size:13px"></div>
     <div style="margin-bottom:9px">
-      <div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ui.difficultySelect">?쒖씠???좏깮</div>
+      <div style="color:var(--dim);font-size:12px;margin-bottom:4px" data-i18n="ui.difficultySelect">난이도 선택</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px">
-        <button id="df-easy" data-i18n-html="ftue.diffEasyFull"    onclick="setDifficulty('easy')"    style="padding:5px 2px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:12px;line-height:1.35">?삃<br>?ъ?<br><span style="font-size:10px;color:var(--dim)">??-75%</span></button>
-        <button id="df-normal" data-i18n-html="ftue.diffNormalFull"  onclick="setDifficulty('normal')"  style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:12px;line-height:1.35">?뷂툘<br>蹂댄넻<br><span style="font-size:10px;color:var(--dim)">湲곕낯</span></button>
-        <button id="df-hard" data-i18n-html="ftue.diffHardFull"    onclick="setDifficulty('hard')"    style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:12px;line-height:1.35">??<br>?대젮?<br><span style="font-size:10px;color:var(--dim)">??+10%</span></button>
-        <button id="df-extreme" data-i18n-html="ftue.diffExtremeFull" onclick="setDifficulty('extreme')" style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;font-size:12px;line-height:1.35">?좑툘<br>洹뱀븙<br><span style="font-size:10px;color:var(--dim)">횞3쨌+50%</span></button>
+        <button id="df-easy" data-i18n-html="ftue.diffEasyFull"    onclick="setDifficulty('easy')"    style="padding:5px 2px;border:1px solid var(--cyan);background:rgba(0,243,255,.08);color:var(--cyan);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:12px;line-height:1.35">😊<br>쉬움<br><span style="font-size:10px;color:var(--dim)">적 -75%</span></button>
+        <button id="df-normal" data-i18n-html="ftue.diffNormalFull"  onclick="setDifficulty('normal')"  style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:12px;line-height:1.35">⚔️<br>보통<br><span style="font-size:10px;color:var(--dim)">기본</span></button>
+        <button id="df-hard" data-i18n-html="ftue.diffHardFull"    onclick="setDifficulty('hard')"    style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:12px;line-height:1.35">💀<br>어려움<br><span style="font-size:10px;color:var(--dim)">적 +10%</span></button>
+        <button id="df-extreme" data-i18n-html="ftue.diffExtremeFull" onclick="setDifficulty('extreme')" style="padding:5px 2px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;border-radius:4px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;font-size:12px;line-height:1.35">☠️<br>극악<br><span style="font-size:10px;color:var(--dim)">×3·+50%</span></button>
       </div>
     </div>
-    <div style="background:var(--card);border-radius:6px;padding:7px 10px;margin-bottom:9px;font-size:12px;color:var(--dim)" data-i18n-html="ftue.initialAssetLine">珥덇린 ?먯궛: <span style="color:var(--yellow)">??0,000</span> | <span style="color:var(--yellow)">VC 3??/span> | <span style="color:var(--yellow)">?쎑 S01 癒몄뒪??/span></div>
+    <div style="background:var(--card);border-radius:6px;padding:7px 10px;margin-bottom:9px;font-size:12px;color:var(--dim)" data-i18n-html="ftue.initialAssetLine">초기 자산: <span style="color:var(--yellow)">₡50,000</span> | <span style="color:var(--yellow)">VC 3회</span> | <span style="color:var(--yellow)">🛸 S01 머스탱</span></div>
     <div id="ft-er" style="color:var(--red);font-size:12px;min-height:14px;margin-bottom:6px"></div>
-    <button class="btn btn-lg" style="width:100%;font-size:14px;padding:10px" onclick="startGame()" data-i18n="ftue.startBtn">?? 異쒕컻! 吏援щ? 援ы븯??媛??/button>
+    <button class="btn btn-lg" style="width:100%;font-size:14px;padding:10px" onclick="startGame()" data-i18n="ftue.startBtn">🚀 출발! 지구를 구하러 가자</button>
   </div>
 </div>
 
@@ -215,117 +215,117 @@ window.addEventListener('desktop-save-restored',function(e){
         style="width:180px;height:180px;object-fit:contain;animation:pulse 2.5s infinite;filter:drop-shadow(0 0 22px rgba(0,243,255,.6));transition:opacity .4s"
         onload="this.style.display='block';var _e=document.getElementById('pr-baekgu-emoji');if(_e)_e.style.display='none'"
         onerror="this.style.display='none';var _e=document.getElementById('pr-baekgu-emoji');if(_e)_e.style.display='block'">
-      <div id="pr-baekgu-emoji" style="display:none;font-size:100px;line-height:180px;text-align:center;animation:pulse 2.5s infinite">?릷</div>
+      <div id="pr-baekgu-emoji" style="display:none;font-size:100px;line-height:180px;text-align:center;animation:pulse 2.5s infinite">🐕</div>
     </div>
     <div id="pr-lines" style="margin-bottom:24px;min-height:80px"></div>
-    <button class="btn" id="pr-btn" onclick="nextPrologue()" style="display:none" data-i18n="prologue.next">怨꾩냽 ??/button>
+    <button class="btn" id="pr-btn" onclick="nextPrologue()" style="display:none" data-i18n="prologue.next">계속 ▶</button>
   </div>
   <div style="position:absolute;bottom:14px;left:0;right:0;color:var(--muted);font-size:11px;text-align:center;opacity:.65;padding:0 16px;line-height:1.55;word-break:keep-all" data-i18n="title.disclaimer">
-    ??蹂?寃뚯엫???깆옣?섎뒗 紐⑤뱺 ?몃Ъ쨌?⑥껜쨌?ш굔? ?묎????곸긽?쇰줈 留뚮뱾?댁쭊 ?쎌뀡?대ŉ, ?ㅼ〈 ?몃Ъ 諛??⑥껜????꾪? 愿?⑥씠 ?놁뒿?덈떎.
+    ※ 본 게임에 등장하는 모든 인물·단체·사건은 작가의 상상으로 만들어진 픽션이며, 실존 인물 및 단체와는 전혀 관련이 없습니다.
   </div>
 </div>
 
 <!-- HUB -->
 <div class="scr" id="s-hub"><div id="hub-planet-bg"></div>
   <div class="hub-side">
-    <!-- ?ㅽ겕濡?媛?ν븳 硫붾돱 ?곸뿭 -->
+    <!-- 스크롤 가능한 메뉴 영역 -->
     <div class="hs-menu-scroll">
       <div class="hs-profile">
-        <div class="hs-av" style="overflow:hidden;padding:0"><img id="hub-cmd-avatar" src="img/chars/commander_m0.png" alt="Commander" data-i18n-alt="speaker.commander" style="width:100%;height:100%;object-fit:cover;display:block" onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='img/chars/baekgu1.png';}else{this.outerHTML='?뫀';}"></div>
-        <div><div class="hs-co" id="hub-cmd" data-i18n="ui.commanderLabel">?щ졊愿</div><div class="hs-pl" id="hub-planet-lbl">P01 ?꾨줉?쒕쭏 b</div></div>
+        <div class="hs-av" style="overflow:hidden;padding:0"><img id="hub-cmd-avatar" src="img/chars/commander_m0.png" alt="Commander" data-i18n-alt="speaker.commander" style="width:100%;height:100%;object-fit:cover;display:block" onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='img/chars/baekgu1.png';}else{this.outerHTML='👤';}"></div>
+        <div><div class="hs-co" id="hub-cmd" data-i18n="ui.commanderLabel">사령관</div><div class="hs-pl" id="hub-planet-lbl">P01 프록시마 b</div></div>
       </div>
       <div class="hs-res">
-        <div class="hs-ri"><span style="color:var(--gold)">??/span><span id="sb-cr">50,000</span></div>
+        <div class="hs-ri"><span style="color:var(--gold)">₡</span><span id="sb-cr">50,000</span></div>
         <div class="hs-ri"><span style="color:var(--cyan)">VE</span><span id="sb-ve">0</span></div>
         <div class="hs-ri"><span style="color:var(--purple)">VC</span><span id="sb-vc">3</span></div>
       </div>
-      <button class="hn-btn on" id="hn-main" onclick="hubTab('main')"><span class="hn-ic">?룧</span><span data-i18n="menu.mainHub">硫붿씤 ?덈툕</span></button>
-      <!-- 硫붿씤?쒕쾭 -->
+      <button class="hn-btn on" id="hn-main" onclick="hubTab('main')"><span class="hn-ic">🏠</span><span data-i18n="menu.mainHub">메인 허브</span></button>
+      <!-- 메인서버 -->
       <div class="hn-folder" id="folder-captain">
-        <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">狩?/span><span data-i18n="menu.folderMain">硫붿씤?쒕쾭</span><span class="folder-arrow" id="folder-arrow-captain">??/span></button>
+        <button class="hn-folder-btn" onclick="toggleFolder('captain')"><span class="hn-ic">⭐</span><span data-i18n="menu.folderMain">메인서버</span><span class="folder-arrow" id="folder-arrow-captain">▶</span></button>
         <div class="hn-folder-items" id="folder-items-captain">
-          <button class="hn-btn hn-sub" data-tab="map" onclick="hubTab('map')"><span class="hn-ic">?뿺截?/span><span data-i18n="menu.galaxyMap">???吏??/span></button>
-          <button class="hn-btn hn-sub" data-tab="codex" onclick="hubTab('codex')"><span class="hn-ic">?뱰</span><span data-i18n="menu.codex">?먯깋 ?꾧컧</span></button>
-          <button class="hn-btn hn-sub" data-tab="crew-dock" onclick="hubTab('crew')"><span class="hn-ic">?뫁</span><span data-i18n="menu.crewRoster">?щ（ 紐낅떒</span></button>
+          <button class="hn-btn hn-sub" data-tab="map" onclick="hubTab('map')"><span class="hn-ic">🗺️</span><span data-i18n="menu.galaxyMap">은하 지도</span></button>
+          <button class="hn-btn hn-sub" data-tab="codex" onclick="hubTab('codex')"><span class="hn-ic">📖</span><span data-i18n="menu.codex">탐색 도감</span></button>
+          <button class="hn-btn hn-sub" data-tab="crew-dock" onclick="hubTab('crew')"><span class="hn-ic">👥</span><span data-i18n="menu.crewRoster">크루 명단</span></button>
         </div>
       </div>
-      <!-- ?됱꽦 愿묒옣 -->
+      <!-- 행성 광장 -->
       <div class="hn-folder" id="folder-plaza">
-        <button class="hn-folder-btn" onclick="toggleFolder('plaza')"><span class="hn-ic">?룵</span><span data-i18n="menu.folderPlaza">?됱꽦 愿묒옣</span><span class="folder-arrow" id="folder-arrow-plaza">??/span></button>
+        <button class="hn-folder-btn" onclick="toggleFolder('plaza')"><span class="hn-ic">🏪</span><span data-i18n="menu.folderPlaza">행성 광장</span><span class="folder-arrow" id="folder-arrow-plaza">▶</span></button>
         <div class="hn-folder-items" id="folder-items-plaza">
-          <button class="hn-btn hn-sub" data-tab="quest" onclick="hubTab('quest')"><span class="hn-ic">?럷截?/span><span data-i18n="menu.admiral">?됱꽦 ?쒕룆</span></button>
-          <button class="hn-btn hn-sub" data-tab="tavern" onclick="hubTab('tavern')"><span class="hn-ic">?뜿</span><span data-i18n="menu.tavern">?됱꽦 二쇱젏</span></button>
-          <button class="hn-btn hn-sub" data-tab="trade" onclick="hubTab('trade')"><span class="hn-ic">?룷</span><span data-i18n="menu.shop">?됱꽦 ?곸젏</span></button>
+          <button class="hn-btn hn-sub" data-tab="quest" onclick="hubTab('quest')"><span class="hn-ic">🎖️</span><span data-i18n="menu.admiral">행성 제독</span></button>
+          <button class="hn-btn hn-sub" data-tab="tavern" onclick="hubTab('tavern')"><span class="hn-ic">🍺</span><span data-i18n="menu.tavern">행성 주점</span></button>
+          <button class="hn-btn hn-sub" data-tab="trade" onclick="hubTab('trade')"><span class="hn-ic">🏬</span><span data-i18n="menu.shop">행성 상점</span></button>
         </div>
       </div>
-      <!-- ?⑥꽑 ?꾪겕 -->
+      <!-- 함선 도크 -->
       <div class="hn-folder" id="folder-dock">
-        <button class="hn-folder-btn" onclick="toggleFolder('dock')"><span class="hn-ic">?슓</span><span data-i18n="menu.folderDock">?⑥꽑 ?꾪겕</span><span class="folder-arrow" id="folder-arrow-dock">??/span></button>
+        <button class="hn-folder-btn" onclick="toggleFolder('dock')"><span class="hn-ic">🚢</span><span data-i18n="menu.folderDock">함선 도크</span><span class="folder-arrow" id="folder-arrow-dock">▶</span></button>
         <div class="hn-folder-items" id="folder-items-dock">
-          <button class="hn-btn hn-sub" data-tab="garage" onclick="hubTab('garage')"><span class="hn-ic">?뵩</span><span data-i18n="menu.garage">?⑥꽑 ?뺣퉬??/span></button>
-          <button class="hn-btn hn-sub" data-tab="ship" onclick="hubTab('ship')"><span class="hn-ic">?쎑</span><span data-i18n="menu.shipTrade">?⑥꽑 嫄곕옒??/span></button>
-          <button class="hn-btn hn-sub" data-tab="craft" onclick="hubTab('craft')"><span class="hn-ic">?쀯툘</span><span data-i18n="menu.shipCraft">?⑥꽑 ?쒖옉??/span></button>
-          <button class="hn-btn hn-sub" id="hn-gather-search" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12);color:var(--dim);opacity:.45;cursor:default" onclick="doGatherSearch()"><span class="hn-ic">?뵯</span><span data-i18n="menu.wreckScan">?뷀빐 ?먯깋</span></button>
+          <button class="hn-btn hn-sub" data-tab="garage" onclick="hubTab('garage')"><span class="hn-ic">🔧</span><span data-i18n="menu.garage">함선 정비소</span></button>
+          <button class="hn-btn hn-sub" data-tab="ship" onclick="hubTab('ship')"><span class="hn-ic">🛸</span><span data-i18n="menu.shipTrade">함선 거래소</span></button>
+          <button class="hn-btn hn-sub" data-tab="craft" onclick="hubTab('craft')"><span class="hn-ic">⚗️</span><span data-i18n="menu.shipCraft">함선 제작소</span></button>
+          <button class="hn-btn hn-sub" id="hn-gather-search" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12);color:var(--dim);opacity:.45;cursor:default" onclick="doGatherSearch()"><span class="hn-ic">🔭</span><span data-i18n="menu.wreckScan">잔해 탐색</span></button>
         </div>
       </div>
-      <!-- ?됱꽦 ?꾨줎??-->
+      <!-- 행성 프론트 -->
       <div class="hn-folder" id="folder-front">
-        <button class="hn-folder-btn" onclick="toggleFolder('front')"><span class="hn-ic">?뙇</span><span data-i18n="menu.folderFront">?됱꽦 ?꾨줎??/span><span class="folder-arrow" id="folder-arrow-front">??/span></button>
+        <button class="hn-folder-btn" onclick="toggleFolder('front')"><span class="hn-ic">🌍</span><span data-i18n="menu.folderFront">행성 프론트</span><span class="folder-arrow" id="folder-arrow-front">▶</span></button>
         <div class="hn-folder-items" id="folder-items-front">
-          <button class="hn-btn hn-sub" data-tab="auction" onclick="hubTab('auction')"><span class="hn-ic">?뵪</span><span data-i18n="menu.auction">?됱꽦寃쎈ℓ</span></button>
+          <button class="hn-btn hn-sub" data-tab="auction" onclick="hubTab('auction')"><span class="hn-ic">🔨</span><span data-i18n="menu.auction">행성경매</span></button>
         </div>
       </div>
 
       <div style="flex:1;min-height:8px"></div>
     </div>
-    <!-- ?섎떒 怨좎젙: ?댁쥌猷?+ ?쒖뒪??硫붾돱 -->
+    <!-- 하단 고정: 턴종료 + 시스템 메뉴 -->
     <div style="flex-shrink:0;border-top:1px solid var(--bdr)">
-      <button id="btn-next-turn" class="hn-btn ha" style="font-weight:bold;background:rgba(255,160,40,.07);border:1px solid rgba(255,160,40,.3);border-radius:6px;margin:4px 8px;width:calc(100% - 16px)" onclick="tryNextTurn()"><span class="hn-ic">??툘</span><span id="btn-next-turn-label" data-i18n="menu.endTurn">??醫낅즺</span></button>
+      <button id="btn-next-turn" class="hn-btn ha" style="font-weight:bold;background:rgba(255,160,40,.07);border:1px solid rgba(255,160,40,.3);border-radius:6px;margin:4px 8px;width:calc(100% - 16px)" onclick="tryNextTurn()"><span class="hn-ic">⏭️</span><span id="btn-next-turn-label" data-i18n="menu.endTurn">턴 종료</span></button>
       <div class="hn-sec" id="sys-sec-hdr" onclick="toggleSysMenu()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:12px 14px 6px">
-        <span data-i18n="menu.system">?숋툘 ?쒖뒪??/span><span id="sys-sec-arrow" style="font-size:12px;color:var(--dim)">??/span>
+        <span data-i18n="menu.system">⚙️ 시스템</span><span id="sys-sec-arrow" style="font-size:12px;color:var(--dim)">▲</span>
       </div>
       <div id="sys-menu" style="overflow:hidden;max-height:0;transition:max-height .25s ease">
-        <button class="hn-btn hs" onclick="showSaveSlots()"><span class="hn-ic">?뮶</span><span data-i18n="menu.saveGame">寃뚯엫 ???/span></button>
-        <button class="hn-btn" onclick="showLoadSlots()"><span class="hn-ic">?뱛</span><span data-i18n="menu.loadGame">寃뚯엫 遺덈윭?ㅺ린</span></button>
-        <button class="hn-btn" onclick="showSettingsModal()"><span class="hn-ic">?숋툘</span><span data-i18n="menu.settings">?ㅼ젙</span></button>
-        <button class="hn-btn hb" onclick="showTitle()"><span class="hn-ic">?뵗</span><span data-i18n="menu.toTitle">??댄?濡?/span></button>
-        <button class="hn-btn" style="color:var(--red);border-top:1px solid rgba(255,60,60,.2);margin-top:4px" onclick="showExitModal()"><span class="hn-ic">?슞</span><span data-i18n="menu.exitGame">寃뚯엫 醫낅즺</span></button>
+        <button class="hn-btn hs" onclick="showSaveSlots()"><span class="hn-ic">💾</span><span data-i18n="menu.saveGame">게임 저장</span></button>
+        <button class="hn-btn" onclick="showLoadSlots()"><span class="hn-ic">📂</span><span data-i18n="menu.loadGame">게임 불러오기</span></button>
+        <button class="hn-btn" onclick="showSettingsModal()"><span class="hn-ic">⚙️</span><span data-i18n="menu.settings">설정</span></button>
+        <button class="hn-btn hb" onclick="showTitle()"><span class="hn-ic">🔙</span><span data-i18n="menu.toTitle">타이틀로</span></button>
+        <button class="hn-btn" style="color:var(--red);border-top:1px solid rgba(255,60,60,.2);margin-top:4px" onclick="showExitModal()"><span class="hn-ic">🚪</span><span data-i18n="menu.exitGame">게임 종료</span></button>
       </div>
     </div>
   </div>
   <div id="hub-right" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
     <div class="hub-body" id="hub-body"></div>
-    <!-- 諛깃뎄 AI + ?⑤? ?듯빀 ?섎떒 諛?-->
+    <!-- 백구 AI + 함대 통합 하단 바 -->
     <div id="bkdialog">
-  <!-- ???꾩껜 ???ㅻ뜑 (諛깃뎄 + ?⑤? 怨듯넻) ???대┃ ?먮뒗 ????踰꾪듉?쇰줈 ?묎린/?쇱튂湲?-->
+  <!-- ▭ 전체 폭 헤더 (백구 + 함대 공통) — 클릭 또는 ▾/▴ 버튼으로 접기/펼치기 -->
   <div id="bk-header-bar" onclick="bkToggleCollapse()" data-i18n-title="bk.headerToggleTitle" title="Click to expand / collapse">
     <div style="display:flex;align-items:center;gap:7px">
-      <img src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu" style="width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:17px&quot;>?릷</span>'">
+      <img src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu" style="width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,.3)" onerror="this.outerHTML='<span style=&quot;font-size:17px&quot;>🐕</span>'">
       <span style="color:var(--cyan);font-size:13px;font-weight:bold;letter-spacing:.5px" data-i18n="bk.title">Baekgu AI</span>
-      <span id="bk-status" style="color:var(--green);font-size:11px" data-i18n="bk.statusOnline">??Online</span>
+      <span id="bk-status" style="color:var(--green);font-size:11px" data-i18n="bk.statusOnline">● Online</span>
       <span style="color:rgba(255,255,255,.25);margin:0 4px">|</span>
-      <span style="color:var(--yellow);font-size:12px;font-weight:bold" data-i18n="bk.fleetLabel">?? Fleet</span>
+      <span style="color:var(--yellow);font-size:12px;font-weight:bold" data-i18n="bk.fleetLabel">🚀 Fleet</span>
       <span id="bk-fleet-count" style="color:var(--dim);font-size:11px"></span>
     </div>
     <div style="display:flex;align-items:center;gap:6px">
-      <button onclick="event.stopPropagation();document.getElementById('bk-msgs').innerHTML=''" style="background:none;border:1px solid rgba(0,243,255,.2);color:var(--muted);font-size:11px;cursor:pointer;padding:1px 6px;border-radius:4px" data-i18n-title="bk.clearMsgs" title="Clear messages">??/button>
-      <span id="bk-collapse-arrow" data-i18n-title="bk.collapseTitle" title="Collapse" style="color:rgba(0,243,255,.65);font-size:15px;padding:2px 8px;border-radius:3px;user-select:none;line-height:1">??/span>
+      <button onclick="event.stopPropagation();document.getElementById('bk-msgs').innerHTML=''" style="background:none;border:1px solid rgba(0,243,255,.2);color:var(--muted);font-size:11px;cursor:pointer;padding:1px 6px;border-radius:4px" data-i18n-title="bk.clearMsgs" title="Clear messages">✕</button>
+      <span id="bk-collapse-arrow" data-i18n-title="bk.collapseTitle" title="Collapse" style="color:rgba(0,243,255,.65);font-size:15px;padding:2px 8px;border-radius:3px;user-select:none;line-height:1">▾</span>
     </div>
   </div>
-  <!-- ??蹂몃Ц (?묓엳硫??④?) -->
+  <!-- ▽ 본문 (접히면 숨김) -->
   <div id="bk-content">
-    <!-- ? 醫? 諛깃뎄 ?⑤꼸 (2移대뱶 ?덈퉬 怨좎젙 468px) -->
+    <!-- ◀ 좌: 백구 패널 (2카드 너비 고정 468px) -->
     <div id="bk-left" style="width:468px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(0,243,255,.2)">
-      <!-- 由ъ궗?댁쫰 ?몃뱾 -->
+      <!-- 리사이즈 핸들 -->
       <div id="bk-resize-handle"></div>
-      <!-- 諛붾뵒: ?대?吏(醫? + 硫붿떆吏(?? -->
+      <!-- 바디: 이미지(좌) + 메시지(우) -->
       <div id="bk-body">
         <div id="bk-img-area">
           <img id="bk-portrait-img" src="img/chars/baekgu1.png" alt="Baekgu" data-i18n-alt="speaker.baekgu"
             onload="this.style.display='block';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='none'"
             onerror="this.style.display='none';var _e=document.getElementById('bk-emoji');if(_e)_e.style.display='flex'"
             style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s">
-          <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">?릷</div>
+          <div id="bk-emoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;position:absolute;top:0;left:0;background:linear-gradient(180deg,#050f1e,#0a1a30)">🐕</div>
           <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(5,12,26,.8) 100%)"></div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid rgba(0,243,255,.12)">
@@ -333,15 +333,15 @@ window.addEventListener('desktop-save-restored',function(e){
           <div id="bk-line" style="display:none"></div>
           <div id="bk-ask-area" style="display:flex;align-items:center;gap:6px;padding:6px 8px;border-top:1px solid rgba(0,243,255,.15);background:rgba(0,10,25,.6);flex-shrink:0;margin-top:auto">
             <input id="bk-ask-input" type="text" data-i18n-placeholder="bk.askPlaceholder" placeholder="Ask Baekgu..." maxlength="60"
-              style="flex:1;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.25);color:var(--txt);font-size:12px;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace;padding:5px 9px;border-radius:6px;outline:none;caret-color:var(--cyan)"
+              style="flex:1;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.25);color:var(--txt);font-size:12px;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace;padding:5px 9px;border-radius:6px;outline:none;caret-color:var(--cyan)"
               onkeydown="if(event.key==='Enter')askBaekgu()"
               onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='rgba(0,243,255,.25)'">
-            <button onclick="askBaekgu()" style="background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.35);color:var(--cyan);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Malgun Gothic','留묒? 怨좊뵓','Courier New',monospace" onmouseover="this.style.background='rgba(0,243,255,.22)'" onmouseout="this.style.background='rgba(0,243,255,.12)'" data-i18n="ui.ask">臾쇱뼱蹂닿린</button>
+            <button onclick="askBaekgu()" style="background:rgba(0,243,255,.12);border:1px solid rgba(0,243,255,.35);color:var(--cyan);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Malgun Gothic','맑은 고딕','Courier New',monospace" onmouseover="this.style.background='rgba(0,243,255,.22)'" onmouseout="this.style.background='rgba(0,243,255,.12)'" data-i18n="ui.ask">물어보기</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- ???? ?⑤? 移대뱶 (洹몃━??4?? -->
+    <!-- ▶ 우: 함대 카드 (그리드 4열) -->
     <div id="bk-fleet" style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);align-content:flex-start;gap:5px;padding:5px 8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,243,255,.2) transparent;min-width:0;background:rgba(0,5,15,.3)">
     </div>
   </div>
@@ -352,78 +352,75 @@ window.addEventListener('desktop-save-restored',function(e){
 
 </div><!-- /#game-stage -->
 
-<!-- 신규 전체화면 프롤로그 오버레이 컨테이너 (js/modules/prologue.js 가 채움; 없으면 JS가 동적 생성) -->
-<div id="prologue-overlay" style="display:none"></div>
-
-<!-- ?먥븧??DATA (遺꾨━???곗씠???뚯씪????game.js蹂대떎 癒쇱? 濡쒕뱶) ?먥븧??-->
-<script>window._GAME_VER='20260626.web_v1.0.0-beta.286';</script>
-<!-- ?먥븧??i18n (?ㅺ뎅?? ???곗씠?걔룰쾶??濡쒖쭅蹂대떎 癒쇱? 濡쒕뱶 ?먥븧??-->
-<script src="js/i18n.js?v=20260626006"></script>
-<!-- i18n 濡쒖??쇰퀎 ?ъ쟾 (湲濡쒕쾶 ?쒖? 援ъ“ ???몄뼱 異붽? = i18n/<lang>.js ?뚯씪 1媛? -->
-<script src="i18n/ko.js?v=20260626006"></script>
-<script src="i18n/en.js?v=20260626006"></script>
-<script src="js/data/factions.js?v=20260626006"></script>
-<script src="js/data/planets.js?v=20260626006"></script>
-<script src="js/data/heroes.js?v=20260626006"></script>
-<script src="js/data/boss-cutscenes.js?v=20260626006"></script>
-<script src="js/data/commodities.js?v=20260626006"></script>
-<script src="js/data/parts.js?v=20260626006"></script>
-<script src="js/data/quests.js?v=20260626006"></script>
-<script src="js/data/cargo.js?v=20260626006"></script>
-<script src="js/data/crafting.js?v=20260626006"></script>
-<script src="js/data/ships.js?v=20260626006"></script>
-<script src="js/data/expose-globals.js?v=20260626006"></script>
-<script src="js/data/voice-map.js?v=20260626006"></script>
-<script src="js/data/voice-manifest.js?v=20260626006"></script>
-<script src="js/data/voice-bytext-en.js?v=20260626006"></script>
-<script src="js/data/baekgu-diary.js?v=20260626006"></script>
-<!-- PRNG쨌????앹꽦 (game.js ?먯꽌 遺꾪븷, 2026-06-17) ??PLANET_DEF ?댄썑쨌starmap/game ?댁쟾 濡쒕뱶 -->
-<script src="js/modules/galaxy-gen.js?v=20260626006"></script>
-<script src="js/modules/png-image.js?v=20260626006"></script>
-<!-- ?먥븧??PHASE ?쒕굹由ъ삤 ?섏뒪???곗씠??(Phase 1쨌2쨌3쨌4쨌5쨌6) ?먥븧??-->
-<script src="js/data/phase1_quests.js?v=20260626006"></script>
-<script src="js/data/phase2_quests.js?v=20260626006"></script>
-<script src="js/data/phase3_quests.js?v=20260626006"></script>
-<script src="js/data/phase4_quests.js?v=20260626006"></script>
-<script src="js/data/phase5_quests.js?v=20260626006"></script>
-<script src="js/data/phase6_quests.js?v=20260626006"></script>
-<!-- ?먥븧??PHASE ?쒕굹由ъ삤 ?섏뒪???붿쭊 (spawnPhasedQuests + tickStoryQuests) ?먥븧??-->
-<script src="js/story-quest-engine.js?v=20260626006"></script>
-<!-- ?먥븧??移섑듃 硫붾돱 (?붾쾭洹??먯썝 吏湲? ?먥븧??-->
-<script src="js/cheat-menu.js?v=20260626006"></script>
-<!-- ?먥븧??FIREBASE SDK (?대씪?곕뱶 ?몄씠釉? ?쇰뱶諛? ?먥븧??-->
+<!-- ═══ DATA (분리된 데이터 파일들 — game.js보다 먼저 로드) ═══ -->
+<script>window._GAME_VER='20260626.web_v1.0.0-beta.288';</script>
+<!-- ═══ i18n (다국어) — 데이터·게임 로직보다 먼저 로드 ═══ -->
+<script src="js/i18n.js?v=20260626002"></script>
+<!-- i18n 로케일별 사전 (글로벌 표준 구조 — 언어 추가 = i18n/<lang>.js 파일 1개) -->
+<script src="i18n/ko.js?v=20260626002"></script>
+<script src="i18n/en.js?v=20260626002"></script>
+<script src="js/data/factions.js?v=20260626002"></script>
+<script src="js/data/planets.js?v=20260626002"></script>
+<script src="js/data/heroes.js?v=20260626002"></script>
+<script src="js/data/boss-cutscenes.js?v=20260626002"></script>
+<script src="js/data/commodities.js?v=20260626002"></script>
+<script src="js/data/parts.js?v=20260626002"></script>
+<script src="js/data/quests.js?v=20260626002"></script>
+<script src="js/data/cargo.js?v=20260626002"></script>
+<script src="js/data/crafting.js?v=20260626002"></script>
+<script src="js/data/ships.js?v=20260626002"></script>
+<script src="js/data/expose-globals.js?v=20260626002"></script>
+<script src="js/data/voice-map.js?v=20260626002"></script>
+<script src="js/data/voice-manifest.js?v=20260626002"></script>
+<script src="js/data/voice-bytext-en.js?v=20260626002"></script>
+<script src="js/data/baekgu-diary.js?v=20260626002"></script>
+<!-- PRNG·은하 생성 (game.js 에서 분할, 2026-06-17) — PLANET_DEF 이후·starmap/game 이전 로드 -->
+<script src="js/modules/galaxy-gen.js?v=20260626002"></script>
+<script src="js/modules/png-image.js?v=20260626002"></script>
+<!-- ═══ PHASE 시나리오 퀘스트 데이터 (Phase 1·2·3·4·5·6) ═══ -->
+<script src="js/data/phase1_quests.js?v=20260626002"></script>
+<script src="js/data/phase2_quests.js?v=20260626002"></script>
+<script src="js/data/phase3_quests.js?v=20260626002"></script>
+<script src="js/data/phase4_quests.js?v=20260626002"></script>
+<script src="js/data/phase5_quests.js?v=20260626002"></script>
+<script src="js/data/phase6_quests.js?v=20260626002"></script>
+<!-- ═══ PHASE 시나리오 퀘스트 엔진 (spawnPhasedQuests + tickStoryQuests) ═══ -->
+<script src="js/story-quest-engine.js?v=20260626002"></script>
+<!-- ═══ 치트 메뉴 (디버그 자원 지급) ═══ -->
+<script src="js/cheat-menu.js?v=20260626002"></script>
+<!-- ═══ FIREBASE SDK (클라우드 세이브, 피드백) ═══ -->
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script defer src="js/cloudsave.js?v=20260626006"></script>
-<!-- ?먥븧??DESKTOP (Electron) BRIDGE ???곗뒪?ы깙???뚮쭔 ?숈옉 ?먥븧??-->
-<script src="js/desktop-bridge.js?v=20260626006"></script>
-<!-- ?먥븧??UI MODULES ??game.js?먯꽌 遺꾪븷???먮┰ 紐⑤뱢 (2026-06-08) ?먥븧??-->
-<script src="js/modules/report-popup.js?v=20260626006"></script>
-<script src="js/modules/shakedown-popup.js?v=20260626006"></script>
-<script src="js/modules/asteroid-minigame.js?v=20260626006"></script>
-<script src="js/modules/starmap.js?v=20260626006"></script>
-<script src="js/modules/auction.js?v=20260626006"></script>
-<script src="js/modules/codex.js?v=20260626006"></script>
-<script src="js/modules/tavern.js?v=20260626006"></script>
-<!-- ?먥븧??GAME LOGIC ?먥븧??-->
-<!-- 罹먮┃??珥덉긽/諛깃뎄 ?????game.js?먯꽌 遺꾪븷 (i18n ?댄썑쨌game.js ?댁쟾 濡쒕뱶 ?꾩닔) -->
-<script src="js/modules/portrait-baekgu.js?v=20260626006"></script>
-<script src="game.js?v=20260626006"></script>
-<!-- 諛깃뎄 梨쀫큸/?뚰듃 ??game.js?먯꽌 遺꾪븷 (2026-06-16). game.js 吏곹썑 濡쒕뱶(?고????몄텧). -->
-<script src="js/modules/baekgu-chat.js?v=20260626006"></script>
-<!-- ?먥븧??COMBAT ??game.js ?먯꽌 遺꾨━ (C1, 2026-06-14) ?먥븧??-->
-<script src="js/modules/combat.js?v=20260626006"></script>
-<!-- ?먥븧??ECONOMY ??game.js ?먯꽌 遺꾨━ (C4, 2026-06-23). game.js 吏곹썑 濡쒕뱶(?고????몄텧, ?꾩뿭 李몄“). ?먥븧??-->
-<script src="js/modules/economy.js?v=20260626006"></script>
-<!-- ?먥븧??VIEWS-MISC ??game.js ?먯꽌 遺꾨━ (C5, 2026-06-23). ?쒖옉?덉쭏/愿묒옣/?꾨갑/?꾪닾湲곕줉 酉? ?먥븧??-->
-<script src="js/modules/views-misc.js?v=20260626006"></script>
-<!-- ?먥븧??HERO RECRUIT ??game.js ?먯꽌 遺꾨━ (C6, 2026-06-23). ?꾩꽕 ?곸썒 ?곸엯/?묒듅. ?먥븧??-->
-<script src="js/modules/hero-recruit.js?v=20260626006"></script>
-<!-- ?먥븧??TITLE/AGE/FTUE ??game.js ?먯꽌 遺꾨━ (C7, 2026-06-23). ??댄?/?곕졊/?깅퀎쨌?쒖씠???먮쫫(onclick ?고???. ?먥븧??-->
-<script src="js/modules/title-flow.js?v=20260626006"></script>
+<script defer src="js/cloudsave.js?v=20260626002"></script>
+<!-- ═══ DESKTOP (Electron) BRIDGE — 데스크탑일 때만 동작 ═══ -->
+<script src="js/desktop-bridge.js?v=20260626002"></script>
+<!-- ═══ UI MODULES — game.js에서 분할된 자립 모듈 (2026-06-08) ═══ -->
+<script src="js/modules/report-popup.js?v=20260626002"></script>
+<script src="js/modules/shakedown-popup.js?v=20260626002"></script>
+<script src="js/modules/asteroid-minigame.js?v=20260626002"></script>
+<script src="js/modules/starmap.js?v=20260626002"></script>
+<script src="js/modules/auction.js?v=20260626002"></script>
+<script src="js/modules/codex.js?v=20260626002"></script>
+<script src="js/modules/tavern.js?v=20260626002"></script>
+<!-- ═══ GAME LOGIC ═══ -->
+<!-- 캐릭터 초상/백구 대사 — game.js에서 분할 (i18n 이후·game.js 이전 로드 필수) -->
+<script src="js/modules/portrait-baekgu.js?v=20260626002"></script>
+<script src="game.js?v=20260626002"></script>
+<!-- 백구 챗봇/힌트 — game.js에서 분할 (2026-06-16). game.js 직후 로드(런타임 호출). -->
+<script src="js/modules/baekgu-chat.js?v=20260626002"></script>
+<!-- ═══ COMBAT — game.js 에서 분리 (C1, 2026-06-14) ═══ -->
+<script src="js/modules/combat.js?v=20260626002"></script>
+<!-- ═══ ECONOMY — game.js 에서 분리 (C4, 2026-06-23). game.js 직후 로드(런타임 호출, 전역 참조). ═══ -->
+<script src="js/modules/economy.js?v=20260626002"></script>
+<!-- ═══ VIEWS-MISC — game.js 에서 분리 (C5, 2026-06-23). 제작품질/광장/전방/전투기록 뷰. ═══ -->
+<script src="js/modules/views-misc.js?v=20260626002"></script>
+<!-- ═══ HERO RECRUIT — game.js 에서 분리 (C6, 2026-06-23). 전설 영웅 영입/탑승. ═══ -->
+<script src="js/modules/hero-recruit.js?v=20260626002"></script>
+<!-- ═══ TITLE/AGE/FTUE — game.js 에서 분리 (C7, 2026-06-23). 타이틀/연령/성별·난이도 흐름(onclick 런타임). ═══ -->
+<script src="js/modules/title-flow.js?v=20260626002"></script>
 <script>
-/* ??댄? 硫붾돱 ?쒕옒洹??대룞 (?ъ슜???붿껌 2026-06-14) ???곗긽??3遺꾪븷 怨⑤뱺?ㅽ뙚 湲곕낯 + ?먯쑀 ?대룞 + ?꾩튂 ???*/
+/* 타이틀 메뉴 드래그 이동 (사용자 요청 2026-06-14) — 우상단 3분할 골든스팟 기본 + 자유 이동 + 위치 저장 */
 (function(){
   function _init(){
     var panel=document.getElementById('title-menu-panel');
@@ -462,39 +459,40 @@ window.addEventListener('desktop-save-restored',function(e){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_init);else _init();
 })();
 </script>
-<script src="js/modules/main-hub-story-strip.js?v=20260626006"></script>
-<script src="js/modules/ending-credits.js?v=20260626006"></script>
-<script src="js/modules/auto-equip.js?v=20260626006"></script>
-<script src="js/modules/gacha.js?v=20260626006"></script>
-<script src="js/modules/render-ship-tab.js?v=20260626006"></script>
-<script src="js/modules/render-craft-tab.js?v=20260626006"></script>
-<script src="js/modules/render-trade-tab.js?v=20260626006"></script>
-<script src="js/modules/settings-backup.js?v=20260626006"></script>
-<script src="js/modules/save-slots.js?v=20260626006"></script>
-<script src="js/modules/hall-of-fame.js?v=20260626006"></script>
-<script src="js/modules/feedback.js?v=20260626006"></script>
-<script src="js/modules/dev-menu.js?v=20260626006"></script>
-<script src="js/modules/loyalty.js?v=20260626006"></script>
-<script src="js/modules/sell-undo.js?v=20260626006"></script>
-<script src="js/modules/ship-skin-enhance.js?v=20260626006"></script>
-<script src="js/modules/bunker-defense.js?v=20260626006"></script>
-<script src="js/modules/quest-gen.js?v=20260626006"></script>
-<!-- ?먥븧???섏뒪??UI (game.js ?먯꽌 遺꾪븷, v1.0.0-beta.121) ?먥븧??-->
-<script src="js/modules/quest-ui.js?v=20260626006"></script>
-<!-- UI ?쒕꼫 ?쒓굅 (?ъ슜???붿껌 2026-06-16): ?곗륫?섎떒 議곗젅 ??鍮꾪솢?깊솕 ??蹂꾨룄 UI ?대줎 ?먮뵒???깆쑝濡??泥?(ui-editor.html) -->
-<!-- ?먥븧???쒕굹由ъ삤 而룹뵮쨌????쒖뒪???먥븧??     쨌 8?곸썒 泥ル쭔?????+ 罹먮┃????ㅽ겕由??앹뾽 + ?쒕굹由ъ삤 ?곸엯 ?쒖꽌
-     쨌 HD 罹먮┃???대?吏(img/chars-hd/**)???ъ쟾????諛고룷 ?쒖쇅 (PC ?꾩슜)
-     쨌 ?ν썑 19梨뺥꽣쨌?뚯꽕???곗씠?????異붽? ???ㅼ떆 PC ?꾩슜?쇰줈 寃⑸━ -->
-<script src="js/story-scenes-pc.js?v=20260626006"></script>
-<script src="js/modules/voice-player.js?v=20260626006"></script>
-<script src="js/modules/prologue.js?v=20260626006"></script>
-<script src="js/modules/eisenklau-midboss.js?v=20260626006"></script>
-<!-- ?먥븧??PWA SERVICE WORKER ?깅줉 (Electron PC 鍮뚮뱶?먯꽑 嫄대꼫?) ?먥븧??-->
+<script src="js/modules/main-hub-story-strip.js?v=20260626002"></script>
+<script src="js/modules/ending-credits.js?v=20260626002"></script>
+<script src="js/modules/auto-equip.js?v=20260626002"></script>
+<script src="js/modules/gacha.js?v=20260626002"></script>
+<script src="js/modules/render-ship-tab.js?v=20260626002"></script>
+<script src="js/modules/render-craft-tab.js?v=20260626002"></script>
+<script src="js/modules/render-trade-tab.js?v=20260626002"></script>
+<script src="js/modules/settings-backup.js?v=20260626002"></script>
+<script src="js/modules/save-slots.js?v=20260626002"></script>
+<script src="js/modules/hall-of-fame.js?v=20260626002"></script>
+<script src="js/modules/feedback.js?v=20260626002"></script>
+<script src="js/modules/dev-menu.js?v=20260626002"></script>
+<script src="js/modules/loyalty.js?v=20260626002"></script>
+<script src="js/modules/sell-undo.js?v=20260626002"></script>
+<script src="js/modules/ship-skin-enhance.js?v=20260626002"></script>
+<script src="js/modules/bunker-defense.js?v=20260626002"></script>
+<script src="js/modules/quest-gen.js?v=20260626002"></script>
+<!-- ═══ 퀘스트 UI (game.js 에서 분할, v1.0.0-beta.121) ═══ -->
+<script src="js/modules/quest-ui.js?v=20260626002"></script>
+<!-- UI 튜너 제거 (사용자 요청 2026-06-16): 우측하단 조절 툴 비활성화 → 별도 UI 클론 에디터 앱으로 대체 (ui-editor.html) -->
+<!-- ═══ 시나리오 컷씬·대화 시스템 ═══
+     · 8영웅 첫만남 대화 + 캐릭터 풀스크린 팝업 + 시나리오 영입 순서
+     · HD 캐릭터 이미지(img/chars-hd/**)는 여전히 웹 배포 제외 (PC 전용)
+     · 향후 19챕터·소설판 데이터 대량 추가 시 다시 PC 전용으로 격리 -->
+<script src="js/story-scenes-pc.js?v=20260626002"></script>
+<script src="js/modules/voice-player.js?v=20260626002"></script>
+<script src="js/modules/prologue.js?v=20260626002"></script>
+<script src="js/modules/eisenklau-midboss.js?v=20260626002"></script>
+<!-- ═══ PWA SERVICE WORKER 등록 (Electron PC 빌드에선 건너뜀) ═══ -->
 <script>
 if ('serviceWorker' in navigator && !window.desktopAPI) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('service-worker.js').then(function (reg) {
-      // ??踰꾩쟾 媛먯? ???먮룞?쇰줈 媛깆떊 ?곸슜
+      // 새 버전 감지 시 자동으로 갱신 적용
       if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
       reg.addEventListener('updatefound', function () {
         var nw = reg.installing;
