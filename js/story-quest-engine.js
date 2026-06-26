@@ -42,7 +42,15 @@ function _isPhaseUnlocked(n){
   if(n<=1)return true;
   return _phaseClaimedFrac(n-1)>=0.5;
 }
-try{ if(typeof window!=='undefined'){ window._phaseClaimedFrac=_phaseClaimedFrac; window._isPhaseUnlocked=_isPhaseUnlocked; } }catch(e){}
+// 행성이 속한 페이즈 번호(1~6). PHASEx_PLANET_INTROS / PHASEx_QUESTS 키에서 역조회. 사용자 요청 2026-06-26.
+function _planetPhase(pid){
+  for(var p=1;p<=6;p++){
+    var intros=window['PHASE'+p+'_PLANET_INTROS']; if(intros && intros[pid])return p;
+    var qs=window['PHASE'+p+'_QUESTS']; if(qs && qs[pid])return p;
+  }
+  return 1;
+}
+try{ if(typeof window!=='undefined'){ window._phaseClaimedFrac=_phaseClaimedFrac; window._isPhaseUnlocked=_isPhaseUnlocked; window._planetPhase=_planetPhase; } }catch(e){}
 
 // ═══ 선행조건 게이트 + 유도 멘트 (사용자 지시서 2026-06-18) ═══════════════
 //   퀘스트/컷신 템플릿의 선언적 `requires`{heroes,items,blueprints,quests} 를 읽어
@@ -353,7 +361,9 @@ function spawnPhasedQuests(pid){
   }
   // 행성 도착 시 해당 행성의 영웅 퀘스트 자동 스폰 (사용자 요청 2026-06-15)
   //   game.js 정의 함수 — 런타임에 window 로 노출됨. 미영입 영웅이면 즉시 퀘스트(status:done) 등장.
-  try{ if(typeof window._spawnHeroQuestForPlanet==='function')window._spawnHeroQuestForPlanet(pid); }catch(e){console.warn('[story-quest-engine] hero quest spawn fail:',e);}
+  //   페이즈 게이트 적용 (사용자 요청 2026-06-26): 행성이 속한 페이즈가 잠겨 있으면(직전 페이즈 <50% claimed) 영웅퀘도 미스폰.
+  //   (이 가드 없으면 새 게임/전행성 사전 spawn 시 모든 페이즈 영웅퀘가 한꺼번에 떠 순서가 엉망)
+  try{ if(typeof window._spawnHeroQuestForPlanet==='function' && _isPhaseUnlocked(_planetPhase(pid)))window._spawnHeroQuestForPlanet(pid); }catch(e){console.warn('[story-quest-engine] hero quest spawn fail:',e);}
   return added>0;
 }
 
