@@ -2406,7 +2406,7 @@ function grantSpecialTurtle(){
       // shipImgSrc 라우팅이 404 나므로, PC·모바일·웹 모두 존재하는 기본 경로(img/ships/LGD01_SP.png)를 직접 사용. 실패 시 ✦ 폴백.
       const _turtleImg='img/ships/LGD01_SP.png';
       const _imgHtml=(typeof imgOrEmoji==='function')
-        ? imgOrEmoji(_turtleImg,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin-bottom:8px')
+        ? imgOrEmoji(_turtleImg,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin:0 auto 8px')
         : '<img src="'+_turtleImg+'" alt="" style="width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 22px #ffd700);margin-bottom:8px" onerror="this.outerHTML=\'<div style=\\\'font-size:110px\\\'>✦</div>\'">';
       const _body='<div style="text-align:center;padding:8px">'+
         _imgHtml+
@@ -2460,7 +2460,7 @@ function grantDestroyerStar(){
     if(typeof openModal==='function'){
       const _img='img/planets/P09.png';   // 볼티움 행성 이미지 = 함선 이미지
       const _imgHtml=(typeof imgOrEmoji==='function')
-        ? imgOrEmoji(_img,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 24px #ff66cc);margin-bottom:8px')
+        ? imgOrEmoji(_img,'✦',180,180,'object-fit:contain;filter:drop-shadow(0 0 24px #ff66cc);margin:0 auto 8px')
         : '<img src="'+_img+'" alt="" style="width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 24px #ff66cc);margin-bottom:8px" onerror="this.outerHTML=\'<div style=\\\'font-size:110px\\\'>✦</div>\'">';
       const _body='<div style="text-align:center;padding:8px">'+
         _imgHtml+

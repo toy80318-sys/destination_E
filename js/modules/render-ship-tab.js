@@ -344,7 +344,7 @@ function renderShipTab(body){
             ${isFlagship?`<span style="font-size:11px;color:var(--cyan);border:1px solid var(--cyan);border-radius:3px;padding:1px 5px">${I18N.t('ship.flagshipChip')}</span>`:''}
             <span style="font-size:11px;color:${tierCol};border:1px solid ${tierCol};border-radius:3px;padding:1px 5px">${I18N.tier(s.tier)}</span>
           </div>
-          <span style="font-size:13px;font-weight:bold;color:${hpC}">HP ${Math.round(s.hp).toLocaleString()}/${_eHpP.toLocaleString()} (${hpP}%)${shP>0?' | '+I18N.t('ui.shieldShort')+' '+shP+'%':''}</span>
+          <span style="font-size:13px;font-weight:bold;color:${hpC}">HP ${Math.round(s.hp).toLocaleString()}/${_eHpP.toLocaleString()} (${hpP}%)${(_stP.maxSH||s.maxSH)>0?' | '+I18N.t('ui.shieldShort')+' '+Math.round(s.sh||0).toLocaleString()+'/'+_eSPp.toLocaleString()+' ('+shP+'%)':''}</span>
         </div>
 
         <!-- ── 본문: 정비소=2열(정보+서브탭) / 거래소=4열 ── -->
