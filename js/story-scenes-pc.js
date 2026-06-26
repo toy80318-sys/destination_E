@@ -607,9 +607,8 @@
   // phase 컷신 등 외부 씬 배열에 첫 만남 멘트 prepend(공용). 반환: 새 배열(또는 원본).
   //   markMet 은 호출부의 onDone 에서 별도 처리(중간 종료 시 미마킹). 여기선 prepend 만.
   function prependFirstMeet(key, scenes){
-    var ln = _firstMeetLine(key);
-    if(!ln || !Array.isArray(scenes)) return scenes;
-    return [ln].concat(scenes);
+    // 사용자 요청 2026-06-26: 영웅 첫 만남 인사 멘트 전면 제거 → prepend 비활성(원본 씬 그대로 반환).
+    return scenes;
   }
 
   function getScenes(hid){
