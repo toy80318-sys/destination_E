@@ -934,16 +934,21 @@ function showHub(){
         var _all=new Set();
         _maps.forEach(function(m){if(m)Object.keys(m).forEach(function(p){_all.add(p);});});
         var seeded=0,baekguTotal=0;
-        _all.forEach(function(p){
-          if(typeof spawnPhasedQuests==='function'){
-            try{
-              spawnPhasedQuests(p);
-              seeded++;
-              var _list=(G.quests&&G.quests[p])||[];
-              baekguTotal+=_list.filter(function(q){return q.npc==='백구';}).length;
-            }catch(e){console.warn('[seed]',p,'fail:',e.message);}
-          }
-        });
+        // 버그수정 2026-06-26: 전 행성 대량 사전 spawn 중에는 영웅 위치단서 notify/백구 음성을 억제.
+        //   (이 가드 없으면 새 게임 시 8개 영웅 단서 음성이 한꺼번에 재생되는 "갑자기 음성" 현상 — 사용자 보고)
+        window._questSeeding=true;
+        try{
+          _all.forEach(function(p){
+            if(typeof spawnPhasedQuests==='function'){
+              try{
+                spawnPhasedQuests(p);
+                seeded++;
+                var _list=(G.quests&&G.quests[p])||[];
+                baekguTotal+=_list.filter(function(q){return q.npc==='백구';}).length;
+              }catch(e){console.warn('[seed]',p,'fail:',e.message);}
+            }
+          });
+        }finally{ window._questSeeding=false; }
         G._allPlanetsSeeded=true;
         console.log('[seed all] '+seeded+'개 행성 spawn 완료 · 백구 퀘 '+baekguTotal+'개');
       }catch(e){console.warn('[seed all] fail:',e);}
@@ -2276,9 +2281,11 @@ function _spawnHeroQuest(heroId){
     required:1,
     planetId:planetId
   });
-  // 알림 + 백구
-  if(typeof notify==='function')notify(_isEn?('⭐ Special Quest: '+heroNm+' ('+planetNm+')'):('⭐ 특별 퀘스트: '+heroNm+' ('+planetNm+')'),'pur');
-  if(typeof baekgu==='function')baekgu(_isEn?(heroNm+' detected at '+planetNm+'. Set course, Commander.'):(planetNm+'에서 '+heroNm+'의 위치 단서를 포착했습니다.'));
+  // 알림 + 백구 — 대량 사전 spawn(_questSeeding) 중에는 억제(음성·토스트 쏟아짐 방지). 퀘스트는 정상 스폰·목록 노출.
+  if(!window._questSeeding){
+    if(typeof notify==='function')notify(_isEn?('⭐ Special Quest: '+heroNm+' ('+planetNm+')'):('⭐ 특별 퀘스트: '+heroNm+' ('+planetNm+')'),'pur');
+    if(typeof baekgu==='function')baekgu(_isEn?(heroNm+' detected at '+planetNm+'. Set course, Commander.'):(planetNm+'에서 '+heroNm+'의 위치 단서를 포착했습니다.'));
+  }
   return true;
 }
 
