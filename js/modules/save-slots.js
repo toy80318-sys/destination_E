@@ -232,6 +232,11 @@ function loadGame(slotN){
       }
     }catch(e){console.warn('[crew _nmKey backfill]',e);}
     if(!G.planets||!Object.keys(G.planets).length)G.planets={};
+    // 엔딩 강제 재생 버그 수정 (2026-06-26): 보스 격파 완료(_earthLiberated) 세이브를 로드하면
+    //   showHub 가 엔딩 크레딧(z-index 99999 풀스크린)을 자동 재생해 게임을 덮던 문제.
+    //   _endingShown 은 엔딩을 '끝까지' 봐야만 set 되므로, 스킵했거나 구세이브(필드 없음)면 매 로드마다 재트리거됨.
+    //   → 이미 완료된 게임 로드는 포스트게임 자유플레이로 진입시킨다(엔딩은 인게임 격파 직후 1회만, 수동 replayEnding() 유지).
+    if(G._earthLiberated) G._endingShown=true;
     // 화물·재료 정합성 — 구버전 세이브 호환 + 직렬화 시 어긋난 카운터 자동 보정
     try{_validateCargoIntegrity();}catch(e){console.warn('cargo validate(load) failed',e);}
     // 불러오기 후 함선 HP 보정 + 블랙팔콘 신화급 슬롯 마이그레이션

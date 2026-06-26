@@ -588,11 +588,13 @@ function getRepRank(rep){
   return{lb:I18N.t('rep.nameless'),col:'var(--dim)',next:50,ic:'❓'};
 }
 function startGame(){
-  const nm=document.getElementById('ft-nm').value.trim(),co=document.getElementById('ft-co').value.trim(),sh=document.getElementById('ft-sh').value.trim();
+  // null-safe 입력 읽기 — 등록 폼 요소가 누락돼도 새 게임이 크래시하지 않도록 방어 (2026-06-26)
+  const _gv=function(id){var el=document.getElementById(id);return (el&&el.value!=null)?el.value.trim():'';};
+  const nm=_gv('ft-nm'),co=_gv('ft-co'),sh=_gv('ft-sh');
   const emailEl=document.getElementById('ft-email');
   const email=emailEl?emailEl.value.trim():'';
   const err=document.getElementById('ft-er');
-  if(!nm){err.textContent=I18N.t('startErr.noCmdName');return;}
+  if(!nm){if(err)err.textContent=I18N.t('startErr.noCmdName');else{try{notify(I18N.t('startErr.noCmdName'),'err');}catch(e){}} return;}
   // 이메일 입력 시 형식 검증 + 클라우드 등록
   if(email){
     if(!window.CloudSave||!CloudSave._validEmail||!CloudSave._validEmail(email)){
