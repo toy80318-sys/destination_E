@@ -57,3 +57,4 @@ __pycache__/
 *.pyc
 *.bak
 *.bak_*
+voice_samples/
