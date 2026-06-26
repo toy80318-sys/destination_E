@@ -462,12 +462,14 @@ function getDiffCountMult(){return G.difficulty==='extreme'?3.0:G.difficulty==='
 // ── 플레이어 내부 레벨 (1~100) ─────────────────────────────────
 // 자본 40점 + 함대 25점 + 행성 20점 + 영웅 10점 + 크루 5점 = 100점
 function calcPlayerLevel(){
-  const creditScore =Math.min(400,Math.floor(G.credits/75000));         // ₡0→0, ₡30M→400
-  const fleetScore  =Math.min(250,Math.max(0,(G.fleet.length-1)*30));   // 1척→0, 9척→240
-  const planetScore =Math.min(200,Object.values(G.planets).filter(p=>p.owned).length*40); // 5개→200
-  const heroScore   =Math.min(100,G.heroes.length*12.5);                // 8명→100
-  const crewScore   =Math.min(50, Math.floor(G.crew.length/3)*10);      // 15명→50
-  return clamp(Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore),1,1000);
+  // 전투력 상한 1000 → 2000 확장 (사용자 요청 2026-06-26). 하위 캡도 풀어 만렙 합이 ~2000.
+  //   적 강화 곡선 getLevelMult 은 lv2000(×2.41)까지 이미 sqrt 감쇠로 대응 → 밸런스 안전.
+  const creditScore =Math.min(800,Math.floor(G.credits/75000));         // ₡0→0, ₡60M→800
+  const fleetScore  =Math.min(500,Math.max(0,(G.fleet.length-1)*40));   // 1척→0, ~13척→480
+  const planetScore =Math.min(400,Object.values(G.planets).filter(p=>p.owned).length*40); // 10개→400
+  const heroScore   =Math.min(200,G.heroes.length*22);                  // 9명→198
+  const crewScore   =Math.min(100, Math.floor(G.crew.length/3)*10);     // 30명→100
+  return clamp(Math.round(creditScore+fleetScore+planetScore+heroScore+crewScore),1,2000);
 }
 // 레벨 기반 적 강화 배율: 플레이어 전투력 상승에 비례해 적 ATK·HP 증가.
 // sqrt 곡선(체감 감소): 초반은 선형과 유사, 후반에 폭주 방지
