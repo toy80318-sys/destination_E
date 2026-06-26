@@ -780,6 +780,12 @@
       if(typeof onDone === 'function') onDone();
       return;
     }
+    // 프롤로그 재생 중에는 모든 자동 스토리 씬을 억제 + seen 마킹(재트리거 방지) → 새 게임은 프롤로그만. 사용자 요청 2026-06-26.
+    //   (퀘스트 수락 등 명시 재생은 forceReplayScene 이 seen 무시하고 재생하므로 영향 없음.)
+    if(window._prologuePlaying){
+      try{ if(!window.G)window.G={}; if(!G._scenesSeen)G._scenesSeen={}; G._scenesSeen['scene_'+sceneId]=true; }catch(e){}
+      return;  // onDone 미호출(완료 오판 방지)
+    }
     var scenes = _getPhaseScene(sceneId);
     if(!scenes){
       console.warn('[STORY_SCENES_PC] No scene found for ID:', sceneId);

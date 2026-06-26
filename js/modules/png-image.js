@@ -618,7 +618,10 @@ function startGame(){
     G._prologueSeen=true;
     try{ if(!G._phasedIntroSeen)G._phasedIntroSeen={}; G._phasedIntroSeen['intro_P01']=true; }catch(e){}
     try{ if(typeof saveGame==='function')saveGame(true); }catch(e){}
+    window._prologuePlaying=true;   // 프롤로그 재생 동안 모든 자동 스토리 씬 억제 → 새 게임은 프롤로그만. 사용자 요청 2026-06-26.
+    try{ setTimeout(function(){ window._prologuePlaying=false; },120000); }catch(e){}   // 안전장치: 콜백 미발화 시 최대 120초 후 강제 해제
     try{ window.showPrologue(function(){
+      window._prologuePlaying=false;
       // 프롤로그 종료/스킵 → 행성(허브) BGM 복귀
       try{
         if(window.AudioMgr && AudioMgr.playBgm){
@@ -626,7 +629,7 @@ function startGame(){
           AudioMgr.playBgm(_bn);
         }
       }catch(e2){}
-    }); }catch(e){ console.warn('[startGame] prologue fail:',e); }
+    }); }catch(e){ window._prologuePlaying=false; console.warn('[startGame] prologue fail:',e); }
   }
   // 사용자 요청 2026-06-07: 게임 시작 백구 멘트 프롤로그 제거
   // → FTUE 직후 바로 허브 진입. showHub()의 spawnPhasedQuests가 p1_ch01a("100년의 잠") 컷씬을 자동 재생함

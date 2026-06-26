@@ -184,6 +184,9 @@ function spawnPhasedQuests(pid){
     Object.keys(G._phasedIntroSeen).forEach(function(key){
       if(!key.startsWith('intro_'))return;
       var planetId=key.substring(6);
+      // 프롤로그(showPrologue)가 P01 기상 서사를 담당 → P01 인트로는 복원(재트리거)하지 않음.
+      //   이 가드 없으면 자동복원이 intro_P01 seen 을 지워 새 게임에 인트로 컷신이 다시 뜸. 사용자 요청 2026-06-26.
+      if(planetId==='P01' && typeof window.showPrologue==='function')return;
       var sceneId=null;
       for(var i=0;i<_intros.length;i++){
         if(_intros[i] && _intros[i][planetId]){sceneId=_intros[i][planetId];break;}
@@ -283,6 +286,9 @@ function spawnPhasedQuests(pid){
   if(!G._phasedIntroSeen)G._phasedIntroSeen={};
   if(!G._introInFlight)G._introInFlight={};  // 컷씬 재생 중 재진입 차단(연속 2회 재생 방지)
   const _introKey='intro_'+pid;
+  // 프롤로그(showPrologue)가 P01 기상 서사를 담당 → P01 인트로 컷신(p1_ch01a) 자동재생 중복 억제.
+  //   타이밍 경쟁(인트로가 startGame 억제 직전에 발동) 회피 위해, 프롤로그 기능이 있으면 무조건 seen 마킹. 사용자 요청 2026-06-26.
+  if(pid==='P01' && typeof window.showPrologue==='function'){ G._phasedIntroSeen[_introKey]=true; }
   if(!G._phasedIntroSeen[_introKey] && !G._introInFlight[_introKey]){
     const _introMaps=[window.PHASE1_PLANET_INTROS, window.PHASE2_PLANET_INTROS, window.PHASE3_PLANET_INTROS, window.PHASE4_PLANET_INTROS, window.PHASE5_PLANET_INTROS, window.PHASE6_PLANET_INTROS];
     let _introSceneId=null;
