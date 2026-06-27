@@ -1,110 +1,110 @@
 {
- "commander": {
-  "voice": "TX3LPaxmHKxFdv7VOQHJ",
-  "name": "Liam (young idol hero)"
- },
- "baekgu": {
-  "voice": "cjVigY5qzO86Huf0OWal",
-  "name": "Eric (smooth trustworthy advisor)"
- },
- "yisunsin": {
-  "voice": "JBFqnCBsd6RMkjVDRZzb",
-  "name": "George (warm, epic admiral)"
- },
- "marcopolo": {
-  "voice": "iP95p4xoKVk53GoZ742B",
-  "name": "Chris (charming trader)"
- },
- "gagarin": {
-  "voice": "IKne3meq5aSn9XLyUdCD",
-  "name": "Charlie (energetic ace) [=487]"
- },
- "jangyeongsil": {
-  "voice": "cgSgspJ2msm6clMCkdW9",
-  "name": "Jessica (playful bright, female inventor)"
- },
- "gwanggaeto": {
-  "voice": "ESNrF6xSj96uiykXXT1f",
-  "name": "Bryan (solemn old king) [=486]"
- },
- "tesla": {
-  "voice": "N2lVS1w4EtoT3dr4eOWO",
-  "name": "Callum (husky trickster, eccentric)"
- },
- "nelson": {
-  "voice": "onwK4e9ZLuTAKqWW03F9",
-  "name": "Daniel (British admiral) [=488]"
- },
- "einstein": {
-  "voice": "nPczCjzI2devNBz1zQrb",
-  "name": "Brian (deep, wise physicist)"
- },
- "leehwiso": {
-  "voice": "pqHfZKP75CvOlQylNhV4",
-  "name": "Bill (wise mature genius)"
- },
- "ursamajor": {
-  "voice": "HtX6ldi13wWkUMIZD7Xq",
-  "name": "Ursa Major EN boss (deep, design)"
- },
- "maximoff": {
-  "voice": "bIHbv24MWmeRgasZH58o",
-  "name": "Will (earnest ranger)"
- },
- "eisenklau": {
-  "voice": "SOYHLrjzK2X1ezoPC6cr",
-  "name": "Harry (fierce enemy commander)"
- },
- "aori": {
-  "voice": "XrExE9yKIg1WjnnlVkGX",
-  "name": "Matilda (info broker, female) [=489]"
- },
- "wolfelder": {
-  "voice": "CwhRBWXzGAHq8TQ4Fs17",
-  "name": "Roger (laid-back old man)"
- },
- "navai": {
-  "voice": "SAz9YHcvj6GT2YYXdXww",
-  "name": "River (neutral AI)"
- },
- "chiks": {
-  "voice": "SOYHLrjzK2X1ezoPC6cr",
-  "name": "Harry (alien vanguard)"
- },
- "volcan": {
-  "voice": "pqHfZKP75CvOlQylNhV4",
-  "name": "Bill (gruff miner)"
- },
- "borg": {
-  "voice": "N2lVS1w4EtoT3dr4eOWO",
-  "name": "Callum (raspy pirate)"
- },
- "karim": {
-  "voice": "cjVigY5qzO86Huf0OWal",
-  "name": "Eric (smooth smuggler)"
- },
- "krash": {
-  "voice": "pNInz6obpgDQGcFmaJgB",
-  "name": "Adam (alien legion cmdr)"
- },
- "veil": {
-  "voice": "SAz9YHcvj6GT2YYXdXww",
-  "name": "River (androgynous bounty hunter)"
- },
- "dorga": {
-  "voice": "CwhRBWXzGAHq8TQ4Fs17",
-  "name": "Roger (sleazy raider)"
- },
- "rebel": {
-  "voice": "bIHbv24MWmeRgasZH58o",
-  "name": "Will (rebel leader)"
- },
- "aureusboss": {
-  "voice": "EXAVITQu4vr4xnSDxMaL",
-  "name": "Sarah (mature haughty financier, female)"
- },
- "etc": {
-  "voice": "JBFqnCBsd6RMkjVDRZzb",
-  "name": "(486~491 이미 개별 캐스팅 완료)"
- }
+  "commander": {
+    "voice": "TX3LPaxmHKxFdv7VOQHJ",
+    "name": "Liam (young idol hero)"
+  },
+  "baekgu": {
+    "voice": "cjVigY5qzO86Huf0OWal",
+    "name": "Eric (smooth trustworthy advisor)"
+  },
+  "yisunsin": {
+    "voice": "JBFqnCBsd6RMkjVDRZzb",
+    "name": "George (warm, epic admiral)"
+  },
+  "marcopolo": {
+    "voice": "iP95p4xoKVk53GoZ742B",
+    "name": "Chris (charming trader)"
+  },
+  "gagarin": {
+    "voice": "IKne3meq5aSn9XLyUdCD",
+    "name": "Charlie (energetic ace) [=487]"
+  },
+  "jangyeongsil": {
+    "voice": "cgSgspJ2msm6clMCkdW9",
+    "name": "Jessica (playful bright, female inventor)"
+  },
+  "gwanggaeto": {
+    "voice": "ESNrF6xSj96uiykXXT1f",
+    "name": "Bryan (solemn old king) [=486]"
+  },
+  "tesla": {
+    "voice": "N2lVS1w4EtoT3dr4eOWO",
+    "name": "Callum (husky trickster, eccentric)"
+  },
+  "nelson": {
+    "voice": "onwK4e9ZLuTAKqWW03F9",
+    "name": "Daniel (British admiral) [=488]"
+  },
+  "einstein": {
+    "voice": "nPczCjzI2devNBz1zQrb",
+    "name": "Brian (deep, wise physicist)"
+  },
+  "leehwiso": {
+    "voice": "pqHfZKP75CvOlQylNhV4",
+    "name": "Bill (wise mature genius)"
+  },
+  "ursamajor": {
+    "voice": "HtX6ldi13wWkUMIZD7Xq",
+    "name": "Ursa Major EN boss (deep, design)"
+  },
+  "maximoff": {
+    "voice": "bIHbv24MWmeRgasZH58o",
+    "name": "Will (earnest ranger)"
+  },
+  "eisenklau": {
+    "voice": "SOYHLrjzK2X1ezoPC6cr",
+    "name": "Harry (fierce enemy commander)"
+  },
+  "aori": {
+    "voice": "ODq5zmih8GrVes37Dizd",
+    "name": "Patrick (info broker, male) — KO와 동일"
+  },
+  "wolfelder": {
+    "voice": "CwhRBWXzGAHq8TQ4Fs17",
+    "name": "Roger (laid-back old man)"
+  },
+  "navai": {
+    "voice": "SAz9YHcvj6GT2YYXdXww",
+    "name": "River (neutral AI)"
+  },
+  "chiks": {
+    "voice": "SOYHLrjzK2X1ezoPC6cr",
+    "name": "Harry (alien vanguard)"
+  },
+  "volcan": {
+    "voice": "pqHfZKP75CvOlQylNhV4",
+    "name": "Bill (gruff miner)"
+  },
+  "borg": {
+    "voice": "N2lVS1w4EtoT3dr4eOWO",
+    "name": "Callum (raspy pirate)"
+  },
+  "karim": {
+    "voice": "cjVigY5qzO86Huf0OWal",
+    "name": "Eric (smooth smuggler)"
+  },
+  "krash": {
+    "voice": "pNInz6obpgDQGcFmaJgB",
+    "name": "Adam (alien legion cmdr)"
+  },
+  "veil": {
+    "voice": "SAz9YHcvj6GT2YYXdXww",
+    "name": "River (androgynous bounty hunter)"
+  },
+  "dorga": {
+    "voice": "CwhRBWXzGAHq8TQ4Fs17",
+    "name": "Roger (sleazy raider)"
+  },
+  "rebel": {
+    "voice": "bIHbv24MWmeRgasZH58o",
+    "name": "Will (rebel leader)"
+  },
+  "aureusboss": {
+    "voice": "EXAVITQu4vr4xnSDxMaL",
+    "name": "Sarah (mature haughty financier, female)"
+  },
+  "etc": {
+    "voice": "JBFqnCBsd6RMkjVDRZzb",
+    "name": "(486~491 이미 개별 캐스팅 완료)"
+  }
 }
