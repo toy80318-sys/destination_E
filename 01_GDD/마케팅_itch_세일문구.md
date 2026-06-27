@@ -63,6 +63,18 @@ From a scrap-picker on the edge of nowhere to the commander who breaks the block
 > Windows · (데스크톱). 1인 인디 프로젝트.
 
 ---
+## 🔖 마케팅 검색용 태그 / 키워드
+
+**itch.io 태그 (소문자, 콤마 구분):**
+`sci-fi, space, rpg, strategy, turn-based, turn-based-combat, fleet, story-rich, singleplayer, exploration, space-sim, narrative, indie, atmospheric, voice-acted, korean, hero-collector, management, post-apocalyptic`
+
+**Steam 태그 / 키워드:**
+`Space, Sci-fi, RPG, Strategy RPG, Turn-Based Tactics, Fleet, Exploration, Story Rich, Singleplayer, Choices Matter, Spaceship, Management, Atmospheric, Great Soundtrack, Voice Acting, Indie, 2D, Korean`
+
+**검색 키워드(스토어 설명·SEO용):**
+데스티네이션 어스 / Destination Earth / 우주 함대 RPG / space fleet RPG / 턴제 우주 전략 / 거북선 / 한국어 음성 / 인디 SF RPG / return to Earth / 봉쇄된 지구 / 영웅 수집 / hero collection space rpg
+
+---
 ## 참고 (운영)
 - itch.io 세일은 대시보드 → **Edit game → Distribute → Sales** 에서 100% off 기간 설정. (가격을 "$0 minimum"/"name your price"가 아니라 정가 → 100% 할인으로 두면 "세일" 배지가 붙어 노출에 유리)
 - 짧은 소개(One-liner)는 itch 게임의 'Short description' 칸에, '게임 소개' 본문은 본문 에디터에.
