@@ -155,7 +155,7 @@ function showStoryGateHint(m0,key){
   if(!m0) return;
   const G=window.G||{}; if(!G._gateHintShown)G._gateHintShown={};
   if(key){ if(G._gateHintShown[key]) return; G._gateHintShown[key]=true; }
-  const _isEn=(typeof I18N!=='undefined'&&I18N.lang==='en');
+  const _isEn=(typeof I18N!=='undefined'&&typeof I18N.getLang==='function'&&I18N.getLang()==='en');
   // 게이트 멘트 전용 음성(백구) — 타입별 vid (gate.needHero 등). showCharDialog 훅이 vid 재생.
   const _gvid={hero:'gate.needHero',item:'gate.needItem',blueprint:'gate.needBlueprint',quest:'gate.needQuest'}[m0.type]||null;
   // 버그수정 2026-06-26: 게이트 힌트를 풀스크린 컷신(showCharDialog)으로 띄우면 새 게임/허브 진입 시

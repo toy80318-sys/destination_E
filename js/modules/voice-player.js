@@ -39,6 +39,8 @@
 
   function lang(){
     try {
+      // I18N 은 getLang()만 노출(I18N.lang 프로퍼티는 없음). EN 음성 미재생 버그 수정 2026-06-27.
+      if (window.I18N && typeof I18N.getLang === 'function') return I18N.getLang();
       if (window.I18N && I18N.lang) return I18N.lang;
       if (window.G && G.lang) return G.lang;
       if (window.GAME_LANG) return window.GAME_LANG;
