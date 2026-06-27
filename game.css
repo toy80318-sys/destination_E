@@ -284,6 +284,12 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
   background:rgba(255,60,60,.14);
   box-shadow:0 12px 28px rgba(255,70,70,.5), inset 0 0 18px rgba(255,95,95,.28) !important;
 }
+/* 모바일/터치: 타이틀 메뉴 버튼 글씨 키워 가독·탭 용이 (모바일 UI 적응 2026-06-28) */
+@media (pointer:coarse){
+  .tmenu-main{font-size:30px;letter-spacing:3px}
+  .tmenu-wide{font-size:18px}
+  .tmenu-box{font-size:17px}
+}
 
 /* ───────────────────────────────────────────────────────────
    UI 에디터 조정값 (ui-editor.html에서 생성한 레이아웃 미세 보정)

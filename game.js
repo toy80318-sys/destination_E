@@ -393,8 +393,24 @@ function setDisplayMode(mode){
   fitGameStage();
 }
 try{if(typeof window!=='undefined')window.setDisplayMode=setDisplayMode;}catch(e){}
+// 모바일 세이프에어리어(노치·홈인디케이터) 인셋 — env() 값을 프로브로 읽어 대칭 축소량 반환.
+//   데스크톱·비노치 기기는 인셋 0 → 스케일 동작 불변. (모바일 포팅 §4.2, 2026-06-28)
+function _safeInsets(){
+  var t=0,r=0,b=0,l=0;
+  try{
+    var p=document.createElement('div');
+    p.style.cssText='position:fixed;visibility:hidden;pointer-events:none;top:0;left:0;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+    document.documentElement.appendChild(p);
+    var cs=getComputedStyle(p);
+    t=parseFloat(cs.paddingTop)||0;r=parseFloat(cs.paddingRight)||0;b=parseFloat(cs.paddingBottom)||0;l=parseFloat(cs.paddingLeft)||0;
+    p.parentNode.removeChild(p);
+  }catch(e){}
+  // 가로/회전 모드에서 노치가 어느 변에 오든 안전하도록 좌우·상하 최댓값을 대칭 차감
+  return {x:2*Math.max(l,r), y:2*Math.max(t,b)};
+}
 function fitGameStage(){
-  const vw=window.innerWidth,vh=window.innerHeight;
+  const _si=_safeInsets();
+  const vw=Math.max(1,window.innerWidth-_si.x),vh=Math.max(1,window.innerHeight-_si.y);
   const mode=window._displayMode||'auto';
   const isPortrait=vh>vw;
   const stage=document.getElementById('game-stage');
