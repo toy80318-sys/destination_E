@@ -149,6 +149,11 @@ function showSettingsModal(){
       <button class="btn btn-sm" style="width:100%;margin-top:4px;border-color:#ff66cc;color:#ff66cc;font-weight:bold;background:linear-gradient(90deg,rgba(255,102,204,.08),rgba(204,68,255,.08))" onclick="cheatGrantMythicSet()">${I18N.t('ui.mythicFullsetGrant')}</button>`}
       <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">${I18N.t('cheat.debugWarn')}</div>
     </div>`}`:''}
+    <!-- 법적 고지: 개인정보처리방침 (스팀/GDPR — 데이터 수집 게임 필수) -->
+    <div style="background:rgba(0,243,255,.04);border:1px solid rgba(0,243,255,.2);border-radius:8px;padding:12px">
+      <div style="font-weight:bold;margin-bottom:8px">${I18N.t('settings.legal')}</div>
+      <button class="btn btn-sm" style="width:100%" onclick="window.open('privacy.html','_blank')">${I18N.t('settings.privacyPolicy')}</button>
+    </div>
   </div>`;
   openModal(I18N.t('modal.settings'),html,[{txt:I18N.t('btn.close'),fn:closeModal,cls:'btn-sm'}],{wide:true});
 }

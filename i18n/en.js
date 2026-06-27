@@ -398,6 +398,8 @@ I18N.registerLocale("en", {
   "partsGuide.scT": "📦 Special Cargo (SC)",
   "partsGuide.scD": "<b>cargoBonus</b> (extra cargo slots). Equipped in the Garage \"Cargo Expansion\" dedicated slots (up to 8 per ship). SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 Legendary/Craft) → SC05(+48 Mythic). Each occupies one dedicated slot. Total cargo up to 100 slots.",
   "settings.deleteSave": "🗑️ Delete Save Data",
+  "settings.legal": "Legal",
+  "settings.privacyPolicy": "📄 Privacy Policy",
   "settings.googleConnect": "🔗 Connect Google",
   "settings.uploadAll": "⬆️ Upload All",
   "settings.downloadAll": "⬇️ Download All",

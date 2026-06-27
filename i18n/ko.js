@@ -398,6 +398,8 @@ I18N.registerLocale("ko", {
   "partsGuide.scT": "📦 특수창고 (Special Cargo, SC)",
   "partsGuide.scD": "<b>cargoBonus</b>(화물칸 추가) 부여. 정비소 「창고 확장 전용 슬롯」(함선당 최대 8칸)에 장착. SC01(+4) → SC02(+10) → SC03(+20) → SC04(+32 전설·제작) → SC05(+48 신화). 슬롯 1개 = 전용 슬롯 1칸 점유. 화물칸 합산 최대 100칸.",
   "settings.deleteSave": "🗑️ 저장 데이터 삭제",
+  "settings.legal": "법적 고지",
+  "settings.privacyPolicy": "📄 개인정보처리방침",
   "settings.googleConnect": "🔗 Google 연결",
   "settings.uploadAll": "⬆️ 전체 업로드",
   "settings.downloadAll": "⬇️ 전체 다운로드",
