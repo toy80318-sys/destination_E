@@ -145,18 +145,18 @@
     // 영입한 영웅별 마무리 대사 + 백구의 일기 페어 (영입 영웅만, 기존 순서 보존)
     var heroBlocks=[];
     // 영웅 한마디(vid 610~616)·백구 일기(vid 617~621) 음성 주입. 이름변수 포함분
-    //   (h06.text·h02/h03/h08.diary)은 자막만 — vid 없음.
+    //   (h06.text=674·h02diary=711·h03diary=712·h08diary=713) 일반화 음성 주입(2026-06-27 검증).
     if(hl.indexOf('H01')>=0){
       heroBlocks.push({sp:_i18n('hero.H01.nm'),col:'#ffd700',ic:'⚔️',tx:_i18n('ending.h01.text'),vid:'610'});
       heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h01.diary')),{vid:'617'}));
     }
     if(hl.indexOf('H02')>=0){
       heroBlocks.push({sp:_i18n('hero.H02.nm'),col:'#9ee7ff',ic:'⚙️',tx:_i18n('ending.h02.text'),vid:'611'});
-      heroBlocks.push(_bgPage(_i18n('ending.h02.diary',{flagshipName:flagshipName})));
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h02.diary',{flagshipName:flagshipName})),{vid:'711'}));
     }
     if(hl.indexOf('H03')>=0){
       heroBlocks.push({sp:_i18n('hero.H03.nm'),col:'#ff6644',ic:'⚔️',tx:_i18n('ending.h03.text'),vid:'612'});
-      heroBlocks.push(_bgPage(_i18n('ending.h03.diary',{cmdName:cmdName})));
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h03.diary',{cmdName:cmdName})),{vid:'712'}));
     }
     if(hl.indexOf('H04')>=0){
       heroBlocks.push({sp:_i18n('hero.H04.nm'),col:'#66ddff',ic:'🚀',tx:_i18n('ending.h04.text'),vid:'613'});
@@ -167,7 +167,7 @@
       heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h05.diary')),{vid:'619'}));
     }
     if(hl.indexOf('H06')>=0){
-      heroBlocks.push({sp:_i18n('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:_i18n('ending.h06.text',{cmdName:cmdName})});
+      heroBlocks.push({sp:_i18n('hero.H06.nm'),col:'#cc99ff',ic:'🧠',tx:_i18n('ending.h06.text',{cmdName:cmdName}),vid:'674'});
       heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h06.diary')),{vid:'620'}));
     }
     if(hl.indexOf('H07')>=0){
@@ -176,30 +176,31 @@
     }
     if(hl.indexOf('H08')>=0){
       heroBlocks.push({sp:_i18n('hero.H08.nm'),col:'#ffcc66',ic:'🧭',tx:_i18n('ending.h08.text'),vid:'616'});
-      heroBlocks.push(_bgPage(_i18n('ending.h08.diary',{shipName:shipName})));
+      heroBlocks.push(Object.assign(_bgPage(_i18n('ending.h08.diary',{shipName:shipName})),{vid:'713'}));
     }
     // 대사 시퀀스 — 백구의 일기 회상 + 영웅 한마디 + 시퀄 훅 (원본 순서/필드 그대로)
     //   vid: 이름변수 없는 고정 대사만 음성화(sys1=492, sys2=493, diary6Chain=497,
     //        cmdTogether=495, diaryLand412=498, bg100Final=496, liberationDone=494).
-    //   이름 포함 일기/타이틀(diaryWake1·firstFlight·cheeksTruth·predeparture·ursaPost·
-    //        lastWarpHome·dontWakeMe·titleLine)은 vid 없음(자막만).
+    //   이름 포함 일기/타이틀(diaryWake1=675·firstFlight=676·cheeksTruth=677·predeparture=678·
+    //        ursaPost=679·lastWarpHome=680·dontWakeMe=681·titleLine=682)은 변형 이름 제외 일반화 음성.
+    //   H06(아인슈타인) 본문=674. (사용자 검증 2026-06-27: 실제 엔딩은 본 함수 → vid 주입 누락 수정.)
     //   heroBlocks: 영웅 한마디 7(610~616)·백구 일기 5(617~621)에 vid 주입(위 참조).
     return [
       {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys1'), vid:'492'},
       {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.sys2'), vid:'493'},
-      Object.assign({tx:_i18n('ui.diaryWake1',{cmdName:cmdName})},BG),
-      Object.assign({tx:_i18n('ui.firstFlightDiary',{shipName:shipName,cmdName:cmdName})},BG),
+      Object.assign({tx:_i18n('ui.diaryWake1',{cmdName:cmdName}),vid:'675'},BG),
+      Object.assign({tx:_i18n('ui.firstFlightDiary',{shipName:shipName,cmdName:cmdName}),vid:'676'},BG),
       ...heroBlocks,
-      Object.assign({tx:_i18n('ui.cheeksTruthDiary',{cmdName:cmdName})},BG),
-      Object.assign({tx:_i18n('ui.predepartureDiary',{flagshipName:flagshipName,cmdName:cmdName})},BG),
+      Object.assign({tx:_i18n('ui.cheeksTruthDiary',{cmdName:cmdName}),vid:'677'},BG),
+      Object.assign({tx:_i18n('ui.predepartureDiary',{flagshipName:flagshipName,cmdName:cmdName}),vid:'678'},BG),
       Object.assign({tx:_i18n('ui.diary6Chain'), vid:'497'},BG),
-      Object.assign({tx:_i18n('ui.ursaPostLine',{cmdName:cmdName})},BG),
+      Object.assign({tx:_i18n('ui.ursaPostLine',{cmdName:cmdName}),vid:'679'},BG),
       {sp:cmdName,col:'#ffd700',tx:_i18n('ending.cmdTogether'), vid:'495'},
-      {sp:cmdName,col:'#ffd700',tx:_i18n('ui.lastWarpHome',{flagshipName:flagshipName})},
+      {sp:cmdName,col:'#ffd700',tx:_i18n('ui.lastWarpHome',{flagshipName:flagshipName}),vid:'680'},
       Object.assign({tx:_i18n('ui.diaryLand412'), vid:'498'},BG),
       Object.assign({tx:_i18n('ending.bg100Final'), vid:'496'},BG),
-      {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:_i18n('ui.dontWakeMe',{nm:cmdName})},
-      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.titleLine')},
+      {sp:'백구',col:'#9ee7ff',ic:'🐕',tx:_i18n('ui.dontWakeMe',{nm:cmdName}),vid:'681'},
+      {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.titleLine'),vid:'682'},
       {sp:_i18n('actTrans.2.sysSp'),col:'#66ffcc',tx:_i18n('ending.liberationDone'), vid:'494'}
     ];
   }
