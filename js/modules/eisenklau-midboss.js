@@ -109,11 +109,21 @@
       var go=function(){ try{ startPirateRaid(raid); }catch(e){ console.error('[eisenklau] combat entry',e); try{notify('전투 진입 오류: '+e.message,'err');}catch(_){} } };
       if(typeof window._safeCombatEntry==='function') window._safeCombatEntry(go,'eisenklauMidBoss'); else go();
     }
-    // 신규 대면 컷신 → onDone → 전투
+    // 신규 대면 컷신 → onDone → 전투.
+    //   컷신이 게이트/프롤로그/중복 등으로 차단되면 triggerScene 이 onDone 없이 return →
+    //   전투가 영영 시작되지 않던 문제(사용자 보고: 중간보스전 미진행 2026-06-28).
+    //   → 안전망: onDone 이 안 와도 전투는 반드시 진입(컷신 시청 중이면 대기).
+    var _entered=false;
+    function _enterOnce(){ if(_entered)return; _entered=true; _enterCombat(); }
     if(window.STORY_SCENES_PC && typeof window.STORY_SCENES_PC.triggerScene==='function'){
-      window.STORY_SCENES_PC.triggerScene('p4_eisenklau', _enterCombat);
+      window.STORY_SCENES_PC.triggerScene('p4_eisenklau', _enterOnce);
+      setTimeout(function(){
+        if(_entered) return;                                       // 컷신 정상 완료(onDone)
+        if(document.getElementById('story-scene-overlay')) return; // 아직 컷신 시청 중 → 대기
+        _enterOnce();                                              // 컷신 차단됨 → 전투 강제 진입
+      }, 1600);
     } else {
-      _enterCombat();
+      _enterOnce();
     }
   }
   window.buildEisenklauFleet=buildEisenklauFleet;
