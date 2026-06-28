@@ -305,3 +305,26 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
    · 이후 단계(하단탭·바텀시트·밀집화면 카드화)에서 이 토큰 사용. (2026-06-28)
    ═══════════════════════════════════════════════════════════════════ */
 body.is-mobile{ --touch-min:48px; --m-gap:12px; --sheet-radius:16px 16px 0 0; }
+
+/* ═══ 모바일 허브 사이드바 드로어 (body.is-mobile) — 본문 영역 확보 ═══ */
+#mnav-toggle, #mnav-backdrop{ display:none; }
+body.is-mobile #mnav-toggle{
+  display:flex; align-items:center; justify-content:center;
+  position:absolute; left:8px; top:54px; z-index:62;
+  width:var(--touch-min,48px); height:var(--touch-min,48px);
+  background:rgba(5,12,26,.92); border:1px solid var(--cyan); border-radius:8px;
+  color:var(--cyan); font-size:22px; line-height:1; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+body.is-mobile #mnav-toggle:active{ background:rgba(0,243,255,.18); }
+body.is-mobile .hub-side{
+  position:absolute; left:0; top:48px; bottom:0; z-index:61;
+  transform:translateX(-100%); transition:transform .25s ease;
+  box-shadow:2px 0 20px rgba(0,0,0,.7);
+}
+body.is-mobile .hub-side.drawer-open{ transform:translateX(0); }
+body.is-mobile #mnav-backdrop{
+  position:absolute; inset:0; z-index:60; background:rgba(0,0,0,.5);
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+body.is-mobile #mnav-backdrop.show{ opacity:1; pointer-events:auto; }
