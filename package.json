@@ -26,7 +26,8 @@
     "deploy:full": "firebase deploy --project cgstation-d8178 --non-interactive && npm run cleanup",
     "cleanup": "node scripts/firebase-cleanup.js 5",
     "cleanup:aggressive": "node scripts/firebase-cleanup.js 3",
-    "mobile:www": "node scripts/build-mobile-www.cjs",
+    "mobile:assets": "node scripts/optimize-mobile-assets.cjs",
+    "mobile:www": "node scripts/build-mobile-www.cjs && node scripts/optimize-mobile-assets.cjs",
     "mobile:add": "npm run mobile:www && npx cap add android",
     "mobile:sync": "npm run mobile:www && npx cap sync android",
     "mobile:open": "npx cap open android"
@@ -46,7 +47,8 @@
     "electron": "^33.4.11",
     "electron-builder": "^25.1.8",
     "png2icons": "^2.0.1",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.2"
   },
   "build": {
     "appId": "kr.cgtation.destinationearth",

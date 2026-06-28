@@ -10,14 +10,14 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'mobile-www');
 
-// 포함할 런타임 자산(파일/디렉터리)
+// 포함할 런타임 자산(파일/디렉터리). ⚠ 이미지(img·02_Assets/img)는 제외 —
+//   optimize-mobile-assets.cjs 가 리사이즈·압축해서 mobile-www 로 출력(중복 복사 방지).
 const INCLUDE = [
   'index.html', 'privacy.html', '404.html',
   'game.js', 'game.css', 'game-holo-theme.css',
-  'i18n', 'js', 'img', '02_Assets/audio',
+  'i18n', 'js', '02_Assets/audio',
 ];
-// 02_Assets 하위 선택 포함(audio 외 prologue 이미지)
-const INCLUDE_EXTRA = ['02_Assets/img/prologue'];
+const INCLUDE_EXTRA = [];
 // 복사 제외 확장자/이름(용량·불필요)
 const SKIP = new Set(['.map', '.txt', '.md', '.DS_Store', 'Thumbs.db']);
 

@@ -29,13 +29,22 @@ npm run mobile:open         # Android Studio 로 android/ 열기
 # Android Studio: Run ▶(에뮬/실기) 또는 Build > Generate Signed Bundle/APK (AAB)
 ```
 
-## 4. ⚠ 에셋 용량 — 출시 전 필수 최적화
-현재 번들 대상: **img/ ≈ 655MB + 02_Assets/audio ≈ 229MB = ~884MB.**
-플레이스토어 AAB 권장 < 150MB(초과 시 즉시 다운로드 제한). **반드시 줄여야 함:**
-- **이미지**: PNG → **WebP** 변환(평균 60~80%↓), 미사용/중복 컷, 해상도 모바일 상한(예: 함선 1024→512).
-- **오디오**: 비트레이트 하향(mp3 128→96kbps), 다국어 음성은 **언어별 분리**(현재 언어만 번들).
-- **Play Asset Delivery(PAD)**: 대용량은 install-time/fast-follow/on-demand 에셋팩으로 분리(앱 본체 경량화).
-- `scripts/build-mobile-www.cjs`의 INCLUDE 목록을 모바일 최소셋으로 조정 가능.
+## 4. 에셋 최적화 (자동화 — 구현·검증 완료)
+원본: **img/ ≈ 655MB + 02_Assets/audio ≈ 229MB = ~884MB** → 플레이스토어 권장 <150MB.
+**자동 최적화 파이프라인 구축**(`mobile-www/`로만 출력, 원본·데스크톱 무영향, 파일명/경로/확장자 유지 → 코드 무변경):
+
+```bash
+npm run mobile:www      # = build-mobile-www(런타임+오디오 복사) + optimize-mobile-assets(이미지 압축)
+# 또는 이미지만:  npm run mobile:assets
+```
+
+- **이미지(`optimize-mobile-assets.cjs`)**: 최대 1024px 캡 + 팔레트 양자화(PNG)/mozjpeg(JPG).
+  **검증 결과: 652.5MB → 95.7MB (85%↓, 907개 압축)** ✅. (.png/.jpg 그대로라 코드 참조 무변경)
+- **오디오(같은 스크립트, ffmpeg 필요)**: mp3 96kbps 재인코딩. **ffmpeg 설치된 빌드 머신**에서 자동 실행
+  (미설치 시 원본 유지·건너뜀). 229MB → 약 절반 예상.
+- **추가 절감 옵션**: 언어별 음성 분리(현재 언어만 번들), **Play Asset Delivery**(대용량 on-demand 에셋팩),
+  더 강한 이미지 축소(상한 768px) 또는 WebP 전환(참조 일괄 치환 필요).
+- 최적화 후 예상 번들: 이미지 ~96MB + 오디오(재인코딩/언어분리) → **<150MB 목표 달성 가능**.
 
 ## 5. 가로 고정·아이콘·스플래시
 - **가로 고정**: `capacitor-init.js`가 `ScreenOrientation.lock('landscape')` 호출(런타임). 보강하려면 `android/app/src/main/AndroidManifest.xml`의 `<activity android:screenOrientation="landscape">`도 설정.
