@@ -1,0 +1,22 @@
+{
+  "appId": "kr.cgtation.destinationearth",
+  "appName": "Destination Earth",
+  "webDir": "mobile-www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#050a1a"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "backgroundColor": "#050a1a",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "overlaysWebView": true,
+      "style": "DARK",
+      "backgroundColor": "#050a1a"
+    }
+  }
+}

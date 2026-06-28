@@ -60,3 +60,10 @@ __pycache__/
 
 # 임시 음성 생성/검증 스크립트
 _*.cjs
+
+# ── 모바일(Capacitor) 생성물 ──
+mobile-www/
+android/
+ios/
+.gradle/
+*.keystore

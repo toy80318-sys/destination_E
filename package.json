@@ -1,6 +1,6 @@
 {
   "name": "destination-earth",
-  "version": "1.0.0-beta.343",
+  "version": "1.0.0-beta.344",
   "description": "DESTINATION EARTH — 빅 픽처 스페이스 RPG",
   "author": "toy80318",
   "private": true,
@@ -25,13 +25,24 @@
     "deploy": "firebase deploy --only hosting --project cgstation-d8178 --non-interactive && npm run cleanup",
     "deploy:full": "firebase deploy --project cgstation-d8178 --non-interactive && npm run cleanup",
     "cleanup": "node scripts/firebase-cleanup.js 5",
-    "cleanup:aggressive": "node scripts/firebase-cleanup.js 3"
+    "cleanup:aggressive": "node scripts/firebase-cleanup.js 3",
+    "mobile:www": "node scripts/build-mobile-www.cjs",
+    "mobile:add": "npm run mobile:www && npx cap add android",
+    "mobile:sync": "npm run mobile:www && npx cap sync android",
+    "mobile:open": "npx cap open android"
   },
   "dependencies": {
     "electron-updater": "^6.8.3",
     "puppeteer-core": "^25.0.4"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/screen-orientation": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
     "electron": "^33.4.11",
     "electron-builder": "^25.1.8",
     "png2icons": "^2.0.1",
