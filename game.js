@@ -417,6 +417,9 @@ function fitGameStage(){
   if(!stage){window.addEventListener('DOMContentLoaded',fitGameStage,{once:true});return;}
   // 무대 크기: 모바일 1500×750(16:8), PC 1536×864(16:9)
   const isMobile=_isMobileFit();
+  // 모바일 UI 클래스 게이트 — 모든 모바일 전용 CSS(터치토큰·바텀시트·하단탭 등)의 기반.
+  //   데스크톱은 클래스 미부여 → 기존 경로 불변(회귀 차단). (모바일 재설계 2026-06-28)
+  try{ document.body.classList.toggle('is-mobile', isMobile); }catch(e){}
   const SW=isMobile?STAGE_W_MOBILE:STAGE_W_PC;
   const SH=isMobile?STAGE_H_MOBILE:STAGE_H_PC;
   // 무대 DOM 크기 동기화 (CSS 디폴트는 PC 기준, 모바일이면 동적 축소)

@@ -299,3 +299,9 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
 #hub-body > div.hub-scroll > div:nth-of-type(1){ box-sizing:border-box; width:1337px; height:45px; transform:translate(-17px,-22px); }
 #hub-body > div.hub-scroll > div:nth-of-type(1) > img:nth-of-type(1){ box-sizing:border-box; width:1346px; height:48px; transform:translate(-1px,0); }
 #hub-body > div.hub-scroll > div.hub-t:nth-of-type(2){ box-sizing:border-box; width:1300px; height:33px; }
+/* ═══════════════════════════════════════════════════════════════════
+   모바일 UI 재설계 — 디자인 토큰 (body.is-mobile: JS _isMobileFit 부여)
+   · 데스크톱은 클래스 미부여 → 전부 미적용(회귀 차단)
+   · 이후 단계(하단탭·바텀시트·밀집화면 카드화)에서 이 토큰 사용. (2026-06-28)
+   ═══════════════════════════════════════════════════════════════════ */
+body.is-mobile{ --touch-min:48px; --m-gap:12px; --sheet-radius:16px 16px 0 0; }
