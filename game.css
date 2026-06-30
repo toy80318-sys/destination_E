@@ -328,3 +328,7 @@ body.is-mobile #mnav-backdrop{
   opacity:0; pointer-events:none; transition:opacity .25s ease;
 }
 body.is-mobile #mnav-backdrop.show{ opacity:1; pointer-events:auto; }
+
+/* 모바일: 언어 토글(KO/EN) 터치 크기 확대 */
+body.is-mobile #lang-toggle{ font-size:14px; }
+body.is-mobile #lang-toggle button{ padding:8px 15px; }

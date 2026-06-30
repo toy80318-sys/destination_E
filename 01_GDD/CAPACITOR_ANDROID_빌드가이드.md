@@ -62,6 +62,26 @@ npx cap open ios        # Xcode → 서명 → Archive → TestFlight
 ```
 - iPad 가로 고정: `Info.plist`에 `Requires Full Screen = YES`.
 
+## ★ 테스트 방법 — 어떻게 실행하나 (2가지)
+
+### A. 즉시 테스트 — 폰 브라우저 (빌드 불필요, 가장 빠름)
+모바일 UI(`body.is-mobile`)는 **터치 기기 브라우저에서 자동 활성**된다(드로어·터치 크기·스테이지 스케일/회전).
+1. PC에서 `npm run deploy` (Firebase 호스팅 배포) — 또는 이미 배포된 URL 사용.
+2. **안드로이드/아이폰 브라우저로 게임 URL 접속** → 가로로 들고 플레이. 햄버거(☰)로 사이드바 드로어 확인.
+3. (PC에서 미리보기) 브라우저 DevTools → 기기 모드(예: 844×390) 로도 동일 확인.
+
+### B. 네이티브 APK 테스트 — GitHub Actions(클라우드 빌드, 로컬 SDK 불필요) ✅ 권장
+로컬에 Android Studio/JDK 없이 **클라우드에서 디버그 APK**를 만들어 폰에 설치한다.
+1. GitHub 저장소 → **Actions** 탭 → 좌측 **"Build Android (Test APK)"** 선택 → **Run workflow** 버튼.
+2. 빌드 완료(약 10~20분) 후, 해당 Run 페이지 하단 **Artifacts → `DestinationEarth-android-debug`** 다운로드(.zip → APK).
+3. APK를 안드로이드 폰으로 옮겨 설치:
+   - 설정 → 보안 → **출처를 알 수 없는 앱 설치 허용**(해당 파일 관리자/브라우저에 대해).
+   - APK 탭 → 설치 → 실행. (디버그 서명이라 스토어 설치 아님 — **테스트 전용**)
+4. 코드/에셋 변경 후 다시 받으려면 워크플로를 재실행.
+
+> 빌드 머신(Android Studio)이 있으면 로컬에서도: `npm install && npm run mobile:add && npm run mobile:open` (§2~3).
+> iOS 테스트(TestFlight)는 Mac 필요(§7).
+
 ## 8. 검증 체크리스트(실기)
 - [ ] 가로 고정 동작 / 회전 무시
 - [ ] 첫 터치 후 음성 재생(웹 오디오 unlock 유지)

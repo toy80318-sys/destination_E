@@ -1,0 +1,62 @@
+# ════════════════════════════════════════════════════════════════════
+# DESTINATION EARTH — Android 테스트 APK 빌드 (Capacitor)
+#   · 로컬에 Android SDK/JDK 없이 클라우드(GitHub Actions)에서 디버그 APK 생성.
+#   · 실행: GitHub → Actions → "Build Android (Test APK)" → Run workflow.
+#   · 완료 후 Run 페이지 하단 Artifacts 에서 APK 다운로드 → 안드로이드 폰에 설치(사이드로드).
+#   · 디버그 서명(자동) APK — 스토어 출시용 아님(테스트 전용). 출시 AAB는 가이드 §6.
+# ════════════════════════════════════════════════════════════════════
+name: Build Android (Test APK)
+
+on:
+  workflow_dispatch:        # 수동 실행 전용 (Android 빌드는 무겁고 폰 테스트 시에만 필요)
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install ffmpeg (오디오 최적화용)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build mobile-www + 에셋 최적화 (이미지 압축 + 오디오 재인코딩)
+        run: npm run mobile:www
+
+      - name: Add Android platform (Capacitor)
+        run: npx cap add android
+
+      - name: Sync web assets → Android
+        run: npx cap sync android
+
+      - name: Build debug APK (Gradle)
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DestinationEarth-android-debug
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
