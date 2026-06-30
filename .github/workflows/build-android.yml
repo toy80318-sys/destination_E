@@ -44,6 +44,9 @@ jobs:
       - name: Add Android platform (Capacitor)
         run: npx cap add android
 
+      - name: Generate app icon & splash (@capacitor/assets)
+        run: npx @capacitor/assets generate --android
+
       - name: Sync web assets → Android
         run: npx cap sync android
 
