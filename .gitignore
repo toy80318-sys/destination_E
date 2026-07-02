@@ -27,7 +27,10 @@ en.png
 dist/
 out/
 # 로컬 에디터/Claude 설정 (머신별 — 공유 안 함)
-.claude/
+# 단, 팀 공유용 서브에이전트/명령 정의는 추적한다
+.claude/*
+!.claude/agents/
+!.claude/commands/
 # 임시 스크린샷 업로드
 git01.png
 # i18n 추출 산출물 (scripts/extract-i18n.js 의 출력 — 재생성 가능)
