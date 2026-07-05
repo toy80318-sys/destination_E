@@ -1,4 +1,5 @@
-:root{--bg:#050a1a;--bg2:#0d1117;--panel:#0d1a2a;--card:#111c2e;--bdr:#1a3a5a;--cyan:#00f3ff;--yellow:#deff9a;--gold:#d4af37;--purple:#8b00ff;--green:#2ecc71;--red:#e74c3c;--blue:#4a90d9;--txt:#ccd6f6;--dim:#446677;--muted:#2a3a4a}
+/* --touch-btn: 모바일 모달 확인/액션 버튼 최소 높이 토큰 — 모바일 미디어쿼리·바텀시트 공용 (M1 리뷰 반영 2026-07-05) */
+:root{--bg:#050a1a;--bg2:#0d1117;--panel:#0d1a2a;--card:#111c2e;--bdr:#1a3a5a;--cyan:#00f3ff;--yellow:#deff9a;--gold:#d4af37;--purple:#8b00ff;--green:#2ecc71;--red:#e74c3c;--blue:#4a90d9;--txt:#ccd6f6;--dim:#446677;--muted:#2a3a4a;--touch-btn:56px}
 *{margin:0;padding:0;box-sizing:border-box}
 /* 모바일 뷰포트 안정화 — Safari URL바 등장·사라짐으로 화면이 마구 움직이는 현상 방지 */
 /*  · 100dvh = dynamic viewport height (URL바 제외 실제 뷰포트)                       */
@@ -232,7 +233,7 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
      제목 바로 아래(우측 상단)로 올려 큰 버튼으로 고정 — 본문은 그 아래에서 스크롤 */
   #modal-btns{order:1;margin:0 0 8px!important;padding:0 0 10px;border-top:none;border-bottom:1px solid rgba(255,255,255,.08);justify-content:flex-end;flex-wrap:wrap;gap:10px}
   #modal-b{order:2;padding-top:2px}
-  #modal-btns .btn,#modal-btns .btn-sm{font-size:20px;padding:13px 26px;min-height:56px;letter-spacing:1px}
+  #modal-btns .btn,#modal-btns .btn-sm{font-size:20px;padding:13px 26px;min-height:var(--touch-btn,56px);letter-spacing:1px}
   /* — 정보 칩 — */
   .ic{padding:7px 13px;border-radius:6px;border-width:1px}
   .icl{font-size:14px;font-weight:bold}
@@ -329,38 +330,46 @@ body.is-mobile #mnav-backdrop{
 }
 body.is-mobile #mnav-backdrop.show{ opacity:1; pointer-events:auto; }
 
-/* ═══ 모바일 모달 → 바텀시트 (body.is-mobile) — 기획서_모바일_UI재설계 §3-8 (M1, 2026-07-05) ═══
-   · 데스크톱: is-mobile 미부여 → 아래 규칙 전부 미적용 (회귀 차단)
+/* ═══ 모바일 모달 → 바텀시트 — 기획서_모바일_UI재설계 §3-8 (M1, 2026-07-05 / 리뷰 1회차 반영) ═══
+   · 이중 게이트: @media(pointer:coarse) ∧ body.is-mobile — _isMobileFit()(game.js)이 뷰포트
+     높이(≤768) 단독으로도 is-mobile을 부여하므로, 터치 기기 조건을 CSS에서 한 번 더 걸어
+     마우스 데스크톱(pointer:fine, 예: 1366×768 창)에서는 기존 중앙 모달을 유지한다(회귀 차단)
    · 하단 고정은 #modal-bg(flex 컨테이너) 정렬로 처리, 시트 본체는 transform 슬라이드업만 사용
    · 본문 스크롤 구조는 기존 그대로 (#modal-b 스크롤 · .modal overflow:hidden · 버튼 고정) */
-body.is-mobile #modal-bg{ align-items:flex-end; justify-content:center; padding:0; }
-body.is-mobile .modal{
-  width:100%; max-width:100%;
-  max-height:92%; /* 기존 모바일 미디어쿼리 .modal max-height(game.css 228행)와 동일값 */
-  border-radius:var(--sheet-radius,16px 16px 0 0);
-  /* 화면 가장자리에 맞닿는 좌·우·하단 테두리 제거 — 상단 라인만 유지 */
-  border-left:none; border-right:none; border-bottom:none;
-  /* 세이프에어리어 — 홈 인디케이터/제스처 바 영역 확보 */
-  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+@media (pointer:coarse){
+  body.is-mobile #modal-bg{ align-items:flex-end; justify-content:center; padding:0; }
+  body.is-mobile .modal{
+    width:100%; max-width:100%;
+    max-height:92%; /* 기존 모바일 미디어쿼리 .modal max-height(game.css 230행)와 동일값 */
+    border-radius:var(--sheet-radius,16px 16px 0 0);
+    /* holo 테마(game-holo-theme.css .modal)의 노치 컷 clip-path 무력화 — 전폭 시트에서
+       상단 라운드 미표시·우하단 16px 대각 절개 구멍 방지. 테마 파일이 game.css 이후에
+       로드되지만(index.html) 본 선택자 명시도 (0,2,1)이 테마 .modal (0,1,0)보다 높아
+       로드 순서와 무관하게 이긴다. .modal::before(clip-path:inherit)도 함께 none 상속.
+       테두리는 테마의 border:0!important가 전면 제거하므로 별도 border 선언 불필요. */
+    clip-path:none;
+    /* padding-bottom: env(safe-area-inset-bottom) 가산 없음 — fitGameStage()가 _safeInsets()로
+       세이프에어리어를 이미 차감·중앙 배치하며(game.js _safeInsets/fitGameStage), #modal-bg는
+       scale된 #game-stage 좌표계라 env() px 가산은 이중 보정+좌표계 불일치. 16px 고정만 사용. */
+    padding-bottom:16px;
+  }
+  /* 슬라이드업 진입 — #modal-bg 가 display:none→flex(.on)로 켜질 때마다 자동 재생(JS 불필요).
+     transform/opacity만 사용 — 컴포지터 전용, reflow 유발 속성 금지. */
+  body.is-mobile #modal-bg.on .modal{ animation:mSheetUp .22s cubic-bezier(.22,.9,.34,1) both; }
+  @keyframes mSheetUp{ from{transform:translateY(100%);opacity:.6} to{transform:translateY(0);opacity:1} }
+  @media (prefers-reduced-motion:reduce){
+    body.is-mobile #modal-bg.on .modal{ animation:none; }
+  }
+  /* 모달 변형 — 바텀시트 모드에서는 변형별 폭 제한 전부 무력화(100%).
+     (위 body.is-mobile .modal 이 명시도·후순위로 이미 이기지만, 규칙 재배치에도 안전하도록 명시) */
+  body.is-mobile .modal.modal-wide,
+  body.is-mobile .modal.modal-bossfight,
+  body.is-mobile .modal.modal-report,
+  body.is-mobile .modal.modal-report.modal-crew-reveal,
+  body.is-mobile .modal.modal-reward-wide,
+  body.is-mobile .modal.modal-save-compact{ max-width:100%; }
+  /* 닫기/주요 버튼 터치 타깃 — 기존 모바일 미디어쿼리(game.css 236행)와 동일 토큰(--touch-btn=56px)
+     공유 — is-mobile 단독 판정 케이스에서도 동일한 56px 버튼 크기를 유지한다. */
+  body.is-mobile #modal-btns .btn,
+  body.is-mobile #modal-btns .btn-sm{ min-height:var(--touch-btn,56px); }
 }
-/* 슬라이드업 진입 — #modal-bg 가 display:none→flex(.on)로 켜질 때마다 자동 재생(JS 불필요).
-   transform/opacity만 사용 — 컴포지터 전용, reflow 유발 속성 금지. */
-body.is-mobile #modal-bg.on .modal{ animation:mSheetUp .22s cubic-bezier(.22,.9,.34,1) both; }
-@keyframes mSheetUp{ from{transform:translateY(100%);opacity:.6} to{transform:translateY(0);opacity:1} }
-@media (prefers-reduced-motion:reduce){
-  body.is-mobile #modal-bg.on .modal{ animation:none; }
-}
-/* 모달 변형 — 바텀시트 모드에서는 변형별 폭 제한 전부 무력화(100%).
-   (위 body.is-mobile .modal 이 명시도·후순위로 이미 이기지만, 규칙 재배치에도 안전하도록 명시) */
-body.is-mobile .modal.modal-wide,
-body.is-mobile .modal.modal-bossfight,
-body.is-mobile .modal.modal-report,
-body.is-mobile .modal.modal-report.modal-crew-reveal,
-body.is-mobile .modal.modal-reward-wide,
-body.is-mobile .modal.modal-save-compact{ max-width:100%; }
-/* 닫기/주요 버튼 터치 타깃 — 최소 var(--touch-min)=48px 보장.
-   기존 모바일 미디어쿼리(game.css 235행, 게이트: max-width:768/pointer:coarse)의 56px 상향과
-   충돌하지 않도록 max()로 통합 — 미디어쿼리 미적중·is-mobile 단독 판정(예: 뷰포트 높이≤768)
-   케이스에서도 동일한 56px 버튼 크기를 유지한다. */
-body.is-mobile #modal-btns .btn,
-body.is-mobile #modal-btns .btn-sm{ min-height:max(56px, var(--touch-min,48px)); }
