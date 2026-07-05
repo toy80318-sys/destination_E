@@ -17,6 +17,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './config';
 import type { GameState } from '../store/gameStore';
+import { encryptString, decryptString } from '../utils/crypto';
 
 // ─── Firestore 컬렉션 경로 ───────────────────────────────────────────────
 const USERS_COL = 'users';
@@ -116,21 +117,21 @@ export async function updateMonthlySpend(
 // ─── 로컬 백업 (오프라인 대비) ────────────────────────────────────────────
 const SAVE_KEY = 'de_save_v1';
 
-export function saveToLocal(state: Partial<GameState>): void {
+export async function saveToLocal(state: Partial<GameState>): Promise<void> {
   try {
     const json = JSON.stringify(state);
-    // TODO: AES-GCM 256bit 암호화 적용
-    localStorage.setItem(SAVE_KEY, json);
+    const encrypted = await encryptString(json); // AES-GCM 256bit 암호화
+    localStorage.setItem(SAVE_KEY, encrypted);
   } catch (e) {
     console.error('로컬 저장 실패:', e);
   }
 }
 
-export function loadFromLocal(): Partial<GameState> | null {
+export async function loadFromLocal(): Promise<Partial<GameState> | null> {
   try {
-    const json = localStorage.getItem(SAVE_KEY);
-    if (!json) return null;
-    // TODO: AES-GCM 256bit 복호화 적용
+    const stored = localStorage.getItem(SAVE_KEY);
+    if (!stored) return null;
+    const json = await decryptString(stored); // AES-GCM 256bit 복호화 (레거시 평문 호환)
     return JSON.parse(json) as Partial<GameState>;
   } catch (e) {
     console.error('로컬 로드 실패:', e);
