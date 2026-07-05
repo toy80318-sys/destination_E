@@ -9,6 +9,17 @@
 
 ## 작업 목록
 
+### 모바일 트랙 (우선 — 기획서_모바일_UI재설계.md §5 순서, body.is-mobile 게이트로 데스크톱 회귀 0 원칙)
+- [ ] M1. 모달 → 바텀시트 전환 — `body.is-mobile`에서 `.modal`을 하단 시트 스타일(화면 하단 고정, `--sheet-radius`, 슬라이드업 애니메이션)로, 닫기 버튼 ≥48px. 데스크톱 모달 불변 (`game.css`, 필요시 `js/modules/` 모달 헬퍼)
+- [ ] M2. 정비소 밀집 화면 모바일 재구성 1/3 — 함선 탭: 좌우 2열 → 세그먼트 탭 상하 스택, 터치 타깃 ≥48px (`js/modules/render-ship-tab.js`, `game.css`)
+- [ ] M3. 정비소 재구성 2/3 — 파츠/제작 탭: 그리드 셀 41px → ≥48px, 드래그 대신 탭→슬롯 선택 보조 (`js/modules/render-craft-tab.js`)
+- [ ] M4. 정비소 재구성 3/3 — 거래 탭 카드화 (`js/modules/render-trade-tab.js`)
+- [ ] M5. 도감·경매 세로 카드 리스트 + 상세 바텀시트 (`js/modules/codex.js`, `js/modules/auction.js`)
+- [ ] M6. 전투 HUD 엄지존 배치 — 스킬/전술 버튼 하단 좌우, 게이지·폰트 확대 (`js/modules/combat.js`, `game.css`)
+- [ ] M7. 스타맵 핀치 줌 + 드래그 팬, 행성 노드 히트박스 ≥48px (`game.js` 스타맵 렌더부)
+- [ ] M8. 세이브 영속화 — localStorage → Capacitor Preferences/Filesystem 이중화(네이티브에서만, 1회 마이그레이션 + 웹 폴백). WebView localStorage는 OS가 정리할 수 있음 (`js/modules/capacitor-init.js` 확장)
+- ❓ M9. Android 실기 빌드·테스트 — Android Studio/실기기 필요(사람). `npx cap add android` → AAB 서명 → Play 내부 테스트
+
 ### QA / 출시 전 검증
 - [x] 1. 고정 시드 맵 검증 — 재시작 후 행성 위치가 동일한지 시뮬레이션으로 확인 (`js/modules/galaxy-gen.js`) (완료: 2026-07-02, 22/23 통과 — 상세는 DEV_LOOP_LOG)
 - [ ] 2. 전투 공식 클램프 검증 — 최소 데미지 1 보장, LOY 0/100 엣지 케이스 (`js/modules/combat.js`)
