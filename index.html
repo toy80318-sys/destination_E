@@ -227,8 +227,7 @@ window.addEventListener('desktop-save-restored',function(e){
 
 <!-- HUB -->
 <div class="scr" id="s-hub"><div id="hub-planet-bg"></div>
-  <!-- 모바일 전용: 사이드바 드로어 토글(햄버거) + 백드롭 (데스크톱 숨김) -->
-  <button id="mnav-toggle" type="button" aria-label="menu" onclick="window._toggleHubDrawer&&window._toggleHubDrawer()">☰</button>
+  <!-- 모바일 전용: 사이드바 드로어 백드롭 (데스크톱 숨김) -->
   <div id="mnav-backdrop" onclick="window._toggleHubDrawer&&window._toggleHubDrawer(false)"></div>
   <div class="hub-side">
     <!-- 스크롤 가능한 메뉴 영역 -->
@@ -352,6 +351,11 @@ window.addEventListener('desktop-save-restored',function(e){
   </div>
 </div>
 
+<!-- 모바일 전용: 허브 사이드바 드로어 토글(햄버거) — #s-hub 밖(형제) 배치.
+     이유: .scr(z:1)이 스태킹 컨텍스트라 #s-hub 내부에서는 어떤 z-index로도
+     #hud(z:200) 위에 올라올 수 없음 → 확대 HUD 좌측 전용 공간에 fixed 표시.
+     표시 게이트: game.css body.is-mobile #s-hub.on ~ #mnav-toggle (허브 화면일 때만) -->
+<button id="mnav-toggle" type="button" aria-label="menu" onclick="window._toggleHubDrawer&&window._toggleHubDrawer()">☰</button>
 
 </div><!-- /#game-stage -->
 

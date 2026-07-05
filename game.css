@@ -305,25 +305,64 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
    · 데스크톱은 클래스 미부여 → 전부 미적용(회귀 차단)
    · 이후 단계(하단탭·바텀시트·밀집화면 카드화)에서 이 토큰 사용. (2026-06-28)
    ═══════════════════════════════════════════════════════════════════ */
-body.is-mobile{ --touch-min:48px; --m-gap:12px; --sheet-radius:16px 16px 0 0; }
+/* 토큰 근거 (실측 2026-07-05, 폰 가로 844×390):
+   · #game-stage(모바일 1500×750)는 transform:scale≈0.52로 창에 맞춰짐
+     → 스테이지 좌표 px는 화면에서 약 절반 크기로 보인다.
+   · --touch-min(48px)은 스테이지 좌표에서 화면 ~25px밖에 안 됨 — 스테이지 좌표계
+     요소의 터치 타깃에는 사용 금지. (#modal-bg 바텀시트도 동일 스테이지 좌표라
+     --touch-btn(56px) 재검토 대상이지만 이번 범위 아님 — M-후속)
+   · --touch-min-stage(92px): 스테이지 좌표 전용 터치 최소치 — 화면 48px 확보에
+     ~2배(≥88~96px)가 필요해 92px(화면 ≈48px)로 설정.
+   · --m-font(26px): 스테이지 좌표 모바일 메뉴 폰트(화면 ≈13~14px).
+   · --m-hud-h(100px): 모바일 허브 HUD 높이 — 햄버거 92px + 상하 여백 4px. */
+body.is-mobile{ --touch-min:48px; --m-gap:12px; --sheet-radius:16px 16px 0 0;
+  --touch-min-stage:92px; --m-font:26px; --m-hud-h:100px; }
 
-/* ═══ 모바일 허브 사이드바 드로어 (body.is-mobile) — 본문 영역 확보 ═══ */
+/* ═══ 모바일 허브 사이드바 드로어 (body.is-mobile) — 본문 영역 확보 ═══
+   #mnav-toggle는 #s-hub 밖(#game-stage 직속, #s-hub 뒤 형제)에 있음 — index.html 참조.
+   허브 화면(.on)일 때만 형제 선택자로 노출. */
 #mnav-toggle, #mnav-backdrop{ display:none; }
+body.is-mobile #s-hub.on ~ #mnav-toggle{ display:flex; }
 body.is-mobile #mnav-toggle{
-  display:flex; align-items:center; justify-content:center;
-  position:absolute; left:8px; top:54px; z-index:62;
-  width:var(--touch-min,48px); height:var(--touch-min,48px);
-  background:rgba(5,12,26,.92); border:1px solid var(--cyan); border-radius:8px;
-  color:var(--cyan); font-size:22px; line-height:1; cursor:pointer;
+  align-items:center; justify-content:center;
+  position:fixed; left:8px; top:4px; z-index:210; /* #hud(z:200) 위, #modal-bg(z:1000) 아래 */
+  width:var(--touch-min-stage,92px); height:var(--touch-min-stage,92px);
+  background:rgba(5,12,26,.92); border:2px solid var(--cyan); border-radius:12px;
+  color:var(--cyan); font-size:44px; line-height:1; cursor:pointer;
   box-shadow:0 2px 8px rgba(0,0,0,.5);
 }
 body.is-mobile #mnav-toggle:active{ background:rgba(0,243,255,.18); }
+/* HUD 확장 — 햄버거 전용 좌측 공간(칩/텍스트 겹침 해소). #hud는 허브 화면에서만
+   표시되므로(show(): id==='s-hub') 다른 화면 레이아웃엔 영향 없음.
+   !important: @media(pointer:coarse) 블록의 height:48px!important·padding-top:48px!important 대응 */
+body.is-mobile #hud{ height:var(--m-hud-h,100px)!important; padding-left:116px; } /* 116 = 8 + 92 + 16 */
+body.is-mobile #s-hub{ padding-top:var(--m-hud-h,100px)!important; }
 body.is-mobile .hub-side{
-  position:absolute; left:0; top:48px; bottom:0; z-index:61;
+  position:absolute; left:0; top:var(--m-hud-h,100px); bottom:0; z-index:61;
+  width:400px; /* 확대 폰트(26px)·아이콘(34px) 수용 — 잘림 방지 */
   transform:translateX(-100%); transition:transform .25s ease;
   box-shadow:2px 0 20px rgba(0,0,0,.7);
 }
 body.is-mobile .hub-side.drawer-open{ transform:translateX(0); }
+/* 드로어 메뉴 항목 — 스테이지 좌표 터치 타깃(행 92px→화면 ≈48px)·폰트 확대.
+   범위: 스크롤 메뉴 영역(.hs-menu-scroll)만 — 하단 고정부(턴종료/시스템)는
+   sys-menu 인라인 max-height(300px, game.js toggleSysMenu)와 얽혀 이번 범위 제외.
+   !important: 기본 .hn-sub(font 13px!important)·coarse MQ(.hn-sub 18px!important,
+   .hn-ic 24px!important) 대응 */
+body.is-mobile .hub-side .hs-menu-scroll .hn-btn,
+body.is-mobile .hub-side .hs-menu-scroll .hn-folder-btn{
+  min-height:var(--touch-min-stage,92px); font-size:var(--m-font,26px);
+  padding:8px 22px; gap:14px; font-weight:bold; line-height:1.25; border-left-width:4px;
+}
+body.is-mobile .hub-side .hs-menu-scroll .hn-sub{
+  min-height:var(--touch-min-stage,92px);
+  font-size:var(--m-font,26px)!important;
+  padding:6px 22px 6px 52px!important;
+}
+body.is-mobile .hub-side .hs-menu-scroll .hn-ic{ font-size:34px!important; width:42px!important; }
+body.is-mobile .hub-side .hs-menu-scroll .folder-arrow{ font-size:18px; }
+/* 폴더 펼침 한도 — 92px 행 × 최대 4개 + 여유 (기본/coarse MQ의 160px 상향) */
+body.is-mobile .hub-side .hs-menu-scroll .hn-folder-items.open{ max-height:420px; }
 body.is-mobile #mnav-backdrop{
   position:absolute; inset:0; z-index:60; background:rgba(0,0,0,.5);
   opacity:0; pointer-events:none; transition:opacity .25s ease;
