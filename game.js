@@ -375,7 +375,18 @@ const STAGE_W_PC=1536,STAGE_H_PC=864;
 const STAGE_W_MOBILE=1500,STAGE_H_MOBILE=750;
 // 호환성: 기존 STAGE_W/STAGE_H 참조는 PC 기준값 유지 (별 배경 캔버스 등 정적 참조)
 const STAGE_W=STAGE_W_PC,STAGE_H=STAGE_H_PC;
+// 강제 모바일 프리뷰 판정 — 데스크톱 브라우저에서 모바일 UI(드로어·바텀시트) 확인용.
+//   URL 쿼리 ?mobile=1 또는 window._FORCE_MOBILE===true 로 켠다 (mobile.html 개발용 프리뷰가 사용).
+//   실기기·일반 데스크톱에서는 항상 false → 기존 판정 경로 불변. (2026-07-05)
+function _isForcedMobile(){
+  try{
+    if(window._FORCE_MOBILE===true)return true;
+    if(/[?&]mobile=1(?:&|$)/.test(window.location.search))return true;
+  }catch(e){}
+  return false;
+}
 function _isMobileFit(){
+  if(_isForcedMobile())return true;
   try{
     if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches)return true;
   }catch(e){}
@@ -420,6 +431,17 @@ function fitGameStage(){
   // 모바일 UI 클래스 게이트 — 모든 모바일 전용 CSS(터치토큰·바텀시트·하단탭 등)의 기반.
   //   데스크톱은 클래스 미부여 → 기존 경로 불변(회귀 차단). (모바일 재설계 2026-06-28)
   try{ document.body.classList.toggle('is-mobile', isMobile); }catch(e){}
+  // is-touch — 터치 전용 CSS(바텀시트 등)의 클래스 게이트. 실기기 조건은 기존
+  //   @media(pointer:coarse)와 동일한 matchMedia 판정이라 동작 등가이며,
+  //   강제 프리뷰(?mobile=1 / _FORCE_MOBILE)에서만 추가로 켜진다.
+  //   pointer:fine 데스크톱(강제 플래그 없음)은 미부여 → 중앙 모달 유지(회귀 차단).
+  try{
+    let isTouch=_isForcedMobile();
+    if(!isTouch){
+      try{ isTouch=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches); }catch(e2){}
+    }
+    document.body.classList.toggle('is-touch', isTouch);
+  }catch(e){}
   const SW=isMobile?STAGE_W_MOBILE:STAGE_W_PC;
   const SH=isMobile?STAGE_H_MOBILE:STAGE_H_PC;
   // 무대 DOM 크기 동기화 (CSS 디폴트는 PC 기준, 모바일이면 동적 축소)

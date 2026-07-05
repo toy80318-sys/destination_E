@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>모바일 UI 프리뷰 (개발용) — 데스티네이션 어스</title>
+<style>
+  /* 개발 전용 프리뷰 페이지 — 배포 대상 아님 (package.json build.files 미포함 · firebase ignore) */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:100%; height:100%; background:#0b0e14; color:#cfd8e3;
+    font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif; overflow:hidden; }
+  #toolbar{
+    position:fixed; top:0; left:0; right:0; height:52px; z-index:10;
+    display:flex; align-items:center; gap:10px; padding:0 14px;
+    background:#141a24; border-bottom:1px solid #2a3546;
+  }
+  #toolbar h1{ font-size:14px; font-weight:700; color:#7fd4ff; margin-right:8px; white-space:nowrap; }
+  #toolbar .preset{
+    padding:7px 12px; font-size:12px; cursor:pointer; white-space:nowrap;
+    background:#1d2634; color:#cfd8e3; border:1px solid #35455c; border-radius:6px;
+  }
+  #toolbar .preset:hover{ background:#26344a; }
+  #toolbar .preset.active{ background:#0e5f7a; border-color:#19b6e6; color:#fff; }
+  #cur-preset{ font-size:12px; color:#8fa3ba; margin-left:auto; white-space:nowrap; }
+  #open-new{ font-size:12px; color:#19b6e6; text-decoration:none; white-space:nowrap;
+    border:1px solid #19b6e6; border-radius:6px; padding:6px 10px; }
+  #open-new:hover{ background:rgba(25,182,230,.12); }
+  #viewport{
+    position:absolute; top:52px; left:0; right:0; bottom:0;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  /* 폰 베젤 프레임 — 창이 작으면 transform:scale 로 축소(contain) */
+  #bezel{
+    background:#05070a; border:14px solid #1c222c; border-radius:34px;
+    box-shadow:0 12px 48px rgba(0,0,0,.6), inset 0 0 0 2px #0c0f14;
+    transform-origin:center center; flex:0 0 auto;
+  }
+  #game-frame{ display:block; border:0; background:#000; border-radius:18px; }
+</style>
+</head>
+<body>
+  <div id="toolbar">
+    <h1>모바일 UI 프리뷰 (개발용)</h1>
+    <button class="preset" data-w="844"  data-h="390" data-label="폰 가로 844×390 (iPhone 14)">폰 844×390</button>
+    <button class="preset" data-w="915"  data-h="412" data-label="폰(대) 가로 915×412">폰(대) 915×412</button>
+    <button class="preset" data-w="1180" data-h="820" data-label="태블릿 가로 1180×820">태블릿 1180×820</button>
+    <span id="cur-preset"></span>
+    <a id="open-new" href="index.html?mobile=1" target="_blank" rel="noopener">새 창에서 열기</a>
+  </div>
+  <div id="viewport">
+    <div id="bezel">
+      <!-- ?mobile=1 → game.js _isForcedMobile() 이 강제 모바일 판정 + body.is-touch 부여 -->
+      <iframe id="game-frame" src="index.html?mobile=1" width="844" height="390" title="게임 프리뷰"></iframe>
+    </div>
+  </div>
+<script>
+(function(){
+  'use strict';
+  var BEZEL_BORDER = 14 * 2; // #bezel border 좌우/상하 합
+  var frame  = document.getElementById('game-frame');
+  var bezel  = document.getElementById('bezel');
+  var vp     = document.getElementById('viewport');
+  var curEl  = document.getElementById('cur-preset');
+  var btns   = Array.prototype.slice.call(document.querySelectorAll('.preset'));
+  var cur = { w:844, h:390, label:'폰 가로 844×390 (iPhone 14)' };
+
+  function fit(){
+    var availW = vp.clientWidth  - 32;
+    var availH = vp.clientHeight - 32;
+    var needW = cur.w + BEZEL_BORDER;
+    var needH = cur.h + BEZEL_BORDER;
+    var s = Math.min(1, availW / needW, availH / needH);
+    if(!isFinite(s) || s <= 0) s = 1;
+    bezel.style.transform = 'scale(' + s + ')';
+    curEl.textContent = '현재: ' + cur.label + (s < 1 ? ' · 표시 배율 ' + Math.round(s*100) + '%' : '');
+  }
+
+  function apply(btn){
+    var w = parseInt(btn.dataset.w, 10);
+    var h = parseInt(btn.dataset.h, 10);
+    if(!(w > 0) || !(h > 0)) return; // 입력 검증 — 프리셋 데이터 이상 시 무시
+    cur = { w:w, h:h, label:btn.dataset.label };
+    frame.width  = w;  frame.height = h;
+    frame.style.width  = w + 'px';
+    frame.style.height = h + 'px';
+    btns.forEach(function(b){ b.classList.toggle('active', b === btn); });
+    fit();
+  }
+
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b); }); });
+  window.addEventListener('resize', fit);
+  apply(btns[0]); // 기본 프리셋: 폰 가로 844×390
+})();
+</script>
+</body>
+</html>
