@@ -1,0 +1,37 @@
+# ════════════════════════════════════════════════════════════════════
+# DESTINATION EARTH — 웹(Firebase Hosting) 자동 배포
+#   · 근본 해결(2026-07-09): 로컬 `firebase login` 의존 제거 — 릴리스 태그(v*)마다
+#     CI가 서비스 계정으로 배포. `npm run release` 한 번 = PC 3-OS + Android APK + 웹 전부.
+#   · 인증: firebase login:ci 토큰은 deprecated → 표준인 서비스 계정(JSON) 사용.
+#   ⚠ 1회 세팅 필요(사람): 로컬에서 `npx firebase-tools init hosting:github` 실행
+#     → 서비스 계정 자동 생성 + GitHub 시크릿 `FIREBASE_SERVICE_ACCOUNT_CGSTATION_D8178`
+#     자동 등록. (워크플로 파일 덮어쓰기 질문엔 No — 본 파일 유지)
+#     시크릿 등록 전에는 이 워크플로만 실패하며 다른 빌드에 영향 없음.
+# ════════════════════════════════════════════════════════════════════
+name: Deploy Web (Firebase Hosting)
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Firebase Hosting (live)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CGSTATION_D8178 }}
+          channelId: live
+          projectId: cgstation-d8178

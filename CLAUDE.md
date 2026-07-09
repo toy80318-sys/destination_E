@@ -37,9 +37,14 @@ build-steam-win.bat       # 버전 bump → dist:win → dist 폴더 열기. 로
 
 # 버전 / 배포
 npm run release:local     # 버전 bump (git push 안 함)
-npm run release           # 버전 bump + push
-npm run deploy            # Firebase 호스팅 배포 + 정리
+npm run release           # 버전 bump + push → v* 태그가 CI 3종 자동 트리거:
+                          #   PC 3-OS 빌드 + Android APK + 웹(Firebase Hosting) 배포
+npm run deploy            # (수동 폴백) Firebase 호스팅 배포 + 정리 — 로컬 firebase login 필요
 ```
+
+웹 배포는 `.github/workflows/deploy-web.yml`이 릴리스 태그마다 서비스 계정으로 자동 수행한다
+(로컬 인증 불필요). 1회 세팅: `npx firebase-tools init hosting:github` → GitHub 시크릿
+`FIREBASE_SERVICE_ACCOUNT_CGSTATION_D8178` 자동 등록(워크플로 덮어쓰기 질문엔 No).
 
 빌드 산출물 위치: `dist/`. **Steam depot 업로드용은 `dist/win-unpacked/` 폴더 통째로** (설치본 .exe가 아님). 자세한 흐름은 `STEAM_BUILD_GUIDE.md` 참고.
 
