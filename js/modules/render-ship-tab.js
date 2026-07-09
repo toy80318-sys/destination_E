@@ -222,7 +222,9 @@ function renderShipTab(body){
       const PART_COLS=getShipPartsGridCols(s);   // 확장분(추가 열) 포함
       const PART_ROWS=getShipPartsGridRows(s);
       const partsLayout=layoutPartsGrid(s.parts||[],PART_COLS,PART_ROWS);
-      const CELL_SZ=41;  // 함선 칸(파츠/함선실) 박스 크기 — 현재의 80% 축소 (사용자 요청 2026-06-16, 51→41)
+      // 함선 칸(파츠/함선실) 박스 크기 — 데스크톱 41(사용자 요청 2026-06-16, 51→41 축소 유지),
+      // 모바일은 터치 타깃(≥44px 원칙)으로 51 복원(드로어 덕에 본문 폭 여유). ⚠ 아래 _CELL_SZ와 동기화.
+      const CELL_SZ=(typeof document!=='undefined'&&document.body&&document.body.classList.contains('is-mobile'))?51:41;
 
       // 크루 색상 헬퍼
 
@@ -389,7 +391,7 @@ function renderShipTab(body){
           // 컬럼 공통: flex 세로 배치 + spacer 로 액션 버튼을 하단에 고정 → 3컬럼 액션 버튼 높이 정렬
           // 파츠↔함선실 간격 20% 축소 (10→6, 양쪽 합산 20→12)
           // 파츠 그리드 실제 너비 계산 (CELL_SZ=51 + gap=3) → 신화(8열)/대형(6열) 함선이 함선실과 겹치지 않게 min-width 보장
-          const _CELL_SZ=41, _CELL_GAP=3;  // CELL_SZ 80% 축소와 동기화
+          const _CELL_SZ=CELL_SZ, _CELL_GAP=3;  // 위 CELL_SZ(모바일 51/데스크톱 41)와 동기화
           const _partsGridW=PART_COLS*_CELL_SZ+(PART_COLS-1)*_CELL_GAP+12; // 12=padding 여유
           // ── 창고 확장 전용 슬롯 (파츠 그리드 오른쪽 세로 1열, 최대 CARGO_EXT_MAX 칸) ──
           //   기존 세이브가 7칸 보유 중이면 그대로 표시 (해제만 가능, 신규 장착은 6칸까지)
