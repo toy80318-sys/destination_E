@@ -126,6 +126,13 @@ destination_E-main/
 - 밸런싱 수치·레벨 디자인 의도 등 "게임 디자인 결정"은 임의로 바꾸지 않는다.
 - 불확실하면 추측해서 진행하지 말고 질문한다(Director를 거쳐 사람에게 확인).
 
+## 에이전트·하네스·루프 (자동화 구성, 2026-07-04)
+
+- **하네스(자동 훅)**: `.claude/settings.json` → 모든 Write/Edit 직후 `scripts/hooks/post-edit-check.cjs` 자동 실행 — `.js` 구문(`node --check`)·`i18n/ko|en.js` 파리티 검사. 실패 시 에러가 컨텍스트로 되돌아오므로 **즉시 수정하라**(수동으로 node --check 를 반복 실행할 필요 없음. 단, 커밋 전 최종 확인은 여전히 유효).
+- **에이전트**(`.claude/agents/`): `game-reviewer`(diff 리뷰, 프로젝트 관례 체크리스트 내장, 읽기전용) · `game-tester`(표준 검증 시퀀스 실행·보고, 수정 금지). 커밋 전 리뷰/검증은 이들에게 위임 가능.
+- **루프 커맨드**(`.claude/commands/`): `/verify-game`(전 검사 초록까지 검증-수정 루프, 최대 3회) · `/ship [커밋제목]`(검증→bump→커밋→릴리스→태그 확인 원스톱). 릴리스 요청 시 `/ship` 절차를 따른다.
+- `.claude/settings.local.json`·`scheduled_tasks.lock`만 로컬(미커밋), 나머지 `.claude/`는 팀 공유(커밋).
+
 ## 리뷰어 참고
 
 - `// @crumbs` 마커나 `#region @crumbs` 블록 같은 임시 디버그 계측은 리뷰에서 결함으로 지적하지 않는다. 병합 전 제거되는 일시적 코드다.
