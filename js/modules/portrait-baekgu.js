@@ -290,7 +290,7 @@ function baekgu(text,mood){
   el.className='bk-msg';
   const now=new Date();
   const ts=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  el.innerHTML=`<span style="color:var(--muted);font-size:11px;margin-right:4px">${ts}</span>${text}`;
+  el.innerHTML=`<span class="bk-ts" style="color:var(--muted);font-size:11px;margin-right:4px">${ts}</span>${text}`;
   msgs.appendChild(el);
   while(msgs.children.length>10)msgs.removeChild(msgs.firstChild);
   msgs.scrollTop=msgs.scrollHeight;

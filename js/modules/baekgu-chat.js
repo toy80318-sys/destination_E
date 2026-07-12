@@ -17,7 +17,7 @@ function askBaekgu(){
   if(msgs){
     const now=new Date();const ts=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
     const qEl=document.createElement('div');qEl.className='bk-msg';
-    qEl.innerHTML=`<span style="color:var(--muted);font-size:11px;margin-right:4px">${ts}</span><span style="color:rgba(200,220,255,.7)">📡 ${q}</span>`;
+    qEl.innerHTML=`<span class="bk-ts" style="color:var(--muted);font-size:11px;margin-right:4px">${ts}</span><span style="color:rgba(200,220,255,.7)">📡 ${q}</span>`;
     msgs.appendChild(qEl);while(msgs.children.length>12)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight;
   }
   inp.value='';

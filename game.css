@@ -313,10 +313,18 @@ body.combat-mode #notif{bottom:16px;max-width:260px}
      --touch-btn(56px) 재검토 대상이지만 이번 범위 아님 — M-후속)
    · --touch-min-stage(92px): 스테이지 좌표 전용 터치 최소치 — 화면 48px 확보에
      ~2배(≥88~96px)가 필요해 92px(화면 ≈48px)로 설정.
-   · --m-font(26px): 스테이지 좌표 모바일 메뉴 폰트(화면 ≈13~14px).
-   · --m-hud-h(100px): 모바일 허브 HUD 높이 — 햄버거 92px + 상하 여백 4px. */
+   · --m-hud-h(100px): 모바일 허브 HUD 높이 — 햄버거 92px + 상하 여백 4px.
+   타이포 토큰 (리서치 확정치 2026-07-12 — 스테이지 좌표, 폰 scale≈0.52 환산):
+   · --m-fs-caption(24px): 보조 텍스트 하한 — 화면 ≈12.5px (iOS HIG 11pt 하한 상회)
+   · --m-fs-body(31px): 본문 하한 — 화면 ≈16px (iOS 17pt / Material 16sp / 게임 컨센서스)
+   · --m-fs-title(38px): 제목/강조 — 본문 1.3× 관례
+   · --m-gap-stage(16px): 스테이지 좌표 터치 요소 간 최소 간격 (8dp 환산)
+   · --m-font: 드로어 메뉴 폰트 — 구 26px(화면 ≈13~14px)를 --m-fs-body로 통합 상향(2026-07-12).
+   정책: 하한 보정 — 현재 값이 토큰보다 크면 유지, 작으면 토큰으로 올린다. */
 body.is-mobile{ --touch-min:48px; --m-gap:12px; --sheet-radius:16px 16px 0 0;
-  --touch-min-stage:92px; --m-font:26px; --m-hud-h:100px; }
+  --touch-min-stage:92px; --m-hud-h:100px;
+  --m-fs-caption:24px; --m-fs-body:31px; --m-fs-title:38px; --m-gap-stage:16px;
+  --m-font:var(--m-fs-body); }
 
 /* ═══ 모바일 허브 사이드바 드로어 (body.is-mobile) — 본문 영역 확보 ═══
    #mnav-toggle는 #s-hub 밖(#game-stage 직속, #s-hub 뒤 형제)에 있음 — index.html 참조.
@@ -339,7 +347,7 @@ body.is-mobile #hud{ height:var(--m-hud-h,100px)!important; padding-left:116px; 
 body.is-mobile #s-hub{ padding-top:var(--m-hud-h,100px)!important; }
 body.is-mobile .hub-side{
   position:absolute; left:0; top:var(--m-hud-h,100px); bottom:0; z-index:61;
-  width:400px; /* 확대 폰트(26px)·아이콘(34px) 수용 — 잘림 방지 */
+  width:400px; /* 확대 폰트(--m-font=--m-fs-body 31px)·아이콘(34px) 수용 — 잘림 방지(2026-07-12 실측: 31px에서도 미클리핑) */
   transform:translateX(-100%); transition:transform .25s ease;
   box-shadow:2px 0 20px rgba(0,0,0,.7);
 }
@@ -415,3 +423,64 @@ body.is-mobile.is-touch .modal.modal-save-compact{ max-width:100%; }
    공유 — is-mobile 단독 판정 케이스에서도 동일한 56px 버튼 크기를 유지한다. */
 body.is-mobile.is-touch #modal-btns .btn,
 body.is-mobile.is-touch #modal-btns .btn-sm{ min-height:var(--touch-btn,56px); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   모바일 타이포 하한 보정 — 허브 플레이 화면 (body.is-mobile, 2026-07-12)
+   · 토큰 근거는 상단 body.is-mobile 토큰 블록 주석 참조 (caption 24 / body 31 / title 38).
+   · !important 필수: renderMain·main-hub-story-strip 등 인라인 style 폰트를 이겨야 함
+     (CSS !important > 인라인 비-important). 인라인 값 자체는 데스크톱 기본값으로 유지.
+   · 데스크톱(1920×1080, 클래스 미부여)은 전부 무영향 — 회귀 차단.
+   ═══════════════════════════════════════════════════════════════════ */
+/* 1) HUD 스탯 칩 행 (renderMain .ic — 위치/함선/크루/TURN TAX/ACT/LEVEL/명성)
+   라벨 caption · 수치 body · 칩 내부 보조 스팬(.ic-sub: Lv 랭크, 명성 카운터) caption.
+   칩 행은 #hud 밖(hub-body 최상단 flex 행·overflow-x:auto)이라 높이는 자동 확장. */
+body.is-mobile #hub-body .icl{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #hub-body .icv{ font-size:var(--m-fs-body)!important; }
+body.is-mobile #hub-body .ic .ic-sub{ font-size:var(--m-fs-caption)!important; }
+/* 2) 상단 회사명/자원 표시줄 (#hud) — 회사명·자원 body / 배지·상태라인 caption.
+   --m-hud-h(100px) 초과 방지: 폭 부족 시 줄바꿈 허용(2줄 × ~40px ≤ 100px). */
+body.is-mobile #hud{ flex-wrap:wrap; align-content:center; row-gap:2px; }
+body.is-mobile #h-co{ font-size:var(--m-fs-body)!important; }
+body.is-mobile #h-pl{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #h-resource-bar > span{ font-size:var(--m-fs-body)!important; }
+body.is-mobile #h-resource-bar img{ width:31px!important; height:31px!important; } /* 크레딧 아이콘 — 본문 폰트와 동기 */
+body.is-mobile #h-rep-rank{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #h-status-bar > div{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #h-lv-rank{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #h-resume-combat{ font-size:var(--m-fs-caption)!important; }
+/* 3) 시나리오 퀘 카드 (main-hub-story-strip .sq-*) — 제목 body / 설명·보상·상태 caption.
+   카드 높이는 콘텐츠 자동 확장(고정 height 없음) — 폭만 280→430px로 상향(폰트 배율 보전). */
+body.is-mobile .sq-strip{ gap:var(--m-gap-stage)!important; } /* 카드=터치 요소 — 간격 하한 16px */
+body.is-mobile .sq-strip-label{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile .sq-card{ flex-basis:430px!important; }
+body.is-mobile .sq-ic{ font-size:var(--m-fs-title)!important; } /* 카드 아이콘(이모지) — 제목급 시인성 */
+body.is-mobile .sq-title{ font-size:var(--m-fs-body)!important; }
+body.is-mobile .sq-badge,
+body.is-mobile .sq-state,
+body.is-mobile .sq-reward,
+body.is-mobile .sq-prog{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile .sq-desc{ font-size:var(--m-fs-caption)!important; max-height:66px!important; } /* caption 2줄(24×1.35×2≈65) */
+/* 4) 하단 상태 스트립 (TURN n | Docked… + Dialogue Log 버튼들) — 전부 caption 이상.
+   터치 높이 60px 근거: 화면 ≈31px — 한 줄 밀집 보조 조작부라 --touch-min-stage(92px,
+   화면 48px) 대신 완화치 60px 허용(리서치 지시). 요소 간 간격은 --m-gap-stage(16px). */
+body.is-mobile .hub-status-strip{ height:auto!important; min-height:60px; gap:var(--m-gap-stage)!important; }
+body.is-mobile .hub-status-strip > span{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile .hub-status-strip button{ font-size:var(--m-fs-caption)!important; min-height:60px; }
+body.is-mobile .hub-status-strip span[onclick]{ display:inline-flex; align-items:center; min-height:60px; } /* 시나리오 배지 — 클릭 요소 */
+/* 5) 백구 AI 패널 — 대화 body / 타임스탬프 caption / 입력창 31px / Ask 버튼 터치 60px.
+   입력창 31px 고정 근거: 화면 유효 16px 미만 input 포커스 시 iOS 사파리가 강제 자동 줌
+   → 스테이지 31px(화면 ≈16px)로 방지. Ask 행도 밀집 행이라 60px 완화치(§4와 동일 근거). */
+body.is-mobile #bk-msgs{ font-size:var(--m-fs-body); }
+body.is-mobile .bk-msg{ font-size:var(--m-fs-body)!important; }
+body.is-mobile .bk-msg .bk-ts{ font-size:var(--m-fs-caption)!important; }
+body.is-mobile #bk-ask-input{ font-size:var(--m-fs-body)!important; min-height:60px; }
+body.is-mobile #bk-ask-area button{ font-size:var(--m-fs-caption)!important; min-height:60px; }
+/* 확대된 Ask 행(≈76px)·대화 폰트가 기존 210px 패널에서 메시지 영역을 과압축(2줄 미만)
+   → 높이 260px로 보전 (bk-collapsed는 기존 32px 유지 — 본 규칙이 명시도로 이기므로 재선언). */
+body.is-mobile #bkdialog{ height:260px; }
+body.is-mobile #bkdialog.bk-collapsed{ height:32px; }
+/* 6) 드로어 메뉴 — --m-font가 --m-fs-body(31px)로 통합됨(토큰 블록) — 별도 규칙 불필요 */
+/* 7) 모달/바텀시트 본문 — 상속 기본 폰트만 하한 보정(제목 title / 본문 body).
+   인라인 style로 소형 폰트를 지정한 모달 콘텐츠는 개별 보정 필요 — 후속 항목. */
+body.is-mobile .modal-t{ font-size:var(--m-fs-title)!important; }
+body.is-mobile #modal-b{ font-size:var(--m-fs-body); }
