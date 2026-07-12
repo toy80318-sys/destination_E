@@ -437,6 +437,15 @@ body.is-mobile.is-touch #modal-btns .btn-sm{ min-height:var(--touch-btn,56px); }
 body.is-mobile #hub-body .icl{ font-size:var(--m-fs-caption)!important; }
 body.is-mobile #hub-body .icv{ font-size:var(--m-fs-body)!important; }
 body.is-mobile #hub-body .ic .ic-sub{ font-size:var(--m-fs-caption)!important; }
+/* 1b) 명성 칩(.ic-rep) 클리핑 회귀 보정 (2026-07-12) — 폰트 확대 후 라벨(.icl)+등급(.icv)이
+   한 줄 인라인으로 흘러 칩 자연폭이 커졌고, nowrap 행의 flex-shrink가 명성 칩만
+   (내부 min-width:0 탓에) min-width:130px 근처로 압착 → 중앙정렬 텍스트가 좌우로 잘림.
+   · .icl 을 다른 칩처럼 위로 쌓아(라벨 위·등급 아래) 칩 폭 축소 — 텍스트/i18n 무변경.
+   · 칩 행은 자연 줄바꿈 허용(인라인 nowrap을 !important 로 override) + 명성 칩 압착 금지.
+   · 데스크톱(클래스 미부여)은 무영향. */
+body.is-mobile #hub-body .hub-chip-row{ flex-wrap:wrap!important; }
+body.is-mobile #hub-body .ic-rep{ flex-shrink:0; }
+body.is-mobile #hub-body .ic-rep .icl{ display:block; }
 /* 2) 상단 회사명/자원 표시줄 (#hud) — 회사명·자원 body / 배지·상태라인 caption.
    --m-hud-h(100px) 초과 방지: 폭 부족 시 줄바꿈 허용(2줄 × ~40px ≤ 100px). */
 body.is-mobile #hud{ flex-wrap:wrap; align-content:center; row-gap:2px; }
